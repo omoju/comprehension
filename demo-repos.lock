@@ -1,0 +1,11 @@
+# name  url  commit — the exact sources every story cites. Rebuild demo-repos/ with: sh codestory/restore_repos.sh
+attrs https://github.com/python-attrs/attrs.git 8f767776326faaed11e6c2974798787f6e19b343
+click https://github.com/pallets/click.git 06b2a678741131fd577ce170e23e5ca0aeba0309
+flask https://github.com/pallets/flask.git d73fa1cdcbd8b1465c151db8924ba58b1dd14e35
+httpx https://github.com/encode/httpx.git b5addb64f0161ff6bfe94c124ef76f6a1fba5254
+itsdangerous https://github.com/pallets/itsdangerous.git 672971d66a2ef9f85151e53283113f33d642dabd
+jinja https://github.com/pallets/jinja.git 5ef70112a1ff19c05324ff889dd30405b1002044
+markupsafe https://github.com/pallets/markupsafe.git b2e4d9c7687be25695fffbe93a37622302b24fb1
+requests https://github.com/psf/requests.git 611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60
+rich https://github.com/Textualize/rich.git 9d8f9a372cc5916fd4781fec207ced7ddac2f08f
+tqdm https://github.com/tqdm/tqdm.git 9cf5a12b1f955468a17f0ba3c59092b23e4258ac

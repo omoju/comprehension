@@ -2,31 +2,43 @@
 *The project's memory between sessions. "Pick up here" is always current; below it: the plan, settled decisions,
 lessons, a short log (newest first), and Omoju's opening paragraph. Code and git say what changed; this says why.*
 
-## ▶ Pick up here (2026-09-30, end of day)
-**State.** CodeStories works end to end on one repo. itsdangerous has a complete 8-chapter story for the owner reader,
-close third person, every chapter passing its checks, rendered as a reading page:
-https://claude.ai/artifact/JyeDNbyYZyMt1ivYxWwshL (private; source `stories/itsdangerous-close-third/index.html`).
+## ▶ Pick up here (handoff, 2026-09-30 night)
+**State.** CodeStories works end to end. itsdangerous has a complete 8-chapter owner story, all checks passing, on a
+reading page with a control-flow chart of the run: https://claude.ai/artifact/JyeDNbyYZyMt1ivYxWwshL (private; source
+`stories/itsdangerous-close-third/index.html`, rebuild with `render.py`). The other 9 repos (`stories/bench/`) have
+scenarios (9/9 ran), compressed traces and owner outlines; **chapters are on hold** (Omoju). Everything is committed;
+`PREREGISTRATION.md` was fixed at the first commit `2c65390`. No jobs running.
 
-**Git:** initialised 2026-09-30; first commit `2c65390` (18:50 PT) includes `PREREGISTRATION.md` with the approved
-repo list, so the rule is fixed before any comparison runs. `.env`, `demo-repos/`, venvs are ignored.
+**First thing next session**
+1. `git status` should be clean. If `demo-repos/` is missing: `sh codestory/restore_repos.sh` (exact commits in
+   `demo-repos.lock`). Keys are in `.env` (not in git; copy `.env.example` if it's gone).
+2. Ask Omoju the open decisions below before spending.
 
-**On hold (Omoju):** chapters for the 9 bench repos. Their scenarios, compressed traces and owner outlines are done
-(`stories/bench/`); 3 outlines fail the question-ID check (requests, httpx, tqdm) and need a re-plan or repair.
+**Open decisions (Omoju)**
+1. When to generate chapters for the 9 repos (≈ $40–60, ~15 min in parallel).
+2. Outline length: they sprawl (requests 14, attrs 14, markupsafe 12 chapters for 499 lines). Add a length budget?
+3. Self-story on this repo: `pyproject.toml`, `.codestoryignore`, then run.
+4. A second, cross-vendor judge for the comparison (the code-review paper's cross-model point), or Jev + Claude only?
+5. Keep the "note to Sha" reminder in `NOTES.md`, or move it out before the repo is published?
+6. Optional: `PREREGISTRATION.md` §9 sentences on what "it helps" would feel like.
 
-**Waiting on Omoju**
-1. When to generate chapters for the 9 repos (≈ $40–60).
-2. Go-ahead for the self-story: `pyproject.toml`, `.codestoryignore`, run on this repo.
-3. Optional: the §9 sentences on what "it helps" would feel like.
+**Next work (Thursday 1 October), in parallel tracks**
+- Re-plan or repair the 3 outlines failing the question-ID check (requests, httpx, tqdm).
+- Stage 3 repair loop as a separate pass over existing chapters (failed checks → Claude, ≤2 tries). Would have
+  handled both hand-fixed proofs.
+- Fetch DeepWiki pages for all 10 via its public MCP server (`https://mcp.deepwiki.com/mcp`, tools
+  `read_wiki_structure`, `read_wiki_contents`); record the commit each page describes.
+- Eval harness: question writing (path + general), answer keys checked by execution, claim extraction, judge;
+  test the judge on planted lies in *both* stories and DeepWiki pages before use.
+- Monday, after the results page: remind Omoju to send Sha Ma a short note.
 
-**Next (Thursday 1 October)**: stage 3 repair loop (failed checks go back to Claude, ≤2 tries; would have handled
-both hand-fixed proofs); pilot on 2 new repos; the self-story.
-
-**Pipeline**, run from the root with `.venv/bin/python` (keys in `.env`):
+**Pipeline**, run from the root with `.venv/bin/python` (Python 3.13; keys in `.env`):
 `codestory/scenario.py <repo> <dir>` → `outline.py <repo> <dir> --reader owner|maintainer|user` →
 `chapter.py <dir> [--upto N]` (writes only missing chapters) → `render.py <dir>`.
 Checks: `verify.py <dir>` (citations, drift, proofs), `claims.py <dir> <chapter>` (Jev contradiction judge).
+Each repo gets its own environment at `demo-repos/<repo>/.codestory-venv` (created on first use).
 
-**Spend so far:** ≈ $10 on Anthropic, pennies on Jev.
+**Spend so far:** ≈ $20 on Anthropic (≈ $10 to 09-30 noon, plus 8-chapter rewrite, 9 scenarios, 9 outlines), pennies on Jev.
 
 ## The plan to Tuesday 6 October
 Question: is a CodeStory better than generated documentation? Head-to-head against DeepWiki on 10 pure-Python repos
