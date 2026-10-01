@@ -1,0 +1,8 @@
+   1. 01-the-trust-boundary-and-the-unguarded-door-beside-i.md  1070 words, 17 citations, 80s, $0.50  → 0 check errors, 1 contradicted
+   2. 02-an-object-that-writes-its-own-html-and-a-template-.md  1020 words, 15 citations, 104s, $0.29  → ok
+   3. 03-the-innermost-escape-the-user-s-name.md  816 words, 10 citations, 88s, $0.24  → ok
+      ✗ 1 check errors, repair 1/2: proof 1 failed: AssertionError
+      ✗ 1 check errors, repair 2/2: proof 1 failed: AssertionError
+   4. 04-markup-escape-and-the-reassembled-page.md  882 words, 15 citations, 216s, $0.74  → ok after 2 repairs
+   5. 05-concatenation-the-operand-gets-escaped-both-ways.md  930 words, 21 citations, 78s, $0.23  → ok
+   6. 06-striptags-the-exit-back-to-plain-text-and-what-the.md  1259 words, 26 citations, 110s, $0.31  → ok
