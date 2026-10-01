@@ -1,0 +1,31 @@
+A Request That Never Touches the Network  [owner]: 13 chapters
+   1. The world it enters: a client wired to a function, not a socket  [trace 2-75]
+   2. "/" becomes an absolute URL  [trace 76-135]
+   3. Merging: one custom header, no cookies, no params, and a timeout smuggled in extensions  [trace 136-177]
+   4. Becoming a Request: empty body, auto Host, read eagerly  [trace 178-246]
+   5. send(): state, timeouts, and the auth that was never configured  [trace 247-255]
+   6. The auth generator: one yield, one pass  [trace 256-260]
+   7. Choosing the transport, and the exception-tagging boundary  [trace 261-266]
+   8. Across the boundary: the request becomes a WSGI environ  [trace 267-303]
+   9. Dressing the response: identity, timing stream, cookies, log line  [trace 304-355]
+  10. Not a redirect: the two loops unwind  [trace 356-363]
+  11. Reading the body: decoders, chunker, and the close that sets elapsed  [trace 364-395]
+  12. Out to the caller: repr, headers, and text decoding policy  [trace 398-452]
+  13. Leaving: closing a client that owns nothing  [trace 453-458]
+  ! ch10 answers q6.1, which was never asked
+  ! 13 chapters, budget is 10: merge the thinnest spans into their neighbours
+
+repair 1/2
+A Request That Never Touches the Network  [owner]: 10 chapters
+   1. The world it enters: a client wired to a function, not a socket  [trace 2-75]
+   2. "/" becomes an absolute URL  [trace 76-135]
+   3. Merging, then becoming a Request  [trace 136-246]
+   4. send(): state, auth resolution, and one pass through the auth generator  [trace 247-260]
+   5. Choosing the transport, and the exception-tagging boundary  [trace 261-266]
+   6. Across the boundary: the request becomes a WSGI environ  [trace 267-303]
+   7. Dressing the response: identity, timing stream, cookies, log line  [trace 304-355]
+   8. Not a redirect: the two loops unwind  [trace 356-363]
+   9. Reading the body: decoders, chunker, and the close that sets elapsed  [trace 364-395]
+  10. Out to the caller, and closing a client that owns nothing  [trace 398-458]
+
+.repair1 tokens: 28,691 in (+0 cached, 152,633 written to cache), 11,604 out

@@ -2,12 +2,13 @@
 *The project's memory between sessions. "Pick up here" is always current; below it: the plan, settled decisions,
 lessons, a short log (newest first), and Omoju's opening paragraph. Code and git say what changed; this says why.*
 
-## ▶ Pick up here (handoff, 2026-09-30 night)
+## ▶ Pick up here (2026-10-01)
 **State.** CodeStories works end to end. itsdangerous has a complete 8-chapter owner story, all checks passing, on a
 reading page with a control-flow chart of the run: https://claude.ai/artifact/JyeDNbyYZyMt1ivYxWwshL (private; source
 `stories/itsdangerous-close-third/index.html`, rebuild with `render.py`). The other 9 repos (`stories/bench/`) have
-scenarios (9/9 ran), compressed traces and owner outlines; **chapters are on hold** (Omoju). Everything is committed;
-`PREREGISTRATION.md` was fixed at the first commit `2c65390`. No jobs running.
+scenarios, compressed traces and **owner outlines that all pass their checks at 10 chapters** (repaired today;
+the previous plans are in `outline.prev.json`). **Chapters for the 9 are not yet generated** (≈ $40–60, ~15 min in
+parallel; Omoju's call). Stage 3 (repair loop) is built into `outline.py` and `chapter.py`. No jobs running.
 
 **First thing next session**
 1. `git status` should be clean. If `demo-repos/` is missing: `sh codestory/restore_repos.sh` (exact commits in
@@ -15,17 +16,16 @@ scenarios (9/9 ran), compressed traces and owner outlines; **chapters are on hol
 2. Ask Omoju the open decisions below before spending.
 
 **Open decisions (Omoju)**
-1. When to generate chapters for the 9 repos (≈ $40–60, ~15 min in parallel).
-2. Outline length: they sprawl (requests 14, attrs 14, markupsafe 12 chapters for 499 lines). Add a length budget?
+1. When to generate chapters for the 9 repos. The pipeline is ready: `chapter.py stories/bench/<repo>` for each.
+2. The length budget is a count cap (`MAX_CHAPTERS = 10`, `--max-chapters N`). markupsafe met it by merging the
+   minimum: ch1 is 4 trace lines, ch10 is 2. Tighten (a minimum span, or a per-repo cap from the trace), or accept?
 3. Self-story on this repo: `pyproject.toml`, `.codestoryignore`, then run.
 4. A second, cross-vendor judge for the comparison (the code-review paper's cross-model point), or Jev + Claude only?
 5. Keep the "note to Sha" reminder in `NOTES.md`, or move it out before the repo is published?
 6. Optional: `PREREGISTRATION.md` §9 sentences on what "it helps" would feel like.
 
-**Next work (Thursday 1 October), in parallel tracks**
-- Re-plan or repair the 3 outlines failing the question-ID check (requests, httpx, tqdm).
-- Stage 3 repair loop as a separate pass over existing chapters (failed checks → Claude, ≤2 tries). Would have
-  handled both hand-fixed proofs.
+**Next work, in parallel tracks**
+- Generate the 9 stories (decision 1), then read the reports: repairs per chapter is the first number stage 3 gives us.
 - Fetch DeepWiki pages for all 10 via its public MCP server (`https://mcp.deepwiki.com/mcp`, tools
   `read_wiki_structure`, `read_wiki_contents`); record the commit each page describes.
 - Eval harness: question writing (path + general), answer keys checked by execution, claim extraction, judge;
@@ -33,12 +33,15 @@ scenarios (9/9 ran), compressed traces and owner outlines; **chapters are on hol
 - Monday, after the results page: remind Omoju to send Sha Ma a short note.
 
 **Pipeline**, run from the root with `.venv/bin/python` (Python 3.13; keys in `.env`):
-`codestory/scenario.py <repo> <dir>` → `outline.py <repo> <dir> --reader owner|maintainer|user` →
-`chapter.py <dir> [--upto N]` (writes only missing chapters) → `render.py <dir>`.
+`codestory/scenario.py <repo> <dir>` → `outline.py <repo> <dir> --reader owner|maintainer|user [--max-chapters N]`
+→ `chapter.py <dir> [--upto N]` (writes missing chapters; rechecks and repairs existing ones) → `render.py <dir>`.
+Repair: a plan or chapter that fails a deterministic check goes back to the model with the errors, in the same
+conversation, ≤ `REPAIRS` = 2 times; `outline.py --repair` does it for an existing plan, `chapter.py` on a finished
+story is the stage-3 pass. The judge is reported, never repaired on.
 Checks: `verify.py <dir>` (citations, drift, proofs), `claims.py <dir> <chapter>` (Jev contradiction judge).
 Each repo gets its own environment at `demo-repos/<repo>/.codestory-venv` (created on first use).
 
-**Spend so far:** ≈ $20 on Anthropic (≈ $10 to 09-30 noon, plus 8-chapter rewrite, 9 scenarios, 9 outlines), pennies on Jev.
+**Spend so far:** ≈ $31 on Anthropic (≈ $20 to 09-30; 10-01: 7 outline repairs ≈ $10, repair-loop test ≈ $1.5), pennies on Jev.
 
 ## The plan to Tuesday 6 October
 Question: is a CodeStory better than generated documentation? Head-to-head against DeepWiki on 10 pure-Python repos
@@ -50,7 +53,7 @@ ship / pivot to stories of *changes* / kill.
 | Day | Work | Status |
 |---|---|---|
 | Wed 30 | voice; full itsdangerous story; per-repo venv; trace-ordered context; preregistration | done, plus the reading page; repo list not yet approved |
-| Thu 1 | repair loop; pilot 2 repos; self-story | |
+| Thu 1 | repair loop; pilot 2 repos; self-story | repair loop done (outline + chapter), outlines repaired to 10 ch.; chapters await go |
 | Fri 2 | run all 10; build the eval (questions, keys, DeepWiki + docs fetch) | |
 | Sat 3 | run the head-to-head | |
 | Sun 4 | buffer; Omoju reads 2–3 | |
@@ -99,8 +102,22 @@ left, design for verification, context engineering, the quality loop, cross-mode
 - **A check that doesn't stop the run isn't a check.** Outline span errors were printed and ignored; now they exit non-zero.
 - **A green run can be wrong.** Every check compared against the code; none against the trace the story claimed to follow.
 - **Ground truth beats inference.** The flowchart's decisions come from executed lines + the AST, not from a model.
+- **Repair in the same conversation, after the check.** The model sees exactly what it wrote and exactly what
+  failed; the cached context makes the retry cost a fraction of the first turn. Seven outlines fixed in one repair
+  each; a chapter with a planted bad citation and a broken proof came back passing in one.
+- **A check on a count gets the minimum.** "At most 10 chapters" was met by merging the two thinnest spans and
+  leaving 2- and 4-line chapters. The check decides what the model optimises; say what you actually want.
+- **"Fix only what is named" is a request, not a guarantee.** The repaired chapter also re-cited every link, cut a
+  sentence from a callout and rewrote the proof's strategy. Everything still passed; the diff is bigger than the fix.
+  Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-01** · Stage 3. `outline.py`: `check_plan` (spans, threads, numbering, length budget `MAX_CHAPTERS` = 10),
+  repair loop ≤ 2, `--repair` for an existing plan. All 7 failing/oversize outlines repaired in one pass each
+  (≈ $1.40 each, dominated by rewriting the repo into cache). `chapter.py`: same loop on deterministic check
+  errors; existing chapters are rechecked and repaired on a rerun (the stage-3 pass over a finished story);
+  report gains a repairs column. Tested on a copy of itsdangerous ch2 with a planted bad line range + failing
+  assert: fixed in one repair, $1.00.
 - **09-30 late** · Repo list approved (prereg §3). To derisk, the riskiest step moved from Friday to now: scenarios for
   all 9 new repos in parallel (`stories/bench/<repo>/`). **9/9 ran**, 8 first try (requests retried: imported the
   repo's tests). Network handled locally (requests: stdlib HTTP server; httpx: WSGITransport). Traces: 81–5,007

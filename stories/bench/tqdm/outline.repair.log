@@ -1,0 +1,32 @@
+Four Characters and a Progress Bar: What tqdm Promises While It Prints  [owner]: 13 chapters
+   1. Before the list is even looked at: a lock, a registry, a thread  [trace 2-21]
+   2. Accepting the arguments: a wrapped stderr, a borrowed `len`, and a guess about Unicode  [trace 22-53]
+   3. Claiming a line: position under lock and a printer with a memory  [trace 54-67]
+   4. The first frame: rendering 0/4 and committing it to stderr  [trace 68-112]
+   5. Four items, no repaint: the loop runs and the bar closes itself  [trace 113-119]
+   6. A second bar is born: the thread is reused, not replaced  [trace 120-135]
+   7. The same setup again, with a prefix  [trace 136-226]
+   8. Describing without counting: forced refreshes that show stale progress  [trace 227-322]
+   9. The gate opens: update(2), the EMA rate, and self-tuned miniters  [trace 323-377]
+  10. Two more cosmetic repaints (told once)  [trace 378-475]
+  11. The last two items: 100% and the final committed frame  [trace 476-529]
+  12. Closing down: leaving the registry, the truth about the rate, and a newline  [trace 530-602]
+  13. After the end: reading a closed bar, and the last safety nets  [trace 603-610]
+  ! ch11 answers q9.1, which was never asked
+  ! ch13 answers q12.1, which was never asked
+  ! 13 chapters, budget is 10: merge the thinnest spans into their neighbours
+
+repair 1/2
+Four Characters and a Progress Bar: What tqdm Promises While It Prints  [owner]: 10 chapters
+   1. Before the list is even looked at: a lock, a registry, a thread  [trace 2-21]
+   2. Accepting the arguments: a wrapped stderr, a borrowed `len`, and a guess about Unicode  [trace 22-53]
+   3. Claiming a line: position under lock and a printer with a memory  [trace 54-67]
+   4. The first frame: rendering 0/4 and committing it to stderr  [trace 68-112]
+   5. Four items, no repaint: the loop runs and the bar closes itself  [trace 113-119]
+   6. A second bar is born: the thread is reused, not replaced  [trace 120-135]
+   7. The same setup again, with a prefix  [trace 136-226]
+   8. Describing without counting: forced refreshes that show stale progress  [trace 227-322]
+   9. The gates open: update(2), the EMA rate, self-tuned miniters, and the run to 100%  [trace 323-529]
+  10. Closing down: leaving the registry, the truth about the rate, and reading a dead bar  [trace 530-610]
+
+.repair1 tokens: 33,450 in (+0 cached, 170,452 written to cache), 11,273 out

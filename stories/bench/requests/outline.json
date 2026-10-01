@@ -1,6 +1,6 @@
 {
   "title": "One GET, End to End: What Requests Promises and Where It Trusts You",
-  "premise": "A caller has a URL and a pair of credentials: `requests.get('http://127.0.0.1:54897/basic-auth/user/pass', auth=('user','pass'))`. Between that line and a parsed JSON dict lies every decision Requests makes on your behalf \u2014 which headers it adds, whether it checks a certificate, how long it will wait, where it will send your password next, and what it does with a response body it has not yet read. This story follows that URL and that password through the library, stopping wherever a guarantee is made or a default quietly decides something for you.",
+  "premise": "A caller has a URL and a pair of credentials: `requests.get('http://127.0.0.1:54897/basic-auth/user/pass', auth=('user','pass'))`. Between that line and a parsed JSON dict lies every decision Requests makes on your behalf \\u2014 which headers it adds, whether it checks a certificate, how long it will wait, where it will send your password next, and what it does with a response body it has not yet read. This story follows that URL and that password through the library, stopping wherever a guarantee is made or a default quietly decides something for you.",
   "reader": "owner",
   "repo": {
     "name": "psf/requests",
@@ -39,7 +39,7 @@
         "RequestsCookieJar"
       ],
       "facts": [
-        "The module-level `requests.get` builds a brand-new Session inside a `with` block, so the session (and its sockets) is closed when the call returns \u2014 no connection reuse between successive `requests.get` calls.",
+        "The module-level `requests.get` builds a brand-new Session inside a `with` block, so the session (and its sockets) is closed when the call returns \\u2014 no connection reuse between successive `requests.get` calls.",
         "Session defaults set here decide the rest of the story: `verify=True`, `stream=False`, `trust_env=True`, `max_redirects=30` (DEFAULT_REDIRECT_LIMIT), `auth=None`, `proxies={}`.",
         "`HTTPAdapter.__init__` with the default `max_retries=0` builds `Retry(0, read=False)`: Requests does not retry anything by default, including connection failures.",
         "Four headers are added unconditionally on every request, including a `User-Agent` that identifies the library and version ('python-requests/2.34.2').",
@@ -87,11 +87,11 @@
         "get_netrc_auth (not taken)"
       ],
       "facts": [
-        "`merge_setting` gives per-request values precedence over session values for dict-like settings, and a per-request key set to `None` *deletes* the session's key \u2014 the documented way to suppress a session default.",
+        "`merge_setting` gives per-request values precedence over session values for dict-like settings, and a per-request key set to `None` *deletes* the session's key \\u2014 the documented way to suppress a session default.",
         "Non-dict settings (verify, stream, cert) bypass merging entirely: the request value wins outright if it is not None.",
-        "Because an explicit `auth` tuple was supplied, the `get_netrc_auth(url)` branch was skipped. Had `auth` been None and `trust_env` True, credentials from `~/.netrc` would have been injected silently \u2014 and netrc auth overrides an Authorization header the caller set via `headers=`.",
+        "Because an explicit `auth` tuple was supplied, the `get_netrc_auth(url)` branch was skipped. Had `auth` been None and `trust_env` True, credentials from `~/.netrc` would have been injected silently \\u2014 and netrc auth overrides an Authorization header the caller set via `headers=`.",
         "Session cookies are merged into a fresh RequestsCookieJar for this request; the session's own jar is not mutated at preparation time.",
-        "The method string is upper-cased twice (once in `Session.request`, once in `prepare_request`) \u2014 'get' and 'GET' are equivalent inputs."
+        "The method string is upper-cased twice (once in `Session.request`, once in `prepare_request`) \\u2014 'get' and 'GET' are equivalent inputs."
       ],
       "open_questions": [
         {
@@ -129,9 +129,9 @@
         "requote_uri"
       ],
       "facts": [
-        "`prepare` runs a fixed order \u2014 method, url, headers, cookies, body, auth, hooks \u2014 and the comments make the ordering a contract: auth must be able to see a fully built request, and hooks must be registered after auth.",
-        "Roads not taken, all raising before any socket opens: no scheme \u2192 `MissingSchema`; no host \u2192 `InvalidURL`; a host starting with '*' or '.' \u2192 `InvalidURL('URL has an invalid label.')`; a urllib3 `LocationParseError` \u2192 `InvalidURL`.",
-        "A URL containing ':' that does not start with 'http' (e.g. `mailto:`, `data:`) is stored *verbatim* with no parsing or validation \u2014 a deliberate escape hatch that later fails at adapter selection instead.",
+        "`prepare` runs a fixed order \\u2014 method, url, headers, cookies, body, auth, hooks \\u2014 and the comments make the ordering a contract: auth must be able to see a fully built request, and hooks must be registered after auth.",
+        "Roads not taken, all raising before any socket opens: no scheme \\u2192 `MissingSchema`; no host \\u2192 `InvalidURL`; a host starting with '*' or '.' \\u2192 `InvalidURL('URL has an invalid label.')`; a urllib3 `LocationParseError` \\u2192 `InvalidURL`.",
+        "A URL containing ':' that does not start with 'http' (e.g. `mailto:`, `data:`) is stored *verbatim* with no parsing or validation \\u2014 a deliberate escape hatch that later fails at adapter selection instead.",
         "Non-ASCII hostnames are IDNA-encoded via the `idna` package; here `unicode_is_ascii('127.0.0.1')` was True so the host passed through unchanged.",
         "`requote_uri` runs an unquote/quote cycle so the final URL is consistently percent-encoded; an undecodable escape falls back to quoting the whole URI rather than failing."
       ],
@@ -145,39 +145,48 @@
     },
     {
       "n": 4,
-      "title": "Headers, and the CRLF That Never Happens",
+      "title": "Headers, Cookies, and the CRLF That Never Happens",
       "trace_lines": [
         105,
-        156
+        168
       ],
-      "data_in": "headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'}",
-      "data_out": "self.headers = CaseInsensitiveDict with those four entries, each name/value validated",
+      "data_in": "headers={'User-Agent': 'python-requests/2.34.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'}, cookies=<RequestsCookieJar[]>",
+      "data_out": "self.headers = CaseInsensitiveDict with those four validated entries; self._cookies set to the empty jar, no 'Cookie' header added (get_cookie_header returned None)",
       "code": [
         "src/requests/models.py:565-574",
         "src/requests/utils.py:1087-1119",
         "src/requests/_internal_utils.py:13-36",
-        "src/requests/structures.py:49-93"
+        "src/requests/structures.py:49-93",
+        "src/requests/models.py:699-720",
+        "src/requests/cookies.py:153-161",
+        "src/requests/cookies.py:31,45-112"
       ],
       "inputs": [
-        "merged headers mapping"
+        "merged headers mapping",
+        "merged cookie jar"
       ],
       "characters": [
         "prepare_headers",
         "check_header_validity",
         "_validate_header_part",
         "HEADER_VALIDATORS",
-        "CaseInsensitiveDict"
+        "CaseInsensitiveDict",
+        "prepare_cookies",
+        "get_cookie_header",
+        "MockRequest"
       ],
       "facts": [
-        "Every header name and value is matched against a regex before it is stored: names must not start with ':' or whitespace and must contain no CR/LF; values must not start with whitespace and must contain no CR/LF. Failure raises `InvalidHeader` \u2014 this is the request-splitting / header-injection defence, and it runs on *every* request.",
+        "Every header name and value is matched against a regex before it is stored: names must not start with ':' or whitespace and must contain no CR/LF; values must not start with whitespace and must contain no CR/LF. Failure raises `InvalidHeader` \\u2014 this is the request-splitting / header-injection defence, and it runs on *every* request.",
         "A header part that is neither `str` nor `bytes` also raises `InvalidHeader`, so stringification is the caller's job.",
-        "Names are normalised with `to_native_string` (ASCII); values are stored as given, bytes included.",
-        "`CaseInsensitiveDict` keys on `key.lower()` and keeps the last-written casing \u2014 two headers differing only in case silently collapse into one, which is undefined behaviour by the class's own docstring."
+        "`CaseInsensitiveDict` keys on `key.lower()` and keeps the last-written casing \\u2014 two headers differing only in case silently collapse into one, which is undefined behaviour by the class's own docstring.",
+        "`prepare_cookies` is the only place a `Cookie` header is generated; `MockRequest` adapts the PreparedRequest to the `http.cookiejar` interface so the standard library's domain/path/secure policy governs what is sent, and `is_unverifiable()` always returns True.",
+        "The docstring states a one-shot contract: cookielib will not regenerate a `Cookie` header that already exists, so calling `prepare_cookies` twice is a no-op unless the header is deleted first \\u2014 redirect handling relies on this by popping 'Cookie' before re-preparing.",
+        "A `Host` header set by the caller changes the URL that `MockRequest.get_full_url()` reports, and therefore which cookies match."
       ],
       "open_questions": [
         {
           "id": "q4.1",
-          "question": "No Cookie header was added here. Does anything else get to add one before the request leaves?"
+          "question": "The jar is empty now. If the server sets a cookie, does it survive past this one request?"
         }
       ],
       "answers": [
@@ -189,102 +198,31 @@
     },
     {
       "n": 5,
-      "title": "An Empty Jar, Consulted Once",
-      "trace_lines": [
-        157,
-        168
-      ],
-      "data_in": "cookies=<RequestsCookieJar[]> (empty, merged from session)",
-      "data_out": "self._cookies set to that jar; no 'Cookie' header added (get_cookie_header returned None)",
-      "code": [
-        "src/requests/models.py:699-720",
-        "src/requests/cookies.py:153-161",
-        "src/requests/cookies.py:31,45-112"
-      ],
-      "inputs": [
-        "merged cookie jar"
-      ],
-      "characters": [
-        "prepare_cookies",
-        "get_cookie_header",
-        "MockRequest",
-        "RequestsCookieJar"
-      ],
-      "facts": [
-        "`MockRequest` adapts a PreparedRequest to the `http.cookiejar` interface so the standard library's cookie policy (domain/path/secure matching) governs what is sent.",
-        "`MockRequest.is_unverifiable()` always returns True, which affects third-party-cookie policy decisions made by cookiejar.",
-        "The docstring states the one-shot contract: cookielib will not regenerate a `Cookie` header that already exists, so calling `prepare_cookies` twice on the same PreparedRequest is a no-op unless the header is deleted first. Redirect handling relies on this by popping 'Cookie' before re-preparing.",
-        "A `Host` header set by the caller changes the URL that `MockRequest.get_full_url()` reports, and therefore which cookies match."
-      ],
-      "open_questions": [
-        {
-          "id": "q5.1",
-          "question": "The jar is empty now. If the server sets a cookie, does it survive past this one request?"
-        }
-      ],
-      "answers": [
-        {
-          "id": "q4.1",
-          "answer": "`prepare_cookies` is the only place a `Cookie` header is generated, via `get_cookie_header`; with an empty jar it returned None and no header was added."
-        }
-      ]
-    },
-    {
-      "n": 6,
-      "title": "No Body, and the Content-Length That Isn't Sent",
+      "title": "No Body, and the Password Becomes a Header",
       "trace_lines": [
         169,
-        172
-      ],
-      "data_in": "data={}, files=[], json=None",
-      "data_out": "self.body = None; no Content-Length, no Content-Type, no Transfer-Encoding",
-      "code": [
-        "src/requests/models.py:576-668",
-        "src/requests/models.py:108-251"
-      ],
-      "inputs": [
-        "empty data, no files, no json"
-      ],
-      "characters": [
-        "prepare_body",
-        "prepare_content_length",
-        "_encode_params",
-        "_encode_files"
-      ],
-      "facts": [
-        "Precedence is explicit: `json` is only used when `data` is falsy, and `files` overrides plain data by switching to multipart encoding. Passing both `data` and `json` silently drops the `json`.",
-        "For GET and HEAD with no body, `prepare_content_length` deliberately omits `Content-Length` entirely; for any other method with no body it sets `Content-Length: 0`.",
-        "A file-like or generator body takes the streaming path: if `super_len` can determine a length it sets `Content-Length`, otherwise it sets `Transfer-Encoding: chunked`. It also records `_body_position` via `tell()` so the body can be rewound on redirect; a failed `tell()` stores a sentinel object so a later rewind raises `UnrewindableBodyError` instead of hanging.",
-        "Streamed bodies and `files` together raise `NotImplementedError`; invalid JSON (e.g. NaN, since `allow_nan=False`) raises `InvalidJSONError`."
-      ],
-      "open_questions": [
-        {
-          "id": "q6.1",
-          "question": "There is no body and no Content-Length header. Will the transport interpret that as a chunked request?"
-        }
-      ],
-      "answers": []
-    },
-    {
-      "n": 7,
-      "title": "The Password Becomes a Header",
-      "trace_lines": [
-        173,
         192
       ],
-      "data_in": "auth=('user','pass'), url='http://127.0.0.1:54897/basic-auth/user/pass'",
-      "data_out": "headers gain 'Authorization': 'Basic dXNlcjpwYXNz'; hooks {'response': []} registered; PreparedRequest [GET] complete",
+      "data_in": "data={}, files=[], json=None, auth=('user','pass'), url='http://127.0.0.1:54897/basic-auth/user/pass'",
+      "data_out": "self.body = None (no Content-Length, no Content-Type); headers gain 'Authorization': 'Basic dXNlcjpwYXNz'; hooks {'response': []} registered; PreparedRequest [GET] complete",
       "code": [
+        "src/requests/models.py:576-668",
+        "src/requests/models.py:108-251",
         "src/requests/models.py:670-697",
         "src/requests/models.py:722-729",
         "src/requests/auth.py:34-113",
         "src/requests/utils.py:1070-1084"
       ],
       "inputs": [
+        "empty data, no files, no json",
         "auth tuple ('user','pass')",
         "prepared url"
       ],
       "characters": [
+        "prepare_body",
+        "prepare_content_length",
+        "_encode_params",
+        "_encode_files",
         "prepare_auth",
         "HTTPBasicAuth",
         "_basic_auth_str",
@@ -292,16 +230,24 @@
         "register_hook"
       ],
       "facts": [
-        "A 2-tuple is special-cased into `HTTPBasicAuth`; anything else callable is invoked as-is with the PreparedRequest, which is the extension point for Digest, OAuth and custom schemes.",
-        "`_basic_auth_str` encodes username and password as **latin-1** before base64 \u2014 non-latin-1 credentials raise `UnicodeEncodeError`. Non-string credentials are coerced with a `DeprecationWarning` for 3.0 compatibility.",
+        "Body precedence is explicit: `json` is only used when `data` is falsy, and `files` overrides plain data by switching to multipart encoding. Passing both `data` and `json` silently drops the `json`.",
+        "For GET and HEAD with no body, `prepare_content_length` deliberately omits `Content-Length` entirely; for any other method with no body it sets `Content-Length: 0`.",
+        "A file-like or generator body takes the streaming path: if `super_len` can determine a length it sets `Content-Length`, otherwise `Transfer-Encoding: chunked`. It records `_body_position` via `tell()` so the body can be rewound on redirect; a failed `tell()` stores a sentinel so a later rewind raises `UnrewindableBodyError` instead of hanging.",
+        "Streamed bodies and `files` together raise `NotImplementedError`; invalid JSON (e.g. NaN, since `allow_nan=False`) raises `InvalidJSONError`.",
+        "A 2-tuple auth is special-cased into `HTTPBasicAuth`; anything else callable is invoked as-is with the PreparedRequest, which is the extension point for Digest, OAuth and custom schemes.",
+        "`_basic_auth_str` encodes username and password as **latin-1** before base64 \\u2014 non-latin-1 credentials raise `UnicodeEncodeError`. Non-string credentials are coerced with a `DeprecationWarning` for 3.0.",
         "When `auth is None`, credentials embedded in the URL (`http://user:pass@host/`) are extracted by `get_auth_from_url` and used automatically.",
-        "The Authorization header is attached with no regard for the scheme: on this plaintext `http://` URL the base64 credentials go out in clear text. Requests does not warn.",
+        "The Authorization header is attached with no regard for the scheme: on this plaintext `http://` URL the base64 credentials go out in clear text, with no warning.",
         "Auth handlers may mutate the request arbitrarily (`self.__dict__.update(r.__dict__)`), so Content-Length is recomputed afterwards, and hooks are prepared last so an auth handler can register response hooks (as HTTPDigestAuth does)."
       ],
       "open_questions": [
         {
-          "id": "q7.1",
+          "id": "q5.1",
           "question": "The credentials are now a header on a plaintext connection. What happens to them if the server answers with a redirect to somewhere else?"
+        },
+        {
+          "id": "q5.2",
+          "question": "There is no body and no Content-Length header. Will the transport interpret that as a chunked request?"
         }
       ],
       "answers": [
@@ -312,92 +258,58 @@
       ]
     },
     {
-      "n": 8,
-      "title": "What the Environment Gets to Say",
+      "n": 6,
+      "title": "What the Environment Gets to Say, and Choosing a Transport",
       "trace_lines": [
         193,
-        211
+        216
       ],
       "data_in": "prep.url, proxies={}, stream=None, verify=None, cert=None",
-      "data_out": "{'cert': None, 'proxies': OrderedDict(), 'stream': False, 'verify': True}",
+      "data_out": "{'cert': None, 'proxies': OrderedDict(), 'stream': False, 'verify': True}; adapter = <HTTPAdapter object at 0x10da78190> (the one mounted at 'http://')",
       "code": [
         "src/requests/sessions.py:831-868",
         "src/requests/utils.py:810-908",
-        "src/requests/utils.py:787-807"
+        "src/requests/utils.py:787-807",
+        "src/requests/sessions.py:752-784",
+        "src/requests/sessions.py:870-897",
+        "src/requests/utils.py:911-939"
       ],
       "inputs": [
         "prepared url",
-        "empty proxies, unset stream/verify/cert"
+        "empty proxies, unset stream/verify/cert",
+        "PreparedRequest"
       ],
       "characters": [
         "merge_environment_settings",
         "get_environ_proxies",
         "should_bypass_proxies",
         "set_environ",
-        "merge_setting"
+        "merge_setting",
+        "Session.send",
+        "get_adapter",
+        "Session.mount",
+        "resolve_proxies"
       ],
       "facts": [
         "Because `trust_env` is True (the default), the process environment can change the security posture of the request: `REQUESTS_CA_BUNDLE` or `CURL_CA_BUNDLE` replaces `verify=True` with a file path, and `http_proxy`/`https_proxy`/`all_proxy` (and uppercase variants) can route the request through a third party.",
         "Environment proxies are only `setdefault`-ed, so an explicit `proxies` argument wins per key; `no_proxy` (argument or env var) can exempt a host, matching plain hostnames, host:port, suffixes, and CIDR ranges for IPv4 literals.",
-        "`should_bypass_proxies` temporarily mutates `os.environ['no_proxy']` inside a context manager while calling the platform `proxy_bypass` \u2014 a process-global side effect, restored afterwards.",
-        "Setting `trust_env=False` is the only way to make a request fully independent of environment and netrc.",
-        "Here nothing matched: proxies resolved to empty and verify stayed `True`."
+        "`should_bypass_proxies` temporarily mutates `os.environ['no_proxy']` inside a context manager while calling the platform `proxy_bypass` \\u2014 a process-global side effect, restored afterwards.",
+        "Setting `trust_env=False` is the only way to make a request fully independent of environment and netrc. Here nothing matched: proxies resolved to empty and verify stayed `True`.",
+        "`Session.send` fills in `stream`, `verify`, `cert` defaults and, if `proxies` was not supplied, calls `resolve_proxies` again \\u2014 so hooks and redirect resolution always see a complete, reproducible kwargs set.",
+        "Passing a `Request` instead of a `PreparedRequest` is explicitly rejected with `ValueError('You can only send PreparedRequests.')`.",
+        "`get_adapter` returns the first mounted prefix that the URL *starts with*, case-insensitively; `mount` keeps longer prefixes first. The documented hazard: mounting 'http://localhost' also matches 'http://localhost.evil.com' \\u2014 prefixes should end with '/'. No match raises `InvalidSchema`, which is how `mailto:`/`data:` URLs finally fail.",
+        "The clock for `Response.elapsed` starts here and stops when headers are parsed, not when the body is read."
       ],
       "open_questions": [
         {
-          "id": "q8.1",
-          "question": "Settings are resolved, but nothing has chosen a transport yet. Which object will carry this URL, and what if none fits?"
+          "id": "q6.1",
+          "question": "A socket is about to open with `timeout=None`. What, if anything, bounds how long this call can take?"
         }
       ],
       "answers": []
     },
     {
-      "n": 9,
-      "title": "Choosing a Transport by Prefix",
-      "trace_lines": [
-        212,
-        216
-      ],
-      "data_in": "Session.send(request=<PreparedRequest [GET]>, timeout=None, allow_redirects=True, stream=False, verify=True, cert=None, proxies=OrderedDict())",
-      "data_out": "adapter = <HTTPAdapter object at 0x10da78190> (the one mounted at 'http://')",
-      "code": [
-        "src/requests/sessions.py:752-784",
-        "src/requests/sessions.py:870-897",
-        "src/requests/utils.py:911-939"
-      ],
-      "inputs": [
-        "PreparedRequest",
-        "merged send kwargs"
-      ],
-      "characters": [
-        "Session.send",
-        "get_adapter",
-        "Session.mount",
-        "resolve_proxies",
-        "is_prepared"
-      ],
-      "facts": [
-        "`Session.send` fills in `stream`, `verify`, `cert` defaults and, if `proxies` was not supplied, calls `resolve_proxies` again \u2014 so hooks and redirect resolution always see a complete, reproducible kwargs set.",
-        "Passing a `Request` instead of a `PreparedRequest` is explicitly rejected with `ValueError('You can only send PreparedRequests.')`.",
-        "`get_adapter` returns the first mounted prefix that the URL *starts with*, case-insensitively; `mount` keeps longer prefixes first. The documented hazard: mounting 'http://localhost' also matches 'http://localhost.evil.com' \u2014 prefixes should end with '/'.",
-        "No match at all raises `InvalidSchema`, which is how `mailto:`/`data:` URLs that slipped through `prepare_url` finally fail.",
-        "The clock for `Response.elapsed` starts here and stops when headers are parsed, not when the body is read."
-      ],
-      "open_questions": [
-        {
-          "id": "q9.1",
-          "question": "A socket is about to open with `timeout=None`. What, if anything, bounds how long this call can take?"
-        }
-      ],
-      "answers": [
-        {
-          "id": "q8.1",
-          "answer": "`Session.get_adapter` picks by longest matching URL prefix among mounted adapters \u2014 here the HTTPAdapter at 'http://' \u2014 and raises `InvalidSchema` when nothing matches."
-        }
-      ]
-    },
-    {
-      "n": 10,
+      "n": 7,
       "title": "The Adapter: Pools, Certificates, and Everything That Can Go Wrong",
       "trace_lines": [
         217,
@@ -426,19 +338,19 @@
         "TimeoutSauce"
       ],
       "facts": [
-        "The connection-pool key is built from scheme/host/port plus TLS parameters, so connections are never shared across differing `verify`/`cert` settings \u2014 the fix for cross-request TLS confusion.",
-        "`cert_verify` is where the TLS guarantee lands: for an `https` URL with `verify` truthy it sets `CERT_REQUIRED` and points at certifi's bundle (or the caller's path/dir), raising `OSError` if the bundle, client cert or key file does not exist. For this plain `http` URL it set `CERT_NONE` and cleared the CA settings \u2014 verification only ever applies to https.",
+        "The connection-pool key is built from scheme/host/port plus TLS parameters, so connections are never shared across differing `verify`/`cert` settings \\u2014 the fix for cross-request TLS confusion.",
+        "`cert_verify` is where the TLS guarantee lands: for an `https` URL with `verify` truthy it sets `CERT_REQUIRED` and points at certifi's bundle (or the caller's path/dir), raising `OSError` if the bundle, client cert or key file does not exist. For this plain `http` URL it set `CERT_NONE` and cleared the CA settings \\u2014 verification only ever applies to https.",
         "`verify=False` disables certificate *and hostname* checking entirely; it is a one-argument opt-out with no warning from this layer.",
         "`request_url` sends only the path (`/basic-auth/user/pass`); the absolute URL is used only for proxied non-HTTPS requests, and `urldefragauth` strips credentials and fragment from it.",
-        "`chunked = not (request.body is None or 'Content-Length' in request.headers)` \u2014 a None body is *not* chunked, so this GET is sent with neither header.",
+        "`chunked = not (request.body is None or 'Content-Length' in request.headers)` \\u2014 a None body is *not* chunked, so this GET is sent with neither header.",
         "`timeout=None` is passed straight to urllib3 as `TimeoutSauce(connect=None, read=None)`: the request can block indefinitely. A tuple becomes (connect, read); anything else raises `ValueError`.",
         "urllib3 is called with `redirect=False`, `retries=self.max_retries` (0), `preload_content=False` and `decode_content=False`: redirects, retries, body reading and decoding are all Requests' job, not urllib3's.",
-        "Every urllib3 failure is translated into a `requests.exceptions` type carrying the request: ProtocolError/OSError \u2192 `ConnectionError`; MaxRetryError \u2192 `ConnectTimeout`/`RetryError`/`ProxyError`/`SSLError`/`ConnectionError` depending on `e.reason`; ReadTimeoutError \u2192 `ReadTimeout`; InvalidHeader \u2192 `InvalidHeader`. Anything unrecognised is re-raised unchanged.",
+        "Every urllib3 failure is translated into a `requests.exceptions` type carrying the request: ProtocolError/OSError \\u2192 `ConnectionError`; MaxRetryError \\u2192 `ConnectTimeout`/`RetryError`/`ProxyError`/`SSLError`/`ConnectionError` depending on `e.reason`; ReadTimeoutError \\u2192 `ReadTimeout`; InvalidHeader \\u2192 `InvalidHeader`. Anything unrecognised is re-raised unchanged.",
         "`add_headers` is a documented no-op hook for subclasses; `get_connection` (the pre-2.32.2 API) still exists but emits a `DeprecationWarning`."
       ],
       "open_questions": [
         {
-          "id": "q10.1",
+          "id": "q7.1",
           "question": "urllib3 handed back a response whose body has not been read and whose connection is still checked out. Who gives it back?"
         }
       ],
@@ -448,17 +360,17 @@
           "answer": "`HTTPAdapter.cert_verify`: for https URLs with the default `verify=True` it sets `CERT_REQUIRED` against certifi's CA bundle; for this http URL it set `CERT_NONE`. Verification only applies to https, and `verify=False` turns it off completely."
         },
         {
-          "id": "q6.1",
+          "id": "q5.2",
           "answer": "No. `chunked` is False when `request.body is None`, so the GET goes out with neither Content-Length nor Transfer-Encoding."
         },
         {
-          "id": "q9.1",
+          "id": "q6.1",
           "answer": "Nothing. `timeout=None` becomes `TimeoutSauce(connect=None, read=None)` and the call can hang indefinitely; with `max_retries=0` there is also no retry budget to cap it."
         }
       ]
     },
     {
-      "n": 11,
+      "n": 8,
       "title": "Dressing the Raw Response",
       "trace_lines": [
         255,
@@ -484,22 +396,22 @@
         "MockResponse"
       ],
       "facts": [
-        "`status_code` is read with `getattr(resp, 'status', None)` \u2014 a Response can legitimately exist with `status_code` None if the transport produced nothing.",
+        "`status_code` is read with `getattr(resp, 'status', None)` \\u2014 a Response can legitimately exist with `status_code` None if the transport produced nothing.",
         "Encoding is decided from headers alone: an explicit `charset` wins (here 'utf-8'); otherwise `text/*` falls back to ISO-8859-1 per RFC 2616, `application/json` to utf-8, and anything else leaves `encoding` as None.",
         "Cookies from the server are extracted into `response.cookies` through `MockResponse`, but only if the urllib3 response exposes a non-empty `_original_response`; otherwise extraction silently does nothing.",
-        "`response.connection = self` keeps the adapter reachable from the Response \u2014 this is what lets `HTTPDigestAuth.handle_401` resend a request from inside a hook.",
+        "`response.connection = self` keeps the adapter reachable from the Response \\u2014 this is what lets `HTTPDigestAuth.handle_401` resend a request from inside a hook.",
         "At this point the body has not been read: `preload_content=False` means `response.raw` is still a live stream."
       ],
       "open_questions": [
         {
-          "id": "q11.1",
+          "id": "q8.1",
           "question": "The encoding came from an explicit charset. What would `r.text` have done if the server had not sent one?"
         }
       ],
       "answers": []
     },
     {
-      "n": 12,
+      "n": 9,
       "title": "Hooks, Cookie Persistence, and the Redirect That Wasn't",
       "trace_lines": [
         290,
@@ -529,51 +441,55 @@
         "rebuild_method"
       ],
       "facts": [
-        "`dispatch_hook` replaces the response with a hook's return value only if that value is not None; a hook raising an exception propagates to the caller \u2014 hooks must handle their own errors.",
+        "`dispatch_hook` replaces the response with a hook's return value only if that value is not None; a hook raising an exception propagates to the caller \\u2014 hooks must handle their own errors.",
         "Server cookies are copied into the *session* jar here (and for every response in `r.history`), which is what makes cookie persistence a session-level, not request-level, guarantee.",
         "`is_redirect` requires both a `location` header and a status in (301, 302, 303, 307, 308); this 200 matched neither, so `resolve_redirects` produced no responses and `history` stayed empty.",
-        "Had it redirected: `rebuild_auth` deletes the `Authorization` header when `should_strip_auth` says the host changed \u2014 same hostname is kept, and http\u2192https on default ports is allowed; `.netrc` may then supply new credentials for the new host if `trust_env`.",
+        "Had it redirected: `rebuild_auth` deletes the `Authorization` header when `should_strip_auth` says the host changed \\u2014 same hostname is kept, and http\\u2192https on default ports is allowed; `.netrc` may then supply new credentials for the new host if `trust_env`.",
         "`rebuild_proxies` always drops `Proxy-Authorization` and re-derives it, and refuses to re-add it for https targets to avoid leaking it into a tunnel.",
         "Browser-compatibility quirks live in `rebuild_method`: 303 and 302 become GET (except HEAD), and a POST answered with 301 becomes a GET. For non-307/308 redirects the body and Content-Length/Content-Type/Transfer-Encoding headers are dropped.",
         "Exceeding `max_redirects` (30) raises `TooManyRedirects`; each hop consumes the previous body (`resp.content`) before releasing the connection."
       ],
       "open_questions": [
         {
-          "id": "q12.1",
+          "id": "q9.1",
           "question": "The body is still unread and the socket still open. When does the content actually arrive?"
         }
       ],
       "answers": [
         {
-          "id": "q5.1",
-          "answer": "Yes, within this Session: `extract_cookies_to_jar(self.cookies, request, r.raw)` in `Session.send` copies server cookies into the session jar \u2014 but this Session is discarded at the end of `requests.get`."
+          "id": "q4.1",
+          "answer": "Yes, within this Session: `extract_cookies_to_jar(self.cookies, request, r.raw)` in `Session.send` copies server cookies into the session jar \\u2014 but this Session is discarded at the end of `requests.get`."
         },
         {
-          "id": "q7.1",
-          "answer": "On a redirect, `rebuild_auth` strips the `Authorization` header whenever `should_strip_auth` detects a different hostname (or a port/scheme change other than http\u2192https on default ports); same-host redirects keep the credentials."
+          "id": "q5.1",
+          "answer": "On a redirect, `rebuild_auth` strips the `Authorization` header whenever `should_strip_auth` detects a different hostname (or a port/scheme change other than http\\u2192https on default ports); same-host redirects keep the credentials."
         }
       ]
     },
     {
-      "n": 13,
-      "title": "Reading the Body, Then Closing Everything",
+      "n": 10,
+      "title": "Reading the Body, Closing Everything, and Decoding What Came Back",
       "trace_lines": [
         311,
-        328
+        351
       ],
       "data_in": "<Response [200]> with stream=False and an unread raw stream",
-      "data_out": "r._content = b'{\"authenticated\": true, \"user\": \"user\"}'; Session closed, both adapters' pools cleared",
+      "data_out": "r._content = b'{\"authenticated\": true, \"user\": \"user\"}'; Session closed; 'application/json; charset=utf-8', 'utf-8', '{\"authenticated\": true, \"user\": \"user\"}', {'authenticated': True, 'user': 'user'}",
       "code": [
         "src/requests/models.py:914-977",
         "src/requests/models.py:1034-1051",
         "src/requests/models.py:1173-1184",
         "src/requests/sessions.py:826-829",
         "src/requests/sessions.py:883-886",
-        "src/requests/adapters.py:555-563"
+        "src/requests/adapters.py:555-563",
+        "src/requests/models.py:1053-1124",
+        "src/requests/models.py:896-904",
+        "src/requests/models.py:1144-1171"
       ],
       "inputs": [
         "Response with live raw stream",
-        "stream=False"
+        "stream=False",
+        "encoding from headers"
       ],
       "characters": [
         "Response.content",
@@ -581,74 +497,41 @@
         "generate",
         "Response.close",
         "Session.close",
-        "HTTPAdapter.close"
-      ],
-      "facts": [
-        "Because `stream` is False, `Session.send` touches `r.content` before returning: the body is fully read into memory and the connection goes back to the pool automatically. With `stream=True` that is the caller's responsibility, and an unread response holds a pooled connection.",
-        "`content` caches into `_content`, so repeated access is free; reading it twice from a streamed, already-consumed response raises `StreamConsumedError`, and a second attempt after consumption raises `RuntimeError`.",
-        "`iter_content` translates transport failures mid-body into Requests exceptions: ProtocolError \u2192 `ChunkedEncodingError`, DecodeError \u2192 `ContentDecodingError`, ReadTimeoutError \u2192 `ConnectionError`, SSLError \u2192 `requests.exceptions.SSLError`. These can surface *after* a 200 status was already observed.",
-        "`Session.close` (fired by `__exit__`) clears every adapter's PoolManager and any ProxyManagers, so the per-call Session leaves no sockets behind \u2014 at the cost of no keep-alive reuse between top-level `requests.get` calls, which is exactly why Sessions exist as a public API."
-      ],
-      "open_questions": [
-        {
-          "id": "q13.1",
-          "question": "The content is bytes. What turns it into the `str` and the dict the caller printed?"
-        }
-      ],
-      "answers": [
-        {
-          "id": "q1.2",
-          "answer": "The per-call Session guarantees no leaked sockets (`__exit__` \u2192 `close()` clears all pools) but forfeits keep-alive, connection pooling and cookie persistence across calls \u2014 reuse `requests.Session()` when making several requests to the same host."
-        },
-        {
-          "id": "q10.1",
-          "answer": "`Session.send` itself: with `stream=False` it accesses `r.content`, which drains `raw` and lets urllib3 return the connection to the pool; `Session.close` then clears the pools entirely."
-        }
-      ]
-    },
-    {
-      "n": 14,
-      "title": "Text, JSON, and the Errors Nobody Raised",
-      "trace_lines": [
-        329,
-        351
-      ],
-      "data_in": "<Response [200]>, _content = b'{\"authenticated\": true, \"user\": \"user\"}', encoding 'utf-8'",
-      "data_out": "'application/json; charset=utf-8', 'utf-8', '{\"authenticated\": true, \"user\": \"user\"}', {'authenticated': True, 'user': 'user'}",
-      "code": [
-        "src/requests/models.py:1053-1124",
-        "src/requests/models.py:896-904",
-        "src/requests/models.py:1144-1171",
-        "src/requests/utils.py:1008-1037"
-      ],
-      "inputs": [
-        "cached content bytes",
-        "encoding from headers"
-      ],
-      "characters": [
+        "HTTPAdapter.close",
         "Response.text",
         "Response.json",
         "apparent_encoding",
         "guess_json_utf",
-        "raise_for_status (not called)",
-        "CaseInsensitiveDict.__getitem__"
+        "raise_for_status (not called)"
       ],
       "facts": [
+        "Because `stream` is False, `Session.send` touches `r.content` before returning: the body is fully read into memory and the connection goes back to the pool automatically. With `stream=True` that is the caller's responsibility, and an unread response holds a pooled connection.",
+        "`content` caches into `_content`, so repeated access is free; reading it twice from a streamed, already-consumed response raises `StreamConsumedError`, and a second attempt after consumption raises `RuntimeError`.",
+        "`iter_content` translates transport failures mid-body into Requests exceptions: ProtocolError \\u2192 `ChunkedEncodingError`, DecodeError \\u2192 `ContentDecodingError`, ReadTimeoutError \\u2192 `ConnectionError`, SSLError \\u2192 `requests.exceptions.SSLError`. These can surface *after* a 200 status was already observed.",
+        "`Session.close` (fired by `__exit__`) clears every adapter's PoolManager and any ProxyManagers, so the per-call Session leaves no sockets behind \\u2014 at the cost of no keep-alive reuse between top-level `requests.get` calls, which is exactly why Sessions exist as a public API.",
         "`r.headers['content-type']` works in any casing because response headers live in a `CaseInsensitiveDict`.",
-        "`text` decodes with `errors='replace'` and falls back to a bare `str(content, errors='replace')` on `LookupError`/`TypeError` \u2014 it never raises for bad bytes or a bogus charset, it silently substitutes replacement characters.",
-        "When no encoding came from the headers, `text` falls back to `apparent_encoding`, i.e. charset_normalizer/chardet statistical detection (or plain 'utf-8' if neither library is installed) \u2014 a guess, not a guarantee.",
+        "`text` decodes with `errors='replace'` and falls back to a bare `str(content, errors='replace')` on `LookupError`/`TypeError` \\u2014 it never raises for bad bytes or a bogus charset, it silently substitutes replacement characters.",
+        "When no encoding came from the headers, `text` falls back to `apparent_encoding`, i.e. charset_normalizer/chardet statistical detection (or plain 'utf-8' if neither library is installed) \\u2014 a guess, not a guarantee.",
         "`json()` is not cached: the trace shows it re-decoding the text on each of the two calls. It uses `guess_json_utf` only when `encoding` is unset, and wraps decode failures as `requests.exceptions.JSONDecodeError`.",
         "Nothing in this path checks the status code. A 404 or 500 returns a perfectly ordinary Response with parseable JSON; `raise_for_status()` is opt-in, and truthiness of a Response (`bool(r)`) is just `status_code < 400`."
       ],
       "open_questions": [],
       "answers": [
         {
-          "id": "q11.1",
-          "answer": "With no charset in the Content-Type, `encoding` would be ISO-8859-1 for `text/*`, utf-8 for `application/json`, and otherwise None \u2014 in which case `text` falls back to `apparent_encoding`, a charset_normalizer/chardet guess."
+          "id": "q1.2",
+          "answer": "The per-call Session guarantees no leaked sockets (`__exit__` \\u2192 `close()` clears all pools) but forfeits keep-alive, connection pooling and cookie persistence across calls \\u2014 reuse `requests.Session()` when making several requests to the same host."
         },
         {
-          "id": "q13.1",
-          "answer": "`Response.text` decodes the cached bytes using the header-derived encoding with `errors='replace'`, and `Response.json()` parses that text (re-parsing on every call) into the Python dict."
+          "id": "q7.1",
+          "answer": "`Session.send` itself: with `stream=False` it accesses `r.content`, which drains `raw` and lets urllib3 return the connection to the pool; `Session.close` then clears the pools entirely."
+        },
+        {
+          "id": "q8.1",
+          "answer": "With no charset in the Content-Type, `encoding` would be ISO-8859-1 for `text/*`, utf-8 for `application/json`, and otherwise None \\u2014 in which case `text` falls back to `apparent_encoding`, a charset_normalizer/chardet guess."
+        },
+        {
+          "id": "q9.1",
+          "answer": "Right here, inside `Session.send`: because `stream=False`, `r.content` runs `iter_content` to completion, caching the bytes and releasing the connection before the Response is handed back to the caller."
         }
       ]
     }

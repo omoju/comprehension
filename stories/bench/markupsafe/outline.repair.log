@@ -1,0 +1,29 @@
+Nothing Gets Out Unescaped: A Run Through MarkupSafe  [owner]: 12 chapters
+   1. The Trust Boundary: escape()  [trace 2-5]
+   2. The Unguarded Door: Markup() itself  [trace 6-9]
+   3. Idempotence: escaping something already safe  [trace 10-17]
+   4. Delegated Trust: an object that writes its own HTML  [trace 18-20]
+   5. A Template That Escapes Its Arguments  [trace 21-25]
+   6. format_field: three doors, in order  [trace 26-29]
+   7. The Innermost Escape: the user's name  [trace 30-44]
+   8. Markup.escape: the type-preserving wrapper  [trace 45-55]
+   9. Reassembly: the page becomes Markup again  [trace 56-61]
+  10. Concatenation: the operand gets escaped, both ways  [trace 62-91]
+  11. striptags: the exit back to plain text  [trace 92-99]
+  12. What the Fragment Guarantees  [trace 100-101]
+  ! 12 chapters, budget is 10: merge the thinnest spans into their neighbours
+
+repair 1/2
+Nothing Gets Out Unescaped: A Run Through MarkupSafe  [owner]: 10 chapters
+   1. The Trust Boundary: escape()  [trace 2-5]
+   2. The Unguarded Door: Markup() itself  [trace 6-9]
+   3. Idempotence, and an Object That Writes Its Own HTML  [trace 10-20]
+   4. A Template That Escapes Its Arguments  [trace 21-25]
+   5. format_field: three doors, in order  [trace 26-29]
+   6. The Innermost Escape: the user's name  [trace 30-44]
+   7. Markup.escape and the Reassembled Page  [trace 45-61]
+   8. Concatenation: the operand gets escaped, both ways  [trace 62-91]
+   9. striptags: the exit back to plain text  [trace 92-99]
+  10. What the Fragment Guarantees  [trace 100-101]
+
+.repair1 tokens: 16,550 in (+0 cached, 37,980 written to cache), 9,498 out

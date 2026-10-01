@@ -1,0 +1,32 @@
+One GET, End to End: What Requests Promises and Where It Trusts You  [owner]: 14 chapters
+   1. A URL and a Password Walk Into a Session  [trace 2-38]
+   2. Merging What the Caller Said With What the Session Believes  [trace 39-85]
+   3. Turning a String Into a URL You Can Trust  [trace 86-104]
+   4. Headers, and the CRLF That Never Happens  [trace 105-156]
+   5. An Empty Jar, Consulted Once  [trace 157-168]
+   6. No Body, and the Content-Length That Isn't Sent  [trace 169-172]
+   7. The Password Becomes a Header  [trace 173-192]
+   8. What the Environment Gets to Say  [trace 193-211]
+   9. Choosing a Transport by Prefix  [trace 212-216]
+  10. The Adapter: Pools, Certificates, and Everything That Can Go Wrong  [trace 217-254]
+  11. Dressing the Raw Response  [trace 255-289]
+  12. Hooks, Cookie Persistence, and the Redirect That Wasn't  [trace 290-310]
+  13. Reading the Body, Then Closing Everything  [trace 311-328]
+  14. Text, JSON, and the Errors Nobody Raised  [trace 329-351]
+  ! q12.1 (ch12) is never answered
+  ! 14 chapters, budget is 10: merge the thinnest spans into their neighbours
+
+repair 1/2
+One GET, End to End: What Requests Promises and Where It Trusts You  [owner]: 10 chapters
+   1. A URL and a Password Walk Into a Session  [trace 2-38]
+   2. Merging What the Caller Said With What the Session Believes  [trace 39-85]
+   3. Turning a String Into a URL You Can Trust  [trace 86-104]
+   4. Headers, Cookies, and the CRLF That Never Happens  [trace 105-168]
+   5. No Body, and the Password Becomes a Header  [trace 169-192]
+   6. What the Environment Gets to Say, and Choosing a Transport  [trace 193-216]
+   7. The Adapter: Pools, Certificates, and Everything That Can Go Wrong  [trace 217-254]
+   8. Dressing the Raw Response  [trace 255-289]
+   9. Hooks, Cookie Persistence, and the Redirect That Wasn't  [trace 290-310]
+  10. Reading the Body, Closing Everything, and Decoding What Came Back  [trace 311-351]
+
+.repair1 tokens: 25,602 in (+0 cached, 157,011 written to cache), 10,882 out
