@@ -239,12 +239,12 @@ a { color: var(--route) }
 button { font: inherit; color: inherit }
 :focus-visible { outline: 2px solid var(--route); outline-offset: 2px }
 
-header.top { max-width: 1480px; margin: 0 auto; padding-block: 28px 20px; display: grid; gap: 8px; border-bottom: 1px solid var(--rule) }
+header.top { max-width: 2000px; margin: 0 auto; padding-block: 28px 20px; display: grid; gap: 8px; border-bottom: 1px solid var(--rule) }
 .eyebrow { font: 500 12px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
 h1 { font: 600 clamp(28px, 4vw, 40px)/1.1 var(--serif); margin: 0; text-wrap: balance }
 .premise { font: 17px/1.55 var(--serif); color: var(--muted); max-width: 72ch; margin: 0 }
 
-.desk { max-width: 1480px; margin: 0 auto; display: grid; grid-template-columns: 380px minmax(0, 1fr) minmax(0, 440px); gap: 28px; align-items: start; padding-block: 20px 80px }
+.desk { max-width: 2000px; margin: 0 auto; display: grid; grid-template-columns: 380px minmax(0, 1fr) clamp(440px, calc(100vw - 1140px), 880px); gap: 28px; align-items: start; padding-block: 20px 80px }
 
 /* The flowchart */
 .map { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); max-height: calc(100vh - 24px); overflow: auto; padding-right: 4px }
