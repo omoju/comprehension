@@ -7,9 +7,15 @@ lessons, a short log (newest first), and Omoju's opening paragraph. Code and git
 close third person, every chapter passing its checks, rendered as a reading page:
 https://claude.ai/artifact/JyeDNbyYZyMt1ivYxWwshL (private; source `stories/itsdangerous-close-third/index.html`).
 
+**Git:** initialised 2026-09-30; first commit `2c65390` (18:50 PT) includes `PREREGISTRATION.md` with the approved
+repo list, so the rule is fixed before any comparison runs. `.env`, `demo-repos/`, venvs are ignored.
+
+**On hold (Omoju):** chapters for the 9 bench repos. Their scenarios, compressed traces and owner outlines are done
+(`stories/bench/`); 3 outlines fail the question-ID check (requests, httpx, tqdm) and need a re-plan or repair.
+
 **Waiting on Omoju**
-1. Approve the 10-repo list in `PREREGISTRATION.md` §3, then commit it (it's binding only once committed).
-2. Go-ahead for the self-story: `pyproject.toml`, `.codestoryignore`, `git init` + first commit, run on this repo.
+1. When to generate chapters for the 9 repos (≈ $40–60).
+2. Go-ahead for the self-story: `pyproject.toml`, `.codestoryignore`, run on this repo.
 3. Optional: the §9 sentences on what "it helps" would feel like.
 
 **Next (Thursday 1 October)**: stage 3 repair loop (failed checks go back to Claude, ≤2 tries; would have handled
@@ -36,10 +42,16 @@ ship / pivot to stories of *changes* / kill.
 | Fri 2 | run all 10; build the eval (questions, keys, DeepWiki + docs fetch) | |
 | Sat 3 | run the head-to-head | |
 | Sun 4 | buffer; Omoju reads 2–3 | |
-| Mon 5 | results page, README (Claude drafts; posts are Omoju's); publish | |
+| Mon 5 | results page, README (Claude drafts; posts are Omoju's); publish. **Then remind Omoju to send Sha Ma a short note** | |
 | Tue 6 | decide by the rule | |
 
 Cuts, in order: 10 → 5 repos; drop the docs arm; drop Omoju's reads.
+
+**Context worth using in the write-up:** Sha Ma et al., "Agentic AI and Code Reviews: Toward a Pattern Language
+for Code Reviews in the Age of Agentic AI" (*Enterprise Technology Leadership Journal*, Fall 2026, IT Revolution).
+Code review's value includes knowledge sharing; the paper's patterns rebuild the *gate* (defects, risk, policy) but
+not the knowledge sharing. CodeStories targets that half. Several of its patterns are already in the pipeline (shift
+left, design for verification, context engineering, the quality loop, cross-model judging, durable records).
 
 ## Settled decisions
 - **Claude writes the stories**, automatically, for any repo (09-23). Chapter count is whatever the journey needs (09-23).
