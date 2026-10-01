@@ -1,0 +1,706 @@
+scenario()  [scenario.py:1]
+  Console.__init__(self=<Console>, color_system='auto', force_terminal=None, force_jupyter=None, force_interactive=None, soft_wrap=False, theme=None, stderr=False, file=None, quiet=False, width=100, height=None, style=None, no_color=None, tab_size=8, record=True, markup=True, emoji=True, emoji_variant=None, highlight=True, log_time=True, log_path=True, log_time_format='[%X]', highlighter=<rich.highlighter.ReprHighlighter object at 0x10bebde80>, legacy_windows=None, safe_box=True, get_datetime=None, get_time=None, _environ=None)  [rich/console.py:619]
+    _is_jupyter()  [rich/console.py:505]
+      → False
+    detect_legacy_windows()  [rich/console.py:576]
+      → False
+    Console._detect_color_system(self=<Console>)  [rich/console.py:789]
+      Console.is_terminal(self=<Console>)  [rich/console.py:930]
+        Console.file(self=<Console>)  [rich/console.py:756]
+          → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+        → False
+      → None
+    LogRender.__init__(self=<LogRender>, show_time=True, show_level=False, show_path=True, time_format='[%X]', omit_repeated_times=True, level_width=8)  [rich/_log_render.py:15]
+      → None
+    Console.is_terminal(self=<Console>)  [rich/console.py:930]
+      Console.file(self=<Console>)  [rich/console.py:756]
+        → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+      → False
+    ThemeStack.__init__(self=<ThemeStack>, theme=<rich.theme.Theme object at 0x10b2df4d0>)  [rich/theme.py:88]
+      → None
+    → None
+  Console.print(self=<Console>, sep=' ', end='\n', style='bold red', justify=None, overflow=None, no_wrap=None, emoji=None, markup=None, highlight=None, width=None, height=None, crop=True, soft_wrap=None, new_line_start=False)  [rich/console.py:1652]
+    Console.__enter__(self=<Console>)  [rich/console.py:857]
+      Console._enter_buffer(self=<Console>)  [rich/console.py:813]
+        Console._buffer_index(self=<Console>)  [rich/console.py:775]
+          → 0
+        … Console._buffer_index ×1 more  [rich/console.py:775]
+        → None
+      → <console width=100 None>
+    Console._collect_renderables(self=<Console>, objects=('Hello', 'World!'), sep=' ', end='\n', justify=None, emoji=None, markup=None, highlight=None)  [rich/console.py:1500]
+      rich_cast(renderable='Hello')  [rich/protocol.py:18]
+        → 'Hello'
+      Console.render_str(self=<Console>, text='Hello', style='', justify=None, overflow=None, emoji=None, markup=None, highlight=None, highlighter=<rich.highlighter.ReprHighlighter object at 0x10bebde80>)  [rich/console.py:1409]
+        render(markup='Hello', style='', emoji=True, emoji_variant=None)  [rich/markup.py:106]
+          _emoji_replace(text='Hello', default_variant=None, _emoji_sub=<built-in method sub of re.Pattern object at 0x10bfae430>)  [rich/_emoji_replace.py:9]
+            → 'Hello'
+          Text.__init__(self=<Text>, text='Hello', style='', justify=None, overflow=None, no_wrap=None, end='\n', tab_size=None, spans=None)  [rich/text.py:144]
+            strip_control_codes(text='Hello', _translate_table={7: None, 8: None, 11: None, 12: None, 13: None})  [rich/control.py:181]
+              → 'Hello'
+            → None
+          → <text 'Hello' [] ''>
+        Text.__str__(self=<Text>)  [rich/text.py:173]
+          Text.plain(self=<Text>)  [rich/text.py:402]
+            → 'Hello'
+          → 'Hello'
+        Highlighter.__call__(self=<ReprHighlighter>, text='Hello')  [rich/highlighter.py:20]
+          Text.__init__(self=<Text>, text='Hello', style='', justify=None, overflow=None, no_wrap=None, end='\n', tab_size=None, spans=None)  [rich/text.py:144]
+            strip_control_codes(text='Hello', _translate_table={7: None, 8: None, 11: None, 12: None, 13: None})  [rich/control.py:181]
+              → 'Hello'
+            → None
+          RegexHighlighter.highlight(self=<ReprHighlighter>, text=<text 'Hello' [] ''>)  [rich/highlighter.py:67]
+            Text.highlight_regex(self=<Text>, re_highlight='(?P<tag_start><)(?P<tag_name>[-\\w.:|...<tag_contents>[\\w\\W]*)(?P<tag_end>>)', style=None, style_prefix='repr.')  [rich/text.py:593]
+              Text.plain(self=<Text>)  [rich/text.py:402]
+                → 'Hello'
+              → 0
+            … Text.highlight_regex ×3 more  [rich/text.py:593]
+            → None
+          → <text 'Hello' [] ''>
+        Text.copy_styles(self=<Text>, text=<text 'Hello' [] ''>)  [rich/text.py:1054]
+          → None
+        → <text 'Hello' [] ''>
+      rich_cast(renderable='World!')  [rich/protocol.py:18]
+        → 'World!'
+      Console.render_str(self=<Console>, text='World!', style='', justify=None, overflow=None, emoji=None, markup=None, highlight=None, highlighter=<rich.highlighter.ReprHighlighter object at 0x10bebde80>)  [rich/console.py:1409]
+        render(markup='World!', style='', emoji=True, emoji_variant=None)  [rich/markup.py:106]
+          _emoji_replace(text='World!', default_variant=None, _emoji_sub=<built-in method sub of re.Pattern object at 0x10bfae430>)  [rich/_emoji_replace.py:9]
+            → 'World!'
+          Text.__init__(self=<Text>, text='World!', style='', justify=None, overflow=None, no_wrap=None, end='\n', tab_size=None, spans=None)  [rich/text.py:144]
+            strip_control_codes(text='World!', _translate_table={7: None, 8: None, 11: None, 12: None, 13: None})  [rich/control.py:181]
+              → 'World!'
+            → None
+          → <text 'World!' [] ''>
+        Text.__str__(self=<Text>)  [rich/text.py:173]
+          Text.plain(self=<Text>)  [rich/text.py:402]
+            → 'World!'
+          → 'World!'
+        Highlighter.__call__(self=<ReprHighlighter>, text='World!')  [rich/highlighter.py:20]
+          Text.__init__(self=<Text>, text='World!', style='', justify=None, overflow=None, no_wrap=None, end='\n', tab_size=None, spans=None)  [rich/text.py:144]
+            strip_control_codes(text='World!', _translate_table={7: None, 8: None, 11: None, 12: None, 13: None})  [rich/control.py:181]
+              → 'World!'
+            → None
+          RegexHighlighter.highlight(self=<ReprHighlighter>, text=<text 'World!' [] ''>)  [rich/highlighter.py:67]
+            Text.highlight_regex(self=<Text>, re_highlight='(?P<tag_start><)(?P<tag_name>[-\\w.:|...<tag_contents>[\\w\\W]*)(?P<tag_end>>)', style=None, style_prefix='repr.')  [rich/text.py:593]
+              Text.plain(self=<Text>)  [rich/text.py:402]
+                → 'World!'
+              → 0
+            … Text.highlight_regex ×3 more  [rich/text.py:593]
+            → None
+          → <text 'World!' [] ''>
+        Text.copy_styles(self=<Text>, text=<text 'World!' [] ''>)  [rich/text.py:1054]
+          → None
+        → <text 'World!' [] ''>
+      Console._collect_renderables.<locals>.check_text()  [rich/console.py:1550]
+        Text.__init__(self=<Text>, text=' ', style='', justify=None, overflow=None, no_wrap=None, end='\n', tab_size=None, spans=None)  [rich/text.py:144]
+          strip_control_codes(text=' ', _translate_table={7: None, 8: None, 11: None, 12: None, 13: None})  [rich/control.py:181]
+            → ' '
+          → None
+        Text.join(self=<Text>, lines=[<text 'Hello' [] ''>, <text 'World!' [] ''>])  [rich/text.py:778]
+          Text.blank_copy(self=<Text>, plain='')  [rich/text.py:430]
+            Text.__init__(self=<Text>, text='', style='', justify=None, overflow=None, no_wrap=None, end='\n', tab_size=None, spans=None)  [rich/text.py:144]
+              strip_control_codes(text='', _translate_table={7: None, 8: None, 11: None, 12: None, 13: None})  [rich/control.py:181]
+                → ''
+              → None
+            → <text '' [] ''>
+          Text.join.<locals>.iter_text()  [rich/text.py:790]
+            Text.plain(self=<Text>)  [rich/text.py:402]
+              → ' '
+            loop_last(values=[<text 'Hello' [] ''>, <text 'World!' [] ''>])  [rich/_loop.py:18]
+              → (False, <text 'Hello' [] ''>)
+            → <text 'Hello' [] ''>
+          Text.__len__(self=<Text>)  [rich/text.py:167]
+            → 5
+          Text.join.<locals>.iter_text()  [rich/text.py:790]
+            → <text ' ' [] ''>
+          Text.__len__(self=<Text>)  [rich/text.py:167]
+            → 1
+          Text.join.<locals>.iter_text()  [rich/text.py:790]
+            loop_last(values=[<text 'Hello' [] ''>, <text 'World!' [] ''>])  [rich/_loop.py:18]
+              → (True, <text 'World!' [] ''>)
+            → <text 'World!' [] ''>
+          Text.__len__(self=<Text>)  [rich/text.py:167]
+            → 6
+          Text.join.<locals>.iter_text()  [rich/text.py:790]
+            loop_last(values=[<text 'Hello' [] ''>, <text 'World!' [] ''>])  [rich/_loop.py:18]
+              → None
+            → None
+          → <text 'Hello World!' [] ''>
+        → None
+      → [<text 'Hello World!' [] ''>]
+    Console.options(self=<Console>)  [rich/console.py:990]
+      Console.size(self=<Console>)  [rich/console.py:1004]
+        Console.is_dumb_terminal(self=<Console>)  [rich/console.py:978]
+          Console.is_terminal(self=<Console>)  [rich/console.py:930]
+            Console.file(self=<Console>)  [rich/console.py:756]
+              → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+            → False
+          → False
+        → ConsoleDimensions(width=100, height=25)
+      Console.encoding(self=<Console>)  [rich/console.py:921]
+        Console.file(self=<Console>)  [rich/console.py:756]
+          → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+        → 'utf-8'
+      Console.is_terminal(self=<Console>)  [rich/console.py:930]
+        Console.file(self=<Console>)  [rich/console.py:756]
+          → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+        → False
+      → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+    ConsoleOptions.update(self=<ConsoleOptions>, width=<rich.console.NoChange object at 0x10bebdd30>, min_width=<rich.console.NoChange object at 0x10bebdd30>, max_width=<rich.console.NoChange object at 0x10bebdd30>, justify=None, overflow=None, no_wrap=None, highlight=None, markup=None, height=None)  [rich/console.py:157]
+      ConsoleOptions.copy(self=<ConsoleOptions>)  [rich/console.py:147]
+        → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+      → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+    Console.get_style(self=<Console>, name='bold red', default=None)  [rich/console.py:1470]
+      Console._theme_stack(self=<Console>)  [rich/console.py:784]
+        → <rich.theme.ThemeStack object at 0x10bebef90>
+      Style.parse(cls=<type>, style_definition='bold red')  [rich/style.py:496]
+        Style.__init__(self=<Style>, color='red', bgcolor=None, bold=True, dim=None, italic=None, underline=None, blink=None, blink2=None, reverse=None, conceal=None, strike=None, underline2=None, frame=None, encircle=None, overline=None, link=None, meta=None)  [rich/style.py:131]
+          Style.__init__.<locals>._make_color(color='red')  [rich/style.py:155]
+            → Color('red', ColorType.STANDARD, number=1)
+          → None
+        → Style(color=Color('red', ColorType.STANDARD, number=1), bold=True)
+      Style.link(self=<Style>)  [rich/style.py:457]
+        → None
+      → Style(color=Color('red', ColorType.STANDARD, number=1), bold=True)
+    Segment.line(cls=<type>)  [rich/segment.py:181]
+      → Segment('\n')
+    Segment.split_lines_terminator(cls=<type>, segments=<generator object Console.render at 0x10b044820>)  [rich/segment.py:275]
+      Console.render(self=<Console>, renderable=<text 'Hello World!' [] ''>, options=ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None))  [rich/console.py:1294]
+        rich_cast(renderable=<text 'Hello World!' [] ''>)  [rich/protocol.py:18]
+          → <text 'Hello World!' [] ''>
+        ConsoleOptions.reset_height(self=<ConsoleOptions>)  [rich/console.py:220]
+          ConsoleOptions.copy(self=<ConsoleOptions>)  [rich/console.py:147]
+            → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+          → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+        Text.__rich_console__(self=<Text>, console=<console width=100 None>, options=ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None))  [rich/text.py:689]
+          pick_bool()  [rich/_pick.py:4]
+            → False
+          Text.wrap(self=<Text>, console=<console width=100 None>, width=100, justify='default', overflow='fold', tab_size=8, no_wrap=False)  [rich/text.py:1201]
+            pick_bool()  [rich/_pick.py:4]
+              → False
+            Lines.__init__(self=<Lines>, lines=())  [rich/containers.py:69]
+              → None
+            Text.split(self=<Text>, separator='\n', include_separator=False, allow_blank=True)  [rich/text.py:1062]
+              Text.plain(self=<Text>)  [rich/text.py:402]
+                → 'Hello World!'
+              Text.copy(self=<Text>)  [rich/text.py:443]
+                Text.plain(self=<Text>)  [rich/text.py:402]
+                  → 'Hello World!'
+                Text.__init__(self=<Text>, text='Hello World!', style='', justify=None, overflow=None, no_wrap=None, end='\n', tab_size=None, spans=None)  [rich/text.py:144]
+                  strip_control_codes(text='Hello World!', _translate_table={7: None, 8: None, 11: None, 12: None, 13: None})  [rich/control.py:181]
+                    → 'Hello World!'
+                  → None
+                → <text 'Hello World!' [] ''>
+              Lines.__init__(self=<Lines>, lines=[<text 'Hello World!' [] ''>])  [rich/containers.py:69]
+                → None
+              → Lines([<text 'Hello World!' [] ''>])
+            Lines.__iter__(self=<Lines>)  [rich/containers.py:75]
+              → <list_iterator object at 0x10beb6920>
+            Text.__contains__(self=<Text>, other='\t')  [rich/text.py:191]
+              Text.plain(self=<Text>)  [rich/text.py:402]
+                → 'Hello World!'
+              → False
+            Text.__str__(self=<Text>)  [rich/text.py:173]
+              Text.plain(self=<Text>)  [rich/text.py:402]
+                → 'Hello World!'
+              → 'Hello World!'
+            divide_line(text='Hello World!', width=100, fold=True)  [rich/_wrap.py:26]
+              words(text='Hello World!')  [rich/_wrap.py:12]
+                → (0, 6, 'Hello ')
+              cell_len(text='Hello', unicode_version='auto')  [rich/cells.py:98]
+                cached_cell_len(text='Hello', unicode_version='auto')  [rich/cells.py:81]
+                  _cell_len(text='Hello', unicode_version='auto')  [rich/cells.py:113]
+                    → 5
+                  → 5
+                → 5
+              … cell_len ×1 more  [rich/cells.py:98]
+              words(text='Hello World!')  [rich/_wrap.py:12]
+                → (6, 12, 'World!')
+              cell_len(text='World!', unicode_version='auto')  [rich/cells.py:98]
+                cached_cell_len(text='World!', unicode_version='auto')  [rich/cells.py:81]
+                  _cell_len(text='World!', unicode_version='auto')  [rich/cells.py:113]
+                    → 6
+                  → 6
+                → 6
+              … cell_len ×1 more  [rich/cells.py:98]
+              words(text='Hello World!')  [rich/_wrap.py:12]
+                → None
+              → []
+            Text.divide(self=<Text>, offsets=[])  [rich/text.py:1106]
+              Text.copy(self=<Text>)  [rich/text.py:443]
+                Text.plain(self=<Text>)  [rich/text.py:402]
+                  → 'Hello World!'
+                Text.__init__(self=<Text>, text='Hello World!', style='', justify=None, overflow=None, no_wrap=None, end='\n', tab_size=None, spans=None)  [rich/text.py:144]
+                  strip_control_codes(text='Hello World!', _translate_table={7: None, 8: None, 11: None, 12: None, 13: None})  [rich/control.py:181]
+                    → 'Hello World!'
+                  → None
+                → <text 'Hello World!' [] ''>
+              Lines.__init__(self=<Lines>, lines=[<text 'Hello World!' [] ''>])  [rich/containers.py:69]
+                → None
+              → Lines([<text 'Hello World!' [] ''>])
+            Lines.__iter__(self=<Lines>)  [rich/containers.py:75]
+              → <list_iterator object at 0x10b2d8ee0>
+            Text.rstrip_end(self=<Text>, size=100)  [rich/text.py:666]
+              Text.__len__(self=<Text>)  [rich/text.py:167]
+                → 12
+              → None
+            Lines.justify(self=<Lines>, console=<console width=100 None>, width=100, justify='default', overflow='fold')  [rich/containers.py:111]
+              → None
+            Lines.__iter__(self=<Lines>)  [rich/containers.py:75]
+              → <list_iterator object at 0x10b2d93c0>
+            Text.truncate(self=<Text>, max_width=100, overflow='fold', pad=False)  [rich/text.py:859]
+              Text.plain(self=<Text>)  [rich/text.py:402]
+                → 'Hello World!'
+              cell_len(text='Hello World!', unicode_version='auto')  [rich/cells.py:98]
+                cached_cell_len(text='Hello World!', unicode_version='auto')  [rich/cells.py:81]
+                  _cell_len(text='Hello World!', unicode_version='auto')  [rich/cells.py:113]
+                    → 12
+                  → 12
+                → 12
+              → None
+            Lines.extend(self=<Lines>, lines=Lines([<text 'Hello World!' [] ''>]))  [rich/containers.py:105]
+              Lines.__iter__(self=<Lines>)  [rich/containers.py:75]
+                → <list_iterator object at 0x10b2d9ab0>
+              Lines.__len__(self=<Lines>)  [rich/containers.py:93]
+                → 1
+              → None
+            → Lines([<text 'Hello World!' [] ''>])
+          Text.__init__(self=<Text>, text='\n', style='', justify=None, overflow=None, no_wrap=None, end='\n', tab_size=None, spans=None)  [rich/text.py:144]
+            strip_control_codes(text='\n', _translate_table={7: None, 8: None, 11: None, 12: None, 13: None})  [rich/control.py:181]
+              → '\n'
+            → None
+          Text.join(self=<Text>, lines=Lines([<text 'Hello World!' [] ''>]))  [rich/text.py:778]
+            Text.blank_copy(self=<Text>, plain='')  [rich/text.py:430]
+              Text.__init__(self=<Text>, text='', style='', justify=None, overflow=None, no_wrap=None, end='\n', tab_size=None, spans=None)  [rich/text.py:144]
+                strip_control_codes(text='', _translate_table={7: None, 8: None, 11: None, 12: None, 13: None})  [rich/control.py:181]
+                  → ''
+                → None
+              → <text '' [] ''>
+            Text.join.<locals>.iter_text()  [rich/text.py:790]
+              Text.plain(self=<Text>)  [rich/text.py:402]
+                → '\n'
+              loop_last(values=Lines([<text 'Hello World!' [] ''>]))  [rich/_loop.py:18]
+                Lines.__iter__(self=<Lines>)  [rich/containers.py:75]
+                  → <list_iterator object at 0x10b2da9e0>
+                → (True, <text 'Hello World!' [] ''>)
+              → <text 'Hello World!' [] ''>
+            Text.__len__(self=<Text>)  [rich/text.py:167]
+              → 12
+            Text.join.<locals>.iter_text()  [rich/text.py:790]
+              loop_last(values=Lines([<text 'Hello World!' [] ''>]))  [rich/_loop.py:18]
+                → None
+              → None
+            → <text 'Hello World!' [] ''>
+          Text.render(self=<Text>, console=<console width=100 None>, end='\n')  [rich/text.py:719]
+            Text.plain(self=<Text>)  [rich/text.py:402]
+              → 'Hello World!'
+            → Segment('Hello World!')
+          → Segment('Hello World!')
+        → Segment('Hello World!')
+      … Console.render ×1 more  [rich/console.py:1294]
+      → ([Segment('Hello World!')], True)
+    Segment.apply_style(cls=<type>, segments=[Segment('Hello World!')], style=Style(color=Color('red', ColorType.STANDARD, number=1), bold=True), post_style=None)  [rich/segment.py:186]
+      Style.__bool__(self=<Style>)  [rich/style.py:340]
+        → True
+      → <generator object Segment.apply_style.<locals>.<genexpr> at 0x10c13cd00>
+    Style.__add__(self=<Style>, style=None)  [rich/style.py:757]
+      Style.__hash__(self=<Style>)  [rich/style.py:441]
+        → 6286236468264462863
+      Style._add(self=<Style>, style=None)  [rich/style.py:732]
+        → Style(color=Color('red', ColorType.STANDARD, number=1), bold=True)
+      Style.link(self=<Style>)  [rich/style.py:457]
+        → None
+      → Style(color=Color('red', ColorType.STANDARD, number=1), bold=True)
+    Segment.split_lines_terminator(cls=<type>, segments=<generator object Console.render at 0x10b044820>)  [rich/segment.py:275]
+      Console.render(self=<Console>, renderable=<text 'Hello World!' [] ''>, options=ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None))  [rich/console.py:1294]
+        Text.__rich_console__(self=<Text>, console=<console width=100 None>, options=ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None))  [rich/text.py:689]
+          Text.render(self=<Text>, console=<console width=100 None>, end='\n')  [rich/text.py:719]
+            → None
+          → None
+        → None
+      → None
+    Console._buffer(self=<Console>)  [rich/console.py:770]
+      → []
+    Console.width(self=<Console>)  [rich/console.py:1056]
+      Console.size(self=<Console>)  [rich/console.py:1004]
+        Console.is_dumb_terminal(self=<Console>)  [rich/console.py:978]
+          Console.is_terminal(self=<Console>)  [rich/console.py:930]
+            Console.file(self=<Console>)  [rich/console.py:756]
+              → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+            → False
+          → False
+        → ConsoleDimensions(width=100, height=25)
+      → 100
+    Segment.split_and_crop_lines(cls=<type>, segments=[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\n')], length=100, style=None, pad=False, include_new_lines=True)  [rich/segment.py:306]
+      Segment.adjust_line_length(cls=<type>, line=[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True))], length=100, style=None, pad=False)  [rich/segment.py:353]
+        Segment.cell_length(self=<Segment>)  [rich/segment.py:78]
+          cell_len(text='Hello World!', unicode_version='auto')  [rich/cells.py:98]
+            → 12
+          → 12
+        → [Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True))]
+      → [Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\n')]
+    … Segment.split_and_crop_lines ×1 more  [rich/segment.py:306]
+    Console.__exit__(self=<Console>, exc_type=None, exc_value=None, traceback=None)  [rich/console.py:862]
+      Console._exit_buffer(self=<Console>)  [rich/console.py:817]
+        Console._buffer_index(self=<Console>)  [rich/console.py:775]
+          → 1
+        … Console._buffer_index ×1 more  [rich/console.py:775]
+        Console._check_buffer(self=<Console>)  [rich/console.py:2044]
+          Console._write_buffer(self=<Console>)  [rich/console.py:2059]
+            Console._buffer_index(self=<Console>)  [rich/console.py:775]
+              → 0
+            Console._buffer(self=<Console>)  [rich/console.py:770]
+              → [Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\n')]
+            Console._buffer_index(self=<Console>)  [rich/console.py:775]
+              → 0
+            Console._buffer(self=<Console>)  [rich/console.py:770]
+              → [Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\n')]
+            Console._render_buffer(self=<Console>, buffer=[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\n')])  [rich/console.py:2132]
+              Console.is_terminal(self=<Console>)  [rich/console.py:930]
+                Console.file(self=<Console>)  [rich/console.py:756]
+                  → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+                → False
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text='Hello World!', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → 'Hello World!'
+              → 'Hello World!\n'
+            Console.file(self=<Console>)  [rich/console.py:756]
+              → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+            … Console.file ×1 more  [rich/console.py:756]
+            Console._buffer(self=<Console>)  [rich/console.py:770]
+              → [Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\n')]
+            → None
+          → None
+        → None
+      → None
+    → None
+  … Console.print ×1 more  [rich/console.py:1652]
+  Table.__init__(self=<Table>, title=None, caption=None, width=None, min_width=None, box=Box(...), safe_box=None, padding=(0, 1), collapse_padding=False, pad_edge=True, expand=False, show_header=True, show_footer=False, show_edge=True, show_lines=False, leading=0, style='none', row_styles=None, header_style='bold magenta', footer_style='table.footer', border_style=None, title_style=None, caption_style=None, title_justify='center', caption_justify='center', highlight=False)  [rich/table.py:188]
+    Padding.unpack(pad=(0, 1))  [rich/padding.py:60]
+      → (0, 1, 0, 1)
+    → None
+  Table.add_column(self=<Table>, header='Date', footer='', header_style=None, highlight=None, footer_style=None, style='dim', justify='left', vertical='top', overflow='ellipsis', width=12, min_width=None, max_width=None, ratio=None, no_wrap=False)  [rich/table.py:364]
+    → None
+  … Table.add_column ×3 more  [rich/table.py:364]
+  Table.add_row(self=<Table>, style=None, end_section=False)  [rich/table.py:422]
+    is_renderable(check_object='Dec 20, 2019')  [rich/protocol.py:9]
+      → True
+    Table.add_row.<locals>.add_cell(column=Column(header='Date', footer='', heade..., highlight=False, _index=0, _cells=[]), renderable='Dec 20, 2019')  [rich/table.py:440]
+      → None
+    is_renderable(check_object='Star Wars: The Rise of Skywalker')  [rich/protocol.py:9]
+      → True
+    Table.add_row.<locals>.add_cell(column=Column(header='Title', footer='', head..., highlight=False, _index=1, _cells=[]), renderable='Star Wars: The Rise of Skywalker')  [rich/table.py:440]
+      → None
+    is_renderable(check_object='$275,000,000')  [rich/protocol.py:9]
+      → True
+    Table.add_row.<locals>.add_cell(column=Column(header='Production Budget', foo..., highlight=False, _index=2, _cells=[]), renderable='$275,000,000')  [rich/table.py:440]
+      → None
+    is_renderable(check_object='$375,126,118')  [rich/protocol.py:9]
+      → True
+    Table.add_row.<locals>.add_cell(column=Column(header='Box Office', footer='',..., highlight=False, _index=3, _cells=[]), renderable='$375,126,118')  [rich/table.py:440]
+      → None
+    → None
+  … Table.add_row ×2 more  [rich/table.py:422]
+  Console.print(self=<Console>, sep=' ', end='\n', style=None, justify=None, overflow=None, no_wrap=None, emoji=None, markup=None, highlight=None, width=None, height=None, crop=True, soft_wrap=None, new_line_start=False)  [rich/console.py:1652]
+    Console.__enter__(self=<Console>)  [rich/console.py:857]
+      Console._enter_buffer(self=<Console>)  [rich/console.py:813]
+        Console._buffer_index(self=<Console>)  [rich/console.py:775]
+          → 0
+        … Console._buffer_index ×1 more  [rich/console.py:775]
+        → None
+      → <console width=100 None>
+    Console._collect_renderables(self=<Console>, objects=(<rich.table.Table object at 0x10bebf230>,), sep=' ', end='\n', justify=None, emoji=None, markup=None, highlight=None)  [rich/console.py:1500]
+      rich_cast(renderable=<rich.table.Table object at 0x10bebf230>)  [rich/protocol.py:18]
+        → <rich.table.Table object at 0x10bebf230>
+      Console._collect_renderables.<locals>.check_text()  [rich/console.py:1550]
+        → None
+      … Console._collect_renderables.<locals>.check_text ×1 more  [rich/console.py:1550]
+      → [<rich.table.Table object at 0x10bebf230>]
+    Console.options(self=<Console>)  [rich/console.py:990]
+      Console.size(self=<Console>)  [rich/console.py:1004]
+        Console.is_dumb_terminal(self=<Console>)  [rich/console.py:978]
+          Console.is_terminal(self=<Console>)  [rich/console.py:930]
+            Console.file(self=<Console>)  [rich/console.py:756]
+              → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+            → False
+          → False
+        → ConsoleDimensions(width=100, height=25)
+      Console.encoding(self=<Console>)  [rich/console.py:921]
+        Console.file(self=<Console>)  [rich/console.py:756]
+          → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+        → 'utf-8'
+      Console.is_terminal(self=<Console>)  [rich/console.py:930]
+        Console.file(self=<Console>)  [rich/console.py:756]
+          → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+        → False
+      → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+    ConsoleOptions.update(self=<ConsoleOptions>, width=<rich.console.NoChange object at 0x10bebdd30>, min_width=<rich.console.NoChange object at 0x10bebdd30>, max_width=<rich.console.NoChange object at 0x10bebdd30>, justify=None, overflow=None, no_wrap=None, highlight=None, markup=None, height=None)  [rich/console.py:157]
+      ConsoleOptions.copy(self=<ConsoleOptions>)  [rich/console.py:147]
+        → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+      → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+    Console.render(self=<Console>, renderable=<rich.table.Table object at 0x10bebf230>, options=ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None))  [rich/console.py:1294]
+      rich_cast(renderable=<rich.table.Table object at 0x10bebf230>)  [rich/protocol.py:18]
+        → <rich.table.Table object at 0x10bebf230>
+      ConsoleOptions.reset_height(self=<ConsoleOptions>)  [rich/console.py:220]
+        ConsoleOptions.copy(self=<ConsoleOptions>)  [rich/console.py:147]
+          → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+        → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+      Table.__rich_console__(self=<Table>, console=<console width=100 None>, options=ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None))  [rich/table.py:475]
+        Table._extra_width(self=<Table>)  [rich/table.py:295]
+          → 5
+        ConsoleOptions.update_width(self=<ConsoleOptions>, width=95)  [rich/console.py:194]
+          ConsoleOptions.copy(self=<ConsoleOptions>)  [rich/console.py:147]
+            → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+          → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+        Table._calculate_column_widths(self=<Table>, console=<console width=100 None>, options=ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None))  [rich/table.py:523]
+          Table._measure_column(self=<Table>, console=<console width=100 None>, options=ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None), column=Column(header='Date', footer='', heade...2019', 'May 25, 2018', 'Dec 15, 2017']))  [rich/table.py:716]
+            Table._get_padding_width(self=<Table>, column_index=0)  [rich/table.py:700]
+              Table.padding(self=<Table>)  [rich/table.py:353]
+                → (0, 1, 0, 1)
+              → 2
+            Measurement.with_maximum(self=<Measurement>, width=95)  [rich/measure.py:34]
+              → Measurement(minimum=14, maximum=14)
+            → Measurement(minimum=14, maximum=14)
+          … Table._measure_column ×3 more  [rich/table.py:716]
+          Table._extra_width(self=<Table>)  [rich/table.py:295]
+            → 5
+          Table.expand(self=<Table>)  [rich/table.py:285]
+            → False
+          … Table.expand ×1 more  [rich/table.py:285]
+          → [14, 35, 19, 16]
+        ConsoleOptions.update(self=<ConsoleOptions>, width=89, min_width=<rich.console.NoChange object at 0x10bebdd30>, max_width=<rich.console.NoChange object at 0x10bebdd30>, justify=<rich.console.NoChange object at 0x10bebdd30>, overflow=<rich.console.NoChange object at 0x10bebdd30>, no_wrap=<rich.console.NoChange object at 0x10bebdd30>, highlight=False, markup=<rich.console.NoChange object at 0x10bebdd30>, height=None)  [rich/console.py:157]
+          ConsoleOptions.copy(self=<ConsoleOptions>)  [rich/console.py:147]
+            → ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)
+          → ConsoleOptions(size=ConsoleDimensions(...hlight=False, markup=None, height=None)
+        Table._render(self=<Table>, console=<console width=100 None>, options=ConsoleOptions(size=ConsoleDimensions(...hlight=False, markup=None, height=None), widths=[14, 35, 19, 16])  [rich/table.py:755]
+          Console.get_style(self=<Console>, name='none', default=None)  [rich/console.py:1470]
+            Console._theme_stack(self=<Console>)  [rich/console.py:784]
+              → <rich.theme.ThemeStack object at 0x10bebef90>
+            Style.link(self=<Style>)  [rich/style.py:457]
+              → None
+            → Style()
+          … Console.get_style ×1 more  [rich/console.py:1470]
+          Style.__add__(self=<Style>, style=Style())  [rich/style.py:757]
+            Style.__hash__(self=<Style>)  [rich/style.py:441]
+              → 8713575502611148872
+            … Style.__hash__ ×1 more  [rich/style.py:441]
+            Style._add(self=<Style>, style=Style())  [rich/style.py:732]
+              → Style()
+            Style.link(self=<Style>)  [rich/style.py:457]
+              → None
+            → Style()
+          Table._get_cells(self=<Table>, console=<console width=100 None>, column_index=0, column=Column(header='Date', footer='', heade...2019', 'May 25, 2018', 'Dec 15, 2017']))  [rich/table.py:627]
+            Table.padding(self=<Table>)  [rich/table.py:353]
+              → (0, 1, 0, 1)
+            Console.get_style(self=<Console>, name='bold magenta', default=None)  [rich/console.py:1470]
+              Console._theme_stack(self=<Console>)  [rich/console.py:784]
+                → <rich.theme.ThemeStack object at 0x10bebef90>
+              Style.link(self=<Style>)  [rich/style.py:457]
+                → None
+              → Style(color=Color('magenta', ColorType.STANDARD, number=5), bold=True)
+            … Console.get_style ×1 more  [rich/console.py:1470]
+            Style.__add__(self=<Style>, style=Style())  [rich/style.py:757]
+              Style.__hash__(self=<Style>)  [rich/style.py:441]
+                → 2651472125470388737
+              … Style.__hash__ ×1 more  [rich/style.py:441]
+              Style.link(self=<Style>)  [rich/style.py:457]
+                → None
+              → Style(color=Color('magenta', ColorType.STANDARD, number=5), bold=True)
+            Console.get_style(self=<Console>, name='dim', default=None)  [rich/console.py:1470]
+              Console._theme_stack(self=<Console>)  [rich/console.py:784]
+                → <rich.theme.ThemeStack object at 0x10bebef90>
+              Style.link(self=<Style>)  [rich/style.py:457]
+                → None
+              → Style(dim=True)
+            Column.cells(self=<Column>)  [rich/table.py:120]
+              → 'Dec 20, 2019'
+            … Column.cells ×3 more  [rich/table.py:120]
+            loop_first_last(values=[(Style(color=Color('magenta', ColorType.STANDARD, number=5), bold=True), 'Date'), (Style(dim=True), 'Dec 20, 2019'), (Style(dim=True), 'May 25, 2018'), (Style(dim=True), 'Dec 15, 2017')])  [rich/_loop.py:31]
+              → (True, False, (Style(color=Color('magenta', ColorType.STANDARD, number=5), bold=True), 'Date'))
+            Table._get_cells.<locals>.get_padding(first_row=True, last_row=False)  [rich/table.py:642]
+              → (0, 1, 0, 1)
+            Padding.__init__(self=<Padding>, renderable='Date', pad=(0, 1, 0, 1), style='none', expand=True)  [rich/padding.py:33]
+              Padding.unpack(pad=(0, 1, 0, 1))  [rich/padding.py:60]
+                → (0, 1, 0, 1)
+              → None
+            → _Cell(style=Style(color=Color('magenta...ing('Date', (0,1,0,1)), vertical='top')
+          … Table._get_cells ×16 more  [rich/table.py:627]
+          pick_bool()  [rich/_pick.py:4]
+            → True
+          Box.substitute(self=<Box>, options=ConsoleOptions(size=ConsoleDimensions(...hlight=False, markup=None, height=None), safe=True)  [rich/box.py:67]
+            ConsoleOptions.ascii_only(self=<ConsoleOptions>)  [rich/console.py:142]
+              → False
+            → Box(...)
+          Segment.line(cls=<type>)  [rich/segment.py:181]
+            → Segment('\n')
+          Box.get_top(self=<Box>, widths=[14, 35, 19, 16])  [rich/box.py:95]
+            loop_last(values=[14, 35, 19, 16])  [rich/_loop.py:18]
+              → (False, 14)
+            … loop_last ×4 more  [rich/_loop.py:18]
+            → '┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━...┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓'
+          → Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style())
+        → Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style())
+      → Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style())
+    … Console.render ×79 more  [rich/console.py:1294]
+    Console._buffer(self=<Console>)  [rich/console.py:770]
+      → []
+    Console.width(self=<Console>)  [rich/console.py:1056]
+      Console.size(self=<Console>)  [rich/console.py:1004]
+        Console.is_dumb_terminal(self=<Console>)  [rich/console.py:978]
+          Console.is_terminal(self=<Console>)  [rich/console.py:930]
+            Console.file(self=<Console>)  [rich/console.py:756]
+              → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+            → False
+          → False
+        → ConsoleDimensions(width=100, height=25)
+      → 100
+    Segment.split_and_crop_lines(cls=<type>, segments=[Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style()), Segment('\n'), Segment('┃', Style()), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), Segment('Date        ', Style(color=Co...orType.STANDARD, number=5), bold=True)), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), ...], length=100, style=None, pad=False, include_new_lines=True)  [rich/segment.py:306]
+      Segment.adjust_line_length(cls=<type>, line=[Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style())], length=100, style=None, pad=False)  [rich/segment.py:353]
+        Segment.cell_length(self=<Segment>)  [rich/segment.py:78]
+          cell_len(text='┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━...┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', unicode_version='auto')  [rich/cells.py:98]
+            cached_cell_len(text='┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━...┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', unicode_version='auto')  [rich/cells.py:81]
+              _cell_len(text='┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━...┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', unicode_version='auto')  [rich/cells.py:113]
+                → 89
+              → 89
+            → 89
+          → 89
+        → [Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style())]
+      → [Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style()), Segment('\n')]
+    … Segment.split_and_crop_lines ×7 more  [rich/segment.py:306]
+    Console.__exit__(self=<Console>, exc_type=None, exc_value=None, traceback=None)  [rich/console.py:862]
+      Console._exit_buffer(self=<Console>)  [rich/console.py:817]
+        Console._buffer_index(self=<Console>)  [rich/console.py:775]
+          → 1
+        … Console._buffer_index ×1 more  [rich/console.py:775]
+        Console._check_buffer(self=<Console>)  [rich/console.py:2044]
+          Console._write_buffer(self=<Console>)  [rich/console.py:2059]
+            Console._buffer_index(self=<Console>)  [rich/console.py:775]
+              → 0
+            Console._buffer(self=<Console>)  [rich/console.py:770]
+              → [Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style()), Segment('\n'), Segment('┃', Style()), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), Segment('Date        ', Style(color=Co...orType.STANDARD, number=5), bold=True)), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), ...]
+            Console._buffer_index(self=<Console>)  [rich/console.py:775]
+              → 0
+            Console._buffer(self=<Console>)  [rich/console.py:770]
+              → [Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style()), Segment('\n'), Segment('┃', Style()), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), Segment('Date        ', Style(color=Co...orType.STANDARD, number=5), bold=True)), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), ...]
+            Console._render_buffer(self=<Console>, buffer=[Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style()), Segment('\n'), Segment('┃', Style()), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), Segment('Date        ', Style(color=Co...orType.STANDARD, number=5), bold=True)), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), ...])  [rich/console.py:2132]
+              Console.is_terminal(self=<Console>)  [rich/console.py:930]
+                Console.file(self=<Console>)  [rich/console.py:756]
+                  → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+                → False
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → False
+              … Style.__bool__ ×2 more  [rich/style.py:340]
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text='Date        ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → 'Date        '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → False
+              … Style.__bool__ ×1 more  [rich/style.py:340]
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text='Title                            ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → 'Title                            '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → False
+              … Style.__bool__ ×1 more  [rich/style.py:340]
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text='Production Budget', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → 'Production Budget'
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → False
+              … Style.__bool__ ×1 more  [rich/style.py:340]
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text='    Box Office', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → '    Box Office'
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → False
+              … Style.__bool__ ×3 more  [rich/style.py:340]
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text='Dec 20, 2019', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → 'Dec 20, 2019'
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → False
+              … Style.__bool__ ×11 more  [rich/style.py:340]
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text='May 25, 2018', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → 'May 25, 2018'
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → False
+              … Style.__bool__ ×2 more  [rich/style.py:340]
+              Style.render(self=<Style>, text='Solo', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → 'Solo'
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → False
+              … Style.__bool__ ×10 more  [rich/style.py:340]
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text='Dec 15, 2017', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → 'Dec 15, 2017'
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → True
+              Style.render(self=<Style>, text=' ', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → ' '
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → False
+              … Style.__bool__ ×8 more  [rich/style.py:340]
+              Style.render(self=<Style>, text='$1,332,539,889', color_system=None, legacy_windows=False)  [rich/style.py:694]
+                → '$1,332,539,889'
+              Style.__bool__(self=<Style>)  [rich/style.py:340]
+                → False
+              … Style.__bool__ ×2 more  [rich/style.py:340]
+              → '┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━...──────────────────┴────────────────┘\n'
+            Console.file(self=<Console>)  [rich/console.py:756]
+              → <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+            … Console.file ×1 more  [rich/console.py:756]
+            Console._buffer(self=<Console>)  [rich/console.py:770]
+              → [Segment('┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━...━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓', Style()), Segment('\n'), Segment('┃', Style()), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), Segment('Date        ', Style(color=Co...orType.STANDARD, number=5), bold=True)), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), ...]
+            → None
+          → None
+        → None
+      → None
+    → None
+  Console.export_text(self=<Console>, clear=True, styles=False)  [rich/console.py:2192]
+    → 'Hello World!\nWhere there is a Will t...──────────────────┴────────────────┘\n'

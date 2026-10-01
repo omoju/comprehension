@@ -1,0 +1,190 @@
+scenario()  [scenario.py:1]
+  Flask.__init__(self=<Flask>, import_name='__main__', static_url_path=None, static_folder='static', static_host=None, host_matching=False, subdomain_matching=False, template_folder='templates', instance_path=None, instance_relative_config=False, root_path=None)  [src/flask/app.py:311]
+    App.__init__(self=<Flask>, import_name='__main__', static_url_path=None, static_folder='static', static_host=None, host_matching=False, subdomain_matching=False, template_folder='templates', instance_path=None, instance_relative_config=False, root_path=None)  [src/flask/sansio/app.py:279]
+      Scaffold.__init__(self=<Flask>, import_name='__main__', static_folder='static', static_url_path=None, template_folder='templates', root_path=None)  [src/flask/sansio/scaffold.py:75]
+        Scaffold.static_folder(self=<Flask>, value='static')  [src/flask/sansio/scaffold.py:233]
+          → None
+        Scaffold.static_url_path(self=<Flask>, value=None)  [src/flask/sansio/scaffold.py:264]
+          → None
+        get_root_path(import_name='__main__')  [src/flask/helpers.py:587]
+          → '/Users/omojumiller/dev/comprehension/stories/bench/flask'
+        → None
+      App.auto_find_instance_path(self=<Flask>)  [src/flask/sansio/app.py:507]
+        find_package(import_name='__main__')  [src/flask/sansio/scaffold.py:762]
+          _find_package_path(import_name='__main__')  [src/flask/sansio/scaffold.py:717]
+            → '/Users/omojumiller/dev/comprehension/demo-repos/flask'
+          → (None, '/Users/omojumiller/dev/comprehension/demo-repos/flask')
+        → '/Users/omojumiller/dev/comprehension/demo-repos/flask/instance'
+      App.make_config(self=<Flask>, instance_relative=False)  [src/flask/sansio/app.py:479]
+        get_debug_flag()  [src/flask/helpers.py:28]
+          → False
+        Config.__init__(self=<Config>, root_path='/Users/omojumiller/dev/comprehension/stories/bench/flask', defaults={'APPLICATION_ROOT': '/', 'DEBUG': False, 'EXPLAIN_TEMPLATE_LOADING': False, 'MAX_CONTENT_LENGTH': None, 'MAX_COOKIE_SIZE': 4093, 'MAX_FORM_MEMORY_SIZE': 500000, ...})  [src/flask/config.py:94]
+          → None
+        → <Config {'DEBUG': False, 'TESTING': Fa...93, 'PROVIDE_AUTOMATIC_OPTIONS': True}>
+      App.make_aborter(self=<Flask>)  [src/flask/sansio/app.py:495]
+        → <werkzeug.exceptions.Aborter object at 0x10f8965d0>
+      JSONProvider.__init__(self=<DefaultJSONProvider>, app=<Flask 'scenario'>)  [src/flask/json/provider.py:38]
+        → None
+      → None
+    Scaffold.has_static_folder(self=<Flask>)  [src/flask/sansio/scaffold.py:240]
+      Scaffold.static_folder(self=<Flask>)  [src/flask/sansio/scaffold.py:223]
+        → '/Users/omojumiller/dev/comprehension/stories/bench/flask/static'
+      → True
+    Scaffold.static_url_path(self=<Flask>)  [src/flask/sansio/scaffold.py:248]
+      Scaffold.static_folder(self=<Flask>)  [src/flask/sansio/scaffold.py:223]
+        → '/Users/omojumiller/dev/comprehension/stories/bench/flask/static'
+      … Scaffold.static_folder ×1 more  [src/flask/sansio/scaffold.py:223]
+      → '/static'
+    setupmethod.<locals>.wrapper_func(self=<Flask>)  [src/flask/sansio/scaffold.py:45]
+      App._check_setup_finished(self=<Flask>, f_name='add_url_rule')  [src/flask/sansio/app.py:410]
+        → None
+      App.add_url_rule(self=<Flask>, rule='/static/<path:filename>', endpoint='static', view_func=<function Flask.__init__.<locals>.<lambda> at 0x10f9b79c0>, provide_automatic_options=None)  [src/flask/sansio/app.py:604]
+        → None
+      → None
+    → None
+  setupmethod.<locals>.wrapper_func(self=<Flask>)  [src/flask/sansio/scaffold.py:45]
+    App._check_setup_finished(self=<Flask>, f_name='route')  [src/flask/sansio/app.py:410]
+      → None
+    Scaffold.route(self=<Flask>, rule='/')  [src/flask/sansio/scaffold.py:343]
+      → <function Scaffold.route.<locals>.decorator at 0x10f9b7e20>
+    → <function Scaffold.route.<locals>.decorator at 0x10f9b7e20>
+  Scaffold.route.<locals>.decorator(f=<function hello at 0x10f9b7ec0>)  [src/flask/sansio/scaffold.py:368]
+    setupmethod.<locals>.wrapper_func(self=<Flask>)  [src/flask/sansio/scaffold.py:45]
+      App._check_setup_finished(self=<Flask>, f_name='add_url_rule')  [src/flask/sansio/app.py:410]
+        → None
+      App.add_url_rule(self=<Flask>, rule='/', endpoint=None, view_func=<function hello at 0x10f9b7ec0>, provide_automatic_options=None)  [src/flask/sansio/app.py:604]
+        _endpoint_from_view_func(view_func=<function hello at 0x10f9b7ec0>)  [src/flask/sansio/scaffold.py:709]
+          → 'hello'
+        → None
+      → None
+    → <function hello at 0x10f9b7ec0>
+  Flask.test_client(self=<Flask>, use_cookies=True)  [src/flask/app.py:758]
+    FlaskClient.__init__(self=<FlaskClient>)  [src/flask/testing.py:125]
+      _get_werkzeug_version()  [src/flask/testing.py:100]
+        → '3.1.9'
+      → None
+    → <FlaskClient <Flask 'scenario'>>
+  FlaskClient.open(self=<FlaskClient>, buffered=False, follow_redirects=False)  [src/flask/testing.py:204]
+    FlaskClient._request_from_builder_args(self=<FlaskClient>, args=('/',), kwargs={'method': 'GET'})  [src/flask/testing.py:193]
+      FlaskClient._copy_environ(self=<FlaskClient>, other={})  [src/flask/testing.py:185]
+        → {'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'REMOTE_ADDR': '127.0.0.1'}
+      EnvironBuilder.__init__(self=<EnvironBuilder>, app=<Flask 'scenario'>, path='/', base_url=None, subdomain=None, url_scheme=None)  [src/flask/testing.py:49]
+        → None
+      → <Request 'http://localhost/' [GET]>
+    Flask.__call__(self=<Flask>, environ={'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'RAW_URI': '/', 'REMOTE_ADDR': '127.0.0.1', ...}, start_response=<function run_wsgi_app.<locals>.start_response at 0x10fa76ac0>)  [src/flask/app.py:1621]
+      Flask.wsgi_app(self=<Flask>, environ={'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'RAW_URI': '/', 'REMOTE_ADDR': '127.0.0.1', ...}, start_response=<function run_wsgi_app.<locals>.start_response at 0x10fa76ac0>)  [src/flask/app.py:1569]
+        Flask.request_context(self=<Flask>, environ={'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'RAW_URI': '/', 'REMOTE_ADDR': '127.0.0.1', ...})  [src/flask/app.py:1504]
+          AppContext.from_environ(cls=<type>, app=<Flask 'scenario'>, environ={'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'RAW_URI': '/', 'REMOTE_ADDR': '127.0.0.1', ...})  [src/flask/ctx.py:339]
+            AppContext.__init__(self=<AppContext>, app=<Flask 'scenario'>, request=<Request 'http://localhost/' [GET]>, session=None)  [src/flask/ctx.py:300]
+              Flask.create_url_adapter(self=<Flask>, request=<Request 'http://localhost/' [GET]>)  [src/flask/app.py:510]
+                → <werkzeug.routing.map.MapAdapter object at 0x10fa1e900>
+              → None
+            → <AppContext 4557234128 of scenario, GET 'http://localhost/'>
+          → <AppContext 4557234128 of scenario, GET 'http://localhost/'>
+        AppContext.push(self=<AppContext>)  [src/flask/ctx.py:416]
+          AppContext._get_session(self=<AppContext>)  [src/flask/ctx.py:381]
+            AppContext.request(self=<AppContext>)  [src/flask/ctx.py:370]
+              → <Request 'http://localhost/' [GET]>
+            SecureCookieSessionInterface.open_session(self=<SecureCookieSessionInterface>, app=<Flask 'scenario'>, request=<Request 'http://localhost/' [GET]>)  [src/flask/sessions.py:323]
+              SecureCookieSessionInterface.get_signing_serializer(self=<SecureCookieSessionInterface>, app=<Flask 'scenario'>)  [src/flask/sessions.py:303]
+                ConfigAttribute.__get__(self=<ConfigAttribute>, obj=<Flask 'scenario'>, owner=<class 'flask.app.Flask'>)  [src/flask/config.py:35]
+                  → None
+                → None
+              → None
+            SessionInterface.make_null_session(self=<SecureCookieSessionInterface>, app=<Flask 'scenario'>)  [src/flask/sessions.py:150]
+              SecureCookieSession.__init__(self=<NullSession>, initial=None)  [src/flask/sessions.py:73]
+                → None
+              → <NullSession {}>
+            → <NullSession {}>
+          AppContext.match_request(self=<AppContext>)  [src/flask/ctx.py:405]
+            → None
+          → None
+        Flask.full_dispatch_request(self=<Flask>, ctx=<AppContext 4557234128 of scenario, GET 'http://localhost/'>)  [src/flask/app.py:995]
+          Flask.preprocess_request(self=<Flask>, ctx=<AppContext 4557234128 of scenario, GET 'http://localhost/'>)  [src/flask/app.py:1369]
+            AppContext.request(self=<AppContext>)  [src/flask/ctx.py:370]
+              → <Request 'http://localhost/' [GET]>
+            Request.blueprints(self=<Request>)  [src/flask/wrappers.py:180]
+              Request.blueprint(self=<Request>)  [src/flask/wrappers.py:161]
+                Request.endpoint(self=<Request>)  [src/flask/wrappers.py:146]
+                  → 'hello'
+                → None
+              → []
+            → None
+          Flask.dispatch_request(self=<Flask>, ctx=<AppContext 4557234128 of scenario, GET 'http://localhost/'>)  [src/flask/app.py:969]
+            AppContext.request(self=<AppContext>)  [src/flask/ctx.py:370]
+              → <Request 'http://localhost/' [GET]>
+            Flask.ensure_sync(self=<Flask>, func=<function hello at 0x10f9b7ec0>)  [src/flask/app.py:1068]
+              → <function hello at 0x10f9b7ec0>
+            → 'Hello, World!'
+          Flask.finalize_request(self=<Flask>, ctx=<AppContext 4557234128 of scenario, GET 'http://localhost/'>, rv='Hello, World!', from_error_handler=False)  [src/flask/app.py:1024]
+            Flask.make_response(self=<Flask>, rv='Hello, World!')  [src/flask/app.py:1227]
+              → <Response 13 bytes [200 OK]>
+            Flask.process_response(self=<Flask>, ctx=<AppContext 4557234128 of scenario, GET 'http://localhost/'>, response=<Response 13 bytes [200 OK]>)  [src/flask/app.py:1397]
+              AppContext.request(self=<AppContext>)  [src/flask/ctx.py:370]
+                → <Request 'http://localhost/' [GET]>
+              Request.blueprints(self=<Request>)  [src/flask/wrappers.py:180]
+                Request.blueprint(self=<Request>)  [src/flask/wrappers.py:161]
+                  Request.endpoint(self=<Request>)  [src/flask/wrappers.py:146]
+                    → 'hello'
+                  → None
+                → []
+              AppContext._get_session(self=<AppContext>)  [src/flask/ctx.py:381]
+                → <NullSession {}>
+              SessionInterface.is_null_session(self=<SecureCookieSessionInterface>, obj=<NullSession {}>)  [src/flask/sessions.py:162]
+                → True
+              → <Response 13 bytes [200 OK]>
+            → <Response 13 bytes [200 OK]>
+          → <Response 13 bytes [200 OK]>
+        AppContext.pop(self=<AppContext>, exc=None)  [src/flask/ctx.py:446]
+          _CollectErrors.__init__(self=<_CollectErrors>)  [src/flask/helpers.py:659]
+            → None
+          _CollectErrors.__enter__(self=<_CollectErrors>)  [src/flask/helpers.py:662]
+            → None
+          Flask.do_teardown_request(self=<Flask>, ctx=<AppContext 4557234128 of scenario, GET 'http://localhost/'>, exc=None)  [src/flask/app.py:1423]
+            _CollectErrors.__init__(self=<_CollectErrors>)  [src/flask/helpers.py:659]
+              → None
+            AppContext.request(self=<AppContext>)  [src/flask/ctx.py:370]
+              → <Request 'http://localhost/' [GET]>
+            Request.blueprints(self=<Request>)  [src/flask/wrappers.py:180]
+              Request.blueprint(self=<Request>)  [src/flask/wrappers.py:161]
+                Request.endpoint(self=<Request>)  [src/flask/wrappers.py:146]
+                  → 'hello'
+                → None
+              → []
+            _CollectErrors.__enter__(self=<_CollectErrors>)  [src/flask/helpers.py:662]
+              → None
+            _CollectErrors.__exit__(self=<_CollectErrors>, exc_type=None, exc_val=None, exc_tb=None)  [src/flask/helpers.py:665]
+              → True
+            _CollectErrors.raise_any(self=<_CollectErrors>, message='Errors during request teardown')  [src/flask/helpers.py:676]
+              → None
+            → None
+          _CollectErrors.__exit__(self=<_CollectErrors>, exc_type=None, exc_val=None, exc_tb=None)  [src/flask/helpers.py:665]
+            → True
+          _CollectErrors.__enter__(self=<_CollectErrors>)  [src/flask/helpers.py:662]
+            → None
+          _CollectErrors.__exit__(self=<_CollectErrors>, exc_type=None, exc_val=None, exc_tb=None)  [src/flask/helpers.py:665]
+            → True
+          _CollectErrors.__enter__(self=<_CollectErrors>)  [src/flask/helpers.py:662]
+            → None
+          Flask.do_teardown_appcontext(self=<Flask>, ctx=<AppContext 4557234128 of scenario, GET 'http://localhost/'>, exc=None)  [src/flask/app.py:1456]
+            _CollectErrors.__init__(self=<_CollectErrors>)  [src/flask/helpers.py:659]
+              → None
+            _CollectErrors.__enter__(self=<_CollectErrors>)  [src/flask/helpers.py:662]
+              → None
+            _CollectErrors.__exit__(self=<_CollectErrors>, exc_type=None, exc_val=None, exc_tb=None)  [src/flask/helpers.py:665]
+              → True
+            _CollectErrors.raise_any(self=<_CollectErrors>, message='Errors during app teardown')  [src/flask/helpers.py:676]
+              → None
+            → None
+          _CollectErrors.__exit__(self=<_CollectErrors>, exc_type=None, exc_val=None, exc_tb=None)  [src/flask/helpers.py:665]
+            → True
+          _CollectErrors.__enter__(self=<_CollectErrors>)  [src/flask/helpers.py:662]
+            → None
+          _CollectErrors.__exit__(self=<_CollectErrors>, exc_type=None, exc_val=None, exc_tb=None)  [src/flask/helpers.py:665]
+            → True
+          _CollectErrors.raise_any(self=<_CollectErrors>, message='Errors during context teardown')  [src/flask/helpers.py:676]
+            → None
+          → None
+        → <werkzeug.wsgi.ClosingIterator object at 0x10fa1ef90>
+      → <werkzeug.wsgi.ClosingIterator object at 0x10fa1ef90>
+    → <WrapperTestResponse streamed [200 OK]>

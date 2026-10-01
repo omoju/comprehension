@@ -1,0 +1,4 @@
+{
+  "why": "The README's \"A Simple Example\" is the library's headline use: build a `URLSafeSerializer(\"secret key\", \"auth\")`, `dumps` a user id/name dict into a token for an untrusted client, then `loads` it back verified. The script keeps that exact journey and only adds a small guard so an external tracer that reads `code.co_qualname` (a Python 3.11+ attribute) cannot abort the run on Python 3.10.",
+  "attempts": 2
+}

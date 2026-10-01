@@ -1,0 +1,1580 @@
+{
+ "fn": "scenario",
+ "file": "scenario.py",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "Flask.__init__",
+   "file": "src/flask/app.py",
+   "line": 311,
+   "called_from": "scenario.py:9",
+   "args": {
+    "self": "<Flask>",
+    "import_name": "'__main__'",
+    "static_url_path": "None",
+    "static_folder": "'static'",
+    "static_host": "None",
+    "host_matching": "False",
+    "subdomain_matching": "False",
+    "template_folder": "'templates'",
+    "instance_path": "None",
+    "instance_relative_config": "False",
+    "root_path": "None"
+   },
+   "calls": [
+    {
+     "fn": "App.__init__",
+     "file": "src/flask/sansio/app.py",
+     "line": 279,
+     "called_from": "app.py:324",
+     "args": {
+      "self": "<Flask>",
+      "import_name": "'__main__'",
+      "static_url_path": "None",
+      "static_folder": "'static'",
+      "static_host": "None",
+      "host_matching": "False",
+      "subdomain_matching": "False",
+      "template_folder": "'templates'",
+      "instance_path": "None",
+      "instance_relative_config": "False",
+      "root_path": "None"
+     },
+     "calls": [
+      {
+       "fn": "Scaffold.__init__",
+       "file": "src/flask/sansio/scaffold.py",
+       "line": 75,
+       "called_from": "app.py:292",
+       "args": {
+        "self": "<Flask>",
+        "import_name": "'__main__'",
+        "static_folder": "'static'",
+        "static_url_path": "None",
+        "template_folder": "'templates'",
+        "root_path": "None"
+       },
+       "calls": [
+        {
+         "fn": "Scaffold.static_folder",
+         "file": "src/flask/sansio/scaffold.py",
+         "line": 233,
+         "called_from": "scaffold.py:87",
+         "args": {
+          "self": "<Flask>",
+          "value": "'static'"
+         },
+         "calls": [],
+         "returned": "None"
+        },
+        {
+         "fn": "Scaffold.static_url_path",
+         "file": "src/flask/sansio/scaffold.py",
+         "line": 264,
+         "called_from": "scaffold.py:88",
+         "args": {
+          "self": "<Flask>",
+          "value": "None"
+         },
+         "calls": [],
+         "returned": "None"
+        },
+        {
+         "fn": "get_root_path",
+         "file": "src/flask/helpers.py",
+         "line": 587,
+         "called_from": "scaffold.py:96",
+         "args": {
+          "import_name": "'__main__'"
+         },
+         "calls": [],
+         "returned": "'/Users/omojumiller/dev/comprehension/stories/bench/flask'"
+        }
+       ],
+       "returned": "None"
+      },
+      {
+       "fn": "App.auto_find_instance_path",
+       "file": "src/flask/sansio/app.py",
+       "line": 507,
+       "called_from": "app.py:301",
+       "args": {
+        "self": "<Flask>"
+       },
+       "calls": [
+        {
+         "fn": "find_package",
+         "file": "src/flask/sansio/scaffold.py",
+         "line": 762,
+         "called_from": "app.py:515",
+         "args": {
+          "import_name": "'__main__'"
+         },
+         "calls": [
+          {
+           "fn": "_find_package_path",
+           "file": "src/flask/sansio/scaffold.py",
+           "line": 717,
+           "called_from": "scaffold.py:775",
+           "args": {
+            "import_name": "'__main__'"
+           },
+           "calls": [],
+           "raised": "ValueError('__main__.__spec__ is None')",
+           "returned": "'/Users/omojumiller/dev/comprehension/demo-repos/flask'"
+          }
+         ],
+         "returned": "(None, '/Users/omojumiller/dev/comprehension/demo-repos/flask')"
+        }
+       ],
+       "returned": "'/Users/omojumiller/dev/comprehension/demo-repos/flask/instance'"
+      },
+      {
+       "fn": "App.make_config",
+       "file": "src/flask/sansio/app.py",
+       "line": 479,
+       "called_from": "app.py:316",
+       "args": {
+        "self": "<Flask>",
+        "instance_relative": "False"
+       },
+       "calls": [
+        {
+         "fn": "get_debug_flag",
+         "file": "src/flask/helpers.py",
+         "line": 28,
+         "called_from": "app.py:492",
+         "args": {},
+         "calls": [],
+         "returned": "False"
+        },
+        {
+         "fn": "Config.__init__",
+         "file": "src/flask/config.py",
+         "line": 94,
+         "called_from": "app.py:493",
+         "args": {
+          "self": "<Config>",
+          "root_path": "'/Users/omojumiller/dev/comprehension/stories/bench/flask'",
+          "defaults": "{'APPLICATION_ROOT': '/', 'DEBUG': False, 'EXPLAIN_TEMPLATE_LOADING': False, 'MAX_CONTENT_LENGTH': None, 'MAX_COOKIE_SIZE': 4093, 'MAX_FORM_MEMORY_SIZE': 500000, ...}"
+         },
+         "calls": [],
+         "returned": "None"
+        }
+       ],
+       "returned": "<Config {'DEBUG': False, 'TESTING': Fa...93, 'PROVIDE_AUTOMATIC_OPTIONS': True}>"
+      },
+      {
+       "fn": "App.make_aborter",
+       "file": "src/flask/sansio/app.py",
+       "line": 495,
+       "called_from": "app.py:324",
+       "args": {
+        "self": "<Flask>"
+       },
+       "calls": [],
+       "returned": "<werkzeug.exceptions.Aborter object at 0x10f8965d0>"
+      },
+      {
+       "fn": "JSONProvider.__init__",
+       "file": "src/flask/json/provider.py",
+       "line": 38,
+       "called_from": "app.py:326",
+       "args": {
+        "self": "<DefaultJSONProvider>",
+        "app": "<Flask 'scenario'>"
+       },
+       "calls": [],
+       "returned": "None"
+      }
+     ],
+     "returned": "None"
+    },
+    {
+     "fn": "Scaffold.has_static_folder",
+     "file": "src/flask/sansio/scaffold.py",
+     "line": 240,
+     "called_from": "app.py:352",
+     "args": {
+      "self": "<Flask>"
+     },
+     "calls": [
+      {
+       "fn": "Scaffold.static_folder",
+       "file": "src/flask/sansio/scaffold.py",
+       "line": 223,
+       "called_from": "scaffold.py:246",
+       "args": {
+        "self": "<Flask>"
+       },
+       "calls": [],
+       "returned": "'/Users/omojumiller/dev/comprehension/stories/bench/flask/static'"
+      }
+     ],
+     "returned": "True"
+    },
+    {
+     "fn": "Scaffold.static_url_path",
+     "file": "src/flask/sansio/scaffold.py",
+     "line": 248,
+     "called_from": "app.py:360",
+     "args": {
+      "self": "<Flask>"
+     },
+     "calls": [
+      {
+       "fn": "Scaffold.static_folder",
+       "file": "src/flask/sansio/scaffold.py",
+       "line": 223,
+       "called_from": "scaffold.py:258",
+       "args": {
+        "self": "<Flask>"
+       },
+       "calls": [],
+       "returned": "'/Users/omojumiller/dev/comprehension/stories/bench/flask/static'"
+      },
+      {
+       "fn": "Scaffold.static_folder",
+       "file": "src/flask/sansio/scaffold.py",
+       "line": 223,
+       "called_from": "scaffold.py:259",
+       "args": {
+        "self": "<Flask>"
+       },
+       "calls": [],
+       "returned": "'/Users/omojumiller/dev/comprehension/stories/bench/flask/static'"
+      }
+     ],
+     "returned": "'/static'"
+    },
+    {
+     "fn": "setupmethod.<locals>.wrapper_func",
+     "file": "src/flask/sansio/scaffold.py",
+     "line": 45,
+     "called_from": "app.py:359",
+     "args": {
+      "self": "<Flask>"
+     },
+     "calls": [
+      {
+       "fn": "App._check_setup_finished",
+       "file": "src/flask/sansio/app.py",
+       "line": 410,
+       "called_from": "scaffold.py:46",
+       "args": {
+        "self": "<Flask>",
+        "f_name": "'add_url_rule'"
+       },
+       "calls": [],
+       "returned": "None"
+      },
+      {
+       "fn": "App.add_url_rule",
+       "file": "src/flask/sansio/app.py",
+       "line": 604,
+       "called_from": "scaffold.py:47",
+       "args": {
+        "self": "<Flask>",
+        "rule": "'/static/<path:filename>'",
+        "endpoint": "'static'",
+        "view_func": "<function Flask.__init__.<locals>.<lambda> at 0x10f9b79c0>",
+        "provide_automatic_options": "None"
+       },
+       "calls": [],
+       "returned": "None"
+      }
+     ],
+     "returned": "None"
+    }
+   ],
+   "returned": "None"
+  },
+  {
+   "fn": "setupmethod.<locals>.wrapper_func",
+   "file": "src/flask/sansio/scaffold.py",
+   "line": 45,
+   "called_from": "scenario.py:12",
+   "args": {
+    "self": "<Flask>"
+   },
+   "calls": [
+    {
+     "fn": "App._check_setup_finished",
+     "file": "src/flask/sansio/app.py",
+     "line": 410,
+     "called_from": "scaffold.py:46",
+     "args": {
+      "self": "<Flask>",
+      "f_name": "'route'"
+     },
+     "calls": [],
+     "returned": "None"
+    },
+    {
+     "fn": "Scaffold.route",
+     "file": "src/flask/sansio/scaffold.py",
+     "line": 343,
+     "called_from": "scaffold.py:47",
+     "args": {
+      "self": "<Flask>",
+      "rule": "'/'"
+     },
+     "calls": [],
+     "returned": "<function Scaffold.route.<locals>.decorator at 0x10f9b7e20>"
+    }
+   ],
+   "returned": "<function Scaffold.route.<locals>.decorator at 0x10f9b7e20>"
+  },
+  {
+   "fn": "Scaffold.route.<locals>.decorator",
+   "file": "src/flask/sansio/scaffold.py",
+   "line": 368,
+   "called_from": "scenario.py:12",
+   "args": {
+    "f": "<function hello at 0x10f9b7ec0>"
+   },
+   "calls": [
+    {
+     "fn": "setupmethod.<locals>.wrapper_func",
+     "file": "src/flask/sansio/scaffold.py",
+     "line": 45,
+     "called_from": "scaffold.py:370",
+     "args": {
+      "self": "<Flask>"
+     },
+     "calls": [
+      {
+       "fn": "App._check_setup_finished",
+       "file": "src/flask/sansio/app.py",
+       "line": 410,
+       "called_from": "scaffold.py:46",
+       "args": {
+        "self": "<Flask>",
+        "f_name": "'add_url_rule'"
+       },
+       "calls": [],
+       "returned": "None"
+      },
+      {
+       "fn": "App.add_url_rule",
+       "file": "src/flask/sansio/app.py",
+       "line": 604,
+       "called_from": "scaffold.py:47",
+       "args": {
+        "self": "<Flask>",
+        "rule": "'/'",
+        "endpoint": "None",
+        "view_func": "<function hello at 0x10f9b7ec0>",
+        "provide_automatic_options": "None"
+       },
+       "calls": [
+        {
+         "fn": "_endpoint_from_view_func",
+         "file": "src/flask/sansio/scaffold.py",
+         "line": 709,
+         "called_from": "app.py:614",
+         "args": {
+          "view_func": "<function hello at 0x10f9b7ec0>"
+         },
+         "calls": [],
+         "returned": "'hello'"
+        }
+       ],
+       "returned": "None"
+      }
+     ],
+     "returned": "None"
+    }
+   ],
+   "returned": "<function hello at 0x10f9b7ec0>"
+  },
+  {
+   "fn": "Flask.test_client",
+   "file": "src/flask/app.py",
+   "line": 758,
+   "called_from": "scenario.py:18",
+   "args": {
+    "self": "<Flask>",
+    "use_cookies": "True"
+   },
+   "calls": [
+    {
+     "fn": "FlaskClient.__init__",
+     "file": "src/flask/testing.py",
+     "line": 125,
+     "called_from": "app.py:812",
+     "args": {
+      "self": "<FlaskClient>"
+     },
+     "calls": [
+      {
+       "fn": "_get_werkzeug_version",
+       "file": "src/flask/testing.py",
+       "line": 100,
+       "called_from": "testing.py:132",
+       "args": {},
+       "calls": [],
+       "returned": "'3.1.9'"
+      }
+     ],
+     "returned": "None"
+    }
+   ],
+   "returned": "<FlaskClient <Flask 'scenario'>>"
+  },
+  {
+   "fn": "FlaskClient.open",
+   "file": "src/flask/testing.py",
+   "line": 204,
+   "called_from": "test.py:1166",
+   "args": {
+    "self": "<FlaskClient>",
+    "buffered": "False",
+    "follow_redirects": "False"
+   },
+   "calls": [
+    {
+     "fn": "FlaskClient._request_from_builder_args",
+     "file": "src/flask/testing.py",
+     "line": 193,
+     "called_from": "testing.py:228",
+     "args": {
+      "self": "<FlaskClient>",
+      "args": "('/',)",
+      "kwargs": "{'method': 'GET'}"
+     },
+     "calls": [
+      {
+       "fn": "FlaskClient._copy_environ",
+       "file": "src/flask/testing.py",
+       "line": 185,
+       "called_from": "testing.py:196",
+       "args": {
+        "self": "<FlaskClient>",
+        "other": "{}"
+       },
+       "calls": [],
+       "returned": "{'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'REMOTE_ADDR': '127.0.0.1'}"
+      },
+      {
+       "fn": "EnvironBuilder.__init__",
+       "file": "src/flask/testing.py",
+       "line": 49,
+       "called_from": "testing.py:197",
+       "args": {
+        "self": "<EnvironBuilder>",
+        "app": "<Flask 'scenario'>",
+        "path": "'/'",
+        "base_url": "None",
+        "subdomain": "None",
+        "url_scheme": "None"
+       },
+       "calls": [],
+       "returned": "None"
+      }
+     ],
+     "returned": "<Request 'http://localhost/' [GET]>"
+    },
+    {
+     "fn": "Flask.__call__",
+     "file": "src/flask/app.py",
+     "line": 1621,
+     "called_from": "test.py:1268",
+     "args": {
+      "self": "<Flask>",
+      "environ": "{'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'RAW_URI': '/', 'REMOTE_ADDR': '127.0.0.1', ...}",
+      "start_response": "<function run_wsgi_app.<locals>.start_response at 0x10fa76ac0>"
+     },
+     "calls": [
+      {
+       "fn": "Flask.wsgi_app",
+       "file": "src/flask/app.py",
+       "line": 1569,
+       "called_from": "app.py:1628",
+       "args": {
+        "self": "<Flask>",
+        "environ": "{'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'RAW_URI': '/', 'REMOTE_ADDR': '127.0.0.1', ...}",
+        "start_response": "<function run_wsgi_app.<locals>.start_response at 0x10fa76ac0>"
+       },
+       "calls": [
+        {
+         "fn": "Flask.request_context",
+         "file": "src/flask/app.py",
+         "line": 1504,
+         "called_from": "app.py:1595",
+         "args": {
+          "self": "<Flask>",
+          "environ": "{'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'RAW_URI': '/', 'REMOTE_ADDR': '127.0.0.1', ...}"
+         },
+         "calls": [
+          {
+           "fn": "AppContext.from_environ",
+           "file": "src/flask/ctx.py",
+           "line": 339,
+           "called_from": "app.py:1518",
+           "args": {
+            "cls": "<type>",
+            "app": "<Flask 'scenario'>",
+            "environ": "{'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'RAW_URI': '/', 'REMOTE_ADDR': '127.0.0.1', ...}"
+           },
+           "calls": [
+            {
+             "fn": "AppContext.__init__",
+             "file": "src/flask/ctx.py",
+             "line": 300,
+             "called_from": "ctx.py:348",
+             "args": {
+              "self": "<AppContext>",
+              "app": "<Flask 'scenario'>",
+              "request": "<Request 'http://localhost/' [GET]>",
+              "session": "None"
+             },
+             "calls": [
+              {
+               "fn": "Flask.create_url_adapter",
+               "file": "src/flask/app.py",
+               "line": 510,
+               "called_from": "ctx.py:326",
+               "args": {
+                "self": "<Flask>",
+                "request": "<Request 'http://localhost/' [GET]>"
+               },
+               "calls": [],
+               "returned": "<werkzeug.routing.map.MapAdapter object at 0x10fa1e900>"
+              }
+             ],
+             "returned": "None"
+            }
+           ],
+           "returned": "<AppContext 4557234128 of scenario, GET 'http://localhost/'>"
+          }
+         ],
+         "returned": "<AppContext 4557234128 of scenario, GET 'http://localhost/'>"
+        },
+        {
+         "fn": "AppContext.push",
+         "file": "src/flask/ctx.py",
+         "line": 416,
+         "called_from": "app.py:1599",
+         "args": {
+          "self": "<AppContext>"
+         },
+         "calls": [
+          {
+           "fn": "AppContext._get_session",
+           "file": "src/flask/ctx.py",
+           "line": 381,
+           "called_from": "ctx.py:439",
+           "args": {
+            "self": "<AppContext>"
+           },
+           "calls": [
+            {
+             "fn": "AppContext.request",
+             "file": "src/flask/ctx.py",
+             "line": 370,
+             "called_from": "ctx.py:388",
+             "args": {
+              "self": "<AppContext>"
+             },
+             "calls": [],
+             "returned": "<Request 'http://localhost/' [GET]>"
+            },
+            {
+             "fn": "SecureCookieSessionInterface.open_session",
+             "file": "src/flask/sessions.py",
+             "line": 323,
+             "called_from": "ctx.py:388",
+             "args": {
+              "self": "<SecureCookieSessionInterface>",
+              "app": "<Flask 'scenario'>",
+              "request": "<Request 'http://localhost/' [GET]>"
+             },
+             "calls": [
+              {
+               "fn": "SecureCookieSessionInterface.get_signing_serializer",
+               "file": "src/flask/sessions.py",
+               "line": 303,
+               "called_from": "sessions.py:324",
+               "args": {
+                "self": "<SecureCookieSessionInterface>",
+                "app": "<Flask 'scenario'>"
+               },
+               "calls": [
+                {
+                 "fn": "ConfigAttribute.__get__",
+                 "file": "src/flask/config.py",
+                 "line": 35,
+                 "called_from": "sessions.py:304",
+                 "args": {
+                  "self": "<ConfigAttribute>",
+                  "obj": "<Flask 'scenario'>",
+                  "owner": "<class 'flask.app.Flask'>"
+                 },
+                 "calls": [],
+                 "returned": "None"
+                }
+               ],
+               "returned": "None"
+              }
+             ],
+             "returned": "None"
+            },
+            {
+             "fn": "SessionInterface.make_null_session",
+             "file": "src/flask/sessions.py",
+             "line": 150,
+             "called_from": "ctx.py:391",
+             "args": {
+              "self": "<SecureCookieSessionInterface>",
+              "app": "<Flask 'scenario'>"
+             },
+             "calls": [
+              {
+               "fn": "SecureCookieSession.__init__",
+               "file": "src/flask/sessions.py",
+               "line": 73,
+               "called_from": "sessions.py:160",
+               "args": {
+                "self": "<NullSession>",
+                "initial": "None"
+               },
+               "calls": [],
+               "returned": "None"
+              }
+             ],
+             "returned": "<NullSession {}>"
+            }
+           ],
+           "returned": "<NullSession {}>"
+          },
+          {
+           "fn": "AppContext.match_request",
+           "file": "src/flask/ctx.py",
+           "line": 405,
+           "called_from": "ctx.py:444",
+           "args": {
+            "self": "<AppContext>"
+           },
+           "calls": [],
+           "returned": "None"
+          }
+         ],
+         "returned": "None"
+        },
+        {
+         "fn": "Flask.full_dispatch_request",
+         "file": "src/flask/app.py",
+         "line": 995,
+         "called_from": "app.py:1600",
+         "args": {
+          "self": "<Flask>",
+          "ctx": "<AppContext 4557234128 of scenario, GET 'http://localhost/'>"
+         },
+         "calls": [
+          {
+           "fn": "Flask.preprocess_request",
+           "file": "src/flask/app.py",
+           "line": 1369,
+           "called_from": "app.py:1017",
+           "args": {
+            "self": "<Flask>",
+            "ctx": "<AppContext 4557234128 of scenario, GET 'http://localhost/'>"
+           },
+           "calls": [
+            {
+             "fn": "AppContext.request",
+             "file": "src/flask/ctx.py",
+             "line": 370,
+             "called_from": "app.py:1379",
+             "args": {
+              "self": "<AppContext>"
+             },
+             "calls": [],
+             "returned": "<Request 'http://localhost/' [GET]>"
+            },
+            {
+             "fn": "Request.blueprints",
+             "file": "src/flask/wrappers.py",
+             "line": 180,
+             "called_from": "app.py:1380",
+             "args": {
+              "self": "<Request>"
+             },
+             "calls": [
+              {
+               "fn": "Request.blueprint",
+               "file": "src/flask/wrappers.py",
+               "line": 161,
+               "called_from": "wrappers.py:190",
+               "args": {
+                "self": "<Request>"
+               },
+               "calls": [
+                {
+                 "fn": "Request.endpoint",
+                 "file": "src/flask/wrappers.py",
+                 "line": 146,
+                 "called_from": "wrappers.py:173",
+                 "args": {
+                  "self": "<Request>"
+                 },
+                 "calls": [],
+                 "returned": "'hello'"
+                }
+               ],
+               "returned": "None"
+              }
+             ],
+             "returned": "[]"
+            }
+           ],
+           "returned": "None"
+          },
+          {
+           "fn": "Flask.dispatch_request",
+           "file": "src/flask/app.py",
+           "line": 969,
+           "called_from": "app.py:1019",
+           "args": {
+            "self": "<Flask>",
+            "ctx": "<AppContext 4557234128 of scenario, GET 'http://localhost/'>"
+           },
+           "calls": [
+            {
+             "fn": "AppContext.request",
+             "file": "src/flask/ctx.py",
+             "line": 370,
+             "called_from": "app.py:979",
+             "args": {
+              "self": "<AppContext>"
+             },
+             "calls": [],
+             "returned": "<Request 'http://localhost/' [GET]>"
+            },
+            {
+             "fn": "Flask.ensure_sync",
+             "file": "src/flask/app.py",
+             "line": 1068,
+             "called_from": "app.py:993",
+             "args": {
+              "self": "<Flask>",
+              "func": "<function hello at 0x10f9b7ec0>"
+             },
+             "calls": [],
+             "returned": "<function hello at 0x10f9b7ec0>"
+            }
+           ],
+           "returned": "'Hello, World!'"
+          },
+          {
+           "fn": "Flask.finalize_request",
+           "file": "src/flask/app.py",
+           "line": 1024,
+           "called_from": "app.py:1022",
+           "args": {
+            "self": "<Flask>",
+            "ctx": "<AppContext 4557234128 of scenario, GET 'http://localhost/'>",
+            "rv": "'Hello, World!'",
+            "from_error_handler": "False"
+           },
+           "calls": [
+            {
+             "fn": "Flask.make_response",
+             "file": "src/flask/app.py",
+             "line": 1227,
+             "called_from": "app.py:1042",
+             "args": {
+              "self": "<Flask>",
+              "rv": "'Hello, World!'"
+             },
+             "calls": [],
+             "returned": "<Response 13 bytes [200 OK]>"
+            },
+            {
+             "fn": "Flask.process_response",
+             "file": "src/flask/app.py",
+             "line": 1397,
+             "called_from": "app.py:1044",
+             "args": {
+              "self": "<Flask>",
+              "ctx": "<AppContext 4557234128 of scenario, GET 'http://localhost/'>",
+              "response": "<Response 13 bytes [200 OK]>"
+             },
+             "calls": [
+              {
+               "fn": "AppContext.request",
+               "file": "src/flask/ctx.py",
+               "line": 370,
+               "called_from": "app.py:1413",
+               "args": {
+                "self": "<AppContext>"
+               },
+               "calls": [],
+               "returned": "<Request 'http://localhost/' [GET]>"
+              },
+              {
+               "fn": "Request.blueprints",
+               "file": "src/flask/wrappers.py",
+               "line": 180,
+               "called_from": "app.py:1413",
+               "args": {
+                "self": "<Request>"
+               },
+               "calls": [
+                {
+                 "fn": "Request.blueprint",
+                 "file": "src/flask/wrappers.py",
+                 "line": 161,
+                 "called_from": "wrappers.py:190",
+                 "args": {
+                  "self": "<Request>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Request.endpoint",
+                   "file": "src/flask/wrappers.py",
+                   "line": 146,
+                   "called_from": "wrappers.py:173",
+                   "args": {
+                    "self": "<Request>"
+                   },
+                   "calls": [],
+                   "returned": "'hello'"
+                  }
+                 ],
+                 "returned": "None"
+                }
+               ],
+               "returned": "[]"
+              },
+              {
+               "fn": "AppContext._get_session",
+               "file": "src/flask/ctx.py",
+               "line": 381,
+               "called_from": "app.py:1418",
+               "args": {
+                "self": "<AppContext>"
+               },
+               "calls": [],
+               "returned": "<NullSession {}>"
+              },
+              {
+               "fn": "SessionInterface.is_null_session",
+               "file": "src/flask/sessions.py",
+               "line": 162,
+               "called_from": "app.py:1418",
+               "args": {
+                "self": "<SecureCookieSessionInterface>",
+                "obj": "<NullSession {}>"
+               },
+               "calls": [],
+               "returned": "True"
+              }
+             ],
+             "returned": "<Response 13 bytes [200 OK]>"
+            }
+           ],
+           "returned": "<Response 13 bytes [200 OK]>"
+          }
+         ],
+         "returned": "<Response 13 bytes [200 OK]>"
+        },
+        {
+         "fn": "AppContext.pop",
+         "file": "src/flask/ctx.py",
+         "line": 446,
+         "called_from": "app.py:1619",
+         "args": {
+          "self": "<AppContext>",
+          "exc": "None"
+         },
+         "calls": [
+          {
+           "fn": "_CollectErrors.__init__",
+           "file": "src/flask/helpers.py",
+           "line": 659,
+           "called_from": "ctx.py:486",
+           "args": {
+            "self": "<_CollectErrors>"
+           },
+           "calls": [],
+           "returned": "None"
+          },
+          {
+           "fn": "_CollectErrors.__enter__",
+           "file": "src/flask/helpers.py",
+           "line": 662,
+           "called_from": "ctx.py:489",
+           "args": {
+            "self": "<_CollectErrors>"
+           },
+           "calls": [],
+           "returned": "None"
+          },
+          {
+           "fn": "Flask.do_teardown_request",
+           "file": "src/flask/app.py",
+           "line": 1423,
+           "called_from": "ctx.py:490",
+           "args": {
+            "self": "<Flask>",
+            "ctx": "<AppContext 4557234128 of scenario, GET 'http://localhost/'>",
+            "exc": "None"
+           },
+           "calls": [
+            {
+             "fn": "_CollectErrors.__init__",
+             "file": "src/flask/helpers.py",
+             "line": 659,
+             "called_from": "app.py:1443",
+             "args": {
+              "self": "<_CollectErrors>"
+             },
+             "calls": [],
+             "returned": "None"
+            },
+            {
+             "fn": "AppContext.request",
+             "file": "src/flask/ctx.py",
+             "line": 370,
+             "called_from": "app.py:1445",
+             "args": {
+              "self": "<AppContext>"
+             },
+             "calls": [],
+             "returned": "<Request 'http://localhost/' [GET]>"
+            },
+            {
+             "fn": "Request.blueprints",
+             "file": "src/flask/wrappers.py",
+             "line": 180,
+             "called_from": "app.py:1445",
+             "args": {
+              "self": "<Request>"
+             },
+             "calls": [
+              {
+               "fn": "Request.blueprint",
+               "file": "src/flask/wrappers.py",
+               "line": 161,
+               "called_from": "wrappers.py:190",
+               "args": {
+                "self": "<Request>"
+               },
+               "calls": [
+                {
+                 "fn": "Request.endpoint",
+                 "file": "src/flask/wrappers.py",
+                 "line": 146,
+                 "called_from": "wrappers.py:173",
+                 "args": {
+                  "self": "<Request>"
+                 },
+                 "calls": [],
+                 "returned": "'hello'"
+                }
+               ],
+               "returned": "None"
+              }
+             ],
+             "returned": "[]"
+            },
+            {
+             "fn": "_CollectErrors.__enter__",
+             "file": "src/flask/helpers.py",
+             "line": 662,
+             "called_from": "app.py:1451",
+             "args": {
+              "self": "<_CollectErrors>"
+             },
+             "calls": [],
+             "returned": "None"
+            },
+            {
+             "fn": "_CollectErrors.__exit__",
+             "file": "src/flask/helpers.py",
+             "line": 665,
+             "called_from": "app.py:1451",
+             "args": {
+              "self": "<_CollectErrors>",
+              "exc_type": "None",
+              "exc_val": "None",
+              "exc_tb": "None"
+             },
+             "calls": [],
+             "returned": "True"
+            },
+            {
+             "fn": "_CollectErrors.raise_any",
+             "file": "src/flask/helpers.py",
+             "line": 676,
+             "called_from": "app.py:1454",
+             "args": {
+              "self": "<_CollectErrors>",
+              "message": "'Errors during request teardown'"
+             },
+             "calls": [],
+             "returned": "None"
+            }
+           ],
+           "returned": "None"
+          },
+          {
+           "fn": "_CollectErrors.__exit__",
+           "file": "src/flask/helpers.py",
+           "line": 665,
+           "called_from": "ctx.py:489",
+           "args": {
+            "self": "<_CollectErrors>",
+            "exc_type": "None",
+            "exc_val": "None",
+            "exc_tb": "None"
+           },
+           "calls": [],
+           "returned": "True"
+          },
+          {
+           "fn": "_CollectErrors.__enter__",
+           "file": "src/flask/helpers.py",
+           "line": 662,
+           "called_from": "ctx.py:492",
+           "args": {
+            "self": "<_CollectErrors>"
+           },
+           "calls": [],
+           "returned": "None"
+          },
+          {
+           "fn": "_CollectErrors.__exit__",
+           "file": "src/flask/helpers.py",
+           "line": 665,
+           "called_from": "ctx.py:492",
+           "args": {
+            "self": "<_CollectErrors>",
+            "exc_type": "None",
+            "exc_val": "None",
+            "exc_tb": "None"
+           },
+           "calls": [],
+           "returned": "True"
+          },
+          {
+           "fn": "_CollectErrors.__enter__",
+           "file": "src/flask/helpers.py",
+           "line": 662,
+           "called_from": "ctx.py:495",
+           "args": {
+            "self": "<_CollectErrors>"
+           },
+           "calls": [],
+           "returned": "None"
+          },
+          {
+           "fn": "Flask.do_teardown_appcontext",
+           "file": "src/flask/app.py",
+           "line": 1456,
+           "called_from": "ctx.py:496",
+           "args": {
+            "self": "<Flask>",
+            "ctx": "<AppContext 4557234128 of scenario, GET 'http://localhost/'>",
+            "exc": "None"
+           },
+           "calls": [
+            {
+             "fn": "_CollectErrors.__init__",
+             "file": "src/flask/helpers.py",
+             "line": 659,
+             "called_from": "app.py:1473",
+             "args": {
+              "self": "<_CollectErrors>"
+             },
+             "calls": [],
+             "returned": "None"
+            },
+            {
+             "fn": "_CollectErrors.__enter__",
+             "file": "src/flask/helpers.py",
+             "line": 662,
+             "called_from": "app.py:1479",
+             "args": {
+              "self": "<_CollectErrors>"
+             },
+             "calls": [],
+             "returned": "None"
+            },
+            {
+             "fn": "_CollectErrors.__exit__",
+             "file": "src/flask/helpers.py",
+             "line": 665,
+             "called_from": "app.py:1479",
+             "args": {
+              "self": "<_CollectErrors>",
+              "exc_type": "None",
+              "exc_val": "None",
+              "exc_tb": "None"
+             },
+             "calls": [],
+             "returned": "True"
+            },
+            {
+             "fn": "_CollectErrors.raise_any",
+             "file": "src/flask/helpers.py",
+             "line": 676,
+             "called_from": "app.py:1482",
+             "args": {
+              "self": "<_CollectErrors>",
+              "message": "'Errors during app teardown'"
+             },
+             "calls": [],
+             "returned": "None"
+            }
+           ],
+           "returned": "None"
+          },
+          {
+           "fn": "_CollectErrors.__exit__",
+           "file": "src/flask/helpers.py",
+           "line": 665,
+           "called_from": "ctx.py:495",
+           "args": {
+            "self": "<_CollectErrors>",
+            "exc_type": "None",
+            "exc_val": "None",
+            "exc_tb": "None"
+           },
+           "calls": [],
+           "returned": "True"
+          },
+          {
+           "fn": "_CollectErrors.__enter__",
+           "file": "src/flask/helpers.py",
+           "line": 662,
+           "called_from": "ctx.py:501",
+           "args": {
+            "self": "<_CollectErrors>"
+           },
+           "calls": [],
+           "returned": "None"
+          },
+          {
+           "fn": "_CollectErrors.__exit__",
+           "file": "src/flask/helpers.py",
+           "line": 665,
+           "called_from": "ctx.py:501",
+           "args": {
+            "self": "<_CollectErrors>",
+            "exc_type": "None",
+            "exc_val": "None",
+            "exc_tb": "None"
+           },
+           "calls": [],
+           "returned": "True"
+          },
+          {
+           "fn": "_CollectErrors.raise_any",
+           "file": "src/flask/helpers.py",
+           "line": 676,
+           "called_from": "ctx.py:504",
+           "args": {
+            "self": "<_CollectErrors>",
+            "message": "'Errors during context teardown'"
+           },
+           "calls": [],
+           "returned": "None"
+          }
+         ],
+         "returned": "None"
+        }
+       ],
+       "returned": "<werkzeug.wsgi.ClosingIterator object at 0x10fa1ef90>"
+      }
+     ],
+     "returned": "<werkzeug.wsgi.ClosingIterator object at 0x10fa1ef90>"
+    }
+   ],
+   "returned": "<WrapperTestResponse streamed [200 OK]>"
+  }
+ ],
+ "lines": {
+  "src/flask/app.py": [
+   324,
+   325,
+   326,
+   327,
+   328,
+   329,
+   330,
+   331,
+   332,
+   333,
+   334,
+   341,
+   345,
+   352,
+   353,
+   358,
+   359,
+   360,
+   361,
+   362,
+   363,
+   530,
+   531,
+   535,
+   536,
+   537,
+   539,
+   543,
+   547,
+   549,
+   550,
+   809,
+   810,
+   811,
+   812,
+   813,
+   979,
+   981,
+   983,
+   987,
+   988,
+   992,
+   993,
+   1002,
+   1013,
+   1015,
+   1016,
+   1017,
+   1018,
+   1019,
+   1022,
+   1042,
+   1043,
+   1044,
+   1045,
+   1046,
+   1054,
+   1077,
+   1080,
+   1284,
+   1285,
+   1288,
+   1309,
+   1317,
+   1318,
+   1322,
+   1323,
+   1324,
+   1325,
+   1327,
+   1355,
+   1357,
+   1364,
+   1367,
+   1379,
+   1380,
+   1382,
+   1383,
+   1387,
+   1388,
+   1395,
+   1410,
+   1413,
+   1414,
+   1418,
+   1421,
+   1443,
+   1445,
+   1446,
+   1451,
+   1452,
+   1454,
+   1473,
+   1475,
+   1479,
+   1480,
+   1482,
+   1518,
+   1595,
+   1596,
+   1597,
+   1598,
+   1599,
+   1600,
+   1607,
+   1609,
+   1613,
+   1619,
+   1628
+  ],
+  "src/flask/config.py": [
+   36,
+   39,
+   41,
+   44,
+   99,
+   100
+  ],
+  "src/flask/ctx.py": [
+   307,
+   308,
+   312,
+   313,
+   315,
+   316,
+   320,
+   321,
+   322,
+   323,
+   325,
+   326,
+   331,
+   332,
+   334,
+   335,
+   346,
+   347,
+   348,
+   376,
+   379,
+   383,
+   386,
+   387,
+   388,
+   390,
+   391,
+   393,
+   409,
+   410,
+   414,
+   428,
+   430,
+   433,
+   434,
+   436,
+   439,
+   443,
+   444,
+   465,
+   468,
+   470,
+   475,
+   481,
+   483,
+   486,
+   488,
+   489,
+   490,
+   492,
+   493,
+   495,
+   496,
+   498,
+   499,
+   501,
+   502,
+   504
+  ],
+  "src/flask/helpers.py": [
+   32,
+   33,
+   597,
+   599,
+   600,
+   660,
+   663,
+   671,
+   674,
+   678
+  ],
+  "src/flask/json/provider.py": [
+   39
+  ],
+  "src/flask/sansio/app.py": [
+   292,
+   293,
+   294,
+   295,
+   296,
+   297,
+   300,
+   301,
+   311,
+   316,
+   324,
+   326,
+   327,
+   350,
+   352,
+   360,
+   366,
+   374,
+   385,
+   402,
+   404,
+   408,
+   411,
+   488,
+   489,
+   491,
+   492,
+   493,
+   505,
+   515,
+   516,
+   517,
+   613,
+   614,
+   615,
+   616,
+   621,
+   622,
+   623,
+   628,
+   631,
+   633,
+   634,
+   635,
+   638,
+   639,
+   640,
+   641,
+   644,
+   645,
+   648,
+   650,
+   651,
+   653,
+   654,
+   655,
+   656,
+   661
+  ],
+  "src/flask/sansio/scaffold.py": [
+   46,
+   47,
+   85,
+   87,
+   88,
+   93,
+   95,
+   96,
+   100,
+   108,
+   123,
+   126,
+   138,
+   140,
+   152,
+   154,
+   167,
+   169,
+   182,
+   184,
+   197,
+   200,
+   213,
+   215,
+   228,
+   229,
+   235,
+   236,
+   238,
+   246,
+   255,
+   258,
+   259,
+   260,
+   266,
+   269,
+   368,
+   369,
+   370,
+   371,
+   373,
+   713,
+   714,
+   719,
+   721,
+   722,
+   726,
+   732,
+   775,
+   776,
+   779,
+   782,
+   785,
+   800
+  ],
+  "src/flask/sessions.py": [
+   77,
+   80,
+   160,
+   169,
+   304,
+   305,
+   324,
+   325,
+   326
+  ],
+  "src/flask/testing.py": [
+   59,
+   65,
+   66,
+   67,
+   69,
+   72,
+   73,
+   75,
+   76,
+   77,
+   78,
+   80,
+   82,
+   85,
+   86,
+   103,
+   104,
+   106,
+   126,
+   127,
+   128,
+   129,
+   130,
+   131,
+   132,
+   186,
+   188,
+   191,
+   196,
+   197,
+   199,
+   200,
+   202,
+   211,
+   212,
+   228,
+   233,
+   235,
+   236,
+   237,
+   238,
+   240,
+   243,
+   246,
+   247
+  ],
+  "src/flask/wrappers.py": [
+   156,
+   157,
+   173,
+   175,
+   178,
+   190,
+   192,
+   193
+  ]
+ }
+}

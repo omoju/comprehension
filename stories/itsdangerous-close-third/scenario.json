@@ -1,0 +1,4 @@
+{
+  "why": "The README's \"A Simple Example\" is the first thing the docs show: create a `URLSafeSerializer(\"secret key\", \"auth\")`, `dumps` a user id/name dict into a token, then `loads` it back. This script follows that exact round trip of one token.",
+  "attempts": 1
+}

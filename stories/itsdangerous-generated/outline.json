@@ -1,0 +1,509 @@
+{
+  "title": "ItsDangerous: How a Token Is Built and Torn Apart",
+  "premise": "You want to hand a piece of data to someone you don't trust \u2014 a browser cookie, a URL in an activation email, a form field \u2014 and get it back later knowing nobody changed it. You can't hide the data, and you don't want to store a copy server-side. The only thing you have that the other side doesn't is a secret key. ItsDangerous is the small library that turns that secret into a tamper-evident wrapper: it serializes an object to bytes, appends a keyed signature, and refuses to give the object back unless the signature still matches \u2014 optionally checking how old the token is, and optionally squeezing it into characters that are safe in a URL. This story follows a single token from the object you pass in, down through serialization, compression, timestamping, key derivation and HMAC, and back up again through verification and failure handling.",
+  "repo": {
+    "name": "pallets/itsdangerous",
+    "url": "https://github.com/pallets/itsdangerous",
+    "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+    "local_path": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous"
+  },
+  "chapters": [
+    {
+      "n": 1,
+      "title": "A Dot in the Middle",
+      "code": [
+        "src/itsdangerous/__init__.py",
+        "README.md:16-32",
+        "docs/index.rst:10-21",
+        "docs/concepts.rst:1-34"
+      ],
+      "inputs": [
+        "Nothing; this is the entry point"
+      ],
+      "characters": [
+        "URLSafeSerializer",
+        "Serializer",
+        "Signer",
+        "TimestampSigner",
+        "the token string"
+      ],
+      "facts": [
+        "`src/itsdangerous/__init__.py` is nothing but re-exports: every public name (`Serializer`, `Signer`, `TimestampSigner`, `TimedSerializer`, `URLSafeSerializer`, `URLSafeTimedSerializer`, the six exceptions, and three encoding helpers) is imported with the `X as X` idiom so type checkers treat them as exported.",
+        "The README's example shows the whole contract: `URLSafeSerializer('secret key', 'auth').dumps({...})` produces `eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg`, and `loads` returns the original dict.",
+        "Every token has the same shape: payload, a separator (default `.`), then a signature; the payload is readable by anyone, only unmodifiable.",
+        "`docs/concepts.rst` states the two-layer design the rest of the code follows: a signer signs bytes, and a serializer wraps a signer so non-bytes data can be signed.",
+        "The `secret_key` is what makes a signature unforgeable; the `salt` is a non-secret extra input that separates contexts (an 'activate' token must not validate as an 'upgrade' token)."
+      ],
+      "open_questions": [
+        "What exactly is the string after the dot, and how is it computed from the key?",
+        "How does a dict become the `eyJpZCI6...` part before signing?",
+        "Why does the plain `Serializer` produce `[1, 2, 3, 4].r7R9...` while `URLSafeSerializer` produces `WzEsMiwzLDRd.wSPH...` for the same input?"
+      ],
+      "answers": []
+    },
+    {
+      "n": 2,
+      "title": "The Vocabulary of Failure",
+      "code": [
+        "src/itsdangerous/exc.py"
+      ],
+      "inputs": [
+        "The idea that verification can fail (ch1)"
+      ],
+      "characters": [
+        "BadData",
+        "BadSignature",
+        "BadTimeSignature",
+        "SignatureExpired",
+        "BadHeader",
+        "BadPayload"
+      ],
+      "facts": [
+        "`BadData` is the root of every exception the library defines; it stores `message` and returns it from `__str__`.",
+        "`BadSignature` adds `payload`: the part of the token that failed verification, deliberately kept so callers can inspect (carefully) what was tampered with.",
+        "`BadTimeSignature` extends `BadSignature` with `date_signed`, a timezone-aware `datetime` since 2.0; `SignatureExpired` is a subclass of it with no extra members \u2014 the class itself is the signal that a token was valid but too old.",
+        "`BadPayload` descends directly from `BadData`, not `BadSignature`: a payload that deserializes badly is a different category from a payload that was tampered with, and it carries `original_error` so the underlying `json`/`zlib` failure isn't lost.",
+        "`BadHeader` exists with `header` and `original_error` fields but no code in this repository raises it; it is a leftover of the removed JWS support, kept because it is part of the public API."
+      ],
+      "open_questions": [
+        "Who constructs `BadSignature` with a `payload`, and what exactly goes in it?",
+        "Who fills in `date_signed`, and how can a timestamp be recovered from a token whose signature is invalid?",
+        "If nothing raises `BadHeader`, why is it still exported?"
+      ],
+      "answers": []
+    },
+    {
+      "n": 3,
+      "title": "Everything Is Bytes",
+      "code": [
+        "src/itsdangerous/encoding.py",
+        "tests/test_itsdangerous/test_encoding.py"
+      ],
+      "inputs": [
+        "`BadData` as the root exception (ch2)"
+      ],
+      "characters": [
+        "want_bytes",
+        "base64_encode",
+        "base64_decode",
+        "_base64_alphabet",
+        "int_to_bytes",
+        "bytes_to_int"
+      ],
+      "facts": [
+        "`want_bytes` is the library's universal front door: any `str` is UTF-8 encoded, `bytes` pass through unchanged. Almost every public method calls it first, which is why signing a `str` and signing its UTF-8 bytes give identical tokens.",
+        "`base64_encode` uses `base64.urlsafe_b64encode` and then strips all trailing `=` padding, so encoded values never contain characters that need escaping in a URL.",
+        "`base64_decode` re-adds the padding with `b'=' * (-len(string) % 4)`, decodes with `errors='ignore'` on the ASCII step, and converts any `TypeError`/`ValueError` into `BadData('Invalid base64-encoded data')` \u2014 this is the one place in `encoding.py` that raises a library exception.",
+        "`_base64_alphabet` is the byte string of letters, digits, `-`, `_` and `=` \u2014 the full set of characters that can appear in an encoded signature.",
+        "`int_to_bytes` packs an int with a big-endian 8-byte `struct.Struct('>Q')` and strips leading NUL bytes, so small numbers become short strings (0 becomes `b''`); `bytes_to_int` right-justifies back to 8 bytes before unpacking. `test_int_bytes` pins 0, 192 and 2**64-1 as round-trip cases."
+      ],
+      "open_questions": [
+        "Why does the library need a compact integer encoding at all?",
+        "What is `_base64_alphabet` for, given nothing here validates against it?"
+      ],
+      "answers": []
+    },
+    {
+      "n": 4,
+      "title": "Three Ways to Make a Signature",
+      "code": [
+        "src/itsdangerous/signer.py:15-73"
+      ],
+      "inputs": [
+        "`want_bytes` (ch3)"
+      ],
+      "characters": [
+        "SigningAlgorithm",
+        "NoneAlgorithm",
+        "HMACAlgorithm",
+        "_lazy_sha1",
+        "_make_keys_list"
+      ],
+      "facts": [
+        "`SigningAlgorithm` defines the whole plug-in surface: `get_signature(key, value)` raises `NotImplementedError`, and `verify_signature` is implemented once for everyone as `hmac.compare_digest(sig, self.get_signature(key, value))` \u2014 a constant-time comparison, so subclasses get timing-safe verification for free.",
+        "`HMACAlgorithm` builds `hmac.new(key, msg=value, digestmod=self.digest_method)` and returns the raw digest bytes (not base64 \u2014 that happens a layer up).",
+        "`NoneAlgorithm` returns `b''`; because verification still goes through `compare_digest`, an unsigned token validates trivially. It exists for tests and for formats that carry no signature.",
+        "`_lazy_sha1` wraps `hashlib.sha1` in a function and is installed as `staticmethod(_lazy_sha1)` for `default_digest_method`, so SHA-1 is never looked up at import time \u2014 on a FIPS build where SHA-1 is unavailable, importing itsdangerous still works and the developer can swap the default before first use.",
+        "`_make_keys_list` normalizes the `secret_key` argument once: a lone `str`/`bytes` becomes a one-element list, any other iterable is mapped through `want_bytes`. Both `Signer` and `Serializer` call it, which is how key rotation enters both layers identically."
+      ],
+      "open_questions": [
+        "Where does the `key` passed to `get_signature` come from \u2014 is it the raw secret key?",
+        "Why is the algorithm object separate from the signer at all?"
+      ],
+      "answers": []
+    },
+    {
+      "n": 5,
+      "title": "The Signer's Key: Salt, Separator, Derivation",
+      "code": [
+        "src/itsdangerous/signer.py:76-213",
+        "docs/concepts.rst:56-134"
+      ],
+      "inputs": [
+        "`SigningAlgorithm`/`HMACAlgorithm` and `_make_keys_list` (ch4)",
+        "`_base64_alphabet`, `want_bytes` (ch3)"
+      ],
+      "characters": [
+        "Signer.__init__",
+        "Signer.secret_keys",
+        "Signer.salt",
+        "Signer.sep",
+        "Signer.derive_key"
+      ],
+      "facts": [
+        "`Signer.__init__` stores `secret_keys` (a list, oldest to newest) and exposes `secret_key` as a property returning `secret_keys[-1]` \u2014 the newest key is always the signing key.",
+        "The separator is validated immediately: if `self.sep in _base64_alphabet`, a `ValueError` is raised, because a separator that can occur inside a base64 signature would make `rsplit` ambiguous. That's why `sep='-'` is rejected and `.` is the default.",
+        "`salt` defaults to `b'itsdangerous.Signer'`, and an explicit `None` falls back to that same default rather than to an empty salt.",
+        "`derive_key` never uses the secret key directly; it mixes salt and key by one of four schemes: `concat` (`digest(salt + key)`), `django-concat` (`digest(salt + b'signer' + key)`, the default, for Django cookie compatibility), `hmac` (HMAC of the salt keyed by the secret), and `none` (return the key unchanged). Anything else raises `TypeError('Unknown key derivation method')`.",
+        "The docstring is explicit that key derivation is not password stretching \u2014 it exists to separate contexts, which is why two serializers with different salts produce different signatures for the same payload (`docs/concepts.rst`)."
+      ],
+      "open_questions": [
+        "`derive_key` defaults to the newest key, but takes a `secret_key` parameter \u2014 who passes an older one?",
+        "How does a serializer reuse this constructor for fallback signers with different digest methods?"
+      ],
+      "answers": []
+    },
+    {
+      "n": 6,
+      "title": "sign, unsign, and the Rotation Loop",
+      "code": [
+        "src/itsdangerous/signer.py:215-266",
+        "tests/test_itsdangerous/test_signer.py"
+      ],
+      "inputs": [
+        "`derive_key`, `sep`, `secret_keys` (ch5)",
+        "`base64_encode`/`base64_decode` (ch3)",
+        "`BadSignature` and its `payload` (ch2)"
+      ],
+      "characters": [
+        "Signer.get_signature",
+        "Signer.sign",
+        "Signer.verify_signature",
+        "Signer.unsign",
+        "Signer.validate"
+      ],
+      "facts": [
+        "`get_signature` is the composition of the previous two chapters: `want_bytes(value)` \u2192 `derive_key()` \u2192 `algorithm.get_signature(key, value)` \u2192 `base64_encode`. The base64 step is what keeps tokens printable.",
+        "`sign` returns `value + self.sep + self.get_signature(value)`; the signature always covers exactly the bytes to its left.",
+        "`verify_signature` is where key rotation pays off: it decodes the candidate signature (returning `False` if base64 decoding throws at all) and then loops `for secret_key in reversed(self.secret_keys)`, deriving a key per secret and asking the algorithm \u2014 newest key first, oldest last.",
+        "`unsign` raises `BadSignature(f'No {sep!r} found in value')` if there is no separator, otherwise `rsplit(sep, 1)` splits at the *last* separator so payloads may contain the separator themselves. On mismatch it raises `BadSignature(..., payload=value)` \u2014 this is the `payload` attribute promised in chapter 2.",
+        "`validate` is just `unsign` with the exception swallowed into a bool.",
+        "`test_signer.py` pins the behaviours: a mutated value fails, a replaced separator fails, `sep='-'` raises `ValueError`, all four derivations round-trip, a custom `_ReverseAlgorithm` works, and a token signed with `Signer('a')` still validates under `Signer(['a', 'b'])`."
+      ],
+      "open_questions": [
+        "This only signs bytes \u2014 how does `{'id': 5}` get in here?",
+        "Where does a timestamp fit into a format where the signature covers everything to its left?"
+      ],
+      "answers": [
+        "Chapter 5's question about passing an older `secret_key` to `derive_key`: `verify_signature` does it, once per rotation candidate."
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Wrapping the Signer: Payloads",
+      "code": [
+        "src/itsdangerous/serializer.py:1-38",
+        "src/itsdangerous/serializer.py:190-276",
+        "docs/serializer.rst:1-34"
+      ],
+      "inputs": [
+        "`Signer` as a bytes-only primitive (ch6)",
+        "`_make_keys_list` (ch4)",
+        "`want_bytes` (ch3)",
+        "`BadPayload` with `original_error` (ch2)"
+      ],
+      "characters": [
+        "Serializer.__init__",
+        "default_serializer (the stdlib `json` module)",
+        "is_text_serializer",
+        "Serializer.dump_payload",
+        "Serializer.load_payload",
+        "_PDataSerializer"
+      ],
+      "facts": [
+        "A `Serializer` is configured entirely in `__init__`: `secret_keys` via the same `_make_keys_list`, a `salt` defaulting to `b'itsdangerous'` (note: different from the `Signer` default, so a bare `Signer` and a bare `Serializer` produce different signatures), a data serializer, a `Signer` *class* plus `signer_kwargs`, and a list of `fallback_signers`.",
+        "`default_serializer` is the stdlib `json` module itself \u2014 any object with `dumps`/`loads` can be substituted, which is how the test suite swaps in `pickle`.",
+        "`is_text_serializer` answers 'does this serializer produce `str` or `bytes`?' by actually calling `serializer.dumps({})` once and checking `isinstance(..., str)`. The answer is cached on the instance at construction time.",
+        "`dump_payload` is `want_bytes(self.serializer.dumps(obj, **self.serializer_kwargs))` \u2014 the payload handed to the signer is always bytes, whichever kind of serializer is configured.",
+        "`load_payload` mirrors it: decode to UTF-8 first if the serializer is a text one, then call `loads`, and wrap *any* exception in `BadPayload(..., original_error=e)`. A serializer can be passed per-call to override the instance's one, in which case `is_text_serializer` is recomputed for it.",
+        "`salt=None` is preserved as `None` rather than coerced, so that the signer's own default salt is used instead."
+      ],
+      "open_questions": [
+        "`fallback_signers` is stored but unused so far \u2014 what shapes can its items take and when are they tried?",
+        "Why call `dumps({})` to detect text-ness instead of declaring it?"
+      ],
+      "answers": [
+        "Chapter 6's question about how non-bytes data is signed: it is serialized to bytes by `dump_payload` before the signer ever sees it."
+      ]
+    },
+    {
+      "n": 8,
+      "title": "dumps, loads, and the Parade of Unsigners",
+      "code": [
+        "src/itsdangerous/serializer.py:278-347",
+        "docs/serializer.rst:77-105"
+      ],
+      "inputs": [
+        "`dump_payload`/`load_payload` and the stored signer class (ch7)",
+        "`Signer.sign`/`unsign` and `BadSignature` (ch6)"
+      ],
+      "characters": [
+        "Serializer.make_signer",
+        "Serializer.iter_unsigners",
+        "Serializer.dumps",
+        "Serializer.loads"
+      ],
+      "facts": [
+        "`make_signer` instantiates `self.signer(self.secret_keys, salt=salt, **self.signer_kwargs)` \u2014 it hands over the whole key list, so the signer does rotation internally as in chapter 6.",
+        "`dumps` is three lines that summarize the library: `dump_payload` \u2192 `make_signer(salt).sign(payload)` \u2192 decode to `str` if the data serializer was a text one. This is why `Serializer.dumps` returns `str` by default but `bytes` with, say, a pickle serializer.",
+        "`iter_unsigners` yields the primary signer first, then builds one signer per fallback entry. Each entry may be a dict of kwargs (reusing `self.signer`), a `Signer` subclass (reusing `self.signer_kwargs`), or a `(class, kwargs)` tuple \u2014 the three forms documented in `docs/serializer.rst`.",
+        "Fallback signers are constructed per secret key (`for secret_key in self.secret_keys: yield fallback(secret_key, ...)`), unlike the primary signer which receives the whole list at once \u2014 so a rotated key set multiplies the number of fallback attempts.",
+        "`loads` coerces to bytes, then tries every unsigner in order, returning `self.load_payload(signer.unsign(s))` on the first success, remembering the last `BadSignature` and re-raising it if all fail. A `BadPayload` from `load_payload` is *not* caught, so it escapes immediately.",
+        "The `salt` argument on `dumps`/`loads` overrides the instance salt per call, which is how one serializer can serve several contexts."
+      ],
+      "open_questions": [
+        "`loads` raises on a bad signature \u2014 but chapter 2 said the payload is preserved. How does a caller get at it?",
+        "If a fallback signer exists, does an *expired* token get retried against the fallbacks?"
+      ],
+      "answers": [
+        "Chapter 7's question about `fallback_signers`: `iter_unsigners` interprets the three accepted shapes and yields them after the primary signer."
+      ]
+    },
+    {
+      "n": 9,
+      "title": "Reading Tokens You Don't Trust",
+      "code": [
+        "src/itsdangerous/serializer.py:322-326",
+        "src/itsdangerous/serializer.py:345-404",
+        "docs/serializer.rst:36-75"
+      ],
+      "inputs": [
+        "`loads`, `load_payload` and the exception hierarchy (ch7, ch8, ch2)"
+      ],
+      "characters": [
+        "Serializer.loads_unsafe",
+        "Serializer._loads_unsafe_impl",
+        "Serializer.dump/load/load_unsafe"
+      ],
+      "facts": [
+        "`loads_unsafe` never raises: it returns `(signature_valid, payload)`. It delegates to `_loads_unsafe_impl`, which is the extension point subclasses use to inject extra arguments.",
+        "`_loads_unsafe_impl` first tries `loads`. On `BadSignature` it checks `e.payload`: `None` means there was nothing recoverable (e.g. the separator was missing), so it returns `(False, None)`; otherwise it calls `load_payload` on the tampered bytes and returns `(False, value)` \u2014 and if *that* raises `BadPayload`, it returns `(False, None)`.",
+        "The docs are blunt about the risk: this path deserializes data known to be tampered with, which is why `load_payload` is a separate explicit step ('think pickle instead of json!').",
+        "`dump`, `load` and `load_unsafe` are thin file wrappers over `dumps`/`loads`/`loads_unsafe`; the file object must match the serializer's text-or-bytes nature, which the tests handle by picking `StringIO` or `BytesIO` based on `isinstance(serializer.dumps(value), bytes)`."
+      ],
+      "open_questions": [
+        "How does a caller (or a type checker) know whether `dumps` will hand them `str` or `bytes` before running the code?"
+      ],
+      "answers": [
+        "Chapter 8's question about retrieving the payload after a failed signature check: `BadSignature.payload` plus an explicit `load_payload`, or the packaged `loads_unsafe`."
+      ]
+    },
+    {
+      "n": 10,
+      "title": "Making the Return Type Honest",
+      "code": [
+        "src/itsdangerous/serializer.py:13-38",
+        "src/itsdangerous/serializer.py:95-188"
+      ],
+      "inputs": [
+        "`is_text_serializer`, `dumps` returning str or bytes (ch7, ch8)"
+      ],
+      "characters": [
+        "_TSerialized",
+        "_PDataSerializer",
+        "is_text_serializer (as a TypeGuard)",
+        "the five `__init__` overloads"
+      ],
+      "facts": [
+        "`Serializer` is `t.Generic[_TSerialized]`, where `_TSerialized` is a `TypeVar` bound to `str | bytes`; under `TYPE_CHECKING` it is declared via `typing_extensions.TypeVar` with `default=str | bytes`, so bare `Serializer` still means something to newer checkers.",
+        "`_PDataSerializer` is a structural `Protocol` with positional-only `loads`/`dumps`, letting the stdlib `json` module, `pickle`, and `_CompactJSON` all satisfy the same static contract without inheritance.",
+        "Five `__init__` overloads encode the inference rules: no serializer \u2192 `Serializer[str]`; a `_PDataSerializer[bytes]` positionally or by keyword \u2192 `Serializer[bytes]`; and two `t.Any` fallbacks for serializers whose signature (extra kwargs) doesn't structurally match the strict protocol, in which case the user must annotate the type themselves.",
+        "`is_text_serializer` is annotated as returning `te.TypeGuard[_PDataSerializer[str]]`, narrowing the serializer type inside `load_payload`'s text branch; a comment notes `TypeIs` would be the better tool once available.",
+        "The runtime `__init__` accepts `serializer: t.Any | None` \u2014 all the precision is static, and `# type: ignore` comments in `dumps`/`load_payload` mark the two places where the runtime `is_text_serializer` flag outruns what the checker can prove."
+      ],
+      "open_questions": [
+        "How does a subclass replace `default_signer` with an incompatible type without breaking this generic machinery?"
+      ],
+      "answers": [
+        "Chapter 9's question about knowing the token type statically: the generic parameter plus overloads make `dumps`'s return type follow from the serializer argument.",
+        "Chapter 7's question about detecting text-ness by calling `dumps({})`: the runtime probe is paired with a static `TypeGuard`, because a Protocol can't declare which of `str`/`bytes` a duck-typed module returns."
+      ]
+    },
+    {
+      "n": 11,
+      "title": "Adding the Clock",
+      "code": [
+        "src/itsdangerous/timed.py:1-167"
+      ],
+      "inputs": [
+        "`Signer.sign`/`unsign`, the `value + sep + signature` layout (ch6)",
+        "`int_to_bytes`/`bytes_to_int`, base64 helpers (ch3)",
+        "`BadTimeSignature`, `SignatureExpired`, `date_signed` (ch2)"
+      ],
+      "characters": [
+        "TimestampSigner",
+        "get_timestamp",
+        "timestamp_to_datetime",
+        "TimestampSigner.sign",
+        "TimestampSigner.unsign"
+      ],
+      "facts": [
+        "`TimestampSigner.sign` inserts a field: `value + sep + base64(int_to_bytes(get_timestamp()))`, and *then* signs that whole thing. The signature therefore covers the timestamp, so a forged expiry date breaks the signature.",
+        "`get_timestamp` returns `int(time.time())` \u2014 a plain Unix timestamp since 1.0; `timestamp_to_datetime` converts it to a timezone-aware UTC `datetime` (naive datetimes were dropped in 2.0).",
+        "`unsign` deliberately catches the parent's `BadSignature` instead of letting it fly, keeping `sig_error` and falling back to `e.payload` \u2014 because even an invalid token may contain a readable timestamp worth reporting to the user.",
+        "Failure ordering is careful: no separator in the result \u2192 re-raise the original signature error if there was one, else `BadTimeSignature('timestamp missing')`; a signature error with a parseable timestamp \u2192 `BadTimeSignature(str(sig_error), payload=value, date_signed=ts_dt)`; a good signature with an unparseable timestamp \u2192 `BadTimeSignature('Malformed timestamp')`.",
+        "`timestamp_to_datetime` is wrapped in `except (ValueError, OSError, OverflowError)` because a huge timestamp raises `OSError` on Windows and `OverflowError` on 32-bit builds \u2014 these become `BadTimeSignature('Malformed timestamp')` rather than escaping as unrelated errors.",
+        "With `max_age` set, `age = get_timestamp() - ts_int`; `age > max_age` raises `SignatureExpired('Signature age N > M seconds')`, and `age < 0` *also* raises `SignatureExpired`, so a token from the future is rejected rather than silently accepted (changed in 2.0).",
+        "The two `@t.overload` declarations make `return_timestamp` switch the return type between `bytes` and `tuple[bytes, datetime]`."
+      ],
+      "open_questions": [
+        "How does a serializer expose the timestamp to `loads` callers, and what happens to the other fallback signers when one reports expiry?"
+      ],
+      "answers": [
+        "Chapter 6's question about where a timestamp fits: it is appended as another `sep`-delimited field *inside* the signed region.",
+        "Chapter 3's question about compact integers: `int_to_bytes` strips leading NULs so the base64 timestamp field stays short in every token.",
+        "Chapter 2's question about `date_signed`: `TimestampSigner.unsign` fills it, even on the failure paths, by parsing the timestamp field after splitting."
+      ]
+    },
+    {
+      "n": 12,
+      "title": "TimedSerializer: Expiry Wins",
+      "code": [
+        "src/itsdangerous/timed.py:170-228",
+        "docs/timed.rst"
+      ],
+      "inputs": [
+        "`TimestampSigner.unsign(max_age=, return_timestamp=)` (ch11)",
+        "`Serializer.loads`, `iter_unsigners`, `_loads_unsafe_impl` (ch8, ch9)",
+        "Generic `Serializer[_TSerialized]` (ch10)"
+      ],
+      "characters": [
+        "TimedSerializer",
+        "TimedSerializer.loads",
+        "TimedSerializer.loads_unsafe"
+      ],
+      "facts": [
+        "`TimedSerializer` subclasses `Serializer[_TSerialized]` and changes exactly one thing declaratively: `default_signer = TimestampSigner` (with a `# pyright: ignore` because the attribute type is narrowed relative to the base class).",
+        "`iter_unsigners` is overridden only to re-cast the iterator type; the construction logic from chapter 8 is untouched, so fallback signers work the same way.",
+        "`loads` re-declares its signature as `(s, max_age=None, return_timestamp=False, salt=None)` \u2014 `salt` moved to fourth position for backwards compatibility, which is why the override needs `# type: ignore[override]` and a TODO comment.",
+        "It always calls the signer with `return_timestamp=True`, loads the payload, and then decides whether to hand the timestamp back to the caller based on its own `return_timestamp` flag.",
+        "The crucial control-flow choice: `SignatureExpired` is re-raised immediately inside the loop, *before* the generic `BadSignature` handler, so a token that verified correctly but is too old never gets retried against fallback signers or older keys.",
+        "`loads_unsafe` reuses `_loads_unsafe_impl` from chapter 9, threading `max_age` through `load_kwargs` \u2014 which is precisely why that helper takes a kwargs dict."
+      ],
+      "open_questions": [
+        "These tokens still contain raw JSON and can be long \u2014 how do they become short and URL-safe?"
+      ],
+      "answers": [
+        "Chapter 8's question about expired tokens and fallbacks: expiry short-circuits the unsigner loop.",
+        "Chapter 11's question about surfacing the timestamp: `loads(..., return_timestamp=True)` returns `(payload, datetime)`.",
+        "Chapter 10's question about overriding `default_signer`: it is done with a narrowing annotation plus a targeted checker suppression."
+      ]
+    },
+    {
+      "n": 13,
+      "title": "Short and URL-Safe",
+      "code": [
+        "src/itsdangerous/_json.py",
+        "src/itsdangerous/url_safe.py",
+        "docs/url_safe.rst"
+      ],
+      "inputs": [
+        "`dump_payload`/`load_payload` as the override seam (ch7)",
+        "`base64_encode`/`base64_decode` and `BadPayload` (ch3, ch2)",
+        "`Serializer` and `TimedSerializer` (ch8, ch12)"
+      ],
+      "characters": [
+        "_CompactJSON",
+        "URLSafeSerializerMixin",
+        "URLSafeSerializer",
+        "URLSafeTimedSerializer"
+      ],
+      "facts": [
+        "`_CompactJSON` is a two-static-method wrapper over `json` that defaults `ensure_ascii=False` and `separators=(',', ':')`, removing every byte of whitespace and avoiding `\\uXXXX` bloat for non-ASCII text.",
+        "`URLSafeSerializerMixin` sets `default_serializer = _CompactJSON` and overrides only the two payload methods \u2014 signing, key handling, fallbacks and timing are all inherited unchanged.",
+        "`dump_payload` calls `super().dump_payload`, zlib-compresses the result, and keeps the compressed form only `if len(compressed) < len(json) - 1` \u2014 the `- 1` pays for the marker byte. A compressed payload is prefixed with `.` after base64 encoding.",
+        "`load_payload` reverses it: a leading `.` means decompress; base64 decoding failure becomes `BadPayload('Could not base64 decode the payload...')` and zlib failure becomes `BadPayload('Could not zlib decompress...')`, each carrying `original_error`.",
+        "Because the payload is base64-encoded, the only non-alphanumeric characters in a finished token are `-`, `_` and `.` \u2014 and `.` is safe as the separator precisely because of the `_base64_alphabet` check from chapter 5 (which forbids `-`, `_` and `=`).",
+        "`URLSafeSerializer` is `class URLSafeSerializer(URLSafeSerializerMixin, Serializer[str])` and `URLSafeTimedSerializer` is the same mixin over `TimedSerializer[str]`, both with empty bodies: the entire feature is MRO composition. The mixin's own base, `Serializer[str]`, makes `super()` resolve to whichever concrete serializer is later in the MRO."
+      ],
+      "open_questions": [
+        "Four serializer classes now share overlapping behaviour \u2014 how is each combination actually verified?"
+      ],
+      "answers": [
+        "Chapter 1's question about why `URLSafeSerializer` produces a different-looking token: the payload is compact-JSON, optionally zlib-compressed, and base64-encoded before signing.",
+        "Chapter 12's question about short URL-safe tokens: this mixin, layered onto either `Serializer` or `TimedSerializer`."
+      ]
+    },
+    {
+      "n": 14,
+      "title": "The Test Suite as a Mirror of the Class Tree",
+      "code": [
+        "tests/test_itsdangerous/test_serializer.py",
+        "tests/test_itsdangerous/test_timed.py",
+        "tests/test_itsdangerous/test_url_safe.py",
+        "tests/test_itsdangerous/test_signer.py:18-26"
+      ],
+      "inputs": [
+        "All four serializer classes and both signer classes (ch6, ch11, ch8, ch12, ch13)"
+      ],
+      "characters": [
+        "TestSigner",
+        "TestTimestampSigner",
+        "TestSerializer",
+        "TestTimedSerializer",
+        "TestURLSafeSerializer",
+        "TestURLSafeTimedSerializer",
+        "FreezeMixin"
+      ],
+      "facts": [
+        "The test classes inherit along the same lines as the source classes: `TestTimestampSigner(FreezeMixin, TestSigner)` and `TestURLSafeTimedSerializer(TestURLSafeSerializer, TestTimedSerializer)`, so every base-class test re-runs against every subclass by simply overriding the `signer_factory`/`serializer_factory` fixture.",
+        "`TestSerializer.serializer_factory` is parametrized over `Serializer` and `partial(Serializer, serializer=pickle)`, so the whole suite runs twice \u2014 once with a text serializer and once with a bytes one. The `coerce_str` helper exists solely to write mutations that work for both.",
+        "`FreezeMixin` uses `freezegun` to pin time to 2011-06-24 and exposes the `freeze` handle so tests can `tick()` past `max_age`; `test_future_age` jumps backwards to 1971 to exercise the negative-age branch from chapter 11.",
+        "`TestURLSafeSerializer` parametrizes `value` with `'a' * 1000` (id `zlib`) to force the compression branch of `dump_payload`.",
+        "`test_iter_unsigners` asserts the exact ordering and construction of fallbacks: the first unsigner still uses `_lazy_sha1`, and all subsequent ones \u2014 from a kwargs dict, a `(class, kwargs)` tuple, and a bare subclass \u2014 use SHA-256.",
+        "`test_digests` pins literal output strings (`'[42].-9cNi0CxsSB3hZPNCe9a2eEs1ZM'` for SHA-1, a long SHA-512 value) so that any accidental change to the default digest or key derivation breaks the build \u2014 these are the library's compatibility anchors."
+      ],
+      "open_questions": [
+        "How is all of this packaged, type-checked and released so downstreams like Flask can rely on it?"
+      ],
+      "answers": [
+        "Chapter 13's question about verifying the combinations: the test hierarchy mirrors the class hierarchy and reuses fixtures."
+      ]
+    },
+    {
+      "n": 15,
+      "title": "Shipping It",
+      "code": [
+        "pyproject.toml:1-16",
+        "pyproject.toml:78-135",
+        "pyproject.toml:138-178",
+        ".github/workflows/tests.yaml",
+        "src/itsdangerous/py.typed",
+        "CHANGES.rst:1-60"
+      ],
+      "inputs": [
+        "The whole package and its test suite (ch1-ch14)"
+      ],
+      "characters": [
+        "pyproject.toml",
+        "py.typed",
+        "mypy/pyright config",
+        "the tests workflow",
+        "CHANGES.rst"
+      ],
+      "facts": [
+        "The package has no runtime dependencies at all \u2014 only stdlib `json`, `hashlib`, `hmac`, `base64`, `struct`, `zlib`, `time` \u2014 which is why it can sit underneath Flask's session handling.",
+        "Build is `flit_core` with `[tool.flit.module] name = 'itsdangerous'`; the empty `src/itsdangerous/py.typed` marker is what makes the inline annotations from chapter 10 visible to downstream type checkers.",
+        "Typing is enforced three ways in the `typing` tox env: `mypy` in `strict` mode over `src`, `pyright` in standard mode, and `pyright --verifytypes itsdangerous --ignoreexternal`, which checks that the *public* API is fully annotated \u2014 the reason for the careful overloads and `TypeGuard`.",
+        "`filterwarnings = ['error']` in the pytest config turns any warning into a test failure, and the CI matrix runs CPython 3.10-3.13 plus PyPy on Linux, Windows and macOS \u2014 the platforms behind the `OSError`/`OverflowError` handling in chapter 11.",
+        "`CHANGES.rst` records why the code looks as it does: JWS serializers were deprecated in 2.0 and removed in 2.1 (leaving `BadHeader` behind), simplejson support was dropped in favour of the `serializer=` argument, key rotation arrived in 2.0, and the lazy SHA-1 default was introduced in 2.2 for FIPS builds.",
+        "The 2.3.0 entry in progress drops Python 3.8/3.9 and removes previously deprecated code, matching `requires-python = '>=3.10'`."
+      ],
+      "open_questions": [],
+      "answers": [
+        "Chapter 2's question about `BadHeader`: it survives as public API from the removed JWS serializers, documented in `CHANGES.rst`.",
+        "Chapter 14's question about packaging and release: flit + `py.typed` + a three-tool typing gate + a cross-platform CI matrix."
+      ]
+    }
+  ]
+}

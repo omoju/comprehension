@@ -1,0 +1,6243 @@
+{
+ "fn": "scenario",
+ "file": "scenario.py",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "Console.__init__",
+   "file": "rich/console.py",
+   "line": 619,
+   "called_from": "scenario.py:7",
+   "args": {
+    "self": "<Console>",
+    "color_system": "'auto'",
+    "force_terminal": "None",
+    "force_jupyter": "None",
+    "force_interactive": "None",
+    "soft_wrap": "False",
+    "theme": "None",
+    "stderr": "False",
+    "file": "None",
+    "quiet": "False",
+    "width": "100",
+    "height": "None",
+    "style": "None",
+    "no_color": "None",
+    "tab_size": "8",
+    "record": "True",
+    "markup": "True",
+    "emoji": "True",
+    "emoji_variant": "None",
+    "highlight": "True",
+    "log_time": "True",
+    "log_path": "True",
+    "log_time_format": "'[%X]'",
+    "highlighter": "<rich.highlighter.ReprHighlighter object at 0x10bebde80>",
+    "legacy_windows": "None",
+    "safe_box": "True",
+    "get_datetime": "None",
+    "get_time": "None",
+    "_environ": "None"
+   },
+   "calls": [
+    {
+     "fn": "_is_jupyter",
+     "file": "rich/console.py",
+     "line": 505,
+     "called_from": "console.py:657",
+     "args": {},
+     "calls": [],
+     "raised": "NameError(\"name 'get_ipython' is not defined\")",
+     "returned": "False",
+     "tl": 3
+    },
+    {
+     "fn": "detect_legacy_windows",
+     "file": "rich/console.py",
+     "line": 576,
+     "called_from": "console.py:679",
+     "args": {},
+     "calls": [],
+     "returned": "False",
+     "tl": 5
+    },
+    {
+     "fn": "Console._detect_color_system",
+     "file": "rich/console.py",
+     "line": 789,
+     "called_from": "console.py:710",
+     "args": {
+      "self": "<Console>"
+     },
+     "calls": [
+      {
+       "fn": "Console.is_terminal",
+       "file": "rich/console.py",
+       "line": 930,
+       "called_from": "console.py:793",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console.file",
+         "file": "rich/console.py",
+         "line": 756,
+         "called_from": "console.py:969",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [],
+         "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+         "tl": 9
+        }
+       ],
+       "returned": "False",
+       "tl": 8
+      }
+     ],
+     "returned": "None",
+     "tl": 7
+    },
+    {
+     "fn": "LogRender.__init__",
+     "file": "rich/_log_render.py",
+     "line": 15,
+     "called_from": "console.py:715",
+     "args": {
+      "self": "<LogRender>",
+      "show_time": "True",
+      "show_level": "False",
+      "show_path": "True",
+      "time_format": "'[%X]'",
+      "omit_repeated_times": "True",
+      "level_width": "8"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 13
+    },
+    {
+     "fn": "Console.is_terminal",
+     "file": "rich/console.py",
+     "line": 930,
+     "called_from": "console.py:739",
+     "args": {
+      "self": "<Console>"
+     },
+     "calls": [
+      {
+       "fn": "Console.file",
+       "file": "rich/console.py",
+       "line": 756,
+       "called_from": "console.py:969",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [],
+       "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+       "tl": 16
+      }
+     ],
+     "returned": "False",
+     "tl": 15
+    },
+    {
+     "fn": "ThemeStack.__init__",
+     "file": "rich/theme.py",
+     "line": 88,
+     "called_from": "console.py:746",
+     "args": {
+      "self": "<ThemeStack>",
+      "theme": "<rich.theme.Theme object at 0x10b2df4d0>"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 19
+    }
+   ],
+   "returned": "None",
+   "tl": 2
+  },
+  {
+   "fn": "Console.print",
+   "file": "rich/console.py",
+   "line": 1652,
+   "called_from": "scenario.py:10",
+   "args": {
+    "self": "<Console>",
+    "sep": "' '",
+    "end": "'\\n'",
+    "style": "'bold red'",
+    "justify": "None",
+    "overflow": "None",
+    "no_wrap": "None",
+    "emoji": "None",
+    "markup": "None",
+    "highlight": "None",
+    "width": "None",
+    "height": "None",
+    "crop": "True",
+    "soft_wrap": "None",
+    "new_line_start": "False"
+   },
+   "calls": [
+    {
+     "fn": "Console.__enter__",
+     "file": "rich/console.py",
+     "line": 857,
+     "called_from": "console.py:1704",
+     "args": {
+      "self": "<Console>"
+     },
+     "calls": [
+      {
+       "fn": "Console._enter_buffer",
+       "file": "rich/console.py",
+       "line": 813,
+       "called_from": "console.py:859",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console._buffer_index",
+         "file": "rich/console.py",
+         "line": 775,
+         "called_from": "console.py:815",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [],
+         "returned": "0",
+         "tl": 25
+        },
+        {
+         "fn": "Console._buffer_index",
+         "file": "rich/console.py",
+         "line": 775,
+         "args": {},
+         "calls": [],
+         "repeat": 1,
+         "returned": "None",
+         "tl": 27
+        }
+       ],
+       "returned": "None",
+       "tl": 24
+      }
+     ],
+     "returned": "<console width=100 None>",
+     "tl": 23
+    },
+    {
+     "fn": "Console._collect_renderables",
+     "file": "rich/console.py",
+     "line": 1500,
+     "called_from": "console.py:1705",
+     "args": {
+      "self": "<Console>",
+      "objects": "('Hello', 'World!')",
+      "sep": "' '",
+      "end": "'\\n'",
+      "justify": "None",
+      "emoji": "None",
+      "markup": "None",
+      "highlight": "None"
+     },
+     "calls": [
+      {
+       "fn": "rich_cast",
+       "file": "rich/protocol.py",
+       "line": 18,
+       "called_from": "console.py:1557",
+       "args": {
+        "renderable": "'Hello'"
+       },
+       "calls": [],
+       "returned": "'Hello'",
+       "tl": 31
+      },
+      {
+       "fn": "Console.render_str",
+       "file": "rich/console.py",
+       "line": 1409,
+       "called_from": "console.py:1560",
+       "args": {
+        "self": "<Console>",
+        "text": "'Hello'",
+        "style": "''",
+        "justify": "None",
+        "overflow": "None",
+        "emoji": "None",
+        "markup": "None",
+        "highlight": "None",
+        "highlighter": "<rich.highlighter.ReprHighlighter object at 0x10bebde80>"
+       },
+       "calls": [
+        {
+         "fn": "render",
+         "file": "rich/markup.py",
+         "line": 106,
+         "called_from": "console.py:1442",
+         "args": {
+          "markup": "'Hello'",
+          "style": "''",
+          "emoji": "True",
+          "emoji_variant": "None"
+         },
+         "calls": [
+          {
+           "fn": "_emoji_replace",
+           "file": "rich/_emoji_replace.py",
+           "line": 9,
+           "called_from": "markup.py:130",
+           "args": {
+            "text": "'Hello'",
+            "default_variant": "None",
+            "_emoji_sub": "<built-in method sub of re.Pattern object at 0x10bfae430>"
+           },
+           "calls": [],
+           "returned": "'Hello'",
+           "tl": 35
+          },
+          {
+           "fn": "Text.__init__",
+           "file": "rich/text.py",
+           "line": 144,
+           "called_from": "markup.py:129",
+           "args": {
+            "self": "<Text>",
+            "text": "'Hello'",
+            "style": "''",
+            "justify": "None",
+            "overflow": "None",
+            "no_wrap": "None",
+            "end": "'\\n'",
+            "tab_size": "None",
+            "spans": "None"
+           },
+           "calls": [
+            {
+             "fn": "strip_control_codes",
+             "file": "rich/control.py",
+             "line": 181,
+             "called_from": "text.py:156",
+             "args": {
+              "text": "'Hello'",
+              "_translate_table": "{7: None, 8: None, 11: None, 12: None, 13: None}"
+             },
+             "calls": [],
+             "returned": "'Hello'",
+             "tl": 38
+            }
+           ],
+           "returned": "None",
+           "tl": 37
+          }
+         ],
+         "returned": "<text 'Hello' [] ''>",
+         "tl": 34
+        },
+        {
+         "fn": "Text.__str__",
+         "file": "rich/text.py",
+         "line": 173,
+         "called_from": "console.py:1464",
+         "args": {
+          "self": "<Text>"
+         },
+         "calls": [
+          {
+           "fn": "Text.plain",
+           "file": "rich/text.py",
+           "line": 402,
+           "called_from": "text.py:174",
+           "args": {
+            "self": "<Text>"
+           },
+           "calls": [],
+           "returned": "'Hello'",
+           "tl": 43
+          }
+         ],
+         "returned": "'Hello'",
+         "tl": 42
+        },
+        {
+         "fn": "Highlighter.__call__",
+         "file": "rich/highlighter.py",
+         "line": 20,
+         "called_from": "console.py:1464",
+         "args": {
+          "self": "<ReprHighlighter>",
+          "text": "'Hello'"
+         },
+         "calls": [
+          {
+           "fn": "Text.__init__",
+           "file": "rich/text.py",
+           "line": 144,
+           "called_from": "highlighter.py:33",
+           "args": {
+            "self": "<Text>",
+            "text": "'Hello'",
+            "style": "''",
+            "justify": "None",
+            "overflow": "None",
+            "no_wrap": "None",
+            "end": "'\\n'",
+            "tab_size": "None",
+            "spans": "None"
+           },
+           "calls": [
+            {
+             "fn": "strip_control_codes",
+             "file": "rich/control.py",
+             "line": 181,
+             "called_from": "text.py:156",
+             "args": {
+              "text": "'Hello'",
+              "_translate_table": "{7: None, 8: None, 11: None, 12: None, 13: None}"
+             },
+             "calls": [],
+             "returned": "'Hello'",
+             "tl": 48
+            }
+           ],
+           "returned": "None",
+           "tl": 47
+          },
+          {
+           "fn": "RegexHighlighter.highlight",
+           "file": "rich/highlighter.py",
+           "line": 67,
+           "called_from": "highlighter.py:38",
+           "args": {
+            "self": "<ReprHighlighter>",
+            "text": "<text 'Hello' [] ''>"
+           },
+           "calls": [
+            {
+             "fn": "Text.highlight_regex",
+             "file": "rich/text.py",
+             "line": 593,
+             "called_from": "highlighter.py:77",
+             "args": {
+              "self": "<Text>",
+              "re_highlight": "'(?P<tag_start><)(?P<tag_name>[-\\\\w.:|...<tag_contents>[\\\\w\\\\W]*)(?P<tag_end>>)'",
+              "style": "None",
+              "style_prefix": "'repr.'"
+             },
+             "calls": [
+              {
+               "fn": "Text.plain",
+               "file": "rich/text.py",
+               "line": 402,
+               "called_from": "text.py:615",
+               "args": {
+                "self": "<Text>"
+               },
+               "calls": [],
+               "returned": "'Hello'",
+               "tl": 53
+              }
+             ],
+             "returned": "0",
+             "tl": 52
+            },
+            {
+             "fn": "Text.highlight_regex",
+             "file": "rich/text.py",
+             "line": 593,
+             "args": {},
+             "calls": [],
+             "repeat": 3,
+             "returned": "0",
+             "tl": 56
+            }
+           ],
+           "returned": "None",
+           "tl": 51
+          }
+         ],
+         "returned": "<text 'Hello' [] ''>",
+         "tl": 46
+        },
+        {
+         "fn": "Text.copy_styles",
+         "file": "rich/text.py",
+         "line": 1054,
+         "called_from": "console.py:1465",
+         "args": {
+          "self": "<Text>",
+          "text": "<text 'Hello' [] ''>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 59
+        }
+       ],
+       "returned": "<text 'Hello' [] ''>",
+       "tl": 33
+      },
+      {
+       "fn": "rich_cast",
+       "file": "rich/protocol.py",
+       "line": 18,
+       "called_from": "console.py:1557",
+       "args": {
+        "renderable": "'World!'"
+       },
+       "calls": [],
+       "returned": "'World!'",
+       "tl": 62
+      },
+      {
+       "fn": "Console.render_str",
+       "file": "rich/console.py",
+       "line": 1409,
+       "called_from": "console.py:1560",
+       "args": {
+        "self": "<Console>",
+        "text": "'World!'",
+        "style": "''",
+        "justify": "None",
+        "overflow": "None",
+        "emoji": "None",
+        "markup": "None",
+        "highlight": "None",
+        "highlighter": "<rich.highlighter.ReprHighlighter object at 0x10bebde80>"
+       },
+       "calls": [
+        {
+         "fn": "render",
+         "file": "rich/markup.py",
+         "line": 106,
+         "called_from": "console.py:1442",
+         "args": {
+          "markup": "'World!'",
+          "style": "''",
+          "emoji": "True",
+          "emoji_variant": "None"
+         },
+         "calls": [
+          {
+           "fn": "_emoji_replace",
+           "file": "rich/_emoji_replace.py",
+           "line": 9,
+           "called_from": "markup.py:130",
+           "args": {
+            "text": "'World!'",
+            "default_variant": "None",
+            "_emoji_sub": "<built-in method sub of re.Pattern object at 0x10bfae430>"
+           },
+           "calls": [],
+           "returned": "'World!'",
+           "tl": 66
+          },
+          {
+           "fn": "Text.__init__",
+           "file": "rich/text.py",
+           "line": 144,
+           "called_from": "markup.py:129",
+           "args": {
+            "self": "<Text>",
+            "text": "'World!'",
+            "style": "''",
+            "justify": "None",
+            "overflow": "None",
+            "no_wrap": "None",
+            "end": "'\\n'",
+            "tab_size": "None",
+            "spans": "None"
+           },
+           "calls": [
+            {
+             "fn": "strip_control_codes",
+             "file": "rich/control.py",
+             "line": 181,
+             "called_from": "text.py:156",
+             "args": {
+              "text": "'World!'",
+              "_translate_table": "{7: None, 8: None, 11: None, 12: None, 13: None}"
+             },
+             "calls": [],
+             "returned": "'World!'",
+             "tl": 69
+            }
+           ],
+           "returned": "None",
+           "tl": 68
+          }
+         ],
+         "returned": "<text 'World!' [] ''>",
+         "tl": 65
+        },
+        {
+         "fn": "Text.__str__",
+         "file": "rich/text.py",
+         "line": 173,
+         "called_from": "console.py:1464",
+         "args": {
+          "self": "<Text>"
+         },
+         "calls": [
+          {
+           "fn": "Text.plain",
+           "file": "rich/text.py",
+           "line": 402,
+           "called_from": "text.py:174",
+           "args": {
+            "self": "<Text>"
+           },
+           "calls": [],
+           "returned": "'World!'",
+           "tl": 74
+          }
+         ],
+         "returned": "'World!'",
+         "tl": 73
+        },
+        {
+         "fn": "Highlighter.__call__",
+         "file": "rich/highlighter.py",
+         "line": 20,
+         "called_from": "console.py:1464",
+         "args": {
+          "self": "<ReprHighlighter>",
+          "text": "'World!'"
+         },
+         "calls": [
+          {
+           "fn": "Text.__init__",
+           "file": "rich/text.py",
+           "line": 144,
+           "called_from": "highlighter.py:33",
+           "args": {
+            "self": "<Text>",
+            "text": "'World!'",
+            "style": "''",
+            "justify": "None",
+            "overflow": "None",
+            "no_wrap": "None",
+            "end": "'\\n'",
+            "tab_size": "None",
+            "spans": "None"
+           },
+           "calls": [
+            {
+             "fn": "strip_control_codes",
+             "file": "rich/control.py",
+             "line": 181,
+             "called_from": "text.py:156",
+             "args": {
+              "text": "'World!'",
+              "_translate_table": "{7: None, 8: None, 11: None, 12: None, 13: None}"
+             },
+             "calls": [],
+             "returned": "'World!'",
+             "tl": 79
+            }
+           ],
+           "returned": "None",
+           "tl": 78
+          },
+          {
+           "fn": "RegexHighlighter.highlight",
+           "file": "rich/highlighter.py",
+           "line": 67,
+           "called_from": "highlighter.py:38",
+           "args": {
+            "self": "<ReprHighlighter>",
+            "text": "<text 'World!' [] ''>"
+           },
+           "calls": [
+            {
+             "fn": "Text.highlight_regex",
+             "file": "rich/text.py",
+             "line": 593,
+             "called_from": "highlighter.py:77",
+             "args": {
+              "self": "<Text>",
+              "re_highlight": "'(?P<tag_start><)(?P<tag_name>[-\\\\w.:|...<tag_contents>[\\\\w\\\\W]*)(?P<tag_end>>)'",
+              "style": "None",
+              "style_prefix": "'repr.'"
+             },
+             "calls": [
+              {
+               "fn": "Text.plain",
+               "file": "rich/text.py",
+               "line": 402,
+               "called_from": "text.py:615",
+               "args": {
+                "self": "<Text>"
+               },
+               "calls": [],
+               "returned": "'World!'",
+               "tl": 84
+              }
+             ],
+             "returned": "0",
+             "tl": 83
+            },
+            {
+             "fn": "Text.highlight_regex",
+             "file": "rich/text.py",
+             "line": 593,
+             "args": {},
+             "calls": [],
+             "repeat": 3,
+             "returned": "0",
+             "tl": 87
+            }
+           ],
+           "returned": "None",
+           "tl": 82
+          }
+         ],
+         "returned": "<text 'World!' [] ''>",
+         "tl": 77
+        },
+        {
+         "fn": "Text.copy_styles",
+         "file": "rich/text.py",
+         "line": 1054,
+         "called_from": "console.py:1465",
+         "args": {
+          "self": "<Text>",
+          "text": "<text 'World!' [] ''>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 90
+        }
+       ],
+       "returned": "<text 'World!' [] ''>",
+       "tl": 64
+      },
+      {
+       "fn": "Console._collect_renderables.<locals>.check_text",
+       "file": "rich/console.py",
+       "line": 1550,
+       "called_from": "console.py:1581",
+       "args": {},
+       "calls": [
+        {
+         "fn": "Text.__init__",
+         "file": "rich/text.py",
+         "line": 144,
+         "called_from": "console.py:1552",
+         "args": {
+          "self": "<Text>",
+          "text": "' '",
+          "style": "''",
+          "justify": "None",
+          "overflow": "None",
+          "no_wrap": "None",
+          "end": "'\\n'",
+          "tab_size": "None",
+          "spans": "None"
+         },
+         "calls": [
+          {
+           "fn": "strip_control_codes",
+           "file": "rich/control.py",
+           "line": 181,
+           "called_from": "text.py:156",
+           "args": {
+            "text": "' '",
+            "_translate_table": "{7: None, 8: None, 11: None, 12: None, 13: None}"
+           },
+           "calls": [],
+           "returned": "' '",
+           "tl": 95
+          }
+         ],
+         "returned": "None",
+         "tl": 94
+        },
+        {
+         "fn": "Text.join",
+         "file": "rich/text.py",
+         "line": 778,
+         "called_from": "console.py:1553",
+         "args": {
+          "self": "<Text>",
+          "lines": "[<text 'Hello' [] ''>, <text 'World!' [] ''>]"
+         },
+         "calls": [
+          {
+           "fn": "Text.blank_copy",
+           "file": "rich/text.py",
+           "line": 430,
+           "called_from": "text.py:788",
+           "args": {
+            "self": "<Text>",
+            "plain": "''"
+           },
+           "calls": [
+            {
+             "fn": "Text.__init__",
+             "file": "rich/text.py",
+             "line": 144,
+             "called_from": "text.py:432",
+             "args": {
+              "self": "<Text>",
+              "text": "''",
+              "style": "''",
+              "justify": "None",
+              "overflow": "None",
+              "no_wrap": "None",
+              "end": "'\\n'",
+              "tab_size": "None",
+              "spans": "None"
+             },
+             "calls": [
+              {
+               "fn": "strip_control_codes",
+               "file": "rich/control.py",
+               "line": 181,
+               "called_from": "text.py:156",
+               "args": {
+                "text": "''",
+                "_translate_table": "{7: None, 8: None, 11: None, 12: None, 13: None}"
+               },
+               "calls": [],
+               "returned": "''",
+               "tl": 101
+              }
+             ],
+             "returned": "None",
+             "tl": 100
+            }
+           ],
+           "returned": "<text '' [] ''>",
+           "tl": 99
+          },
+          {
+           "fn": "Text.join.<locals>.iter_text",
+           "file": "rich/text.py",
+           "line": 790,
+           "called_from": "text.py:805",
+           "args": {},
+           "calls": [
+            {
+             "fn": "Text.plain",
+             "file": "rich/text.py",
+             "line": 402,
+             "called_from": "text.py:791",
+             "args": {
+              "self": "<Text>"
+             },
+             "calls": [],
+             "returned": "' '",
+             "tl": 106
+            },
+            {
+             "fn": "loop_last",
+             "file": "rich/_loop.py",
+             "line": 18,
+             "called_from": "text.py:792",
+             "args": {
+              "values": "[<text 'Hello' [] ''>, <text 'World!' [] ''>]"
+             },
+             "calls": [],
+             "returned": "(False, <text 'Hello' [] ''>)",
+             "tl": 108
+            }
+           ],
+           "returned": "<text 'Hello' [] ''>",
+           "tl": 105
+          },
+          {
+           "fn": "Text.__len__",
+           "file": "rich/text.py",
+           "line": 167,
+           "called_from": "text.py:813",
+           "args": {
+            "self": "<Text>"
+           },
+           "calls": [],
+           "returned": "5",
+           "tl": 111
+          },
+          {
+           "fn": "Text.join.<locals>.iter_text",
+           "file": "rich/text.py",
+           "line": 790,
+           "called_from": "text.py:805",
+           "args": {},
+           "calls": [],
+           "returned": "<text ' ' [] ''>",
+           "tl": 113
+          },
+          {
+           "fn": "Text.__len__",
+           "file": "rich/text.py",
+           "line": 167,
+           "called_from": "text.py:813",
+           "args": {
+            "self": "<Text>"
+           },
+           "calls": [],
+           "returned": "1",
+           "tl": 115
+          },
+          {
+           "fn": "Text.join.<locals>.iter_text",
+           "file": "rich/text.py",
+           "line": 790,
+           "called_from": "text.py:805",
+           "args": {},
+           "calls": [
+            {
+             "fn": "loop_last",
+             "file": "rich/_loop.py",
+             "line": 18,
+             "called_from": "text.py:792",
+             "args": {
+              "values": "[<text 'Hello' [] ''>, <text 'World!' [] ''>]"
+             },
+             "calls": [],
+             "returned": "(True, <text 'World!' [] ''>)",
+             "tl": 118
+            }
+           ],
+           "returned": "<text 'World!' [] ''>",
+           "tl": 117
+          },
+          {
+           "fn": "Text.__len__",
+           "file": "rich/text.py",
+           "line": 167,
+           "called_from": "text.py:813",
+           "args": {
+            "self": "<Text>"
+           },
+           "calls": [],
+           "returned": "6",
+           "tl": 121
+          },
+          {
+           "fn": "Text.join.<locals>.iter_text",
+           "file": "rich/text.py",
+           "line": 790,
+           "called_from": "text.py:805",
+           "args": {},
+           "calls": [
+            {
+             "fn": "loop_last",
+             "file": "rich/_loop.py",
+             "line": 18,
+             "called_from": "text.py:792",
+             "args": {
+              "values": "[<text 'Hello' [] ''>, <text 'World!' [] ''>]"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 124
+            }
+           ],
+           "returned": "None",
+           "tl": 123
+          }
+         ],
+         "returned": "<text 'Hello World!' [] ''>",
+         "tl": 98
+        }
+       ],
+       "returned": "None",
+       "tl": 93
+      }
+     ],
+     "returned": "[<text 'Hello World!' [] ''>]",
+     "tl": 30
+    },
+    {
+     "fn": "Console.options",
+     "file": "rich/console.py",
+     "line": 990,
+     "called_from": "console.py:1716",
+     "args": {
+      "self": "<Console>"
+     },
+     "calls": [
+      {
+       "fn": "Console.size",
+       "file": "rich/console.py",
+       "line": 1004,
+       "called_from": "console.py:993",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console.is_dumb_terminal",
+         "file": "rich/console.py",
+         "line": 978,
+         "called_from": "console.py:1015",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [
+          {
+           "fn": "Console.is_terminal",
+           "file": "rich/console.py",
+           "line": 930,
+           "called_from": "console.py:988",
+           "args": {
+            "self": "<Console>"
+           },
+           "calls": [
+            {
+             "fn": "Console.file",
+             "file": "rich/console.py",
+             "line": 756,
+             "called_from": "console.py:969",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+             "tl": 134
+            }
+           ],
+           "returned": "False",
+           "tl": 133
+          }
+         ],
+         "returned": "False",
+         "tl": 132
+        }
+       ],
+       "raised": "OSError(19, 'Operation not supported by device')",
+       "returned": "ConsoleDimensions(width=100, height=25)",
+       "tl": 131
+      },
+      {
+       "fn": "Console.encoding",
+       "file": "rich/console.py",
+       "line": 921,
+       "called_from": "console.py:1000",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console.file",
+         "file": "rich/console.py",
+         "line": 756,
+         "called_from": "console.py:928",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [],
+         "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+         "tl": 140
+        }
+       ],
+       "returned": "'utf-8'",
+       "tl": 139
+      },
+      {
+       "fn": "Console.is_terminal",
+       "file": "rich/console.py",
+       "line": 930,
+       "called_from": "console.py:1001",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console.file",
+         "file": "rich/console.py",
+         "line": 756,
+         "called_from": "console.py:969",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [],
+         "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+         "tl": 144
+        }
+       ],
+       "returned": "False",
+       "tl": 143
+      }
+     ],
+     "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+     "tl": 130
+    },
+    {
+     "fn": "ConsoleOptions.update",
+     "file": "rich/console.py",
+     "line": 157,
+     "called_from": "console.py:1716",
+     "args": {
+      "self": "<ConsoleOptions>",
+      "width": "<rich.console.NoChange object at 0x10bebdd30>",
+      "min_width": "<rich.console.NoChange object at 0x10bebdd30>",
+      "max_width": "<rich.console.NoChange object at 0x10bebdd30>",
+      "justify": "None",
+      "overflow": "None",
+      "no_wrap": "None",
+      "highlight": "None",
+      "markup": "None",
+      "height": "None"
+     },
+     "calls": [
+      {
+       "fn": "ConsoleOptions.copy",
+       "file": "rich/console.py",
+       "line": 147,
+       "called_from": "console.py:171",
+       "args": {
+        "self": "<ConsoleOptions>"
+       },
+       "calls": [],
+       "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+       "tl": 149
+      }
+     ],
+     "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+     "tl": 148
+    },
+    {
+     "fn": "Console.get_style",
+     "file": "rich/console.py",
+     "line": 1470,
+     "called_from": "console.py:1733",
+     "args": {
+      "self": "<Console>",
+      "name": "'bold red'",
+      "default": "None"
+     },
+     "calls": [
+      {
+       "fn": "Console._theme_stack",
+       "file": "rich/console.py",
+       "line": 784,
+       "called_from": "console.py:1489",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [],
+       "returned": "<rich.theme.ThemeStack object at 0x10bebef90>",
+       "tl": 153
+      },
+      {
+       "fn": "Style.parse",
+       "file": "rich/style.py",
+       "line": 496,
+       "called_from": "console.py:1491",
+       "args": {
+        "cls": "<type>",
+        "style_definition": "'bold red'"
+       },
+       "calls": [
+        {
+         "fn": "Style.__init__",
+         "file": "rich/style.py",
+         "line": 131,
+         "called_from": "style.py:560",
+         "args": {
+          "self": "<Style>",
+          "color": "'red'",
+          "bgcolor": "None",
+          "bold": "True",
+          "dim": "None",
+          "italic": "None",
+          "underline": "None",
+          "blink": "None",
+          "blink2": "None",
+          "reverse": "None",
+          "conceal": "None",
+          "strike": "None",
+          "underline2": "None",
+          "frame": "None",
+          "encircle": "None",
+          "overline": "None",
+          "link": "None",
+          "meta": "None"
+         },
+         "calls": [
+          {
+           "fn": "Style.__init__.<locals>._make_color",
+           "file": "rich/style.py",
+           "line": 155,
+           "called_from": "style.py:158",
+           "args": {
+            "color": "'red'"
+           },
+           "calls": [],
+           "returned": "Color('red', ColorType.STANDARD, number=1)",
+           "tl": 157
+          }
+         ],
+         "returned": "None",
+         "tl": 156
+        }
+       ],
+       "returned": "Style(color=Color('red', ColorType.STANDARD, number=1), bold=True)",
+       "tl": 155
+      },
+      {
+       "fn": "Style.link",
+       "file": "rich/style.py",
+       "line": 457,
+       "called_from": "console.py:1492",
+       "args": {
+        "self": "<Style>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 161
+      }
+     ],
+     "returned": "Style(color=Color('red', ColorType.STANDARD, number=1), bold=True)",
+     "tl": 152
+    },
+    {
+     "fn": "Segment.line",
+     "file": "rich/segment.py",
+     "line": 181,
+     "called_from": "console.py:1734",
+     "args": {
+      "cls": "<type>"
+     },
+     "calls": [],
+     "returned": "Segment('\\n')",
+     "tl": 164
+    },
+    {
+     "fn": "Segment.split_lines_terminator",
+     "file": "rich/segment.py",
+     "line": 275,
+     "called_from": "console.py:1736",
+     "args": {
+      "cls": "<type>",
+      "segments": "<generator object Console.render at 0x10b044820>"
+     },
+     "calls": [
+      {
+       "fn": "Console.render",
+       "file": "rich/console.py",
+       "line": 1294,
+       "called_from": "segment.py:290",
+       "args": {
+        "self": "<Console>",
+        "renderable": "<text 'Hello World!' [] ''>",
+        "options": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)"
+       },
+       "calls": [
+        {
+         "fn": "rich_cast",
+         "file": "rich/protocol.py",
+         "line": 18,
+         "called_from": "console.py:1317",
+         "args": {
+          "renderable": "<text 'Hello World!' [] ''>"
+         },
+         "calls": [],
+         "returned": "<text 'Hello World!' [] ''>",
+         "tl": 168
+        },
+        {
+         "fn": "ConsoleOptions.reset_height",
+         "file": "rich/console.py",
+         "line": 220,
+         "called_from": "console.py:1338",
+         "args": {
+          "self": "<ConsoleOptions>"
+         },
+         "calls": [
+          {
+           "fn": "ConsoleOptions.copy",
+           "file": "rich/console.py",
+           "line": 147,
+           "called_from": "console.py:226",
+           "args": {
+            "self": "<ConsoleOptions>"
+           },
+           "calls": [],
+           "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+           "tl": 171
+          }
+         ],
+         "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+         "tl": 170
+        },
+        {
+         "fn": "Text.__rich_console__",
+         "file": "rich/text.py",
+         "line": 689,
+         "called_from": "console.py:1339",
+         "args": {
+          "self": "<Text>",
+          "console": "<console width=100 None>",
+          "options": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)"
+         },
+         "calls": [
+          {
+           "fn": "pick_bool",
+           "file": "rich/_pick.py",
+           "line": 4,
+           "called_from": "text.py:702",
+           "args": {},
+           "calls": [],
+           "returned": "False",
+           "tl": 175
+          },
+          {
+           "fn": "Text.wrap",
+           "file": "rich/text.py",
+           "line": 1201,
+           "called_from": "text.py:696",
+           "args": {
+            "self": "<Text>",
+            "console": "<console width=100 None>",
+            "width": "100",
+            "justify": "'default'",
+            "overflow": "'fold'",
+            "tab_size": "8",
+            "no_wrap": "False"
+           },
+           "calls": [
+            {
+             "fn": "pick_bool",
+             "file": "rich/_pick.py",
+             "line": 4,
+             "called_from": "text.py:1227",
+             "args": {},
+             "calls": [],
+             "returned": "False",
+             "tl": 178
+            },
+            {
+             "fn": "Lines.__init__",
+             "file": "rich/containers.py",
+             "line": 69,
+             "called_from": "text.py:1229",
+             "args": {
+              "self": "<Lines>",
+              "lines": "()"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 180
+            },
+            {
+             "fn": "Text.split",
+             "file": "rich/text.py",
+             "line": 1062,
+             "called_from": "text.py:1230",
+             "args": {
+              "self": "<Text>",
+              "separator": "'\\n'",
+              "include_separator": "False",
+              "allow_blank": "True"
+             },
+             "calls": [
+              {
+               "fn": "Text.plain",
+               "file": "rich/text.py",
+               "line": 402,
+               "called_from": "text.py:1081",
+               "args": {
+                "self": "<Text>"
+               },
+               "calls": [],
+               "returned": "'Hello World!'",
+               "tl": 183
+              },
+              {
+               "fn": "Text.copy",
+               "file": "rich/text.py",
+               "line": 443,
+               "called_from": "text.py:1083",
+               "args": {
+                "self": "<Text>"
+               },
+               "calls": [
+                {
+                 "fn": "Text.plain",
+                 "file": "rich/text.py",
+                 "line": 402,
+                 "called_from": "text.py:446",
+                 "args": {
+                  "self": "<Text>"
+                 },
+                 "calls": [],
+                 "returned": "'Hello World!'",
+                 "tl": 186
+                },
+                {
+                 "fn": "Text.__init__",
+                 "file": "rich/text.py",
+                 "line": 144,
+                 "called_from": "text.py:445",
+                 "args": {
+                  "self": "<Text>",
+                  "text": "'Hello World!'",
+                  "style": "''",
+                  "justify": "None",
+                  "overflow": "None",
+                  "no_wrap": "None",
+                  "end": "'\\n'",
+                  "tab_size": "None",
+                  "spans": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "strip_control_codes",
+                   "file": "rich/control.py",
+                   "line": 181,
+                   "called_from": "text.py:156",
+                   "args": {
+                    "text": "'Hello World!'",
+                    "_translate_table": "{7: None, 8: None, 11: None, 12: None, 13: None}"
+                   },
+                   "calls": [],
+                   "returned": "'Hello World!'",
+                   "tl": 189
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 188
+                }
+               ],
+               "returned": "<text 'Hello World!' [] ''>",
+               "tl": 185
+              },
+              {
+               "fn": "Lines.__init__",
+               "file": "rich/containers.py",
+               "line": 69,
+               "called_from": "text.py:1083",
+               "args": {
+                "self": "<Lines>",
+                "lines": "[<text 'Hello World!' [] ''>]"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 193
+              }
+             ],
+             "returned": "Lines([<text 'Hello World!' [] ''>])",
+             "tl": 182
+            },
+            {
+             "fn": "Lines.__iter__",
+             "file": "rich/containers.py",
+             "line": 75,
+             "called_from": "text.py:1230",
+             "args": {
+              "self": "<Lines>"
+             },
+             "calls": [],
+             "returned": "<list_iterator object at 0x10beb6920>",
+             "tl": 196
+            },
+            {
+             "fn": "Text.__contains__",
+             "file": "rich/text.py",
+             "line": 191,
+             "called_from": "text.py:1231",
+             "args": {
+              "self": "<Text>",
+              "other": "'\\t'"
+             },
+             "calls": [
+              {
+               "fn": "Text.plain",
+               "file": "rich/text.py",
+               "line": 402,
+               "called_from": "text.py:193",
+               "args": {
+                "self": "<Text>"
+               },
+               "calls": [],
+               "returned": "'Hello World!'",
+               "tl": 199
+              }
+             ],
+             "returned": "False",
+             "tl": 198
+            },
+            {
+             "fn": "Text.__str__",
+             "file": "rich/text.py",
+             "line": 173,
+             "called_from": "text.py:1239",
+             "args": {
+              "self": "<Text>"
+             },
+             "calls": [
+              {
+               "fn": "Text.plain",
+               "file": "rich/text.py",
+               "line": 402,
+               "called_from": "text.py:174",
+               "args": {
+                "self": "<Text>"
+               },
+               "calls": [],
+               "returned": "'Hello World!'",
+               "tl": 203
+              }
+             ],
+             "returned": "'Hello World!'",
+             "tl": 202
+            },
+            {
+             "fn": "divide_line",
+             "file": "rich/_wrap.py",
+             "line": 26,
+             "called_from": "text.py:1239",
+             "args": {
+              "text": "'Hello World!'",
+              "width": "100",
+              "fold": "True"
+             },
+             "calls": [
+              {
+               "fn": "words",
+               "file": "rich/_wrap.py",
+               "line": 12,
+               "called_from": "_wrap.py:44",
+               "args": {
+                "text": "'Hello World!'"
+               },
+               "calls": [],
+               "returned": "(0, 6, 'Hello ')",
+               "tl": 207
+              },
+              {
+               "fn": "cell_len",
+               "file": "rich/cells.py",
+               "line": 98,
+               "called_from": "_wrap.py:45",
+               "args": {
+                "text": "'Hello'",
+                "unicode_version": "'auto'"
+               },
+               "calls": [
+                {
+                 "fn": "cached_cell_len",
+                 "file": "rich/cells.py",
+                 "line": 81,
+                 "called_from": "cells.py:109",
+                 "args": {
+                  "text": "'Hello'",
+                  "unicode_version": "'auto'"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_cell_len",
+                   "file": "rich/cells.py",
+                   "line": 113,
+                   "called_from": "cells.py:95",
+                   "args": {
+                    "text": "'Hello'",
+                    "unicode_version": "'auto'"
+                   },
+                   "calls": [],
+                   "returned": "5",
+                   "tl": 211
+                  }
+                 ],
+                 "returned": "5",
+                 "tl": 210
+                }
+               ],
+               "returned": "5",
+               "tl": 209
+              },
+              {
+               "fn": "cell_len",
+               "file": "rich/cells.py",
+               "line": 98,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "6",
+               "tl": 215
+              },
+              {
+               "fn": "words",
+               "file": "rich/_wrap.py",
+               "line": 12,
+               "called_from": "_wrap.py:44",
+               "args": {
+                "text": "'Hello World!'"
+               },
+               "calls": [],
+               "returned": "(6, 12, 'World!')",
+               "tl": 216
+              },
+              {
+               "fn": "cell_len",
+               "file": "rich/cells.py",
+               "line": 98,
+               "called_from": "_wrap.py:45",
+               "args": {
+                "text": "'World!'",
+                "unicode_version": "'auto'"
+               },
+               "calls": [
+                {
+                 "fn": "cached_cell_len",
+                 "file": "rich/cells.py",
+                 "line": 81,
+                 "called_from": "cells.py:109",
+                 "args": {
+                  "text": "'World!'",
+                  "unicode_version": "'auto'"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_cell_len",
+                   "file": "rich/cells.py",
+                   "line": 113,
+                   "called_from": "cells.py:95",
+                   "args": {
+                    "text": "'World!'",
+                    "unicode_version": "'auto'"
+                   },
+                   "calls": [],
+                   "returned": "6",
+                   "tl": 220
+                  }
+                 ],
+                 "returned": "6",
+                 "tl": 219
+                }
+               ],
+               "returned": "6",
+               "tl": 218
+              },
+              {
+               "fn": "cell_len",
+               "file": "rich/cells.py",
+               "line": 98,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "6",
+               "tl": 224
+              },
+              {
+               "fn": "words",
+               "file": "rich/_wrap.py",
+               "line": 12,
+               "called_from": "_wrap.py:44",
+               "args": {
+                "text": "'Hello World!'"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 225
+              }
+             ],
+             "returned": "[]",
+             "tl": 206
+            },
+            {
+             "fn": "Text.divide",
+             "file": "rich/text.py",
+             "line": 1106,
+             "called_from": "text.py:1240",
+             "args": {
+              "self": "<Text>",
+              "offsets": "[]"
+             },
+             "calls": [
+              {
+               "fn": "Text.copy",
+               "file": "rich/text.py",
+               "line": 443,
+               "called_from": "text.py:1118",
+               "args": {
+                "self": "<Text>"
+               },
+               "calls": [
+                {
+                 "fn": "Text.plain",
+                 "file": "rich/text.py",
+                 "line": 402,
+                 "called_from": "text.py:446",
+                 "args": {
+                  "self": "<Text>"
+                 },
+                 "calls": [],
+                 "returned": "'Hello World!'",
+                 "tl": 230
+                },
+                {
+                 "fn": "Text.__init__",
+                 "file": "rich/text.py",
+                 "line": 144,
+                 "called_from": "text.py:445",
+                 "args": {
+                  "self": "<Text>",
+                  "text": "'Hello World!'",
+                  "style": "''",
+                  "justify": "None",
+                  "overflow": "None",
+                  "no_wrap": "None",
+                  "end": "'\\n'",
+                  "tab_size": "None",
+                  "spans": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "strip_control_codes",
+                   "file": "rich/control.py",
+                   "line": 181,
+                   "called_from": "text.py:156",
+                   "args": {
+                    "text": "'Hello World!'",
+                    "_translate_table": "{7: None, 8: None, 11: None, 12: None, 13: None}"
+                   },
+                   "calls": [],
+                   "returned": "'Hello World!'",
+                   "tl": 233
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 232
+                }
+               ],
+               "returned": "<text 'Hello World!' [] ''>",
+               "tl": 229
+              },
+              {
+               "fn": "Lines.__init__",
+               "file": "rich/containers.py",
+               "line": 69,
+               "called_from": "text.py:1118",
+               "args": {
+                "self": "<Lines>",
+                "lines": "[<text 'Hello World!' [] ''>]"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 237
+              }
+             ],
+             "returned": "Lines([<text 'Hello World!' [] ''>])",
+             "tl": 228
+            },
+            {
+             "fn": "Lines.__iter__",
+             "file": "rich/containers.py",
+             "line": 75,
+             "called_from": "text.py:1241",
+             "args": {
+              "self": "<Lines>"
+             },
+             "calls": [],
+             "returned": "<list_iterator object at 0x10b2d8ee0>",
+             "tl": 240
+            },
+            {
+             "fn": "Text.rstrip_end",
+             "file": "rich/text.py",
+             "line": 666,
+             "called_from": "text.py:1242",
+             "args": {
+              "self": "<Text>",
+              "size": "100"
+             },
+             "calls": [
+              {
+               "fn": "Text.__len__",
+               "file": "rich/text.py",
+               "line": 167,
+               "called_from": "text.py:672",
+               "args": {
+                "self": "<Text>"
+               },
+               "calls": [],
+               "returned": "12",
+               "tl": 243
+              }
+             ],
+             "returned": "None",
+             "tl": 242
+            },
+            {
+             "fn": "Lines.justify",
+             "file": "rich/containers.py",
+             "line": 111,
+             "called_from": "text.py:1244",
+             "args": {
+              "self": "<Lines>",
+              "console": "<console width=100 None>",
+              "width": "100",
+              "justify": "'default'",
+              "overflow": "'fold'"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 246
+            },
+            {
+             "fn": "Lines.__iter__",
+             "file": "rich/containers.py",
+             "line": 75,
+             "called_from": "text.py:1247",
+             "args": {
+              "self": "<Lines>"
+             },
+             "calls": [],
+             "returned": "<list_iterator object at 0x10b2d93c0>",
+             "tl": 248
+            },
+            {
+             "fn": "Text.truncate",
+             "file": "rich/text.py",
+             "line": 859,
+             "called_from": "text.py:1248",
+             "args": {
+              "self": "<Text>",
+              "max_width": "100",
+              "overflow": "'fold'",
+              "pad": "False"
+             },
+             "calls": [
+              {
+               "fn": "Text.plain",
+               "file": "rich/text.py",
+               "line": 402,
+               "called_from": "text.py:875",
+               "args": {
+                "self": "<Text>"
+               },
+               "calls": [],
+               "returned": "'Hello World!'",
+               "tl": 251
+              },
+              {
+               "fn": "cell_len",
+               "file": "rich/cells.py",
+               "line": 98,
+               "called_from": "text.py:875",
+               "args": {
+                "text": "'Hello World!'",
+                "unicode_version": "'auto'"
+               },
+               "calls": [
+                {
+                 "fn": "cached_cell_len",
+                 "file": "rich/cells.py",
+                 "line": 81,
+                 "called_from": "cells.py:109",
+                 "args": {
+                  "text": "'Hello World!'",
+                  "unicode_version": "'auto'"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_cell_len",
+                   "file": "rich/cells.py",
+                   "line": 113,
+                   "called_from": "cells.py:95",
+                   "args": {
+                    "text": "'Hello World!'",
+                    "unicode_version": "'auto'"
+                   },
+                   "calls": [],
+                   "returned": "12",
+                   "tl": 255
+                  }
+                 ],
+                 "returned": "12",
+                 "tl": 254
+                }
+               ],
+               "returned": "12",
+               "tl": 253
+              }
+             ],
+             "returned": "None",
+             "tl": 250
+            },
+            {
+             "fn": "Lines.extend",
+             "file": "rich/containers.py",
+             "line": 105,
+             "called_from": "text.py:1249",
+             "args": {
+              "self": "<Lines>",
+              "lines": "Lines([<text 'Hello World!' [] ''>])"
+             },
+             "calls": [
+              {
+               "fn": "Lines.__iter__",
+               "file": "rich/containers.py",
+               "line": 75,
+               "called_from": "containers.py:106",
+               "args": {
+                "self": "<Lines>"
+               },
+               "calls": [],
+               "returned": "<list_iterator object at 0x10b2d9ab0>",
+               "tl": 261
+              },
+              {
+               "fn": "Lines.__len__",
+               "file": "rich/containers.py",
+               "line": 93,
+               "called_from": "containers.py:106",
+               "args": {
+                "self": "<Lines>"
+               },
+               "calls": [],
+               "returned": "1",
+               "tl": 263
+              }
+             ],
+             "returned": "None",
+             "tl": 260
+            }
+           ],
+           "returned": "Lines([<text 'Hello World!' [] ''>])",
+           "tl": 177
+          },
+          {
+           "fn": "Text.__init__",
+           "file": "rich/text.py",
+           "line": 144,
+           "called_from": "text.py:704",
+           "args": {
+            "self": "<Text>",
+            "text": "'\\n'",
+            "style": "''",
+            "justify": "None",
+            "overflow": "None",
+            "no_wrap": "None",
+            "end": "'\\n'",
+            "tab_size": "None",
+            "spans": "None"
+           },
+           "calls": [
+            {
+             "fn": "strip_control_codes",
+             "file": "rich/control.py",
+             "line": 181,
+             "called_from": "text.py:156",
+             "args": {
+              "text": "'\\n'",
+              "_translate_table": "{7: None, 8: None, 11: None, 12: None, 13: None}"
+             },
+             "calls": [],
+             "returned": "'\\n'",
+             "tl": 268
+            }
+           ],
+           "returned": "None",
+           "tl": 267
+          },
+          {
+           "fn": "Text.join",
+           "file": "rich/text.py",
+           "line": 778,
+           "called_from": "text.py:704",
+           "args": {
+            "self": "<Text>",
+            "lines": "Lines([<text 'Hello World!' [] ''>])"
+           },
+           "calls": [
+            {
+             "fn": "Text.blank_copy",
+             "file": "rich/text.py",
+             "line": 430,
+             "called_from": "text.py:788",
+             "args": {
+              "self": "<Text>",
+              "plain": "''"
+             },
+             "calls": [
+              {
+               "fn": "Text.__init__",
+               "file": "rich/text.py",
+               "line": 144,
+               "called_from": "text.py:432",
+               "args": {
+                "self": "<Text>",
+                "text": "''",
+                "style": "''",
+                "justify": "None",
+                "overflow": "None",
+                "no_wrap": "None",
+                "end": "'\\n'",
+                "tab_size": "None",
+                "spans": "None"
+               },
+               "calls": [
+                {
+                 "fn": "strip_control_codes",
+                 "file": "rich/control.py",
+                 "line": 181,
+                 "called_from": "text.py:156",
+                 "args": {
+                  "text": "''",
+                  "_translate_table": "{7: None, 8: None, 11: None, 12: None, 13: None}"
+                 },
+                 "calls": [],
+                 "returned": "''",
+                 "tl": 274
+                }
+               ],
+               "returned": "None",
+               "tl": 273
+              }
+             ],
+             "returned": "<text '' [] ''>",
+             "tl": 272
+            },
+            {
+             "fn": "Text.join.<locals>.iter_text",
+             "file": "rich/text.py",
+             "line": 790,
+             "called_from": "text.py:805",
+             "args": {},
+             "calls": [
+              {
+               "fn": "Text.plain",
+               "file": "rich/text.py",
+               "line": 402,
+               "called_from": "text.py:791",
+               "args": {
+                "self": "<Text>"
+               },
+               "calls": [],
+               "returned": "'\\n'",
+               "tl": 279
+              },
+              {
+               "fn": "loop_last",
+               "file": "rich/_loop.py",
+               "line": 18,
+               "called_from": "text.py:792",
+               "args": {
+                "values": "Lines([<text 'Hello World!' [] ''>])"
+               },
+               "calls": [
+                {
+                 "fn": "Lines.__iter__",
+                 "file": "rich/containers.py",
+                 "line": 75,
+                 "called_from": "_loop.py:20",
+                 "args": {
+                  "self": "<Lines>"
+                 },
+                 "calls": [],
+                 "returned": "<list_iterator object at 0x10b2da9e0>",
+                 "tl": 282
+                }
+               ],
+               "returned": "(True, <text 'Hello World!' [] ''>)",
+               "tl": 281
+              }
+             ],
+             "returned": "<text 'Hello World!' [] ''>",
+             "tl": 278
+            },
+            {
+             "fn": "Text.__len__",
+             "file": "rich/text.py",
+             "line": 167,
+             "called_from": "text.py:813",
+             "args": {
+              "self": "<Text>"
+             },
+             "calls": [],
+             "returned": "12",
+             "tl": 286
+            },
+            {
+             "fn": "Text.join.<locals>.iter_text",
+             "file": "rich/text.py",
+             "line": 790,
+             "called_from": "text.py:805",
+             "args": {},
+             "calls": [
+              {
+               "fn": "loop_last",
+               "file": "rich/_loop.py",
+               "line": 18,
+               "called_from": "text.py:792",
+               "args": {
+                "values": "Lines([<text 'Hello World!' [] ''>])"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 289
+              }
+             ],
+             "returned": "None",
+             "tl": 288
+            }
+           ],
+           "returned": "<text 'Hello World!' [] ''>",
+           "tl": 271
+          },
+          {
+           "fn": "Text.render",
+           "file": "rich/text.py",
+           "line": 719,
+           "called_from": "text.py:705",
+           "args": {
+            "self": "<Text>",
+            "console": "<console width=100 None>",
+            "end": "'\\n'"
+           },
+           "calls": [
+            {
+             "fn": "Text.plain",
+             "file": "rich/text.py",
+             "line": 402,
+             "called_from": "text.py:730",
+             "args": {
+              "self": "<Text>"
+             },
+             "calls": [],
+             "returned": "'Hello World!'",
+             "tl": 294
+            }
+           ],
+           "returned": "Segment('Hello World!')",
+           "tl": 293
+          }
+         ],
+         "returned": "Segment('Hello World!')",
+         "tl": 174
+        }
+       ],
+       "returned": "Segment('Hello World!')",
+       "tl": 167
+      },
+      {
+       "fn": "Console.render",
+       "file": "rich/console.py",
+       "line": 1294,
+       "args": {},
+       "calls": [],
+       "repeat": 1,
+       "returned": "Segment('\\n')",
+       "tl": 299
+      }
+     ],
+     "returned": "([Segment('Hello World!')], True)",
+     "tl": 166
+    },
+    {
+     "fn": "Segment.apply_style",
+     "file": "rich/segment.py",
+     "line": 186,
+     "called_from": "console.py:1739",
+     "args": {
+      "cls": "<type>",
+      "segments": "[Segment('Hello World!')]",
+      "style": "Style(color=Color('red', ColorType.STANDARD, number=1), bold=True)",
+      "post_style": "None"
+     },
+     "calls": [
+      {
+       "fn": "Style.__bool__",
+       "file": "rich/style.py",
+       "line": 340,
+       "called_from": "segment.py:206",
+       "args": {
+        "self": "<Style>"
+       },
+       "calls": [],
+       "returned": "True",
+       "tl": 302
+      }
+     ],
+     "returned": "<generator object Segment.apply_style.<locals>.<genexpr> at 0x10c13cd00>",
+     "tl": 301
+    },
+    {
+     "fn": "Style.__add__",
+     "file": "rich/style.py",
+     "line": 757,
+     "called_from": "segment.py:209",
+     "args": {
+      "self": "<Style>",
+      "style": "None"
+     },
+     "calls": [
+      {
+       "fn": "Style.__hash__",
+       "file": "rich/style.py",
+       "line": 441,
+       "called_from": "style.py:758",
+       "args": {
+        "self": "<Style>"
+       },
+       "calls": [],
+       "returned": "6286236468264462863",
+       "tl": 306
+      },
+      {
+       "fn": "Style._add",
+       "file": "rich/style.py",
+       "line": 732,
+       "called_from": "style.py:758",
+       "args": {
+        "self": "<Style>",
+        "style": "None"
+       },
+       "calls": [],
+       "returned": "Style(color=Color('red', ColorType.STANDARD, number=1), bold=True)",
+       "tl": 308
+      },
+      {
+       "fn": "Style.link",
+       "file": "rich/style.py",
+       "line": 457,
+       "called_from": "style.py:759",
+       "args": {
+        "self": "<Style>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 310
+      }
+     ],
+     "returned": "Style(color=Color('red', ColorType.STANDARD, number=1), bold=True)",
+     "tl": 305
+    },
+    {
+     "fn": "Segment.split_lines_terminator",
+     "file": "rich/segment.py",
+     "line": 275,
+     "called_from": "console.py:1736",
+     "args": {
+      "cls": "<type>",
+      "segments": "<generator object Console.render at 0x10b044820>"
+     },
+     "calls": [
+      {
+       "fn": "Console.render",
+       "file": "rich/console.py",
+       "line": 1294,
+       "called_from": "segment.py:290",
+       "args": {
+        "self": "<Console>",
+        "renderable": "<text 'Hello World!' [] ''>",
+        "options": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)"
+       },
+       "calls": [
+        {
+         "fn": "Text.__rich_console__",
+         "file": "rich/text.py",
+         "line": 689,
+         "called_from": "console.py:1339",
+         "args": {
+          "self": "<Text>",
+          "console": "<console width=100 None>",
+          "options": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)"
+         },
+         "calls": [
+          {
+           "fn": "Text.render",
+           "file": "rich/text.py",
+           "line": 719,
+           "called_from": "text.py:705",
+           "args": {
+            "self": "<Text>",
+            "console": "<console width=100 None>",
+            "end": "'\\n'"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 316
+          }
+         ],
+         "raised": "StopIteration()",
+         "returned": "None",
+         "tl": 315
+        }
+       ],
+       "returned": "None",
+       "tl": 314
+      }
+     ],
+     "returned": "None",
+     "tl": 313
+    },
+    {
+     "fn": "Console._buffer",
+     "file": "rich/console.py",
+     "line": 770,
+     "called_from": "console.py:1750",
+     "args": {
+      "self": "<Console>"
+     },
+     "calls": [],
+     "returned": "[]",
+     "tl": 321
+    },
+    {
+     "fn": "Console.width",
+     "file": "rich/console.py",
+     "line": 1056,
+     "called_from": "console.py:1752",
+     "args": {
+      "self": "<Console>"
+     },
+     "calls": [
+      {
+       "fn": "Console.size",
+       "file": "rich/console.py",
+       "line": 1004,
+       "called_from": "console.py:1063",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console.is_dumb_terminal",
+         "file": "rich/console.py",
+         "line": 978,
+         "called_from": "console.py:1015",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [
+          {
+           "fn": "Console.is_terminal",
+           "file": "rich/console.py",
+           "line": 930,
+           "called_from": "console.py:988",
+           "args": {
+            "self": "<Console>"
+           },
+           "calls": [
+            {
+             "fn": "Console.file",
+             "file": "rich/console.py",
+             "line": 756,
+             "called_from": "console.py:969",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+             "tl": 327
+            }
+           ],
+           "returned": "False",
+           "tl": 326
+          }
+         ],
+         "returned": "False",
+         "tl": 325
+        }
+       ],
+       "raised": "OSError(19, 'Operation not supported by device')",
+       "returned": "ConsoleDimensions(width=100, height=25)",
+       "tl": 324
+      }
+     ],
+     "returned": "100",
+     "tl": 323
+    },
+    {
+     "fn": "Segment.split_and_crop_lines",
+     "file": "rich/segment.py",
+     "line": 306,
+     "called_from": "console.py:1751",
+     "args": {
+      "cls": "<type>",
+      "segments": "[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\\n')]",
+      "length": "100",
+      "style": "None",
+      "pad": "False",
+      "include_new_lines": "True"
+     },
+     "calls": [
+      {
+       "fn": "Segment.adjust_line_length",
+       "file": "rich/segment.py",
+       "line": 353,
+       "called_from": "segment.py:341",
+       "args": {
+        "cls": "<type>",
+        "line": "[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True))]",
+        "length": "100",
+        "style": "None",
+        "pad": "False"
+       },
+       "calls": [
+        {
+         "fn": "Segment.cell_length",
+         "file": "rich/segment.py",
+         "line": 78,
+         "called_from": "segment.py:372",
+         "args": {
+          "self": "<Segment>"
+         },
+         "calls": [
+          {
+           "fn": "cell_len",
+           "file": "rich/cells.py",
+           "line": 98,
+           "called_from": "segment.py:86",
+           "args": {
+            "text": "'Hello World!'",
+            "unicode_version": "'auto'"
+           },
+           "calls": [],
+           "returned": "12",
+           "tl": 336
+          }
+         ],
+         "returned": "12",
+         "tl": 335
+        }
+       ],
+       "returned": "[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True))]",
+       "tl": 334
+      }
+     ],
+     "returned": "[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\\n')]",
+     "tl": 333
+    },
+    {
+     "fn": "Segment.split_and_crop_lines",
+     "file": "rich/segment.py",
+     "line": 306,
+     "args": {},
+     "calls": [],
+     "repeat": 1,
+     "returned": "None",
+     "tl": 341
+    },
+    {
+     "fn": "Console.__exit__",
+     "file": "rich/console.py",
+     "line": 862,
+     "called_from": "console.py:1704",
+     "args": {
+      "self": "<Console>",
+      "exc_type": "None",
+      "exc_value": "None",
+      "traceback": "None"
+     },
+     "calls": [
+      {
+       "fn": "Console._exit_buffer",
+       "file": "rich/console.py",
+       "line": 817,
+       "called_from": "console.py:864",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console._buffer_index",
+         "file": "rich/console.py",
+         "line": 775,
+         "called_from": "console.py:819",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [],
+         "returned": "1",
+         "tl": 344
+        },
+        {
+         "fn": "Console._buffer_index",
+         "file": "rich/console.py",
+         "line": 775,
+         "args": {},
+         "calls": [],
+         "repeat": 1,
+         "returned": "None",
+         "tl": 346
+        },
+        {
+         "fn": "Console._check_buffer",
+         "file": "rich/console.py",
+         "line": 2044,
+         "called_from": "console.py:820",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [
+          {
+           "fn": "Console._write_buffer",
+           "file": "rich/console.py",
+           "line": 2059,
+           "called_from": "console.py:2055",
+           "args": {
+            "self": "<Console>"
+           },
+           "calls": [
+            {
+             "fn": "Console._buffer_index",
+             "file": "rich/console.py",
+             "line": 775,
+             "called_from": "console.py:2063",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "0",
+             "tl": 349
+            },
+            {
+             "fn": "Console._buffer",
+             "file": "rich/console.py",
+             "line": 770,
+             "called_from": "console.py:2065",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\\n')]",
+             "tl": 351
+            },
+            {
+             "fn": "Console._buffer_index",
+             "file": "rich/console.py",
+             "line": 775,
+             "called_from": "console.py:2067",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "0",
+             "tl": 353
+            },
+            {
+             "fn": "Console._buffer",
+             "file": "rich/console.py",
+             "line": 770,
+             "called_from": "console.py:2122",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\\n')]",
+             "tl": 355
+            },
+            {
+             "fn": "Console._render_buffer",
+             "file": "rich/console.py",
+             "line": 2132,
+             "called_from": "console.py:2122",
+             "args": {
+              "self": "<Console>",
+              "buffer": "[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\\n')]"
+             },
+             "calls": [
+              {
+               "fn": "Console.is_terminal",
+               "file": "rich/console.py",
+               "line": 930,
+               "called_from": "console.py:2138",
+               "args": {
+                "self": "<Console>"
+               },
+               "calls": [
+                {
+                 "fn": "Console.file",
+                 "file": "rich/console.py",
+                 "line": 756,
+                 "called_from": "console.py:969",
+                 "args": {
+                  "self": "<Console>"
+                 },
+                 "calls": [],
+                 "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+                 "tl": 359
+                }
+               ],
+               "returned": "False",
+               "tl": 358
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 362
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "'Hello World!'",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "'Hello World!'",
+               "tl": 364
+              }
+             ],
+             "returned": "'Hello World!\\n'",
+             "tl": 357
+            },
+            {
+             "fn": "Console.file",
+             "file": "rich/console.py",
+             "line": 756,
+             "called_from": "console.py:2124",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+             "tl": 367
+            },
+            {
+             "fn": "Console.file",
+             "file": "rich/console.py",
+             "line": 756,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+             "tl": 369
+            },
+            {
+             "fn": "Console._buffer",
+             "file": "rich/console.py",
+             "line": 770,
+             "called_from": "console.py:2130",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "[Segment('Hello World!', Style(color=Co...orType.STANDARD, number=1), bold=True)), Segment('\\n')]",
+             "tl": 370
+            }
+           ],
+           "returned": "None",
+           "tl": 348
+          }
+         ],
+         "returned": "None",
+         "tl": 347
+        }
+       ],
+       "returned": "None",
+       "tl": 343
+      }
+     ],
+     "returned": "None",
+     "tl": 342
+    }
+   ],
+   "returned": "None",
+   "tl": 22
+  },
+  {
+   "fn": "Console.print",
+   "file": "rich/console.py",
+   "line": 1652,
+   "args": {},
+   "calls": [],
+   "repeat": 1,
+   "returned": "None",
+   "tl": 377
+  },
+  {
+   "fn": "Table.__init__",
+   "file": "rich/table.py",
+   "line": 188,
+   "called_from": "scenario.py:16",
+   "args": {
+    "self": "<Table>",
+    "title": "None",
+    "caption": "None",
+    "width": "None",
+    "min_width": "None",
+    "box": "Box(...)",
+    "safe_box": "None",
+    "padding": "(0, 1)",
+    "collapse_padding": "False",
+    "pad_edge": "True",
+    "expand": "False",
+    "show_header": "True",
+    "show_footer": "False",
+    "show_edge": "True",
+    "show_lines": "False",
+    "leading": "0",
+    "style": "'none'",
+    "row_styles": "None",
+    "header_style": "'bold magenta'",
+    "footer_style": "'table.footer'",
+    "border_style": "None",
+    "title_style": "None",
+    "caption_style": "None",
+    "title_justify": "'center'",
+    "caption_justify": "'center'",
+    "highlight": "False"
+   },
+   "calls": [
+    {
+     "fn": "Padding.unpack",
+     "file": "rich/padding.py",
+     "line": 60,
+     "called_from": "table.py:225",
+     "args": {
+      "pad": "(0, 1)"
+     },
+     "calls": [],
+     "returned": "(0, 1, 0, 1)",
+     "tl": 379
+    }
+   ],
+   "returned": "None",
+   "tl": 378
+  },
+  {
+   "fn": "Table.add_column",
+   "file": "rich/table.py",
+   "line": 364,
+   "called_from": "scenario.py:17",
+   "args": {
+    "self": "<Table>",
+    "header": "'Date'",
+    "footer": "''",
+    "header_style": "None",
+    "highlight": "None",
+    "footer_style": "None",
+    "style": "'dim'",
+    "justify": "'left'",
+    "vertical": "'top'",
+    "overflow": "'ellipsis'",
+    "width": "12",
+    "min_width": "None",
+    "max_width": "None",
+    "ratio": "None",
+    "no_wrap": "False"
+   },
+   "calls": [],
+   "returned": "None",
+   "tl": 382
+  },
+  {
+   "fn": "Table.add_column",
+   "file": "rich/table.py",
+   "line": 364,
+   "args": {},
+   "calls": [],
+   "repeat": 3,
+   "returned": "None",
+   "tl": 384
+  },
+  {
+   "fn": "Table.add_row",
+   "file": "rich/table.py",
+   "line": 422,
+   "called_from": "scenario.py:21",
+   "args": {
+    "self": "<Table>",
+    "style": "None",
+    "end_section": "False"
+   },
+   "calls": [
+    {
+     "fn": "is_renderable",
+     "file": "rich/protocol.py",
+     "line": 9,
+     "called_from": "table.py:461",
+     "args": {
+      "check_object": "'Dec 20, 2019'"
+     },
+     "calls": [],
+     "returned": "True",
+     "tl": 386
+    },
+    {
+     "fn": "Table.add_row.<locals>.add_cell",
+     "file": "rich/table.py",
+     "line": 440,
+     "called_from": "table.py:462",
+     "args": {
+      "column": "Column(header='Date', footer='', heade..., highlight=False, _index=0, _cells=[])",
+      "renderable": "'Dec 20, 2019'"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 388
+    },
+    {
+     "fn": "is_renderable",
+     "file": "rich/protocol.py",
+     "line": 9,
+     "called_from": "table.py:461",
+     "args": {
+      "check_object": "'Star Wars: The Rise of Skywalker'"
+     },
+     "calls": [],
+     "returned": "True",
+     "tl": 390
+    },
+    {
+     "fn": "Table.add_row.<locals>.add_cell",
+     "file": "rich/table.py",
+     "line": 440,
+     "called_from": "table.py:462",
+     "args": {
+      "column": "Column(header='Title', footer='', head..., highlight=False, _index=1, _cells=[])",
+      "renderable": "'Star Wars: The Rise of Skywalker'"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 392
+    },
+    {
+     "fn": "is_renderable",
+     "file": "rich/protocol.py",
+     "line": 9,
+     "called_from": "table.py:461",
+     "args": {
+      "check_object": "'$275,000,000'"
+     },
+     "calls": [],
+     "returned": "True",
+     "tl": 394
+    },
+    {
+     "fn": "Table.add_row.<locals>.add_cell",
+     "file": "rich/table.py",
+     "line": 440,
+     "called_from": "table.py:462",
+     "args": {
+      "column": "Column(header='Production Budget', foo..., highlight=False, _index=2, _cells=[])",
+      "renderable": "'$275,000,000'"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 396
+    },
+    {
+     "fn": "is_renderable",
+     "file": "rich/protocol.py",
+     "line": 9,
+     "called_from": "table.py:461",
+     "args": {
+      "check_object": "'$375,126,118'"
+     },
+     "calls": [],
+     "returned": "True",
+     "tl": 398
+    },
+    {
+     "fn": "Table.add_row.<locals>.add_cell",
+     "file": "rich/table.py",
+     "line": 440,
+     "called_from": "table.py:462",
+     "args": {
+      "column": "Column(header='Box Office', footer='',..., highlight=False, _index=3, _cells=[])",
+      "renderable": "'$375,126,118'"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 400
+    }
+   ],
+   "returned": "None",
+   "tl": 385
+  },
+  {
+   "fn": "Table.add_row",
+   "file": "rich/table.py",
+   "line": 422,
+   "args": {},
+   "calls": [],
+   "repeat": 2,
+   "returned": "None",
+   "tl": 403
+  },
+  {
+   "fn": "Console.print",
+   "file": "rich/console.py",
+   "line": 1652,
+   "called_from": "scenario.py:37",
+   "args": {
+    "self": "<Console>",
+    "sep": "' '",
+    "end": "'\\n'",
+    "style": "None",
+    "justify": "None",
+    "overflow": "None",
+    "no_wrap": "None",
+    "emoji": "None",
+    "markup": "None",
+    "highlight": "None",
+    "width": "None",
+    "height": "None",
+    "crop": "True",
+    "soft_wrap": "None",
+    "new_line_start": "False"
+   },
+   "calls": [
+    {
+     "fn": "Console.__enter__",
+     "file": "rich/console.py",
+     "line": 857,
+     "called_from": "console.py:1704",
+     "args": {
+      "self": "<Console>"
+     },
+     "calls": [
+      {
+       "fn": "Console._enter_buffer",
+       "file": "rich/console.py",
+       "line": 813,
+       "called_from": "console.py:859",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console._buffer_index",
+         "file": "rich/console.py",
+         "line": 775,
+         "called_from": "console.py:815",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [],
+         "returned": "0",
+         "tl": 407
+        },
+        {
+         "fn": "Console._buffer_index",
+         "file": "rich/console.py",
+         "line": 775,
+         "args": {},
+         "calls": [],
+         "repeat": 1,
+         "returned": "None",
+         "tl": 409
+        }
+       ],
+       "returned": "None",
+       "tl": 406
+      }
+     ],
+     "returned": "<console width=100 None>",
+     "tl": 405
+    },
+    {
+     "fn": "Console._collect_renderables",
+     "file": "rich/console.py",
+     "line": 1500,
+     "called_from": "console.py:1705",
+     "args": {
+      "self": "<Console>",
+      "objects": "(<rich.table.Table object at 0x10bebf230>,)",
+      "sep": "' '",
+      "end": "'\\n'",
+      "justify": "None",
+      "emoji": "None",
+      "markup": "None",
+      "highlight": "None"
+     },
+     "calls": [
+      {
+       "fn": "rich_cast",
+       "file": "rich/protocol.py",
+       "line": 18,
+       "called_from": "console.py:1557",
+       "args": {
+        "renderable": "<rich.table.Table object at 0x10bebf230>"
+       },
+       "calls": [],
+       "returned": "<rich.table.Table object at 0x10bebf230>",
+       "tl": 413
+      },
+      {
+       "fn": "Console._collect_renderables.<locals>.check_text",
+       "file": "rich/console.py",
+       "line": 1550,
+       "called_from": "console.py:1571",
+       "args": {},
+       "calls": [],
+       "returned": "None",
+       "tl": 415
+      },
+      {
+       "fn": "Console._collect_renderables.<locals>.check_text",
+       "file": "rich/console.py",
+       "line": 1550,
+       "args": {},
+       "calls": [],
+       "repeat": 1,
+       "returned": "None",
+       "tl": 417
+      }
+     ],
+     "returned": "[<rich.table.Table object at 0x10bebf230>]",
+     "tl": 412
+    },
+    {
+     "fn": "Console.options",
+     "file": "rich/console.py",
+     "line": 990,
+     "called_from": "console.py:1716",
+     "args": {
+      "self": "<Console>"
+     },
+     "calls": [
+      {
+       "fn": "Console.size",
+       "file": "rich/console.py",
+       "line": 1004,
+       "called_from": "console.py:993",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console.is_dumb_terminal",
+         "file": "rich/console.py",
+         "line": 978,
+         "called_from": "console.py:1015",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [
+          {
+           "fn": "Console.is_terminal",
+           "file": "rich/console.py",
+           "line": 930,
+           "called_from": "console.py:988",
+           "args": {
+            "self": "<Console>"
+           },
+           "calls": [
+            {
+             "fn": "Console.file",
+             "file": "rich/console.py",
+             "line": 756,
+             "called_from": "console.py:969",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+             "tl": 423
+            }
+           ],
+           "returned": "False",
+           "tl": 422
+          }
+         ],
+         "returned": "False",
+         "tl": 421
+        }
+       ],
+       "raised": "OSError(19, 'Operation not supported by device')",
+       "returned": "ConsoleDimensions(width=100, height=25)",
+       "tl": 420
+      },
+      {
+       "fn": "Console.encoding",
+       "file": "rich/console.py",
+       "line": 921,
+       "called_from": "console.py:1000",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console.file",
+         "file": "rich/console.py",
+         "line": 756,
+         "called_from": "console.py:928",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [],
+         "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+         "tl": 429
+        }
+       ],
+       "returned": "'utf-8'",
+       "tl": 428
+      },
+      {
+       "fn": "Console.is_terminal",
+       "file": "rich/console.py",
+       "line": 930,
+       "called_from": "console.py:1001",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console.file",
+         "file": "rich/console.py",
+         "line": 756,
+         "called_from": "console.py:969",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [],
+         "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+         "tl": 433
+        }
+       ],
+       "returned": "False",
+       "tl": 432
+      }
+     ],
+     "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+     "tl": 419
+    },
+    {
+     "fn": "ConsoleOptions.update",
+     "file": "rich/console.py",
+     "line": 157,
+     "called_from": "console.py:1716",
+     "args": {
+      "self": "<ConsoleOptions>",
+      "width": "<rich.console.NoChange object at 0x10bebdd30>",
+      "min_width": "<rich.console.NoChange object at 0x10bebdd30>",
+      "max_width": "<rich.console.NoChange object at 0x10bebdd30>",
+      "justify": "None",
+      "overflow": "None",
+      "no_wrap": "None",
+      "highlight": "None",
+      "markup": "None",
+      "height": "None"
+     },
+     "calls": [
+      {
+       "fn": "ConsoleOptions.copy",
+       "file": "rich/console.py",
+       "line": 147,
+       "called_from": "console.py:171",
+       "args": {
+        "self": "<ConsoleOptions>"
+       },
+       "calls": [],
+       "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+       "tl": 438
+      }
+     ],
+     "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+     "tl": 437
+    },
+    {
+     "fn": "Console.render",
+     "file": "rich/console.py",
+     "line": 1294,
+     "called_from": "console.py:1731",
+     "args": {
+      "self": "<Console>",
+      "renderable": "<rich.table.Table object at 0x10bebf230>",
+      "options": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)"
+     },
+     "calls": [
+      {
+       "fn": "rich_cast",
+       "file": "rich/protocol.py",
+       "line": 18,
+       "called_from": "console.py:1317",
+       "args": {
+        "renderable": "<rich.table.Table object at 0x10bebf230>"
+       },
+       "calls": [],
+       "returned": "<rich.table.Table object at 0x10bebf230>",
+       "tl": 442
+      },
+      {
+       "fn": "ConsoleOptions.reset_height",
+       "file": "rich/console.py",
+       "line": 220,
+       "called_from": "console.py:1338",
+       "args": {
+        "self": "<ConsoleOptions>"
+       },
+       "calls": [
+        {
+         "fn": "ConsoleOptions.copy",
+         "file": "rich/console.py",
+         "line": 147,
+         "called_from": "console.py:226",
+         "args": {
+          "self": "<ConsoleOptions>"
+         },
+         "calls": [],
+         "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+         "tl": 445
+        }
+       ],
+       "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+       "tl": 444
+      },
+      {
+       "fn": "Table.__rich_console__",
+       "file": "rich/table.py",
+       "line": 475,
+       "called_from": "console.py:1339",
+       "args": {
+        "self": "<Table>",
+        "console": "<console width=100 None>",
+        "options": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)"
+       },
+       "calls": [
+        {
+         "fn": "Table._extra_width",
+         "file": "rich/table.py",
+         "line": 295,
+         "called_from": "table.py:486",
+         "args": {
+          "self": "<Table>"
+         },
+         "calls": [],
+         "returned": "5",
+         "tl": 449
+        },
+        {
+         "fn": "ConsoleOptions.update_width",
+         "file": "rich/console.py",
+         "line": 194,
+         "called_from": "table.py:489",
+         "args": {
+          "self": "<ConsoleOptions>",
+          "width": "95"
+         },
+         "calls": [
+          {
+           "fn": "ConsoleOptions.copy",
+           "file": "rich/console.py",
+           "line": 147,
+           "called_from": "console.py:203",
+           "args": {
+            "self": "<ConsoleOptions>"
+           },
+           "calls": [],
+           "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+           "tl": 452
+          }
+         ],
+         "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+         "tl": 451
+        },
+        {
+         "fn": "Table._calculate_column_widths",
+         "file": "rich/table.py",
+         "line": 523,
+         "called_from": "table.py:488",
+         "args": {
+          "self": "<Table>",
+          "console": "<console width=100 None>",
+          "options": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)"
+         },
+         "calls": [
+          {
+           "fn": "Table._measure_column",
+           "file": "rich/table.py",
+           "line": 716,
+           "called_from": "table.py:530",
+           "args": {
+            "self": "<Table>",
+            "console": "<console width=100 None>",
+            "options": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+            "column": "Column(header='Date', footer='', heade...2019', 'May 25, 2018', 'Dec 15, 2017'])"
+           },
+           "calls": [
+            {
+             "fn": "Table._get_padding_width",
+             "file": "rich/table.py",
+             "line": 700,
+             "called_from": "table.py:728",
+             "args": {
+              "self": "<Table>",
+              "column_index": "0"
+             },
+             "calls": [
+              {
+               "fn": "Table.padding",
+               "file": "rich/table.py",
+               "line": 353,
+               "called_from": "table.py:702",
+               "args": {
+                "self": "<Table>"
+               },
+               "calls": [],
+               "returned": "(0, 1, 0, 1)",
+               "tl": 458
+              }
+             ],
+             "returned": "2",
+             "tl": 457
+            },
+            {
+             "fn": "Measurement.with_maximum",
+             "file": "rich/measure.py",
+             "line": 34,
+             "called_from": "table.py:733",
+             "args": {
+              "self": "<Measurement>",
+              "width": "95"
+             },
+             "calls": [],
+             "returned": "Measurement(minimum=14, maximum=14)",
+             "tl": 461
+            }
+           ],
+           "returned": "Measurement(minimum=14, maximum=14)",
+           "tl": 456
+          },
+          {
+           "fn": "Table._measure_column",
+           "file": "rich/table.py",
+           "line": 716,
+           "args": {},
+           "calls": [],
+           "repeat": 3,
+           "returned": "(various)",
+           "tl": 464
+          },
+          {
+           "fn": "Table._extra_width",
+           "file": "rich/table.py",
+           "line": 295,
+           "called_from": "table.py:535",
+           "args": {
+            "self": "<Table>"
+           },
+           "calls": [],
+           "returned": "5",
+           "tl": 465
+          },
+          {
+           "fn": "Table.expand",
+           "file": "rich/table.py",
+           "line": 285,
+           "called_from": "table.py:536",
+           "args": {
+            "self": "<Table>"
+           },
+           "calls": [],
+           "returned": "False",
+           "tl": 467
+          },
+          {
+           "fn": "Table.expand",
+           "file": "rich/table.py",
+           "line": 285,
+           "args": {},
+           "calls": [],
+           "repeat": 1,
+           "returned": "False",
+           "tl": 469
+          }
+         ],
+         "returned": "[14, 35, 19, 16]",
+         "tl": 455
+        },
+        {
+         "fn": "ConsoleOptions.update",
+         "file": "rich/console.py",
+         "line": 157,
+         "called_from": "table.py:493",
+         "args": {
+          "self": "<ConsoleOptions>",
+          "width": "89",
+          "min_width": "<rich.console.NoChange object at 0x10bebdd30>",
+          "max_width": "<rich.console.NoChange object at 0x10bebdd30>",
+          "justify": "<rich.console.NoChange object at 0x10bebdd30>",
+          "overflow": "<rich.console.NoChange object at 0x10bebdd30>",
+          "no_wrap": "<rich.console.NoChange object at 0x10bebdd30>",
+          "highlight": "False",
+          "markup": "<rich.console.NoChange object at 0x10bebdd30>",
+          "height": "None"
+         },
+         "calls": [
+          {
+           "fn": "ConsoleOptions.copy",
+           "file": "rich/console.py",
+           "line": 147,
+           "called_from": "console.py:171",
+           "args": {
+            "self": "<ConsoleOptions>"
+           },
+           "calls": [],
+           "returned": "ConsoleOptions(size=ConsoleDimensions(...ghlight=None, markup=None, height=None)",
+           "tl": 472
+          }
+         ],
+         "returned": "ConsoleOptions(size=ConsoleDimensions(...hlight=False, markup=None, height=None)",
+         "tl": 471
+        },
+        {
+         "fn": "Table._render",
+         "file": "rich/table.py",
+         "line": 755,
+         "called_from": "table.py:515",
+         "args": {
+          "self": "<Table>",
+          "console": "<console width=100 None>",
+          "options": "ConsoleOptions(size=ConsoleDimensions(...hlight=False, markup=None, height=None)",
+          "widths": "[14, 35, 19, 16]"
+         },
+         "calls": [
+          {
+           "fn": "Console.get_style",
+           "file": "rich/console.py",
+           "line": 1470,
+           "called_from": "table.py:758",
+           "args": {
+            "self": "<Console>",
+            "name": "'none'",
+            "default": "None"
+           },
+           "calls": [
+            {
+             "fn": "Console._theme_stack",
+             "file": "rich/console.py",
+             "line": 784,
+             "called_from": "console.py:1489",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "<rich.theme.ThemeStack object at 0x10bebef90>",
+             "tl": 477
+            },
+            {
+             "fn": "Style.link",
+             "file": "rich/style.py",
+             "line": 457,
+             "called_from": "console.py:1492",
+             "args": {
+              "self": "<Style>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 479
+            }
+           ],
+           "returned": "Style()",
+           "tl": 476
+          },
+          {
+           "fn": "Console.get_style",
+           "file": "rich/console.py",
+           "line": 1470,
+           "args": {},
+           "calls": [],
+           "repeat": 1,
+           "returned": "Style()",
+           "tl": 482
+          },
+          {
+           "fn": "Style.__add__",
+           "file": "rich/style.py",
+           "line": 757,
+           "called_from": "table.py:760",
+           "args": {
+            "self": "<Style>",
+            "style": "Style()"
+           },
+           "calls": [
+            {
+             "fn": "Style.__hash__",
+             "file": "rich/style.py",
+             "line": 441,
+             "called_from": "style.py:758",
+             "args": {
+              "self": "<Style>"
+             },
+             "calls": [],
+             "returned": "8713575502611148872",
+             "tl": 484
+            },
+            {
+             "fn": "Style.__hash__",
+             "file": "rich/style.py",
+             "line": 441,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "8713575502611148872",
+             "tl": 486
+            },
+            {
+             "fn": "Style._add",
+             "file": "rich/style.py",
+             "line": 732,
+             "called_from": "style.py:758",
+             "args": {
+              "self": "<Style>",
+              "style": "Style()"
+             },
+             "calls": [],
+             "returned": "Style()",
+             "tl": 487
+            },
+            {
+             "fn": "Style.link",
+             "file": "rich/style.py",
+             "line": 457,
+             "called_from": "style.py:759",
+             "args": {
+              "self": "<Style>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 489
+            }
+           ],
+           "returned": "Style()",
+           "tl": 483
+          },
+          {
+           "fn": "Table._get_cells",
+           "file": "rich/table.py",
+           "line": 627,
+           "called_from": "table.py:766",
+           "args": {
+            "self": "<Table>",
+            "console": "<console width=100 None>",
+            "column_index": "0",
+            "column": "Column(header='Date', footer='', heade...2019', 'May 25, 2018', 'Dec 15, 2017'])"
+           },
+           "calls": [
+            {
+             "fn": "Table.padding",
+             "file": "rich/table.py",
+             "line": 353,
+             "called_from": "table.py:634",
+             "args": {
+              "self": "<Table>"
+             },
+             "calls": [],
+             "returned": "(0, 1, 0, 1)",
+             "tl": 493
+            },
+            {
+             "fn": "Console.get_style",
+             "file": "rich/console.py",
+             "line": 1470,
+             "called_from": "table.py:671",
+             "args": {
+              "self": "<Console>",
+              "name": "'bold magenta'",
+              "default": "None"
+             },
+             "calls": [
+              {
+               "fn": "Console._theme_stack",
+               "file": "rich/console.py",
+               "line": 784,
+               "called_from": "console.py:1489",
+               "args": {
+                "self": "<Console>"
+               },
+               "calls": [],
+               "returned": "<rich.theme.ThemeStack object at 0x10bebef90>",
+               "tl": 496
+              },
+              {
+               "fn": "Style.link",
+               "file": "rich/style.py",
+               "line": 457,
+               "called_from": "console.py:1492",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 498
+              }
+             ],
+             "returned": "Style(color=Color('magenta', ColorType.STANDARD, number=5), bold=True)",
+             "tl": 495
+            },
+            {
+             "fn": "Console.get_style",
+             "file": "rich/console.py",
+             "line": 1470,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "Style()",
+             "tl": 501
+            },
+            {
+             "fn": "Style.__add__",
+             "file": "rich/style.py",
+             "line": 757,
+             "called_from": "table.py:671",
+             "args": {
+              "self": "<Style>",
+              "style": "Style()"
+             },
+             "calls": [
+              {
+               "fn": "Style.__hash__",
+               "file": "rich/style.py",
+               "line": 441,
+               "called_from": "style.py:758",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "2651472125470388737",
+               "tl": 503
+              },
+              {
+               "fn": "Style.__hash__",
+               "file": "rich/style.py",
+               "line": 441,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "8713575502611148872",
+               "tl": 505
+              },
+              {
+               "fn": "Style.link",
+               "file": "rich/style.py",
+               "line": 457,
+               "called_from": "style.py:759",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 506
+              }
+             ],
+             "returned": "Style(color=Color('magenta', ColorType.STANDARD, number=5), bold=True)",
+             "tl": 502
+            },
+            {
+             "fn": "Console.get_style",
+             "file": "rich/console.py",
+             "line": 1470,
+             "called_from": "table.py:675",
+             "args": {
+              "self": "<Console>",
+              "name": "'dim'",
+              "default": "None"
+             },
+             "calls": [
+              {
+               "fn": "Console._theme_stack",
+               "file": "rich/console.py",
+               "line": 784,
+               "called_from": "console.py:1489",
+               "args": {
+                "self": "<Console>"
+               },
+               "calls": [],
+               "returned": "<rich.theme.ThemeStack object at 0x10bebef90>",
+               "tl": 510
+              },
+              {
+               "fn": "Style.link",
+               "file": "rich/style.py",
+               "line": 457,
+               "called_from": "console.py:1492",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 512
+              }
+             ],
+             "returned": "Style(dim=True)",
+             "tl": 509
+            },
+            {
+             "fn": "Column.cells",
+             "file": "rich/table.py",
+             "line": 120,
+             "called_from": "table.py:676",
+             "args": {
+              "self": "<Column>"
+             },
+             "calls": [],
+             "returned": "'Dec 20, 2019'",
+             "tl": 515
+            },
+            {
+             "fn": "Column.cells",
+             "file": "rich/table.py",
+             "line": 120,
+             "args": {},
+             "calls": [],
+             "repeat": 3,
+             "returned": "(various)",
+             "tl": 517
+            },
+            {
+             "fn": "loop_first_last",
+             "file": "rich/_loop.py",
+             "line": 31,
+             "called_from": "table.py:686",
+             "args": {
+              "values": "[(Style(color=Color('magenta', ColorType.STANDARD, number=5), bold=True), 'Date'), (Style(dim=True), 'Dec 20, 2019'), (Style(dim=True), 'May 25, 2018'), (Style(dim=True), 'Dec 15, 2017')]"
+             },
+             "calls": [],
+             "returned": "(True, False, (Style(color=Color('magenta', ColorType.STANDARD, number=5), bold=True), 'Date'))",
+             "tl": 518
+            },
+            {
+             "fn": "Table._get_cells.<locals>.get_padding",
+             "file": "rich/table.py",
+             "line": 642,
+             "called_from": "table.py:689",
+             "args": {
+              "first_row": "True",
+              "last_row": "False"
+             },
+             "calls": [],
+             "returned": "(0, 1, 0, 1)",
+             "tl": 520
+            },
+            {
+             "fn": "Padding.__init__",
+             "file": "rich/padding.py",
+             "line": 33,
+             "called_from": "table.py:689",
+             "args": {
+              "self": "<Padding>",
+              "renderable": "'Date'",
+              "pad": "(0, 1, 0, 1)",
+              "style": "'none'",
+              "expand": "True"
+             },
+             "calls": [
+              {
+               "fn": "Padding.unpack",
+               "file": "rich/padding.py",
+               "line": 60,
+               "called_from": "padding.py:42",
+               "args": {
+                "pad": "(0, 1, 0, 1)"
+               },
+               "calls": [],
+               "returned": "(0, 1, 0, 1)",
+               "tl": 523
+              }
+             ],
+             "returned": "None",
+             "tl": 522
+            }
+           ],
+           "returned": "_Cell(style=Style(color=Color('magenta...ing('Date', (0,1,0,1)), vertical='top')",
+           "tl": 492
+          },
+          {
+           "fn": "Table._get_cells",
+           "file": "rich/table.py",
+           "line": 627,
+           "args": {},
+           "calls": [],
+           "repeat": 16,
+           "returned": "(various)",
+           "tl": 527
+          },
+          {
+           "fn": "pick_bool",
+           "file": "rich/_pick.py",
+           "line": 4,
+           "called_from": "table.py:769",
+           "args": {},
+           "calls": [],
+           "returned": "True",
+           "tl": 528
+          },
+          {
+           "fn": "Box.substitute",
+           "file": "rich/box.py",
+           "line": 67,
+           "called_from": "table.py:768",
+           "args": {
+            "self": "<Box>",
+            "options": "ConsoleOptions(size=ConsoleDimensions(...hlight=False, markup=None, height=None)",
+            "safe": "True"
+           },
+           "calls": [
+            {
+             "fn": "ConsoleOptions.ascii_only",
+             "file": "rich/console.py",
+             "line": 142,
+             "called_from": "box.py:81",
+             "args": {
+              "self": "<ConsoleOptions>"
+             },
+             "calls": [],
+             "returned": "False",
+             "tl": 531
+            }
+           ],
+           "returned": "Box(...)",
+           "tl": 530
+          },
+          {
+           "fn": "Segment.line",
+           "file": "rich/segment.py",
+           "line": 181,
+           "called_from": "table.py:776",
+           "args": {
+            "cls": "<type>"
+           },
+           "calls": [],
+           "returned": "Segment('\\n')",
+           "tl": 534
+          },
+          {
+           "fn": "Box.get_top",
+           "file": "rich/box.py",
+           "line": 95,
+           "called_from": "table.py:805",
+           "args": {
+            "self": "<Box>",
+            "widths": "[14, 35, 19, 16]"
+           },
+           "calls": [
+            {
+             "fn": "loop_last",
+             "file": "rich/_loop.py",
+             "line": 18,
+             "called_from": "box.py:108",
+             "args": {
+              "values": "[14, 35, 19, 16]"
+             },
+             "calls": [],
+             "returned": "(False, 14)",
+             "tl": 537
+            },
+            {
+             "fn": "loop_last",
+             "file": "rich/_loop.py",
+             "line": 18,
+             "args": {},
+             "calls": [],
+             "repeat": 4,
+             "returned": "(various)",
+             "tl": 539
+            }
+           ],
+           "returned": "'\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513'",
+           "tl": 536
+          }
+         ],
+         "returned": "Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style())",
+         "tl": 475
+        }
+       ],
+       "returned": "Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style())",
+       "tl": 448
+      }
+     ],
+     "returned": "Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style())",
+     "tl": 441
+    },
+    {
+     "fn": "Console.render",
+     "file": "rich/console.py",
+     "line": 1294,
+     "args": {},
+     "calls": [],
+     "repeat": 79,
+     "returned": "(various)",
+     "tl": 544
+    },
+    {
+     "fn": "Console._buffer",
+     "file": "rich/console.py",
+     "line": 770,
+     "called_from": "console.py:1750",
+     "args": {
+      "self": "<Console>"
+     },
+     "calls": [],
+     "returned": "[]",
+     "tl": 545
+    },
+    {
+     "fn": "Console.width",
+     "file": "rich/console.py",
+     "line": 1056,
+     "called_from": "console.py:1752",
+     "args": {
+      "self": "<Console>"
+     },
+     "calls": [
+      {
+       "fn": "Console.size",
+       "file": "rich/console.py",
+       "line": 1004,
+       "called_from": "console.py:1063",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console.is_dumb_terminal",
+         "file": "rich/console.py",
+         "line": 978,
+         "called_from": "console.py:1015",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [
+          {
+           "fn": "Console.is_terminal",
+           "file": "rich/console.py",
+           "line": 930,
+           "called_from": "console.py:988",
+           "args": {
+            "self": "<Console>"
+           },
+           "calls": [
+            {
+             "fn": "Console.file",
+             "file": "rich/console.py",
+             "line": 756,
+             "called_from": "console.py:969",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+             "tl": 551
+            }
+           ],
+           "returned": "False",
+           "tl": 550
+          }
+         ],
+         "returned": "False",
+         "tl": 549
+        }
+       ],
+       "raised": "OSError(19, 'Operation not supported by device')",
+       "returned": "ConsoleDimensions(width=100, height=25)",
+       "tl": 548
+      }
+     ],
+     "returned": "100",
+     "tl": 547
+    },
+    {
+     "fn": "Segment.split_and_crop_lines",
+     "file": "rich/segment.py",
+     "line": 306,
+     "called_from": "console.py:1751",
+     "args": {
+      "cls": "<type>",
+      "segments": "[Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style()), Segment('\\n'), Segment('\u2503', Style()), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), Segment('Date        ', Style(color=Co...orType.STANDARD, number=5), bold=True)), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), ...]",
+      "length": "100",
+      "style": "None",
+      "pad": "False",
+      "include_new_lines": "True"
+     },
+     "calls": [
+      {
+       "fn": "Segment.adjust_line_length",
+       "file": "rich/segment.py",
+       "line": 353,
+       "called_from": "segment.py:341",
+       "args": {
+        "cls": "<type>",
+        "line": "[Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style())]",
+        "length": "100",
+        "style": "None",
+        "pad": "False"
+       },
+       "calls": [
+        {
+         "fn": "Segment.cell_length",
+         "file": "rich/segment.py",
+         "line": 78,
+         "called_from": "segment.py:372",
+         "args": {
+          "self": "<Segment>"
+         },
+         "calls": [
+          {
+           "fn": "cell_len",
+           "file": "rich/cells.py",
+           "line": 98,
+           "called_from": "segment.py:86",
+           "args": {
+            "text": "'\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513'",
+            "unicode_version": "'auto'"
+           },
+           "calls": [
+            {
+             "fn": "cached_cell_len",
+             "file": "rich/cells.py",
+             "line": 81,
+             "called_from": "cells.py:109",
+             "args": {
+              "text": "'\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513'",
+              "unicode_version": "'auto'"
+             },
+             "calls": [
+              {
+               "fn": "_cell_len",
+               "file": "rich/cells.py",
+               "line": 113,
+               "called_from": "cells.py:95",
+               "args": {
+                "text": "'\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513'",
+                "unicode_version": "'auto'"
+               },
+               "calls": [],
+               "returned": "89",
+               "tl": 562
+              }
+             ],
+             "returned": "89",
+             "tl": 561
+            }
+           ],
+           "returned": "89",
+           "tl": 560
+          }
+         ],
+         "returned": "89",
+         "tl": 559
+        }
+       ],
+       "returned": "[Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style())]",
+       "tl": 558
+      }
+     ],
+     "returned": "[Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style()), Segment('\\n')]",
+     "tl": 557
+    },
+    {
+     "fn": "Segment.split_and_crop_lines",
+     "file": "rich/segment.py",
+     "line": 306,
+     "args": {},
+     "calls": [],
+     "repeat": 7,
+     "returned": "(various)",
+     "tl": 569
+    },
+    {
+     "fn": "Console.__exit__",
+     "file": "rich/console.py",
+     "line": 862,
+     "called_from": "console.py:1704",
+     "args": {
+      "self": "<Console>",
+      "exc_type": "None",
+      "exc_value": "None",
+      "traceback": "None"
+     },
+     "calls": [
+      {
+       "fn": "Console._exit_buffer",
+       "file": "rich/console.py",
+       "line": 817,
+       "called_from": "console.py:864",
+       "args": {
+        "self": "<Console>"
+       },
+       "calls": [
+        {
+         "fn": "Console._buffer_index",
+         "file": "rich/console.py",
+         "line": 775,
+         "called_from": "console.py:819",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [],
+         "returned": "1",
+         "tl": 572
+        },
+        {
+         "fn": "Console._buffer_index",
+         "file": "rich/console.py",
+         "line": 775,
+         "args": {},
+         "calls": [],
+         "repeat": 1,
+         "returned": "None",
+         "tl": 574
+        },
+        {
+         "fn": "Console._check_buffer",
+         "file": "rich/console.py",
+         "line": 2044,
+         "called_from": "console.py:820",
+         "args": {
+          "self": "<Console>"
+         },
+         "calls": [
+          {
+           "fn": "Console._write_buffer",
+           "file": "rich/console.py",
+           "line": 2059,
+           "called_from": "console.py:2055",
+           "args": {
+            "self": "<Console>"
+           },
+           "calls": [
+            {
+             "fn": "Console._buffer_index",
+             "file": "rich/console.py",
+             "line": 775,
+             "called_from": "console.py:2063",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "0",
+             "tl": 577
+            },
+            {
+             "fn": "Console._buffer",
+             "file": "rich/console.py",
+             "line": 770,
+             "called_from": "console.py:2065",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "[Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style()), Segment('\\n'), Segment('\u2503', Style()), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), Segment('Date        ', Style(color=Co...orType.STANDARD, number=5), bold=True)), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), ...]",
+             "tl": 579
+            },
+            {
+             "fn": "Console._buffer_index",
+             "file": "rich/console.py",
+             "line": 775,
+             "called_from": "console.py:2067",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "0",
+             "tl": 581
+            },
+            {
+             "fn": "Console._buffer",
+             "file": "rich/console.py",
+             "line": 770,
+             "called_from": "console.py:2122",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "[Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style()), Segment('\\n'), Segment('\u2503', Style()), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), Segment('Date        ', Style(color=Co...orType.STANDARD, number=5), bold=True)), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), ...]",
+             "tl": 583
+            },
+            {
+             "fn": "Console._render_buffer",
+             "file": "rich/console.py",
+             "line": 2132,
+             "called_from": "console.py:2122",
+             "args": {
+              "self": "<Console>",
+              "buffer": "[Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style()), Segment('\\n'), Segment('\u2503', Style()), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), Segment('Date        ', Style(color=Co...orType.STANDARD, number=5), bold=True)), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), ...]"
+             },
+             "calls": [
+              {
+               "fn": "Console.is_terminal",
+               "file": "rich/console.py",
+               "line": 930,
+               "called_from": "console.py:2138",
+               "args": {
+                "self": "<Console>"
+               },
+               "calls": [
+                {
+                 "fn": "Console.file",
+                 "file": "rich/console.py",
+                 "line": 756,
+                 "called_from": "console.py:969",
+                 "args": {
+                  "self": "<Console>"
+                 },
+                 "calls": [],
+                 "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+                 "tl": 587
+                }
+               ],
+               "returned": "False",
+               "tl": 586
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 590
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "args": {},
+               "calls": [],
+               "repeat": 2,
+               "returned": "(various)",
+               "tl": 592
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 593
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 595
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "'Date        '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "'Date        '",
+               "tl": 597
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 599
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 601
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 603
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "True",
+               "tl": 605
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 606
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 608
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "'Title                            '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "'Title                            '",
+               "tl": 610
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 612
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 614
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 616
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "True",
+               "tl": 618
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 619
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 621
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "'Production Budget'",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "'Production Budget'",
+               "tl": 623
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 625
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 627
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 629
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "True",
+               "tl": 631
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 632
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 634
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "'    Box Office'",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "'    Box Office'",
+               "tl": 636
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 638
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 640
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 642
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "args": {},
+               "calls": [],
+               "repeat": 3,
+               "returned": "(various)",
+               "tl": 644
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 645
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 647
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "'Dec 20, 2019'",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "'Dec 20, 2019'",
+               "tl": 649
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 651
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 653
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 655
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "args": {},
+               "calls": [],
+               "repeat": 11,
+               "returned": "(various)",
+               "tl": 657
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 658
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 660
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "'May 25, 2018'",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "'May 25, 2018'",
+               "tl": 662
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 664
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 666
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 668
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "args": {},
+               "calls": [],
+               "repeat": 2,
+               "returned": "(various)",
+               "tl": 670
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "'Solo'",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "'Solo'",
+               "tl": 671
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 673
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "args": {},
+               "calls": [],
+               "repeat": 10,
+               "returned": "(various)",
+               "tl": 675
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 676
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 678
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "'Dec 15, 2017'",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "'Dec 15, 2017'",
+               "tl": 680
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 682
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "' '",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "' '",
+               "tl": 684
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 686
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "args": {},
+               "calls": [],
+               "repeat": 8,
+               "returned": "(various)",
+               "tl": 688
+              },
+              {
+               "fn": "Style.render",
+               "file": "rich/style.py",
+               "line": 694,
+               "called_from": "console.py:2144",
+               "args": {
+                "self": "<Style>",
+                "text": "'$1,332,539,889'",
+                "color_system": "None",
+                "legacy_windows": "False"
+               },
+               "calls": [],
+               "returned": "'$1,332,539,889'",
+               "tl": 689
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "called_from": "console.py:2142",
+               "args": {
+                "self": "<Style>"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 691
+              },
+              {
+               "fn": "Style.__bool__",
+               "file": "rich/style.py",
+               "line": 340,
+               "args": {},
+               "calls": [],
+               "repeat": 2,
+               "returned": "False",
+               "tl": 693
+              }
+             ],
+             "returned": "'\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\\n'",
+             "tl": 585
+            },
+            {
+             "fn": "Console.file",
+             "file": "rich/console.py",
+             "line": 756,
+             "called_from": "console.py:2124",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+             "tl": 695
+            },
+            {
+             "fn": "Console.file",
+             "file": "rich/console.py",
+             "line": 756,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "<_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+             "tl": 697
+            },
+            {
+             "fn": "Console._buffer",
+             "file": "rich/console.py",
+             "line": 770,
+             "called_from": "console.py:2130",
+             "args": {
+              "self": "<Console>"
+             },
+             "calls": [],
+             "returned": "[Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501...\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2513', Style()), Segment('\\n'), Segment('\u2503', Style()), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), Segment('Date        ', Style(color=Co...orType.STANDARD, number=5), bold=True)), Segment(' ', Style(color=Color('magent...orType.STANDARD, number=5), bold=True)), ...]",
+             "tl": 698
+            }
+           ],
+           "returned": "None",
+           "tl": 576
+          }
+         ],
+         "returned": "None",
+         "tl": 575
+        }
+       ],
+       "returned": "None",
+       "tl": 571
+      }
+     ],
+     "returned": "None",
+     "tl": 570
+    }
+   ],
+   "returned": "None",
+   "tl": 404
+  },
+  {
+   "fn": "Console.export_text",
+   "file": "rich/console.py",
+   "line": 2192,
+   "called_from": "scenario.py:40",
+   "args": {
+    "self": "<Console>",
+    "clear": "True",
+    "styles": "False"
+   },
+   "calls": [],
+   "returned": "'Hello World!\\nWhere there is a Will t...\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\\n'",
+   "tl": 705
+  }
+ ],
+ "lines": {
+  "rich/_emoji_replace.py": [
+   15,
+   17,
+   18,
+   19,
+   20,
+   22,
+   31
+  ],
+  "rich/_log_render.py": [
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30
+  ],
+  "rich/_loop.py": [
+   20,
+   21,
+   22,
+   25,
+   26,
+   27,
+   28,
+   33,
+   34,
+   35,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43
+  ],
+  "rich/_pick.py": [
+   13,
+   14,
+   15,
+   16
+  ],
+  "rich/_wrap.py": [
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   39,
+   40,
+   41,
+   42,
+   44,
+   45,
+   46,
+   47,
+   49,
+   51,
+   78
+  ],
+  "rich/box.py": [
+   78,
+   79,
+   81,
+   83,
+   105,
+   106,
+   107,
+   108,
+   109,
+   110,
+   111,
+   112,
+   113,
+   129,
+   130,
+   131,
+   132,
+   133,
+   152,
+   153,
+   154,
+   155,
+   156,
+   157,
+   158,
+   159,
+   160,
+   161,
+   162,
+   174,
+   175,
+   176,
+   177,
+   178,
+   179,
+   180,
+   181,
+   182
+  ],
+  "rich/cells.py": [
+   95,
+   108,
+   109,
+   124,
+   125
+  ],
+  "rich/console.py": [
+   145,
+   153,
+   154,
+   155,
+   171,
+   172,
+   173,
+   174,
+   176,
+   178,
+   179,
+   180,
+   181,
+   182,
+   183,
+   184,
+   185,
+   186,
+   187,
+   188,
+   189,
+   191,
+   192,
+   203,
+   204,
+   205,
+   226,
+   227,
+   228,
+   507,
+   508,
+   509,
+   510,
+   578,
+   654,
+   657,
+   658,
+   672,
+   673,
+   674,
+   675,
+   676,
+   677,
+   678,
+   679,
+   680,
+   684,
+   688,
+   689,
+   690,
+   693,
+   694,
+   695,
+   697,
+   699,
+   700,
+   703,
+   704,
+   705,
+   707,
+   709,
+   710,
+   714,
+   715,
+   716,
+   717,
+   718,
+   720,
+   721,
+   722,
+   723,
+   724,
+   725,
+   727,
+   728,
+   730,
+   731,
+   732,
+   738,
+   739,
+   740,
+   744,
+   745,
+   746,
+   748,
+   749,
+   750,
+   751,
+   759,
+   760,
+   761,
+   763,
+   773,
+   778,
+   782,
+   787,
+   791,
+   793,
+   794,
+   815,
+   819,
+   820,
+   859,
+   860,
+   864,
+   928,
+   939,
+   943,
+   944,
+   949,
+   953,
+   955,
+   957,
+   960,
+   964,
+   965,
+   969,
+   970,
+   971,
+   986,
+   987,
+   988,
+   993,
+   994,
+   995,
+   996,
+   997,
+   998,
+   999,
+   1000,
+   1001,
+   1012,
+   1015,
+   1018,
+   1019,
+   1021,
+   1022,
+   1023,
+   1024,
+   1025,
+   1026,
+   1030,
+   1031,
+   1033,
+   1034,
+   1038,
+   1039,
+   1040,
+   1041,
+   1042,
+   1063,
+   1311,
+   1312,
+   1317,
+   1318,
+   1319,
+   1320,
+   1321,
+   1322,
+   1324,
+   1331,
+   1332,
+   1337,
+   1338,
+   1339,
+   1340,
+   1341,
+   1369,
+   1370,
+   1371,
+   1372,
+   1373,
+   1375,
+   1376,
+   1379,
+   1380,
+   1381,
+   1382,
+   1383,
+   1384,
+   1385,
+   1386,
+   1388,
+   1389,
+   1392,
+   1407,
+   1437,
+   1438,
+   1439,
+   1441,
+   1442,
+   1443,
+   1444,
+   1445,
+   1446,
+   1448,
+   1449,
+   1462,
+   1463,
+   1464,
+   1465,
+   1466,
+   1468,
+   1485,
+   1486,
+   1488,
+   1489,
+   1490,
+   1491,
+   1492,
+   1526,
+   1533,
+   1534,
+   1535,
+   1536,
+   1538,
+   1539,
+   1546,
+   1547,
+   1548,
+   1550,
+   1551,
+   1552,
+   1553,
+   1554,
+   1556,
+   1557,
+   1558,
+   1559,
+   1560,
+   1561,
+   1562,
+   1563,
+   1564,
+   1565,
+   1568,
+   1570,
+   1571,
+   1572,
+   1581,
+   1583,
+   1587,
+   1689,
+   1695,
+   1696,
+   1697,
+   1703,
+   1704,
+   1705,
+   1706,
+   1707,
+   1708,
+   1709,
+   1710,
+   1711,
+   1712,
+   1714,
+   1716,
+   1717,
+   1718,
+   1719,
+   1720,
+   1721,
+   1722,
+   1723,
+   1726,
+   1727,
+   1728,
+   1729,
+   1730,
+   1731,
+   1733,
+   1734,
+   1735,
+   1736,
+   1737,
+   1739,
+   1740,
+   1741,
+   1743,
+   1749,
+   1750,
+   1751,
+   1752,
+   1754,
+   2050,
+   2054,
+   2055,
+   2062,
+   2063,
+   2064,
+   2065,
+   2067,
+   2068,
+   2074,
+   2122,
+   2123,
+   2124,
+   2129,
+   2130,
+   2134,
+   2135,
+   2136,
+   2137,
+   2138,
+   2139,
+   2141,
+   2142,
+   2143,
+   2144,
+   2145,
+   2146,
+   2147,
+   2150,
+   2151,
+   2153,
+   2154,
+   2205,
+   2208,
+   2209,
+   2215,
+   2216,
+   2217,
+   2218,
+   2220,
+   2221,
+   2222
+  ],
+  "rich/containers.py": [
+   70,
+   76,
+   94,
+   106,
+   127,
+   129,
+   130,
+   131,
+   132,
+   138,
+   139,
+   140,
+   141,
+   142,
+   143
+  ],
+  "rich/control.py": [
+   192
+  ],
+  "rich/highlighter.py": [
+   32,
+   33,
+   38,
+   39,
+   75,
+   76,
+   77
+  ],
+  "rich/markup.py": [
+   29,
+   30,
+   80,
+   81,
+   82,
+   83,
+   84,
+   85,
+   86,
+   87,
+   88,
+   99,
+   100,
+   101,
+   102,
+   103,
+   127,
+   128,
+   129,
+   130,
+   131,
+   133,
+   134,
+   135,
+   137,
+   138,
+   140,
+   141,
+   143,
+   144,
+   146,
+   148,
+   149,
+   150,
+   153,
+   154,
+   156,
+   157,
+   158,
+   159,
+   160,
+   162,
+   163,
+   164,
+   165,
+   178,
+   217,
+   220,
+   221,
+   223,
+   224,
+   230,
+   231
+  ],
+  "rich/measure.py": [
+   30,
+   31,
+   32,
+   43,
+   44,
+   71,
+   72,
+   74,
+   76,
+   95,
+   96,
+   98,
+   99,
+   100,
+   102,
+   103,
+   104,
+   106,
+   107,
+   108,
+   109,
+   110,
+   111,
+   113,
+   115
+  ],
+  "rich/padding.py": [
+   41,
+   42,
+   43,
+   44,
+   63,
+   65,
+   68,
+   69,
+   70,
+   71,
+   72,
+   73,
+   82,
+   83,
+   84,
+   92,
+   93,
+   97,
+   98,
+   100,
+   102,
+   103,
+   104,
+   105,
+   108,
+   109,
+   112,
+   113,
+   114,
+   115,
+   116,
+   121,
+   128,
+   129,
+   130,
+   132,
+   133,
+   134,
+   135
+  ],
+  "rich/protocol.py": [
+   11,
+   12,
+   13,
+   14,
+   27,
+   29,
+   30,
+   41
+  ],
+  "rich/segment.py": [
+   85,
+   86,
+   99,
+   184,
+   205,
+   206,
+   207,
+   208,
+   209,
+   210,
+   212,
+   225,
+   287,
+   288,
+   290,
+   291,
+   292,
+   293,
+   294,
+   295,
+   297,
+   298,
+   299,
+   300,
+   302,
+   303,
+   327,
+   328,
+   330,
+   331,
+   333,
+   334,
+   335,
+   336,
+   337,
+   338,
+   340,
+   341,
+   342,
+   344,
+   345,
+   346,
+   347,
+   349,
+   350,
+   372,
+   375,
+   376,
+   379,
+   380,
+   395,
+   396,
+   446,
+   448,
+   449,
+   452,
+   453,
+   454,
+   455,
+   457,
+   459,
+   482,
+   483,
+   484,
+   511,
+   512,
+   513
+  ],
+  "rich/style.py": [
+   34,
+   35,
+   152,
+   153,
+   155,
+   156,
+   158,
+   159,
+   160,
+   161,
+   162,
+   163,
+   164,
+   165,
+   166,
+   167,
+   168,
+   169,
+   170,
+   171,
+   172,
+   173,
+   174,
+   177,
+   178,
+   179,
+   180,
+   181,
+   182,
+   183,
+   184,
+   185,
+   186,
+   187,
+   188,
+   189,
+   190,
+   191,
+   192,
+   195,
+   196,
+   199,
+   200,
+   201,
+   202,
+   204,
+   205,
+   210,
+   296,
+   297,
+   298,
+   299,
+   300,
+   301,
+   302,
+   303,
+   305,
+   306,
+   307,
+   308,
+   309,
+   320,
+   329,
+   330,
+   331,
+   334,
+   337,
+   338,
+   342,
+   399,
+   400,
+   442,
+   443,
+   444,
+   445,
+   460,
+   510,
+   511,
+   513,
+   514,
+   515,
+   516,
+   517,
+   519,
+   520,
+   521,
+   522,
+   534,
+   543,
+   549,
+   550,
+   553,
+   554,
+   559,
+   560,
+   561,
+   610,
+   611,
+   710,
+   711,
+   734,
+   735,
+   736,
+   737,
+   758,
+   759
+  ],
+  "rich/table.py": [
+   123,
+   217,
+   218,
+   219,
+   220,
+   221,
+   222,
+   223,
+   224,
+   225,
+   226,
+   227,
+   228,
+   229,
+   230,
+   231,
+   232,
+   233,
+   234,
+   235,
+   236,
+   237,
+   238,
+   239,
+   240,
+   241,
+   242,
+   243,
+   244,
+   245,
+   288,
+   298,
+   299,
+   300,
+   301,
+   302,
+   303,
+   312,
+   313,
+   315,
+   316,
+   318,
+   356,
+   403,
+   404,
+   405,
+   406,
+   407,
+   408,
+   409,
+   410,
+   411,
+   412,
+   413,
+   414,
+   415,
+   416,
+   417,
+   418,
+   420,
+   440,
+   441,
+   443,
+   445,
+   446,
+   451,
+   452,
+   458,
+   459,
+   461,
+   462,
+   467,
+   478,
+   482,
+   483,
+   486,
+   488,
+   489,
+   491,
+   493,
+   494,
+   497,
+   498,
+   499,
+   509,
+   515,
+   516,
+   527,
+   528,
+   529,
+   530,
+   532,
+   534,
+   535,
+   536,
+   554,
+   556,
+   575,
+   576,
+   586,
+   632,
+   633,
+   634,
+   635,
+   637,
+   638,
+   640,
+   642,
+   643,
+   644,
+   645,
+   646,
+   648,
+   654,
+   663,
+   664,
+   665,
+   667,
+   668,
+   669,
+   670,
+   671,
+   672,
+   674,
+   675,
+   676,
+   677,
+   678,
+   684,
+   685,
+   686,
+   687,
+   688,
+   689,
+   690,
+   702,
+   704,
+   708,
+   714,
+   724,
+   725,
+   728,
+   729,
+   731,
+   732,
+   733,
+   735,
+   736,
+   737,
+   738,
+   739,
+   740,
+   741,
+   742,
+   743,
+   745,
+   746,
+   747,
+   748,
+   749,
+   750,
+   751,
+   753,
+   758,
+   760,
+   761,
+   762,
+   763,
+   766,
+   767,
+   768,
+   769,
+   771,
+   774,
+   776,
+   778,
+   779,
+   780,
+   781,
+   782,
+   783,
+   785,
+   786,
+   787,
+   788,
+   789,
+   790,
+   791,
+   793,
+   794,
+   795,
+   796,
+   798,
+   799,
+   800,
+   801,
+   804,
+   805,
+   806,
+   810,
+   811,
+   813,
+   814,
+   815,
+   816,
+   817,
+   818,
+   819,
+   821,
+   822,
+   823,
+   824,
+   826,
+   827,
+   829,
+   830,
+   831,
+   832,
+   833,
+   834,
+   835,
+   836,
+   838,
+   839,
+   840,
+   841,
+   843,
+   844,
+   846,
+   848,
+   849,
+   850,
+   851,
+   852,
+   853,
+   854,
+   855,
+   856,
+   859,
+   860,
+   861,
+   863,
+   865,
+   866,
+   867,
+   868,
+   869,
+   870,
+   871,
+   873,
+   874,
+   876,
+   879,
+   880,
+   885,
+   888,
+   889,
+   890,
+   895,
+   896,
+   897,
+   898,
+   899,
+   900,
+   901,
+   902,
+   903,
+   904,
+   910,
+   911,
+   912,
+   914,
+   915,
+   916,
+   933,
+   934,
+   935
+  ],
+  "rich/text.py": [
+   156,
+   157,
+   158,
+   159,
+   160,
+   161,
+   162,
+   163,
+   164,
+   165,
+   168,
+   174,
+   192,
+   193,
+   405,
+   407,
+   412,
+   413,
+   414,
+   415,
+   416,
+   417,
+   428,
+   432,
+   433,
+   434,
+   435,
+   436,
+   437,
+   438,
+   439,
+   441,
+   445,
+   446,
+   447,
+   448,
+   449,
+   450,
+   451,
+   452,
+   454,
+   455,
+   612,
+   613,
+   614,
+   615,
+   616,
+   617,
+   618,
+   631,
+   664,
+   672,
+   673,
+   692,
+   693,
+   694,
+   696,
+   697,
+   698,
+   699,
+   700,
+   701,
+   702,
+   704,
+   705,
+   710,
+   711,
+   712,
+   713,
+   714,
+   715,
+   717,
+   729,
+   730,
+   731,
+   732,
+   733,
+   734,
+   735,
+   736,
+   738,
+   739,
+   740,
+   742,
+   743,
+   744,
+   745,
+   746,
+   748,
+   750,
+   751,
+   752,
+   754,
+   755,
+   756,
+   758,
+   760,
+   761,
+   762,
+   763,
+   764,
+   765,
+   766,
+   768,
+   769,
+   770,
+   772,
+   773,
+   774,
+   775,
+   776,
+   788,
+   790,
+   791,
+   792,
+   793,
+   794,
+   795,
+   799,
+   800,
+   801,
+   802,
+   803,
+   805,
+   806,
+   807,
+   809,
+   810,
+   811,
+   813,
+   814,
+   815,
+   873,
+   874,
+   875,
+   876,
+   881,
+   882,
+   883,
+   884,
+   924,
+   925,
+   926,
+   927,
+   928,
+   930,
+   977,
+   980,
+   981,
+   982,
+   983,
+   984,
+   985,
+   986,
+   988,
+   1006,
+   1060,
+   1079,
+   1081,
+   1082,
+   1083,
+   1115,
+   1117,
+   1118,
+   1224,
+   1225,
+   1227,
+   1229,
+   1230,
+   1231,
+   1233,
+   1239,
+   1240,
+   1241,
+   1242,
+   1243,
+   1244,
+   1245,
+   1247,
+   1248,
+   1249,
+   1250
+  ],
+  "rich/theme.py": [
+   89,
+   90
+  ]
+ },
+ "tl": 1
+}

@@ -1,0 +1,51 @@
+{
+  "id": "msg_011CfafkofWyAfNJU6NEYg41",
+  "container": null,
+  "content": [
+    {
+      "signature": "CAIS7QgKxgIIEhgCKkD9BCi6eu7mEJruyEvA7Mo7Cpb9dDSUPSuecvgH1Mz9o5sQ90BZe3frIHXqyg/vGFkyTX/sSUOcd+rq5/k21nPhMg1jbGF1ZGUtb3B1cy01OAFCCHRoaW5raW5nWiQ1NDUyNDVkNS0zNmYzLTQ2NmQtYjhjMC1lNWZkMzc4MjhhOTiaAQ8KDWNsYXVkZS1vcHVzLTWoAbv19tUGwgFACAYQABoSATAIAtqKA083BVFiBevUBCatIAIyBBJxzyU6BMhY/9ZCBDgzI4pKBDgzI4pQAFoE2QXhVmACaAFwAdoBYAoWcHJlZml4X2JlZm9yZV9ibG9ja192MRIgZ6LHnu6W4InlfTuuvDaR7qEZD3RmaWjEmUYu4SPIDnwiADIgwsATyGqckuIvlm89hhd2j4t6RMkCrcwJe/oeCYr7Th9IAxIMsAqZZby9gV37WQHfGgzJnrZ9gfgjkQ4ziqQiMI27J+ldPEEaUyGgHokkyQVjk9MnwhXBl0ZxjSKi4FekymWdeiA2uLQn8oWzt7Ev6SrTBRKYQ+qlOp0HlwwLikGdLFlS9ofPuutr1IGwDsja4L40K6wPVDW+NmBzumc0dqHdFeybRDSHaCKoQB55qoR05f/zzMl2qepC0C8BR3EUzlDXsmK9+7hw2tuaqO1mr6+FrsoMOYQ6D6hxlZuzJ3sgIRMrFITHukAkqagUBqAywAch/GfAOZyrzazOB6pXARuSAAjZFRomxcu/v7qOniLJGdfzTP0LE7G5L5dKw7ip9fZHw9tVCDZ4unjeR3l++4KbZAQ1iV3YgnerZbPQlf7mIqvyAjBM/206o30IdnvDy73qv6B56uTwBUHt6vyS1dq692mNRbh5/U23OGtySowgbIgTs2zOocIWNND/N+fQb+8CBHBeL7+AUzchCGnmQ4bEE/s+oR7CbhEJFrXiXYJY9w15LOymApCEQaEQnU8CoAJuAm6RYJz7/ksVG6E5NU8DpjBqf1c1b+iZFGlap9Odr62MSEkcjyivhxWTYDE/E/NE3GB1Uc+bpzQdWgj/4STPQkYS1572LHXhOWpZ2cpTHZ/L3PauA+tQWFDHXxh2/9PsWgEaKMFXLqFnSzO4vMcwzSuuLb7hbca/YviG4FfftWsTZYJ1CejC3mysflUJb9fksIcLxj3qZIHByLsCeU2iS4HJjV5Zh7P6smSHu/hym+O3KxS9ZCbT1D4p3pYCinPueKLh9wNf77y+pQHkG/DvonAjHGLJ4bHTMbWwcbOpS993VBcM0oy/XkV0ygatYZ80P4PBqNGj6EZYixS3lGgPkY8LgtyqYzQJgnCyePK8aJzIrjH623DWRGQeKWim6HlSXHSjJpuu1p5gpk0h+7KTqlF6y9t2/Xb+O9f4yMSBoR26K4nLOIyP+iPmHU379rDbOSAGwHCuamQABladvI23fDgGOqkLLhHGASHZNKpFlYL7fNAg7O2MO7sBbjC3ToBSRdOBLNmoYhy37KOJMfZHni/8IxgB",
+      "thinking": "",
+      "type": "thinking"
+    },
+    {
+      "text": "{\"why\":\"The README's \\\"Example\\\" section (and docs/overview.md, which includes it) shows exactly this first-contact journey: `from attrs import asdict, define, make_class, Factory`, defining `SomeClass` with a plain field and a `Factory(list)` field, instantiating it, calling a method, comparing instances, serializing with `asdict()`, using defaults, and finally `make_class`. This is the canonical, intended, successful use of the library.\",\"script\":\"\\\"\\\"\\\"Walk through the first example from attrs' README.\\\"\\\"\\\"\\n\\nimport os\\nimport sys\\n\\n\\n# Make the src-layout package importable when running from the repo root.\\n_SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), \\\"src\\\")\\nif os.path.isdir(_SRC) and _SRC not in sys.path:\\n    sys.path.insert(0, _SRC)\\n\\nfrom attrs import Factory, asdict, define, make_class\\n\\n\\n@define\\nclass SomeClass:\\n    a_number: int = 42\\n    list_of_numbers: list[int] = Factory(list)\\n\\n    def hard_math(self, another_number):\\n        return self.a_number + sum(self.list_of_numbers) * another_number\\n\\n\\ndef main():\\n    sc = SomeClass(1, [1, 2, 3])\\n    print(repr(sc))\\n\\n    result = sc.hard_math(3)\\n    print(\\\"hard_math(3) =\\\", result)\\n\\n    print(\\\"equal to twin:\\\", sc == SomeClass(1, [1, 2, 3]))\\n    print(\\\"differs from other:\\\", sc != SomeClass(2, [3, 2, 1]))\\n\\n    as_dict = asdict(sc)\\n    print(\\\"asdict:\\\", as_dict)\\n\\n    defaults = SomeClass()\\n    print(repr(defaults))\\n\\n    C = make_class(\\\"C\\\", [\\\"a\\\", \\\"b\\\"])\\n    made = C(\\\"foo\\\", \\\"bar\\\")\\n    print(repr(made))\\n\\n    assert repr(sc) == \\\"SomeClass(a_number=1, list_of_numbers=[1, 2, 3])\\\"\\n    assert result == 19\\n    assert sc == SomeClass(1, [1, 2, 3])\\n    assert sc != SomeClass(2, [3, 2, 1])\\n    assert as_dict == {\\\"a_number\\\": 1, \\\"list_of_numbers\\\": [1, 2, 3]}\\n    assert repr(defaults) == \\\"SomeClass(a_number=42, list_of_numbers=[])\\\"\\n    assert repr(made) == \\\"C(a='foo', b='bar')\\\"\\n\\n\\nif __name__ == \\\"__main__\\\":\\n    main()\\n\"}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "model": "claude-opus-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 163413
+    },
+    "cache_creation_input_tokens": 163413,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 9,
+    "iterations": [
+      {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 163413
+        },
+        "cache_creation_input_tokens": 163413,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 9,
+        "model": null,
+        "output_tokens": 1153,
+        "type": "message"
+      }
+    ],
+    "output_tokens": 1153,
+    "output_tokens_details": {
+      "thinking_tokens": 216
+    },
+    "service_tier": "standard"
+  }
+}

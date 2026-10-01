@@ -1,0 +1,101 @@
+scenario()  [scenario.py:1]
+  escape(s='<script>alert(document.cookie);</script>')  [src/markupsafe/__init__.py:24]
+    Markup.__new__(cls=<type>, object='&lt;script&gt;alert(document.cookie);&lt;/script&gt;', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+      → Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')
+    → Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')
+  Markup.__repr__(self=<Markup>)  [src/markupsafe/__init__.py:167]
+    → "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')"
+  Markup.__new__(cls=<type>, object='&lt;script&gt;alert(document.cookie);&lt;/script&gt;', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+    → Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')
+  escape(s=Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;'))  [src/markupsafe/__init__.py:24]
+    Markup.__html__(self=<Markup>)  [src/markupsafe/__init__.py:133]
+      → Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')
+    Markup.__new__(cls=<type>, object=Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;'), encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+      Markup.__html__(self=<Markup>)  [src/markupsafe/__init__.py:133]
+        → Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')
+      → Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')
+    → Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')
+  … escape ×1 more  [src/markupsafe/__init__.py:24]
+  Markup.__repr__(self=<Markup>)  [src/markupsafe/__init__.py:167]
+    → 'Markup(\'<span class="user">Alice &#3...lt;b&gt;Great&lt;/b&gt;&#34;</span>\')'
+  Markup.__new__(cls=<type>, object='<p>User: {user:link} said: {comment}</p>', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+    → Markup('<p>User: {user:link} said: {comment}</p>')
+  Markup.format(self=<Markup>)  [src/markupsafe/__init__.py:313]
+    EscapeFormatter.__init__(self=<EscapeFormatter>, escape=<bound method Markup.escape of <class 'markupsafe.Markup'>>)  [src/markupsafe/__init__.py:335]
+      → None
+    EscapeFormatter.format_field(self=<EscapeFormatter>, value=<__main__.User object at 0x10cffa900>, format_spec='link')  [src/markupsafe/__init__.py:339]
+      Markup.__new__(cls=<type>, object='<a href="/user/{}">{}</a>', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+        → Markup('<a href="/user/{}">{}</a>')
+      … Markup.__new__ ×1 more  [src/markupsafe/__init__.py:122]
+      Markup.format(self=<Markup>)  [src/markupsafe/__init__.py:313]
+        EscapeFormatter.__init__(self=<EscapeFormatter>, escape=<bound method Markup.escape of <class 'markupsafe.Markup'>>)  [src/markupsafe/__init__.py:335]
+          → None
+        EscapeFormatter.format_field(self=<EscapeFormatter>, value='Alice "The <b>Great</b>"', format_spec='')  [src/markupsafe/__init__.py:339]
+          Markup.escape(cls=<type>, s='Alice "The <b>Great</b>"')  [src/markupsafe/__init__.py:230]
+            escape(s='Alice "The <b>Great</b>"')  [src/markupsafe/__init__.py:24]
+              Markup.__new__(cls=<type>, object='Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+                → Markup('Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;')
+              → Markup('Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;')
+            → Markup('Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;')
+          → 'Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;'
+        Markup.__new__(cls=<type>, object='<span class="user">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+          → Markup('<span class="user">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')
+        → Markup('<span class="user">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')
+      … Markup.format ×1 more  [src/markupsafe/__init__.py:313]
+      Markup.escape(cls=<type>, s=Markup('<a href="/user/3"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>'))  [src/markupsafe/__init__.py:230]
+        escape(s=Markup('<a href="/user/3"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>'))  [src/markupsafe/__init__.py:24]
+          Markup.__html__(self=<Markup>)  [src/markupsafe/__init__.py:133]
+            → Markup('<a href="/user/3"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')
+          Markup.__new__(cls=<type>, object=Markup('<a href="/user/3"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>'), encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+            Markup.__html__(self=<Markup>)  [src/markupsafe/__init__.py:133]
+              → Markup('<a href="/user/3"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')
+            → Markup('<a href="/user/3"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')
+          → Markup('<a href="/user/3"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')
+        → Markup('<a href="/user/3"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')
+      → '<a href="/user/3"><span class="user">...t;b&gt;Great&lt;/b&gt;&#34;</span></a>'
+    … EscapeFormatter.format_field ×1 more  [src/markupsafe/__init__.py:339]
+    Markup.__new__(cls=<type>, object='<p>User: <a href="/user/3"><span clas...t(document.cookie);&lt;/script&gt;</p>', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+      → Markup('<p>User: <a href="/user/3"><sp...(document.cookie);&lt;/script&gt;</p>')
+    → Markup('<p>User: <a href="/user/3"><sp...(document.cookie);&lt;/script&gt;</p>')
+  Markup.__repr__(self=<Markup>)  [src/markupsafe/__init__.py:167]
+    → 'Markup(\'<p>User: <a href="/user/3"><...ocument.cookie);&lt;/script&gt;</p>\')'
+  Markup.__new__(cls=<type>, object='<footer>', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+    → Markup('<footer>')
+  Markup.__add__(self=<Markup>, value='</p> & <script>oops</script>')  [src/markupsafe/__init__.py:136]
+    Markup.escape(cls=<type>, s='</p> & <script>oops</script>')  [src/markupsafe/__init__.py:230]
+      escape(s='</p> & <script>oops</script>')  [src/markupsafe/__init__.py:24]
+        Markup.__new__(cls=<type>, object='&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+          → Markup('&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;')
+        → Markup('&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;')
+      → Markup('&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;')
+    Markup.__new__(cls=<type>, object='<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+      → Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;')
+    → Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;')
+  Markup.__new__(cls=<type>, object='</footer>', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+    → Markup('</footer>')
+  Markup.__add__(self=<Markup>, value=Markup('</footer>'))  [src/markupsafe/__init__.py:136]
+    Markup.escape(cls=<type>, s=Markup('</footer>'))  [src/markupsafe/__init__.py:230]
+      escape(s=Markup('</footer>'))  [src/markupsafe/__init__.py:24]
+        Markup.__html__(self=<Markup>)  [src/markupsafe/__init__.py:133]
+          → Markup('</footer>')
+        Markup.__new__(cls=<type>, object=Markup('</footer>'), encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+          Markup.__html__(self=<Markup>)  [src/markupsafe/__init__.py:133]
+            → Markup('</footer>')
+          → Markup('</footer>')
+        → Markup('</footer>')
+      → Markup('</footer>')
+    Markup.__new__(cls=<type>, object='<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+      → Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')
+    → Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')
+  Markup.__repr__(self=<Markup>)  [src/markupsafe/__init__.py:167]
+    → "Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')"
+  Markup.__new__(cls=<type>, object='<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+    → Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')
+  Markup.striptags(self=<Markup>)  [src/markupsafe/__init__.py:199]
+    Markup.__new__(cls=<type>, object='User: Alice &#34;The &lt;b&gt;Great&l...alert(document.cookie);&lt;/script&gt;', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+      → Markup('User: Alice &#34;The &lt;b&gt;...lert(document.cookie);&lt;/script&gt;')
+    Markup.unescape(self=<Markup>)  [src/markupsafe/__init__.py:188]
+      → 'User: Alice "The <b>Great</b>" said: <script>alert(document.cookie);</script>'
+    → 'User: Alice "The <b>Great</b>" said: <script>alert(document.cookie);</script>'
+  Markup.__new__(cls=<type>, object='<p>User: <a href="/user/3"><span clas...t(document.cookie);&lt;/script&gt;</p>', encoding=None, errors='strict')  [src/markupsafe/__init__.py:122]
+    → Markup('<p>User: <a href="/user/3"><sp...(document.cookie);&lt;/script&gt;</p>')

@@ -1,0 +1,378 @@
+{
+  "title": "A Token and Its Word: One Round Trip Through ItsDangerous",
+  "premise": "A web app wants to hand a user's identity \u2014 `{\"id\": 5, \"name\": \"itsdangerous\"}` \u2014 to an untrusted place (a URL, a cookie, an email link) and get it back later without having stored anything server-side. The data must survive the trip in a form that is safe for URLs, and any tampering must be detectable on return. `URLSafeSerializer(\"secret key\", \"auth\")` is the promise; this story follows the dict out to a token and back again, and notes exactly what that promise covers and what it does not.",
+  "reader": "owner",
+  "repo": {
+    "name": "pallets/itsdangerous",
+    "url": "https://github.com/pallets/itsdangerous",
+    "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+    "local_path": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+    "import_path": "src"
+  },
+  "chapters": [
+    {
+      "n": 1,
+      "title": "The World the Dict Enters",
+      "trace_lines": [
+        4,
+        15
+      ],
+      "data_in": "secret_key='secret key', salt='auth', serializer=None, signer=None, signer_kwargs=None, fallback_signers=None",
+      "data_out": "a URLSafeSerializer with secret_keys=[b'secret key'], salt=b'auth', serializer=_CompactJSON, is_text_serializer=True, signer=Signer, fallback_signers=[]",
+      "code": [
+        "src/itsdangerous/serializer.py:190-234",
+        "src/itsdangerous/signer.py:67-73",
+        "src/itsdangerous/encoding.py:11-17",
+        "src/itsdangerous/url_safe.py:15-21",
+        "src/itsdangerous/serializer.py:33-37"
+      ],
+      "inputs": [
+        "'secret key'",
+        "'auth'"
+      ],
+      "characters": [
+        "Serializer.__init__",
+        "_make_keys_list",
+        "want_bytes",
+        "is_text_serializer",
+        "_CompactJSON",
+        "URLSafeSerializer"
+      ],
+      "facts": [
+        "A single `str` or `bytes` secret key is normalised into a one-element list by `_make_keys_list`; any other iterable becomes a list of keys, oldest to newest, which is the key-rotation feature.",
+        "`want_bytes` encodes text as UTF-8 with `errors='strict'`, so a secret key or salt is always compared as bytes, never as text.",
+        "`salt` defaults to `b\"itsdangerous\"`; passing `None` leaves it unset here so the Signer's own default applies later. The salt is not secret \u2014 it only separates signing contexts.",
+        "`URLSafeSerializerMixin` overrides `default_serializer` to `_CompactJSON`, which sets `separators=(\",\",\":\")` and `ensure_ascii=False`, producing shorter payloads than stdlib `json` defaults.",
+        "`is_text_serializer` decides text-vs-binary by actually calling `serializer.dumps({})` at construction time and checking for `str` \u2014 a probe, not a declaration; a custom serializer that raises on `{}` would fail at construction.",
+        "`fallback_signers` defaults to the class attribute `default_fallback_signers`, which is an empty list since 2.0 (the SHA-512 fallback was removed).",
+        "No signing or hashing happens here: `hashlib.sha1` is deliberately not touched at import or construction time (`_lazy_sha1`) so FIPS builds can reconfigure the default first."
+      ],
+      "open_questions": [
+        {
+          "id": "q1.1",
+          "question": "The salt 'auth' was merely turned into bytes and stored. Where does it actually enter the cryptography, and can it be confused with the secret?"
+        },
+        {
+          "id": "q1.2",
+          "question": "A throwaway `dumps({})` was evaluated and remembered as `True`. What decision does that boolean control later?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 2,
+      "title": "Becoming a Payload",
+      "trace_lines": [
+        16,
+        28
+      ],
+      "data_in": "obj={'id': 5, 'name': 'itsdangerous'}, salt=None",
+      "data_out": "b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9' (base64, no leading dot)",
+      "code": [
+        "src/itsdangerous/serializer.py:309-320",
+        "src/itsdangerous/url_safe.py:55-69",
+        "src/itsdangerous/serializer.py:271-276",
+        "src/itsdangerous/_json.py:14-18",
+        "src/itsdangerous/encoding.py:20-25"
+      ],
+      "inputs": [
+        "{'id': 5, 'name': 'itsdangerous'}"
+      ],
+      "characters": [
+        "Serializer.dumps",
+        "URLSafeSerializerMixin.dump_payload",
+        "Serializer.dump_payload",
+        "_CompactJSON.dumps",
+        "base64_encode",
+        "zlib.compress"
+      ],
+      "facts": [
+        "The dict is serialised to the 30-byte text `{\"id\":5,\"name\":\"itsdangerous\"}` and then encoded to bytes; `dump_payload` always returns bytes even when the inner serializer returns text.",
+        "`serializer_kwargs` (empty here) are passed straight into `serializer.dumps`, so caller-supplied options affect the signed bytes.",
+        "The URL-safe mixin compresses every payload with zlib and keeps the compressed form only if it is shorter than `len(json) - 1`; for this 30-byte JSON it was not, so the original bytes were used and no marker byte was added.",
+        "`base64_encode` uses `base64.urlsafe_b64encode` and strips `=` padding, so the payload contains only `A-Za-z0-9-_` \u2014 safe in URLs and, importantly, free of the `.` separator.",
+        "Compression is applied to attacker-visible data before signing; the token's length leaks something about the payload's compressibility, which is a known (and accepted) property of this design."
+      ],
+      "open_questions": [
+        {
+          "id": "q2.1",
+          "question": "zlib ran and its output was thrown away. If it had been kept, how would the reader on the other side ever know to decompress?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 3,
+      "title": "A Signer Is Built for the Job",
+      "trace_lines": [
+        29,
+        44
+      ],
+      "data_in": "payload b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'; make_signer(salt=None)",
+      "data_out": "a fresh Signer(secret_keys=[b'secret key'], salt=b'auth', sep=b'.', key_derivation='django-concat', algorithm=HMACAlgorithm(_lazy_sha1))",
+      "code": [
+        "src/itsdangerous/serializer.py:278-285",
+        "src/itsdangerous/signer.py:129-173",
+        "src/itsdangerous/signer.py:40-64",
+        "src/itsdangerous/encoding.py:42"
+      ],
+      "inputs": [
+        "b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'"
+      ],
+      "characters": [
+        "Serializer.make_signer",
+        "Signer.__init__",
+        "HMACAlgorithm",
+        "_lazy_sha1",
+        "_base64_alphabet"
+      ],
+      "facts": [
+        "`make_signer(None)` substitutes the serializer's own salt, so `dumps`/`loads` without an explicit salt are guaranteed to use the same context key.",
+        "The whole `secret_keys` list is handed to the Signer, not just one key.",
+        "Road not taken: if `sep` were any ASCII letter, digit, `-`, `_` or `=` \u2014 characters that can appear inside a base64 signature \u2014 `Signer.__init__` raises `ValueError` immediately rather than producing ambiguous tokens. `b'.'` is not in `_base64_alphabet`, so construction proceeds.",
+        "`key_derivation` defaults to `'django-concat'` and `digest_method` to `_lazy_sha1`; a wrong `key_derivation` string is not rejected here \u2014 it raises `TypeError` only later, inside `derive_key`.",
+        "With no `algorithm` given, an `HMACAlgorithm` wrapping the digest method is constructed; a caller may substitute any `SigningAlgorithm`, including `NoneAlgorithm`, which signs nothing at all.",
+        "A new Signer object is created per `dumps` and per unsign attempt; signers hold no mutable per-message state."
+      ],
+      "open_questions": [
+        {
+          "id": "q3.1",
+          "question": "The signer received a list of keys but only one message to sign. Which key signs, and what is the list for?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 4,
+      "title": "The Signature, and the Token Leaves Home",
+      "trace_lines": [
+        45,
+        67
+      ],
+      "data_in": "Signer.sign(value=b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9')",
+      "data_out": "'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg' (str)",
+      "code": [
+        "src/itsdangerous/signer.py:215-225",
+        "src/itsdangerous/signer.py:182-213",
+        "src/itsdangerous/signer.py:62-64",
+        "src/itsdangerous/encoding.py:20-25",
+        "src/itsdangerous/serializer.py:314-320"
+      ],
+      "inputs": [
+        "b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'"
+      ],
+      "characters": [
+        "Signer.sign",
+        "Signer.get_signature",
+        "Signer.derive_key",
+        "HMACAlgorithm.get_signature",
+        "base64_encode"
+      ],
+      "facts": [
+        "`derive_key(None)` uses `self.secret_keys[-1]` \u2014 the newest key signs \u2014 and under 'django-concat' computes `sha1(salt + b\"signer\" + secret_key).digest()`, here `sha1(b'authsignersecret key')`.",
+        "Derivation is a plain hash concatenation, not a KDF: the docstring states it is not a way to stretch a short password into a strong key, and short secret keys stay weak.",
+        "Because the salt is prefixed into the derived key, two serializers with the same secret key but different salts produce different signatures and cannot read each other's tokens.",
+        "The HMAC is computed over the base64 payload bytes with the derived key; the digest is then `base64_encode`d, giving the 27-character `6YP6T0BaO67XP--9UzTrmurXSmg`.",
+        "`sign` returns `value + sep + signature`, so the payload stays readable in the clear \u2014 this is integrity and authenticity, not confidentiality.",
+        "`dumps` decodes the signed bytes to `str` precisely because `is_text_serializer` was `True`; with a binary serializer the same code returns `bytes`."
+      ],
+      "open_questions": [
+        {
+          "id": "q4.1",
+          "question": "The dict is now travelling as readable base64 with a hash stuck on the end. What can the holder of the token learn, and what can they change?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q1.1",
+          "answer": "The salt enters as a literal byte prefix in key derivation \u2014 `sha1(b'auth' + b'signer' + b'secret key')` \u2014 separating contexts without being secret itself."
+        },
+        {
+          "id": "q1.2",
+          "answer": "`is_text_serializer=True` is what makes `dumps` return `rv.decode(\"utf-8\")`, i.e. a `str` token instead of bytes."
+        },
+        {
+          "id": "q3.1",
+          "answer": "Signing uses only the last (newest) key: `derive_key` defaults to `self.secret_keys[-1]`."
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Back From the Untrusted World",
+      "trace_lines": [
+        68,
+        86
+      ],
+      "data_in": "s='eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg', salt=None",
+      "data_out": "bytes to verify, plus exactly one candidate Signer (salt=b'auth') from iter_unsigners",
+      "code": [
+        "src/itsdangerous/serializer.py:328-343",
+        "src/itsdangerous/serializer.py:287-307",
+        "src/itsdangerous/encoding.py:11-17"
+      ],
+      "inputs": [
+        "'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg'"
+      ],
+      "characters": [
+        "Serializer.loads",
+        "Serializer.iter_unsigners",
+        "want_bytes"
+      ],
+      "facts": [
+        "`loads` accepts `str` or `bytes` and normalises with `want_bytes`; nothing about the token is trusted at this point.",
+        "`iter_unsigners` is a generator: it yields the primary signer first, then one signer per fallback configuration per secret key \u2014 so the current parameters are always tried before any legacy ones.",
+        "With `fallback_signers=[]` only one signer is produced here; fallbacks exist so digest methods or derivation schemes can be upgraded without invalidating tokens in the wild.",
+        "Each fallback entry may be a dict of kwargs, a `Signer` subclass, or a `(class, kwargs)` tuple \u2014 and, unlike the primary signer, fallbacks are constructed one key at a time, iterating `secret_keys`.",
+        "`loads` swallows `BadSignature` from each candidate and keeps only the last one; if every signer fails it re-raises that final exception, so the error a caller sees comes from the last signer tried, not necessarily the most informative one.",
+        "If `iter_unsigners` ever yielded nothing, `last_exception` would still be `None` and `raise None` would surface as a `TypeError` \u2014 reachable only by deliberately breaking the generator."
+      ],
+      "open_questions": [
+        {
+          "id": "q5.1",
+          "question": "Failures from each candidate signer are caught and discarded in a loop. What information does a rejected token carry with it, and does anything leak?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 6,
+      "title": "Splitting the Token Apart",
+      "trace_lines": [
+        87,
+        96
+      ],
+      "data_in": "signed_value=b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg'",
+      "data_out": "value=b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9' and raw sig bytes b'\\xe9\\x83\\xfaO@Z;\\xae\\xd7?\\xef\\xbdS4\\xeb\\x9a\\xea\\xd7Jh' ready to compare",
+      "code": [
+        "src/itsdangerous/signer.py:244-256",
+        "src/itsdangerous/signer.py:227-234",
+        "src/itsdangerous/encoding.py:28-38"
+      ],
+      "inputs": [
+        "b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg'"
+      ],
+      "characters": [
+        "Signer.unsign",
+        "Signer.verify_signature",
+        "base64_decode",
+        "BadSignature"
+      ],
+      "facts": [
+        "Road not taken: a value with no `.` in it raises `BadSignature(\"No b'.' found in value\")` before any crypto runs \u2014 and with no `payload` attached, so nothing tampered is offered back to the caller.",
+        "The split is `rsplit(sep, 1)`: the last dot wins, which is why the separator must not be a character that can occur in a base64 signature (enforced back in chapter 3) \u2014 payload dots, as used by the compression marker, are harmless.",
+        "`verify_signature` base64-decodes the presented signature inside a bare `except Exception: return False`, so malformed signature text becomes a plain verification failure rather than a `BadData` leak.",
+        "`base64_decode` re-pads the input and decodes with `errors='ignore'` on the ascii step, so junk characters are dropped rather than raising \u2014 verification of a garbled signature simply fails.",
+        "On mismatch, `unsign` raises `BadSignature(f\"Signature {sig!r} does not match\", payload=value)`: the unverified payload is deliberately attached so callers can inspect it, which is why `load_payload` is a separate, explicit step."
+      ],
+      "open_questions": [
+        {
+          "id": "q6.1",
+          "question": "Two byte strings now have to be judged equal. Is that comparison safe against an attacker who can time it, and is only one key consulted?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q5.1",
+          "answer": "A rejected token comes back as `BadSignature` carrying the unverified `payload`; itsdangerous never decodes it for you in `loads` \u2014 `loads_unsafe`/`load_payload` make that choice explicit and unsafe by name."
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "title": "The Verdict",
+      "trace_lines": [
+        97,
+        112
+      ],
+      "data_in": "key derivation for secret_key=b'secret key'; sig vs recomputed HMAC",
+      "data_out": "True \u2192 unsign returns b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'",
+      "code": [
+        "src/itsdangerous/signer.py:227-242",
+        "src/itsdangerous/signer.py:182-213",
+        "src/itsdangerous/signer.py:20-28",
+        "src/itsdangerous/signer.py:62-64"
+      ],
+      "inputs": [
+        "b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'",
+        "b'\\xe9\\x83\\xfaO@Z;\\xae\\xd7?\\xef\\xbdS4\\xeb\\x9a\\xea\\xd7Jh'"
+      ],
+      "characters": [
+        "Signer.verify_signature",
+        "Signer.derive_key",
+        "SigningAlgorithm.verify_signature",
+        "hmac.compare_digest",
+        "HMACAlgorithm.get_signature"
+      ],
+      "facts": [
+        "Verification loops over `reversed(self.secret_keys)`: newest key first, every key tried, returning `True` on the first match \u2014 this is what makes key rotation work, and it means an old key stays valid until it is removed from the list.",
+        "Here `derive_key` is called with an explicit key (`b'secret key'`), taking the `want_bytes` branch, and recomputes the same `sha1(b'authsignersecret key')` derived key as signing did.",
+        "The signature is recomputed from scratch and compared with `hmac.compare_digest`, a constant-time comparison, so the check does not leak the expected signature through timing.",
+        "A forged token must produce the right HMAC under one of the configured keys; without a key this is infeasible, which is the whole guarantee: tamper-evidence, not secrecy.",
+        "`SigningAlgorithm.verify_signature` is generic \u2014 a custom algorithm could verify asymmetrically, and `NoneAlgorithm` would accept an empty signature from anyone. The default is the safe one.",
+        "`Signer.validate` exists for callers who want a boolean instead of an exception; it swallows `BadSignature` only."
+      ],
+      "open_questions": [
+        {
+          "id": "q7.1",
+          "question": "The bytes handed back are still base64 and still look like a token. What turns them back into the caller's dict, and can that step itself be attacked?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q6.1",
+          "answer": "Yes on both counts: `hmac.compare_digest` is constant-time, and `verify_signature` tries every key in `secret_keys` from newest to oldest before giving up."
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "title": "Home Again, and What Was Promised",
+      "trace_lines": [
+        113,
+        123
+      ],
+      "data_in": "payload=b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'",
+      "data_out": "{'id': 5, 'name': 'itsdangerous'}",
+      "code": [
+        "src/itsdangerous/url_safe.py:23-53",
+        "src/itsdangerous/serializer.py:243-269",
+        "src/itsdangerous/encoding.py:28-38",
+        "src/itsdangerous/_json.py:10-12"
+      ],
+      "inputs": [
+        "b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'"
+      ],
+      "characters": [
+        "URLSafeSerializerMixin.load_payload",
+        "Serializer.load_payload",
+        "base64_decode",
+        "_CompactJSON.loads",
+        "BadPayload"
+      ],
+      "facts": [
+        "A leading `b\".\"` is the compression marker: it is stripped and `zlib.decompress` is applied. This payload has none, matching chapter 2 where compression was discarded \u2014 the flag and the decision are two halves of the same contract.",
+        "Road not taken: a bad base64 body raises `BadPayload(\"Could not base64 decode the payload...\")`, and a bad zlib body raises `BadPayload(\"Could not zlib decompress...\")`, both keeping the original exception in `original_error`.",
+        "Because decompression happens only after a valid signature (when reached through `loads`), attacker-controlled zlib input is not processed unauthenticated on the happy path \u2014 but `load_payload` called directly on a `BadSignature.payload`, as the docs suggest for debugging, does decompress unverified data.",
+        "`Serializer.load_payload` decodes to UTF-8 text before calling `loads` because `is_text_serializer` was `True`, and wraps every exception from the inner serializer in `BadPayload` \u2014 so serializer mismatches surface as `BadData`, not arbitrary errors.",
+        "`BadPayload` is a `BadData` but *not* a `BadSignature`, so it escapes the retry loop in `loads` instead of causing the next signer to be tried: a valid signature over an unloadable payload fails loudly.",
+        "The round trip guarantees the returned object is the one that was dumped by a holder of one of the secret keys under this salt. It does not hide the data, does not expire it, and does not prevent replay \u2014 expiry needs `TimedSerializer`/`TimestampSigner`, and the default serializer being JSON (not pickle) is what keeps `load_payload` from being remote code execution."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q2.1",
+          "answer": "A compressed payload is prefixed with `b\".\"`; `load_payload` strips that byte and calls `zlib.decompress`. No marker here, so the bytes were decoded as-is."
+        },
+        {
+          "id": "q4.1",
+          "answer": "Everything: the holder can `base64_decode` the payload and read `{\"id\":5,...}` \u2014 nothing is encrypted. They cannot change it, because any edit invalidates the HMAC."
+        },
+        {
+          "id": "q7.1",
+          "answer": "`load_payload` base64-decodes and JSON-parses the verified bytes; failures become `BadPayload` with the original error, and using JSON rather than pickle keeps this step from executing attacker data."
+        }
+      ]
+    }
+  ]
+}

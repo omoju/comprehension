@@ -1,0 +1,3576 @@
+{
+ "fn": "scenario",
+ "file": "scenario.py",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "Factory.__init__",
+   "file": "src/attr/_make.py",
+   "line": 3105,
+   "called_from": "scenario.py:18",
+   "args": {
+    "self": "<Factory>",
+    "factory": "<class 'list'>",
+    "takes_self": "False"
+   },
+   "calls": [],
+   "returned": "None"
+  },
+  {
+   "fn": "define",
+   "file": "src/attr/_next_gen.py",
+   "line": 23,
+   "called_from": "scenario.py:15",
+   "args": {
+    "maybe_cls": "<class '__main__.SomeClass'>",
+    "these": "None",
+    "repr": "None",
+    "unsafe_hash": "None",
+    "hash": "None",
+    "init": "None",
+    "slots": "True",
+    "frozen": "False",
+    "weakref_slot": "True",
+    "str": "False",
+    "auto_attribs": "None",
+    "kw_only": "False",
+    "cache_hash": "False",
+    "auto_exc": "True",
+    "eq": "None",
+    "order": "False",
+    "auto_detect": "True",
+    "getstate_setstate": "None",
+    "on_setattr": "None",
+    "field_transformer": "None",
+    "match_args": "True",
+    "force_kw_only": "False"
+   },
+   "calls": [
+    {
+     "fn": "define.<locals>.wrap",
+     "file": "src/attr/_next_gen.py",
+     "line": 389,
+     "called_from": "_next_gen.py:427",
+     "args": {
+      "cls": "<type>"
+     },
+     "calls": [
+      {
+       "fn": "define.<locals>.do_it",
+       "file": "src/attr/_next_gen.py",
+       "line": 362,
+       "called_from": "_next_gen.py:418",
+       "args": {
+        "cls": "<type>",
+        "auto_attribs": "True"
+       },
+       "calls": [
+        {
+         "fn": "attrs",
+         "file": "src/attr/_make.py",
+         "line": 1353,
+         "called_from": "_next_gen.py:363",
+         "args": {
+          "maybe_cls": "<class '__main__.SomeClass'>",
+          "these": "None",
+          "repr_ns": "None",
+          "repr": "None",
+          "cmp": "None",
+          "hash": "None",
+          "init": "None",
+          "slots": "True",
+          "frozen": "False",
+          "weakref_slot": "True",
+          "str": "False",
+          "auto_attribs": "True",
+          "kw_only": "False",
+          "cache_hash": "False",
+          "auto_exc": "True",
+          "eq": "None",
+          "order": "False",
+          "auto_detect": "True",
+          "collect_by_mro": "True",
+          "getstate_setstate": "None",
+          "on_setattr": "<function pipe.<locals>.wrapped_pipe at 0x10d5a7100>",
+          "field_transformer": "None",
+          "match_args": "True",
+          "unsafe_hash": "None",
+          "force_kw_only": "False"
+         },
+         "calls": [
+          {
+           "fn": "_determine_attrs_eq_order",
+           "file": "src/attr/_make.py",
+           "line": 1256,
+           "called_from": "_make.py:1469",
+           "args": {
+            "cmp": "None",
+            "eq": "None",
+            "order": "False",
+            "default_eq": "None"
+           },
+           "calls": [],
+           "returned": "(None, False)"
+          },
+          {
+           "fn": "attrs.<locals>.wrap",
+           "file": "src/attr/_make.py",
+           "line": 1478,
+           "called_from": "_make.py:1616",
+           "args": {
+            "cls": "<type>"
+           },
+           "calls": [
+            {
+             "fn": "_has_frozen_base_class",
+             "file": "src/attr/_make.py",
+             "line": 1626,
+             "called_from": "_make.py:1480",
+             "args": {
+              "cls": "<type>"
+             },
+             "calls": [],
+             "returned": "False"
+            },
+            {
+             "fn": "_has_own_attribute",
+             "file": "src/attr/_make.py",
+             "line": 313,
+             "called_from": "_make.py:1482",
+             "args": {
+              "cls": "<type>",
+              "attrib_name": "'__setattr__'"
+             },
+             "calls": [],
+             "returned": "False"
+            },
+            {
+             "fn": "_determine_whether_to_implement",
+             "file": "src/attr/_make.py",
+             "line": 1327,
+             "called_from": "_make.py:1490",
+             "args": {
+              "cls": "<type>",
+              "flag": "None",
+              "auto_detect": "True",
+              "dunders": "('__eq__', '__ne__')",
+              "default": "True"
+             },
+             "calls": [
+              {
+               "fn": "_has_own_attribute",
+               "file": "src/attr/_make.py",
+               "line": 313,
+               "called_from": "_make.py:1347",
+               "args": {
+                "cls": "<type>",
+                "attrib_name": "'__eq__'"
+               },
+               "calls": [],
+               "returned": "False"
+              },
+              {
+               "fn": "_has_own_attribute",
+               "file": "src/attr/_make.py",
+               "line": 313,
+               "called_from": "_make.py:1347",
+               "args": {
+                "cls": "<type>",
+                "attrib_name": "'__ne__'"
+               },
+               "calls": [],
+               "returned": "False"
+              }
+             ],
+             "returned": "True"
+            },
+            {
+             "fn": "_has_own_attribute",
+             "file": "src/attr/_make.py",
+             "line": 313,
+             "called_from": "_make.py:1507",
+             "args": {
+              "cls": "<type>",
+              "attrib_name": "'__hash__'"
+             },
+             "calls": [],
+             "returned": "False"
+            },
+            {
+             "fn": "_determine_whether_to_implement",
+             "file": "src/attr/_make.py",
+             "line": 1327,
+             "called_from": "_make.py:1534",
+             "args": {
+              "cls": "<type>",
+              "flag": "None",
+              "auto_detect": "True",
+              "dunders": "('__init__',)",
+              "default": "True"
+             },
+             "calls": [
+              {
+               "fn": "_has_own_attribute",
+               "file": "src/attr/_make.py",
+               "line": 313,
+               "called_from": "_make.py:1347",
+               "args": {
+                "cls": "<type>",
+                "attrib_name": "'__init__'"
+               },
+               "calls": [],
+               "returned": "False"
+              }
+             ],
+             "returned": "True"
+            },
+            {
+             "fn": "_determine_whether_to_implement",
+             "file": "src/attr/_make.py",
+             "line": 1327,
+             "called_from": "_make.py:1537",
+             "args": {
+              "cls": "<type>",
+              "flag": "None",
+              "auto_detect": "True",
+              "dunders": "('__repr__',)",
+              "default": "True"
+             },
+             "calls": [
+              {
+               "fn": "_has_own_attribute",
+               "file": "src/attr/_make.py",
+               "line": 313,
+               "called_from": "_make.py:1347",
+               "args": {
+                "cls": "<type>",
+                "attrib_name": "'__repr__'"
+               },
+               "calls": [],
+               "returned": "False"
+              }
+             ],
+             "returned": "True"
+            },
+            {
+             "fn": "_determine_whether_to_implement",
+             "file": "src/attr/_make.py",
+             "line": 1327,
+             "called_from": "_make.py:1542",
+             "args": {
+              "cls": "<type>",
+              "flag": "False",
+              "auto_detect": "True",
+              "dunders": "('__lt__', '__le__', '__gt__', '__ge__')",
+              "default": "True"
+             },
+             "calls": [],
+             "returned": "False"
+            },
+            {
+             "fn": "_determine_whether_to_implement",
+             "file": "src/attr/_make.py",
+             "line": 1327,
+             "called_from": "_make.py:1553",
+             "args": {
+              "cls": "<type>",
+              "flag": "None",
+              "auto_detect": "True",
+              "dunders": "('__getstate__', '__setstate__')",
+              "default": "True"
+             },
+             "calls": [
+              {
+               "fn": "_has_own_attribute",
+               "file": "src/attr/_make.py",
+               "line": 313,
+               "called_from": "_make.py:1347",
+               "args": {
+                "cls": "<type>",
+                "attrib_name": "'__getstate__'"
+               },
+               "calls": [],
+               "returned": "False"
+              },
+              {
+               "fn": "_has_own_attribute",
+               "file": "src/attr/_make.py",
+               "line": 313,
+               "called_from": "_make.py:1347",
+               "args": {
+                "cls": "<type>",
+                "attrib_name": "'__setstate__'"
+               },
+               "calls": [],
+               "returned": "False"
+              }
+             ],
+             "returned": "True"
+            },
+            {
+             "fn": "ClassProps.__init__",
+             "file": "src/attr/_make.py",
+             "line": 3020,
+             "called_from": "_make.py:1529",
+             "args": {
+              "self": "<ClassProps>",
+              "is_exception": "False",
+              "is_slotted": "True",
+              "has_weakref_slot": "True",
+              "is_frozen": "False",
+              "kw_only": "<KeywordOnly.NO: 'no'>",
+              "collected_fields_by_mro": "True",
+              "added_init": "True",
+              "added_repr": "True",
+              "added_eq": "True",
+              "added_ordering": "False",
+              "hashability": "<Hashability.UNHASHABLE: 'unhashable'>",
+              "added_match_args": "True",
+              "added_str": "False",
+              "added_pickling": "True",
+              "on_setattr_hook": "<function pipe.<locals>.wrapped_pipe at 0x10d5a7100>",
+              "field_transformer": "None"
+             },
+             "calls": [],
+             "returned": "None"
+            },
+            {
+             "fn": "ClassProps.is_hashable",
+             "file": "src/attr/_make.py",
+             "line": 3056,
+             "called_from": "_make.py:1564",
+             "args": {
+              "self": "<ClassProps>"
+             },
+             "calls": [],
+             "returned": "False"
+            },
+            {
+             "fn": "_ClassBuilder.__init__",
+             "file": "src/attr/_make.py",
+             "line": 676,
+             "called_from": "_make.py:1568",
+             "args": {
+              "self": "<_ClassBuilder>",
+              "cls": "<type>",
+              "these": "None",
+              "auto_attribs": "True",
+              "props": "ClassProps(is_exception=False, is_slot...t 0x10d5a7100>, field_transformer=None)",
+              "has_custom_setattr": "False"
+             },
+             "calls": [
+              {
+               "fn": "_transform_attrs",
+               "file": "src/attr/_make.py",
+               "line": 381,
+               "called_from": "_make.py:684",
+               "args": {
+                "cls": "<type>",
+                "these": "None",
+                "auto_attribs": "True",
+                "kw_only": "<KeywordOnly.NO: 'no'>",
+                "collect_by_mro": "True",
+                "field_transformer": "None"
+               },
+               "calls": [
+                {
+                 "fn": "_get_annotations",
+                 "file": "src/attr/_compat.py",
+                 "line": 30,
+                 "called_from": "_make.py:400",
+                 "args": {
+                  "cls": "<type>"
+                 },
+                 "calls": [],
+                 "returned": "{'a_number': <class 'int'>, 'list_of_numbers': list[int]}"
+                },
+                {
+                 "fn": "_is_class_var",
+                 "file": "src/attr/_make.py",
+                 "line": 295,
+                 "called_from": "_make.py:413",
+                 "args": {
+                  "annot": "<class 'int'>"
+                 },
+                 "calls": [],
+                 "returned": "False"
+                },
+                {
+                 "fn": "attrib",
+                 "file": "src/attr/_make.py",
+                 "line": 104,
+                 "called_from": "_make.py:419",
+                 "args": {
+                  "default": "42",
+                  "validator": "None",
+                  "repr": "True",
+                  "cmp": "None",
+                  "hash": "None",
+                  "init": "True",
+                  "metadata": "None",
+                  "type": "None",
+                  "converter": "None",
+                  "factory": "None",
+                  "kw_only": "None",
+                  "eq": "None",
+                  "order": "None",
+                  "on_setattr": "None",
+                  "alias": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_determine_attrib_eq_order",
+                   "file": "src/attr/_make.py",
+                   "line": 1284,
+                   "called_from": "_make.py:165",
+                   "args": {
+                    "cmp": "None",
+                    "eq": "None",
+                    "order": "None",
+                    "default_eq": "True"
+                   },
+                   "calls": [],
+                   "returned": "(True, None, True, None)"
+                  },
+                  {
+                   "fn": "_CountingAttr.__init__",
+                   "file": "src/attr/_make.py",
+                   "line": 2809,
+                   "called_from": "_make.py:197",
+                   "args": {
+                    "self": "<_CountingAttr>",
+                    "default": "42",
+                    "validator": "None",
+                    "repr": "True",
+                    "cmp": "None",
+                    "hash": "None",
+                    "init": "True",
+                    "converter": "None",
+                    "metadata": "{}",
+                    "type": "None",
+                    "kw_only": "None",
+                    "eq": "True",
+                    "eq_key": "None",
+                    "order": "True",
+                    "order_key": "None",
+                    "on_setattr": "None",
+                    "alias": "None"
+                   },
+                   "calls": [],
+                   "returned": "None"
+                  }
+                 ],
+                 "returned": "_CountingAttr(counter=6, _default=42, ..._setattr=None, alias=None, metadata={})"
+                },
+                {
+                 "fn": "_is_class_var",
+                 "file": "src/attr/_make.py",
+                 "line": 295,
+                 "called_from": "_make.py:413",
+                 "args": {
+                  "annot": "list[int]"
+                 },
+                 "calls": [],
+                 "returned": "False"
+                },
+                {
+                 "fn": "attrib",
+                 "file": "src/attr/_make.py",
+                 "line": 104,
+                 "called_from": "_make.py:419",
+                 "args": {
+                  "default": "Factory(factory=<class 'list'>, takes_self=False)",
+                  "validator": "None",
+                  "repr": "True",
+                  "cmp": "None",
+                  "hash": "None",
+                  "init": "True",
+                  "metadata": "None",
+                  "type": "None",
+                  "converter": "None",
+                  "factory": "None",
+                  "kw_only": "None",
+                  "eq": "None",
+                  "order": "None",
+                  "on_setattr": "None",
+                  "alias": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_determine_attrib_eq_order",
+                   "file": "src/attr/_make.py",
+                   "line": 1284,
+                   "called_from": "_make.py:165",
+                   "args": {
+                    "cmp": "None",
+                    "eq": "None",
+                    "order": "None",
+                    "default_eq": "True"
+                   },
+                   "calls": [],
+                   "returned": "(True, None, True, None)"
+                  },
+                  {
+                   "fn": "_CountingAttr.__init__",
+                   "file": "src/attr/_make.py",
+                   "line": 2809,
+                   "called_from": "_make.py:197",
+                   "args": {
+                    "self": "<_CountingAttr>",
+                    "default": "Factory(factory=<class 'list'>, takes_self=False)",
+                    "validator": "None",
+                    "repr": "True",
+                    "cmp": "None",
+                    "hash": "None",
+                    "init": "True",
+                    "converter": "None",
+                    "metadata": "{}",
+                    "type": "None",
+                    "kw_only": "None",
+                    "eq": "True",
+                    "eq_key": "None",
+                    "order": "True",
+                    "order_key": "None",
+                    "on_setattr": "None",
+                    "alias": "None"
+                   },
+                   "calls": [],
+                   "returned": "None"
+                  }
+                 ],
+                 "returned": "_CountingAttr(counter=7, _default=Fact..._setattr=None, alias=None, metadata={})"
+                },
+                {
+                 "fn": "Attribute.from_counting_attr",
+                 "file": "src/attr/_make.py",
+                 "line": 2594,
+                 "called_from": "_make.py:444",
+                 "args": {
+                  "cls": "<type>",
+                  "name": "'a_number'",
+                  "ca": "_CountingAttr(counter=6, _default=42, ..._setattr=None, alias=None, metadata={})",
+                  "kw_only": "False",
+                  "type": "<class 'int'>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Attribute.__init__",
+                   "file": "src/attr/_make.py",
+                   "line": 2531,
+                   "called_from": "_make.py:2606",
+                   "args": {
+                    "self": "<Attribute>",
+                    "name": "'a_number'",
+                    "default": "42",
+                    "validator": "None",
+                    "repr": "True",
+                    "cmp": "None",
+                    "hash": "None",
+                    "init": "True",
+                    "inherited": "False",
+                    "metadata": "{}",
+                    "type": "<class 'int'>",
+                    "converter": "None",
+                    "kw_only": "False",
+                    "eq": "True",
+                    "eq_key": "None",
+                    "order": "True",
+                    "order_key": "None",
+                    "on_setattr": "None",
+                    "alias": "None",
+                    "alias_is_default": "True"
+                   },
+                   "calls": [
+                    {
+                     "fn": "_determine_attrib_eq_order",
+                     "file": "src/attr/_make.py",
+                     "line": 1284,
+                     "called_from": "_make.py:2553",
+                     "args": {
+                      "cmp": "None",
+                      "eq": "True",
+                      "order": "True",
+                      "default_eq": "True"
+                     },
+                     "calls": [
+                      {
+                       "fn": "_determine_attrib_eq_order.<locals>.decide_callable_or_boolean",
+                       "file": "src/attr/_make.py",
+                       "line": 1293,
+                       "called_from": "_make.py:1313",
+                       "args": {
+                        "value": "True"
+                       },
+                       "calls": [],
+                       "returned": "(True, None)"
+                      },
+                      {
+                       "fn": "_determine_attrib_eq_order.<locals>.decide_callable_or_boolean",
+                       "file": "src/attr/_make.py",
+                       "line": 1293,
+                       "called_from": "_make.py:1318",
+                       "args": {
+                        "value": "True"
+                       },
+                       "calls": [],
+                       "returned": "(True, None)"
+                      }
+                     ],
+                     "returned": "(True, None, True, None)"
+                    }
+                   ],
+                   "returned": "None"
+                  }
+                 ],
+                 "returned": "Attribute(name='a_number', default=42,...ted=False, on_setattr=None, alias=None)"
+                },
+                {
+                 "fn": "Attribute.from_counting_attr",
+                 "file": "src/attr/_make.py",
+                 "line": 2594,
+                 "called_from": "_make.py:444",
+                 "args": {
+                  "cls": "<type>",
+                  "name": "'list_of_numbers'",
+                  "ca": "_CountingAttr(counter=7, _default=Fact..._setattr=None, alias=None, metadata={})",
+                  "kw_only": "False",
+                  "type": "list[int]"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Attribute.__init__",
+                   "file": "src/attr/_make.py",
+                   "line": 2531,
+                   "called_from": "_make.py:2606",
+                   "args": {
+                    "self": "<Attribute>",
+                    "name": "'list_of_numbers'",
+                    "default": "Factory(factory=<class 'list'>, takes_self=False)",
+                    "validator": "None",
+                    "repr": "True",
+                    "cmp": "None",
+                    "hash": "None",
+                    "init": "True",
+                    "inherited": "False",
+                    "metadata": "{}",
+                    "type": "list[int]",
+                    "converter": "None",
+                    "kw_only": "False",
+                    "eq": "True",
+                    "eq_key": "None",
+                    "order": "True",
+                    "order_key": "None",
+                    "on_setattr": "None",
+                    "alias": "None",
+                    "alias_is_default": "True"
+                   },
+                   "calls": [
+                    {
+                     "fn": "_determine_attrib_eq_order",
+                     "file": "src/attr/_make.py",
+                     "line": 1284,
+                     "called_from": "_make.py:2553",
+                     "args": {
+                      "cmp": "None",
+                      "eq": "True",
+                      "order": "True",
+                      "default_eq": "True"
+                     },
+                     "calls": [
+                      {
+                       "fn": "_determine_attrib_eq_order.<locals>.decide_callable_or_boolean",
+                       "file": "src/attr/_make.py",
+                       "line": 1293,
+                       "called_from": "_make.py:1313",
+                       "args": {
+                        "value": "True"
+                       },
+                       "calls": [],
+                       "returned": "(True, None)"
+                      },
+                      {
+                       "fn": "_determine_attrib_eq_order.<locals>.decide_callable_or_boolean",
+                       "file": "src/attr/_make.py",
+                       "line": 1293,
+                       "called_from": "_make.py:1318",
+                       "args": {
+                        "value": "True"
+                       },
+                       "calls": [],
+                       "returned": "(True, None)"
+                      }
+                     ],
+                     "returned": "(True, None, True, None)"
+                    }
+                   ],
+                   "returned": "None"
+                  }
+                 ],
+                 "returned": "Attribute(name='list_of_numbers', defa...ted=False, on_setattr=None, alias=None)"
+                },
+                {
+                 "fn": "_collect_base_attrs",
+                 "file": "src/attr/_make.py",
+                 "line": 320,
+                 "called_from": "_make.py:454",
+                 "args": {
+                  "cls": "<type>",
+                  "taken_attr_names": "{'a_number', 'list_of_numbers'}"
+                 },
+                 "calls": [],
+                 "returned": "([], {})"
+                },
+                {
+                 "fn": "_default_init_alias_for",
+                 "file": "src/attr/_make.py",
+                 "line": 2451,
+                 "called_from": "_make.py:474",
+                 "args": {
+                  "name": "'a_number'"
+                 },
+                 "calls": [],
+                 "returned": "'a_number'"
+                },
+                {
+                 "fn": "_default_init_alias_for",
+                 "file": "src/attr/_make.py",
+                 "line": 2451,
+                 "called_from": "_make.py:474",
+                 "args": {
+                  "name": "'list_of_numbers'"
+                 },
+                 "calls": [],
+                 "returned": "'list_of_numbers'"
+                },
+                {
+                 "fn": "_transform_attrs.<locals>.<genexpr>",
+                 "file": "src/attr/_make.py",
+                 "line": 486,
+                 "called_from": "_make.py:486",
+                 "args": {
+                  ".0": "<list_iterator object at 0x10d5e7100>"
+                 },
+                 "calls": [],
+                 "returned": "Attribute(name='a_number', default=42,...lse, on_setattr=None, alias='a_number')"
+                },
+                {
+                 "fn": "_transform_attrs.<locals>.<genexpr>",
+                 "file": "src/attr/_make.py",
+                 "line": 486,
+                 "called_from": "_make.py:486",
+                 "args": {
+                  ".0": "<list_iterator object at 0x10d5e7100>"
+                 },
+                 "calls": [],
+                 "returned": "Attribute(name='list_of_numbers', defa..._setattr=None, alias='list_of_numbers')"
+                },
+                {
+                 "fn": "_transform_attrs.<locals>.<genexpr>",
+                 "file": "src/attr/_make.py",
+                 "line": 486,
+                 "called_from": "_make.py:486",
+                 "args": {
+                  ".0": "<list_iterator object at 0x10d5e7100>"
+                 },
+                 "calls": [],
+                 "returned": "None"
+                },
+                {
+                 "fn": "_make_attr_tuple_class",
+                 "file": "src/attr/_make.py",
+                 "line": 266,
+                 "called_from": "_make.py:504",
+                 "args": {
+                  "cls_name": "'SomeClass'",
+                  "attr_names": "['a_number', 'list_of_numbers']"
+                 },
+                 "calls": [],
+                 "returned": "<class 'attr._make.SomeClassAttributes'>"
+                }
+               ],
+               "returned": "_Attributes(attrs=(Attribute(name='a_n...s')), base_attrs=[], base_attrs_map={})"
+              },
+              {
+               "fn": "_ClassBuilder.__init__.<locals>.<genexpr>",
+               "file": "src/attr/_make.py",
+               "line": 698,
+               "called_from": "_make.py:698",
+               "args": {
+                ".0": "<tuple_iterator object at 0x10d5e5030>"
+               },
+               "calls": [],
+               "returned": "'a_number'"
+              },
+              {
+               "fn": "_ClassBuilder.__init__.<locals>.<genexpr>",
+               "file": "src/attr/_make.py",
+               "line": 698,
+               "called_from": "_make.py:698",
+               "args": {
+                ".0": "<tuple_iterator object at 0x10d5e5030>"
+               },
+               "calls": [],
+               "returned": "'list_of_numbers'"
+              },
+              {
+               "fn": "_ClassBuilder.__init__.<locals>.<genexpr>",
+               "file": "src/attr/_make.py",
+               "line": 698,
+               "called_from": "_make.py:698",
+               "args": {
+                ".0": "<tuple_iterator object at 0x10d5e5030>"
+               },
+               "calls": [],
+               "returned": "None"
+              },
+              {
+               "fn": "_ClassBuilder._make_getstate_setstate",
+               "file": "src/attr/_make.py",
+               "line": 1025,
+               "called_from": "_make.py:762",
+               "args": {
+                "self": "<_ClassBuilder>"
+               },
+               "calls": [
+                {
+                 "fn": "_ClassBuilder._make_getstate_setstate.<locals>.<genexpr>",
+                 "file": "src/attr/_make.py",
+                 "line": 1030,
+                 "called_from": "_make.py:1030",
+                 "args": {
+                  ".0": "<tuple_iterator object at 0x10d5e7730>"
+                 },
+                 "calls": [],
+                 "returned": "'a_number'"
+                },
+                {
+                 "fn": "_ClassBuilder._make_getstate_setstate.<locals>.<genexpr>",
+                 "file": "src/attr/_make.py",
+                 "line": 1030,
+                 "called_from": "_make.py:1030",
+                 "args": {
+                  ".0": "<tuple_iterator object at 0x10d5e7730>"
+                 },
+                 "calls": [],
+                 "returned": "'list_of_numbers'"
+                },
+                {
+                 "fn": "_ClassBuilder._make_getstate_setstate.<locals>.<genexpr>",
+                 "file": "src/attr/_make.py",
+                 "line": 1030,
+                 "called_from": "_make.py:1030",
+                 "args": {
+                  ".0": "<tuple_iterator object at 0x10d5e7730>"
+                 },
+                 "calls": [],
+                 "returned": "None"
+                }
+               ],
+               "returned": "(<function _ClassBuilder._make_getstate...<locals>.slots_getstate at 0x10e172ac0>, <function _ClassBuilder._make_getstate...<locals>.slots_setstate at 0x10e172d40>)"
+              }
+             ],
+             "returned": "None"
+            },
+            {
+             "fn": "_ClassBuilder.add_repr",
+             "file": "src/attr/_make.py",
+             "line": 1004,
+             "called_from": "_make.py:1577",
+             "args": {
+              "self": "<_ClassBuilder>",
+              "ns": "None"
+             },
+             "calls": [
+              {
+               "fn": "_make_repr_script",
+               "file": "src/attr/_make.py",
+               "line": 1852,
+               "called_from": "_make.py:1005",
+               "args": {
+                "attrs": "(Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers'))",
+                "ns": "None"
+               },
+               "calls": [
+                {
+                 "fn": "_make_repr_script.<locals>.<genexpr>",
+                 "file": "src/attr/_make.py",
+                 "line": 1859,
+                 "called_from": "_make.py:1859",
+                 "args": {
+                  ".0": "<tuple_iterator object at 0x10d5e7af0>"
+                 },
+                 "calls": [],
+                 "returned": "('a_number', <built-in function repr>, True)"
+                },
+                {
+                 "fn": "_make_repr_script.<locals>.<genexpr>",
+                 "file": "src/attr/_make.py",
+                 "line": 1859,
+                 "called_from": "_make.py:1859",
+                 "args": {
+                  ".0": "<tuple_iterator object at 0x10d5e7af0>"
+                 },
+                 "calls": [],
+                 "returned": "('list_of_numbers', <built-in function repr>, True)"
+                },
+                {
+                 "fn": "_make_repr_script.<locals>.<genexpr>",
+                 "file": "src/attr/_make.py",
+                 "line": 1859,
+                 "called_from": "_make.py:1859",
+                 "args": {
+                  ".0": "<tuple_iterator object at 0x10d5e7af0>"
+                 },
+                 "calls": [],
+                 "returned": "None"
+                }
+               ],
+               "returned": "('def __repr__(self):\\n  try:\\n    alre...\\n    already_repring.remove(id(self))', {'AttributeError': <class 'AttributeError'>, 'NOTHING': NOTHING, '_compat': <module 'attr._compat' from '/Users/om.../demo-repos/attrs/src/attr/_compat.py'>})"
+              }
+             ],
+             "returned": "<_ClassBuilder(cls=SomeClass)>"
+            },
+            {
+             "fn": "_ClassBuilder.add_eq",
+             "file": "src/attr/_make.py",
+             "line": 1150,
+             "called_from": "_make.py:1583",
+             "args": {
+              "self": "<_ClassBuilder>"
+             },
+             "calls": [
+              {
+               "fn": "_make_eq_script",
+               "file": "src/attr/_make.py",
+               "line": 1742,
+               "called_from": "_make.py:1153",
+               "args": {
+                "attrs": "(Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers'))"
+               },
+               "calls": [],
+               "returned": "('def __eq__(self, other):\\n    if othe...umbers == other.list_of_numbers\\n    )', {})"
+              }
+             ],
+             "returned": "<_ClassBuilder(cls=SomeClass)>"
+            },
+            {
+             "fn": "_ClassBuilder.add_setattr",
+             "file": "src/attr/_make.py",
+             "line": 1174,
+             "called_from": "_make.py:1588",
+             "args": {
+              "self": "<_ClassBuilder>"
+             },
+             "calls": [],
+             "returned": "<_ClassBuilder(cls=SomeClass)>"
+            },
+            {
+             "fn": "ClassProps.is_hashable",
+             "file": "src/attr/_make.py",
+             "line": 3056,
+             "called_from": "_make.py:1590",
+             "args": {
+              "self": "<ClassProps>"
+             },
+             "calls": [],
+             "returned": "False"
+            },
+            {
+             "fn": "_ClassBuilder.make_unhashable",
+             "file": "src/attr/_make.py",
+             "line": 1066,
+             "called_from": "_make.py:1593",
+             "args": {
+              "self": "<_ClassBuilder>"
+             },
+             "calls": [],
+             "returned": "<_ClassBuilder(cls=SomeClass)>"
+            },
+            {
+             "fn": "_ClassBuilder.add_init",
+             "file": "src/attr/_make.py",
+             "line": 1085,
+             "called_from": "_make.py:1596",
+             "args": {
+              "self": "<_ClassBuilder>"
+             },
+             "calls": [
+              {
+               "fn": "_make_init_script",
+               "file": "src/attr/_make.py",
+               "line": 2030,
+               "called_from": "_make.py:1086",
+               "args": {
+                "cls": "<type>",
+                "attrs": "(Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers'))",
+                "pre_init": "False",
+                "pre_init_has_args": "False",
+                "post_init": "False",
+                "frozen": "False",
+                "slots": "True",
+                "cache_hash": "False",
+                "base_attr_map": "{}",
+                "is_exc": "False",
+                "cls_on_setattr": "None",
+                "attrs_init": "False"
+               },
+               "calls": [
+                {
+                 "fn": "_attrs_to_init_script",
+                 "file": "src/attr/_make.py",
+                 "line": 2187,
+                 "called_from": "_make.py:2071",
+                 "args": {
+                  "attrs": "[Attribute(name='a_number', default=42,...lse, on_setattr=None, alias='a_number'), Attribute(name='list_of_numbers', defa..._setattr=None, alias='list_of_numbers')]",
+                  "is_frozen": "False",
+                  "is_slotted": "True",
+                  "call_pre_init": "False",
+                  "pre_init_has_args": "False",
+                  "call_post_init": "False",
+                  "does_cache_hash": "False",
+                  "base_attr_map": "{}",
+                  "is_exc": "False",
+                  "needs_cached_setattr": "False",
+                  "has_cls_on_setattr": "False",
+                  "method_name": "'__init__'"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_determine_setters",
+                   "file": "src/attr/_make.py",
+                   "line": 2140,
+                   "called_from": "_make.py:2217",
+                   "args": {
+                    "frozen": "False",
+                    "slots": "True",
+                    "base_attr_map": "{}"
+                   },
+                   "calls": [],
+                   "returned": "((), <function _assign at 0x10e18bb00>, <function _assign_with_converter at 0x10e18bba0>)"
+                  },
+                  {
+                   "fn": "_assign",
+                   "file": "src/attr/_make.py",
+                   "line": 2116,
+                   "called_from": "_make.py:2314",
+                   "args": {
+                    "attr_name": "'a_number'",
+                    "value": "'a_number'",
+                    "has_on_setattr": "False"
+                   },
+                   "calls": [],
+                   "returned": "'self.a_number = a_number'"
+                  },
+                  {
+                   "fn": "_assign",
+                   "file": "src/attr/_make.py",
+                   "line": 2116,
+                   "called_from": "_make.py:2348",
+                   "args": {
+                    "attr_name": "'list_of_numbers'",
+                    "value": "'list_of_numbers'",
+                    "has_on_setattr": "False"
+                   },
+                   "calls": [],
+                   "returned": "'self.list_of_numbers = list_of_numbers'"
+                  },
+                  {
+                   "fn": "_assign",
+                   "file": "src/attr/_make.py",
+                   "line": 2116,
+                   "called_from": "_make.py:2353",
+                   "args": {
+                    "attr_name": "'list_of_numbers'",
+                    "value": "'__attr_factory_list_of_numbers()'",
+                    "has_on_setattr": "False"
+                   },
+                   "calls": [],
+                   "returned": "'self.list_of_numbers = __attr_factory_list_of_numbers()'"
+                  }
+                 ],
+                 "returned": "('def __init__(self, a_number=attr_dict...s = __attr_factory_list_of_numbers()\\n', {'__attr_factory_list_of_numbers': <class 'list'>}, {'a_number': <class 'int'>, 'list_of_numbers': list[int], 'return': None})"
+                }
+               ],
+               "returned": "('def __init__(self, a_number=attr_dict...s = __attr_factory_list_of_numbers()\\n', {'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, '__cached__': None, ...}, {'a_number': <class 'int'>, 'list_of_numbers': list[int], 'return': None})"
+              }
+             ],
+             "returned": "<_ClassBuilder(cls=SomeClass)>"
+            },
+            {
+             "fn": "_has_own_attribute",
+             "file": "src/attr/_make.py",
+             "line": 313,
+             "called_from": "_make.py:1603",
+             "args": {
+              "cls": "<type>",
+              "attrib_name": "'__replace__'"
+             },
+             "calls": [],
+             "returned": "False"
+            },
+            {
+             "fn": "_ClassBuilder.add_replace",
+             "file": "src/attr/_make.py",
+             "line": 1110,
+             "called_from": "_make.py:1604",
+             "args": {
+              "self": "<_ClassBuilder>"
+             },
+             "calls": [
+              {
+               "fn": "_ClassBuilder._add_method_dunders_unsafe",
+               "file": "src/attr/_make.py",
+               "line": 1226,
+               "called_from": "_make.py:1115",
+               "args": {
+                "self": "<_ClassBuilder>",
+                "method": "<function _ClassBuilder.add_replace.<locals>.__replace__ at 0x10e173ba0>"
+               },
+               "calls": [],
+               "returned": "<function SomeClass.__replace__ at 0x10e173ba0>"
+              }
+             ],
+             "returned": "<_ClassBuilder(cls=SomeClass)>"
+            },
+            {
+             "fn": "_has_own_attribute",
+             "file": "src/attr/_make.py",
+             "line": 313,
+             "called_from": "_make.py:1606",
+             "args": {
+              "cls": "<type>",
+              "attrib_name": "'__match_args__'"
+             },
+             "calls": [],
+             "returned": "False"
+            },
+            {
+             "fn": "_ClassBuilder.add_match_args",
+             "file": "src/attr/_make.py",
+             "line": 1118,
+             "called_from": "_make.py:1607",
+             "args": {
+              "self": "<_ClassBuilder>"
+             },
+             "calls": [
+              {
+               "fn": "_ClassBuilder.add_match_args.<locals>.<genexpr>",
+               "file": "src/attr/_make.py",
+               "line": 1119,
+               "called_from": "_make.py:1119",
+               "args": {
+                ".0": "<tuple_iterator object at 0x10d60c910>"
+               },
+               "calls": [],
+               "returned": "'a_number'"
+              },
+              {
+               "fn": "_ClassBuilder.add_match_args.<locals>.<genexpr>",
+               "file": "src/attr/_make.py",
+               "line": 1119,
+               "called_from": "_make.py:1119",
+               "args": {
+                ".0": "<tuple_iterator object at 0x10d60c910>"
+               },
+               "calls": [],
+               "returned": "'list_of_numbers'"
+              },
+              {
+               "fn": "_ClassBuilder.add_match_args.<locals>.<genexpr>",
+               "file": "src/attr/_make.py",
+               "line": 1119,
+               "called_from": "_make.py:1119",
+               "args": {
+                ".0": "<tuple_iterator object at 0x10d60c910>"
+               },
+               "calls": [],
+               "returned": "None"
+              }
+             ],
+             "returned": "None"
+            },
+            {
+             "fn": "_ClassBuilder.build_class",
+             "file": "src/attr/_make.py",
+             "line": 800,
+             "called_from": "_make.py:1609",
+             "args": {
+              "self": "<_ClassBuilder>"
+             },
+             "calls": [
+              {
+               "fn": "_ClassBuilder._eval_snippets",
+               "file": "src/attr/_make.py",
+               "line": 782,
+               "called_from": "_make.py:806",
+               "args": {
+                "self": "<_ClassBuilder>"
+               },
+               "calls": [
+                {
+                 "fn": "_generate_unique_filename",
+                 "file": "src/attr/_make.py",
+                 "line": 1634,
+                 "called_from": "_make.py:793",
+                 "args": {
+                  "cls": "<type>",
+                  "func_name": "'methods'"
+                 },
+                 "calls": [],
+                 "returned": "'<attrs generated methods __main__.SomeClass>'"
+                },
+                {
+                 "fn": "_linecache_and_compile",
+                 "file": "src/attr/_make.py",
+                 "line": 231,
+                 "called_from": "_make.py:791",
+                 "args": {
+                  "script": "'def __repr__(self):\\n  try:\\n    alre...s = __attr_factory_list_of_numbers()\\n'",
+                  "filename": "'<attrs generated methods __main__.SomeClass>'",
+                  "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
+                  "locals": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_compile_and_eval",
+                   "file": "src/attr/_make.py",
+                   "line": 217,
+                   "called_from": "_make.py:261",
+                   "args": {
+                    "script": "'def __repr__(self):\\n  try:\\n    alre...s = __attr_factory_list_of_numbers()\\n'",
+                    "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
+                    "locs": "{}",
+                    "filename": "'<attrs generated methods __main__.SomeClass>'"
+                   },
+                   "calls": [],
+                   "returned": "None"
+                  }
+                 ],
+                 "returned": "{'__eq__': <function __eq__ at 0x10e15c4a0>, '__init__': <function __init__ at 0x10e15c540>, '__repr__': <function __repr__ at 0x10e15c400>}"
+                },
+                {
+                 "fn": "_ClassBuilder.add_repr.<locals>._attach_repr",
+                 "file": "src/attr/_make.py",
+                 "line": 1007,
+                 "called_from": "_make.py:798",
+                 "args": {
+                  "cls_dict": "{'__annotations__': {'a_number': <class 'int'>, 'list_of_numbers': list[int]}, '__attrs_attrs__': (Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers')), '__attrs_props__': ClassProps(is_exception=False, is_slot...t 0x10d5a7100>, field_transformer=None), '__dict__': <attribute '__dict__' of 'SomeClass' objects>, '__doc__': None, '__firstlineno__': 15, ...}",
+                  "globs": "{'__eq__': <function __eq__ at 0x10e15c4a0>, '__init__': <function __init__ at 0x10e15c540>, '__repr__': <function __repr__ at 0x10e15c400>}"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_ClassBuilder._add_method_dunders_unsafe",
+                   "file": "src/attr/_make.py",
+                   "line": 1226,
+                   "called_from": "_make.py:1008",
+                   "args": {
+                    "self": "<_ClassBuilder>",
+                    "method": "<function __repr__ at 0x10e15c400>"
+                   },
+                   "calls": [],
+                   "returned": "<function SomeClass.__repr__ at 0x10e15c400>"
+                  }
+                 ],
+                 "returned": "None"
+                },
+                {
+                 "fn": "_ClassBuilder.add_eq.<locals>._attach_eq",
+                 "file": "src/attr/_make.py",
+                 "line": 1155,
+                 "called_from": "_make.py:798",
+                 "args": {
+                  "cls_dict": "{'__annotations__': {'a_number': <class 'int'>, 'list_of_numbers': list[int]}, '__attrs_attrs__': (Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers')), '__attrs_props__': ClassProps(is_exception=False, is_slot...t 0x10d5a7100>, field_transformer=None), '__dict__': <attribute '__dict__' of 'SomeClass' objects>, '__doc__': None, '__firstlineno__': 15, ...}",
+                  "globs": "{'__eq__': <function __eq__ at 0x10e15c4a0>, '__init__': <function __init__ at 0x10e15c540>, '__repr__': <function SomeClass.__repr__ at 0x10e15c400>}"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_ClassBuilder._add_method_dunders_unsafe",
+                   "file": "src/attr/_make.py",
+                   "line": 1226,
+                   "called_from": "_make.py:1156",
+                   "args": {
+                    "self": "<_ClassBuilder>",
+                    "method": "<function __eq__ at 0x10e15c4a0>"
+                   },
+                   "calls": [],
+                   "returned": "<function SomeClass.__eq__ at 0x10e15c4a0>"
+                  }
+                 ],
+                 "returned": "None"
+                },
+                {
+                 "fn": "_ClassBuilder.add_init.<locals>._attach_init",
+                 "file": "src/attr/_make.py",
+                 "line": 1101,
+                 "called_from": "_make.py:798",
+                 "args": {
+                  "cls_dict": "{'__annotations__': {'a_number': <class 'int'>, 'list_of_numbers': list[int]}, '__attrs_attrs__': (Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers')), '__attrs_props__': ClassProps(is_exception=False, is_slot...t 0x10d5a7100>, field_transformer=None), '__dict__': <attribute '__dict__' of 'SomeClass' objects>, '__doc__': None, '__eq__': <function SomeClass.__eq__ at 0x10e15c4a0>, ...}",
+                  "globs": "{'__eq__': <function SomeClass.__eq__ at 0x10e15c4a0>, '__init__': <function __init__ at 0x10e15c540>, '__repr__': <function SomeClass.__repr__ at 0x10e15c400>}"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_ClassBuilder._add_method_dunders_unsafe",
+                   "file": "src/attr/_make.py",
+                   "line": 1226,
+                   "called_from": "_make.py:1104",
+                   "args": {
+                    "self": "<_ClassBuilder>",
+                    "method": "<function __init__ at 0x10e15c540>"
+                   },
+                   "calls": [],
+                   "returned": "<function SomeClass.__init__ at 0x10e15c540>"
+                  }
+                 ],
+                 "returned": "None"
+                }
+               ],
+               "returned": "None"
+              },
+              {
+               "fn": "_ClassBuilder._create_slots_class",
+               "file": "src/attr/_make.py",
+               "line": 859,
+               "called_from": "_make.py:808",
+               "args": {
+                "self": "<_ClassBuilder>"
+               },
+               "calls": [],
+               "returned": "<class '__main__.SomeClass'>"
+              }
+             ],
+             "returned": "<class '__main__.SomeClass'>"
+            }
+           ],
+           "returned": "<class '__main__.SomeClass'>"
+          }
+         ],
+         "returned": "<class '__main__.SomeClass'>"
+        }
+       ],
+       "returned": "<class '__main__.SomeClass'>"
+      }
+     ],
+     "returned": "<class '__main__.SomeClass'>"
+    }
+   ],
+   "returned": "<class '__main__.SomeClass'>"
+  },
+  {
+   "fn": "__ne__",
+   "file": "src/attr/_make.py",
+   "line": 1730,
+   "called_from": "scenario.py:32",
+   "args": {
+    "self": "<SomeClass>",
+    "other": "SomeClass(a_number=2, list_of_numbers=[3, 2, 1])"
+   },
+   "calls": [],
+   "returned": "True"
+  },
+  {
+   "fn": "asdict",
+   "file": "src/attr/_next_gen.py",
+   "line": 627,
+   "called_from": "scenario.py:34",
+   "args": {
+    "inst": "SomeClass(a_number=1, list_of_numbers=[1, 2, 3])",
+    "recurse": "True",
+    "filter": "None",
+    "value_serializer": "None"
+   },
+   "calls": [
+    {
+     "fn": "asdict",
+     "file": "src/attr/_funcs.py",
+     "line": 26,
+     "called_from": "_next_gen.py:634",
+     "args": {
+      "inst": "SomeClass(a_number=1, list_of_numbers=[1, 2, 3])",
+      "recurse": "True",
+      "filter": "None",
+      "dict_factory": "<class 'dict'>",
+      "retain_collection_types": "True",
+      "value_serializer": "None"
+     },
+     "calls": [
+      {
+       "fn": "fields",
+       "file": "src/attr/_make.py",
+       "line": 1924,
+       "called_from": "_funcs.py:78",
+       "args": {
+        "cls": "<type>"
+       },
+       "calls": [
+        {
+         "fn": "get_generic_base",
+         "file": "src/attr/_compat.py",
+         "line": 98,
+         "called_from": "_make.py:1948",
+         "args": {
+          "cl": "<class '__main__.SomeClass'>"
+         },
+         "calls": [],
+         "returned": "None"
+        }
+       ],
+       "returned": "(Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers'))"
+      },
+      {
+       "fn": "has",
+       "file": "src/attr/_funcs.py",
+       "line": 352,
+       "called_from": "_funcs.py:92",
+       "args": {
+        "cls": "<type>"
+       },
+       "calls": [
+        {
+         "fn": "get_generic_base",
+         "file": "src/attr/_compat.py",
+         "line": 98,
+         "called_from": "_funcs.py:370",
+         "args": {
+          "cl": "<class 'list'>"
+         },
+         "calls": [],
+         "returned": "None"
+        }
+       ],
+       "returned": "False"
+      },
+      {
+       "fn": "_asdict_anything",
+       "file": "src/attr/_funcs.py",
+       "line": 152,
+       "called_from": "_funcs.py:104",
+       "args": {
+        "val": "1",
+        "is_key": "False",
+        "filter": "None",
+        "dict_factory": "<class 'dict'>",
+        "retain_collection_types": "True",
+        "value_serializer": "None"
+       },
+       "calls": [],
+       "returned": "1"
+      },
+      {
+       "fn": "_asdict_anything",
+       "file": "src/attr/_funcs.py",
+       "line": 152,
+       "called_from": "_funcs.py:104",
+       "args": {
+        "val": "2",
+        "is_key": "False",
+        "filter": "None",
+        "dict_factory": "<class 'dict'>",
+        "retain_collection_types": "True",
+        "value_serializer": "None"
+       },
+       "calls": [],
+       "returned": "2"
+      },
+      {
+       "fn": "_asdict_anything",
+       "file": "src/attr/_funcs.py",
+       "line": 152,
+       "called_from": "_funcs.py:104",
+       "args": {
+        "val": "3",
+        "is_key": "False",
+        "filter": "None",
+        "dict_factory": "<class 'dict'>",
+        "retain_collection_types": "True",
+        "value_serializer": "None"
+       },
+       "calls": [],
+       "returned": "3"
+      }
+     ],
+     "returned": "{'a_number': 1, 'list_of_numbers': [1, 2, 3]}"
+    }
+   ],
+   "returned": "{'a_number': 1, 'list_of_numbers': [1, 2, 3]}"
+  },
+  {
+   "fn": "make_class",
+   "file": "src/attr/_make.py",
+   "line": 3261,
+   "called_from": "scenario.py:40",
+   "args": {
+    "name": "'C'",
+    "attrs": "['a', 'b']",
+    "bases": "(<class 'object'>,)",
+    "class_body": "None"
+   },
+   "calls": [
+    {
+     "fn": "attrib",
+     "file": "src/attr/_make.py",
+     "line": 104,
+     "called_from": "_make.py:3314",
+     "args": {
+      "default": "NOTHING",
+      "validator": "None",
+      "repr": "True",
+      "cmp": "None",
+      "hash": "None",
+      "init": "True",
+      "metadata": "None",
+      "type": "None",
+      "converter": "None",
+      "factory": "None",
+      "kw_only": "None",
+      "eq": "None",
+      "order": "None",
+      "on_setattr": "None",
+      "alias": "None"
+     },
+     "calls": [
+      {
+       "fn": "_determine_attrib_eq_order",
+       "file": "src/attr/_make.py",
+       "line": 1284,
+       "called_from": "_make.py:165",
+       "args": {
+        "cmp": "None",
+        "eq": "None",
+        "order": "None",
+        "default_eq": "True"
+       },
+       "calls": [],
+       "returned": "(True, None, True, None)"
+      },
+      {
+       "fn": "_CountingAttr.__init__",
+       "file": "src/attr/_make.py",
+       "line": 2809,
+       "called_from": "_make.py:197",
+       "args": {
+        "self": "<_CountingAttr>",
+        "default": "NOTHING",
+        "validator": "None",
+        "repr": "True",
+        "cmp": "None",
+        "hash": "None",
+        "init": "True",
+        "converter": "None",
+        "metadata": "{}",
+        "type": "None",
+        "kw_only": "None",
+        "eq": "True",
+        "eq_key": "None",
+        "order": "True",
+        "order_key": "None",
+        "on_setattr": "None",
+        "alias": "None"
+       },
+       "calls": [],
+       "returned": "None"
+      }
+     ],
+     "returned": "_CountingAttr(counter=8, _default=NOTH..._setattr=None, alias=None, metadata={})"
+    },
+    {
+     "fn": "attrib",
+     "file": "src/attr/_make.py",
+     "line": 104,
+     "called_from": "_make.py:3314",
+     "args": {
+      "default": "NOTHING",
+      "validator": "None",
+      "repr": "True",
+      "cmp": "None",
+      "hash": "None",
+      "init": "True",
+      "metadata": "None",
+      "type": "None",
+      "converter": "None",
+      "factory": "None",
+      "kw_only": "None",
+      "eq": "None",
+      "order": "None",
+      "on_setattr": "None",
+      "alias": "None"
+     },
+     "calls": [
+      {
+       "fn": "_determine_attrib_eq_order",
+       "file": "src/attr/_make.py",
+       "line": 1284,
+       "called_from": "_make.py:165",
+       "args": {
+        "cmp": "None",
+        "eq": "None",
+        "order": "None",
+        "default_eq": "True"
+       },
+       "calls": [],
+       "returned": "(True, None, True, None)"
+      },
+      {
+       "fn": "_CountingAttr.__init__",
+       "file": "src/attr/_make.py",
+       "line": 2809,
+       "called_from": "_make.py:197",
+       "args": {
+        "self": "<_CountingAttr>",
+        "default": "NOTHING",
+        "validator": "None",
+        "repr": "True",
+        "cmp": "None",
+        "hash": "None",
+        "init": "True",
+        "converter": "None",
+        "metadata": "{}",
+        "type": "None",
+        "kw_only": "None",
+        "eq": "True",
+        "eq_key": "None",
+        "order": "True",
+        "order_key": "None",
+        "on_setattr": "None",
+        "alias": "None"
+       },
+       "calls": [],
+       "returned": "None"
+      }
+     ],
+     "returned": "_CountingAttr(counter=9, _default=NOTH..._setattr=None, alias=None, metadata={})"
+    },
+    {
+     "fn": "make_class.<locals>.<lambda>",
+     "file": "src/attr/_make.py",
+     "line": 3333,
+     "called_from": "types.py:72",
+     "args": {
+      "ns": "{}"
+     },
+     "calls": [],
+     "returned": "None"
+    },
+    {
+     "fn": "_determine_attrs_eq_order",
+     "file": "src/attr/_make.py",
+     "line": 1256,
+     "called_from": "_make.py:3349",
+     "args": {
+      "cmp": "None",
+      "eq": "None",
+      "order": "None",
+      "default_eq": "True"
+     },
+     "calls": [],
+     "returned": "(True, True)"
+    },
+    {
+     "fn": "attrs",
+     "file": "src/attr/_make.py",
+     "line": 1353,
+     "called_from": "_make.py:3356",
+     "args": {
+      "maybe_cls": "None",
+      "these": "{'a': _CountingAttr(counter=8, _default=NOTH..._setattr=None, alias=None, metadata={}), 'b': _CountingAttr(counter=9, _default=NOTH..._setattr=None, alias=None, metadata={})}",
+      "repr_ns": "None",
+      "repr": "None",
+      "cmp": "None",
+      "hash": "None",
+      "init": "None",
+      "slots": "False",
+      "frozen": "False",
+      "weakref_slot": "True",
+      "str": "False",
+      "auto_attribs": "False",
+      "kw_only": "False",
+      "cache_hash": "False",
+      "auto_exc": "False",
+      "eq": "True",
+      "order": "True",
+      "auto_detect": "False",
+      "collect_by_mro": "False",
+      "getstate_setstate": "None",
+      "on_setattr": "None",
+      "field_transformer": "None",
+      "match_args": "True",
+      "unsafe_hash": "None",
+      "force_kw_only": "True"
+     },
+     "calls": [
+      {
+       "fn": "_determine_attrs_eq_order",
+       "file": "src/attr/_make.py",
+       "line": 1256,
+       "called_from": "_make.py:1469",
+       "args": {
+        "cmp": "None",
+        "eq": "True",
+        "order": "True",
+        "default_eq": "None"
+       },
+       "calls": [],
+       "returned": "(True, True)"
+      }
+     ],
+     "returned": "<function attrs.<locals>.wrap at 0x10e15d6c0>"
+    },
+    {
+     "fn": "attrs.<locals>.wrap",
+     "file": "src/attr/_make.py",
+     "line": 1478,
+     "called_from": "_make.py:3356",
+     "args": {
+      "cls": "<type>"
+     },
+     "calls": [
+      {
+       "fn": "_has_frozen_base_class",
+       "file": "src/attr/_make.py",
+       "line": 1626,
+       "called_from": "_make.py:1480",
+       "args": {
+        "cls": "<type>"
+       },
+       "calls": [],
+       "returned": "False"
+      },
+      {
+       "fn": "_determine_whether_to_implement",
+       "file": "src/attr/_make.py",
+       "line": 1327,
+       "called_from": "_make.py:1490",
+       "args": {
+        "cls": "<type>",
+        "flag": "True",
+        "auto_detect": "False",
+        "dunders": "('__eq__', '__ne__')",
+        "default": "True"
+       },
+       "calls": [],
+       "returned": "True"
+      },
+      {
+       "fn": "_determine_whether_to_implement",
+       "file": "src/attr/_make.py",
+       "line": 1327,
+       "called_from": "_make.py:1534",
+       "args": {
+        "cls": "<type>",
+        "flag": "None",
+        "auto_detect": "False",
+        "dunders": "('__init__',)",
+        "default": "True"
+       },
+       "calls": [],
+       "returned": "True"
+      },
+      {
+       "fn": "_determine_whether_to_implement",
+       "file": "src/attr/_make.py",
+       "line": 1327,
+       "called_from": "_make.py:1537",
+       "args": {
+        "cls": "<type>",
+        "flag": "None",
+        "auto_detect": "False",
+        "dunders": "('__repr__',)",
+        "default": "True"
+       },
+       "calls": [],
+       "returned": "True"
+      },
+      {
+       "fn": "_determine_whether_to_implement",
+       "file": "src/attr/_make.py",
+       "line": 1327,
+       "called_from": "_make.py:1542",
+       "args": {
+        "cls": "<type>",
+        "flag": "True",
+        "auto_detect": "False",
+        "dunders": "('__lt__', '__le__', '__gt__', '__ge__')",
+        "default": "True"
+       },
+       "calls": [],
+       "returned": "True"
+      },
+      {
+       "fn": "_determine_whether_to_implement",
+       "file": "src/attr/_make.py",
+       "line": 1327,
+       "called_from": "_make.py:1553",
+       "args": {
+        "cls": "<type>",
+        "flag": "None",
+        "auto_detect": "False",
+        "dunders": "('__getstate__', '__setstate__')",
+        "default": "False"
+       },
+       "calls": [],
+       "returned": "False"
+      },
+      {
+       "fn": "ClassProps.__init__",
+       "file": "src/attr/_make.py",
+       "line": 3020,
+       "called_from": "_make.py:1529",
+       "args": {
+        "self": "<ClassProps>",
+        "is_exception": "False",
+        "is_slotted": "False",
+        "has_weakref_slot": "True",
+        "is_frozen": "False",
+        "kw_only": "<KeywordOnly.NO: 'no'>",
+        "collected_fields_by_mro": "False",
+        "added_init": "True",
+        "added_repr": "True",
+        "added_eq": "True",
+        "added_ordering": "True",
+        "hashability": "<Hashability.UNHASHABLE: 'unhashable'>",
+        "added_match_args": "True",
+        "added_str": "False",
+        "added_pickling": "False",
+        "on_setattr_hook": "None",
+        "field_transformer": "None"
+       },
+       "calls": [],
+       "returned": "None"
+      },
+      {
+       "fn": "ClassProps.is_hashable",
+       "file": "src/attr/_make.py",
+       "line": 3056,
+       "called_from": "_make.py:1564",
+       "args": {
+        "self": "<ClassProps>"
+       },
+       "calls": [],
+       "returned": "False"
+      },
+      {
+       "fn": "_ClassBuilder.__init__",
+       "file": "src/attr/_make.py",
+       "line": 676,
+       "called_from": "_make.py:1568",
+       "args": {
+        "self": "<_ClassBuilder>",
+        "cls": "<type>",
+        "these": "{'a': _CountingAttr(counter=8, _default=NOTH..._setattr=None, alias=None, metadata={}), 'b': _CountingAttr(counter=9, _default=NOTH..._setattr=None, alias=None, metadata={})}",
+        "auto_attribs": "False",
+        "props": "ClassProps(is_exception=False, is_slot...attr_hook=None, field_transformer=None)",
+        "has_custom_setattr": "False"
+       },
+       "calls": [
+        {
+         "fn": "_transform_attrs",
+         "file": "src/attr/_make.py",
+         "line": 381,
+         "called_from": "_make.py:684",
+         "args": {
+          "cls": "<type>",
+          "these": "{'a': _CountingAttr(counter=8, _default=NOTH..._setattr=None, alias=None, metadata={}), 'b': _CountingAttr(counter=9, _default=NOTH..._setattr=None, alias=None, metadata={})}",
+          "auto_attribs": "False",
+          "kw_only": "<KeywordOnly.NO: 'no'>",
+          "collect_by_mro": "False",
+          "field_transformer": "None"
+         },
+         "calls": [
+          {
+           "fn": "_get_annotations",
+           "file": "src/attr/_compat.py",
+           "line": 30,
+           "called_from": "_make.py:400",
+           "args": {
+            "cls": "<type>"
+           },
+           "calls": [],
+           "returned": "{}"
+          },
+          {
+           "fn": "Attribute.from_counting_attr",
+           "file": "src/attr/_make.py",
+           "line": 2594,
+           "called_from": "_make.py:444",
+           "args": {
+            "cls": "<type>",
+            "name": "'a'",
+            "ca": "_CountingAttr(counter=8, _default=NOTH..._setattr=None, alias=None, metadata={})",
+            "kw_only": "False",
+            "type": "None"
+           },
+           "calls": [
+            {
+             "fn": "Attribute.__init__",
+             "file": "src/attr/_make.py",
+             "line": 2531,
+             "called_from": "_make.py:2606",
+             "args": {
+              "self": "<Attribute>",
+              "name": "'a'",
+              "default": "NOTHING",
+              "validator": "None",
+              "repr": "True",
+              "cmp": "None",
+              "hash": "None",
+              "init": "True",
+              "inherited": "False",
+              "metadata": "{}",
+              "type": "None",
+              "converter": "None",
+              "kw_only": "False",
+              "eq": "True",
+              "eq_key": "None",
+              "order": "True",
+              "order_key": "None",
+              "on_setattr": "None",
+              "alias": "None",
+              "alias_is_default": "True"
+             },
+             "calls": [
+              {
+               "fn": "_determine_attrib_eq_order",
+               "file": "src/attr/_make.py",
+               "line": 1284,
+               "called_from": "_make.py:2553",
+               "args": {
+                "cmp": "None",
+                "eq": "True",
+                "order": "True",
+                "default_eq": "True"
+               },
+               "calls": [
+                {
+                 "fn": "_determine_attrib_eq_order.<locals>.decide_callable_or_boolean",
+                 "file": "src/attr/_make.py",
+                 "line": 1293,
+                 "called_from": "_make.py:1313",
+                 "args": {
+                  "value": "True"
+                 },
+                 "calls": [],
+                 "returned": "(True, None)"
+                },
+                {
+                 "fn": "_determine_attrib_eq_order.<locals>.decide_callable_or_boolean",
+                 "file": "src/attr/_make.py",
+                 "line": 1293,
+                 "called_from": "_make.py:1318",
+                 "args": {
+                  "value": "True"
+                 },
+                 "calls": [],
+                 "returned": "(True, None)"
+                }
+               ],
+               "returned": "(True, None, True, None)"
+              }
+             ],
+             "returned": "None"
+            }
+           ],
+           "returned": "Attribute(name='a', default=NOTHING, v...ted=False, on_setattr=None, alias=None)"
+          },
+          {
+           "fn": "Attribute.from_counting_attr",
+           "file": "src/attr/_make.py",
+           "line": 2594,
+           "called_from": "_make.py:444",
+           "args": {
+            "cls": "<type>",
+            "name": "'b'",
+            "ca": "_CountingAttr(counter=9, _default=NOTH..._setattr=None, alias=None, metadata={})",
+            "kw_only": "False",
+            "type": "None"
+           },
+           "calls": [
+            {
+             "fn": "Attribute.__init__",
+             "file": "src/attr/_make.py",
+             "line": 2531,
+             "called_from": "_make.py:2606",
+             "args": {
+              "self": "<Attribute>",
+              "name": "'b'",
+              "default": "NOTHING",
+              "validator": "None",
+              "repr": "True",
+              "cmp": "None",
+              "hash": "None",
+              "init": "True",
+              "inherited": "False",
+              "metadata": "{}",
+              "type": "None",
+              "converter": "None",
+              "kw_only": "False",
+              "eq": "True",
+              "eq_key": "None",
+              "order": "True",
+              "order_key": "None",
+              "on_setattr": "None",
+              "alias": "None",
+              "alias_is_default": "True"
+             },
+             "calls": [
+              {
+               "fn": "_determine_attrib_eq_order",
+               "file": "src/attr/_make.py",
+               "line": 1284,
+               "called_from": "_make.py:2553",
+               "args": {
+                "cmp": "None",
+                "eq": "True",
+                "order": "True",
+                "default_eq": "True"
+               },
+               "calls": [
+                {
+                 "fn": "_determine_attrib_eq_order.<locals>.decide_callable_or_boolean",
+                 "file": "src/attr/_make.py",
+                 "line": 1293,
+                 "called_from": "_make.py:1313",
+                 "args": {
+                  "value": "True"
+                 },
+                 "calls": [],
+                 "returned": "(True, None)"
+                },
+                {
+                 "fn": "_determine_attrib_eq_order.<locals>.decide_callable_or_boolean",
+                 "file": "src/attr/_make.py",
+                 "line": 1293,
+                 "called_from": "_make.py:1318",
+                 "args": {
+                  "value": "True"
+                 },
+                 "calls": [],
+                 "returned": "(True, None)"
+                }
+               ],
+               "returned": "(True, None, True, None)"
+              }
+             ],
+             "returned": "None"
+            }
+           ],
+           "returned": "Attribute(name='b', default=NOTHING, v...ted=False, on_setattr=None, alias=None)"
+          },
+          {
+           "fn": "_collect_base_attrs_broken",
+           "file": "src/attr/_make.py",
+           "line": 353,
+           "called_from": "_make.py:458",
+           "args": {
+            "cls": "<type>",
+            "taken_attr_names": "{'a', 'b'}"
+           },
+           "calls": [],
+           "returned": "([], {})"
+          },
+          {
+           "fn": "_default_init_alias_for",
+           "file": "src/attr/_make.py",
+           "line": 2451,
+           "called_from": "_make.py:474",
+           "args": {
+            "name": "'a'"
+           },
+           "calls": [],
+           "returned": "'a'"
+          },
+          {
+           "fn": "_default_init_alias_for",
+           "file": "src/attr/_make.py",
+           "line": 2451,
+           "called_from": "_make.py:474",
+           "args": {
+            "name": "'b'"
+           },
+           "calls": [],
+           "returned": "'b'"
+          },
+          {
+           "fn": "_transform_attrs.<locals>.<genexpr>",
+           "file": "src/attr/_make.py",
+           "line": 486,
+           "called_from": "_make.py:486",
+           "args": {
+            ".0": "<list_iterator object at 0x10d60ff10>"
+           },
+           "calls": [],
+           "returned": "Attribute(name='a', default=NOTHING, v...ited=False, on_setattr=None, alias='a')"
+          },
+          {
+           "fn": "_transform_attrs.<locals>.<genexpr>",
+           "file": "src/attr/_make.py",
+           "line": 486,
+           "called_from": "_make.py:486",
+           "args": {
+            ".0": "<list_iterator object at 0x10d60ff10>"
+           },
+           "calls": [],
+           "returned": "Attribute(name='b', default=NOTHING, v...ited=False, on_setattr=None, alias='b')"
+          },
+          {
+           "fn": "_transform_attrs.<locals>.<genexpr>",
+           "file": "src/attr/_make.py",
+           "line": 486,
+           "called_from": "_make.py:486",
+           "args": {
+            ".0": "<list_iterator object at 0x10d60ff10>"
+           },
+           "calls": [],
+           "returned": "None"
+          },
+          {
+           "fn": "_make_attr_tuple_class",
+           "file": "src/attr/_make.py",
+           "line": 266,
+           "called_from": "_make.py:504",
+           "args": {
+            "cls_name": "'C'",
+            "attr_names": "['a', 'b']"
+           },
+           "calls": [],
+           "returned": "<class 'attr._make.CAttributes'>"
+          }
+         ],
+         "returned": "_Attributes(attrs=(Attribute(name='a',...b')), base_attrs=[], base_attrs_map={})"
+        },
+        {
+         "fn": "_ClassBuilder.__init__.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 698,
+         "called_from": "_make.py:698",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60f9a0>"
+         },
+         "calls": [],
+         "returned": "'a'"
+        },
+        {
+         "fn": "_ClassBuilder.__init__.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 698,
+         "called_from": "_make.py:698",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60f9a0>"
+         },
+         "calls": [],
+         "returned": "'b'"
+        },
+        {
+         "fn": "_ClassBuilder.__init__.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 698,
+         "called_from": "_make.py:698",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60f9a0>"
+         },
+         "calls": [],
+         "returned": "None"
+        }
+       ],
+       "returned": "None"
+      },
+      {
+       "fn": "_ClassBuilder.add_repr",
+       "file": "src/attr/_make.py",
+       "line": 1004,
+       "called_from": "_make.py:1577",
+       "args": {
+        "self": "<_ClassBuilder>",
+        "ns": "None"
+       },
+       "calls": [
+        {
+         "fn": "_make_repr_script",
+         "file": "src/attr/_make.py",
+         "line": 1852,
+         "called_from": "_make.py:1005",
+         "args": {
+          "attrs": "(Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b'))",
+          "ns": "None"
+         },
+         "calls": [
+          {
+           "fn": "_make_repr_script.<locals>.<genexpr>",
+           "file": "src/attr/_make.py",
+           "line": 1859,
+           "called_from": "_make.py:1859",
+           "args": {
+            ".0": "<tuple_iterator object at 0x10d60eda0>"
+           },
+           "calls": [],
+           "returned": "('a', <built-in function repr>, True)"
+          },
+          {
+           "fn": "_make_repr_script.<locals>.<genexpr>",
+           "file": "src/attr/_make.py",
+           "line": 1859,
+           "called_from": "_make.py:1859",
+           "args": {
+            ".0": "<tuple_iterator object at 0x10d60eda0>"
+           },
+           "calls": [],
+           "returned": "('b', <built-in function repr>, True)"
+          },
+          {
+           "fn": "_make_repr_script.<locals>.<genexpr>",
+           "file": "src/attr/_make.py",
+           "line": 1859,
+           "called_from": "_make.py:1859",
+           "args": {
+            ".0": "<tuple_iterator object at 0x10d60eda0>"
+           },
+           "calls": [],
+           "returned": "None"
+          }
+         ],
+         "returned": "('def __repr__(self):\\n  try:\\n    alre...\\n    already_repring.remove(id(self))', {'AttributeError': <class 'AttributeError'>, 'NOTHING': NOTHING, '_compat': <module 'attr._compat' from '/Users/om.../demo-repos/attrs/src/attr/_compat.py'>})"
+        }
+       ],
+       "returned": "<_ClassBuilder(cls=C)>"
+      },
+      {
+       "fn": "_ClassBuilder.add_eq",
+       "file": "src/attr/_make.py",
+       "line": 1150,
+       "called_from": "_make.py:1583",
+       "args": {
+        "self": "<_ClassBuilder>"
+       },
+       "calls": [
+        {
+         "fn": "_make_eq_script",
+         "file": "src/attr/_make.py",
+         "line": 1742,
+         "called_from": "_make.py:1153",
+         "args": {
+          "attrs": "(Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b'))"
+         },
+         "calls": [],
+         "returned": "('def __eq__(self, other):\\n    if othe... and\\n        self.b == other.b\\n    )', {})"
+        }
+       ],
+       "returned": "<_ClassBuilder(cls=C)>"
+      },
+      {
+       "fn": "_ClassBuilder.add_order",
+       "file": "src/attr/_make.py",
+       "line": 1164,
+       "called_from": "_make.py:1585",
+       "args": {
+        "self": "<_ClassBuilder>"
+       },
+       "calls": [
+        {
+         "fn": "_make_order",
+         "file": "src/attr/_make.py",
+         "line": 1779,
+         "called_from": "_make.py:1169",
+         "args": {
+          "cls": "<type>",
+          "attrs": "(Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b'))"
+         },
+         "calls": [],
+         "returned": "(<function _make_order.<locals>.__lt__ at 0x10e172fc0>, <function _make_order.<locals>.__le__ at 0x10e172e80>, <function _make_order.<locals>.__gt__ at 0x10e172de0>, <function _make_order.<locals>.__ge__ at 0x10e172ca0>)"
+        },
+        {
+         "fn": "_ClassBuilder.add_order.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 1167,
+         "called_from": "_make.py:1167",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60d270>"
+         },
+         "calls": [
+          {
+           "fn": "_ClassBuilder._add_method_dunders_unsafe",
+           "file": "src/attr/_make.py",
+           "line": 1226,
+           "called_from": "_make.py:1168",
+           "args": {
+            "self": "<_ClassBuilder>",
+            "method": "<function _make_order.<locals>.__lt__ at 0x10e172fc0>"
+           },
+           "calls": [],
+           "returned": "<function C.__lt__ at 0x10e172fc0>"
+          }
+         ],
+         "returned": "<function C.__lt__ at 0x10e172fc0>"
+        },
+        {
+         "fn": "_ClassBuilder.add_order.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 1167,
+         "called_from": "_make.py:1167",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60d270>"
+         },
+         "calls": [
+          {
+           "fn": "_ClassBuilder._add_method_dunders_unsafe",
+           "file": "src/attr/_make.py",
+           "line": 1226,
+           "called_from": "_make.py:1168",
+           "args": {
+            "self": "<_ClassBuilder>",
+            "method": "<function _make_order.<locals>.__le__ at 0x10e172e80>"
+           },
+           "calls": [],
+           "returned": "<function C.__le__ at 0x10e172e80>"
+          }
+         ],
+         "returned": "<function C.__le__ at 0x10e172e80>"
+        },
+        {
+         "fn": "_ClassBuilder.add_order.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 1167,
+         "called_from": "_make.py:1167",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60d270>"
+         },
+         "calls": [
+          {
+           "fn": "_ClassBuilder._add_method_dunders_unsafe",
+           "file": "src/attr/_make.py",
+           "line": 1226,
+           "called_from": "_make.py:1168",
+           "args": {
+            "self": "<_ClassBuilder>",
+            "method": "<function _make_order.<locals>.__gt__ at 0x10e172de0>"
+           },
+           "calls": [],
+           "returned": "<function C.__gt__ at 0x10e172de0>"
+          }
+         ],
+         "returned": "<function C.__gt__ at 0x10e172de0>"
+        },
+        {
+         "fn": "_ClassBuilder.add_order.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 1167,
+         "called_from": "_make.py:1167",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60d270>"
+         },
+         "calls": [
+          {
+           "fn": "_ClassBuilder._add_method_dunders_unsafe",
+           "file": "src/attr/_make.py",
+           "line": 1226,
+           "called_from": "_make.py:1168",
+           "args": {
+            "self": "<_ClassBuilder>",
+            "method": "<function _make_order.<locals>.__ge__ at 0x10e172ca0>"
+           },
+           "calls": [],
+           "returned": "<function C.__ge__ at 0x10e172ca0>"
+          }
+         ],
+         "returned": "<function C.__ge__ at 0x10e172ca0>"
+        },
+        {
+         "fn": "_ClassBuilder.add_order.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 1167,
+         "called_from": "_make.py:1167",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60d270>"
+         },
+         "calls": [],
+         "returned": "None"
+        }
+       ],
+       "returned": "<_ClassBuilder(cls=C)>"
+      },
+      {
+       "fn": "_ClassBuilder.add_setattr",
+       "file": "src/attr/_make.py",
+       "line": 1174,
+       "called_from": "_make.py:1588",
+       "args": {
+        "self": "<_ClassBuilder>"
+       },
+       "calls": [],
+       "returned": "<_ClassBuilder(cls=C)>"
+      },
+      {
+       "fn": "ClassProps.is_hashable",
+       "file": "src/attr/_make.py",
+       "line": 3056,
+       "called_from": "_make.py:1590",
+       "args": {
+        "self": "<ClassProps>"
+       },
+       "calls": [],
+       "returned": "False"
+      },
+      {
+       "fn": "_ClassBuilder.make_unhashable",
+       "file": "src/attr/_make.py",
+       "line": 1066,
+       "called_from": "_make.py:1593",
+       "args": {
+        "self": "<_ClassBuilder>"
+       },
+       "calls": [],
+       "returned": "<_ClassBuilder(cls=C)>"
+      },
+      {
+       "fn": "_ClassBuilder.add_init",
+       "file": "src/attr/_make.py",
+       "line": 1085,
+       "called_from": "_make.py:1596",
+       "args": {
+        "self": "<_ClassBuilder>"
+       },
+       "calls": [
+        {
+         "fn": "_make_init_script",
+         "file": "src/attr/_make.py",
+         "line": 2030,
+         "called_from": "_make.py:1086",
+         "args": {
+          "cls": "<type>",
+          "attrs": "(Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b'))",
+          "pre_init": "False",
+          "pre_init_has_args": "False",
+          "post_init": "False",
+          "frozen": "False",
+          "slots": "False",
+          "cache_hash": "False",
+          "base_attr_map": "{}",
+          "is_exc": "False",
+          "cls_on_setattr": "None",
+          "attrs_init": "False"
+         },
+         "calls": [
+          {
+           "fn": "_attrs_to_init_script",
+           "file": "src/attr/_make.py",
+           "line": 2187,
+           "called_from": "_make.py:2071",
+           "args": {
+            "attrs": "[Attribute(name='a', default=NOTHING, v...ited=False, on_setattr=None, alias='a'), Attribute(name='b', default=NOTHING, v...ited=False, on_setattr=None, alias='b')]",
+            "is_frozen": "False",
+            "is_slotted": "False",
+            "call_pre_init": "False",
+            "pre_init_has_args": "False",
+            "call_post_init": "False",
+            "does_cache_hash": "False",
+            "base_attr_map": "{}",
+            "is_exc": "False",
+            "needs_cached_setattr": "False",
+            "has_cls_on_setattr": "False",
+            "method_name": "'__init__'"
+           },
+           "calls": [
+            {
+             "fn": "_determine_setters",
+             "file": "src/attr/_make.py",
+             "line": 2140,
+             "called_from": "_make.py:2217",
+             "args": {
+              "frozen": "False",
+              "slots": "False",
+              "base_attr_map": "{}"
+             },
+             "calls": [],
+             "returned": "((), <function _assign at 0x10e18bb00>, <function _assign_with_converter at 0x10e18bba0>)"
+            },
+            {
+             "fn": "_assign",
+             "file": "src/attr/_make.py",
+             "line": 2116,
+             "called_from": "_make.py:2377",
+             "args": {
+              "attr_name": "'a'",
+              "value": "'a'",
+              "has_on_setattr": "False"
+             },
+             "calls": [],
+             "returned": "'self.a = a'"
+            },
+            {
+             "fn": "_assign",
+             "file": "src/attr/_make.py",
+             "line": 2116,
+             "called_from": "_make.py:2377",
+             "args": {
+              "attr_name": "'b'",
+              "value": "'b'",
+              "has_on_setattr": "False"
+             },
+             "calls": [],
+             "returned": "'self.b = b'"
+            }
+           ],
+           "returned": "('def __init__(self, a, b):\\n    self.a = a\\n    self.b = b\\n', {}, {'return': None})"
+          }
+         ],
+         "returned": "('def __init__(self, a, b):\\n    self.a = a\\n    self.b = b\\n', {'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, '__cached__': None, ...}, {'return': None})"
+        }
+       ],
+       "returned": "<_ClassBuilder(cls=C)>"
+      },
+      {
+       "fn": "_has_own_attribute",
+       "file": "src/attr/_make.py",
+       "line": 313,
+       "called_from": "_make.py:1603",
+       "args": {
+        "cls": "<type>",
+        "attrib_name": "'__replace__'"
+       },
+       "calls": [],
+       "returned": "False"
+      },
+      {
+       "fn": "_ClassBuilder.add_replace",
+       "file": "src/attr/_make.py",
+       "line": 1110,
+       "called_from": "_make.py:1604",
+       "args": {
+        "self": "<_ClassBuilder>"
+       },
+       "calls": [
+        {
+         "fn": "_ClassBuilder._add_method_dunders_unsafe",
+         "file": "src/attr/_make.py",
+         "line": 1226,
+         "called_from": "_make.py:1115",
+         "args": {
+          "self": "<_ClassBuilder>",
+          "method": "<function _ClassBuilder.add_replace.<locals>.__replace__ at 0x10e171f80>"
+         },
+         "calls": [],
+         "returned": "<function C.__replace__ at 0x10e171f80>"
+        }
+       ],
+       "returned": "<_ClassBuilder(cls=C)>"
+      },
+      {
+       "fn": "_has_own_attribute",
+       "file": "src/attr/_make.py",
+       "line": 313,
+       "called_from": "_make.py:1606",
+       "args": {
+        "cls": "<type>",
+        "attrib_name": "'__match_args__'"
+       },
+       "calls": [],
+       "returned": "False"
+      },
+      {
+       "fn": "_ClassBuilder.add_match_args",
+       "file": "src/attr/_make.py",
+       "line": 1118,
+       "called_from": "_make.py:1607",
+       "args": {
+        "self": "<_ClassBuilder>"
+       },
+       "calls": [
+        {
+         "fn": "_ClassBuilder.add_match_args.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 1119,
+         "called_from": "_make.py:1119",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60c0d0>"
+         },
+         "calls": [],
+         "returned": "'a'"
+        },
+        {
+         "fn": "_ClassBuilder.add_match_args.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 1119,
+         "called_from": "_make.py:1119",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60c0d0>"
+         },
+         "calls": [],
+         "returned": "'b'"
+        },
+        {
+         "fn": "_ClassBuilder.add_match_args.<locals>.<genexpr>",
+         "file": "src/attr/_make.py",
+         "line": 1119,
+         "called_from": "_make.py:1119",
+         "args": {
+          ".0": "<tuple_iterator object at 0x10d60c0d0>"
+         },
+         "calls": [],
+         "returned": "None"
+        }
+       ],
+       "returned": "None"
+      },
+      {
+       "fn": "_ClassBuilder.build_class",
+       "file": "src/attr/_make.py",
+       "line": 800,
+       "called_from": "_make.py:1609",
+       "args": {
+        "self": "<_ClassBuilder>"
+       },
+       "calls": [
+        {
+         "fn": "_ClassBuilder._eval_snippets",
+         "file": "src/attr/_make.py",
+         "line": 782,
+         "called_from": "_make.py:806",
+         "args": {
+          "self": "<_ClassBuilder>"
+         },
+         "calls": [
+          {
+           "fn": "_generate_unique_filename",
+           "file": "src/attr/_make.py",
+           "line": 1634,
+           "called_from": "_make.py:793",
+           "args": {
+            "cls": "<type>",
+            "func_name": "'methods'"
+           },
+           "calls": [],
+           "returned": "'<attrs generated methods __main__.C>'"
+          },
+          {
+           "fn": "_linecache_and_compile",
+           "file": "src/attr/_make.py",
+           "line": 231,
+           "called_from": "_make.py:791",
+           "args": {
+            "script": "'def __repr__(self):\\n  try:\\n    alre... b):\\n    self.a = a\\n    self.b = b\\n'",
+            "filename": "'<attrs generated methods __main__.C>'",
+            "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
+            "locals": "None"
+           },
+           "calls": [
+            {
+             "fn": "_compile_and_eval",
+             "file": "src/attr/_make.py",
+             "line": 217,
+             "called_from": "_make.py:261",
+             "args": {
+              "script": "'def __repr__(self):\\n  try:\\n    alre... b):\\n    self.a = a\\n    self.b = b\\n'",
+              "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
+              "locs": "{}",
+              "filename": "'<attrs generated methods __main__.C>'"
+             },
+             "calls": [],
+             "returned": "None"
+            }
+           ],
+           "returned": "{'__eq__': <function __eq__ at 0x10e1732e0>, '__init__': <function __init__ at 0x10e1739c0>, '__repr__': <function __repr__ at 0x10e172f20>}"
+          },
+          {
+           "fn": "_ClassBuilder.add_repr.<locals>._attach_repr",
+           "file": "src/attr/_make.py",
+           "line": 1007,
+           "called_from": "_make.py:798",
+           "args": {
+            "cls_dict": "{'__attrs_attrs__': (Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b')), '__attrs_props__': ClassProps(is_exception=False, is_slot...attr_hook=None, field_transformer=None), '__ge__': <function C.__ge__ at 0x10e172ca0>, '__gt__': <function C.__gt__ at 0x10e172de0>, '__hash__': None, '__le__': <function C.__le__ at 0x10e172e80>, ...}",
+            "globs": "{'__eq__': <function __eq__ at 0x10e1732e0>, '__init__': <function __init__ at 0x10e1739c0>, '__repr__': <function __repr__ at 0x10e172f20>}"
+           },
+           "calls": [
+            {
+             "fn": "_ClassBuilder._add_method_dunders_unsafe",
+             "file": "src/attr/_make.py",
+             "line": 1226,
+             "called_from": "_make.py:1008",
+             "args": {
+              "self": "<_ClassBuilder>",
+              "method": "<function __repr__ at 0x10e172f20>"
+             },
+             "calls": [],
+             "returned": "<function C.__repr__ at 0x10e172f20>"
+            }
+           ],
+           "returned": "None"
+          },
+          {
+           "fn": "_ClassBuilder.add_eq.<locals>._attach_eq",
+           "file": "src/attr/_make.py",
+           "line": 1155,
+           "called_from": "_make.py:798",
+           "args": {
+            "cls_dict": "{'__attrs_attrs__': (Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b')), '__attrs_props__': ClassProps(is_exception=False, is_slot...attr_hook=None, field_transformer=None), '__ge__': <function C.__ge__ at 0x10e172ca0>, '__gt__': <function C.__gt__ at 0x10e172de0>, '__hash__': None, '__le__': <function C.__le__ at 0x10e172e80>, ...}",
+            "globs": "{'__eq__': <function __eq__ at 0x10e1732e0>, '__init__': <function __init__ at 0x10e1739c0>, '__repr__': <function C.__repr__ at 0x10e172f20>}"
+           },
+           "calls": [
+            {
+             "fn": "_ClassBuilder._add_method_dunders_unsafe",
+             "file": "src/attr/_make.py",
+             "line": 1226,
+             "called_from": "_make.py:1156",
+             "args": {
+              "self": "<_ClassBuilder>",
+              "method": "<function __eq__ at 0x10e1732e0>"
+             },
+             "calls": [],
+             "returned": "<function C.__eq__ at 0x10e1732e0>"
+            }
+           ],
+           "returned": "None"
+          },
+          {
+           "fn": "_ClassBuilder.add_init.<locals>._attach_init",
+           "file": "src/attr/_make.py",
+           "line": 1101,
+           "called_from": "_make.py:798",
+           "args": {
+            "cls_dict": "{'__attrs_attrs__': (Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b')), '__attrs_props__': ClassProps(is_exception=False, is_slot...attr_hook=None, field_transformer=None), '__eq__': <function C.__eq__ at 0x10e1732e0>, '__ge__': <function C.__ge__ at 0x10e172ca0>, '__gt__': <function C.__gt__ at 0x10e172de0>, '__hash__': None, ...}",
+            "globs": "{'__eq__': <function C.__eq__ at 0x10e1732e0>, '__init__': <function __init__ at 0x10e1739c0>, '__repr__': <function C.__repr__ at 0x10e172f20>}"
+           },
+           "calls": [
+            {
+             "fn": "_ClassBuilder._add_method_dunders_unsafe",
+             "file": "src/attr/_make.py",
+             "line": 1226,
+             "called_from": "_make.py:1104",
+             "args": {
+              "self": "<_ClassBuilder>",
+              "method": "<function __init__ at 0x10e1739c0>"
+             },
+             "calls": [],
+             "returned": "<function C.__init__ at 0x10e1739c0>"
+            }
+           ],
+           "returned": "None"
+          }
+         ],
+         "returned": "None"
+        },
+        {
+         "fn": "_ClassBuilder._patch_original_class",
+         "file": "src/attr/_make.py",
+         "line": 823,
+         "called_from": "_make.py:811",
+         "args": {
+          "self": "<_ClassBuilder>"
+         },
+         "calls": [],
+         "returned": "<class '__main__.C'>"
+        }
+       ],
+       "returned": "<class '__main__.C'>"
+      }
+     ],
+     "returned": "<class '__main__.C'>"
+    }
+   ],
+   "returned": "<class '__main__.C'>"
+  },
+  {
+   "fn": "__ne__",
+   "file": "src/attr/_make.py",
+   "line": 1730,
+   "called_from": "scenario.py:47",
+   "args": {
+    "self": "<SomeClass>",
+    "other": "SomeClass(a_number=2, list_of_numbers=[3, 2, 1])"
+   },
+   "calls": [],
+   "returned": "True"
+  }
+ ],
+ "lines": {
+  "src/attr/_compat.py": [
+   34,
+   100,
+   102
+  ],
+  "src/attr/_funcs.py": [
+   78,
+   79,
+   80,
+   81,
+   82,
+   85,
+   88,
+   89,
+   90,
+   91,
+   92,
+   101,
+   102,
+   103,
+   104,
+   105,
+   106,
+   107,
+   108,
+   109,
+   110,
+   112,
+   114,
+   115,
+   149,
+   163,
+   164,
+   165,
+   166,
+   227,
+   365,
+   366,
+   370,
+   371,
+   377
+  ],
+  "src/attr/_make.py": [
+   165,
+   166,
+   169,
+   173,
+   184,
+   185,
+   188,
+   191,
+   194,
+   197,
+   198,
+   199,
+   200,
+   201,
+   202,
+   203,
+   204,
+   205,
+   206,
+   207,
+   208,
+   209,
+   210,
+   211,
+   212,
+   213,
+   227,
+   228,
+   241,
+   245,
+   246,
+   247,
+   248,
+   249,
+   250,
+   251,
+   252,
+   254,
+   255,
+   256,
+   261,
+   263,
+   276,
+   277,
+   278,
+   280,
+   283,
+   284,
+   303,
+   304,
+   307,
+   310,
+   317,
+   326,
+   327,
+   330,
+   342,
+   343,
+   344,
+   350,
+   364,
+   365,
+   368,
+   378,
+   399,
+   400,
+   402,
+   403,
+   404,
+   405,
+   406,
+   407,
+   408,
+   410,
+   411,
+   412,
+   413,
+   415,
+   416,
+   418,
+   419,
+   420,
+   422,
+   423,
+   441,
+   442,
+   443,
+   444,
+   445,
+   446,
+   447,
+   448,
+   450,
+   453,
+   454,
+   455,
+   458,
+   459,
+   462,
+   466,
+   471,
+   472,
+   474,
+   475,
+   477,
+   485,
+   486,
+   487,
+   491,
+   492,
+   496,
+   497,
+   503,
+   504,
+   506,
+   684,
+   685,
+   686,
+   687,
+   688,
+   689,
+   690,
+   693,
+   694,
+   695,
+   696,
+   697,
+   698,
+   699,
+   700,
+   701,
+   702,
+   703,
+   705,
+   706,
+   707,
+   715,
+   716,
+   717,
+   718,
+   720,
+   721,
+   723,
+   724,
+   726,
+   731,
+   732,
+   733,
+   734,
+   736,
+   737,
+   738,
+   740,
+   743,
+   747,
+   748,
+   756,
+   758,
+   759,
+   760,
+   761,
+   762,
+   765,
+   767,
+   768,
+   772,
+   773,
+   777,
+   786,
+   787,
+   788,
+   789,
+   791,
+   792,
+   793,
+   794,
+   797,
+   798,
+   806,
+   807,
+   808,
+   809,
+   811,
+   816,
+   821,
+   827,
+   828,
+   831,
+   844,
+   845,
+   849,
+   850,
+   857,
+   863,
+   864,
+   865,
+   866,
+   870,
+   881,
+   882,
+   884,
+   885,
+   886,
+   892,
+   893,
+   894,
+   904,
+   906,
+   908,
+   909,
+   910,
+   911,
+   913,
+   915,
+   916,
+   917,
+   918,
+   923,
+   924,
+   948,
+   954,
+   956,
+   959,
+   960,
+   961,
+   964,
+   966,
+   969,
+   977,
+   978,
+   980,
+   984,
+   989,
+   991,
+   992,
+   993,
+   994,
+   995,
+   1000,
+   1002,
+   1005,
+   1007,
+   1008,
+   1010,
+   1011,
+   1012,
+   1030,
+   1031,
+   1034,
+   1040,
+   1042,
+   1064,
+   1067,
+   1068,
+   1086,
+   1087,
+   1088,
+   1089,
+   1090,
+   1091,
+   1092,
+   1093,
+   1094,
+   1095,
+   1096,
+   1097,
+   1098,
+   1101,
+   1102,
+   1103,
+   1104,
+   1106,
+   1108,
+   1112,
+   1115,
+   1116,
+   1119,
+   1120,
+   1121,
+   1122,
+   1151,
+   1153,
+   1155,
+   1156,
+   1158,
+   1160,
+   1162,
+   1165,
+   1167,
+   1168,
+   1169,
+   1172,
+   1175,
+   1176,
+   1177,
+   1178,
+   1185,
+   1186,
+   1230,
+   1232,
+   1234,
+   1235,
+   1238,
+   1261,
+   1266,
+   1271,
+   1272,
+   1274,
+   1275,
+   1277,
+   1281,
+   1289,
+   1293,
+   1297,
+   1300,
+   1301,
+   1304,
+   1310,
+   1311,
+   1313,
+   1315,
+   1316,
+   1318,
+   1320,
+   1324,
+   1339,
+   1340,
+   1342,
+   1343,
+   1346,
+   1347,
+   1350,
+   1459,
+   1469,
+   1472,
+   1475,
+   1478,
+   1480,
+   1481,
+   1482,
+   1483,
+   1486,
+   1490,
+   1491,
+   1494,
+   1496,
+   1498,
+   1504,
+   1506,
+   1507,
+   1509,
+   1515,
+   1518,
+   1523,
+   1524,
+   1527,
+   1529,
+   1530,
+   1531,
+   1532,
+   1533,
+   1534,
+   1535,
+   1537,
+   1538,
+   1540,
+   1541,
+   1542,
+   1543,
+   1544,
+   1545,
+   1546,
+   1548,
+   1549,
+   1550,
+   1551,
+   1552,
+   1553,
+   1554,
+   1555,
+   1556,
+   1557,
+   1558,
+   1560,
+   1561,
+   1564,
+   1568,
+   1569,
+   1570,
+   1571,
+   1572,
+   1573,
+   1576,
+   1577,
+   1579,
+   1582,
+   1583,
+   1584,
+   1585,
+   1587,
+   1588,
+   1590,
+   1592,
+   1593,
+   1595,
+   1596,
+   1603,
+   1604,
+   1606,
+   1607,
+   1609,
+   1613,
+   1614,
+   1616,
+   1631,
+   1638,
+   1639,
+   1640,
+   1735,
+   1736,
+   1739,
+   1746,
+   1748,
+   1754,
+   1755,
+   1756,
+   1757,
+   1758,
+   1767,
+   1768,
+   1769,
+   1770,
+   1774,
+   1776,
+   1783,
+   1785,
+   1796,
+   1805,
+   1814,
+   1823,
+   1832,
+   1859,
+   1860,
+   1861,
+   1862,
+   1864,
+   1865,
+   1867,
+   1868,
+   1869,
+   1870,
+   1871,
+   1872,
+   1873,
+   1875,
+   1876,
+   1877,
+   1880,
+   1881,
+   1883,
+   1884,
+   1888,
+   1889,
+   1890,
+   1891,
+   1892,
+   1893,
+   1894,
+   1895,
+   1896,
+   1897,
+   1898,
+   1899,
+   1900,
+   1901,
+   1902,
+   1903,
+   1906,
+   1948,
+   1950,
+   1958,
+   1960,
+   1972,
+   2044,
+   2045,
+   2048,
+   2052,
+   2053,
+   2054,
+   2055,
+   2056,
+   2059,
+   2060,
+   2062,
+   2068,
+   2071,
+   2072,
+   2073,
+   2074,
+   2075,
+   2076,
+   2077,
+   2078,
+   2079,
+   2080,
+   2081,
+   2082,
+   2083,
+   2085,
+   2087,
+   2089,
+   2091,
+   2096,
+   2121,
+   2124,
+   2147,
+   2184,
+   2207,
+   2209,
+   2217,
+   2218,
+   2220,
+   2222,
+   2223,
+   2224,
+   2225,
+   2229,
+   2230,
+   2232,
+   2233,
+   2236,
+   2237,
+   2238,
+   2242,
+   2244,
+   2245,
+   2247,
+   2250,
+   2252,
+   2296,
+   2297,
+   2298,
+   2301,
+   2302,
+   2304,
+   2314,
+   2316,
+   2317,
+   2318,
+   2321,
+   2322,
+   2323,
+   2325,
+   2326,
+   2347,
+   2348,
+   2350,
+   2351,
+   2352,
+   2353,
+   2354,
+   2355,
+   2356,
+   2359,
+   2361,
+   2364,
+   2365,
+   2367,
+   2377,
+   2379,
+   2380,
+   2381,
+   2382,
+   2386,
+   2396,
+   2404,
+   2416,
+   2421,
+   2422,
+   2423,
+   2436,
+   2441,
+   2442,
+   2443,
+   2444,
+   2446,
+   2447,
+   2459,
+   2553,
+   2554,
+   2558,
+   2562,
+   2563,
+   2564,
+   2565,
+   2566,
+   2567,
+   2568,
+   2569,
+   2570,
+   2571,
+   2572,
+   2573,
+   2574,
+   2577,
+   2578,
+   2581,
+   2582,
+   2583,
+   2584,
+   2585,
+   2586,
+   2587,
+   2588,
+   2601,
+   2602,
+   2603,
+   2606,
+   2607,
+   2608,
+   2609,
+   2610,
+   2611,
+   2612,
+   2613,
+   2614,
+   2615,
+   2616,
+   2617,
+   2618,
+   2619,
+   2620,
+   2621,
+   2622,
+   2623,
+   2624,
+   2625,
+   2828,
+   2829,
+   2830,
+   2831,
+   2832,
+   2833,
+   2834,
+   2835,
+   2836,
+   2837,
+   2838,
+   2839,
+   2840,
+   2841,
+   2842,
+   2843,
+   2844,
+   3039,
+   3040,
+   3041,
+   3042,
+   3043,
+   3044,
+   3045,
+   3046,
+   3047,
+   3048,
+   3049,
+   3050,
+   3051,
+   3052,
+   3053,
+   3054,
+   3058,
+   3059,
+   3060,
+   3106,
+   3107,
+   3309,
+   3311,
+   3313,
+   3314,
+   3319,
+   3320,
+   3321,
+   3323,
+   3324,
+   3326,
+   3328,
+   3330,
+   3333,
+   3339,
+   3340,
+   3341,
+   3345,
+   3346,
+   3347,
+   3348,
+   3349,
+   3350,
+   3351,
+   3352,
+   3353,
+   3356,
+   3358,
+   3359,
+   3361
+  ],
+  "src/attr/_next_gen.py": [
+   362,
+   363,
+   364,
+   365,
+   366,
+   367,
+   368,
+   369,
+   370,
+   371,
+   372,
+   373,
+   374,
+   375,
+   376,
+   377,
+   378,
+   379,
+   380,
+   381,
+   382,
+   383,
+   384,
+   385,
+   386,
+   389,
+   397,
+   400,
+   401,
+   405,
+   406,
+   414,
+   417,
+   418,
+   424,
+   427,
+   634,
+   635,
+   636,
+   637,
+   638,
+   639
+  ]
+ }
+}

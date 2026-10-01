@@ -1,0 +1,16 @@
+What Actually Reaches the Terminal: Two Strings and a Table Through Rich  [owner]: 12 chapters
+   1. The World the Data Enters  [trace 2-21]
+   2. Two Strings Become One Text  [trace 22-129]
+   3. Measuring the Room and Naming the Colour  [trace 130-163]
+   4. From Text to Segments: Wrapping, Cells, and the Style Stack  [trace 164-320]
+   5. Cropping, the Buffer, and the Single Write  [trace 321-376]
+   6. The Markup Round  [trace 377-377]
+   7. Building the Table: Columns, Cells, and the Renderability Gate  [trace 378-403]
+   8. Deciding the Shape: Column Measurement and Collapse  [trace 404-474]
+   9. Drawing the Table: Padding, Box Characters, and Per-Cell Styles  [trace 475-544]
+  10. One Last Crop  [trace 545-569]
+  11. Styles Spent, Text Written  [trace 570-704]
+  12. Reading Back What Was Printed  [trace 705-706]
+
+tokens: 23,830 in (+0 cached, 169,882 written to cache), 13,318 out
+exit=0

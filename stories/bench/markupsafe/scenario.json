@@ -1,0 +1,4 @@
+{
+  "why": "The README's first example and the docs (docs/index.rst, docs/html.rst, docs/formatting.rst) show exactly this flow: escape untrusted text into a `Markup`, define a class with `__html__`/`__html_format__`, and format them into a `Markup` template so arguments are escaped automatically. The script follows one piece of untrusted comment text plus a user object from raw input through escaping and template formatting to a final safe HTML fragment.",
+  "attempts": 1
+}

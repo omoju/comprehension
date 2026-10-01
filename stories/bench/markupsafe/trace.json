@@ -1,0 +1,750 @@
+{
+ "fn": "scenario",
+ "file": "scenario.py",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "escape",
+   "file": "src/markupsafe/__init__.py",
+   "line": 24,
+   "called_from": "scenario.py:35",
+   "args": {
+    "s": "'<script>alert(document.cookie);</script>'"
+   },
+   "calls": [
+    {
+     "fn": "Markup.__new__",
+     "file": "src/markupsafe/__init__.py",
+     "line": 122,
+     "called_from": "__init__.py:40",
+     "args": {
+      "cls": "<type>",
+      "object": "'&lt;script&gt;alert(document.cookie);&lt;/script&gt;'",
+      "encoding": "None",
+      "errors": "'strict'"
+     },
+     "calls": [],
+     "returned": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+     "tl": 3
+    }
+   ],
+   "returned": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+   "tl": 2
+  },
+  {
+   "fn": "Markup.__repr__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 167,
+   "called_from": "scenario.py:36",
+   "args": {
+    "self": "<Markup>"
+   },
+   "calls": [],
+   "returned": "\"Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')\"",
+   "tl": 6
+  },
+  {
+   "fn": "Markup.__new__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 122,
+   "called_from": "scenario.py:37",
+   "args": {
+    "cls": "<type>",
+    "object": "'&lt;script&gt;alert(document.cookie);&lt;/script&gt;'",
+    "encoding": "None",
+    "errors": "'strict'"
+   },
+   "calls": [],
+   "returned": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+   "tl": 8
+  },
+  {
+   "fn": "escape",
+   "file": "src/markupsafe/__init__.py",
+   "line": 24,
+   "called_from": "scenario.py:40",
+   "args": {
+    "s": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')"
+   },
+   "calls": [
+    {
+     "fn": "Markup.__html__",
+     "file": "src/markupsafe/__init__.py",
+     "line": 133,
+     "called_from": "__init__.py:43",
+     "args": {
+      "self": "<Markup>"
+     },
+     "calls": [],
+     "returned": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+     "tl": 11
+    },
+    {
+     "fn": "Markup.__new__",
+     "file": "src/markupsafe/__init__.py",
+     "line": 122,
+     "called_from": "__init__.py:43",
+     "args": {
+      "cls": "<type>",
+      "object": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+      "encoding": "None",
+      "errors": "'strict'"
+     },
+     "calls": [
+      {
+       "fn": "Markup.__html__",
+       "file": "src/markupsafe/__init__.py",
+       "line": 133,
+       "called_from": "__init__.py:126",
+       "args": {
+        "self": "<Markup>"
+       },
+       "calls": [],
+       "returned": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+       "tl": 14
+      }
+     ],
+     "returned": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+     "tl": 13
+    }
+   ],
+   "returned": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+   "tl": 10
+  },
+  {
+   "fn": "escape",
+   "file": "src/markupsafe/__init__.py",
+   "line": 24,
+   "args": {},
+   "calls": [],
+   "repeat": 1,
+   "returned": "Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')",
+   "tl": 18
+  },
+  {
+   "fn": "Markup.__repr__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 167,
+   "called_from": "scenario.py:44",
+   "args": {
+    "self": "<Markup>"
+   },
+   "calls": [],
+   "returned": "'Markup(\\'<span class=\"user\">Alice &#3...lt;b&gt;Great&lt;/b&gt;&#34;</span>\\')'",
+   "tl": 19
+  },
+  {
+   "fn": "Markup.__new__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 122,
+   "called_from": "scenario.py:47",
+   "args": {
+    "cls": "<type>",
+    "object": "'<p>User: {user:link} said: {comment}</p>'",
+    "encoding": "None",
+    "errors": "'strict'"
+   },
+   "calls": [],
+   "returned": "Markup('<p>User: {user:link} said: {comment}</p>')",
+   "tl": 21
+  },
+  {
+   "fn": "Markup.format",
+   "file": "src/markupsafe/__init__.py",
+   "line": 313,
+   "called_from": "scenario.py:48",
+   "args": {
+    "self": "<Markup>"
+   },
+   "calls": [
+    {
+     "fn": "EscapeFormatter.__init__",
+     "file": "src/markupsafe/__init__.py",
+     "line": 335,
+     "called_from": "__init__.py:314",
+     "args": {
+      "self": "<EscapeFormatter>",
+      "escape": "<bound method Markup.escape of <class 'markupsafe.Markup'>>"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 24
+    },
+    {
+     "fn": "EscapeFormatter.format_field",
+     "file": "src/markupsafe/__init__.py",
+     "line": 339,
+     "called_from": "string.py:247",
+     "args": {
+      "self": "<EscapeFormatter>",
+      "value": "<__main__.User object at 0x10cffa900>",
+      "format_spec": "'link'"
+     },
+     "calls": [
+      {
+       "fn": "Markup.__new__",
+       "file": "src/markupsafe/__init__.py",
+       "line": 122,
+       "called_from": "scenario.py:24",
+       "args": {
+        "cls": "<type>",
+        "object": "'<a href=\"/user/{}\">{}</a>'",
+        "encoding": "None",
+        "errors": "'strict'"
+       },
+       "calls": [],
+       "returned": "Markup('<a href=\"/user/{}\">{}</a>')",
+       "tl": 27
+      },
+      {
+       "fn": "Markup.__new__",
+       "file": "src/markupsafe/__init__.py",
+       "line": 122,
+       "args": {},
+       "calls": [],
+       "repeat": 1,
+       "returned": "Markup('<span class=\"user\">{0}</span>')",
+       "tl": 29
+      },
+      {
+       "fn": "Markup.format",
+       "file": "src/markupsafe/__init__.py",
+       "line": 313,
+       "called_from": "scenario.py:30",
+       "args": {
+        "self": "<Markup>"
+       },
+       "calls": [
+        {
+         "fn": "EscapeFormatter.__init__",
+         "file": "src/markupsafe/__init__.py",
+         "line": 335,
+         "called_from": "__init__.py:314",
+         "args": {
+          "self": "<EscapeFormatter>",
+          "escape": "<bound method Markup.escape of <class 'markupsafe.Markup'>>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 31
+        },
+        {
+         "fn": "EscapeFormatter.format_field",
+         "file": "src/markupsafe/__init__.py",
+         "line": 339,
+         "called_from": "string.py:247",
+         "args": {
+          "self": "<EscapeFormatter>",
+          "value": "'Alice \"The <b>Great</b>\"'",
+          "format_spec": "''"
+         },
+         "calls": [
+          {
+           "fn": "Markup.escape",
+           "file": "src/markupsafe/__init__.py",
+           "line": 230,
+           "called_from": "__init__.py:354",
+           "args": {
+            "cls": "<type>",
+            "s": "'Alice \"The <b>Great</b>\"'"
+           },
+           "calls": [
+            {
+             "fn": "escape",
+             "file": "src/markupsafe/__init__.py",
+             "line": 24,
+             "called_from": "__init__.py:235",
+             "args": {
+              "s": "'Alice \"The <b>Great</b>\"'"
+             },
+             "calls": [
+              {
+               "fn": "Markup.__new__",
+               "file": "src/markupsafe/__init__.py",
+               "line": 122,
+               "called_from": "__init__.py:40",
+               "args": {
+                "cls": "<type>",
+                "object": "'Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;'",
+                "encoding": "None",
+                "errors": "'strict'"
+               },
+               "calls": [],
+               "returned": "Markup('Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;')",
+               "tl": 36
+              }
+             ],
+             "returned": "Markup('Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;')",
+             "tl": 35
+            }
+           ],
+           "returned": "Markup('Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;')",
+           "tl": 34
+          }
+         ],
+         "returned": "'Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;'",
+         "tl": 33
+        },
+        {
+         "fn": "Markup.__new__",
+         "file": "src/markupsafe/__init__.py",
+         "line": 122,
+         "called_from": "__init__.py:315",
+         "args": {
+          "cls": "<type>",
+          "object": "'<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>'",
+          "encoding": "None",
+          "errors": "'strict'"
+         },
+         "calls": [],
+         "returned": "Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')",
+         "tl": 41
+        }
+       ],
+       "returned": "Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')",
+       "tl": 30
+      },
+      {
+       "fn": "Markup.format",
+       "file": "src/markupsafe/__init__.py",
+       "line": 313,
+       "args": {},
+       "calls": [],
+       "repeat": 1,
+       "returned": "Markup('<a href=\"/user/3\"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')",
+       "tl": 44
+      },
+      {
+       "fn": "Markup.escape",
+       "file": "src/markupsafe/__init__.py",
+       "line": 230,
+       "called_from": "__init__.py:354",
+       "args": {
+        "cls": "<type>",
+        "s": "Markup('<a href=\"/user/3\"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')"
+       },
+       "calls": [
+        {
+         "fn": "escape",
+         "file": "src/markupsafe/__init__.py",
+         "line": 24,
+         "called_from": "__init__.py:235",
+         "args": {
+          "s": "Markup('<a href=\"/user/3\"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')"
+         },
+         "calls": [
+          {
+           "fn": "Markup.__html__",
+           "file": "src/markupsafe/__init__.py",
+           "line": 133,
+           "called_from": "__init__.py:43",
+           "args": {
+            "self": "<Markup>"
+           },
+           "calls": [],
+           "returned": "Markup('<a href=\"/user/3\"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')",
+           "tl": 47
+          },
+          {
+           "fn": "Markup.__new__",
+           "file": "src/markupsafe/__init__.py",
+           "line": 122,
+           "called_from": "__init__.py:43",
+           "args": {
+            "cls": "<type>",
+            "object": "Markup('<a href=\"/user/3\"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')",
+            "encoding": "None",
+            "errors": "'strict'"
+           },
+           "calls": [
+            {
+             "fn": "Markup.__html__",
+             "file": "src/markupsafe/__init__.py",
+             "line": 133,
+             "called_from": "__init__.py:126",
+             "args": {
+              "self": "<Markup>"
+             },
+             "calls": [],
+             "returned": "Markup('<a href=\"/user/3\"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')",
+             "tl": 50
+            }
+           ],
+           "returned": "Markup('<a href=\"/user/3\"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')",
+           "tl": 49
+          }
+         ],
+         "returned": "Markup('<a href=\"/user/3\"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')",
+         "tl": 46
+        }
+       ],
+       "returned": "Markup('<a href=\"/user/3\"><span class=...;b&gt;Great&lt;/b&gt;&#34;</span></a>')",
+       "tl": 45
+      }
+     ],
+     "returned": "'<a href=\"/user/3\"><span class=\"user\">...t;b&gt;Great&lt;/b&gt;&#34;</span></a>'",
+     "tl": 26
+    },
+    {
+     "fn": "EscapeFormatter.format_field",
+     "file": "src/markupsafe/__init__.py",
+     "line": 339,
+     "args": {},
+     "calls": [],
+     "repeat": 1,
+     "returned": "'&lt;script&gt;alert(document.cookie);&lt;/script&gt;'",
+     "tl": 56
+    },
+    {
+     "fn": "Markup.__new__",
+     "file": "src/markupsafe/__init__.py",
+     "line": 122,
+     "called_from": "__init__.py:315",
+     "args": {
+      "cls": "<type>",
+      "object": "'<p>User: <a href=\"/user/3\"><span clas...t(document.cookie);&lt;/script&gt;</p>'",
+      "encoding": "None",
+      "errors": "'strict'"
+     },
+     "calls": [],
+     "returned": "Markup('<p>User: <a href=\"/user/3\"><sp...(document.cookie);&lt;/script&gt;</p>')",
+     "tl": 57
+    }
+   ],
+   "returned": "Markup('<p>User: <a href=\"/user/3\"><sp...(document.cookie);&lt;/script&gt;</p>')",
+   "tl": 23
+  },
+  {
+   "fn": "Markup.__repr__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 167,
+   "called_from": "scenario.py:49",
+   "args": {
+    "self": "<Markup>"
+   },
+   "calls": [],
+   "returned": "'Markup(\\'<p>User: <a href=\"/user/3\"><...ocument.cookie);&lt;/script&gt;</p>\\')'",
+   "tl": 60
+  },
+  {
+   "fn": "Markup.__new__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 122,
+   "called_from": "scenario.py:52",
+   "args": {
+    "cls": "<type>",
+    "object": "'<footer>'",
+    "encoding": "None",
+    "errors": "'strict'"
+   },
+   "calls": [],
+   "returned": "Markup('<footer>')",
+   "tl": 62
+  },
+  {
+   "fn": "Markup.__add__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 136,
+   "called_from": "scenario.py:52",
+   "args": {
+    "self": "<Markup>",
+    "value": "'</p> & <script>oops</script>'"
+   },
+   "calls": [
+    {
+     "fn": "Markup.escape",
+     "file": "src/markupsafe/__init__.py",
+     "line": 230,
+     "called_from": "__init__.py:138",
+     "args": {
+      "cls": "<type>",
+      "s": "'</p> & <script>oops</script>'"
+     },
+     "calls": [
+      {
+       "fn": "escape",
+       "file": "src/markupsafe/__init__.py",
+       "line": 24,
+       "called_from": "__init__.py:235",
+       "args": {
+        "s": "'</p> & <script>oops</script>'"
+       },
+       "calls": [
+        {
+         "fn": "Markup.__new__",
+         "file": "src/markupsafe/__init__.py",
+         "line": 122,
+         "called_from": "__init__.py:40",
+         "args": {
+          "cls": "<type>",
+          "object": "'&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;'",
+          "encoding": "None",
+          "errors": "'strict'"
+         },
+         "calls": [],
+         "returned": "Markup('&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;')",
+         "tl": 67
+        }
+       ],
+       "returned": "Markup('&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;')",
+       "tl": 66
+      }
+     ],
+     "returned": "Markup('&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;')",
+     "tl": 65
+    },
+    {
+     "fn": "Markup.__new__",
+     "file": "src/markupsafe/__init__.py",
+     "line": 122,
+     "called_from": "__init__.py:138",
+     "args": {
+      "cls": "<type>",
+      "object": "'<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;'",
+      "encoding": "None",
+      "errors": "'strict'"
+     },
+     "calls": [],
+     "returned": "Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;')",
+     "tl": 71
+    }
+   ],
+   "returned": "Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;')",
+   "tl": 64
+  },
+  {
+   "fn": "Markup.__new__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 122,
+   "called_from": "scenario.py:52",
+   "args": {
+    "cls": "<type>",
+    "object": "'</footer>'",
+    "encoding": "None",
+    "errors": "'strict'"
+   },
+   "calls": [],
+   "returned": "Markup('</footer>')",
+   "tl": 74
+  },
+  {
+   "fn": "Markup.__add__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 136,
+   "called_from": "scenario.py:52",
+   "args": {
+    "self": "<Markup>",
+    "value": "Markup('</footer>')"
+   },
+   "calls": [
+    {
+     "fn": "Markup.escape",
+     "file": "src/markupsafe/__init__.py",
+     "line": 230,
+     "called_from": "__init__.py:138",
+     "args": {
+      "cls": "<type>",
+      "s": "Markup('</footer>')"
+     },
+     "calls": [
+      {
+       "fn": "escape",
+       "file": "src/markupsafe/__init__.py",
+       "line": 24,
+       "called_from": "__init__.py:235",
+       "args": {
+        "s": "Markup('</footer>')"
+       },
+       "calls": [
+        {
+         "fn": "Markup.__html__",
+         "file": "src/markupsafe/__init__.py",
+         "line": 133,
+         "called_from": "__init__.py:43",
+         "args": {
+          "self": "<Markup>"
+         },
+         "calls": [],
+         "returned": "Markup('</footer>')",
+         "tl": 79
+        },
+        {
+         "fn": "Markup.__new__",
+         "file": "src/markupsafe/__init__.py",
+         "line": 122,
+         "called_from": "__init__.py:43",
+         "args": {
+          "cls": "<type>",
+          "object": "Markup('</footer>')",
+          "encoding": "None",
+          "errors": "'strict'"
+         },
+         "calls": [
+          {
+           "fn": "Markup.__html__",
+           "file": "src/markupsafe/__init__.py",
+           "line": 133,
+           "called_from": "__init__.py:126",
+           "args": {
+            "self": "<Markup>"
+           },
+           "calls": [],
+           "returned": "Markup('</footer>')",
+           "tl": 82
+          }
+         ],
+         "returned": "Markup('</footer>')",
+         "tl": 81
+        }
+       ],
+       "returned": "Markup('</footer>')",
+       "tl": 78
+      }
+     ],
+     "returned": "Markup('</footer>')",
+     "tl": 77
+    },
+    {
+     "fn": "Markup.__new__",
+     "file": "src/markupsafe/__init__.py",
+     "line": 122,
+     "called_from": "__init__.py:138",
+     "args": {
+      "cls": "<type>",
+      "object": "'<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>'",
+      "encoding": "None",
+      "errors": "'strict'"
+     },
+     "calls": [],
+     "returned": "Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')",
+     "tl": 87
+    }
+   ],
+   "returned": "Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')",
+   "tl": 76
+  },
+  {
+   "fn": "Markup.__repr__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 167,
+   "called_from": "scenario.py:53",
+   "args": {
+    "self": "<Markup>"
+   },
+   "calls": [],
+   "returned": "\"Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')\"",
+   "tl": 90
+  },
+  {
+   "fn": "Markup.__new__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 122,
+   "called_from": "scenario.py:54",
+   "args": {
+    "cls": "<type>",
+    "object": "'<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>'",
+    "encoding": "None",
+    "errors": "'strict'"
+   },
+   "calls": [],
+   "returned": "Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')",
+   "tl": 92
+  },
+  {
+   "fn": "Markup.striptags",
+   "file": "src/markupsafe/__init__.py",
+   "line": 199,
+   "called_from": "scenario.py:59",
+   "args": {
+    "self": "<Markup>"
+   },
+   "calls": [
+    {
+     "fn": "Markup.__new__",
+     "file": "src/markupsafe/__init__.py",
+     "line": 122,
+     "called_from": "__init__.py:228",
+     "args": {
+      "cls": "<type>",
+      "object": "'User: Alice &#34;The &lt;b&gt;Great&l...alert(document.cookie);&lt;/script&gt;'",
+      "encoding": "None",
+      "errors": "'strict'"
+     },
+     "calls": [],
+     "returned": "Markup('User: Alice &#34;The &lt;b&gt;...lert(document.cookie);&lt;/script&gt;')",
+     "tl": 95
+    },
+    {
+     "fn": "Markup.unescape",
+     "file": "src/markupsafe/__init__.py",
+     "line": 188,
+     "called_from": "__init__.py:228",
+     "args": {
+      "self": "<Markup>"
+     },
+     "calls": [],
+     "returned": "'User: Alice \"The <b>Great</b>\" said: <script>alert(document.cookie);</script>'",
+     "tl": 97
+    }
+   ],
+   "returned": "'User: Alice \"The <b>Great</b>\" said: <script>alert(document.cookie);</script>'",
+   "tl": 94
+  },
+  {
+   "fn": "Markup.__new__",
+   "file": "src/markupsafe/__init__.py",
+   "line": 122,
+   "called_from": "scenario.py:65",
+   "args": {
+    "cls": "<type>",
+    "object": "'<p>User: <a href=\"/user/3\"><span clas...t(document.cookie);&lt;/script&gt;</p>'",
+    "encoding": "None",
+    "errors": "'strict'"
+   },
+   "calls": [],
+   "returned": "Markup('<p>User: <a href=\"/user/3\"><sp...(document.cookie);&lt;/script&gt;</p>')",
+   "tl": 100
+  }
+ ],
+ "lines": {
+  "src/markupsafe/__init__.py": [
+   39,
+   40,
+   42,
+   43,
+   125,
+   126,
+   128,
+   129,
+   134,
+   137,
+   138,
+   168,
+   195,
+   197,
+   206,
+   212,
+   220,
+   221,
+   224,
+   227,
+   228,
+   235,
+   237,
+   240,
+   314,
+   315,
+   326,
+   329,
+   336,
+   337,
+   340,
+   341,
+   342,
+   353,
+   354
+  ]
+ },
+ "tl": 1
+}

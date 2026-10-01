@@ -1,0 +1,457 @@
+scenario()  [scenario.py:1]
+  DictLoader.__init__(self=<DictLoader>, mapping={'base.html': '<!DOCTYPE html>\n<html lang="en">\n<h... endblock %}</div>\n</body>\n</html>\n', 'members.html': '{% extends "base.html" %}\n{% block t...% endfor %}\n  </ul>\n{% endblock %}\n'})  [src/jinja2/loaders.py:441]
+    → None
+  select_autoescape(enabled_extensions=['html', 'htm', 'xml'], disabled_extensions=(), default_for_string=True, default=False)  [src/jinja2/utils.py:581]
+    → <function select_autoescape.<locals>.autoescape at 0x10a5bcea0>
+  Environment.__init__(self=<Environment>, block_start_string='{%', block_end_string='%}', variable_start_string='{{', variable_end_string='}}', comment_start_string='{#', comment_end_string='#}', line_statement_prefix=None, line_comment_prefix=None, trim_blocks=False, lstrip_blocks=False, newline_sequence='\n', keep_trailing_newline=False, extensions=(), optimized=True, undefined=<class 'jinja2.runtime.Undefined'>, finalize=None, autoescape=<function select_autoescape.<locals>.autoescape at 0x10a5bcea0>, loader=<jinja2.loaders.DictLoader object at 0x10969d550>, cache_size=400, auto_reload=True, bytecode_cache=None, enable_async=False)  [src/jinja2/environment.py:295]
+    create_cache(size=400)  [src/jinja2/environment.py:83]
+      LRUCache.__init__(self=<LRUCache>, capacity=400)  [src/jinja2/utils.py:439]
+        LRUCache._postinit(self=<LRUCache>)  [src/jinja2/utils.py:445]
+          → None
+        → None
+      → <LRUCache {}>
+    load_extensions(environment=<jinja2.environment.Environment object at 0x10a51c830>, extensions=())  [src/jinja2/environment.py:109]
+      → {}
+    _environment_config_check(environment=<jinja2.environment.Environment object at 0x10a51c830>)  [src/jinja2/environment.py:127]
+      → <jinja2.environment.Environment object at 0x10a51c830>
+    → None
+  Environment.get_template(self=<Environment>, name='members.html', parent=None, globals=None)  [src/jinja2/environment.py:980]
+    Environment._load_template(self=<Environment>, name='members.html', globals=None)  [src/jinja2/environment.py:955]
+      LRUCache.get(self=<LRUCache>, key=(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'members.html'), default=None)  [src/jinja2/utils.py:474]
+        LRUCache.__getitem__(self=<LRUCache>, key=(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'members.html'))  [src/jinja2/utils.py:508]
+          → None
+        → None
+      Environment.make_globals(self=<Environment>, d=None)  [src/jinja2/environment.py:1110]
+        → ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})
+      BaseLoader.load(self=<DictLoader>, environment=<jinja2.environment.Environment object at 0x10a51c830>, name='members.html', globals=ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>}))  [src/jinja2/loaders.py:107]
+        DictLoader.get_source(self=<DictLoader>, environment=<jinja2.environment.Environment object at 0x10a51c830>, template='members.html')  [src/jinja2/loaders.py:444]
+          → ('{% extends "base.html" %}\n{% block t...% endfor %}\n  </ul>\n{% endblock %}\n', None, <function DictLoader.get_source.<locals>.<lambda> at 0x10a5be5c0>)
+        Environment.compile(self=<Environment>, source='{% extends "base.html" %}\n{% block t...% endfor %}\n  </ul>\n{% endblock %}\n', name='members.html', filename=None, raw=False, defer_init=False)  [src/jinja2/environment.py:730]
+          Environment._parse(self=<Environment>, source='{% extends "base.html" %}\n{% block t...% endfor %}\n  </ul>\n{% endblock %}\n', name='members.html', filename=None)  [src/jinja2/environment.py:617]
+            Parser.__init__(self=<Parser>, environment=<jinja2.environment.Environment object at 0x10a51c830>, source='{% extends "base.html" %}\n{% block t...% endfor %}\n  </ul>\n{% endblock %}\n', name='members.html', filename=None, state=None)  [src/jinja2/parser.py:53]
+              Environment._tokenize(self=<Environment>, source='{% extends "base.html" %}\n{% block t...% endfor %}\n  </ul>\n{% endblock %}\n', name='members.html', filename=None, state=None)  [src/jinja2/environment.py:660]
+                Environment.preprocess(self=<Environment>, source='{% extends "base.html" %}\n{% block t...% endfor %}\n  </ul>\n{% endblock %}\n', name='members.html', filename=None)  [src/jinja2/environment.py:644]
+                  Environment.iter_extensions(self=<Environment>)  [src/jinja2/environment.py:463]
+                    → <list_iterator object at 0x10a4bfe50>
+                  → '{% extends "base.html" %}\n{% block t...% endfor %}\n  </ul>\n{% endblock %}\n'
+                Environment.lexer(self=<Environment>)  [src/jinja2/environment.py:458]
+                  get_lexer(environment=<jinja2.environment.Environment object at 0x10a51c830>)  [src/jinja2/lexer.py:428]
+                    … 17 nested calls
+                    → <jinja2.lexer.Lexer object at 0x10a51cd70>
+                  → <jinja2.lexer.Lexer object at 0x10a51cd70>
+                Lexer.tokenize(self=<Lexer>, source='{% extends "base.html" %}\n{% block t...% endfor %}\n  </ul>\n{% endblock %}\n', name='members.html', filename=None, state=None)  [src/jinja2/lexer.py:604]
+                  TokenStream.__init__(self=<TokenStream>, generator=<generator object Lexer.wrap at 0x10a5775b0>, name='members.html', filename=None)  [src/jinja2/lexer.py:325]
+                    … 3 nested calls
+                    → None
+                  → <jinja2.lexer.TokenStream object at 0x10a51d2b0>
+                Environment.iter_extensions(self=<Environment>)  [src/jinja2/environment.py:463]
+                  → <list_iterator object at 0x10a4d1de0>
+                → <jinja2.lexer.TokenStream object at 0x10a51d2b0>
+              Environment.iter_extensions(self=<Environment>)  [src/jinja2/environment.py:463]
+                → <list_iterator object at 0x10a4d1e40>
+              → None
+            Parser.parse(self=<Parser>)  [src/jinja2/parser.py:1037]
+              Parser.subparse(self=<Parser>, end_tokens=None)  [src/jinja2/parser.py:990]
+                TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                  → True
+                Parser.subparse.<locals>.flush_data()  [src/jinja2/parser.py:998]
+                  → None
+                TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                  Lexer.wrap(self=<Lexer>, stream=<generator object Lexer.tokeniter at 0x10a32a2b0>, name='members.html', filename=None)  [src/jinja2/lexer.py:615]
+                    … 2 nested calls
+                    → Token(lineno=1, type='name', value='extends')
+                  → Token(lineno=1, type='block_begin', value='{%')
+                Parser.parse_statement(self=<Parser>)  [src/jinja2/parser.py:163]
+                  Parser.parse_extends(self=<Parser>)  [src/jinja2/parser.py:324]
+                    … 39 nested calls
+                    → Extends(template=Const(value='base.html'))
+                  → Extends(template=Const(value='base.html'))
+                TokenStream.expect(self=<TokenStream>, expr='block_end')  [src/jinja2/lexer.py:403]
+                  Token.test(self=<Token>, expr='block_end')  [src/jinja2/lexer.py:277]
+                    → True
+                  TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                    … 3 nested calls
+                    → Token(lineno=1, type='block_end', value='%}')
+                  → Token(lineno=1, type='block_end', value='%}')
+                TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                  → True
+                Node.__init__(self=<TemplateData>)  [src/jinja2/nodes.py:129]
+                  → None
+                TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                  Lexer.wrap(self=<Lexer>, stream=<generator object Lexer.tokeniter at 0x10a32a2b0>, name='members.html', filename=None)  [src/jinja2/lexer.py:615]
+                    … 1 nested calls
+                    → Token(lineno=2, type='block_begin', value='{%')
+                  → Token(lineno=1, type='data', value='\n')
+                TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                  → True
+                Parser.subparse.<locals>.flush_data()  [src/jinja2/parser.py:998]
+                  Node.__init__(self=<Output>)  [src/jinja2/nodes.py:129]
+                    → None
+                  → None
+                TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                  Lexer.wrap(self=<Lexer>, stream=<generator object Lexer.tokeniter at 0x10a32a2b0>, name='members.html', filename=None)  [src/jinja2/lexer.py:615]
+                    … 2 nested calls
+                    → Token(lineno=2, type='name', value='block')
+                  → Token(lineno=2, type='block_begin', value='{%')
+                Parser.parse_statement(self=<Parser>)  [src/jinja2/parser.py:163]
+                  Parser.parse_block(self=<Parser>)  [src/jinja2/parser.py:292]
+                    … 47 nested calls
+                    → Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False)
+                  → Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False)
+                TokenStream.expect(self=<TokenStream>, expr='block_end')  [src/jinja2/lexer.py:403]
+                  Token.test(self=<Token>, expr='block_end')  [src/jinja2/lexer.py:277]
+                    → True
+                  TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                    … 3 nested calls
+                    → Token(lineno=2, type='block_end', value='%}')
+                  → Token(lineno=2, type='block_end', value='%}')
+                TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                  → True
+                Node.__init__(self=<TemplateData>)  [src/jinja2/nodes.py:129]
+                  → None
+                TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                  Lexer.wrap(self=<Lexer>, stream=<generator object Lexer.tokeniter at 0x10a32a2b0>, name='members.html', filename=None)  [src/jinja2/lexer.py:615]
+                    … 1 nested calls
+                    → Token(lineno=3, type='block_begin', value='{%')
+                  → Token(lineno=2, type='data', value='\n')
+                TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                  → True
+                Parser.subparse.<locals>.flush_data()  [src/jinja2/parser.py:998]
+                  Node.__init__(self=<Output>)  [src/jinja2/nodes.py:129]
+                    → None
+                  → None
+                TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                  Lexer.wrap(self=<Lexer>, stream=<generator object Lexer.tokeniter at 0x10a32a2b0>, name='members.html', filename=None)  [src/jinja2/lexer.py:615]
+                    … 2 nested calls
+                    → Token(lineno=3, type='name', value='block')
+                  → Token(lineno=3, type='block_begin', value='{%')
+                Parser.parse_statement(self=<Parser>)  [src/jinja2/parser.py:163]
+                  Parser.parse_block(self=<Parser>)  [src/jinja2/parser.py:292]
+                    … 280 nested calls
+                    → Block(name='content', body=[Output(nod...>\n')])], scoped=False, required=False)
+                  → Block(name='content', body=[Output(nod...>\n')])], scoped=False, required=False)
+                TokenStream.expect(self=<TokenStream>, expr='block_end')  [src/jinja2/lexer.py:403]
+                  Token.test(self=<Token>, expr='block_end')  [src/jinja2/lexer.py:277]
+                    → True
+                  TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                    … 3 nested calls
+                    → Token(lineno=9, type='block_end', value='%}')
+                  → Token(lineno=9, type='block_end', value='%}')
+                TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                  → False
+                Parser.subparse.<locals>.flush_data()  [src/jinja2/parser.py:998]
+                  → None
+                → [Extends(template=Const(value='base.html')), Output(nodes=[TemplateData(data='\n')]), Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), Output(nodes=[TemplateData(data='\n')]), Block(name='content', body=[Output(nod...>\n')])], scoped=False, required=False)]
+              Node.__init__(self=<Template>)  [src/jinja2/nodes.py:129]
+                → None
+              Node.set_environment(self=<Template>, environment=<jinja2.environment.Environment object at 0x10a51c830>)  [src/jinja2/nodes.py:231]
+                Node.iter_child_nodes(self=<Template>, exclude=None, only=None)  [src/jinja2/nodes.py:169]
+                  Node.iter_fields(self=<Template>, exclude=None, only=None)  [src/jinja2/nodes.py:147]
+                    → ('body', [Extends(template=Const(value='base.html')), Output(nodes=[TemplateData(data='\n')]), Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), Output(nodes=[TemplateData(data='\n')]), Block(name='content', body=[Output(nod...>\n')])], scoped=False, required=False)])
+                  → Extends(template=Const(value='base.html'))
+                … Node.iter_child_nodes ×50 more  [src/jinja2/nodes.py:169]
+                → Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])
+              → Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])
+            → Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])
+          Environment._generate(self=<Environment>, source=Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)]), name='members.html', filename=None, defer_init=False)  [src/jinja2/environment.py:681]
+            generate(node=Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)]), environment=<jinja2.environment.Environment object at 0x10a51c830>, name='members.html', filename=None, stream=None, defer_init=False, optimized=True)  [src/jinja2/compiler.py:101]
+              CodeGenerator.__init__(self=<CodeGenerator>, environment=<jinja2.environment.Environment object at 0x10a51c830>, name='members.html', filename=None, stream=None, defer_init=False, optimized=True)  [src/jinja2/compiler.py:299]
+                Optimizer.__init__(self=<Optimizer>, environment=<jinja2.environment.Environment object at 0x10a51c830>)  [src/jinja2/optimizer.py:28]
+                  → None
+                → None
+              NodeVisitor.visit(self=<CodeGenerator>, node=Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)]))  [src/jinja2/visitor.py:35]
+                NodeVisitor.get_visitor(self=<CodeGenerator>, node=Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)]))  [src/jinja2/visitor.py:28]
+                  → <bound method CodeGenerator.visit_Temp...r.CodeGenerator object at 0x10a51cc20>>
+                CodeGenerator.visit_Template(self=<CodeGenerator>, node=Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)]), frame=None)  [src/jinja2/compiler.py:825]
+                  EvalContext.__init__(self=<EvalContext>, environment=<jinja2.environment.Environment object at 0x10a51c830>, template_name='members.html')  [src/jinja2/nodes.py:76]
+                    … 1 nested calls
+                    → None
+                  CodeGenerator.writeline(self=<CodeGenerator>, x='from jinja2.runtime import LoopContex...alcode, markup_join, missing, str_join', node=None, extra=0)  [src/jinja2/compiler.py:465]
+                    … 2 nested calls
+                    → None
+                  Node.find(self=<Template>, node_type=<class 'jinja2.nodes.Extends'>)  [src/jinja2/nodes.py:186]
+                    … 4 nested calls
+                    → Extends(template=Const(value='base.html'))
+                  Node.find_all(self=<Template>, node_type=<class 'jinja2.nodes.Block'>)  [src/jinja2/nodes.py:195]
+                    … 22 nested calls
+                    → Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False)
+                  … Node.find_all ×3 more  [src/jinja2/nodes.py:195]
+                  CodeGenerator.writeline(self=<CodeGenerator>, x="name = 'members.html'", node=None, extra=0)  [src/jinja2/compiler.py:465]
+                    … 2 nested calls
+                    → None
+                  CodeGenerator.func(self=<CodeGenerator>, name='root')  [src/jinja2/compiler.py:607]
+                    … 1 nested calls
+                    → 'def root'
+                  CodeGenerator.writeline(self=<CodeGenerator>, x='def root(context, missing=missing, environment=environment):', node=None, extra=1)  [src/jinja2/compiler.py:465]
+                    … 2 nested calls
+                    → None
+                  CodeGenerator.indent(self=<CodeGenerator>)  [src/jinja2/compiler.py:412]
+                    → None
+                  CodeGenerator.write_commons(self=<CodeGenerator>)  [src/jinja2/compiler.py:719]
+                    … 4 nested calls
+                    → None
+                  Frame.__init__(self=<Frame>, eval_ctx=<jinja2.nodes.EvalContext object at 0x10a51e3c0>, parent=None, level=None)  [src/jinja2/compiler.py:166]
+                    … 1 nested calls
+                    → None
+                  find_undeclared(nodes=[Extends(template=Const(value='base.html')), Output(nodes=[TemplateData(data='\n')]), Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), Output(nodes=[TemplateData(data='\n')]), Block(name='content', body=[Output(nod...>\n')])], scoped=False, required=False)], names=('self',))  [src/jinja2/compiler.py:142]
+                    … 15 nested calls
+                    → set()
+                  Symbols.analyze_node(self=<Symbols>, node=Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)]))  [src/jinja2/idtracking.py:49]
+                    … 58 nested calls
+                    → None
+                  CodeGenerator.writeline(self=<CodeGenerator>, x='parent_template = None', node=None, extra=0)  [src/jinja2/compiler.py:465]
+                    … 2 nested calls
+                    → None
+                  CodeGenerator.enter_frame(self=<CodeGenerator>, frame=<jinja2.compiler.Frame object at 0x10a51e510>)  [src/jinja2/compiler.py:580]
+                    → None
+                  CodeGenerator.pull_dependencies(self=<CodeGenerator>, nodes=[Extends(template=Const(value='base.html')), Output(nodes=[TemplateData(data='\n')]), Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), Output(nodes=[TemplateData(data='\n')]), Block(name='content', body=[Output(nod...>\n')])], scoped=False, required=False)])  [src/jinja2/compiler.py:534]
+                    … 15 nested calls
+                    → None
+                  CodeGenerator.blockvisit(self=<CodeGenerator>, nodes=[Extends(template=Const(value='base.html')), Output(nodes=[TemplateData(data='\n')]), Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), Output(nodes=[TemplateData(data='\n')]), Block(name='content', body=[Output(nod...>\n')])], scoped=False, required=False)], frame=<jinja2.compiler.Frame object at 0x10a51e510>)  [src/jinja2/compiler.py:440]
+                    … 24 nested calls
+                    → None
+                  CodeGenerator.leave_frame(self=<CodeGenerator>, frame=<jinja2.compiler.Frame object at 0x10a51e510>, with_python_scope=True)  [src/jinja2/compiler.py:596]
+                    → None
+                  CodeGenerator.outdent(self=<CodeGenerator>, step=1)  [src/jinja2/compiler.py:416]
+                    → None
+                  CodeGenerator.indent(self=<CodeGenerator>)  [src/jinja2/compiler.py:412]
+                    → None
+                  CodeGenerator.writeline(self=<CodeGenerator>, x='yield from parent_template.root_render_func(context)', node=None, extra=0)  [src/jinja2/compiler.py:465]
+                    … 2 nested calls
+                    → None
+                  CodeGenerator.outdent(self=<CodeGenerator>, step=1)  [src/jinja2/compiler.py:416]
+                    → None
+                  CodeGenerator.func(self=<CodeGenerator>, name='block_title')  [src/jinja2/compiler.py:607]
+                    … 1 nested calls
+                    → 'def block_title'
+                  CodeGenerator.writeline(self=<CodeGenerator>, x='def block_title(context, missing=missing, environment=environment):', node=Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), extra=1)  [src/jinja2/compiler.py:465]
+                    … 2 nested calls
+                    → None
+                  CodeGenerator.indent(self=<CodeGenerator>)  [src/jinja2/compiler.py:412]
+                    → None
+                  CodeGenerator.write_commons(self=<CodeGenerator>)  [src/jinja2/compiler.py:719]
+                    … 4 nested calls
+                    → None
+                  Frame.__init__(self=<Frame>, eval_ctx=<jinja2.nodes.EvalContext object at 0x10a51e3c0>, parent=None, level=None)  [src/jinja2/compiler.py:166]
+                    … 1 nested calls
+                    → None
+                  find_undeclared(nodes=[Output(nodes=[TemplateData(data='Members')])], names=('self', 'super'))  [src/jinja2/compiler.py:142]
+                    … 14 nested calls
+                    → set()
+                  Symbols.analyze_node(self=<Symbols>, node=Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False))  [src/jinja2/idtracking.py:49]
+                    … 24 nested calls
+                    → None
+                  CodeGenerator.writeline(self=<CodeGenerator>, x='_block_vars = {}', node=None, extra=0)  [src/jinja2/compiler.py:465]
+                    … 2 nested calls
+                    → None
+                  CodeGenerator.enter_frame(self=<CodeGenerator>, frame=<jinja2.compiler.Frame object at 0x10a579e50>)  [src/jinja2/compiler.py:580]
+                    → None
+                  CodeGenerator.pull_dependencies(self=<CodeGenerator>, nodes=[Output(nodes=[TemplateData(data='Members')])])  [src/jinja2/compiler.py:534]
+                    … 14 nested calls
+                    → None
+                  CodeGenerator.blockvisit(self=<CodeGenerator>, nodes=[Output(nodes=[TemplateData(data='Members')])], frame=<jinja2.compiler.Frame object at 0x10a579e50>)  [src/jinja2/compiler.py:440]
+                    … 14 nested calls
+                    → None
+                  CodeGenerator.leave_frame(self=<CodeGenerator>, frame=<jinja2.compiler.Frame object at 0x10a579e50>, with_python_scope=True)  [src/jinja2/compiler.py:596]
+                    → None
+                  CodeGenerator.outdent(self=<CodeGenerator>, step=1)  [src/jinja2/compiler.py:416]
+                    → None
+                  CodeGenerator.func(self=<CodeGenerator>, name='block_content')  [src/jinja2/compiler.py:607]
+                    … 1 nested calls
+                    → 'def block_content'
+                  CodeGenerator.writeline(self=<CodeGenerator>, x='def block_content(context, missing=missing, environment=environment):', node=Block(name='content', body=[Output(nod...>\n')])], scoped=False, required=False), extra=1)  [src/jinja2/compiler.py:465]
+                    … 2 nested calls
+                    → None
+                  CodeGenerator.indent(self=<CodeGenerator>)  [src/jinja2/compiler.py:412]
+                    → None
+                  CodeGenerator.write_commons(self=<CodeGenerator>)  [src/jinja2/compiler.py:719]
+                    … 4 nested calls
+                    → None
+                  Frame.__init__(self=<Frame>, eval_ctx=<jinja2.nodes.EvalContext object at 0x10a51e3c0>, parent=None, level=None)  [src/jinja2/compiler.py:166]
+                    … 1 nested calls
+                    → None
+                  find_undeclared(nodes=[Output(nodes=[TemplateData(data='\n  <ul>\n  ')]), For(target=Name(name='user', ctx='stor..., else_=[], test=None, recursive=False), Output(nodes=[TemplateData(data='\n  </ul>\n')])], names=('self', 'super'))  [src/jinja2/compiler.py:142]
+                    … 15 nested calls
+                    → set()
+                  Symbols.analyze_node(self=<Symbols>, node=Block(name='content', body=[Output(nod...>\n')])], scoped=False, required=False))  [src/jinja2/idtracking.py:49]
+                    … 48 nested calls
+                    → None
+                  CodeGenerator.writeline(self=<CodeGenerator>, x='_block_vars = {}', node=None, extra=0)  [src/jinja2/compiler.py:465]
+                    … 2 nested calls
+                    → None
+                  CodeGenerator.enter_frame(self=<CodeGenerator>, frame=<jinja2.compiler.Frame object at 0x10a57a210>)  [src/jinja2/compiler.py:580]
+                    … 4 nested calls
+                    → None
+                  CodeGenerator.pull_dependencies(self=<CodeGenerator>, nodes=[Output(nodes=[TemplateData(data='\n  <ul>\n  ')]), For(target=Name(name='user', ctx='stor..., else_=[], test=None, recursive=False), Output(nodes=[TemplateData(data='\n  </ul>\n')])])  [src/jinja2/compiler.py:534]
+                    … 15 nested calls
+                    → None
+                  CodeGenerator.blockvisit(self=<CodeGenerator>, nodes=[Output(nodes=[TemplateData(data='\n  <ul>\n  ')]), For(target=Name(name='user', ctx='stor..., else_=[], test=None, recursive=False), Output(nodes=[TemplateData(data='\n  </ul>\n')])], frame=<jinja2.compiler.Frame object at 0x10a57a210>)  [src/jinja2/compiler.py:440]
+                    … 15 nested calls
+                    → None
+                  CodeGenerator.leave_frame(self=<CodeGenerator>, frame=<jinja2.compiler.Frame object at 0x10a57a210>, with_python_scope=True)  [src/jinja2/compiler.py:596]
+                    → None
+                  CodeGenerator.outdent(self=<CodeGenerator>, step=1)  [src/jinja2/compiler.py:416]
+                    → None
+                  CodeGenerator.writeline(self=<CodeGenerator>, x="blocks = {'title': block_title, 'content': block_content}", node=None, extra=1)  [src/jinja2/compiler.py:465]
+                    … 2 nested calls
+                    → None
+                  … CodeGenerator.writeline ×1 more  [src/jinja2/compiler.py:465]
+                  → None
+                → None
+              → "from jinja2.runtime import LoopContex...ebug_info = '1=12&2=17&3=27&5=37&6=41'"
+            → "from jinja2.runtime import LoopContex...ebug_info = '1=12&2=17&3=27&5=37&6=41'"
+          Environment._compile(self=<Environment>, source="from jinja2.runtime import LoopContex...ebug_info = '1=12&2=17&3=27&5=37&6=41'", filename='<template>')  [src/jinja2/environment.py:702]
+            → <code object <module> at 0x10a51dfb0, file "<template>", line 1>
+          → <code object <module> at 0x10a51dfb0, file "<template>", line 1>
+        Template.from_code(cls=<type>, environment=<jinja2.environment.Environment object at 0x10a51c830>, code=<code object <module> at 0x10a51dfb0, file "<template>", line 1>, globals=ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>}), uptodate=<function DictLoader.get_source.<locals>.<lambda> at 0x10a5be5c0>)  [src/jinja2/environment.py:1213]
+          Template._from_namespace(cls=<type>, environment=<jinja2.environment.Environment object at 0x10a51c830>, namespace={'LoopContext': <class 'jinja2.runtime.LoopContext'>, 'Macro': <class 'jinja2.runtime.Macro'>, 'Markup': <class 'markupsafe.Markup'>, 'Namespace': <class 'jinja2.utils.Namespace'>, 'TemplateNotFound': <class 'jinja2.exceptions.TemplateNotFound'>, 'TemplateReference': <class 'jinja2.runtime.TemplateReference'>, ...}, globals=ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>}))  [src/jinja2/environment.py:1244]
+            → <Template 'members.html'>
+          → <Template 'members.html'>
+        → <Template 'members.html'>
+      LRUCache.__setitem__(self=<LRUCache>, key=(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'members.html'), value=<Template 'members.html'>)  [src/jinja2/utils.py:530]
+        → None
+      → <Template 'members.html'>
+    → <Template 'members.html'>
+  Template.render(self=<Template>)  [src/jinja2/environment.py:1272]
+    Template.new_context(self=<Template>, vars={'users': [{'url': '/user/1', 'username': 'ada'}, {'url': '/user/2', 'username': 'grace'}, {'url': '/user/3', 'username': 'Tom & Jerry'}]}, shared=False, locals=None)  [src/jinja2/environment.py:1369]
+      new_context(environment=<jinja2.environment.Environment object at 0x10a51c830>, template_name='members.html', blocks={'content': <function block_content at 0x10a528d60>, 'title': <function block_title at 0x10a528e00>}, vars={'users': [{'url': '/user/1', 'username': 'ada'}, {'url': '/user/2', 'username': 'grace'}, {'url': '/user/3', 'username': 'Tom & Jerry'}]}, shared=False, globals=ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>}), locals=None)  [src/jinja2/runtime.py:93]
+        Context.__init__(self=<Context>, environment=<jinja2.environment.Environment object at 0x10a51c830>, parent={'cycler': <class 'jinja2.utils.Cycler'>, 'dict': <class 'dict'>, 'joiner': <class 'jinja2.utils.Joiner'>, 'lipsum': <function generate_lorem_ipsum at 0x10a48cc20>, 'namespace': <class 'jinja2.utils.Namespace'>, 'range': <class 'range'>, ...}, name='members.html', blocks={'content': <function block_content at 0x10a528d60>, 'title': <function block_title at 0x10a528e00>}, globals=ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>}))  [src/jinja2/runtime.py:165]
+          EvalContext.__init__(self=<EvalContext>, environment=<jinja2.environment.Environment object at 0x10a51c830>, template_name='members.html')  [src/jinja2/nodes.py:76]
+            select_autoescape.<locals>.autoescape(template_name='members.html')  [src/jinja2/utils.py:624]
+              → True
+            → None
+          → None
+        → <Context {'range': <class 'range'>, 'd...e': 'Tom & Jerry'}]} of 'members.html'>
+      → <Context {'range': <class 'range'>, 'd...e': 'Tom & Jerry'}]} of 'members.html'>
+    Environment.get_template(self=<Environment>, name='base.html', parent='members.html', globals=None)  [src/jinja2/environment.py:980]
+      Environment.join_path(self=<Environment>, template='base.html', parent='members.html')  [src/jinja2/environment.py:943]
+        → 'base.html'
+      Environment._load_template(self=<Environment>, name='base.html', globals=None)  [src/jinja2/environment.py:955]
+        LRUCache.get(self=<LRUCache>, key=(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'base.html'), default=None)  [src/jinja2/utils.py:474]
+          LRUCache.__getitem__(self=<LRUCache>, key=(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'base.html'))  [src/jinja2/utils.py:508]
+            → None
+          → None
+        Environment.make_globals(self=<Environment>, d=None)  [src/jinja2/environment.py:1110]
+          → ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})
+        BaseLoader.load(self=<DictLoader>, environment=<jinja2.environment.Environment object at 0x10a51c830>, name='base.html', globals=ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>}))  [src/jinja2/loaders.py:107]
+          DictLoader.get_source(self=<DictLoader>, environment=<jinja2.environment.Environment object at 0x10a51c830>, template='base.html')  [src/jinja2/loaders.py:444]
+            → ('<!DOCTYPE html>\n<html lang="en">\n<h... endblock %}</div>\n</body>\n</html>\n', None, <function DictLoader.get_source.<locals>.<lambda> at 0x10a528040>)
+          Environment.compile(self=<Environment>, source='<!DOCTYPE html>\n<html lang="en">\n<h... endblock %}</div>\n</body>\n</html>\n', name='base.html', filename=None, raw=False, defer_init=False)  [src/jinja2/environment.py:730]
+            Environment._parse(self=<Environment>, source='<!DOCTYPE html>\n<html lang="en">\n<h... endblock %}</div>\n</body>\n</html>\n', name='base.html', filename=None)  [src/jinja2/environment.py:617]
+              Parser.__init__(self=<Parser>, environment=<jinja2.environment.Environment object at 0x10a51c830>, source='<!DOCTYPE html>\n<html lang="en">\n<h... endblock %}</div>\n</body>\n</html>\n', name='base.html', filename=None, state=None)  [src/jinja2/parser.py:53]
+                Environment._tokenize(self=<Environment>, source='<!DOCTYPE html>\n<html lang="en">\n<h... endblock %}</div>\n</body>\n</html>\n', name='base.html', filename=None, state=None)  [src/jinja2/environment.py:660]
+                  Environment.preprocess(self=<Environment>, source='<!DOCTYPE html>\n<html lang="en">\n<h... endblock %}</div>\n</body>\n</html>\n', name='base.html', filename=None)  [src/jinja2/environment.py:644]
+                    … 1 nested calls
+                    → '<!DOCTYPE html>\n<html lang="en">\n<h... endblock %}</div>\n</body>\n</html>\n'
+                  Environment.lexer(self=<Environment>)  [src/jinja2/environment.py:458]
+                    … 3 nested calls
+                    → <jinja2.lexer.Lexer object at 0x10a51cd70>
+                  Lexer.tokenize(self=<Lexer>, source='<!DOCTYPE html>\n<html lang="en">\n<h... endblock %}</div>\n</body>\n</html>\n', name='base.html', filename=None, state=None)  [src/jinja2/lexer.py:604]
+                    … 5 nested calls
+                    → <jinja2.lexer.TokenStream object at 0x10a579a90>
+                  Environment.iter_extensions(self=<Environment>)  [src/jinja2/environment.py:463]
+                    → <list_iterator object at 0x10a56a2c0>
+                  → <jinja2.lexer.TokenStream object at 0x10a579a90>
+                Environment.iter_extensions(self=<Environment>)  [src/jinja2/environment.py:463]
+                  → <list_iterator object at 0x10a5688e0>
+                → None
+              Parser.parse(self=<Parser>)  [src/jinja2/parser.py:1037]
+                Parser.subparse(self=<Parser>, end_tokens=None)  [src/jinja2/parser.py:990]
+                  TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                    → True
+                  Node.__init__(self=<TemplateData>)  [src/jinja2/nodes.py:129]
+                    → None
+                  TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                    … 2 nested calls
+                    → Token(lineno=1, type='data', value='<!...<html lang="en">\n<head>\n    <title>')
+                  TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                    → True
+                  Parser.subparse.<locals>.flush_data()  [src/jinja2/parser.py:998]
+                    … 1 nested calls
+                    → None
+                  TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                    … 3 nested calls
+                    → Token(lineno=4, type='block_begin', value='{%')
+                  Parser.parse_statement(self=<Parser>)  [src/jinja2/parser.py:163]
+                    … 41 nested calls
+                    → Block(name='title', body=[], scoped=False, required=False)
+                  TokenStream.expect(self=<TokenStream>, expr='block_end')  [src/jinja2/lexer.py:403]
+                    … 5 nested calls
+                    → Token(lineno=4, type='block_end', value='%}')
+                  TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                    → True
+                  Node.__init__(self=<TemplateData>)  [src/jinja2/nodes.py:129]
+                    → None
+                  TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                    … 2 nested calls
+                    → Token(lineno=4, type='data', value=' -...head>\n<body>\n    <div id="content">')
+                  TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                    → True
+                  Parser.subparse.<locals>.flush_data()  [src/jinja2/parser.py:998]
+                    … 1 nested calls
+                    → None
+                  TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                    … 3 nested calls
+                    → Token(lineno=7, type='block_begin', value='{%')
+                  Parser.parse_statement(self=<Parser>)  [src/jinja2/parser.py:163]
+                    … 41 nested calls
+                    → Block(name='content', body=[], scoped=False, required=False)
+                  TokenStream.expect(self=<TokenStream>, expr='block_end')  [src/jinja2/lexer.py:403]
+                    … 5 nested calls
+                    → Token(lineno=7, type='block_end', value='%}')
+                  TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                    → True
+                  Node.__init__(self=<TemplateData>)  [src/jinja2/nodes.py:129]
+                    → None
+                  TokenStream.__next__(self=<TokenStream>)  [src/jinja2/lexer.py:380]
+                    … 3 nested calls
+                    → Token(lineno=7, type='data', value='</div>\n</body>\n</html>')
+                  TokenStream.__bool__(self=<TokenStream>)  [src/jinja2/lexer.py:342]
+                    → False
+                  Parser.subparse.<locals>.flush_data()  [src/jinja2/parser.py:998]
+                    … 1 nested calls
+                    → None
+                  → [Output(nodes=[TemplateData(data='<!DOC...tml lang="en">\n<head>\n    <title>')]), Block(name='title', body=[], scoped=False, required=False), Output(nodes=[TemplateData(data=' - My...ad>\n<body>\n    <div id="content">')]), Block(name='content', body=[], scoped=False, required=False), Output(nodes=[TemplateData(data='</div>\n</body>\n</html>')])]
+                Node.__init__(self=<Template>)  [src/jinja2/nodes.py:129]
+                  → None
+                Node.set_environment(self=<Template>, environment=<jinja2.environment.Environment object at 0x10a51c830>)  [src/jinja2/nodes.py:231]
+                  Node.iter_child_nodes(self=<Template>, exclude=None, only=None)  [src/jinja2/nodes.py:169]
+                    … 1 nested calls
+                    → Output(nodes=[TemplateData(data='<!DOC...tml lang="en">\n<head>\n    <title>')])
+                  … Node.iter_child_nodes ×16 more  [src/jinja2/nodes.py:169]
+                  → Template(body=[Output(nodes=[TemplateD...ta(data='</div>\n</body>\n</html>')])])
+                → Template(body=[Output(nodes=[TemplateD...ta(data='</div>\n</body>\n</html>')])])
+              → Template(body=[Output(nodes=[TemplateD...ta(data='</div>\n</body>\n</html>')])])
+            Environment._generate(self=<Environment>, source=Template(body=[Output(nodes=[TemplateD...ta(data='</div>\n</body>\n</html>')])]), name='base.html', filename=None, defer_init=False)  [src/jinja2/environment.py:681]
+              generate(node=Template(body=[Output(nodes=[TemplateD...ta(data='</div>\n</body>\n</html>')])]), environment=<jinja2.environment.Environment object at 0x10a51c830>, name='base.html', filename=None, stream=None, defer_init=False, optimized=True)  [src/jinja2/compiler.py:101]
+                CodeGenerator.__init__(self=<CodeGenerator>, environment=<jinja2.environment.Environment object at 0x10a51c830>, name='base.html', filename=None, stream=None, defer_init=False, optimized=True)  [src/jinja2/compiler.py:299]
+                  Optimizer.__init__(self=<Optimizer>, environment=<jinja2.environment.Environment object at 0x10a51c830>)  [src/jinja2/optimizer.py:28]
+                    → None
+                  → None
+                NodeVisitor.visit(self=<CodeGenerator>, node=Template(body=[Output(nodes=[TemplateD...ta(data='</div>\n</body>\n</html>')])]))  [src/jinja2/visitor.py:35]
+                  NodeVisitor.get_visitor(self=<CodeGenerator>, node=Template(body=[Output(nodes=[TemplateD...ta(data='</div>\n</body>\n</html>')])]))  [src/jinja2/visitor.py:28]
+                    → <bound method CodeGenerator.visit_Temp...r.CodeGenerator object at 0x10a579810>>
+                  CodeGenerator.visit_Template(self=<CodeGenerator>, node=Template(body=[Output(nodes=[TemplateD...ta(data='</div>\n</body>\n</html>')])]), frame=None)  [src/jinja2/compiler.py:825]
+                    … 266 nested calls
+                    → None
+                  → None
+                → "from jinja2.runtime import LoopContex...t}\ndebug_info = '4=12&7=14&4=17&7=26'"
+              → "from jinja2.runtime import LoopContex...t}\ndebug_info = '4=12&7=14&4=17&7=26'"
+            Environment._compile(self=<Environment>, source="from jinja2.runtime import LoopContex...t}\ndebug_info = '4=12&7=14&4=17&7=26'", filename='<template>')  [src/jinja2/environment.py:702]
+              → <code object <module> at 0x10a51d680, file "<template>", line 1>
+            → <code object <module> at 0x10a51d680, file "<template>", line 1>
+          Template.from_code(cls=<type>, environment=<jinja2.environment.Environment object at 0x10a51c830>, code=<code object <module> at 0x10a51d680, file "<template>", line 1>, globals=ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>}), uptodate=<function DictLoader.get_source.<locals>.<lambda> at 0x10a528040>)  [src/jinja2/environment.py:1213]
+            Template._from_namespace(cls=<type>, environment=<jinja2.environment.Environment object at 0x10a51c830>, namespace={'LoopContext': <class 'jinja2.runtime.LoopContext'>, 'Macro': <class 'jinja2.runtime.Macro'>, 'Markup': <class 'markupsafe.Markup'>, 'Namespace': <class 'jinja2.utils.Namespace'>, 'TemplateNotFound': <class 'jinja2.exceptions.TemplateNotFound'>, 'TemplateReference': <class 'jinja2.runtime.TemplateReference'>, ...}, globals=ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>}))  [src/jinja2/environment.py:1244]
+              → <Template 'base.html'>
+            → <Template 'base.html'>
+          → <Template 'base.html'>
+        LRUCache.__setitem__(self=<LRUCache>, key=(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'base.html'), value=<Template 'base.html'>)  [src/jinja2/utils.py:530]
+          → None
+        → <Template 'base.html'>
+      → <Template 'base.html'>
+    Context.resolve_or_missing(self=<Context>, key='users')  [src/jinja2/runtime.py:229]
+      → [{'url': '/user/1', 'username': 'ada'}, {'url': '/user/2', 'username': 'grace'}, {'url': '/user/3', 'username': 'Tom & Jerry'}]
+    Environment.getattr(self=<Environment>, obj={'url': '/user/1', 'username': 'ada'}, attribute='url')  [src/jinja2/environment.py:484]
+      → '/user/1'
+    … Environment.getattr ×5 more  [src/jinja2/environment.py:484]
+    → '<!DOCTYPE html>\n<html lang="en">\n<h...n  \n  </ul>\n</div>\n</body>\n</html>'

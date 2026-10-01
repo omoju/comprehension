@@ -1,0 +1,4 @@
+{
+  "why": "The README's \"A Simple Example\" is the first thing the repo shows: a `Flask(__name__)` app with a `@app.route(\"/\")` view returning \"Hello, World!\". Since `flask run` would need a live server, the request is driven through Flask's own documented `app.test_client()` (docs/testing.rst), which exercises the exact same WSGI path: environ -> app context -> routing -> view -> response.",
+  "attempts": 1
+}

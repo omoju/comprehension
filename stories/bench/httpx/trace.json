@@ -1,0 +1,3854 @@
+{
+ "fn": "scenario",
+ "file": "scenario.py",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "WSGITransport.__init__",
+   "file": "httpx/_transports/wsgi.py",
+   "line": 77,
+   "called_from": "scenario.py:27",
+   "args": {
+    "self": "<WSGITransport>",
+    "app": "<function app at 0x10cb5da80>",
+    "raise_app_exceptions": "True",
+    "script_name": "''",
+    "remote_addr": "'127.0.0.1'",
+    "wsgi_errors": "None"
+   },
+   "calls": [],
+   "returned": "None",
+   "tl": 2
+  },
+  {
+   "fn": "Client.__init__",
+   "file": "httpx/_client.py",
+   "line": 639,
+   "called_from": "scenario.py:29",
+   "args": {
+    "self": "<Client>",
+    "auth": "None",
+    "params": "None",
+    "headers": "None",
+    "cookies": "None",
+    "verify": "True",
+    "cert": "None",
+    "trust_env": "True",
+    "http1": "True",
+    "http2": "False",
+    "proxy": "None",
+    "mounts": "None",
+    "timeout": "Timeout(timeout=5.0)",
+    "follow_redirects": "False",
+    "limits": "Limits(max_connections=100, max_keepalive_connections=20, keepalive_expiry=5.0)",
+    "max_redirects": "20",
+    "event_hooks": "None",
+    "base_url": "'http://testserver'",
+    "transport": "<httpx.WSGITransport object at 0x10e7f70e0>",
+    "default_encoding": "'utf-8'"
+   },
+   "calls": [
+    {
+     "fn": "BaseClient.__init__",
+     "file": "httpx/_client.py",
+     "line": 189,
+     "called_from": "_client.py:662",
+     "args": {
+      "self": "<Client>",
+      "auth": "None",
+      "params": "None",
+      "headers": "None",
+      "cookies": "None",
+      "timeout": "Timeout(timeout=5.0)",
+      "follow_redirects": "False",
+      "max_redirects": "20",
+      "event_hooks": "None",
+      "base_url": "'http://testserver'",
+      "trust_env": "True",
+      "default_encoding": "'utf-8'"
+     },
+     "calls": [
+      {
+       "fn": "URL.__init__",
+       "file": "httpx/_urls.py",
+       "line": 77,
+       "called_from": "_client.py:206",
+       "args": {
+        "self": "<URL>",
+        "url": "'http://testserver'"
+       },
+       "calls": [
+        {
+         "fn": "urlparse",
+         "file": "httpx/_urlparse.py",
+         "line": 213,
+         "called_from": "_urls.py:117",
+         "args": {
+          "url": "'http://testserver'"
+         },
+         "calls": [
+          {
+           "fn": "quote",
+           "file": "httpx/_urlparse.py",
+           "line": 497,
+           "called_from": "_urlparse.py:319",
+           "args": {
+            "string": "''",
+            "safe": "\"!$%&'()*+,-.0123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~\""
+           },
+           "calls": [],
+           "returned": "''",
+           "tl": 8
+          },
+          {
+           "fn": "encode_host",
+           "file": "httpx/_urlparse.py",
+           "line": 348,
+           "called_from": "_urlparse.py:320",
+           "args": {
+            "host": "'testserver'"
+           },
+           "calls": [
+            {
+             "fn": "quote",
+             "file": "httpx/_urlparse.py",
+             "line": 497,
+             "called_from": "_urlparse.py:386",
+             "args": {
+              "string": "'testserver'",
+              "safe": "'!$&\\'()*+,;=\"`{}%|\\\\'"
+             },
+             "calls": [
+              {
+               "fn": "percent_encoded",
+               "file": "httpx/_urlparse.py",
+               "line": 482,
+               "called_from": "_urlparse.py:525",
+               "args": {
+                "string": "'testserver'",
+                "safe": "'!$&\\'()*+,;=\"`{}%|\\\\'"
+               },
+               "calls": [],
+               "returned": "'testserver'",
+               "tl": 12
+              }
+             ],
+             "returned": "'testserver'",
+             "tl": 11
+            }
+           ],
+           "returned": "'testserver'",
+           "tl": 10
+          },
+          {
+           "fn": "normalize_port",
+           "file": "httpx/_urlparse.py",
+           "line": 395,
+           "called_from": "_urlparse.py:321",
+           "args": {
+            "port": "''",
+            "scheme": "'http'"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 16
+          },
+          {
+           "fn": "validate_path",
+           "file": "httpx/_urlparse.py",
+           "line": 422,
+           "called_from": "_urlparse.py:327",
+           "args": {
+            "path": "''",
+            "has_scheme": "True",
+            "has_authority": "True"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 18
+          },
+          {
+           "fn": "normalize_path",
+           "file": "httpx/_urlparse.py",
+           "line": 447,
+           "called_from": "_urlparse.py:329",
+           "args": {
+            "path": "''"
+           },
+           "calls": [],
+           "returned": "''",
+           "tl": 20
+          },
+          {
+           "fn": "quote",
+           "file": "httpx/_urlparse.py",
+           "line": 497,
+           "called_from": "_urlparse.py:331",
+           "args": {
+            "string": "''",
+            "safe": "\"!$%&'()*+,-./0123456789:;=@ABCDEFGHIJ...WXYZ[\\\\]^_abcdefghijklmnopqrstuvwxyz|~\""
+           },
+           "calls": [],
+           "returned": "''",
+           "tl": 22
+          }
+         ],
+         "returned": "ParseResult(scheme='http', userinfo=''...ne, path='', query=None, fragment=None)",
+         "tl": 7
+        }
+       ],
+       "returned": "None",
+       "tl": 6
+      },
+      {
+       "fn": "BaseClient._enforce_trailing_slash",
+       "file": "httpx/_client.py",
+       "line": 234,
+       "called_from": "_client.py:206",
+       "args": {
+        "self": "<Client>",
+        "url": "URL('http://testserver')"
+       },
+       "calls": [
+        {
+         "fn": "URL.raw_path",
+         "file": "httpx/_urls.py",
+         "line": 282,
+         "called_from": "_client.py:235",
+         "args": {
+          "self": "<URL>"
+         },
+         "calls": [],
+         "returned": "b'/'",
+         "tl": 27
+        }
+       ],
+       "returned": "URL('http://testserver')",
+       "tl": 26
+      },
+      {
+       "fn": "BaseClient._build_auth",
+       "file": "httpx/_client.py",
+       "line": 445,
+       "called_from": "_client.py:208",
+       "args": {
+        "self": "<Client>",
+        "auth": "None"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 30
+      },
+      {
+       "fn": "QueryParams.__init__",
+       "file": "httpx/_urls.py",
+       "line": 425,
+       "called_from": "_client.py:209",
+       "args": {
+        "self": "<QueryParams>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 32
+      },
+      {
+       "fn": "Headers.__init__",
+       "file": "httpx/_models.py",
+       "line": 144,
+       "called_from": "_client.py:210",
+       "args": {
+        "self": "<Headers>",
+        "headers": "None",
+        "encoding": "None"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 34
+      },
+      {
+       "fn": "BaseClient.headers",
+       "file": "httpx/_client.py",
+       "line": 305,
+       "called_from": "_client.py:210",
+       "args": {
+        "self": "<Client>",
+        "headers": "Headers({})"
+       },
+       "calls": [
+        {
+         "fn": "Headers.__init__",
+         "file": "httpx/_models.py",
+         "line": 144,
+         "called_from": "_client.py:307",
+         "args": {
+          "self": "<Headers>",
+          "headers": "{b'Accept': b'*/*', b'Accept-Encoding': b'gzip, deflate', b'Connection': b'keep-alive', b'User-Agent': b'python-httpx/0.28.1'}",
+          "encoding": "None"
+         },
+         "calls": [
+          {
+           "fn": "_normalize_header_key",
+           "file": "httpx/_models.py",
+           "line": 67,
+           "called_from": "_models.py:155",
+           "args": {
+            "key": "b'Accept'",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "b'Accept'",
+           "tl": 38
+          },
+          {
+           "fn": "_normalize_header_value",
+           "file": "httpx/_models.py",
+           "line": 74,
+           "called_from": "_models.py:156",
+           "args": {
+            "value": "b'*/*'",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "b'*/*'",
+           "tl": 40
+          },
+          {
+           "fn": "_normalize_header_key",
+           "file": "httpx/_models.py",
+           "line": 67,
+           "called_from": "_models.py:155",
+           "args": {
+            "key": "b'Accept-Encoding'",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "b'Accept-Encoding'",
+           "tl": 42
+          },
+          {
+           "fn": "_normalize_header_value",
+           "file": "httpx/_models.py",
+           "line": 74,
+           "called_from": "_models.py:156",
+           "args": {
+            "value": "b'gzip, deflate'",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "b'gzip, deflate'",
+           "tl": 44
+          },
+          {
+           "fn": "_normalize_header_key",
+           "file": "httpx/_models.py",
+           "line": 67,
+           "called_from": "_models.py:155",
+           "args": {
+            "key": "b'Connection'",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "b'Connection'",
+           "tl": 46
+          },
+          {
+           "fn": "_normalize_header_value",
+           "file": "httpx/_models.py",
+           "line": 74,
+           "called_from": "_models.py:156",
+           "args": {
+            "value": "b'keep-alive'",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "b'keep-alive'",
+           "tl": 48
+          },
+          {
+           "fn": "_normalize_header_key",
+           "file": "httpx/_models.py",
+           "line": 67,
+           "called_from": "_models.py:155",
+           "args": {
+            "key": "b'User-Agent'",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "b'User-Agent'",
+           "tl": 50
+          },
+          {
+           "fn": "_normalize_header_value",
+           "file": "httpx/_models.py",
+           "line": 74,
+           "called_from": "_models.py:156",
+           "args": {
+            "value": "b'python-httpx/0.28.1'",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "b'python-httpx/0.28.1'",
+           "tl": 52
+          }
+         ],
+         "returned": "None",
+         "tl": 37
+        },
+        {
+         "fn": "Headers.update",
+         "file": "httpx/_models.py",
+         "line": 274,
+         "called_from": "_client.py:315",
+         "args": {
+          "self": "<Headers>",
+          "headers": "Headers({})"
+         },
+         "calls": [
+          {
+           "fn": "Headers.__init__",
+           "file": "httpx/_models.py",
+           "line": 144,
+           "called_from": "_models.py:275",
+           "args": {
+            "self": "<Headers>",
+            "headers": "Headers({})",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 56
+          },
+          {
+           "fn": "Headers.keys",
+           "file": "httpx/_models.py",
+           "line": 202,
+           "called_from": "_models.py:276",
+           "args": {
+            "self": "<Headers>"
+           },
+           "calls": [],
+           "returned": "dict_keys([])",
+           "tl": 58
+          }
+         ],
+         "returned": "None",
+         "tl": 55
+        }
+       ],
+       "returned": "None",
+       "tl": 36
+      },
+      {
+       "fn": "Cookies.__init__",
+       "file": "httpx/_models.py",
+       "line": 1084,
+       "called_from": "_client.py:211",
+       "args": {
+        "self": "<Cookies>",
+        "cookies": "None"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 62
+      },
+      {
+       "fn": "Timeout.__init__",
+       "file": "httpx/_config.py",
+       "line": 86,
+       "called_from": "_client.py:212",
+       "args": {
+        "self": "<Timeout>",
+        "timeout": "Timeout(timeout=5.0)",
+        "connect": "<httpx._config.UnsetType object at 0x10cafb230>",
+        "read": "<httpx._config.UnsetType object at 0x10cafb230>",
+        "write": "<httpx._config.UnsetType object at 0x10cafb230>",
+        "pool": "<httpx._config.UnsetType object at 0x10cafb230>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 64
+      }
+     ],
+     "returned": "None",
+     "tl": 5
+    },
+    {
+     "fn": "BaseClient._get_proxy_map",
+     "file": "httpx/_client.py",
+     "line": 239,
+     "called_from": "_client.py:686",
+     "args": {
+      "self": "<Client>",
+      "proxy": "None",
+      "allow_env_proxies": "False"
+     },
+     "calls": [],
+     "returned": "{}",
+     "tl": 67
+    },
+    {
+     "fn": "Client._init_transport",
+     "file": "httpx/_client.py",
+     "line": 718,
+     "called_from": "_client.py:688",
+     "args": {
+      "self": "<Client>",
+      "verify": "True",
+      "cert": "None",
+      "trust_env": "True",
+      "http1": "True",
+      "http2": "False",
+      "limits": "Limits(max_connections=100, max_keepalive_connections=20, keepalive_expiry=5.0)",
+      "transport": "<httpx.WSGITransport object at 0x10e7f70e0>"
+     },
+     "calls": [],
+     "returned": "<httpx.WSGITransport object at 0x10e7f70e0>",
+     "tl": 69
+    }
+   ],
+   "returned": "None",
+   "tl": 4
+  },
+  {
+   "fn": "Client.__enter__",
+   "file": "httpx/_client.py",
+   "line": 1275,
+   "called_from": "scenario.py:29",
+   "args": {
+    "self": "<Client>"
+   },
+   "calls": [
+    {
+     "fn": "BaseTransport.__enter__",
+     "file": "httpx/_transports/base.py",
+     "line": 15,
+     "called_from": "_client.py:1287",
+     "args": {
+      "self": "<WSGITransport>"
+     },
+     "calls": [],
+     "returned": "<httpx.WSGITransport object at 0x10e7f70e0>",
+     "tl": 73
+    }
+   ],
+   "returned": "<httpx.Client object at 0x10e7f6f90>",
+   "tl": 72
+  },
+  {
+   "fn": "Client.get",
+   "file": "httpx/_client.py",
+   "line": 1036,
+   "called_from": "scenario.py:30",
+   "args": {
+    "self": "<Client>",
+    "url": "'/'",
+    "params": "None",
+    "headers": "{'X-Custom': 'value'}",
+    "cookies": "None",
+    "auth": "<httpx._client.UseClientDefault object at 0x10e7f67b0>",
+    "follow_redirects": "<httpx._client.UseClientDefault object at 0x10e7f67b0>",
+    "timeout": "<httpx._client.UseClientDefault object at 0x10e7f67b0>",
+    "extensions": "None"
+   },
+   "calls": [
+    {
+     "fn": "Client.request",
+     "file": "httpx/_client.py",
+     "line": 771,
+     "called_from": "_client.py:1053",
+     "args": {
+      "self": "<Client>",
+      "method": "'GET'",
+      "url": "'/'",
+      "content": "None",
+      "data": "None",
+      "files": "None",
+      "json": "None",
+      "params": "None",
+      "headers": "{'X-Custom': 'value'}",
+      "cookies": "None",
+      "auth": "<httpx._client.UseClientDefault object at 0x10e7f67b0>",
+      "follow_redirects": "<httpx._client.UseClientDefault object at 0x10e7f67b0>",
+      "timeout": "<httpx._client.UseClientDefault object at 0x10e7f67b0>",
+      "extensions": "None"
+     },
+     "calls": [
+      {
+       "fn": "BaseClient.build_request",
+       "file": "httpx/_client.py",
+       "line": 340,
+       "called_from": "_client.py:812",
+       "args": {
+        "self": "<Client>",
+        "method": "'GET'",
+        "url": "'/'",
+        "content": "None",
+        "data": "None",
+        "files": "None",
+        "json": "None",
+        "params": "None",
+        "headers": "{'X-Custom': 'value'}",
+        "cookies": "None",
+        "timeout": "<httpx._client.UseClientDefault object at 0x10e7f67b0>",
+        "extensions": "None"
+       },
+       "calls": [
+        {
+         "fn": "BaseClient._merge_url",
+         "file": "httpx/_client.py",
+         "line": 391,
+         "called_from": "_client.py:366",
+         "args": {
+          "self": "<Client>",
+          "url": "'/'"
+         },
+         "calls": [
+          {
+           "fn": "URL.__init__",
+           "file": "httpx/_urls.py",
+           "line": 77,
+           "called_from": "_client.py:396",
+           "args": {
+            "self": "<URL>",
+            "url": "'/'"
+           },
+           "calls": [
+            {
+             "fn": "urlparse",
+             "file": "httpx/_urlparse.py",
+             "line": 213,
+             "called_from": "_urls.py:117",
+             "args": {
+              "url": "'/'"
+             },
+             "calls": [
+              {
+               "fn": "quote",
+               "file": "httpx/_urlparse.py",
+               "line": 497,
+               "called_from": "_urlparse.py:319",
+               "args": {
+                "string": "''",
+                "safe": "\"!$%&'()*+,-.0123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~\""
+               },
+               "calls": [],
+               "returned": "''",
+               "tl": 82
+              },
+              {
+               "fn": "encode_host",
+               "file": "httpx/_urlparse.py",
+               "line": 348,
+               "called_from": "_urlparse.py:320",
+               "args": {
+                "host": "''"
+               },
+               "calls": [],
+               "returned": "''",
+               "tl": 84
+              },
+              {
+               "fn": "normalize_port",
+               "file": "httpx/_urlparse.py",
+               "line": 395,
+               "called_from": "_urlparse.py:321",
+               "args": {
+                "port": "''",
+                "scheme": "''"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 86
+              },
+              {
+               "fn": "validate_path",
+               "file": "httpx/_urlparse.py",
+               "line": 422,
+               "called_from": "_urlparse.py:327",
+               "args": {
+                "path": "'/'",
+                "has_scheme": "False",
+                "has_authority": "False"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 88
+              },
+              {
+               "fn": "quote",
+               "file": "httpx/_urlparse.py",
+               "line": 497,
+               "called_from": "_urlparse.py:331",
+               "args": {
+                "string": "'/'",
+                "safe": "\"!$%&'()*+,-./0123456789:;=@ABCDEFGHIJ...WXYZ[\\\\]^_abcdefghijklmnopqrstuvwxyz|~\""
+               },
+               "calls": [
+                {
+                 "fn": "percent_encoded",
+                 "file": "httpx/_urlparse.py",
+                 "line": 482,
+                 "called_from": "_urlparse.py:525",
+                 "args": {
+                  "string": "'/'",
+                  "safe": "\"!$%&'()*+,-./0123456789:;=@ABCDEFGHIJ...WXYZ[\\\\]^_abcdefghijklmnopqrstuvwxyz|~\""
+                 },
+                 "calls": [],
+                 "returned": "'/'",
+                 "tl": 91
+                }
+               ],
+               "returned": "'/'",
+               "tl": 90
+              }
+             ],
+             "returned": "ParseResult(scheme='', userinfo='', ho...e, path='/', query=None, fragment=None)",
+             "tl": 81
+            }
+           ],
+           "returned": "None",
+           "tl": 80
+          },
+          {
+           "fn": "URL.is_relative_url",
+           "file": "httpx/_urls.py",
+           "line": 319,
+           "called_from": "_client.py:397",
+           "args": {
+            "self": "<URL>"
+           },
+           "calls": [
+            {
+             "fn": "URL.is_absolute_url",
+             "file": "httpx/_urls.py",
+             "line": 307,
+             "called_from": "_urls.py:325",
+             "args": {
+              "self": "<URL>"
+             },
+             "calls": [],
+             "returned": "False",
+             "tl": 97
+            }
+           ],
+           "returned": "True",
+           "tl": 96
+          },
+          {
+           "fn": "BaseClient.base_url",
+           "file": "httpx/_client.py",
+           "line": 287,
+           "called_from": "_client.py:409",
+           "args": {
+            "self": "<Client>"
+           },
+           "calls": [],
+           "returned": "URL('http://testserver')",
+           "tl": 100
+          },
+          {
+           "fn": "URL.raw_path",
+           "file": "httpx/_urls.py",
+           "line": 282,
+           "called_from": "_client.py:409",
+           "args": {
+            "self": "<URL>"
+           },
+           "calls": [],
+           "returned": "b'/'",
+           "tl": 102
+          },
+          {
+           "fn": "URL.raw_path",
+           "file": "httpx/_urls.py",
+           "line": 282,
+           "args": {},
+           "calls": [],
+           "repeat": 1,
+           "returned": "b'/'",
+           "tl": 104
+          },
+          {
+           "fn": "BaseClient.base_url",
+           "file": "httpx/_client.py",
+           "line": 287,
+           "called_from": "_client.py:410",
+           "args": {
+            "self": "<Client>"
+           },
+           "calls": [],
+           "returned": "URL('http://testserver')",
+           "tl": 105
+          },
+          {
+           "fn": "URL.copy_with",
+           "file": "httpx/_urls.py",
+           "line": 327,
+           "called_from": "_client.py:410",
+           "args": {
+            "self": "<URL>"
+           },
+           "calls": [
+            {
+             "fn": "URL.__init__",
+             "file": "httpx/_urls.py",
+             "line": 77,
+             "called_from": "_urls.py:340",
+             "args": {
+              "self": "<URL>",
+              "url": "URL('http://testserver')"
+             },
+             "calls": [
+              {
+               "fn": "ParseResult.copy_with",
+               "file": "httpx/_urlparse.py",
+               "line": 186,
+               "called_from": "_urls.py:119",
+               "args": {
+                "self": "<ParseResult>"
+               },
+               "calls": [
+                {
+                 "fn": "ParseResult.authority",
+                 "file": "httpx/_urlparse.py",
+                 "line": 167,
+                 "called_from": "_urlparse.py:192",
+                 "args": {
+                  "self": "<ParseResult>"
+                 },
+                 "calls": [],
+                 "returned": "'testserver'",
+                 "tl": 110
+                },
+                {
+                 "fn": "urlparse",
+                 "file": "httpx/_urlparse.py",
+                 "line": 213,
+                 "called_from": "_urlparse.py:198",
+                 "args": {
+                  "url": "''"
+                 },
+                 "calls": [
+                  {
+                   "fn": "quote",
+                   "file": "httpx/_urlparse.py",
+                   "line": 497,
+                   "called_from": "_urlparse.py:319",
+                   "args": {
+                    "string": "''",
+                    "safe": "\"!$%&'()*+,-.0123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~\""
+                   },
+                   "calls": [],
+                   "returned": "''",
+                   "tl": 113
+                  },
+                  {
+                   "fn": "encode_host",
+                   "file": "httpx/_urlparse.py",
+                   "line": 348,
+                   "called_from": "_urlparse.py:320",
+                   "args": {
+                    "host": "'testserver'"
+                   },
+                   "calls": [
+                    {
+                     "fn": "quote",
+                     "file": "httpx/_urlparse.py",
+                     "line": 497,
+                     "called_from": "_urlparse.py:386",
+                     "args": {
+                      "string": "'testserver'",
+                      "safe": "'!$&\\'()*+,;=\"`{}%|\\\\'"
+                     },
+                     "calls": [
+                      {
+                       "fn": "percent_encoded",
+                       "file": "httpx/_urlparse.py",
+                       "line": 482,
+                       "called_from": "_urlparse.py:525",
+                       "args": {
+                        "string": "'testserver'",
+                        "safe": "'!$&\\'()*+,;=\"`{}%|\\\\'"
+                       },
+                       "calls": [],
+                       "returned": "'testserver'",
+                       "tl": 117
+                      }
+                     ],
+                     "returned": "'testserver'",
+                     "tl": 116
+                    }
+                   ],
+                   "returned": "'testserver'",
+                   "tl": 115
+                  },
+                  {
+                   "fn": "normalize_port",
+                   "file": "httpx/_urlparse.py",
+                   "line": 395,
+                   "called_from": "_urlparse.py:321",
+                   "args": {
+                    "port": "''",
+                    "scheme": "'http'"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 121
+                  },
+                  {
+                   "fn": "validate_path",
+                   "file": "httpx/_urlparse.py",
+                   "line": 422,
+                   "called_from": "_urlparse.py:327",
+                   "args": {
+                    "path": "'/'",
+                    "has_scheme": "True",
+                    "has_authority": "True"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 123
+                  },
+                  {
+                   "fn": "normalize_path",
+                   "file": "httpx/_urlparse.py",
+                   "line": 447,
+                   "called_from": "_urlparse.py:329",
+                   "args": {
+                    "path": "'/'"
+                   },
+                   "calls": [],
+                   "returned": "'/'",
+                   "tl": 125
+                  },
+                  {
+                   "fn": "quote",
+                   "file": "httpx/_urlparse.py",
+                   "line": 497,
+                   "called_from": "_urlparse.py:331",
+                   "args": {
+                    "string": "'/'",
+                    "safe": "\"!$%&'()*+,-./0123456789:;=@ABCDEFGHIJ...WXYZ[\\\\]^_abcdefghijklmnopqrstuvwxyz|~\""
+                   },
+                   "calls": [
+                    {
+                     "fn": "percent_encoded",
+                     "file": "httpx/_urlparse.py",
+                     "line": 482,
+                     "called_from": "_urlparse.py:525",
+                     "args": {
+                      "string": "'/'",
+                      "safe": "\"!$%&'()*+,-./0123456789:;=@ABCDEFGHIJ...WXYZ[\\\\]^_abcdefghijklmnopqrstuvwxyz|~\""
+                     },
+                     "calls": [],
+                     "returned": "'/'",
+                     "tl": 128
+                    }
+                   ],
+                   "returned": "'/'",
+                   "tl": 127
+                  }
+                 ],
+                 "returned": "ParseResult(scheme='http', userinfo=''...e, path='/', query=None, fragment=None)",
+                 "tl": 112
+                }
+               ],
+               "returned": "ParseResult(scheme='http', userinfo=''...e, path='/', query=None, fragment=None)",
+               "tl": 109
+              }
+             ],
+             "returned": "None",
+             "tl": 108
+            }
+           ],
+           "returned": "URL('http://testserver/')",
+           "tl": 107
+          }
+         ],
+         "returned": "URL('http://testserver/')",
+         "tl": 79
+        },
+        {
+         "fn": "BaseClient._merge_headers",
+         "file": "httpx/_client.py",
+         "line": 424,
+         "called_from": "_client.py:367",
+         "args": {
+          "self": "<Client>",
+          "headers": "{'X-Custom': 'value'}"
+         },
+         "calls": [
+          {
+           "fn": "BaseClient.headers",
+           "file": "httpx/_client.py",
+           "line": 298,
+           "called_from": "_client.py:429",
+           "args": {
+            "self": "<Client>"
+           },
+           "calls": [],
+           "returned": "Headers({'accept': '*/*', 'accept-enco..., 'user-agent': 'python-httpx/0.28.1'})",
+           "tl": 137
+          },
+          {
+           "fn": "Headers.__init__",
+           "file": "httpx/_models.py",
+           "line": 144,
+           "called_from": "_client.py:429",
+           "args": {
+            "self": "<Headers>",
+            "headers": "Headers({'accept': '*/*', 'accept-enco..., 'user-agent': 'python-httpx/0.28.1'})",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 139
+          },
+          {
+           "fn": "Headers.update",
+           "file": "httpx/_models.py",
+           "line": 274,
+           "called_from": "_client.py:430",
+           "args": {
+            "self": "<Headers>",
+            "headers": "{'X-Custom': 'value'}"
+           },
+           "calls": [
+            {
+             "fn": "Headers.__init__",
+             "file": "httpx/_models.py",
+             "line": 144,
+             "called_from": "_models.py:275",
+             "args": {
+              "self": "<Headers>",
+              "headers": "{'X-Custom': 'value'}",
+              "encoding": "None"
+             },
+             "calls": [
+              {
+               "fn": "_normalize_header_key",
+               "file": "httpx/_models.py",
+               "line": 67,
+               "called_from": "_models.py:155",
+               "args": {
+                "key": "'X-Custom'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'X-Custom'",
+               "tl": 143
+              },
+              {
+               "fn": "_normalize_header_value",
+               "file": "httpx/_models.py",
+               "line": 74,
+               "called_from": "_models.py:156",
+               "args": {
+                "value": "'value'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'value'",
+               "tl": 145
+              }
+             ],
+             "returned": "None",
+             "tl": 142
+            },
+            {
+             "fn": "Headers.keys",
+             "file": "httpx/_models.py",
+             "line": 202,
+             "called_from": "_models.py:276",
+             "args": {
+              "self": "<Headers>"
+             },
+             "calls": [
+              {
+               "fn": "Headers.encoding",
+               "file": "httpx/_models.py",
+               "line": 166,
+               "called_from": "_models.py:203",
+               "args": {
+                "self": "<Headers>"
+               },
+               "calls": [
+                {
+                 "fn": "Headers.raw",
+                 "file": "httpx/_models.py",
+                 "line": 195,
+                 "called_from": "_models.py:174",
+                 "args": {
+                  "self": "<Headers>"
+                 },
+                 "calls": [],
+                 "returned": "[(b'X-Custom', b'value')]",
+                 "tl": 150
+                }
+               ],
+               "returned": "'ascii'",
+               "tl": 149
+              }
+             ],
+             "returned": "dict_keys(['x-custom'])",
+             "tl": 148
+            },
+            {
+             "fn": "Headers.__contains__",
+             "file": "httpx/_models.py",
+             "line": 346,
+             "called_from": "_models.py:277",
+             "args": {
+              "self": "<Headers>",
+              "key": "'x-custom'"
+             },
+             "calls": [
+              {
+               "fn": "Headers.encoding",
+               "file": "httpx/_models.py",
+               "line": 166,
+               "called_from": "_models.py:347",
+               "args": {
+                "self": "<Headers>"
+               },
+               "calls": [
+                {
+                 "fn": "Headers.raw",
+                 "file": "httpx/_models.py",
+                 "line": 195,
+                 "called_from": "_models.py:174",
+                 "args": {
+                  "self": "<Headers>"
+                 },
+                 "calls": [],
+                 "returned": "[(b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1')]",
+                 "tl": 156
+                }
+               ],
+               "returned": "'ascii'",
+               "tl": 155
+              }
+             ],
+             "returned": "False",
+             "tl": 154
+            }
+           ],
+           "returned": "None",
+           "tl": 141
+          }
+         ],
+         "returned": "Headers({'accept': '*/*', 'accept-enco...on-httpx/0.28.1', 'x-custom': 'value'})",
+         "tl": 136
+        },
+        {
+         "fn": "BaseClient._merge_cookies",
+         "file": "httpx/_client.py",
+         "line": 413,
+         "called_from": "_client.py:368",
+         "args": {
+          "self": "<Client>",
+          "cookies": "None"
+         },
+         "calls": [
+          {
+           "fn": "BaseClient.cookies",
+           "file": "httpx/_client.py",
+           "line": 318,
+           "called_from": "_client.py:418",
+           "args": {
+            "self": "<Client>"
+           },
+           "calls": [],
+           "returned": "<Cookies[]>",
+           "tl": 163
+          },
+          {
+           "fn": "Cookies.__bool__",
+           "file": "httpx/_models.py",
+           "line": 1228,
+           "called_from": "_client.py:418",
+           "args": {
+            "self": "<Cookies>"
+           },
+           "calls": [],
+           "returned": "False",
+           "tl": 165
+          }
+         ],
+         "returned": "None",
+         "tl": 162
+        },
+        {
+         "fn": "BaseClient._merge_queryparams",
+         "file": "httpx/_client.py",
+         "line": 433,
+         "called_from": "_client.py:369",
+         "args": {
+          "self": "<Client>",
+          "params": "None"
+         },
+         "calls": [
+          {
+           "fn": "BaseClient.params",
+           "file": "httpx/_client.py",
+           "line": 329,
+           "called_from": "_client.py:440",
+           "args": {
+            "self": "<Client>"
+           },
+           "calls": [],
+           "returned": "QueryParams('')",
+           "tl": 169
+          },
+          {
+           "fn": "QueryParams.__bool__",
+           "file": "httpx/_urls.py",
+           "line": 612,
+           "called_from": "_client.py:440",
+           "args": {
+            "self": "<QueryParams>"
+           },
+           "calls": [],
+           "returned": "False",
+           "tl": 171
+          }
+         ],
+         "returned": "None",
+         "tl": 168
+        },
+        {
+         "fn": "BaseClient.timeout",
+         "file": "httpx/_client.py",
+         "line": 253,
+         "called_from": "_client.py:373",
+         "args": {
+          "self": "<Client>"
+         },
+         "calls": [],
+         "returned": "Timeout(timeout=5.0)",
+         "tl": 174
+        },
+        {
+         "fn": "Timeout.as_dict",
+         "file": "httpx/_config.py",
+         "line": 132,
+         "called_from": "_client.py:377",
+         "args": {
+          "self": "<Timeout>"
+         },
+         "calls": [],
+         "returned": "{'connect': 5.0, 'pool': 5.0, 'read': 5.0, 'write': 5.0}",
+         "tl": 176
+        },
+        {
+         "fn": "Request.__init__",
+         "file": "httpx/_models.py",
+         "line": 383,
+         "called_from": "_client.py:378",
+         "args": {
+          "self": "<Request>",
+          "method": "'GET'",
+          "url": "URL('http://testserver/')",
+          "params": "None",
+          "headers": "Headers({'accept': '*/*', 'accept-enco...on-httpx/0.28.1', 'x-custom': 'value'})",
+          "cookies": "None",
+          "content": "None",
+          "data": "None",
+          "files": "None",
+          "json": "None",
+          "stream": "None",
+          "extensions": "{'timeout': {'connect': 5.0, 'pool': 5.0, 'read': 5.0, 'write': 5.0}}"
+         },
+         "calls": [
+          {
+           "fn": "URL.__init__",
+           "file": "httpx/_urls.py",
+           "line": 77,
+           "called_from": "_models.py:399",
+           "args": {
+            "self": "<URL>",
+            "url": "URL('http://testserver/')"
+           },
+           "calls": [
+            {
+             "fn": "ParseResult.copy_with",
+             "file": "httpx/_urlparse.py",
+             "line": 186,
+             "called_from": "_urls.py:119",
+             "args": {
+              "self": "<ParseResult>"
+             },
+             "calls": [],
+             "returned": "ParseResult(scheme='http', userinfo=''...e, path='/', query=None, fragment=None)",
+             "tl": 180
+            }
+           ],
+           "returned": "None",
+           "tl": 179
+          },
+          {
+           "fn": "Headers.__init__",
+           "file": "httpx/_models.py",
+           "line": 144,
+           "called_from": "_models.py:400",
+           "args": {
+            "self": "<Headers>",
+            "headers": "Headers({'accept': '*/*', 'accept-enco...on-httpx/0.28.1', 'x-custom': 'value'})",
+            "encoding": "None"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 183
+          },
+          {
+           "fn": "Headers.get",
+           "file": "httpx/_models.py",
+           "line": 242,
+           "called_from": "_models.py:407",
+           "args": {
+            "self": "<Headers>",
+            "key": "'content-type'",
+            "default": "None"
+           },
+           "calls": [
+            {
+             "fn": "Headers.__getitem__",
+             "file": "httpx/_models.py",
+             "line": 284,
+             "called_from": "_models.py:248",
+             "args": {
+              "self": "<Headers>",
+              "key": "'content-type'"
+             },
+             "calls": [
+              {
+               "fn": "Headers.encoding",
+               "file": "httpx/_models.py",
+               "line": 166,
+               "called_from": "_models.py:291",
+               "args": {
+                "self": "<Headers>"
+               },
+               "calls": [
+                {
+                 "fn": "Headers.raw",
+                 "file": "httpx/_models.py",
+                 "line": 195,
+                 "called_from": "_models.py:174",
+                 "args": {
+                  "self": "<Headers>"
+                 },
+                 "calls": [],
+                 "returned": "[(b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1'), (b'X-Custom', b'value')]",
+                 "tl": 188
+                }
+               ],
+               "returned": "'ascii'",
+               "tl": 187
+              }
+             ],
+             "raised": "KeyError('content-type')",
+             "returned": "None",
+             "tl": 186
+            }
+           ],
+           "raised": "KeyError('content-type')",
+           "returned": "None",
+           "tl": 185
+          },
+          {
+           "fn": "get_multipart_boundary_from_content_type",
+           "file": "httpx/_multipart.py",
+           "line": 56,
+           "called_from": "_models.py:413",
+           "args": {
+            "content_type": "None"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 193
+          },
+          {
+           "fn": "encode_request",
+           "file": "httpx/_content.py",
+           "line": 186,
+           "called_from": "_models.py:408",
+           "args": {
+            "content": "None",
+            "data": "None",
+            "files": "None",
+            "json": "None",
+            "boundary": "None"
+           },
+           "calls": [
+            {
+             "fn": "ByteStream.__init__",
+             "file": "httpx/_content.py",
+             "line": 32,
+             "called_from": "_content.py:218",
+             "args": {
+              "self": "<ByteStream>",
+              "stream": "b''"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 196
+            }
+           ],
+           "returned": "({}, <httpx.ByteStream object at 0x10e7f7a10>)",
+           "tl": 195
+          },
+          {
+           "fn": "Request._prepare",
+           "file": "httpx/_models.py",
+           "line": 441,
+           "called_from": "_models.py:419",
+           "args": {
+            "self": "<Request>",
+            "default_headers": "{}"
+           },
+           "calls": [
+            {
+             "fn": "Headers.__contains__",
+             "file": "httpx/_models.py",
+             "line": 346,
+             "called_from": "_models.py:450",
+             "args": {
+              "self": "<Headers>",
+              "key": "'Host'"
+             },
+             "calls": [
+              {
+               "fn": "Headers.encoding",
+               "file": "httpx/_models.py",
+               "line": 166,
+               "called_from": "_models.py:347",
+               "args": {
+                "self": "<Headers>"
+               },
+               "calls": [],
+               "returned": "'ascii'",
+               "tl": 201
+              }
+             ],
+             "returned": "False",
+             "tl": 200
+            },
+            {
+             "fn": "Headers.__contains__",
+             "file": "httpx/_models.py",
+             "line": 346,
+             "args": {},
+             "calls": [],
+             "repeat": 2,
+             "returned": "False",
+             "tl": 204
+            },
+            {
+             "fn": "URL.host",
+             "file": "httpx/_urls.py",
+             "line": 168,
+             "called_from": "_models.py:455",
+             "args": {
+              "self": "<URL>"
+             },
+             "calls": [],
+             "returned": "'testserver'",
+             "tl": 205
+            },
+            {
+             "fn": "URL.netloc",
+             "file": "httpx/_urls.py",
+             "line": 233,
+             "called_from": "_models.py:456",
+             "args": {
+              "self": "<URL>"
+             },
+             "calls": [
+              {
+               "fn": "ParseResult.netloc",
+               "file": "httpx/_urlparse.py",
+               "line": 177,
+               "called_from": "_urls.py:242",
+               "args": {
+                "self": "<ParseResult>"
+               },
+               "calls": [],
+               "returned": "'testserver'",
+               "tl": 208
+              }
+             ],
+             "returned": "b'testserver'",
+             "tl": 207
+            },
+            {
+             "fn": "Headers.raw",
+             "file": "httpx/_models.py",
+             "line": 195,
+             "called_from": "_models.py:460",
+             "args": {
+              "self": "<Headers>"
+             },
+             "calls": [],
+             "returned": "[(b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1'), (b'X-Custom', b'value')]",
+             "tl": 211
+            },
+            {
+             "fn": "Headers.__init__",
+             "file": "httpx/_models.py",
+             "line": 144,
+             "called_from": "_models.py:460",
+             "args": {
+              "self": "<Headers>",
+              "headers": "[(b'Host', b'testserver'), (b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1'), (b'X-Custom', b'value')]",
+              "encoding": "None"
+             },
+             "calls": [
+              {
+               "fn": "_normalize_header_key",
+               "file": "httpx/_models.py",
+               "line": 67,
+               "called_from": "_models.py:160",
+               "args": {
+                "key": "b'Host'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'Host'",
+               "tl": 214
+              },
+              {
+               "fn": "_normalize_header_value",
+               "file": "httpx/_models.py",
+               "line": 74,
+               "called_from": "_models.py:161",
+               "args": {
+                "value": "b'testserver'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'testserver'",
+               "tl": 216
+              },
+              {
+               "fn": "_normalize_header_key",
+               "file": "httpx/_models.py",
+               "line": 67,
+               "called_from": "_models.py:160",
+               "args": {
+                "key": "b'Accept'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'Accept'",
+               "tl": 218
+              },
+              {
+               "fn": "_normalize_header_value",
+               "file": "httpx/_models.py",
+               "line": 74,
+               "called_from": "_models.py:161",
+               "args": {
+                "value": "b'*/*'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'*/*'",
+               "tl": 220
+              },
+              {
+               "fn": "_normalize_header_key",
+               "file": "httpx/_models.py",
+               "line": 67,
+               "called_from": "_models.py:160",
+               "args": {
+                "key": "b'Accept-Encoding'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'Accept-Encoding'",
+               "tl": 222
+              },
+              {
+               "fn": "_normalize_header_value",
+               "file": "httpx/_models.py",
+               "line": 74,
+               "called_from": "_models.py:161",
+               "args": {
+                "value": "b'gzip, deflate'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'gzip, deflate'",
+               "tl": 224
+              },
+              {
+               "fn": "_normalize_header_key",
+               "file": "httpx/_models.py",
+               "line": 67,
+               "called_from": "_models.py:160",
+               "args": {
+                "key": "b'Connection'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'Connection'",
+               "tl": 226
+              },
+              {
+               "fn": "_normalize_header_value",
+               "file": "httpx/_models.py",
+               "line": 74,
+               "called_from": "_models.py:161",
+               "args": {
+                "value": "b'keep-alive'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'keep-alive'",
+               "tl": 228
+              },
+              {
+               "fn": "_normalize_header_key",
+               "file": "httpx/_models.py",
+               "line": 67,
+               "called_from": "_models.py:160",
+               "args": {
+                "key": "b'User-Agent'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'User-Agent'",
+               "tl": 230
+              },
+              {
+               "fn": "_normalize_header_value",
+               "file": "httpx/_models.py",
+               "line": 74,
+               "called_from": "_models.py:161",
+               "args": {
+                "value": "b'python-httpx/0.28.1'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'python-httpx/0.28.1'",
+               "tl": 232
+              },
+              {
+               "fn": "_normalize_header_key",
+               "file": "httpx/_models.py",
+               "line": 67,
+               "called_from": "_models.py:160",
+               "args": {
+                "key": "b'X-Custom'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'X-Custom'",
+               "tl": 234
+              },
+              {
+               "fn": "_normalize_header_value",
+               "file": "httpx/_models.py",
+               "line": 74,
+               "called_from": "_models.py:161",
+               "args": {
+                "value": "b'value'",
+                "encoding": "None"
+               },
+               "calls": [],
+               "returned": "b'value'",
+               "tl": 236
+              }
+             ],
+             "returned": "None",
+             "tl": 213
+            }
+           ],
+           "returned": "None",
+           "tl": 199
+          },
+          {
+           "fn": "Request.read",
+           "file": "httpx/_models.py",
+           "line": 468,
+           "called_from": "_models.py:423",
+           "args": {
+            "self": "<Request>"
+           },
+           "calls": [
+            {
+             "fn": "ByteStream.__iter__",
+             "file": "httpx/_content.py",
+             "line": 35,
+             "called_from": "_models.py:474",
+             "args": {
+              "self": "<ByteStream>"
+             },
+             "calls": [],
+             "returned": "b''",
+             "tl": 241
+            },
+            {
+             "fn": "ByteStream.__iter__",
+             "file": "httpx/_content.py",
+             "line": 35,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "None",
+             "tl": 243
+            }
+           ],
+           "returned": "b''",
+           "tl": 240
+          }
+         ],
+         "returned": "None",
+         "tl": 178
+        }
+       ],
+       "returned": "<Request('GET', 'http://testserver/')>",
+       "tl": 78
+      },
+      {
+       "fn": "Client.send",
+       "file": "httpx/_client.py",
+       "line": 879,
+       "called_from": "_client.py:825",
+       "args": {
+        "self": "<Client>",
+        "request": "<Request('GET', 'http://testserver/')>",
+        "stream": "False",
+        "auth": "<httpx._client.UseClientDefault object at 0x10e7f67b0>",
+        "follow_redirects": "<httpx._client.UseClientDefault object at 0x10e7f67b0>"
+       },
+       "calls": [
+        {
+         "fn": "BaseClient._set_timeout",
+         "file": "httpx/_client.py",
+         "line": 584,
+         "called_from": "_client.py:910",
+         "args": {
+          "self": "<Client>",
+          "request": "<Request('GET', 'http://testserver/')>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 248
+        },
+        {
+         "fn": "BaseClient._build_request_auth",
+         "file": "httpx/_client.py",
+         "line": 457,
+         "called_from": "_client.py:912",
+         "args": {
+          "self": "<Client>",
+          "request": "<Request('GET', 'http://testserver/')>",
+          "auth": "<httpx._client.UseClientDefault object at 0x10e7f67b0>"
+         },
+         "calls": [
+          {
+           "fn": "URL.username",
+           "file": "httpx/_urls.py",
+           "line": 150,
+           "called_from": "_client.py:469",
+           "args": {
+            "self": "<URL>"
+           },
+           "calls": [],
+           "returned": "''",
+           "tl": 251
+          },
+          {
+           "fn": "URL.password",
+           "file": "httpx/_urls.py",
+           "line": 159,
+           "called_from": "_client.py:469",
+           "args": {
+            "self": "<URL>"
+           },
+           "calls": [],
+           "returned": "''",
+           "tl": 253
+          }
+         ],
+         "returned": "<httpx.Auth object at 0x10e7f7cb0>",
+         "tl": 250
+        },
+        {
+         "fn": "Client._send_handling_auth",
+         "file": "httpx/_client.py",
+         "line": 930,
+         "called_from": "_client.py:914",
+         "args": {
+          "self": "<Client>",
+          "request": "<Request('GET', 'http://testserver/')>",
+          "auth": "<httpx.Auth object at 0x10e7f7cb0>",
+          "follow_redirects": "False",
+          "history": "[]"
+         },
+         "calls": [
+          {
+           "fn": "Auth.sync_auth_flow",
+           "file": "httpx/_auth.py",
+           "line": 62,
+           "called_from": "_client.py:939",
+           "args": {
+            "self": "<Auth>",
+            "request": "<Request('GET', 'http://testserver/')>"
+           },
+           "calls": [
+            {
+             "fn": "Auth.auth_flow",
+             "file": "httpx/_auth.py",
+             "line": 38,
+             "called_from": "_auth.py:75",
+             "args": {
+              "self": "<Auth>",
+              "request": "<Request('GET', 'http://testserver/')>"
+             },
+             "calls": [],
+             "returned": "<Request('GET', 'http://testserver/')>",
+             "tl": 258
+            }
+           ],
+           "returned": "<Request('GET', 'http://testserver/')>",
+           "tl": 257
+          },
+          {
+           "fn": "Client._send_handling_redirects",
+           "file": "httpx/_client.py",
+           "line": 964,
+           "called_from": "_client.py:942",
+           "args": {
+            "self": "<Client>",
+            "request": "<Request('GET', 'http://testserver/')>",
+            "follow_redirects": "False",
+            "history": "[]"
+           },
+           "calls": [
+            {
+             "fn": "Client._send_single_request",
+             "file": "httpx/_client.py",
+             "line": 1001,
+             "called_from": "_client.py:979",
+             "args": {
+              "self": "<Client>",
+              "request": "<Request('GET', 'http://testserver/')>"
+             },
+             "calls": [
+              {
+               "fn": "Client._transport_for_url",
+               "file": "httpx/_client.py",
+               "line": 760,
+               "called_from": "_client.py:1005",
+               "args": {
+                "self": "<Client>",
+                "url": "URL('http://testserver/')"
+               },
+               "calls": [],
+               "returned": "<httpx.WSGITransport object at 0x10e7f70e0>",
+               "tl": 263
+              },
+              {
+               "fn": "request_context",
+               "file": "httpx/_exceptions.py",
+               "line": 364,
+               "called_from": "contextlib.py:141",
+               "args": {
+                "request": "<Request('GET', 'http://testserver/')>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 265
+              },
+              {
+               "fn": "WSGITransport.handle_request",
+               "file": "httpx/_transports/wsgi.py",
+               "line": 91,
+               "called_from": "_client.py:1014",
+               "args": {
+                "self": "<WSGITransport>",
+                "request": "<Request('GET', 'http://testserver/')>"
+               },
+               "calls": [
+                {
+                 "fn": "Request.read",
+                 "file": "httpx/_models.py",
+                 "line": 468,
+                 "called_from": "wsgi.py:92",
+                 "args": {
+                  "self": "<Request>"
+                 },
+                 "calls": [],
+                 "returned": "b''",
+                 "tl": 268
+                },
+                {
+                 "fn": "Request.content",
+                 "file": "httpx/_models.py",
+                 "line": 462,
+                 "called_from": "wsgi.py:93",
+                 "args": {
+                  "self": "<Request>"
+                 },
+                 "calls": [],
+                 "returned": "b''",
+                 "tl": 270
+                },
+                {
+                 "fn": "URL.port",
+                 "file": "httpx/_urls.py",
+                 "line": 217,
+                 "called_from": "wsgi.py:95",
+                 "args": {
+                  "self": "<URL>"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 272
+                },
+                {
+                 "fn": "URL.scheme",
+                 "file": "httpx/_urls.py",
+                 "line": 126,
+                 "called_from": "wsgi.py:95",
+                 "args": {
+                  "self": "<URL>"
+                 },
+                 "calls": [],
+                 "returned": "'http'",
+                 "tl": 274
+                },
+                {
+                 "fn": "URL.scheme",
+                 "file": "httpx/_urls.py",
+                 "line": 126,
+                 "args": {},
+                 "calls": [],
+                 "repeat": 1,
+                 "returned": "'http'",
+                 "tl": 276
+                },
+                {
+                 "fn": "URL.path",
+                 "file": "httpx/_urls.py",
+                 "line": 244,
+                 "called_from": "wsgi.py:106",
+                 "args": {
+                  "self": "<URL>"
+                 },
+                 "calls": [],
+                 "returned": "'/'",
+                 "tl": 277
+                },
+                {
+                 "fn": "URL.query",
+                 "file": "httpx/_urls.py",
+                 "line": 257,
+                 "called_from": "wsgi.py:107",
+                 "args": {
+                  "self": "<URL>"
+                 },
+                 "calls": [],
+                 "returned": "b''",
+                 "tl": 279
+                },
+                {
+                 "fn": "URL.host",
+                 "file": "httpx/_urls.py",
+                 "line": 168,
+                 "called_from": "wsgi.py:108",
+                 "args": {
+                  "self": "<URL>"
+                 },
+                 "calls": [],
+                 "returned": "'testserver'",
+                 "tl": 281
+                },
+                {
+                 "fn": "Headers.raw",
+                 "file": "httpx/_models.py",
+                 "line": 195,
+                 "called_from": "wsgi.py:113",
+                 "args": {
+                  "self": "<Headers>"
+                 },
+                 "calls": [],
+                 "returned": "[(b'Host', b'testserver'), (b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1'), (b'X-Custom', b'value')]",
+                 "tl": 283
+                },
+                {
+                 "fn": "WSGITransport.handle_request.<locals>.start_response",
+                 "file": "httpx/_transports/wsgi.py",
+                 "line": 123,
+                 "called_from": "scenario.py:17",
+                 "args": {
+                  "status": "'200 OK'",
+                  "response_headers": "[('Content-Type', 'text/plain; charset=utf-8'), ('Content-Length', '12')]",
+                  "exc_info": "None"
+                 },
+                 "calls": [],
+                 "returned": "<function WSGITransport.handle_request...ponse.<locals>.<lambda> at 0x10e91dc60>",
+                 "tl": 285
+                },
+                {
+                 "fn": "WSGIByteStream.__init__",
+                 "file": "httpx/_transports/wsgi.py",
+                 "line": 31,
+                 "called_from": "wsgi.py:136",
+                 "args": {
+                  "self": "<WSGIByteStream>",
+                  "result": "[b'Hello World!']"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_skip_leading_empty_chunks",
+                   "file": "httpx/_transports/wsgi.py",
+                   "line": 22,
+                   "called_from": "wsgi.py:33",
+                   "args": {
+                    "body": "[b'Hello World!']"
+                   },
+                   "calls": [],
+                   "returned": "<itertools.chain object at 0x10e8ec760>",
+                   "tl": 288
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 287
+                },
+                {
+                 "fn": "Response.__init__",
+                 "file": "httpx/_models.py",
+                 "line": 516,
+                 "called_from": "wsgi.py:149",
+                 "args": {
+                  "self": "<Response>",
+                  "status_code": "200",
+                  "headers": "[(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'12')]",
+                  "content": "None",
+                  "text": "None",
+                  "html": "None",
+                  "json": "None",
+                  "stream": "<httpx._transports.wsgi.WSGIByteStream object at 0x10e958050>",
+                  "request": "None",
+                  "extensions": "None",
+                  "history": "None",
+                  "default_encoding": "'utf-8'"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Headers.__init__",
+                   "file": "httpx/_models.py",
+                   "line": 144,
+                   "called_from": "_models.py:532",
+                   "args": {
+                    "self": "<Headers>",
+                    "headers": "[(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'12')]",
+                    "encoding": "None"
+                   },
+                   "calls": [
+                    {
+                     "fn": "_normalize_header_key",
+                     "file": "httpx/_models.py",
+                     "line": 67,
+                     "called_from": "_models.py:160",
+                     "args": {
+                      "key": "b'Content-Type'",
+                      "encoding": "None"
+                     },
+                     "calls": [],
+                     "returned": "b'Content-Type'",
+                     "tl": 293
+                    },
+                    {
+                     "fn": "_normalize_header_value",
+                     "file": "httpx/_models.py",
+                     "line": 74,
+                     "called_from": "_models.py:161",
+                     "args": {
+                      "value": "b'text/plain; charset=utf-8'",
+                      "encoding": "None"
+                     },
+                     "calls": [],
+                     "returned": "b'text/plain; charset=utf-8'",
+                     "tl": 295
+                    },
+                    {
+                     "fn": "_normalize_header_key",
+                     "file": "httpx/_models.py",
+                     "line": 67,
+                     "called_from": "_models.py:160",
+                     "args": {
+                      "key": "b'Content-Length'",
+                      "encoding": "None"
+                     },
+                     "calls": [],
+                     "returned": "b'Content-Length'",
+                     "tl": 297
+                    },
+                    {
+                     "fn": "_normalize_header_value",
+                     "file": "httpx/_models.py",
+                     "line": 74,
+                     "called_from": "_models.py:161",
+                     "args": {
+                      "value": "b'12'",
+                      "encoding": "None"
+                     },
+                     "calls": [],
+                     "returned": "b'12'",
+                     "tl": 299
+                    }
+                   ],
+                   "returned": "None",
+                   "tl": 292
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 291
+                }
+               ],
+               "returned": "<Response [200 OK]>",
+               "tl": 267
+              },
+              {
+               "fn": "request_context",
+               "file": "httpx/_exceptions.py",
+               "line": 364,
+               "called_from": "contextlib.py:148",
+               "args": {
+                "request": "<Request('GET', 'http://testserver/')>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 304
+              },
+              {
+               "fn": "Response.request",
+               "file": "httpx/_models.py",
+               "line": 606,
+               "called_from": "_client.py:1018",
+               "args": {
+                "self": "<Response>",
+                "value": "<Request('GET', 'http://testserver/')>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 306
+              },
+              {
+               "fn": "BoundSyncStream.__init__",
+               "file": "httpx/_client.py",
+               "line": 145,
+               "called_from": "_client.py:1019",
+               "args": {
+                "self": "<BoundSyncStream>",
+                "stream": "<httpx._transports.wsgi.WSGIByteStream object at 0x10e958050>",
+                "response": "<Response [200 OK]>",
+                "start": "428800.362486125"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 308
+              },
+              {
+               "fn": "BaseClient.cookies",
+               "file": "httpx/_client.py",
+               "line": 318,
+               "called_from": "_client.py:1022",
+               "args": {
+                "self": "<Client>"
+               },
+               "calls": [],
+               "returned": "<Cookies[]>",
+               "tl": 310
+              },
+              {
+               "fn": "Cookies.extract_cookies",
+               "file": "httpx/_models.py",
+               "line": 1101,
+               "called_from": "_client.py:1022",
+               "args": {
+                "self": "<Cookies>",
+                "response": "<Response [200 OK]>"
+               },
+               "calls": [
+                {
+                 "fn": "Cookies._CookieCompatResponse.__init__",
+                 "file": "httpx/_models.py",
+                 "line": 1267,
+                 "called_from": "_models.py:1105",
+                 "args": {
+                  "self": "<_CookieCompatResponse>",
+                  "response": "<Response [200 OK]>"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 313
+                },
+                {
+                 "fn": "Response.request",
+                 "file": "httpx/_models.py",
+                 "line": 595,
+                 "called_from": "_models.py:1106",
+                 "args": {
+                  "self": "<Response>"
+                 },
+                 "calls": [],
+                 "returned": "<Request('GET', 'http://testserver/')>",
+                 "tl": 315
+                },
+                {
+                 "fn": "Cookies._CookieCompatRequest.__init__",
+                 "file": "httpx/_models.py",
+                 "line": 1249,
+                 "called_from": "_models.py:1106",
+                 "args": {
+                  "self": "<_CookieCompatRequest>",
+                  "request": "<Request('GET', 'http://testserver/')>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "URL.__str__",
+                   "file": "httpx/_urls.py",
+                   "line": 374,
+                   "called_from": "_models.py:1251",
+                   "args": {
+                    "self": "<URL>"
+                   },
+                   "calls": [
+                    {
+                     "fn": "ParseResult.__str__",
+                     "file": "httpx/_urlparse.py",
+                     "line": 200,
+                     "called_from": "_urls.py:375",
+                     "args": {
+                      "self": "<ParseResult>"
+                     },
+                     "calls": [
+                      {
+                       "fn": "ParseResult.authority",
+                       "file": "httpx/_urlparse.py",
+                       "line": 167,
+                       "called_from": "_urlparse.py:201",
+                       "args": {
+                        "self": "<ParseResult>"
+                       },
+                       "calls": [],
+                       "returned": "'testserver'",
+                       "tl": 320
+                      }
+                     ],
+                     "returned": "'http://testserver/'",
+                     "tl": 319
+                    }
+                   ],
+                   "returned": "'http://testserver/'",
+                   "tl": 318
+                  },
+                  {
+                   "fn": "Headers.keys",
+                   "file": "httpx/_models.py",
+                   "line": 202,
+                   "called_from": "_models.py:1252",
+                   "args": {
+                    "self": "<Headers>"
+                   },
+                   "calls": [
+                    {
+                     "fn": "Headers.encoding",
+                     "file": "httpx/_models.py",
+                     "line": 166,
+                     "called_from": "_models.py:203",
+                     "args": {
+                      "self": "<Headers>"
+                     },
+                     "calls": [
+                      {
+                       "fn": "Headers.raw",
+                       "file": "httpx/_models.py",
+                       "line": 195,
+                       "called_from": "_models.py:174",
+                       "args": {
+                        "self": "<Headers>"
+                       },
+                       "calls": [],
+                       "returned": "[(b'Host', b'testserver'), (b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1'), (b'X-Custom', b'value')]",
+                       "tl": 326
+                      }
+                     ],
+                     "returned": "'ascii'",
+                     "tl": 325
+                    },
+                    {
+                     "fn": "Headers.encoding",
+                     "file": "httpx/_models.py",
+                     "line": 166,
+                     "args": {},
+                     "calls": [],
+                     "repeat": 5,
+                     "returned": "'ascii'",
+                     "tl": 329
+                    }
+                   ],
+                   "returned": "dict_keys(['host', 'accept', 'accept-e...connection', 'user-agent', 'x-custom'])",
+                   "tl": 324
+                  },
+                  {
+                   "fn": "Headers.__getitem__",
+                   "file": "httpx/_models.py",
+                   "line": 284,
+                   "called_from": "_models.py:1252",
+                   "args": {
+                    "self": "<Headers>",
+                    "key": "'host'"
+                   },
+                   "calls": [
+                    {
+                     "fn": "Headers.encoding",
+                     "file": "httpx/_models.py",
+                     "line": 166,
+                     "called_from": "_models.py:291",
+                     "args": {
+                      "self": "<Headers>"
+                     },
+                     "calls": [],
+                     "returned": "'ascii'",
+                     "tl": 332
+                    },
+                    {
+                     "fn": "Headers.encoding",
+                     "file": "httpx/_models.py",
+                     "line": 166,
+                     "args": {},
+                     "calls": [],
+                     "repeat": 1,
+                     "returned": "'ascii'",
+                     "tl": 334
+                    }
+                   ],
+                   "returned": "'testserver'",
+                   "tl": 331
+                  },
+                  {
+                   "fn": "Headers.__getitem__",
+                   "file": "httpx/_models.py",
+                   "line": 284,
+                   "args": {},
+                   "calls": [],
+                   "repeat": 5,
+                   "returned": "(various)",
+                   "tl": 336
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 317
+                },
+                {
+                 "fn": "Cookies._CookieCompatResponse.info",
+                 "file": "httpx/_models.py",
+                 "line": 1270,
+                 "called_from": "cookiejar.py:1682",
+                 "args": {
+                  "self": "<_CookieCompatResponse>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Headers.multi_items",
+                   "file": "httpx/_models.py",
+                   "line": 231,
+                   "called_from": "_models.py:1272",
+                   "args": {
+                    "self": "<Headers>"
+                   },
+                   "calls": [
+                    {
+                     "fn": "Headers.encoding",
+                     "file": "httpx/_models.py",
+                     "line": 166,
+                     "called_from": "_models.py:238",
+                     "args": {
+                      "self": "<Headers>"
+                     },
+                     "calls": [
+                      {
+                       "fn": "Headers.raw",
+                       "file": "httpx/_models.py",
+                       "line": 195,
+                       "called_from": "_models.py:174",
+                       "args": {
+                        "self": "<Headers>"
+                       },
+                       "calls": [],
+                       "returned": "[(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'12')]",
+                       "tl": 341
+                      }
+                     ],
+                     "returned": "'ascii'",
+                     "tl": 340
+                    },
+                    {
+                     "fn": "Headers.encoding",
+                     "file": "httpx/_models.py",
+                     "line": 166,
+                     "args": {},
+                     "calls": [],
+                     "repeat": 3,
+                     "returned": "'ascii'",
+                     "tl": 344
+                    }
+                   ],
+                   "returned": "[('content-type', 'text/plain; charset=utf-8'), ('content-length', '12')]",
+                   "tl": 339
+                  }
+                 ],
+                 "returned": "<email.message.Message object at 0x10e9586e0>",
+                 "tl": 338
+                },
+                {
+                 "fn": "Cookies._CookieCompatResponse.info",
+                 "file": "httpx/_models.py",
+                 "line": 1270,
+                 "args": {},
+                 "calls": [],
+                 "repeat": 1,
+                 "returned": "<email.message.Message object at 0x10e816710>",
+                 "tl": 347
+                }
+               ],
+               "returned": "None",
+               "tl": 312
+              },
+              {
+               "fn": "Response.http_version",
+               "file": "httpx/_models.py",
+               "line": 610,
+               "called_from": "_client.py:1029",
+               "args": {
+                "self": "<Response>"
+               },
+               "calls": [],
+               "raised": "KeyError('http_version')",
+               "returned": "'HTTP/1.1'",
+               "tl": 349
+              },
+              {
+               "fn": "Response.reason_phrase",
+               "file": "httpx/_models.py",
+               "line": 619,
+               "called_from": "_client.py:1031",
+               "args": {
+                "self": "<Response>"
+               },
+               "calls": [
+                {
+                 "fn": "codes.get_reason_phrase",
+                 "file": "httpx/_status_codes.py",
+                 "line": 38,
+                 "called_from": "_models.py:624",
+                 "args": {
+                  "cls": "<EnumType>",
+                  "value": "200"
+                 },
+                 "calls": [],
+                 "returned": "'OK'",
+                 "tl": 352
+                }
+               ],
+               "raised": "KeyError('reason_phrase')",
+               "returned": "'OK'",
+               "tl": 351
+              }
+             ],
+             "returned": "<Response [200 OK]>",
+             "tl": 262
+            },
+            {
+             "fn": "Response.has_redirect_location",
+             "file": "httpx/_models.py",
+             "line": 771,
+             "called_from": "_client.py:985",
+             "args": {
+              "self": "<Response>"
+             },
+             "calls": [],
+             "returned": "False",
+             "tl": 356
+            }
+           ],
+           "returned": "<Response [200 OK]>",
+           "tl": 261
+          },
+          {
+           "fn": "Auth.sync_auth_flow",
+           "file": "httpx/_auth.py",
+           "line": 62,
+           "called_from": "_client.py:949",
+           "args": {
+            "self": "<Auth>",
+            "request": "<Request('GET', 'http://testserver/')>"
+           },
+           "calls": [
+            {
+             "fn": "Auth.auth_flow",
+             "file": "httpx/_auth.py",
+             "line": 38,
+             "called_from": "_auth.py:83",
+             "args": {
+              "self": "<Auth>",
+              "request": "<Request('GET', 'http://testserver/')>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 360
+            }
+           ],
+           "raised": "StopIteration()",
+           "returned": "None",
+           "tl": 359
+          }
+         ],
+         "raised": "StopIteration()",
+         "returned": "<Response [200 OK]>",
+         "tl": 256
+        },
+        {
+         "fn": "Response.read",
+         "file": "httpx/_models.py",
+         "line": 876,
+         "called_from": "_client.py:922",
+         "args": {
+          "self": "<Response>"
+         },
+         "calls": [
+          {
+           "fn": "Response.iter_bytes",
+           "file": "httpx/_models.py",
+           "line": 884,
+           "called_from": "_models.py:881",
+           "args": {
+            "self": "<Response>",
+            "chunk_size": "None"
+           },
+           "calls": [
+            {
+             "fn": "Response._get_content_decoder",
+             "file": "httpx/_models.py",
+             "line": 699,
+             "called_from": "_models.py:894",
+             "args": {
+              "self": "<Response>"
+             },
+             "calls": [
+              {
+               "fn": "Headers.get_list",
+               "file": "httpx/_models.py",
+               "line": 252,
+               "called_from": "_models.py:706",
+               "args": {
+                "self": "<Headers>",
+                "key": "'content-encoding'",
+                "split_commas": "True"
+               },
+               "calls": [
+                {
+                 "fn": "Headers.encoding",
+                 "file": "httpx/_models.py",
+                 "line": 166,
+                 "called_from": "_models.py:258",
+                 "args": {
+                  "self": "<Headers>"
+                 },
+                 "calls": [],
+                 "returned": "'ascii'",
+                 "tl": 368
+                }
+               ],
+               "returned": "[]",
+               "tl": 367
+              }
+             ],
+             "returned": "<httpx._decoders.IdentityDecoder object at 0x10e9582f0>",
+             "tl": 366
+            },
+            {
+             "fn": "ByteChunker.__init__",
+             "file": "httpx/_decoders.py",
+             "line": 233,
+             "called_from": "_models.py:895",
+             "args": {
+              "self": "<ByteChunker>",
+              "chunk_size": "None"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 372
+            },
+            {
+             "fn": "request_context",
+             "file": "httpx/_exceptions.py",
+             "line": 364,
+             "called_from": "contextlib.py:141",
+             "args": {
+              "request": "<Request('GET', 'http://testserver/')>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 374
+            },
+            {
+             "fn": "Response.iter_raw",
+             "file": "httpx/_models.py",
+             "line": 935,
+             "called_from": "_models.py:897",
+             "args": {
+              "self": "<Response>",
+              "chunk_size": "None"
+             },
+             "calls": [
+              {
+               "fn": "ByteChunker.__init__",
+               "file": "httpx/_decoders.py",
+               "line": 233,
+               "called_from": "_models.py:948",
+               "args": {
+                "self": "<ByteChunker>",
+                "chunk_size": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 377
+              },
+              {
+               "fn": "request_context",
+               "file": "httpx/_exceptions.py",
+               "line": 364,
+               "called_from": "contextlib.py:141",
+               "args": {
+                "request": "<Request('GET', 'http://testserver/')>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 379
+              },
+              {
+               "fn": "BoundSyncStream.__iter__",
+               "file": "httpx/_client.py",
+               "line": 152,
+               "called_from": "_models.py:951",
+               "args": {
+                "self": "<BoundSyncStream>"
+               },
+               "calls": [
+                {
+                 "fn": "WSGIByteStream.__iter__",
+                 "file": "httpx/_transports/wsgi.py",
+                 "line": 35,
+                 "called_from": "_client.py:153",
+                 "args": {
+                  "self": "<WSGIByteStream>"
+                 },
+                 "calls": [],
+                 "returned": "b'Hello World!'",
+                 "tl": 382
+                }
+               ],
+               "returned": "b'Hello World!'",
+               "tl": 381
+              },
+              {
+               "fn": "ByteChunker.decode",
+               "file": "httpx/_decoders.py",
+               "line": 237,
+               "called_from": "_models.py:953",
+               "args": {
+                "self": "<ByteChunker>",
+                "content": "b'Hello World!'"
+               },
+               "calls": [],
+               "returned": "[b'Hello World!']",
+               "tl": 385
+              }
+             ],
+             "returned": "b'Hello World!'",
+             "tl": 376
+            },
+            {
+             "fn": "IdentityDecoder.decode",
+             "file": "httpx/_decoders.py",
+             "line": 49,
+             "called_from": "_models.py:898",
+             "args": {
+              "self": "<IdentityDecoder>",
+              "data": "b'Hello World!'"
+             },
+             "calls": [],
+             "returned": "b'Hello World!'",
+             "tl": 388
+            },
+            {
+             "fn": "ByteChunker.decode",
+             "file": "httpx/_decoders.py",
+             "line": 237,
+             "called_from": "_models.py:899",
+             "args": {
+              "self": "<ByteChunker>",
+              "content": "b'Hello World!'"
+             },
+             "calls": [],
+             "returned": "[b'Hello World!']",
+             "tl": 390
+            }
+           ],
+           "returned": "b'Hello World!'",
+           "tl": 365
+          },
+          {
+           "fn": "Response.iter_bytes",
+           "file": "httpx/_models.py",
+           "line": 884,
+           "args": {},
+           "calls": [],
+           "repeat": 1,
+           "returned": "None",
+           "tl": 393
+          }
+         ],
+         "returned": "b'Hello World!'",
+         "tl": 364
+        }
+       ],
+       "returned": "<Response [200 OK]>",
+       "tl": 247
+      }
+     ],
+     "returned": "<Response [200 OK]>",
+     "tl": 77
+    }
+   ],
+   "returned": "<Response [200 OK]>",
+   "tl": 76
+  },
+  {
+   "fn": "Response.__repr__",
+   "file": "httpx/_models.py",
+   "line": 859,
+   "called_from": "scenario.py:32",
+   "args": {
+    "self": "<Response>"
+   },
+   "calls": [
+    {
+     "fn": "Response.reason_phrase",
+     "file": "httpx/_models.py",
+     "line": 619,
+     "called_from": "_models.py:860",
+     "args": {
+      "self": "<Response>"
+     },
+     "calls": [
+      {
+       "fn": "codes.get_reason_phrase",
+       "file": "httpx/_status_codes.py",
+       "line": 38,
+       "called_from": "_models.py:624",
+       "args": {
+        "cls": "<EnumType>",
+        "value": "200"
+       },
+       "calls": [],
+       "returned": "'OK'",
+       "tl": 400
+      }
+     ],
+     "raised": "KeyError('reason_phrase')",
+     "returned": "'OK'",
+     "tl": 399
+    }
+   ],
+   "returned": "'<Response [200 OK]>'",
+   "tl": 398
+  },
+  {
+   "fn": "Response.request",
+   "file": "httpx/_models.py",
+   "line": 595,
+   "called_from": "scenario.py:33",
+   "args": {
+    "self": "<Response>"
+   },
+   "calls": [],
+   "returned": "<Request('GET', 'http://testserver/')>",
+   "tl": 404
+  },
+  {
+   "fn": "URL.__str__",
+   "file": "httpx/_urls.py",
+   "line": 374,
+   "called_from": "scenario.py:33",
+   "args": {
+    "self": "<URL>"
+   },
+   "calls": [
+    {
+     "fn": "ParseResult.__str__",
+     "file": "httpx/_urlparse.py",
+     "line": 200,
+     "called_from": "_urls.py:375",
+     "args": {
+      "self": "<ParseResult>"
+     },
+     "calls": [
+      {
+       "fn": "ParseResult.authority",
+       "file": "httpx/_urlparse.py",
+       "line": 167,
+       "called_from": "_urlparse.py:201",
+       "args": {
+        "self": "<ParseResult>"
+       },
+       "calls": [],
+       "returned": "'testserver'",
+       "tl": 408
+      }
+     ],
+     "returned": "'http://testserver/'",
+     "tl": 407
+    }
+   ],
+   "returned": "'http://testserver/'",
+   "tl": 406
+  },
+  {
+   "fn": "Headers.__getitem__",
+   "file": "httpx/_models.py",
+   "line": 284,
+   "called_from": "scenario.py:34",
+   "args": {
+    "self": "<Headers>",
+    "key": "'content-type'"
+   },
+   "calls": [
+    {
+     "fn": "Headers.encoding",
+     "file": "httpx/_models.py",
+     "line": 166,
+     "called_from": "_models.py:291",
+     "args": {
+      "self": "<Headers>"
+     },
+     "calls": [],
+     "returned": "'ascii'",
+     "tl": 413
+    },
+    {
+     "fn": "Headers.encoding",
+     "file": "httpx/_models.py",
+     "line": 166,
+     "args": {},
+     "calls": [],
+     "repeat": 1,
+     "returned": "'ascii'",
+     "tl": 415
+    }
+   ],
+   "returned": "'text/plain; charset=utf-8'",
+   "tl": 412
+  },
+  {
+   "fn": "Response.text",
+   "file": "httpx/_models.py",
+   "line": 641,
+   "called_from": "scenario.py:35",
+   "args": {
+    "self": "<Response>"
+   },
+   "calls": [
+    {
+     "fn": "Response.content",
+     "file": "httpx/_models.py",
+     "line": 635,
+     "called_from": "_models.py:644",
+     "args": {
+      "self": "<Response>"
+     },
+     "calls": [],
+     "returned": "b'Hello World!'",
+     "tl": 418
+    },
+    {
+     "fn": "Response.encoding",
+     "file": "httpx/_models.py",
+     "line": 652,
+     "called_from": "_models.py:648",
+     "args": {
+      "self": "<Response>"
+     },
+     "calls": [
+      {
+       "fn": "Response.charset_encoding",
+       "file": "httpx/_models.py",
+       "line": 688,
+       "called_from": "_models.py:665",
+       "args": {
+        "self": "<Response>"
+       },
+       "calls": [
+        {
+         "fn": "Headers.get",
+         "file": "httpx/_models.py",
+         "line": 242,
+         "called_from": "_models.py:693",
+         "args": {
+          "self": "<Headers>",
+          "key": "'Content-Type'",
+          "default": "None"
+         },
+         "calls": [
+          {
+           "fn": "Headers.__getitem__",
+           "file": "httpx/_models.py",
+           "line": 284,
+           "called_from": "_models.py:248",
+           "args": {
+            "self": "<Headers>",
+            "key": "'Content-Type'"
+           },
+           "calls": [
+            {
+             "fn": "Headers.encoding",
+             "file": "httpx/_models.py",
+             "line": 166,
+             "called_from": "_models.py:291",
+             "args": {
+              "self": "<Headers>"
+             },
+             "calls": [],
+             "returned": "'ascii'",
+             "tl": 424
+            },
+            {
+             "fn": "Headers.encoding",
+             "file": "httpx/_models.py",
+             "line": 166,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "'ascii'",
+             "tl": 426
+            }
+           ],
+           "returned": "'text/plain; charset=utf-8'",
+           "tl": 423
+          }
+         ],
+         "returned": "'text/plain; charset=utf-8'",
+         "tl": 422
+        },
+        {
+         "fn": "_parse_content_type_charset",
+         "file": "httpx/_models.py",
+         "line": 85,
+         "called_from": "_models.py:697",
+         "args": {
+          "content_type": "'text/plain; charset=utf-8'"
+         },
+         "calls": [],
+         "returned": "'utf-8'",
+         "tl": 429
+        }
+       ],
+       "returned": "'utf-8'",
+       "tl": 421
+      },
+      {
+       "fn": "_is_known_encoding",
+       "file": "httpx/_models.py",
+       "line": 56,
+       "called_from": "_models.py:666",
+       "args": {
+        "encoding": "'utf-8'"
+       },
+       "calls": [],
+       "returned": "True",
+       "tl": 432
+      }
+     ],
+     "returned": "'utf-8'",
+     "tl": 420
+    },
+    {
+     "fn": "TextDecoder.__init__",
+     "file": "httpx/_decoders.py",
+     "line": 311,
+     "called_from": "_models.py:648",
+     "args": {
+      "self": "<TextDecoder>",
+      "encoding": "'utf-8'"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 435
+    },
+    {
+     "fn": "Response.content",
+     "file": "httpx/_models.py",
+     "line": 635,
+     "called_from": "_models.py:649",
+     "args": {
+      "self": "<Response>"
+     },
+     "calls": [],
+     "returned": "b'Hello World!'",
+     "tl": 437
+    },
+    {
+     "fn": "TextDecoder.decode",
+     "file": "httpx/_decoders.py",
+     "line": 314,
+     "called_from": "_models.py:649",
+     "args": {
+      "self": "<TextDecoder>",
+      "data": "b'Hello World!'"
+     },
+     "calls": [],
+     "returned": "'Hello World!'",
+     "tl": 439
+    },
+    {
+     "fn": "TextDecoder.flush",
+     "file": "httpx/_decoders.py",
+     "line": 317,
+     "called_from": "_models.py:649",
+     "args": {
+      "self": "<TextDecoder>"
+     },
+     "calls": [],
+     "returned": "''",
+     "tl": 441
+    }
+   ],
+   "returned": "'Hello World!'",
+   "tl": 417
+  },
+  {
+   "fn": "Response.request",
+   "file": "httpx/_models.py",
+   "line": 595,
+   "called_from": "scenario.py:37",
+   "args": {
+    "self": "<Response>"
+   },
+   "calls": [],
+   "returned": "<Request('GET', 'http://testserver/')>",
+   "tl": 444
+  },
+  {
+   "fn": "Headers.__getitem__",
+   "file": "httpx/_models.py",
+   "line": 284,
+   "called_from": "scenario.py:37",
+   "args": {
+    "self": "<Headers>",
+    "key": "'X-Custom'"
+   },
+   "calls": [
+    {
+     "fn": "Headers.encoding",
+     "file": "httpx/_models.py",
+     "line": 166,
+     "called_from": "_models.py:291",
+     "args": {
+      "self": "<Headers>"
+     },
+     "calls": [],
+     "returned": "'ascii'",
+     "tl": 447
+    },
+    {
+     "fn": "Headers.encoding",
+     "file": "httpx/_models.py",
+     "line": 166,
+     "args": {},
+     "calls": [],
+     "repeat": 1,
+     "returned": "'ascii'",
+     "tl": 449
+    }
+   ],
+   "returned": "'value'",
+   "tl": 446
+  },
+  {
+   "fn": "Response.text",
+   "file": "httpx/_models.py",
+   "line": 641,
+   "called_from": "scenario.py:39",
+   "args": {
+    "self": "<Response>"
+   },
+   "calls": [],
+   "returned": "'Hello World!'",
+   "tl": 451
+  },
+  {
+   "fn": "Client.__exit__",
+   "file": "httpx/_client.py",
+   "line": 1293,
+   "called_from": "scenario.py:29",
+   "args": {
+    "self": "<Client>",
+    "exc_type": "None",
+    "exc_value": "None",
+    "traceback": "None"
+   },
+   "calls": [
+    {
+     "fn": "BaseTransport.__exit__",
+     "file": "httpx/_transports/base.py",
+     "line": 18,
+     "called_from": "_client.py:1301",
+     "args": {
+      "self": "<WSGITransport>",
+      "exc_type": "None",
+      "exc_value": "None",
+      "traceback": "None"
+     },
+     "calls": [
+      {
+       "fn": "BaseTransport.close",
+       "file": "httpx/_transports/base.py",
+       "line": 61,
+       "called_from": "base.py:24",
+       "args": {
+        "self": "<WSGITransport>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 455
+      }
+     ],
+     "returned": "None",
+     "tl": 454
+    }
+   ],
+   "returned": "None",
+   "tl": 453
+  }
+ ],
+ "lines": {
+  "httpx/_auth.py": [
+   60,
+   71,
+   74,
+   75,
+   77,
+   78,
+   79,
+   82,
+   83,
+   84,
+   85
+  ],
+  "httpx/_client.py": [
+   148,
+   149,
+   150,
+   153,
+   154,
+   157,
+   158,
+   159,
+   204,
+   206,
+   208,
+   209,
+   210,
+   211,
+   212,
+   213,
+   214,
+   215,
+   216,
+   217,
+   219,
+   220,
+   221,
+   235,
+   236,
+   242,
+   243,
+   248,
+   255,
+   292,
+   303,
+   307,
+   308,
+   309,
+   310,
+   311,
+   312,
+   315,
+   316,
+   323,
+   334,
+   366,
+   367,
+   368,
+   369,
+   370,
+   371,
+   372,
+   373,
+   374,
+   377,
+   378,
+   379,
+   380,
+   381,
+   382,
+   383,
+   384,
+   385,
+   386,
+   387,
+   388,
+   396,
+   397,
+   409,
+   410,
+   418,
+   422,
+   429,
+   430,
+   431,
+   440,
+   443,
+   446,
+   447,
+   462,
+   463,
+   466,
+   469,
+   470,
+   473,
+   585,
+   662,
+   663,
+   664,
+   665,
+   666,
+   667,
+   668,
+   669,
+   670,
+   671,
+   672,
+   673,
+   676,
+   685,
+   686,
+   688,
+   689,
+   690,
+   691,
+   692,
+   693,
+   694,
+   695,
+   697,
+   709,
+   711,
+   716,
+   728,
+   729,
+   765,
+   769,
+   804,
+   812,
+   813,
+   814,
+   815,
+   816,
+   817,
+   818,
+   819,
+   820,
+   821,
+   822,
+   823,
+   825,
+   900,
+   903,
+   904,
+   905,
+   906,
+   910,
+   912,
+   914,
+   915,
+   916,
+   917,
+   918,
+   920,
+   921,
+   922,
+   924,
+   937,
+   938,
+   939,
+   941,
+   942,
+   943,
+   944,
+   945,
+   947,
+   948,
+   949,
+   950,
+   951,
+   962,
+   970,
+   971,
+   976,
+   979,
+   980,
+   981,
+   983,
+   985,
+   986,
+   1005,
+   1006,
+   1008,
+   1013,
+   1014,
+   1016,
+   1018,
+   1019,
+   1020,
+   1022,
+   1023,
+   1025,
+   1026,
+   1027,
+   1028,
+   1029,
+   1030,
+   1031,
+   1034,
+   1053,
+   1054,
+   1055,
+   1056,
+   1057,
+   1058,
+   1059,
+   1060,
+   1061,
+   1062,
+   1276,
+   1285,
+   1287,
+   1288,
+   1291,
+   1299,
+   1301,
+   1302
+  ],
+  "httpx/_config.py": [
+   95,
+   97,
+   98,
+   99,
+   100,
+   101,
+   102,
+   103,
+   104,
+   133,
+   134,
+   135,
+   136,
+   137
+  ],
+  "httpx/_content.py": [
+   33,
+   36,
+   197,
+   209,
+   211,
+   213,
+   215,
+   218
+  ],
+  "httpx/_decoders.py": [
+   50,
+   53,
+   234,
+   235,
+   238,
+   239,
+   261,
+   262,
+   263,
+   264,
+   312,
+   315,
+   318
+  ],
+  "httpx/_exceptions.py": [
+   372,
+   373
+  ],
+  "httpx/_models.py": [
+   60,
+   61,
+   64,
+   71,
+   78,
+   79,
+   80,
+   82,
+   88,
+   89,
+   90,
+   149,
+   151,
+   152,
+   153,
+   154,
+   155,
+   156,
+   157,
+   158,
+   159,
+   160,
+   161,
+   162,
+   164,
+   172,
+   173,
+   174,
+   175,
+   176,
+   177,
+   183,
+   184,
+   189,
+   200,
+   203,
+   237,
+   238,
+   239,
+   247,
+   248,
+   249,
+   250,
+   258,
+   260,
+   261,
+   262,
+   263,
+   266,
+   269,
+   270,
+   272,
+   275,
+   276,
+   277,
+   279,
+   291,
+   293,
+   294,
+   295,
+   296,
+   299,
+   300,
+   302,
+   347,
+   348,
+   398,
+   399,
+   400,
+   401,
+   403,
+   406,
+   407,
+   408,
+   409,
+   410,
+   411,
+   412,
+   413,
+   415,
+   416,
+   419,
+   420,
+   422,
+   423,
+   442,
+   448,
+   450,
+   451,
+   452,
+   455,
+   456,
+   457,
+   460,
+   464,
+   466,
+   472,
+   473,
+   474,
+   475,
+   480,
+   531,
+   532,
+   534,
+   538,
+   540,
+   541,
+   543,
+   544,
+   546,
+   548,
+   567,
+   569,
+   593,
+   600,
+   604,
+   608,
+   612,
+   613,
+   614,
+   615,
+   621,
+   622,
+   623,
+   624,
+   637,
+   639,
+   643,
+   644,
+   645,
+   648,
+   649,
+   650,
+   664,
+   665,
+   666,
+   671,
+   672,
+   693,
+   694,
+   697,
+   704,
+   705,
+   706,
+   707,
+   715,
+   717,
+   720,
+   722,
+   777,
+   778,
+   779,
+   781,
+   783,
+   785,
+   787,
+   789,
+   860,
+   880,
+   881,
+   882,
+   889,
+   894,
+   895,
+   896,
+   897,
+   898,
+   899,
+   900,
+   901,
+   902,
+   904,
+   939,
+   941,
+   943,
+   946,
+   947,
+   948,
+   950,
+   951,
+   952,
+   953,
+   954,
+   956,
+   959,
+   966,
+   969,
+   970,
+   971,
+   972,
+   1085,
+   1086,
+   1087,
+   1105,
+   1106,
+   1108,
+   1229,
+   1231,
+   1250,
+   1251,
+   1252,
+   1253,
+   1255,
+   1268,
+   1271,
+   1272,
+   1276,
+   1277
+  ],
+  "httpx/_multipart.py": [
+   59,
+   60
+  ],
+  "httpx/_status_codes.py": [
+   40,
+   41
+  ],
+  "httpx/_transports/base.py": [
+   16,
+   24,
+   62
+  ],
+  "httpx/_transports/wsgi.py": [
+   23,
+   24,
+   25,
+   26,
+   32,
+   33,
+   36,
+   37,
+   40,
+   85,
+   86,
+   87,
+   88,
+   89,
+   92,
+   93,
+   95,
+   96,
+   97,
+   98,
+   99,
+   100,
+   101,
+   102,
+   103,
+   104,
+   105,
+   106,
+   107,
+   108,
+   109,
+   110,
+   111,
+   113,
+   114,
+   115,
+   116,
+   117,
+   119,
+   120,
+   121,
+   123,
+   124,
+   125,
+   126,
+   127,
+   129,
+   130,
+   131,
+   132,
+   134,
+   136,
+   138,
+   139,
+   140,
+   143,
+   144,
+   145,
+   146,
+   149
+  ],
+  "httpx/_urlparse.py": [
+   169,
+   170,
+   171,
+   172,
+   173,
+   179,
+   180,
+   181,
+   182,
+   187,
+   188,
+   190,
+   191,
+   192,
+   193,
+   194,
+   195,
+   197,
+   198,
+   201,
+   202,
+   203,
+   204,
+   205,
+   206,
+   207,
+   208,
+   218,
+   223,
+   235,
+   240,
+   245,
+   251,
+   252,
+   253,
+   254,
+   255,
+   258,
+   266,
+   267,
+   268,
+   273,
+   285,
+   289,
+   290,
+   291,
+   298,
+   299,
+   300,
+   301,
+   302,
+   305,
+   306,
+   307,
+   311,
+   312,
+   313,
+   318,
+   319,
+   320,
+   321,
+   323,
+   324,
+   325,
+   327,
+   328,
+   329,
+   331,
+   332,
+   333,
+   337,
+   338,
+   339,
+   340,
+   341,
+   342,
+   343,
+   344,
+   349,
+   350,
+   352,
+   364,
+   379,
+   385,
+   386,
+   405,
+   406,
+   429,
+   432,
+   435,
+   438,
+   443,
+   456,
+   457,
+   486,
+   489,
+   490,
+   508,
+   509,
+   510,
+   523,
+   524,
+   525,
+   527
+  ],
+  "httpx/_urls.py": [
+   78,
+   79,
+   80,
+   81,
+   82,
+   83,
+   84,
+   85,
+   86,
+   87,
+   88,
+   89,
+   90,
+   91,
+   95,
+   96,
+   99,
+   104,
+   105,
+   107,
+   116,
+   117,
+   118,
+   119,
+   132,
+   156,
+   157,
+   165,
+   166,
+   188,
+   190,
+   193,
+   231,
+   242,
+   254,
+   255,
+   271,
+   272,
+   294,
+   295,
+   297,
+   317,
+   325,
+   340,
+   375,
+   426,
+   427,
+   429,
+   431,
+   432,
+   433,
+   613
+  ]
+ },
+ "tl": 1
+}

@@ -1,0 +1,51 @@
+{
+  "id": "msg_011Cfafkog2EtAyqt4nwDRhs",
+  "container": null,
+  "content": [
+    {
+      "signature": "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",
+      "thinking": "",
+      "type": "thinking"
+    },
+    {
+      "text": "{\"why\":\"The README's \\\"Using the Console\\\" and \\\"Tables\\\" sections are the first things it shows: construct a `Console`, print styled text with console markup, then build a `Table` with `add_column`/`add_row` and `console.print(table)`. This script follows that exact journey with the README's own movie data, capturing the rendered output via `record=True` so the result can be asserted.\",\"script\":\"\\\"\\\"\\\"Typical Rich usage, following the README: console markup + a table.\\\"\\\"\\\"\\n\\nfrom rich.console import Console\\nfrom rich.table import Table\\n\\n# For more control over rich terminal content, construct a Console object.\\nconsole = Console(record=True, width=100)\\n\\n# Styled output, both via the `style` argument and console markup.\\nconsole.print(\\\"Hello\\\", \\\"World!\\\", style=\\\"bold red\\\")\\nconsole.print(\\n    \\\"Where there is a [bold cyan]Will[/bold cyan] there [u]is[/u] a [i]way[/i].\\\"\\n)\\n\\n# Build the table from the README.\\ntable = Table(show_header=True, header_style=\\\"bold magenta\\\")\\ntable.add_column(\\\"Date\\\", style=\\\"dim\\\", width=12)\\ntable.add_column(\\\"Title\\\")\\ntable.add_column(\\\"Production Budget\\\", justify=\\\"right\\\")\\ntable.add_column(\\\"Box Office\\\", justify=\\\"right\\\")\\ntable.add_row(\\n    \\\"Dec 20, 2019\\\", \\\"Star Wars: The Rise of Skywalker\\\", \\\"$275,000,000\\\", \\\"$375,126,118\\\"\\n)\\ntable.add_row(\\n    \\\"May 25, 2018\\\",\\n    \\\"[red]Solo[/red]: A Star Wars Story\\\",\\n    \\\"$275,000,000\\\",\\n    \\\"$393,151,347\\\",\\n)\\ntable.add_row(\\n    \\\"Dec 15, 2017\\\",\\n    \\\"Star Wars Ep. VIII: The Last Jedi\\\",\\n    \\\"$262,000,000\\\",\\n    \\\"[bold]$1,332,539,889[/bold]\\\",\\n)\\n\\nconsole.print(table)\\n\\n# Inspect what was actually rendered to the terminal.\\noutput = console.export_text()\\n\\nassert \\\"Hello World!\\\" in output\\nassert \\\"Where there is a Will there is a way.\\\" in output\\nassert \\\"Star Wars: The Rise of Skywalker\\\" in output\\nassert \\\"Solo: A Star Wars Story\\\" in output\\nassert \\\"$1,332,539,889\\\" in output\\n\"}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "model": "claude-opus-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 211920
+    },
+    "cache_creation_input_tokens": 211920,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 9,
+    "iterations": [
+      {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 211920
+        },
+        "cache_creation_input_tokens": 211920,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 9,
+        "model": null,
+        "output_tokens": 1266,
+        "type": "message"
+      }
+    ],
+    "output_tokens": 1266,
+    "output_tokens_details": {
+      "thinking_tokens": 404
+    },
+    "service_tier": "standard"
+  }
+}

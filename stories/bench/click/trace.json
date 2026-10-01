@@ -1,0 +1,3119 @@
+{
+ "fn": "scenario",
+ "file": "scenario.py",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "command",
+   "file": "src/click/decorators.py",
+   "line": 168,
+   "called_from": "scenario.py:12",
+   "args": {
+    "name": "None",
+    "cls": "<NoneType>"
+   },
+   "calls": [],
+   "returned": "<function command.<locals>.decorator at 0x10bc09ee0>",
+   "tl": 2
+  },
+  {
+   "fn": "option",
+   "file": "src/click/decorators.py",
+   "line": 352,
+   "called_from": "scenario.py:13",
+   "args": {
+    "cls": "<NoneType>"
+   },
+   "calls": [],
+   "returned": "<function option.<locals>.decorator at 0x10bc40e00>",
+   "tl": 4
+  },
+  {
+   "fn": "option",
+   "file": "src/click/decorators.py",
+   "line": 352,
+   "args": {},
+   "calls": [],
+   "repeat": 1,
+   "returned": "<function option.<locals>.decorator at 0x10bc41760>",
+   "tl": 6
+  },
+  {
+   "fn": "option.<locals>.decorator",
+   "file": "src/click/decorators.py",
+   "line": 373,
+   "called_from": "scenario.py:14",
+   "args": {
+    "f": "<function hello at 0x10bc41800>"
+   },
+   "calls": [
+    {
+     "fn": "Option.__init__",
+     "file": "src/click/core.py",
+     "line": 3055,
+     "called_from": "decorators.py:374",
+     "args": {
+      "self": "<Option>",
+      "param_decls": "('--name',)",
+      "show_default": "None",
+      "prompt": "'Your name'",
+      "confirmation_prompt": "False",
+      "prompt_required": "True",
+      "hide_input": "False",
+      "is_flag": "None",
+      "flag_value": "Sentinel.UNSET",
+      "multiple": "False",
+      "count": "False",
+      "allow_from_autoenv": "True",
+      "type": "None",
+      "help": "'The person to greet.'",
+      "hidden": "False",
+      "show_choices": "True",
+      "show_envvar": "False",
+      "deprecated": "False"
+     },
+     "calls": [
+      {
+       "fn": "Parameter.__init__",
+       "file": "src/click/core.py",
+       "line": 2356,
+       "called_from": "core.py:3076",
+       "args": {
+        "self": "<Option>",
+        "param_decls": "('--name',)",
+        "type": "None",
+        "required": "False",
+        "default": "Sentinel.UNSET",
+        "callback": "None",
+        "nargs": "None",
+        "multiple": "False",
+        "metavar": "None",
+        "expose_value": "True",
+        "is_eager": "False",
+        "envvar": "None",
+        "shell_complete": "None",
+        "deprecated": "False",
+        "help": "'The person to greet.'"
+       },
+       "calls": [
+        {
+         "fn": "Option._parse_decls",
+         "file": "src/click/core.py",
+         "line": 3355,
+         "called_from": "core.py:2386",
+         "args": {
+          "self": "<Option>",
+          "decls": "('--name',)",
+          "expose_value": "True"
+         },
+         "calls": [
+          {
+           "fn": "_split_opt",
+           "file": "src/click/parser.py",
+           "line": 111,
+           "called_from": "core.py:3388",
+           "args": {
+            "opt": "'--name'"
+           },
+           "calls": [],
+           "returned": "('--', 'name')",
+           "tl": 11
+          },
+          {
+           "fn": "Parameter._check_name_is_usable",
+           "file": "src/click/core.py",
+           "line": 2482,
+           "called_from": "core.py:3418",
+           "args": {
+            "self": "<Option>",
+            "name": "'name'",
+            "decls": "('--name',)"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 13
+          }
+         ],
+         "returned": "('name', ['--name'], [])",
+         "tl": 10
+        },
+        {
+         "fn": "convert_type",
+         "file": "src/click/types.py",
+         "line": 1356,
+         "called_from": "core.py:2389",
+         "args": {
+          "ty": "None",
+          "default": "Sentinel.UNSET"
+         },
+         "calls": [
+          {
+           "fn": "_guess_type",
+           "file": "src/click/types.py",
+           "line": 1311,
+           "called_from": "types.py:1363",
+           "args": {
+            "ty": "None",
+            "default": "Sentinel.UNSET"
+           },
+           "calls": [],
+           "returned": "<enum 'Sentinel'>",
+           "tl": 17
+          }
+         ],
+         "returned": "STRING",
+         "tl": 16
+        }
+       ],
+       "returned": "None",
+       "tl": 9
+      },
+      {
+       "fn": "Option._infer_flag_kind",
+       "file": "src/click/core.py",
+       "line": 3155,
+       "called_from": "core.py:3104",
+       "args": {
+        "self": "<Option>",
+        "is_flag": "None",
+        "flag_value": "Sentinel.UNSET"
+       },
+       "calls": [],
+       "returned": "(False, False)",
+       "tl": 21
+      },
+      {
+       "fn": "Option._pick_type",
+       "file": "src/click/core.py",
+       "line": 3188,
+       "called_from": "core.py:3110",
+       "args": {
+        "self": "<Option>",
+        "type_arg": "None",
+        "flag_value": "Sentinel.UNSET",
+        "count": "False",
+        "is_flag": "False"
+       },
+       "calls": [],
+       "returned": "STRING",
+       "tl": 23
+      },
+      {
+       "fn": "Option._validate",
+       "file": "src/click/core.py",
+       "line": 3251,
+       "called_from": "core.py:3131",
+       "args": {
+        "self": "<Option>",
+        "prompt": "'Your name'",
+        "deprecated": "False"
+       },
+       "calls": [
+        {
+         "fn": "Option.is_bool_flag",
+         "file": "src/click/core.py",
+         "line": 3133,
+         "called_from": "core.py:3263",
+         "args": {
+          "self": "<Option>"
+         },
+         "calls": [],
+         "returned": "False",
+         "tl": 26
+        },
+        {
+         "fn": "Option.is_bool_flag",
+         "file": "src/click/core.py",
+         "line": 3133,
+         "args": {},
+         "calls": [],
+         "repeat": 1,
+         "returned": "False",
+         "tl": 28
+        }
+       ],
+       "returned": "None",
+       "tl": 25
+      }
+     ],
+     "returned": "None",
+     "tl": 8
+    },
+    {
+     "fn": "_param_memo",
+     "file": "src/click/decorators.py",
+     "line": 314,
+     "called_from": "decorators.py:374",
+     "args": {
+      "f": "<function hello at 0x10bc41800>",
+      "param": "<Option name>"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 31
+    }
+   ],
+   "returned": "<function hello at 0x10bc41800>",
+   "tl": 7
+  },
+  {
+   "fn": "option.<locals>.decorator",
+   "file": "src/click/decorators.py",
+   "line": 373,
+   "args": {},
+   "calls": [],
+   "repeat": 1,
+   "returned": "<function hello at 0x10bc41800>",
+   "tl": 34
+  },
+  {
+   "fn": "command.<locals>.decorator",
+   "file": "src/click/decorators.py",
+   "line": 217,
+   "called_from": "scenario.py:12",
+   "args": {
+    "f": "<function hello at 0x10bc41800>"
+   },
+   "calls": [
+    {
+     "fn": "Command.__init__",
+     "file": "src/click/core.py",
+     "line": 1061,
+     "called_from": "decorators.py:248",
+     "args": {
+      "self": "<Command>",
+      "name": "'hello'",
+      "context_settings": "None",
+      "callback": "<function hello at 0x10bc41800>",
+      "params": "[<Option count>, <Option name>]",
+      "help": "'Simple program that greets NAME for a total of COUNT times.'",
+      "epilog": "None",
+      "short_help": "None",
+      "options_metavar": "'[OPTIONS]'",
+      "add_help_option": "True",
+      "no_args_is_help": "False",
+      "hidden": "False",
+      "deprecated": "False"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 36
+    }
+   ],
+   "returned": "<Command hello>",
+   "tl": 35
+  },
+  {
+   "fn": "CliRunner.__init__",
+   "file": "src/click/testing.py",
+   "line": 360,
+   "called_from": "scenario.py:22",
+   "args": {
+    "self": "<CliRunner>",
+    "charset": "'utf-8'",
+    "env": "None",
+    "echo_stdin": "False",
+    "catch_exceptions": "True",
+    "capture": "'sys'"
+   },
+   "calls": [],
+   "returned": "None",
+   "tl": 39
+  },
+  {
+   "fn": "CliRunner.invoke",
+   "file": "src/click/testing.py",
+   "line": 596,
+   "called_from": "scenario.py:23",
+   "args": {
+    "self": "<CliRunner>",
+    "cli": "<Command hello>",
+    "args": "['--count=3']",
+    "input": "'Click\\n'",
+    "env": "None",
+    "catch_exceptions": "None",
+    "color": "False"
+   },
+   "calls": [
+    {
+     "fn": "CliRunner.isolation",
+     "file": "src/click/testing.py",
+     "line": 398,
+     "called_from": "contextlib.py:141",
+     "args": {
+      "self": "<CliRunner>",
+      "input": "'Click\\n'",
+      "env": "None",
+      "color": "False"
+     },
+     "calls": [
+      {
+       "fn": "make_input_stream",
+       "file": "src/click/testing.py",
+       "line": 211,
+       "called_from": "testing.py:432",
+       "args": {
+        "input": "'Click\\n'",
+        "charset": "'utf-8'"
+       },
+       "calls": [],
+       "returned": "<_io.BytesIO object at 0x10bc49760>",
+       "tl": 43
+      },
+      {
+       "fn": "CliRunner.make_env",
+       "file": "src/click/testing.py",
+       "line": 389,
+       "called_from": "testing.py:441",
+       "args": {
+        "self": "<CliRunner>",
+        "overrides": "None"
+       },
+       "calls": [],
+       "returned": "{}",
+       "tl": 45
+      },
+      {
+       "fn": "StreamMixer.__init__",
+       "file": "src/click/testing.py",
+       "line": 150,
+       "called_from": "testing.py:443",
+       "args": {
+        "self": "<StreamMixer>"
+       },
+       "calls": [
+        {
+         "fn": "BytesIOCopy.__init__",
+         "file": "src/click/testing.py",
+         "line": 125,
+         "called_from": "testing.py:152",
+         "args": {
+          "self": "<BytesIOCopy>",
+          "copy_to": "<_io.BytesIO object at 0x10bc498a0>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 48
+        },
+        {
+         "fn": "BytesIOCopy.__init__",
+         "file": "src/click/testing.py",
+         "line": 125,
+         "args": {},
+         "calls": [],
+         "repeat": 1,
+         "returned": "None",
+         "tl": 50
+        }
+       ],
+       "returned": "None",
+       "tl": 47
+      },
+      {
+       "fn": "_NamedTextIOWrapper.__init__",
+       "file": "src/click/testing.py",
+       "line": 172,
+       "called_from": "testing.py:450",
+       "args": {
+        "self": "<_NamedTextIOWrapper>",
+        "buffer": "<_io.BytesIO object at 0x10bc49760>",
+        "name": "'<stdin>'",
+        "mode": "'r'"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 52
+      },
+      {
+       "fn": "_NamedTextIOWrapper.__init__",
+       "file": "src/click/testing.py",
+       "line": 172,
+       "args": {},
+       "calls": [],
+       "repeat": 2,
+       "returned": "None",
+       "tl": 54
+      }
+     ],
+     "returned": "(<click.testing.BytesIOCopy object at 0x10bc498f0>, <click.testing.BytesIOCopy object at 0x10bc499e0>, <_io.BytesIO object at 0x10bc498a0>)",
+     "tl": 42
+    },
+    {
+     "fn": "CliRunner.get_default_prog_name",
+     "file": "src/click/testing.py",
+     "line": 382,
+     "called_from": "testing.py:684",
+     "args": {
+      "self": "<CliRunner>",
+      "cli": "<Command hello>"
+     },
+     "calls": [],
+     "returned": "'hello'",
+     "tl": 56
+    },
+    {
+     "fn": "Command.main",
+     "file": "src/click/core.py",
+     "line": 1511,
+     "called_from": "testing.py:687",
+     "args": {
+      "self": "<Command>",
+      "args": "['--count=3']",
+      "prog_name": "'hello'",
+      "complete_var": "None",
+      "standalone_mode": "True",
+      "windows_expand_args": "True"
+     },
+     "calls": [
+      {
+       "fn": "Command._main_shell_completion",
+       "file": "src/click/core.py",
+       "line": 1647,
+       "called_from": "core.py:1574",
+       "args": {
+        "self": "<Command>",
+        "ctx_args": "{}",
+        "prog_name": "'hello'",
+        "complete_var": "None"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 59
+      },
+      {
+       "fn": "Command.make_context",
+       "file": "src/click/core.py",
+       "line": 1355,
+       "called_from": "core.py:1587",
+       "args": {
+        "self": "<Command>",
+        "info_name": "'hello'",
+        "args": "['--count=3']",
+        "parent": "None"
+       },
+       "calls": [
+        {
+         "fn": "Context.__init__",
+         "file": "src/click/core.py",
+         "line": 366,
+         "called_from": "core.py:1386",
+         "args": {
+          "self": "<Context>",
+          "command": "<Command hello>",
+          "parent": "None",
+          "info_name": "'hello'",
+          "obj": "None",
+          "auto_envvar_prefix": "None",
+          "default_map": "None",
+          "terminal_width": "None",
+          "max_content_width": "None",
+          "resilient_parsing": "False",
+          "allow_extra_args": "None",
+          "allow_interspersed_args": "None",
+          "ignore_unknown_options": "None",
+          "help_option_names": "None",
+          "token_normalize_func": "None",
+          "color": "None",
+          "show_default": "None"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 62
+        },
+        {
+         "fn": "Context.scope",
+         "file": "src/click/core.py",
+         "line": 594,
+         "called_from": "contextlib.py:141",
+         "args": {
+          "self": "<Context>",
+          "cleanup": "False"
+         },
+         "calls": [
+          {
+           "fn": "Context.__enter__",
+           "file": "src/click/core.py",
+           "line": 575,
+           "called_from": "core.py:626",
+           "args": {
+            "self": "<Context>"
+           },
+           "calls": [
+            {
+             "fn": "push_context",
+             "file": "src/click/globals.py",
+             "line": 44,
+             "called_from": "core.py:577",
+             "args": {
+              "ctx": "<click.core.Context object at 0x10bc11400>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 66
+            }
+           ],
+           "returned": "<click.core.Context object at 0x10bc11400>",
+           "tl": 65
+          }
+         ],
+         "returned": "<click.core.Context object at 0x10bc11400>",
+         "tl": 64
+        },
+        {
+         "fn": "Command.parse_args",
+         "file": "src/click/core.py",
+         "line": 1392,
+         "called_from": "core.py:1389",
+         "args": {
+          "self": "<Command>",
+          "ctx": "<click.core.Context object at 0x10bc11400>",
+          "args": "['--count=3']"
+         },
+         "calls": [
+          {
+           "fn": "Command.make_parser",
+           "file": "src/click/core.py",
+           "line": 1252,
+           "called_from": "core.py:1396",
+           "args": {
+            "self": "<Command>",
+            "ctx": "<click.core.Context object at 0x10bc11400>"
+           },
+           "calls": [
+            {
+             "fn": "_OptionParser.__init__",
+             "file": "src/click/parser.py",
+             "line": 241,
+             "called_from": "core.py:1254",
+             "args": {
+              "self": "<_OptionParser>",
+              "ctx": "<click.core.Context object at 0x10bc11400>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 72
+            },
+            {
+             "fn": "Command.get_params",
+             "file": "src/click/core.py",
+             "line": 1128,
+             "called_from": "core.py:1255",
+             "args": {
+              "self": "<Command>",
+              "ctx": "<click.core.Context object at 0x10bc11400>"
+             },
+             "calls": [
+              {
+               "fn": "Command.get_help_option",
+               "file": "src/click/core.py",
+               "line": 1218,
+               "called_from": "core.py:1130",
+               "args": {
+                "self": "<Command>",
+                "ctx": "<click.core.Context object at 0x10bc11400>"
+               },
+               "calls": [
+                {
+                 "fn": "Command.get_help_option_names",
+                 "file": "src/click/core.py",
+                 "line": 1203,
+                 "called_from": "core.py:1231",
+                 "args": {
+                  "self": "<Command>",
+                  "ctx": "<click.core.Context object at 0x10bc11400>"
+                 },
+                 "calls": [],
+                 "returned": "['--help']",
+                 "tl": 76
+                },
+                {
+                 "fn": "help_option",
+                 "file": "src/click/decorators.py",
+                 "line": 603,
+                 "called_from": "core.py:1247",
+                 "args": {},
+                 "calls": [
+                  {
+                   "fn": "option",
+                   "file": "src/click/decorators.py",
+                   "line": 352,
+                   "called_from": "decorators.py:627",
+                   "args": {
+                    "cls": "<NoneType>"
+                   },
+                   "calls": [],
+                   "returned": "<function option.<locals>.decorator at 0x10bc43d80>",
+                   "tl": 79
+                  }
+                 ],
+                 "returned": "<function option.<locals>.decorator at 0x10bc43d80>",
+                 "tl": 78
+                },
+                {
+                 "fn": "option.<locals>.decorator",
+                 "file": "src/click/decorators.py",
+                 "line": 373,
+                 "called_from": "core.py:1247",
+                 "args": {
+                  "f": "<Command hello>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Option.__init__",
+                   "file": "src/click/core.py",
+                   "line": 3055,
+                   "called_from": "decorators.py:374",
+                   "args": {
+                    "self": "<Option>",
+                    "param_decls": "('--help', '_click_default_help')",
+                    "show_default": "None",
+                    "prompt": "False",
+                    "confirmation_prompt": "False",
+                    "prompt_required": "True",
+                    "hide_input": "False",
+                    "is_flag": "True",
+                    "flag_value": "Sentinel.UNSET",
+                    "multiple": "False",
+                    "count": "False",
+                    "allow_from_autoenv": "True",
+                    "type": "None",
+                    "help": "'Show this message and exit.'",
+                    "hidden": "False",
+                    "show_choices": "True",
+                    "show_envvar": "False",
+                    "deprecated": "False"
+                   },
+                   "calls": [
+                    {
+                     "fn": "Parameter.__init__",
+                     "file": "src/click/core.py",
+                     "line": 2356,
+                     "called_from": "core.py:3076",
+                     "args": {
+                      "self": "<Option>",
+                      "param_decls": "('--help', '_click_default_help')",
+                      "type": "None",
+                      "required": "False",
+                      "default": "Sentinel.UNSET",
+                      "callback": "<function help_option.<locals>.show_help at 0x10bc43ba0>",
+                      "nargs": "None",
+                      "multiple": "False",
+                      "metavar": "None",
+                      "expose_value": "False",
+                      "is_eager": "True",
+                      "envvar": "None",
+                      "shell_complete": "None",
+                      "deprecated": "False",
+                      "help": "'Show this message and exit.'"
+                     },
+                     "calls": [
+                      {
+                       "fn": "Option._parse_decls",
+                       "file": "src/click/core.py",
+                       "line": 3355,
+                       "called_from": "core.py:2386",
+                       "args": {
+                        "self": "<Option>",
+                        "decls": "('--help', '_click_default_help')",
+                        "expose_value": "False"
+                       },
+                       "calls": [
+                        {
+                         "fn": "_split_opt",
+                         "file": "src/click/parser.py",
+                         "line": 111,
+                         "called_from": "core.py:3388",
+                         "args": {
+                          "opt": "'--help'"
+                         },
+                         "calls": [],
+                         "returned": "('--', 'help')",
+                         "tl": 86
+                        },
+                        {
+                         "fn": "Option._check_name_is_normalized",
+                         "file": "src/click/core.py",
+                         "line": 3335,
+                         "called_from": "core.py:3416",
+                         "args": {
+                          "self": "<Option>",
+                          "name": "'_click_default_help'",
+                          "decls": "('--help', '_click_default_help')"
+                         },
+                         "calls": [],
+                         "returned": "None",
+                         "tl": 88
+                        },
+                        {
+                         "fn": "Parameter._check_name_is_usable",
+                         "file": "src/click/core.py",
+                         "line": 2482,
+                         "called_from": "core.py:3418",
+                         "args": {
+                          "self": "<Option>",
+                          "name": "'_click_default_help'",
+                          "decls": "('--help', '_click_default_help')"
+                         },
+                         "calls": [],
+                         "returned": "None",
+                         "tl": 90
+                        }
+                       ],
+                       "returned": "('_click_default_help', ['--help'], [])",
+                       "tl": 85
+                      },
+                      {
+                       "fn": "convert_type",
+                       "file": "src/click/types.py",
+                       "line": 1356,
+                       "called_from": "core.py:2389",
+                       "args": {
+                        "ty": "None",
+                        "default": "Sentinel.UNSET"
+                       },
+                       "calls": [
+                        {
+                         "fn": "_guess_type",
+                         "file": "src/click/types.py",
+                         "line": 1311,
+                         "called_from": "types.py:1363",
+                         "args": {
+                          "ty": "None",
+                          "default": "Sentinel.UNSET"
+                         },
+                         "calls": [],
+                         "returned": "<enum 'Sentinel'>",
+                         "tl": 94
+                        }
+                       ],
+                       "returned": "STRING",
+                       "tl": 93
+                      }
+                     ],
+                     "returned": "None",
+                     "tl": 84
+                    },
+                    {
+                     "fn": "Option._infer_flag_kind",
+                     "file": "src/click/core.py",
+                     "line": 3155,
+                     "called_from": "core.py:3104",
+                     "args": {
+                      "self": "<Option>",
+                      "is_flag": "True",
+                      "flag_value": "Sentinel.UNSET"
+                     },
+                     "calls": [],
+                     "returned": "(True, False)",
+                     "tl": 98
+                    },
+                    {
+                     "fn": "Option._pick_type",
+                     "file": "src/click/core.py",
+                     "line": 3188,
+                     "called_from": "core.py:3110",
+                     "args": {
+                      "self": "<Option>",
+                      "type_arg": "None",
+                      "flag_value": "Sentinel.UNSET",
+                      "count": "False",
+                      "is_flag": "True"
+                     },
+                     "calls": [],
+                     "returned": "BOOL",
+                     "tl": 100
+                    },
+                    {
+                     "fn": "Option._validate",
+                     "file": "src/click/core.py",
+                     "line": 3251,
+                     "called_from": "core.py:3131",
+                     "args": {
+                      "self": "<Option>",
+                      "prompt": "False",
+                      "deprecated": "False"
+                     },
+                     "calls": [
+                      {
+                       "fn": "Option.is_bool_flag",
+                       "file": "src/click/core.py",
+                       "line": 3133,
+                       "called_from": "core.py:3263",
+                       "args": {
+                        "self": "<Option>"
+                       },
+                       "calls": [],
+                       "returned": "True",
+                       "tl": 103
+                      },
+                      {
+                       "fn": "Option.is_bool_flag",
+                       "file": "src/click/core.py",
+                       "line": 3133,
+                       "args": {},
+                       "calls": [],
+                       "repeat": 1,
+                       "returned": "True",
+                       "tl": 105
+                      }
+                     ],
+                     "returned": "None",
+                     "tl": 102
+                    }
+                   ],
+                   "returned": "None",
+                   "tl": 83
+                  },
+                  {
+                   "fn": "_param_memo",
+                   "file": "src/click/decorators.py",
+                   "line": 314,
+                   "called_from": "decorators.py:374",
+                   "args": {
+                    "f": "<Command hello>",
+                    "param": "<Option _click_default_help>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 108
+                  }
+                 ],
+                 "returned": "<Command hello>",
+                 "tl": 82
+                }
+               ],
+               "returned": "<Option _click_default_help>",
+               "tl": 75
+              }
+             ],
+             "returned": "[<Option count>, <Option name>, <Option _click_default_help>]",
+             "tl": 74
+            },
+            {
+             "fn": "Option.add_to_parser",
+             "file": "src/click/core.py",
+             "line": 3422,
+             "called_from": "core.py:1256",
+             "args": {
+              "self": "<Option>",
+              "parser": "<click.parser._OptionParser object at 0x10bc11550>",
+              "ctx": "<click.core.Context object at 0x10bc11400>"
+             },
+             "calls": [
+              {
+               "fn": "_OptionParser.add_option",
+               "file": "src/click/parser.py",
+               "line": 265,
+               "called_from": "core.py:3456",
+               "args": {
+                "self": "<_OptionParser>",
+                "obj": "<Option count>",
+                "opts": "['--count']",
+                "dest": "'count'",
+                "action": "'store'",
+                "nargs": "1",
+                "const": "None"
+               },
+               "calls": [
+                {
+                 "fn": "_normalize_opt",
+                 "file": "src/click/parser.py",
+                 "line": 120,
+                 "called_from": "parser.py:282",
+                 "args": {
+                  "opt": "'--count'",
+                  "ctx": "<click.core.Context object at 0x10bc11400>"
+                 },
+                 "calls": [],
+                 "returned": "'--count'",
+                 "tl": 115
+                },
+                {
+                 "fn": "_Option.__init__",
+                 "file": "src/click/parser.py",
+                 "line": 128,
+                 "called_from": "parser.py:283",
+                 "args": {
+                  "self": "<_Option>",
+                  "obj": "<Option count>",
+                  "opts": "['--count']",
+                  "dest": "'count'",
+                  "action": "'store'",
+                  "nargs": "1",
+                  "const": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_split_opt",
+                   "file": "src/click/parser.py",
+                   "line": 111,
+                   "called_from": "parser.py:142",
+                   "args": {
+                    "opt": "'--count'"
+                   },
+                   "calls": [],
+                   "returned": "('--', 'count')",
+                   "tl": 118
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 117
+                }
+               ],
+               "returned": "None",
+               "tl": 114
+              }
+             ],
+             "returned": "None",
+             "tl": 113
+            },
+            {
+             "fn": "Option.add_to_parser",
+             "file": "src/click/core.py",
+             "line": 3422,
+             "args": {},
+             "calls": [],
+             "repeat": 2,
+             "returned": "None",
+             "tl": 123
+            }
+           ],
+           "returned": "<click.parser._OptionParser object at 0x10bc11550>",
+           "tl": 71
+          },
+          {
+           "fn": "_OptionParser.parse_args",
+           "file": "src/click/parser.py",
+           "line": 298,
+           "called_from": "core.py:1397",
+           "args": {
+            "self": "<_OptionParser>",
+            "args": "['--count=3']"
+           },
+           "calls": [
+            {
+             "fn": "_ParsingState.__init__",
+             "file": "src/click/parser.py",
+             "line": 217,
+             "called_from": "parser.py:307",
+             "args": {
+              "self": "<_ParsingState>",
+              "rargs": "['--count=3']"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 126
+            },
+            {
+             "fn": "_OptionParser._process_args_for_options",
+             "file": "src/click/parser.py",
+             "line": 327,
+             "called_from": "parser.py:309",
+             "args": {
+              "self": "<_OptionParser>",
+              "state": "<click.parser._ParsingState object at 0x10bc11fd0>"
+             },
+             "calls": [
+              {
+               "fn": "_OptionParser._process_opts",
+               "file": "src/click/parser.py",
+               "line": 470,
+               "called_from": "parser.py:336",
+               "args": {
+                "self": "<_OptionParser>",
+                "arg": "'--count=3'",
+                "state": "<click.parser._ParsingState object at 0x10bc11fd0>"
+               },
+               "calls": [
+                {
+                 "fn": "_normalize_opt",
+                 "file": "src/click/parser.py",
+                 "line": 120,
+                 "called_from": "parser.py:479",
+                 "args": {
+                  "opt": "'--count'",
+                  "ctx": "<click.core.Context object at 0x10bc11400>"
+                 },
+                 "calls": [],
+                 "returned": "'--count'",
+                 "tl": 130
+                },
+                {
+                 "fn": "_OptionParser._match_long_opt",
+                 "file": "src/click/parser.py",
+                 "line": 363,
+                 "called_from": "parser.py:485",
+                 "args": {
+                  "self": "<_OptionParser>",
+                  "opt": "'--count'",
+                  "explicit_value": "'3'",
+                  "state": "<click.parser._ParsingState object at 0x10bc11fd0>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_Option.takes_value",
+                   "file": "src/click/parser.py",
+                   "line": 165,
+                   "called_from": "parser.py:370",
+                   "args": {
+                    "self": "<_Option>"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 133
+                  },
+                  {
+                   "fn": "_OptionParser._get_value_from_state",
+                   "file": "src/click/parser.py",
+                   "line": 430,
+                   "called_from": "parser.py:378",
+                   "args": {
+                    "self": "<_OptionParser>",
+                    "option_name": "'--count'",
+                    "option": "<click.parser._Option object at 0x10bc11d30>",
+                    "state": "<click.parser._ParsingState object at 0x10bc11fd0>"
+                   },
+                   "calls": [],
+                   "returned": "'3'",
+                   "tl": 135
+                  },
+                  {
+                   "fn": "_Option.process",
+                   "file": "src/click/parser.py",
+                   "line": 169,
+                   "called_from": "parser.py:388",
+                   "args": {
+                    "self": "<_Option>",
+                    "value": "'3'",
+                    "state": "<click.parser._ParsingState object at 0x10bc11fd0>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 137
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 132
+                }
+               ],
+               "returned": "None",
+               "tl": 129
+              }
+             ],
+             "returned": "None",
+             "tl": 128
+            },
+            {
+             "fn": "_OptionParser._process_args_for_args",
+             "file": "src/click/parser.py",
+             "line": 316,
+             "called_from": "parser.py:310",
+             "args": {
+              "self": "<_OptionParser>",
+              "state": "<click.parser._ParsingState object at 0x10bc11fd0>"
+             },
+             "calls": [
+              {
+               "fn": "_unpack_args",
+               "file": "src/click/parser.py",
+               "line": 51,
+               "called_from": "parser.py:317",
+               "args": {
+                "args": "[]",
+                "nargs_spec": "[]"
+               },
+               "calls": [],
+               "returned": "((), [])",
+               "tl": 143
+              }
+             ],
+             "returned": "None",
+             "tl": 142
+            }
+           ],
+           "returned": "({'count': '3'}, [], [<Option count>])",
+           "tl": 125
+          },
+          {
+           "fn": "Command.get_params",
+           "file": "src/click/core.py",
+           "line": 1128,
+           "called_from": "core.py:1399",
+           "args": {
+            "self": "<Command>",
+            "ctx": "<click.core.Context object at 0x10bc11400>"
+           },
+           "calls": [
+            {
+             "fn": "Command.get_help_option",
+             "file": "src/click/core.py",
+             "line": 1218,
+             "called_from": "core.py:1130",
+             "args": {
+              "self": "<Command>",
+              "ctx": "<click.core.Context object at 0x10bc11400>"
+             },
+             "calls": [
+              {
+               "fn": "Command.get_help_option_names",
+               "file": "src/click/core.py",
+               "line": 1203,
+               "called_from": "core.py:1231",
+               "args": {
+                "self": "<Command>",
+                "ctx": "<click.core.Context object at 0x10bc11400>"
+               },
+               "calls": [],
+               "returned": "['--help']",
+               "tl": 149
+              }
+             ],
+             "returned": "<Option _click_default_help>",
+             "tl": 148
+            }
+           ],
+           "returned": "[<Option count>, <Option name>, <Option _click_default_help>]",
+           "tl": 147
+          },
+          {
+           "fn": "iter_params_for_processing",
+           "file": "src/click/core.py",
+           "line": 168,
+           "called_from": "core.py:1399",
+           "args": {
+            "invocation_order": "[<Option count>]",
+            "declaration_order": "[<Option count>, <Option name>, <Option _click_default_help>]"
+           },
+           "calls": [
+            {
+             "fn": "iter_params_for_processing.<locals>.sort_key",
+             "file": "src/click/core.py",
+             "line": 184,
+             "called_from": "core.py:192",
+             "args": {
+              "item": "<Option count>"
+             },
+             "calls": [],
+             "returned": "(True, 0)",
+             "tl": 154
+            },
+            {
+             "fn": "iter_params_for_processing.<locals>.sort_key",
+             "file": "src/click/core.py",
+             "line": 184,
+             "args": {},
+             "calls": [],
+             "repeat": 2,
+             "returned": "(various)",
+             "tl": 156
+            }
+           ],
+           "returned": "[<Option _click_default_help>, <Option count>, <Option name>]",
+           "tl": 153
+          },
+          {
+           "fn": "Parameter.handle_parse_result",
+           "file": "src/click/core.py",
+           "line": 2835,
+           "called_from": "core.py:1400",
+           "args": {
+            "self": "<Option>",
+            "ctx": "<click.core.Context object at 0x10bc11400>",
+            "opts": "{'count': '3'}",
+            "args": "[]"
+           },
+           "calls": [
+            {
+             "fn": "Context.get_parameter_source",
+             "file": "src/click/core.py",
+             "line": 966,
+             "called_from": "core.py:2854",
+             "args": {
+              "self": "<Context>",
+              "name": "'_click_default_help'"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 159
+            },
+            {
+             "fn": "augment_usage_errors",
+             "file": "src/click/core.py",
+             "line": 149,
+             "called_from": "contextlib.py:141",
+             "args": {
+              "ctx": "<click.core.Context object at 0x10bc11400>",
+              "param": "<Option _click_default_help>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 161
+            },
+            {
+             "fn": "Option.consume_value",
+             "file": "src/click/core.py",
+             "line": 3726,
+             "called_from": "core.py:2858",
+             "args": {
+              "self": "<Option>",
+              "ctx": "<click.core.Context object at 0x10bc11400>",
+              "opts": "{'count': '3'}"
+             },
+             "calls": [
+              {
+               "fn": "Parameter.consume_value",
+               "file": "src/click/core.py",
+               "line": 2586,
+               "called_from": "core.py:3738",
+               "args": {
+                "self": "<Option>",
+                "ctx": "<click.core.Context object at 0x10bc11400>",
+                "opts": "{'count': '3'}"
+               },
+               "calls": [
+                {
+                 "fn": "Option.value_from_envvar",
+                 "file": "src/click/core.py",
+                 "line": 3678,
+                 "called_from": "core.py:2610",
+                 "args": {
+                  "self": "<Option>",
+                  "ctx": "<click.core.Context object at 0x10bc11400>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Option.resolve_envvar_value",
+                   "file": "src/click/core.py",
+                   "line": 3654,
+                   "called_from": "core.py:3691",
+                   "args": {
+                    "self": "<Option>",
+                    "ctx": "<click.core.Context object at 0x10bc11400>"
+                   },
+                   "calls": [
+                    {
+                     "fn": "Parameter.resolve_envvar_value",
+                     "file": "src/click/core.py",
+                     "line": 2774,
+                     "called_from": "core.py:3664",
+                     "args": {
+                      "self": "<Option>",
+                      "ctx": "<click.core.Context object at 0x10bc11400>"
+                     },
+                     "calls": [],
+                     "returned": "None",
+                     "tl": 167
+                    }
+                   ],
+                   "returned": "None",
+                   "tl": 166
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 165
+                },
+                {
+                 "fn": "Context.lookup_default",
+                 "file": "src/click/core.py",
+                 "line": 811,
+                 "called_from": "core.py:2616",
+                 "args": {
+                  "self": "<Context>",
+                  "name": "'_click_default_help'",
+                  "call": "True"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Context._default_map_has",
+                   "file": "src/click/core.py",
+                   "line": 787,
+                   "called_from": "core.py:821",
+                   "args": {
+                    "self": "<Context>",
+                    "name": "'_click_default_help'"
+                   },
+                   "calls": [],
+                   "returned": "False",
+                   "tl": 172
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 171
+                },
+                {
+                 "fn": "Context._default_map_has",
+                 "file": "src/click/core.py",
+                 "line": 787,
+                 "called_from": "core.py:2617",
+                 "args": {
+                  "self": "<Context>",
+                  "name": "'_click_default_help'"
+                 },
+                 "calls": [],
+                 "returned": "False",
+                 "tl": 175
+                },
+                {
+                 "fn": "Option.get_default",
+                 "file": "src/click/core.py",
+                 "line": 3295,
+                 "called_from": "core.py:2627",
+                 "args": {
+                  "self": "<Option>",
+                  "ctx": "<click.core.Context object at 0x10bc11400>",
+                  "call": "True"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Parameter.get_default",
+                   "file": "src/click/core.py",
+                   "line": 2550,
+                   "called_from": "core.py:3318",
+                   "args": {
+                    "self": "<Option>",
+                    "ctx": "<click.core.Context object at 0x10bc11400>",
+                    "call": "False"
+                   },
+                   "calls": [
+                    {
+                     "fn": "Context.lookup_default",
+                     "file": "src/click/core.py",
+                     "line": 811,
+                     "called_from": "core.py:2573",
+                     "args": {
+                      "self": "<Context>",
+                      "name": "'_click_default_help'",
+                      "call": "False"
+                     },
+                     "calls": [
+                      {
+                       "fn": "Context._default_map_has",
+                       "file": "src/click/core.py",
+                       "line": 787,
+                       "called_from": "core.py:821",
+                       "args": {
+                        "self": "<Context>",
+                        "name": "'_click_default_help'"
+                       },
+                       "calls": [],
+                       "returned": "False",
+                       "tl": 180
+                      }
+                     ],
+                     "returned": "None",
+                     "tl": 179
+                    },
+                    {
+                     "fn": "Context._default_map_has",
+                     "file": "src/click/core.py",
+                     "line": 787,
+                     "called_from": "core.py:2575",
+                     "args": {
+                      "self": "<Context>",
+                      "name": "'_click_default_help'"
+                     },
+                     "calls": [],
+                     "returned": "False",
+                     "tl": 183
+                    }
+                   ],
+                   "returned": "Sentinel.UNSET",
+                   "tl": 178
+                  },
+                  {
+                   "fn": "Option._resolve_lazy_default",
+                   "file": "src/click/core.py",
+                   "line": 3227,
+                   "called_from": "core.py:3319",
+                   "args": {
+                    "self": "<Option>",
+                    "value": "Sentinel.UNSET"
+                   },
+                   "calls": [
+                    {
+                     "fn": "Option.is_bool_flag",
+                     "file": "src/click/core.py",
+                     "line": 3133,
+                     "called_from": "core.py:3242",
+                     "args": {
+                      "self": "<Option>"
+                     },
+                     "calls": [],
+                     "returned": "True",
+                     "tl": 187
+                    }
+                   ],
+                   "returned": "False",
+                   "tl": 186
+                  }
+                 ],
+                 "returned": "False",
+                 "tl": 177
+                }
+               ],
+               "returned": "(False, <ParameterSource.DEFAULT: 5>)",
+               "tl": 164
+              }
+             ],
+             "returned": "(False, <ParameterSource.DEFAULT: 5>)",
+             "tl": 163
+            },
+            {
+             "fn": "Context.set_parameter_source",
+             "file": "src/click/core.py",
+             "line": 957,
+             "called_from": "core.py:2863",
+             "args": {
+              "self": "<Context>",
+              "name": "'_click_default_help'",
+              "source": "<ParameterSource.DEFAULT: 5>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 193
+            },
+            {
+             "fn": "Option.process_value",
+             "file": "src/click/core.py",
+             "line": 3782,
+             "called_from": "core.py:2883",
+             "args": {
+              "self": "<Option>",
+              "ctx": "<click.core.Context object at 0x10bc11400>",
+              "value": "False"
+             },
+             "calls": [
+              {
+               "fn": "Option.is_bool_flag",
+               "file": "src/click/core.py",
+               "line": 3133,
+               "called_from": "core.py:3788",
+               "args": {
+                "self": "<Option>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 196
+              },
+              {
+               "fn": "Parameter.process_value",
+               "file": "src/click/core.py",
+               "line": 2708,
+               "called_from": "core.py:3797",
+               "args": {
+                "self": "<Option>",
+                "ctx": "<click.core.Context object at 0x10bc11400>",
+                "value": "False"
+               },
+               "calls": [
+                {
+                 "fn": "Parameter.type_cast_value",
+                 "file": "src/click/core.py",
+                 "line": 2634,
+                 "called_from": "core.py:2730",
+                 "args": {
+                  "self": "<Option>",
+                  "ctx": "<click.core.Context object at 0x10bc11400>",
+                  "value": "False"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Parameter.type_cast_value.<locals>.convert",
+                   "file": "src/click/core.py",
+                   "line": 2659,
+                   "called_from": "core.py:2688",
+                   "args": {
+                    "value": "False"
+                   },
+                   "calls": [
+                    {
+                     "fn": "ParamType.__call__",
+                     "file": "src/click/types.py",
+                     "line": 159,
+                     "called_from": "core.py:2660",
+                     "args": {
+                      "self": "<BoolParamType>",
+                      "value": "False",
+                      "param": "<Option _click_default_help>",
+                      "ctx": "<click.core.Context object at 0x10bc11400>"
+                     },
+                     "calls": [
+                      {
+                       "fn": "BoolParamType.convert",
+                       "file": "src/click/types.py",
+                       "line": 870,
+                       "called_from": "types.py:166",
+                       "args": {
+                        "self": "<BoolParamType>",
+                        "value": "False",
+                        "param": "<Option _click_default_help>",
+                        "ctx": "<click.core.Context object at 0x10bc11400>"
+                       },
+                       "calls": [
+                        {
+                         "fn": "BoolParamType.str_to_bool",
+                         "file": "src/click/types.py",
+                         "line": 855,
+                         "called_from": "types.py:873",
+                         "args": {
+                          "value": "False"
+                         },
+                         "calls": [],
+                         "returned": "False",
+                         "tl": 203
+                        }
+                       ],
+                       "returned": "False",
+                       "tl": 202
+                      }
+                     ],
+                     "returned": "False",
+                     "tl": 201
+                    }
+                   ],
+                   "returned": "False",
+                   "tl": 200
+                  }
+                 ],
+                 "returned": "False",
+                 "tl": 199
+                },
+                {
+                 "fn": "help_option.<locals>.show_help",
+                 "file": "src/click/decorators.py",
+                 "line": 612,
+                 "called_from": "core.py:2745",
+                 "args": {
+                  "ctx": "<click.core.Context object at 0x10bc11400>",
+                  "param": "<Option _click_default_help>",
+                  "value": "False"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 209
+                }
+               ],
+               "returned": "None",
+               "tl": 198
+              }
+             ],
+             "returned": "None",
+             "tl": 195
+            },
+            {
+             "fn": "augment_usage_errors",
+             "file": "src/click/core.py",
+             "line": 149,
+             "called_from": "contextlib.py:148",
+             "args": {
+              "ctx": "<click.core.Context object at 0x10bc11400>",
+              "param": "<Option _click_default_help>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 213
+            }
+           ],
+           "returned": "(None, [])",
+           "tl": 158
+          },
+          {
+           "fn": "Parameter.handle_parse_result",
+           "file": "src/click/core.py",
+           "line": 2835,
+           "args": {},
+           "calls": [],
+           "repeat": 2,
+           "returned": "(various)",
+           "tl": 216
+          }
+         ],
+         "returned": "[]",
+         "tl": 70
+        },
+        {
+         "fn": "Context.scope",
+         "file": "src/click/core.py",
+         "line": 594,
+         "called_from": "contextlib.py:148",
+         "args": {
+          "self": "<Context>",
+          "cleanup": "False"
+         },
+         "calls": [
+          {
+           "fn": "Context.__exit__",
+           "file": "src/click/core.py",
+           "line": 580,
+           "called_from": "core.py:626",
+           "args": {
+            "self": "<Context>",
+            "exc_type": "None",
+            "exc_value": "None",
+            "tb": "None"
+           },
+           "calls": [
+            {
+             "fn": "pop_context",
+             "file": "src/click/globals.py",
+             "line": 49,
+             "called_from": "core.py:590",
+             "args": {},
+             "calls": [],
+             "returned": "None",
+             "tl": 220
+            }
+           ],
+           "returned": "None",
+           "tl": 219
+          }
+         ],
+         "returned": "None",
+         "tl": 218
+        }
+       ],
+       "returned": "<click.core.Context object at 0x10bc11400>",
+       "tl": 61
+      },
+      {
+       "fn": "Context.__enter__",
+       "file": "src/click/core.py",
+       "line": 575,
+       "called_from": "core.py:1587",
+       "args": {
+        "self": "<Context>"
+       },
+       "calls": [
+        {
+         "fn": "push_context",
+         "file": "src/click/globals.py",
+         "line": 44,
+         "called_from": "core.py:577",
+         "args": {
+          "ctx": "<click.core.Context object at 0x10bc11400>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 226
+        }
+       ],
+       "returned": "<click.core.Context object at 0x10bc11400>",
+       "tl": 225
+      },
+      {
+       "fn": "Command.invoke",
+       "file": "src/click/core.py",
+       "line": 1428,
+       "called_from": "core.py:1588",
+       "args": {
+        "self": "<Command>",
+        "ctx": "<click.core.Context object at 0x10bc11400>"
+       },
+       "calls": [
+        {
+         "fn": "Context.invoke",
+         "file": "src/click/core.py",
+         "line": 883,
+         "called_from": "core.py:1442",
+         "args": {
+          "self": "<Context>",
+          "callback": "<function hello at 0x10bc41800>"
+         },
+         "calls": [
+          {
+           "fn": "augment_usage_errors",
+           "file": "src/click/core.py",
+           "line": 149,
+           "called_from": "contextlib.py:141",
+           "args": {
+            "ctx": "<click.core.Context object at 0x10bc11400>",
+            "param": "None"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 231
+          },
+          {
+           "fn": "Context.__enter__",
+           "file": "src/click/core.py",
+           "line": 575,
+           "called_from": "core.py:935",
+           "args": {
+            "self": "<Context>"
+           },
+           "calls": [
+            {
+             "fn": "push_context",
+             "file": "src/click/globals.py",
+             "line": 44,
+             "called_from": "core.py:577",
+             "args": {
+              "ctx": "<click.core.Context object at 0x10bc11400>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 234
+            }
+           ],
+           "returned": "<click.core.Context object at 0x10bc11400>",
+           "tl": 233
+          },
+          {
+           "fn": "echo",
+           "file": "src/click/utils.py",
+           "line": 240,
+           "called_from": "scenario.py:18",
+           "args": {
+            "message": "'Hello, Click!'",
+            "file": "None",
+            "nl": "True",
+            "err": "False",
+            "color": "None"
+           },
+           "calls": [
+            {
+             "fn": "_make_cached_stream_func.<locals>.func",
+             "file": "src/click/_compat.py",
+             "line": 553,
+             "called_from": "utils.py:291",
+             "args": {},
+             "calls": [
+              {
+               "fn": "get_text_stdout",
+               "file": "src/click/_compat.py",
+               "line": 347,
+               "called_from": "_compat.py:565",
+               "args": {
+                "encoding": "None",
+                "errors": "None"
+               },
+               "calls": [
+                {
+                 "fn": "_get_windows_console_stream",
+                 "file": "src/click/_compat.py",
+                 "line": 530,
+                 "called_from": "_compat.py:348",
+                 "args": {
+                  "f": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+                  "encoding": "None",
+                  "errors": "None"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 240
+                },
+                {
+                 "fn": "_force_correct_text_writer",
+                 "file": "src/click/_compat.py",
+                 "line": 303,
+                 "called_from": "_compat.py:351",
+                 "args": {
+                  "text_writer": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+                  "encoding": "None",
+                  "errors": "None",
+                  "force_writable": "True"
+                 },
+                 "calls": [
+                  {
+                   "fn": "_force_correct_text_stream",
+                   "file": "src/click/_compat.py",
+                   "line": 241,
+                   "called_from": "_compat.py:309",
+                   "args": {
+                    "text_stream": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+                    "encoding": "None",
+                    "errors": "None",
+                    "is_binary": "<function _is_binary_writer at 0x10bb645e0>",
+                    "find_binary": "<function _find_binary_writer at 0x10bb64720>",
+                    "force_readable": "False",
+                    "force_writable": "True"
+                   },
+                   "calls": [
+                    {
+                     "fn": "_is_binary_writer",
+                     "file": "src/click/_compat.py",
+                     "line": 163,
+                     "called_from": "_compat.py:250",
+                     "args": {
+                      "stream": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+                      "default": "False"
+                     },
+                     "calls": [],
+                     "raised": "TypeError('write() argument must be str, not bytes')",
+                     "returned": "False",
+                     "tl": 244
+                    },
+                    {
+                     "fn": "_is_compatible_text_stream",
+                     "file": "src/click/_compat.py",
+                     "line": 230,
+                     "called_from": "_compat.py:256",
+                     "args": {
+                      "stream": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+                      "encoding": "None",
+                      "errors": "None"
+                     },
+                     "calls": [
+                      {
+                       "fn": "_is_compat_stream_attr",
+                       "file": "src/click/_compat.py",
+                       "line": 221,
+                       "called_from": "_compat.py:236",
+                       "args": {
+                        "stream": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+                        "attr": "'encoding'",
+                        "value": "None"
+                       },
+                       "calls": [],
+                       "returned": "True",
+                       "tl": 247
+                      },
+                      {
+                       "fn": "_is_compat_stream_attr",
+                       "file": "src/click/_compat.py",
+                       "line": 221,
+                       "args": {},
+                       "calls": [],
+                       "repeat": 1,
+                       "returned": "True",
+                       "tl": 249
+                      }
+                     ],
+                     "returned": "True",
+                     "tl": 246
+                    },
+                    {
+                     "fn": "_stream_is_misconfigured",
+                     "file": "src/click/_compat.py",
+                     "line": 212,
+                     "called_from": "_compat.py:257",
+                     "args": {
+                      "stream": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>"
+                     },
+                     "calls": [
+                      {
+                       "fn": "is_ascii_encoding",
+                       "file": "src/click/_compat.py",
+                       "line": 43,
+                       "called_from": "_compat.py:218",
+                       "args": {
+                        "encoding": "'utf-8'"
+                       },
+                       "calls": [],
+                       "returned": "False",
+                       "tl": 252
+                      }
+                     ],
+                     "returned": "False",
+                     "tl": 251
+                    }
+                   ],
+                   "returned": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+                   "tl": 243
+                  }
+                 ],
+                 "returned": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+                 "tl": 242
+                }
+               ],
+               "returned": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+               "tl": 239
+              }
+             ],
+             "returned": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+             "tl": 238
+            },
+            {
+             "fn": "resolve_color_default",
+             "file": "src/click/globals.py",
+             "line": 54,
+             "called_from": "utils.py:330",
+             "args": {
+              "color": "None"
+             },
+             "calls": [
+              {
+               "fn": "get_current_context",
+               "file": "src/click/globals.py",
+               "line": 20,
+               "called_from": "globals.py:62",
+               "args": {
+                "silent": "True"
+               },
+               "calls": [],
+               "returned": "<click.core.Context object at 0x10bc11400>",
+               "tl": 260
+              }
+             ],
+             "returned": "None",
+             "tl": 259
+            },
+            {
+             "fn": "CliRunner.isolation.<locals>.should_strip_ansi",
+             "file": "src/click/testing.py",
+             "line": 506,
+             "called_from": "utils.py:330",
+             "args": {
+              "stream": "<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>",
+              "color": "None"
+             },
+             "calls": [],
+             "returned": "True",
+             "tl": 263
+            },
+            {
+             "fn": "strip_ansi",
+             "file": "src/click/_compat.py",
+             "line": 491,
+             "called_from": "utils.py:331",
+             "args": {
+              "value": "'Hello, Click!\\n'"
+             },
+             "calls": [],
+             "returned": "'Hello, Click!\\n'",
+             "tl": 265
+            },
+            {
+             "fn": "BytesIOCopy.write",
+             "file": "src/click/testing.py",
+             "line": 133,
+             "called_from": "utils.py:334",
+             "args": {
+              "self": "<BytesIOCopy>",
+              "b": "b'Hello, Click!\\n'"
+             },
+             "calls": [],
+             "returned": "14",
+             "tl": 267
+            },
+            {
+             "fn": "BytesIOCopy.flush",
+             "file": "src/click/testing.py",
+             "line": 129,
+             "called_from": "utils.py:334",
+             "args": {
+              "self": "<BytesIOCopy>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 269
+            }
+           ],
+           "returned": "None",
+           "tl": 237
+          },
+          {
+           "fn": "echo",
+           "file": "src/click/utils.py",
+           "line": 240,
+           "args": {},
+           "calls": [],
+           "repeat": 2,
+           "returned": "None",
+           "tl": 272
+          },
+          {
+           "fn": "Context.__exit__",
+           "file": "src/click/core.py",
+           "line": 580,
+           "called_from": "core.py:935",
+           "args": {
+            "self": "<Context>",
+            "exc_type": "None",
+            "exc_value": "None",
+            "tb": "None"
+           },
+           "calls": [
+            {
+             "fn": "pop_context",
+             "file": "src/click/globals.py",
+             "line": 49,
+             "called_from": "core.py:590",
+             "args": {},
+             "calls": [],
+             "returned": "None",
+             "tl": 274
+            }
+           ],
+           "returned": "None",
+           "tl": 273
+          },
+          {
+           "fn": "augment_usage_errors",
+           "file": "src/click/core.py",
+           "line": 149,
+           "called_from": "contextlib.py:148",
+           "args": {
+            "ctx": "<click.core.Context object at 0x10bc11400>",
+            "param": "None"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 277
+          }
+         ],
+         "returned": "None",
+         "tl": 230
+        }
+       ],
+       "returned": "None",
+       "tl": 229
+      },
+      {
+       "fn": "Context.exit",
+       "file": "src/click/core.py",
+       "line": 845,
+       "called_from": "core.py:1598",
+       "args": {
+        "self": "<Context>",
+        "code": "0"
+       },
+       "calls": [
+        {
+         "fn": "Context.close",
+         "file": "src/click/core.py",
+         "line": 715,
+         "called_from": "core.py:852",
+         "args": {
+          "self": "<Context>"
+         },
+         "calls": [
+          {
+           "fn": "Context._close_with_exception_info",
+           "file": "src/click/core.py",
+           "line": 722,
+           "called_from": "core.py:720",
+           "args": {
+            "self": "<Context>",
+            "exc_type": "None",
+            "exc_value": "None",
+            "tb": "None"
+           },
+           "calls": [],
+           "returned": "False",
+           "tl": 283
+          }
+         ],
+         "returned": "None",
+         "tl": 282
+        },
+        {
+         "fn": "Exit.__init__",
+         "file": "src/click/exceptions.py",
+         "line": 377,
+         "called_from": "core.py:853",
+         "args": {
+          "self": "<Exit>",
+          "code": "0"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 286
+        }
+       ],
+       "raised": "Exit(0)",
+       "returned": "None",
+       "tl": 281
+      },
+      {
+       "fn": "Context.__exit__",
+       "file": "src/click/core.py",
+       "line": 580,
+       "called_from": "core.py:1587",
+       "args": {
+        "self": "<Context>",
+        "exc_type": "<class 'click.exceptions.Exit'>",
+        "exc_value": "Exit(0)",
+        "tb": "<traceback object at 0x10bc98700>"
+       },
+       "calls": [
+        {
+         "fn": "Context._close_with_exception_info",
+         "file": "src/click/core.py",
+         "line": 722,
+         "called_from": "core.py:589",
+         "args": {
+          "self": "<Context>",
+          "exc_type": "<class 'click.exceptions.Exit'>",
+          "exc_value": "Exit(0)",
+          "tb": "<traceback object at 0x10bc98700>"
+         },
+         "calls": [],
+         "returned": "False",
+         "tl": 290
+        },
+        {
+         "fn": "pop_context",
+         "file": "src/click/globals.py",
+         "line": 49,
+         "called_from": "core.py:590",
+         "args": {},
+         "calls": [],
+         "returned": "None",
+         "tl": 292
+        }
+       ],
+       "returned": "False",
+       "tl": 289
+      }
+     ],
+     "raised": "Exit(0)",
+     "returned": "None",
+     "tl": 58
+    },
+    {
+     "fn": "BytesIOCopy.flush",
+     "file": "src/click/testing.py",
+     "line": 129,
+     "called_from": "testing.py:712",
+     "args": {
+      "self": "<BytesIOCopy>"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 296
+    },
+    {
+     "fn": "BytesIOCopy.flush",
+     "file": "src/click/testing.py",
+     "line": 129,
+     "args": {},
+     "calls": [],
+     "repeat": 1,
+     "returned": "None",
+     "tl": 298
+    },
+    {
+     "fn": "CliRunner.isolation",
+     "file": "src/click/testing.py",
+     "line": 398,
+     "called_from": "contextlib.py:148",
+     "args": {
+      "self": "<CliRunner>",
+      "input": "'Click\\n'",
+      "env": "{}",
+      "color": "False"
+     },
+     "calls": [
+      {
+       "fn": "_NamedTextIOWrapper.close",
+       "file": "src/click/testing.py",
+       "line": 184,
+       "called_from": "testing.py:586",
+       "args": {
+        "self": "<_NamedTextIOWrapper>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 300
+      }
+     ],
+     "returned": "None",
+     "tl": 299
+    },
+    {
+     "fn": "_NamedTextIOWrapper.close",
+     "file": "src/click/testing.py",
+     "line": 184,
+     "called_from": "contextlib.py:148",
+     "args": {
+      "self": "<_NamedTextIOWrapper>"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 303
+    },
+    {
+     "fn": "Result.__init__",
+     "file": "src/click/testing.py",
+     "line": 262,
+     "called_from": "testing.py:730",
+     "args": {
+      "self": "<Result>",
+      "runner": "<click.testing.CliRunner object at 0x10bc102f0>",
+      "stdout_bytes": "b'Your name: Click\\nHello, Click!\\nHello, Click!\\nHello, Click!\\n'",
+      "stderr_bytes": "b''",
+      "output_bytes": "b'Your name: Click\\nHello, Click!\\nHello, Click!\\nHello, Click!\\n'",
+      "return_value": "None",
+      "exit_code": "0",
+      "exception": "None",
+      "exc_info": "(<class 'SystemExit'>, SystemExit(0), <traceback object at 0x10b9e7780>)"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 305
+    }
+   ],
+   "raised": "KeyError('prog_name')",
+   "returned": "<Result okay>",
+   "tl": 41
+  },
+  {
+   "fn": "Result.output",
+   "file": "src/click/testing.py",
+   "line": 282,
+   "called_from": "scenario.py:24",
+   "args": {
+    "self": "<Result>"
+   },
+   "calls": [],
+   "returned": "'Your name: Click\\nHello, Click!\\nHello, Click!\\nHello, Click!\\n'",
+   "tl": 308
+  },
+  {
+   "fn": "Result.output",
+   "file": "src/click/testing.py",
+   "line": 282,
+   "args": {},
+   "calls": [],
+   "repeat": 1,
+   "returned": "'Your name: Click\\nHello, Click!\\nHello, Click!\\nHello, Click!\\n'",
+   "tl": 310
+  }
+ ],
+ "lines": {
+  "src/click/_compat.py": [
+   45,
+   46,
+   164,
+   165,
+   166,
+   167,
+   168,
+   169,
+   218,
+   226,
+   227,
+   236,
+   237,
+   238,
+   250,
+   253,
+   256,
+   257,
+   259,
+   309,
+   310,
+   311,
+   312,
+   313,
+   314,
+   315,
+   348,
+   349,
+   351,
+   492,
+   533,
+   554,
+   556,
+   559,
+   560,
+   563,
+   564,
+   565,
+   566,
+   567,
+   570,
+   576
+  ],
+  "src/click/core.py": [
+   154,
+   155,
+   184,
+   185,
+   186,
+   187,
+   188,
+   190,
+   192,
+   386,
+   388,
+   390,
+   393,
+   395,
+   400,
+   402,
+   404,
+   408,
+   409,
+   413,
+   414,
+   415,
+   420,
+   432,
+   434,
+   438,
+   440,
+   445,
+   447,
+   448,
+   454,
+   456,
+   457,
+   463,
+   465,
+   466,
+   476,
+   478,
+   479,
+   482,
+   485,
+   487,
+   492,
+   497,
+   502,
+   504,
+   514,
+   517,
+   519,
+   523,
+   525,
+   529,
+   531,
+   532,
+   533,
+   539,
+   540,
+   576,
+   577,
+   578,
+   586,
+   587,
+   588,
+   589,
+   590,
+   592,
+   623,
+   624,
+   625,
+   626,
+   627,
+   629,
+   630,
+   720,
+   734,
+   736,
+   738,
+   794,
+   795,
+   796,
+   821,
+   822,
+   852,
+   853,
+   903,
+   933,
+   935,
+   936,
+   964,
+   982,
+   1080,
+   1082,
+   1083,
+   1086,
+   1090,
+   1094,
+   1095,
+   1096,
+   1097,
+   1098,
+   1099,
+   1100,
+   1101,
+   1102,
+   1103,
+   1129,
+   1130,
+   1132,
+   1133,
+   1135,
+   1136,
+   1138,
+   1139,
+   1140,
+   1142,
+   1154,
+   1155,
+   1156,
+   1159,
+   1182,
+   1212,
+   1213,
+   1214,
+   1215,
+   1216,
+   1231,
+   1233,
+   1240,
+   1242,
+   1247,
+   1248,
+   1250,
+   1254,
+   1255,
+   1256,
+   1257,
+   1382,
+   1386,
+   1388,
+   1389,
+   1390,
+   1393,
+   1396,
+   1397,
+   1399,
+   1400,
+   1411,
+   1412,
+   1415,
+   1424,
+   1425,
+   1426,
+   1432,
+   1441,
+   1442,
+   1562,
+   1568,
+   1570,
+   1574,
+   1582,
+   1583,
+   1585,
+   1586,
+   1587,
+   1588,
+   1589,
+   1598,
+   1599,
+   1600,
+   1611,
+   1637,
+   1640,
+   1641,
+   1665,
+   1666,
+   1667,
+   1669,
+   1671,
+   1672,
+   2386,
+   2387,
+   2389,
+   2393,
+   2394,
+   2397,
+   2399,
+   2400,
+   2401,
+   2402,
+   2403,
+   2404,
+   2410,
+   2411,
+   2412,
+   2413,
+   2414,
+   2415,
+   2417,
+   2418,
+   2420,
+   2424,
+   2426,
+   2427,
+   2433,
+   2446,
+   2475,
+   2500,
+   2502,
+   2504,
+   2507,
+   2573,
+   2575,
+   2576,
+   2578,
+   2581,
+   2600,
+   2603,
+   2604,
+   2605,
+   2606,
+   2609,
+   2610,
+   2611,
+   2615,
+   2616,
+   2617,
+   2626,
+   2627,
+   2628,
+   2629,
+   2630,
+   2632,
+   2638,
+   2644,
+   2657,
+   2659,
+   2660,
+   2685,
+   2688,
+   2726,
+   2730,
+   2732,
+   2735,
+   2738,
+   2742,
+   2744,
+   2745,
+   2772,
+   2799,
+   2800,
+   2853,
+   2854,
+   2855,
+   2857,
+   2858,
+   2863,
+   2867,
+   2882,
+   2883,
+   2894,
+   2895,
+   2896,
+   2897,
+   2898,
+   2903,
+   2904,
+   2909,
+   2910,
+   2911,
+   2912,
+   2921,
+   3076,
+   3077,
+   3078,
+   3079,
+   3080,
+   3081,
+   3082,
+   3087,
+   3092,
+   3093,
+   3095,
+   3097,
+   3098,
+   3099,
+   3100,
+   3101,
+   3104,
+   3105,
+   3110,
+   3120,
+   3121,
+   3122,
+   3125,
+   3126,
+   3127,
+   3128,
+   3131,
+   3140,
+   3151,
+   3152,
+   3167,
+   3169,
+   3171,
+   3174,
+   3177,
+   3179,
+   3181,
+   3186,
+   3202,
+   3205,
+   3208,
+   3209,
+   3212,
+   3213,
+   3239,
+   3240,
+   3242,
+   3243,
+   3244,
+   3249,
+   3257,
+   3259,
+   3261,
+   3263,
+   3265,
+   3267,
+   3318,
+   3319,
+   3325,
+   3327,
+   3340,
+   3342,
+   3343,
+   3358,
+   3359,
+   3360,
+   3361,
+   3362,
+   3364,
+   3365,
+   3366,
+   3368,
+   3370,
+   3371,
+   3388,
+   3389,
+   3391,
+   3392,
+   3393,
+   3395,
+   3406,
+   3415,
+   3416,
+   3418,
+   3420,
+   3423,
+   3425,
+   3428,
+   3430,
+   3431,
+   3433,
+   3445,
+   3446,
+   3447,
+   3448,
+   3449,
+   3453,
+   3456,
+   3457,
+   3458,
+   3459,
+   3460,
+   3461,
+   3610,
+   3614,
+   3617,
+   3637,
+   3638,
+   3641,
+   3642,
+   3645,
+   3646,
+   3647,
+   3648,
+   3649,
+   3650,
+   3651,
+   3664,
+   3666,
+   3669,
+   3676,
+   3691,
+   3694,
+   3695,
+   3738,
+   3743,
+   3757,
+   3772,
+   3773,
+   3774,
+   3775,
+   3777,
+   3778,
+   3780,
+   3788,
+   3797
+  ],
+  "src/click/decorators.py": [
+   206,
+   208,
+   214,
+   215,
+   217,
+   218,
+   221,
+   222,
+   224,
+   225,
+   229,
+   230,
+   232,
+   233,
+   235,
+   239,
+   242,
+   243,
+   245,
+   248,
+   249,
+   250,
+   252,
+   255,
+   315,
+   316,
+   318,
+   319,
+   321,
+   370,
+   371,
+   373,
+   374,
+   375,
+   377,
+   612,
+   614,
+   618,
+   621,
+   622,
+   623,
+   624,
+   625,
+   627
+  ],
+  "src/click/exceptions.py": [
+   378
+  ],
+  "src/click/globals.py": [
+   35,
+   36,
+   46,
+   51,
+   59,
+   62,
+   64,
+   65
+  ],
+  "src/click/parser.py": [
+   63,
+   64,
+   65,
+   66,
+   68,
+   77,
+   103,
+   108,
+   112,
+   113,
+   115,
+   116,
+   121,
+   122,
+   137,
+   138,
+   139,
+   141,
+   142,
+   143,
+   149,
+   150,
+   153,
+   154,
+   156,
+   159,
+   160,
+   161,
+   162,
+   163,
+   167,
+   170,
+   171,
+   182,
+   218,
+   219,
+   220,
+   221,
+   244,
+   249,
+   254,
+   256,
+   257,
+   258,
+   260,
+   261,
+   262,
+   263,
+   282,
+   283,
+   284,
+   285,
+   287,
+   288,
+   307,
+   308,
+   309,
+   310,
+   314,
+   317,
+   318,
+   321,
+   324,
+   325,
+   328,
+   329,
+   330,
+   333,
+   335,
+   336,
+   366,
+   369,
+   370,
+   375,
+   376,
+   378,
+   388,
+   433,
+   437,
+   450,
+   451,
+   454,
+   463,
+   468,
+   471,
+   475,
+   476,
+   479,
+   484,
+   485
+  ],
+  "src/click/termui.py": [
+   95,
+   99,
+   100,
+   102,
+   105,
+   116,
+   117,
+   119,
+   120,
+   121,
+   123,
+   125,
+   235,
+   236,
+   237,
+   238,
+   247,
+   250,
+   251,
+   254,
+   260,
+   261,
+   262,
+   263,
+   264,
+   271,
+   272,
+   277,
+   278
+  ],
+  "src/click/testing.py": [
+   72,
+   73,
+   126,
+   127,
+   130,
+   131,
+   134,
+   135,
+   151,
+   152,
+   153,
+   179,
+   180,
+   181,
+   182,
+   184,
+   215,
+   223,
+   225,
+   226,
+   228,
+   273,
+   274,
+   275,
+   276,
+   277,
+   278,
+   279,
+   280,
+   290,
+   291,
+   368,
+   372,
+   376,
+   377,
+   378,
+   379,
+   380,
+   387,
+   393,
+   394,
+   396,
+   432,
+   433,
+   435,
+   436,
+   437,
+   438,
+   439,
+   441,
+   443,
+   445,
+   450,
+   451,
+   454,
+   459,
+   460,
+   461,
+   462,
+   463,
+   466,
+   467,
+   468,
+   469,
+   470,
+   471,
+   474,
+   475,
+   476,
+   477,
+   478,
+   481,
+   482,
+   483,
+   485,
+   486,
+   494,
+   495,
+   504,
+   506,
+   507,
+   508,
+   509,
+   510,
+   513,
+   514,
+   515,
+   516,
+   517,
+   518,
+   519,
+   520,
+   521,
+   522,
+   523,
+   525,
+   526,
+   527,
+   528,
+   529,
+   530,
+   531,
+   562,
+   564,
+   565,
+   566,
+   575,
+   577,
+   585,
+   586,
+   587,
+   588,
+   589,
+   590,
+   591,
+   592,
+   593,
+   594,
+   649,
+   650,
+   651,
+   654,
+   655,
+   657,
+   666,
+   670,
+   674,
+   675,
+   676,
+   678,
+   681,
+   682,
+   683,
+   684,
+   686,
+   687,
+   688,
+   689,
+   690,
+   692,
+   695,
+   698,
+   703,
+   712,
+   713,
+   718,
+   726,
+   727,
+   728,
+   730,
+   731,
+   732,
+   733,
+   734,
+   735,
+   736,
+   737,
+   738
+  ],
+  "src/click/types.py": [
+   165,
+   166,
+   310,
+   323,
+   601,
+   602,
+   866,
+   867,
+   873,
+   874,
+   882,
+   1321,
+   1324,
+   1327,
+   1328,
+   1363,
+   1364,
+   1366,
+   1369,
+   1372,
+   1375,
+   1376,
+   1378,
+   1381,
+   1384,
+   1385
+  ],
+  "src/click/utils.py": [
+   287,
+   288,
+   291,
+   295,
+   298,
+   299,
+   300,
+   306,
+   307,
+   308,
+   312,
+   320,
+   330,
+   331,
+   333,
+   334
+  ]
+ },
+ "tl": 1
+}

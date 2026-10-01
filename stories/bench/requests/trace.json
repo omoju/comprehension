@@ -1,0 +1,3015 @@
+{
+ "fn": "scenario",
+ "file": "scenario.py",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "get",
+   "file": "src/requests/api.py",
+   "line": 74,
+   "called_from": "scenario.py:41",
+   "args": {
+    "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+    "params": "None"
+   },
+   "calls": [
+    {
+     "fn": "request",
+     "file": "src/requests/api.py",
+     "line": 24,
+     "called_from": "api.py:87",
+     "args": {
+      "method": "'get'",
+      "url": "'http://127.0.0.1:54897/basic-auth/user/pass'"
+     },
+     "calls": [
+      {
+       "fn": "Session.__init__",
+       "file": "src/requests/sessions.py",
+       "line": 442,
+       "called_from": "api.py:70",
+       "args": {
+        "self": "<Session>"
+       },
+       "calls": [
+        {
+         "fn": "default_headers",
+         "file": "src/requests/utils.py",
+         "line": 951,
+         "called_from": "sessions.py:446",
+         "args": {},
+         "calls": [
+          {
+           "fn": "default_user_agent",
+           "file": "src/requests/utils.py",
+           "line": 942,
+           "called_from": "utils.py:957",
+           "args": {
+            "name": "'python-requests'"
+           },
+           "calls": [],
+           "returned": "'python-requests/2.34.2'",
+           "tl": 6
+          },
+          {
+           "fn": "CaseInsensitiveDict.__init__",
+           "file": "src/requests/structures.py",
+           "line": 49,
+           "called_from": "utils.py:955",
+           "args": {
+            "self": "<CaseInsensitiveDict>",
+            "data": "{'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Connection': 'keep-alive', 'User-Agent': 'python-requests/2.34.2'}"
+           },
+           "calls": [
+            {
+             "fn": "CaseInsensitiveDict.__setitem__",
+             "file": "src/requests/structures.py",
+             "line": 59,
+             "called_from": "<frozen _collections_abc>:987",
+             "args": {
+              "self": "<CaseInsensitiveDict>",
+              "key": "'User-Agent'",
+              "value": "'python-requests/2.34.2'"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 9
+            },
+            {
+             "fn": "CaseInsensitiveDict.__setitem__",
+             "file": "src/requests/structures.py",
+             "line": 59,
+             "args": {},
+             "calls": [],
+             "repeat": 3,
+             "returned": "None",
+             "tl": 11
+            }
+           ],
+           "returned": "None",
+           "tl": 8
+          }
+         ],
+         "returned": "{'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'}",
+         "tl": 5
+        },
+        {
+         "fn": "default_hooks",
+         "file": "src/requests/hooks.py",
+         "line": 25,
+         "called_from": "sessions.py:458",
+         "args": {},
+         "calls": [],
+         "returned": "{'response': []}",
+         "tl": 14
+        },
+        {
+         "fn": "cookiejar_from_dict",
+         "file": "src/requests/cookies.py",
+         "line": 579,
+         "called_from": "sessions.py:498",
+         "args": {
+          "cookie_dict": "{}",
+          "cookiejar": "None",
+          "overwrite": "True"
+         },
+         "calls": [
+          {
+           "fn": "RequestsCookieJar.__iter__",
+           "file": "src/requests/cookies.py",
+           "line": 348,
+           "called_from": "cookies.py:596",
+           "args": {
+            "self": "<RequestsCookieJar>"
+           },
+           "calls": [],
+           "returned": "<generator object deepvalues at 0x10c1e3060>",
+           "tl": 17
+          }
+         ],
+         "returned": "<RequestsCookieJar[]>",
+         "tl": 16
+        },
+        {
+         "fn": "HTTPAdapter.__init__",
+         "file": "src/requests/adapters.py",
+         "line": 201,
+         "called_from": "sessions.py:502",
+         "args": {
+          "self": "<HTTPAdapter>",
+          "pool_connections": "10",
+          "pool_maxsize": "10",
+          "max_retries": "0",
+          "pool_block": "False"
+         },
+         "calls": [
+          {
+           "fn": "BaseAdapter.__init__",
+           "file": "src/requests/adapters.py",
+           "line": 125,
+           "called_from": "adapters.py:215",
+           "args": {
+            "self": "<HTTPAdapter>"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 21
+          },
+          {
+           "fn": "HTTPAdapter.init_poolmanager",
+           "file": "src/requests/adapters.py",
+           "line": 239,
+           "called_from": "adapters.py:221",
+           "args": {
+            "self": "<HTTPAdapter>",
+            "connections": "10",
+            "maxsize": "10",
+            "block": "False"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 23
+          }
+         ],
+         "returned": "None",
+         "tl": 20
+        },
+        {
+         "fn": "Session.mount",
+         "file": "src/requests/sessions.py",
+         "line": 888,
+         "called_from": "sessions.py:502",
+         "args": {
+          "self": "<Session>",
+          "prefix": "'https://'",
+          "adapter": "<requests.adapters.HTTPAdapter object at 0x10da09160>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 26
+        },
+        {
+         "fn": "HTTPAdapter.__init__",
+         "file": "src/requests/adapters.py",
+         "line": 201,
+         "called_from": "sessions.py:503",
+         "args": {
+          "self": "<HTTPAdapter>",
+          "pool_connections": "10",
+          "pool_maxsize": "10",
+          "max_retries": "0",
+          "pool_block": "False"
+         },
+         "calls": [
+          {
+           "fn": "BaseAdapter.__init__",
+           "file": "src/requests/adapters.py",
+           "line": 125,
+           "called_from": "adapters.py:215",
+           "args": {
+            "self": "<HTTPAdapter>"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 29
+          },
+          {
+           "fn": "HTTPAdapter.init_poolmanager",
+           "file": "src/requests/adapters.py",
+           "line": 239,
+           "called_from": "adapters.py:221",
+           "args": {
+            "self": "<HTTPAdapter>",
+            "connections": "10",
+            "maxsize": "10",
+            "block": "False"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 31
+          }
+         ],
+         "returned": "None",
+         "tl": 28
+        },
+        {
+         "fn": "Session.mount",
+         "file": "src/requests/sessions.py",
+         "line": 888,
+         "called_from": "sessions.py:503",
+         "args": {
+          "self": "<Session>",
+          "prefix": "'http://'",
+          "adapter": "<requests.adapters.HTTPAdapter object at 0x10da78190>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 34
+        }
+       ],
+       "returned": "None",
+       "tl": 4
+      },
+      {
+       "fn": "Session.__enter__",
+       "file": "src/requests/sessions.py",
+       "line": 505,
+       "called_from": "api.py:70",
+       "args": {
+        "self": "<Session>"
+       },
+       "calls": [],
+       "returned": "<requests.sessions.Session object at 0x10da08c20>",
+       "tl": 37
+      },
+      {
+       "fn": "Session.request",
+       "file": "src/requests/sessions.py",
+       "line": 557,
+       "called_from": "api.py:71",
+       "args": {
+        "self": "<Session>",
+        "method": "'get'",
+        "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+        "params": "None",
+        "data": "None",
+        "headers": "None",
+        "cookies": "None",
+        "files": "None",
+        "auth": "('user', 'pass')",
+        "timeout": "None",
+        "allow_redirects": "True",
+        "proxies": "None",
+        "hooks": "None",
+        "stream": "None",
+        "verify": "None",
+        "cert": "None",
+        "json": "None"
+       },
+       "calls": [
+        {
+         "fn": "Request.__init__",
+         "file": "src/requests/models.py",
+         "line": 323,
+         "called_from": "sessions.py:623",
+         "args": {
+          "self": "<Request>",
+          "method": "'GET'",
+          "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+          "headers": "None",
+          "files": "None",
+          "data": "{}",
+          "params": "{}",
+          "auth": "('user', 'pass')",
+          "cookies": "None",
+          "hooks": "None",
+          "json": "None"
+         },
+         "calls": [
+          {
+           "fn": "default_hooks",
+           "file": "src/requests/hooks.py",
+           "line": 25,
+           "called_from": "models.py:343",
+           "args": {},
+           "calls": [],
+           "returned": "{'response': []}",
+           "tl": 41
+          }
+         ],
+         "returned": "None",
+         "tl": 40
+        },
+        {
+         "fn": "Session.prepare_request",
+         "file": "src/requests/sessions.py",
+         "line": 511,
+         "called_from": "sessions.py:635",
+         "args": {
+          "self": "<Session>",
+          "request": "<Request [GET]>"
+         },
+         "calls": [
+          {
+           "fn": "cookiejar_from_dict",
+           "file": "src/requests/cookies.py",
+           "line": 579,
+           "called_from": "sessions.py:528",
+           "args": {
+            "cookie_dict": "{}",
+            "cookiejar": "None",
+            "overwrite": "True"
+           },
+           "calls": [
+            {
+             "fn": "RequestsCookieJar.__iter__",
+             "file": "src/requests/cookies.py",
+             "line": 348,
+             "called_from": "cookies.py:596",
+             "args": {
+              "self": "<RequestsCookieJar>"
+             },
+             "calls": [],
+             "returned": "<generator object deepvalues at 0x10da2db60>",
+             "tl": 46
+            }
+           ],
+           "returned": "<RequestsCookieJar[]>",
+           "tl": 45
+          },
+          {
+           "fn": "merge_cookies",
+           "file": "src/requests/cookies.py",
+           "line": 604,
+           "called_from": "sessions.py:532",
+           "args": {
+            "cookiejar": "<RequestsCookieJar[]>",
+            "cookies": "<RequestsCookieJar[]>"
+           },
+           "calls": [
+            {
+             "fn": "RequestsCookieJar.update",
+             "file": "src/requests/cookies.py",
+             "line": 391,
+             "called_from": "cookies.py:620",
+             "args": {
+              "self": "<RequestsCookieJar>",
+              "other": "<RequestsCookieJar[]>"
+             },
+             "calls": [
+              {
+               "fn": "RequestsCookieJar.__iter__",
+               "file": "src/requests/cookies.py",
+               "line": 348,
+               "called_from": "cookies.py:396",
+               "args": {
+                "self": "<RequestsCookieJar>"
+               },
+               "calls": [],
+               "returned": "<generator object deepvalues at 0x10da2db60>",
+               "tl": 51
+              }
+             ],
+             "returned": "None",
+             "tl": 50
+            }
+           ],
+           "returned": "<RequestsCookieJar[]>",
+           "tl": 49
+          },
+          {
+           "fn": "merge_cookies",
+           "file": "src/requests/cookies.py",
+           "line": 604,
+           "args": {},
+           "calls": [],
+           "repeat": 1,
+           "returned": "<RequestsCookieJar[]>",
+           "tl": 55
+          },
+          {
+           "fn": "PreparedRequest.__init__",
+           "file": "src/requests/models.py",
+           "line": 407,
+           "called_from": "sessions.py:540",
+           "args": {
+            "self": "<PreparedRequest>"
+           },
+           "calls": [
+            {
+             "fn": "default_hooks",
+             "file": "src/requests/hooks.py",
+             "line": 25,
+             "called_from": "models.py:420",
+             "args": {},
+             "calls": [],
+             "returned": "{'response': []}",
+             "tl": 57
+            }
+           ],
+           "returned": "None",
+           "tl": 56
+          },
+          {
+           "fn": "merge_setting",
+           "file": "src/requests/sessions.py",
+           "line": 76,
+           "called_from": "sessions.py:547",
+           "args": {
+            "request_setting": "{}",
+            "session_setting": "{'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'}",
+            "dict_class": "<class 'requests.structures.CaseInsensitiveDict'>"
+           },
+           "calls": [
+            {
+             "fn": "to_key_val_list",
+             "file": "src/requests/utils.py",
+             "line": 376,
+             "called_from": "sessions.py:96",
+             "args": {
+              "value": "{'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'}"
+             },
+             "calls": [
+              {
+               "fn": "CaseInsensitiveDict.__len__",
+               "file": "src/requests/structures.py",
+               "line": 73,
+               "called_from": "<frozen _collections_abc>:854",
+               "args": {
+                "self": "<CaseInsensitiveDict>"
+               },
+               "calls": [],
+               "returned": "4",
+               "tl": 62
+              },
+              {
+               "fn": "CaseInsensitiveDict.__iter__",
+               "file": "src/requests/structures.py",
+               "line": 70,
+               "called_from": "<frozen _collections_abc>:898",
+               "args": {
+                "self": "<CaseInsensitiveDict>"
+               },
+               "calls": [],
+               "returned": "<generator object CaseInsensitiveDict....er__.<locals>.<genexpr> at 0x10da93100>",
+               "tl": 64
+              },
+              {
+               "fn": "CaseInsensitiveDict.__getitem__",
+               "file": "src/requests/structures.py",
+               "line": 64,
+               "called_from": "<frozen _collections_abc>:899",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "key": "'User-Agent'"
+               },
+               "calls": [],
+               "returned": "'python-requests/2.34.2'",
+               "tl": 66
+              },
+              {
+               "fn": "CaseInsensitiveDict.__getitem__",
+               "file": "src/requests/structures.py",
+               "line": 64,
+               "args": {},
+               "calls": [],
+               "repeat": 3,
+               "returned": "(various)",
+               "tl": 68
+              }
+             ],
+             "returned": "[('User-Agent', 'python-requests/2.34.2'), ('Accept-Encoding', 'gzip, deflate'), ('Accept', '*/*'), ('Connection', 'keep-alive')]",
+             "tl": 61
+            },
+            {
+             "fn": "CaseInsensitiveDict.__init__",
+             "file": "src/requests/structures.py",
+             "line": 49,
+             "called_from": "sessions.py:96",
+             "args": {
+              "self": "<CaseInsensitiveDict>",
+              "data": "[('User-Agent', 'python-requests/2.34.2'), ('Accept-Encoding', 'gzip, deflate'), ('Accept', '*/*'), ('Connection', 'keep-alive')]"
+             },
+             "calls": [
+              {
+               "fn": "CaseInsensitiveDict.__setitem__",
+               "file": "src/requests/structures.py",
+               "line": 59,
+               "called_from": "<frozen _collections_abc>:993",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "key": "'User-Agent'",
+                "value": "'python-requests/2.34.2'"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 71
+              },
+              {
+               "fn": "CaseInsensitiveDict.__setitem__",
+               "file": "src/requests/structures.py",
+               "line": 59,
+               "args": {},
+               "calls": [],
+               "repeat": 3,
+               "returned": "None",
+               "tl": 73
+              }
+             ],
+             "returned": "None",
+             "tl": 70
+            },
+            {
+             "fn": "to_key_val_list",
+             "file": "src/requests/utils.py",
+             "line": 376,
+             "called_from": "sessions.py:97",
+             "args": {
+              "value": "{}"
+             },
+             "calls": [],
+             "returned": "[]",
+             "tl": 75
+            },
+            {
+             "fn": "CaseInsensitiveDict.__iter__",
+             "file": "src/requests/structures.py",
+             "line": 70,
+             "called_from": "<frozen _collections_abc>:898",
+             "args": {
+              "self": "<CaseInsensitiveDict>"
+             },
+             "calls": [],
+             "returned": "<generator object CaseInsensitiveDict....er__.<locals>.<genexpr> at 0x10da93e00>",
+             "tl": 77
+            },
+            {
+             "fn": "CaseInsensitiveDict.__getitem__",
+             "file": "src/requests/structures.py",
+             "line": 64,
+             "called_from": "<frozen _collections_abc>:899",
+             "args": {
+              "self": "<CaseInsensitiveDict>",
+              "key": "'User-Agent'"
+             },
+             "calls": [],
+             "returned": "'python-requests/2.34.2'",
+             "tl": 79
+            },
+            {
+             "fn": "CaseInsensitiveDict.__getitem__",
+             "file": "src/requests/structures.py",
+             "line": 64,
+             "args": {},
+             "calls": [],
+             "repeat": 3,
+             "returned": "(various)",
+             "tl": 81
+            }
+           ],
+           "returned": "{'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'}",
+           "tl": 60
+          },
+          {
+           "fn": "merge_setting",
+           "file": "src/requests/sessions.py",
+           "line": 76,
+           "args": {},
+           "calls": [],
+           "repeat": 2,
+           "returned": "(various)",
+           "tl": 83
+          },
+          {
+           "fn": "merge_hooks",
+           "file": "src/requests/sessions.py",
+           "line": 108,
+           "called_from": "sessions.py:553",
+           "args": {
+            "request_hooks": "{'response': []}",
+            "session_hooks": "{'response': []}",
+            "dict_class": "<class 'collections.OrderedDict'>"
+           },
+           "calls": [],
+           "returned": "{'response': []}",
+           "tl": 84
+          },
+          {
+           "fn": "PreparedRequest.prepare",
+           "file": "src/requests/models.py",
+           "line": 424,
+           "called_from": "sessions.py:541",
+           "args": {
+            "self": "<PreparedRequest>",
+            "method": "'GET'",
+            "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+            "headers": "{'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'}",
+            "files": "[]",
+            "data": "{}",
+            "params": "OrderedDict()",
+            "auth": "('user', 'pass')",
+            "cookies": "<RequestsCookieJar[]>",
+            "hooks": "{'response': []}",
+            "json": "None"
+           },
+           "calls": [
+            {
+             "fn": "PreparedRequest.prepare_method",
+             "file": "src/requests/models.py",
+             "line": 467,
+             "called_from": "models.py:440",
+             "args": {
+              "self": "<PreparedRequest>",
+              "method": "'GET'"
+             },
+             "calls": [
+              {
+               "fn": "to_native_string",
+               "file": "src/requests/_internal_utils.py",
+               "line": 26,
+               "called_from": "models.py:471",
+               "args": {
+                "string": "'GET'",
+                "encoding": "'ascii'"
+               },
+               "calls": [],
+               "returned": "'GET'",
+               "tl": 88
+              }
+             ],
+             "returned": "None",
+             "tl": 87
+            },
+            {
+             "fn": "PreparedRequest.prepare_url",
+             "file": "src/requests/models.py",
+             "line": 483,
+             "called_from": "models.py:441",
+             "args": {
+              "self": "<PreparedRequest>",
+              "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+              "params": "OrderedDict()"
+             },
+             "calls": [
+              {
+               "fn": "unicode_is_ascii",
+               "file": "src/requests/_internal_utils.py",
+               "line": 39,
+               "called_from": "models.py:528",
+               "args": {
+                "u_string": "'127.0.0.1'"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 92
+              },
+              {
+               "fn": "RequestEncodingMixin._encode_params",
+               "file": "src/requests/models.py",
+               "line": 150,
+               "called_from": "models.py:552",
+               "args": {
+                "data": "OrderedDict()"
+               },
+               "calls": [
+                {
+                 "fn": "has_read",
+                 "file": "src/requests/_types.py",
+                 "line": 32,
+                 "called_from": "models.py:163",
+                 "args": {
+                  "obj": "OrderedDict()"
+                 },
+                 "calls": [],
+                 "returned": "False",
+                 "tl": 95
+                },
+                {
+                 "fn": "to_key_val_list",
+                 "file": "src/requests/utils.py",
+                 "line": 376,
+                 "called_from": "models.py:167",
+                 "args": {
+                  "value": "OrderedDict()"
+                 },
+                 "calls": [],
+                 "returned": "[]",
+                 "tl": 97
+                }
+               ],
+               "returned": "''",
+               "tl": 94
+              },
+              {
+               "fn": "requote_uri",
+               "file": "src/requests/utils.py",
+               "line": 704,
+               "called_from": "models.py:562",
+               "args": {
+                "uri": "'http://127.0.0.1:54897/basic-auth/user/pass'"
+               },
+               "calls": [
+                {
+                 "fn": "unquote_unreserved",
+                 "file": "src/requests/utils.py",
+                 "line": 680,
+                 "called_from": "utils.py:718",
+                 "args": {
+                  "uri": "'http://127.0.0.1:54897/basic-auth/user/pass'"
+                 },
+                 "calls": [],
+                 "returned": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+                 "tl": 101
+                }
+               ],
+               "returned": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+               "tl": 100
+              }
+             ],
+             "returned": "None",
+             "tl": 91
+            },
+            {
+             "fn": "PreparedRequest.prepare_headers",
+             "file": "src/requests/models.py",
+             "line": 565,
+             "called_from": "models.py:442",
+             "args": {
+              "self": "<PreparedRequest>",
+              "headers": "{'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'}"
+             },
+             "calls": [
+              {
+               "fn": "CaseInsensitiveDict.__init__",
+               "file": "src/requests/structures.py",
+               "line": 49,
+               "called_from": "models.py:568",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "data": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 106
+              },
+              {
+               "fn": "CaseInsensitiveDict.__len__",
+               "file": "src/requests/structures.py",
+               "line": 73,
+               "called_from": "models.py:569",
+               "args": {
+                "self": "<CaseInsensitiveDict>"
+               },
+               "calls": [],
+               "returned": "4",
+               "tl": 108
+              },
+              {
+               "fn": "CaseInsensitiveDict.__iter__",
+               "file": "src/requests/structures.py",
+               "line": 70,
+               "called_from": "<frozen _collections_abc>:898",
+               "args": {
+                "self": "<CaseInsensitiveDict>"
+               },
+               "calls": [],
+               "returned": "<generator object CaseInsensitiveDict....er__.<locals>.<genexpr> at 0x10da6d630>",
+               "tl": 110
+              },
+              {
+               "fn": "CaseInsensitiveDict.__getitem__",
+               "file": "src/requests/structures.py",
+               "line": 64,
+               "called_from": "<frozen _collections_abc>:899",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "key": "'User-Agent'"
+               },
+               "calls": [],
+               "returned": "'python-requests/2.34.2'",
+               "tl": 112
+              },
+              {
+               "fn": "check_header_validity",
+               "file": "src/requests/utils.py",
+               "line": 1087,
+               "called_from": "models.py:572",
+               "args": {
+                "header": "('User-Agent', 'python-requests/2.34.2')"
+               },
+               "calls": [
+                {
+                 "fn": "_validate_header_part",
+                 "file": "src/requests/utils.py",
+                 "line": 1098,
+                 "called_from": "utils.py:1094",
+                 "args": {
+                  "header": "('User-Agent', 'python-requests/2.34.2')",
+                  "header_part": "'User-Agent'",
+                  "header_validator_index": "0"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 115
+                },
+                {
+                 "fn": "_validate_header_part",
+                 "file": "src/requests/utils.py",
+                 "line": 1098,
+                 "args": {},
+                 "calls": [],
+                 "repeat": 1,
+                 "returned": "None",
+                 "tl": 117
+                }
+               ],
+               "returned": "None",
+               "tl": 114
+              },
+              {
+               "fn": "to_native_string",
+               "file": "src/requests/_internal_utils.py",
+               "line": 26,
+               "called_from": "models.py:574",
+               "args": {
+                "string": "'User-Agent'",
+                "encoding": "'ascii'"
+               },
+               "calls": [],
+               "returned": "'User-Agent'",
+               "tl": 119
+              },
+              {
+               "fn": "CaseInsensitiveDict.__setitem__",
+               "file": "src/requests/structures.py",
+               "line": 59,
+               "called_from": "models.py:574",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "key": "'User-Agent'",
+                "value": "'python-requests/2.34.2'"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 121
+              },
+              {
+               "fn": "CaseInsensitiveDict.__getitem__",
+               "file": "src/requests/structures.py",
+               "line": 64,
+               "called_from": "<frozen _collections_abc>:899",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "key": "'Accept-Encoding'"
+               },
+               "calls": [],
+               "returned": "'gzip, deflate'",
+               "tl": 123
+              },
+              {
+               "fn": "check_header_validity",
+               "file": "src/requests/utils.py",
+               "line": 1087,
+               "called_from": "models.py:572",
+               "args": {
+                "header": "('Accept-Encoding', 'gzip, deflate')"
+               },
+               "calls": [
+                {
+                 "fn": "_validate_header_part",
+                 "file": "src/requests/utils.py",
+                 "line": 1098,
+                 "called_from": "utils.py:1094",
+                 "args": {
+                  "header": "('Accept-Encoding', 'gzip, deflate')",
+                  "header_part": "'Accept-Encoding'",
+                  "header_validator_index": "0"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 126
+                },
+                {
+                 "fn": "_validate_header_part",
+                 "file": "src/requests/utils.py",
+                 "line": 1098,
+                 "args": {},
+                 "calls": [],
+                 "repeat": 1,
+                 "returned": "None",
+                 "tl": 128
+                }
+               ],
+               "returned": "None",
+               "tl": 125
+              },
+              {
+               "fn": "to_native_string",
+               "file": "src/requests/_internal_utils.py",
+               "line": 26,
+               "called_from": "models.py:574",
+               "args": {
+                "string": "'Accept-Encoding'",
+                "encoding": "'ascii'"
+               },
+               "calls": [],
+               "returned": "'Accept-Encoding'",
+               "tl": 130
+              },
+              {
+               "fn": "CaseInsensitiveDict.__setitem__",
+               "file": "src/requests/structures.py",
+               "line": 59,
+               "called_from": "models.py:574",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "key": "'Accept-Encoding'",
+                "value": "'gzip, deflate'"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 132
+              },
+              {
+               "fn": "CaseInsensitiveDict.__getitem__",
+               "file": "src/requests/structures.py",
+               "line": 64,
+               "called_from": "<frozen _collections_abc>:899",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "key": "'Accept'"
+               },
+               "calls": [],
+               "returned": "'*/*'",
+               "tl": 134
+              },
+              {
+               "fn": "check_header_validity",
+               "file": "src/requests/utils.py",
+               "line": 1087,
+               "called_from": "models.py:572",
+               "args": {
+                "header": "('Accept', '*/*')"
+               },
+               "calls": [
+                {
+                 "fn": "_validate_header_part",
+                 "file": "src/requests/utils.py",
+                 "line": 1098,
+                 "called_from": "utils.py:1094",
+                 "args": {
+                  "header": "('Accept', '*/*')",
+                  "header_part": "'Accept'",
+                  "header_validator_index": "0"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 137
+                },
+                {
+                 "fn": "_validate_header_part",
+                 "file": "src/requests/utils.py",
+                 "line": 1098,
+                 "args": {},
+                 "calls": [],
+                 "repeat": 1,
+                 "returned": "None",
+                 "tl": 139
+                }
+               ],
+               "returned": "None",
+               "tl": 136
+              },
+              {
+               "fn": "to_native_string",
+               "file": "src/requests/_internal_utils.py",
+               "line": 26,
+               "called_from": "models.py:574",
+               "args": {
+                "string": "'Accept'",
+                "encoding": "'ascii'"
+               },
+               "calls": [],
+               "returned": "'Accept'",
+               "tl": 141
+              },
+              {
+               "fn": "CaseInsensitiveDict.__setitem__",
+               "file": "src/requests/structures.py",
+               "line": 59,
+               "called_from": "models.py:574",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "key": "'Accept'",
+                "value": "'*/*'"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 143
+              },
+              {
+               "fn": "CaseInsensitiveDict.__getitem__",
+               "file": "src/requests/structures.py",
+               "line": 64,
+               "called_from": "<frozen _collections_abc>:899",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "key": "'Connection'"
+               },
+               "calls": [],
+               "returned": "'keep-alive'",
+               "tl": 145
+              },
+              {
+               "fn": "check_header_validity",
+               "file": "src/requests/utils.py",
+               "line": 1087,
+               "called_from": "models.py:572",
+               "args": {
+                "header": "('Connection', 'keep-alive')"
+               },
+               "calls": [
+                {
+                 "fn": "_validate_header_part",
+                 "file": "src/requests/utils.py",
+                 "line": 1098,
+                 "called_from": "utils.py:1094",
+                 "args": {
+                  "header": "('Connection', 'keep-alive')",
+                  "header_part": "'Connection'",
+                  "header_validator_index": "0"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 148
+                },
+                {
+                 "fn": "_validate_header_part",
+                 "file": "src/requests/utils.py",
+                 "line": 1098,
+                 "args": {},
+                 "calls": [],
+                 "repeat": 1,
+                 "returned": "None",
+                 "tl": 150
+                }
+               ],
+               "returned": "None",
+               "tl": 147
+              },
+              {
+               "fn": "to_native_string",
+               "file": "src/requests/_internal_utils.py",
+               "line": 26,
+               "called_from": "models.py:574",
+               "args": {
+                "string": "'Connection'",
+                "encoding": "'ascii'"
+               },
+               "calls": [],
+               "returned": "'Connection'",
+               "tl": 152
+              },
+              {
+               "fn": "CaseInsensitiveDict.__setitem__",
+               "file": "src/requests/structures.py",
+               "line": 59,
+               "called_from": "models.py:574",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "key": "'Connection'",
+                "value": "'keep-alive'"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 154
+              }
+             ],
+             "returned": "None",
+             "tl": 105
+            },
+            {
+             "fn": "PreparedRequest.prepare_cookies",
+             "file": "src/requests/models.py",
+             "line": 699,
+             "called_from": "models.py:443",
+             "args": {
+              "self": "<PreparedRequest>",
+              "cookies": "<RequestsCookieJar[]>"
+             },
+             "calls": [
+              {
+               "fn": "get_cookie_header",
+               "file": "src/requests/cookies.py",
+               "line": 153,
+               "called_from": "models.py:718",
+               "args": {
+                "jar": "<RequestsCookieJar[]>",
+                "request": "<PreparedRequest [GET]>"
+               },
+               "calls": [
+                {
+                 "fn": "MockRequest.__init__",
+                 "file": "src/requests/cookies.py",
+                 "line": 45,
+                 "called_from": "cookies.py:159",
+                 "args": {
+                  "self": "<MockRequest>",
+                  "request": "<PreparedRequest [GET]>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "is_prepared",
+                   "file": "src/requests/_types.py",
+                   "line": 47,
+                   "called_from": "cookies.py:46",
+                   "args": {
+                    "request": "<PreparedRequest [GET]>"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 160
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 159
+                },
+                {
+                 "fn": "RequestsCookieJar.__iter__",
+                 "file": "src/requests/cookies.py",
+                 "line": 348,
+                 "called_from": "cookiejar.py:1747",
+                 "args": {
+                  "self": "<RequestsCookieJar>"
+                 },
+                 "calls": [],
+                 "returned": "<generator object deepvalues at 0x10da2f140>",
+                 "tl": 163
+                },
+                {
+                 "fn": "MockRequest.get_new_headers",
+                 "file": "src/requests/cookies.py",
+                 "line": 98,
+                 "called_from": "cookies.py:161",
+                 "args": {
+                  "self": "<MockRequest>"
+                 },
+                 "calls": [],
+                 "returned": "{}",
+                 "tl": 165
+                }
+               ],
+               "returned": "None",
+               "tl": 158
+              }
+             ],
+             "returned": "None",
+             "tl": 157
+            },
+            {
+             "fn": "PreparedRequest.prepare_body",
+             "file": "src/requests/models.py",
+             "line": 576,
+             "called_from": "models.py:444",
+             "args": {
+              "self": "<PreparedRequest>",
+              "data": "{}",
+              "files": "[]",
+              "json": "None"
+             },
+             "calls": [
+              {
+               "fn": "PreparedRequest.prepare_content_length",
+               "file": "src/requests/models.py",
+               "line": 654,
+               "called_from": "models.py:646",
+               "args": {
+                "self": "<PreparedRequest>",
+                "body": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 170
+              }
+             ],
+             "returned": "None",
+             "tl": 169
+            },
+            {
+             "fn": "PreparedRequest.prepare_auth",
+             "file": "src/requests/models.py",
+             "line": 670,
+             "called_from": "models.py:445",
+             "args": {
+              "self": "<PreparedRequest>",
+              "auth": "('user', 'pass')",
+              "url": "'http://127.0.0.1:54897/basic-auth/user/pass'"
+             },
+             "calls": [
+              {
+               "fn": "HTTPBasicAuth.__init__",
+               "file": "src/requests/auth.py",
+               "line": 96,
+               "called_from": "models.py:685",
+               "args": {
+                "self": "<HTTPBasicAuth>",
+                "username": "'user'",
+                "password": "'pass'"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 174
+              },
+              {
+               "fn": "HTTPBasicAuth.__call__",
+               "file": "src/requests/auth.py",
+               "line": 111,
+               "called_from": "models.py:691",
+               "args": {
+                "self": "<HTTPBasicAuth>",
+                "r": "<PreparedRequest [GET]>"
+               },
+               "calls": [
+                {
+                 "fn": "_basic_auth_str",
+                 "file": "src/requests/auth.py",
+                 "line": 34,
+                 "called_from": "auth.py:112",
+                 "args": {
+                  "username": "'user'",
+                  "password": "'pass'"
+                 },
+                 "calls": [
+                  {
+                   "fn": "to_native_string",
+                   "file": "src/requests/_internal_utils.py",
+                   "line": 26,
+                   "called_from": "auth.py:71",
+                   "args": {
+                    "string": "b'dXNlcjpwYXNz'",
+                    "encoding": "'ascii'"
+                   },
+                   "calls": [],
+                   "returned": "'dXNlcjpwYXNz'",
+                   "tl": 178
+                  }
+                 ],
+                 "returned": "'Basic dXNlcjpwYXNz'",
+                 "tl": 177
+                },
+                {
+                 "fn": "CaseInsensitiveDict.__setitem__",
+                 "file": "src/requests/structures.py",
+                 "line": 59,
+                 "called_from": "auth.py:112",
+                 "args": {
+                  "self": "<CaseInsensitiveDict>",
+                  "key": "'Authorization'",
+                  "value": "'Basic dXNlcjpwYXNz'"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 181
+                }
+               ],
+               "returned": "<PreparedRequest [GET]>",
+               "tl": 176
+              },
+              {
+               "fn": "PreparedRequest.prepare_content_length",
+               "file": "src/requests/models.py",
+               "line": 654,
+               "called_from": "models.py:697",
+               "args": {
+                "self": "<PreparedRequest>",
+                "body": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 184
+              }
+             ],
+             "returned": "None",
+             "tl": 173
+            },
+            {
+             "fn": "PreparedRequest.prepare_hooks",
+             "file": "src/requests/models.py",
+             "line": 722,
+             "called_from": "models.py:451",
+             "args": {
+              "self": "<PreparedRequest>",
+              "hooks": "{'response': []}"
+             },
+             "calls": [
+              {
+               "fn": "RequestHooksMixin.register_hook",
+               "file": "src/requests/models.py",
+               "line": 257,
+               "called_from": "models.py:729",
+               "args": {
+                "self": "<PreparedRequest>",
+                "event": "'response'",
+                "hook": "[]"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 188
+              }
+             ],
+             "returned": "None",
+             "tl": 187
+            }
+           ],
+           "returned": "None",
+           "tl": 86
+          }
+         ],
+         "returned": "<PreparedRequest [GET]>",
+         "tl": 44
+        },
+        {
+         "fn": "is_prepared",
+         "file": "src/requests/_types.py",
+         "line": 47,
+         "called_from": "sessions.py:637",
+         "args": {
+          "request": "<PreparedRequest [GET]>"
+         },
+         "calls": [],
+         "returned": "True",
+         "tl": 193
+        },
+        {
+         "fn": "Session.merge_environment_settings",
+         "file": "src/requests/sessions.py",
+         "line": 831,
+         "called_from": "sessions.py:641",
+         "args": {
+          "self": "<Session>",
+          "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+          "proxies": "{}",
+          "stream": "None",
+          "verify": "None",
+          "cert": "None"
+         },
+         "calls": [
+          {
+           "fn": "get_environ_proxies",
+           "file": "src/requests/utils.py",
+           "line": 873,
+           "called_from": "sessions.py:848",
+           "args": {
+            "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+            "no_proxy": "None"
+           },
+           "calls": [
+            {
+             "fn": "should_bypass_proxies",
+             "file": "src/requests/utils.py",
+             "line": 810,
+             "called_from": "utils.py:879",
+             "args": {
+              "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+              "no_proxy": "None"
+             },
+             "calls": [
+              {
+               "fn": "should_bypass_proxies.<locals>.get_proxy",
+               "file": "src/requests/utils.py",
+               "line": 819,
+               "called_from": "utils.py:826",
+               "args": {
+                "key": "'no_proxy'"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 198
+              },
+              {
+               "fn": "set_environ",
+               "file": "src/requests/utils.py",
+               "line": 787,
+               "called_from": "contextlib.py:141",
+               "args": {
+                "env_name": "'no_proxy'",
+                "value": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 200
+              },
+              {
+               "fn": "set_environ",
+               "file": "src/requests/utils.py",
+               "line": 787,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "None",
+               "tl": 202
+              }
+             ],
+             "returned": "False",
+             "tl": 197
+            }
+           ],
+           "returned": "{}",
+           "tl": 196
+          },
+          {
+           "fn": "merge_setting",
+           "file": "src/requests/sessions.py",
+           "line": 76,
+           "called_from": "sessions.py:863",
+           "args": {
+            "request_setting": "{}",
+            "session_setting": "{}",
+            "dict_class": "<class 'collections.OrderedDict'>"
+           },
+           "calls": [
+            {
+             "fn": "to_key_val_list",
+             "file": "src/requests/utils.py",
+             "line": 376,
+             "called_from": "sessions.py:96",
+             "args": {
+              "value": "{}"
+             },
+             "calls": [],
+             "returned": "[]",
+             "tl": 206
+            },
+            {
+             "fn": "to_key_val_list",
+             "file": "src/requests/utils.py",
+             "line": 376,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "[]",
+             "tl": 208
+            }
+           ],
+           "returned": "OrderedDict()",
+           "tl": 205
+          },
+          {
+           "fn": "merge_setting",
+           "file": "src/requests/sessions.py",
+           "line": 76,
+           "args": {},
+           "calls": [],
+           "repeat": 3,
+           "returned": "(various)",
+           "tl": 210
+          }
+         ],
+         "returned": "{'cert': None, 'proxies': OrderedDict(), 'stream': False, 'verify': True}",
+         "tl": 195
+        },
+        {
+         "fn": "Session.send",
+         "file": "src/requests/sessions.py",
+         "line": 752,
+         "called_from": "sessions.py:651",
+         "args": {
+          "self": "<Session>",
+          "request": "<PreparedRequest [GET]>"
+         },
+         "calls": [
+          {
+           "fn": "is_prepared",
+           "file": "src/requests/_types.py",
+           "line": 47,
+           "called_from": "sessions.py:770",
+           "args": {
+            "request": "<PreparedRequest [GET]>"
+           },
+           "calls": [],
+           "returned": "True",
+           "tl": 213
+          },
+          {
+           "fn": "Session.get_adapter",
+           "file": "src/requests/sessions.py",
+           "line": 870,
+           "called_from": "sessions.py:778",
+           "args": {
+            "self": "<Session>",
+            "url": "'http://127.0.0.1:54897/basic-auth/user/pass'"
+           },
+           "calls": [],
+           "returned": "<requests.adapters.HTTPAdapter object at 0x10da78190>",
+           "tl": 215
+          },
+          {
+           "fn": "HTTPAdapter.send",
+           "file": "src/requests/adapters.py",
+           "line": 634,
+           "called_from": "sessions.py:784",
+           "args": {
+            "self": "<HTTPAdapter>",
+            "request": "<PreparedRequest [GET]>",
+            "stream": "False",
+            "timeout": "None",
+            "verify": "True",
+            "cert": "None",
+            "proxies": "OrderedDict()"
+           },
+           "calls": [
+            {
+             "fn": "is_prepared",
+             "file": "src/requests/_types.py",
+             "line": 47,
+             "called_from": "adapters.py:659",
+             "args": {
+              "request": "<PreparedRequest [GET]>"
+             },
+             "calls": [],
+             "returned": "True",
+             "tl": 218
+            },
+            {
+             "fn": "HTTPAdapter.get_connection_with_tls_context",
+             "file": "src/requests/adapters.py",
+             "line": 455,
+             "called_from": "adapters.py:662",
+             "args": {
+              "self": "<HTTPAdapter>",
+              "request": "<PreparedRequest [GET]>",
+              "verify": "True",
+              "proxies": "OrderedDict()",
+              "cert": "None"
+             },
+             "calls": [
+              {
+               "fn": "is_prepared",
+               "file": "src/requests/_types.py",
+               "line": 47,
+               "called_from": "adapters.py:481",
+               "args": {
+                "request": "<PreparedRequest [GET]>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 221
+              },
+              {
+               "fn": "select_proxy",
+               "file": "src/requests/utils.py",
+               "line": 885,
+               "called_from": "adapters.py:483",
+               "args": {
+                "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+                "proxies": "OrderedDict()"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 223
+              },
+              {
+               "fn": "HTTPAdapter.build_connection_pool_key_attributes",
+               "file": "src/requests/adapters.py",
+               "line": 403,
+               "called_from": "adapters.py:485",
+               "args": {
+                "self": "<HTTPAdapter>",
+                "request": "<PreparedRequest [GET]>",
+                "verify": "True",
+                "cert": "None"
+               },
+               "calls": [
+                {
+                 "fn": "_urllib3_request_context",
+                 "file": "src/requests/adapters.py",
+                 "line": 85,
+                 "called_from": "adapters.py:453",
+                 "args": {
+                  "request": "<PreparedRequest [GET]>",
+                  "verify": "True",
+                  "client_cert": "None",
+                  "poolmanager": "<urllib3.poolmanager.PoolManager object at 0x10da78410>"
+                 },
+                 "calls": [],
+                 "returned": "({'host': '127.0.0.1', 'port': 54897, 'scheme': 'http'}, {'cert_reqs': 'CERT_REQUIRED'})",
+                 "tl": 226
+                }
+               ],
+               "returned": "({'host': '127.0.0.1', 'port': 54897, 'scheme': 'http'}, {'cert_reqs': 'CERT_REQUIRED'})",
+               "tl": 225
+              }
+             ],
+             "returned": "<urllib3.connectionpool.HTTPConnectionPool object at 0x10da09400>",
+             "tl": 220
+            },
+            {
+             "fn": "HTTPAdapter.cert_verify",
+             "file": "src/requests/adapters.py",
+             "line": 307,
+             "called_from": "adapters.py:668",
+             "args": {
+              "self": "<HTTPAdapter>",
+              "conn": "<urllib3.connectionpool.HTTPConnectionPool object at 0x10da09400>",
+              "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+              "verify": "True",
+              "cert": "None"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 230
+            },
+            {
+             "fn": "HTTPAdapter.request_url",
+             "file": "src/requests/adapters.py",
+             "line": 565,
+             "called_from": "adapters.py:669",
+             "args": {
+              "self": "<HTTPAdapter>",
+              "request": "<PreparedRequest [GET]>",
+              "proxies": "OrderedDict()"
+             },
+             "calls": [
+              {
+               "fn": "is_prepared",
+               "file": "src/requests/_types.py",
+               "line": 47,
+               "called_from": "adapters.py:581",
+               "args": {
+                "request": "<PreparedRequest [GET]>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 233
+              },
+              {
+               "fn": "select_proxy",
+               "file": "src/requests/utils.py",
+               "line": 885,
+               "called_from": "adapters.py:583",
+               "args": {
+                "url": "'http://127.0.0.1:54897/basic-auth/user/pass'",
+                "proxies": "OrderedDict()"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 235
+              },
+              {
+               "fn": "RequestEncodingMixin.path_url",
+               "file": "src/requests/models.py",
+               "line": 111,
+               "called_from": "adapters.py:592",
+               "args": {
+                "self": "<PreparedRequest>"
+               },
+               "calls": [],
+               "returned": "'/basic-auth/user/pass'",
+               "tl": 237
+              }
+             ],
+             "returned": "'/basic-auth/user/pass'",
+             "tl": 232
+            },
+            {
+             "fn": "HTTPAdapter.add_headers",
+             "file": "src/requests/adapters.py",
+             "line": 599,
+             "called_from": "adapters.py:670",
+             "args": {
+              "self": "<HTTPAdapter>",
+              "request": "<PreparedRequest [GET]>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 240
+            },
+            {
+             "fn": "CaseInsensitiveDict.copy",
+             "file": "src/requests/structures.py",
+             "line": 89,
+             "called_from": "connectionpool.py:755",
+             "args": {
+              "self": "<CaseInsensitiveDict>"
+             },
+             "calls": [
+              {
+               "fn": "CaseInsensitiveDict.__init__",
+               "file": "src/requests/structures.py",
+               "line": 49,
+               "called_from": "structures.py:90",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "data": "odict_values([('User-Agent', 'python-r...Authorization', 'Basic dXNlcjpwYXNz')])"
+               },
+               "calls": [
+                {
+                 "fn": "CaseInsensitiveDict.__setitem__",
+                 "file": "src/requests/structures.py",
+                 "line": 59,
+                 "called_from": "<frozen _collections_abc>:993",
+                 "args": {
+                  "self": "<CaseInsensitiveDict>",
+                  "key": "'User-Agent'",
+                  "value": "'python-requests/2.34.2'"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 244
+                },
+                {
+                 "fn": "CaseInsensitiveDict.__setitem__",
+                 "file": "src/requests/structures.py",
+                 "line": 59,
+                 "args": {},
+                 "calls": [],
+                 "repeat": 4,
+                 "returned": "None",
+                 "tl": 246
+                }
+               ],
+               "returned": "None",
+               "tl": 243
+              }
+             ],
+             "returned": "{'User-Agent': 'python-requests/2.34.2... 'Authorization': 'Basic dXNlcjpwYXNz'}",
+             "tl": 242
+            },
+            {
+             "fn": "CaseInsensitiveDict.__iter__",
+             "file": "src/requests/structures.py",
+             "line": 70,
+             "called_from": "connection.py:526",
+             "args": {
+              "self": "<CaseInsensitiveDict>"
+             },
+             "calls": [],
+             "returned": "<generator object CaseInsensitiveDict....er__.<locals>.<genexpr> at 0x10da61ff0>",
+             "tl": 249
+            },
+            {
+             "fn": "CaseInsensitiveDict.__iter__",
+             "file": "src/requests/structures.py",
+             "line": 70,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "<generator object CaseInsensitiveDict....er__.<locals>.<genexpr> at 0x10da62260>",
+             "tl": 251
+            },
+            {
+             "fn": "CaseInsensitiveDict.__getitem__",
+             "file": "src/requests/structures.py",
+             "line": 64,
+             "called_from": "<frozen _collections_abc>:899",
+             "args": {
+              "self": "<CaseInsensitiveDict>",
+              "key": "'User-Agent'"
+             },
+             "calls": [],
+             "returned": "'python-requests/2.34.2'",
+             "tl": 252
+            },
+            {
+             "fn": "CaseInsensitiveDict.__getitem__",
+             "file": "src/requests/structures.py",
+             "line": 64,
+             "args": {},
+             "calls": [],
+             "repeat": 4,
+             "returned": "(various)",
+             "tl": 254
+            },
+            {
+             "fn": "HTTPAdapter.build_response",
+             "file": "src/requests/adapters.py",
+             "line": 365,
+             "called_from": "adapters.py:748",
+             "args": {
+              "self": "<HTTPAdapter>",
+              "req": "<PreparedRequest [GET]>",
+              "resp": "<urllib3.response.HTTPResponse object at 0x10c23f910>"
+             },
+             "calls": [
+              {
+               "fn": "is_prepared",
+               "file": "src/requests/_types.py",
+               "line": 47,
+               "called_from": "adapters.py:375",
+               "args": {
+                "request": "<PreparedRequest [GET]>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 256
+              },
+              {
+               "fn": "Response.__init__",
+               "file": "src/requests/models.py",
+               "line": 765,
+               "called_from": "adapters.py:376",
+               "args": {
+                "self": "<Response>"
+               },
+               "calls": [
+                {
+                 "fn": "CaseInsensitiveDict.__init__",
+                 "file": "src/requests/structures.py",
+                 "line": 49,
+                 "called_from": "models.py:776",
+                 "args": {
+                  "self": "<CaseInsensitiveDict>",
+                  "data": "None"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 259
+                },
+                {
+                 "fn": "cookiejar_from_dict",
+                 "file": "src/requests/cookies.py",
+                 "line": 579,
+                 "called_from": "models.py:798",
+                 "args": {
+                  "cookie_dict": "{}",
+                  "cookiejar": "None",
+                  "overwrite": "True"
+                 },
+                 "calls": [
+                  {
+                   "fn": "RequestsCookieJar.__iter__",
+                   "file": "src/requests/cookies.py",
+                   "line": 348,
+                   "called_from": "cookies.py:596",
+                   "args": {
+                    "self": "<RequestsCookieJar>"
+                   },
+                   "calls": [],
+                   "returned": "<generator object deepvalues at 0x10da2f840>",
+                   "tl": 262
+                  }
+                 ],
+                 "returned": "<RequestsCookieJar[]>",
+                 "tl": 261
+                }
+               ],
+               "returned": "None",
+               "tl": 258
+              },
+              {
+               "fn": "CaseInsensitiveDict.__init__",
+               "file": "src/requests/structures.py",
+               "line": 49,
+               "called_from": "adapters.py:382",
+               "args": {
+                "self": "<CaseInsensitiveDict>",
+                "data": "HTTPHeaderDict({'Server': 'BaseHTTP/0....harset=utf-8', 'Content-Length': '39'})"
+               },
+               "calls": [
+                {
+                 "fn": "CaseInsensitiveDict.__setitem__",
+                 "file": "src/requests/structures.py",
+                 "line": 59,
+                 "called_from": "<frozen _collections_abc>:987",
+                 "args": {
+                  "self": "<CaseInsensitiveDict>",
+                  "key": "'Server'",
+                  "value": "'BaseHTTP/0.6 Python/3.13.1'"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 267
+                },
+                {
+                 "fn": "CaseInsensitiveDict.__setitem__",
+                 "file": "src/requests/structures.py",
+                 "line": 59,
+                 "args": {},
+                 "calls": [],
+                 "repeat": 3,
+                 "returned": "None",
+                 "tl": 269
+                }
+               ],
+               "returned": "None",
+               "tl": 266
+              },
+              {
+               "fn": "get_encoding_from_headers",
+               "file": "src/requests/utils.py",
+               "line": 569,
+               "called_from": "adapters.py:385",
+               "args": {
+                "headers": "{'Server': 'BaseHTTP/0.6 Python/3.13.1...charset=utf-8', 'Content-Length': '39'}"
+               },
+               "calls": [
+                {
+                 "fn": "CaseInsensitiveDict.__getitem__",
+                 "file": "src/requests/structures.py",
+                 "line": 64,
+                 "called_from": "<frozen _collections_abc>:811",
+                 "args": {
+                  "self": "<CaseInsensitiveDict>",
+                  "key": "'content-type'"
+                 },
+                 "calls": [],
+                 "returned": "'application/json; charset=utf-8'",
+                 "tl": 272
+                },
+                {
+                 "fn": "_parse_content_type_header",
+                 "file": "src/requests/utils.py",
+                 "line": 547,
+                 "called_from": "utils.py:581",
+                 "args": {
+                  "header": "'application/json; charset=utf-8'"
+                 },
+                 "calls": [],
+                 "returned": "('application/json', {'charset': 'utf-8'})",
+                 "tl": 274
+                }
+               ],
+               "returned": "'utf-8'",
+               "tl": 271
+              },
+              {
+               "fn": "extract_cookies_to_jar",
+               "file": "src/requests/cookies.py",
+               "line": 135,
+               "called_from": "adapters.py:395",
+               "args": {
+                "jar": "<RequestsCookieJar[]>",
+                "request": "<PreparedRequest [GET]>",
+                "response": "<urllib3.response.HTTPResponse object at 0x10c23f910>"
+               },
+               "calls": [
+                {
+                 "fn": "MockRequest.__init__",
+                 "file": "src/requests/cookies.py",
+                 "line": 45,
+                 "called_from": "cookies.py:147",
+                 "args": {
+                  "self": "<MockRequest>",
+                  "request": "<PreparedRequest [GET]>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "is_prepared",
+                   "file": "src/requests/_types.py",
+                   "line": 47,
+                   "called_from": "cookies.py:46",
+                   "args": {
+                    "request": "<PreparedRequest [GET]>"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 279
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 278
+                },
+                {
+                 "fn": "MockResponse.__init__",
+                 "file": "src/requests/cookies.py",
+                 "line": 121,
+                 "called_from": "cookies.py:149",
+                 "args": {
+                  "self": "<MockResponse>",
+                  "headers": "<http.client.HTTPMessage object at 0x10da055b0>"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 282
+                },
+                {
+                 "fn": "MockResponse.info",
+                 "file": "src/requests/cookies.py",
+                 "line": 128,
+                 "called_from": "cookiejar.py:1682",
+                 "args": {
+                  "self": "<MockResponse>"
+                 },
+                 "calls": [],
+                 "returned": "<http.client.HTTPMessage object at 0x10da055b0>",
+                 "tl": 284
+                },
+                {
+                 "fn": "MockResponse.info",
+                 "file": "src/requests/cookies.py",
+                 "line": 128,
+                 "args": {},
+                 "calls": [],
+                 "repeat": 1,
+                 "returned": "<http.client.HTTPMessage object at 0x10da055b0>",
+                 "tl": 286
+                }
+               ],
+               "returned": "None",
+               "tl": 277
+              }
+             ],
+             "returned": "<Response [200]>",
+             "tl": 255
+            }
+           ],
+           "returned": "<Response [200]>",
+           "tl": 217
+          },
+          {
+           "fn": "dispatch_hook",
+           "file": "src/requests/hooks.py",
+           "line": 32,
+           "called_from": "sessions.py:791",
+           "args": {
+            "key": "'response'",
+            "hooks": "{'response': []}",
+            "hook_data": "<Response [200]>"
+           },
+           "calls": [],
+           "returned": "<Response [200]>",
+           "tl": 290
+          },
+          {
+           "fn": "extract_cookies_to_jar",
+           "file": "src/requests/cookies.py",
+           "line": 135,
+           "called_from": "sessions.py:799",
+           "args": {
+            "jar": "<RequestsCookieJar[]>",
+            "request": "<PreparedRequest [GET]>",
+            "response": "<urllib3.response.HTTPResponse object at 0x10c23f910>"
+           },
+           "calls": [
+            {
+             "fn": "MockRequest.__init__",
+             "file": "src/requests/cookies.py",
+             "line": 45,
+             "called_from": "cookies.py:147",
+             "args": {
+              "self": "<MockRequest>",
+              "request": "<PreparedRequest [GET]>"
+             },
+             "calls": [
+              {
+               "fn": "is_prepared",
+               "file": "src/requests/_types.py",
+               "line": 47,
+               "called_from": "cookies.py:46",
+               "args": {
+                "request": "<PreparedRequest [GET]>"
+               },
+               "calls": [],
+               "returned": "True",
+               "tl": 294
+              }
+             ],
+             "returned": "None",
+             "tl": 293
+            },
+            {
+             "fn": "MockResponse.__init__",
+             "file": "src/requests/cookies.py",
+             "line": 121,
+             "called_from": "cookies.py:149",
+             "args": {
+              "self": "<MockResponse>",
+              "headers": "<http.client.HTTPMessage object at 0x10da055b0>"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 297
+            },
+            {
+             "fn": "MockResponse.info",
+             "file": "src/requests/cookies.py",
+             "line": 128,
+             "called_from": "cookiejar.py:1682",
+             "args": {
+              "self": "<MockResponse>"
+             },
+             "calls": [],
+             "returned": "<http.client.HTTPMessage object at 0x10da055b0>",
+             "tl": 299
+            },
+            {
+             "fn": "MockResponse.info",
+             "file": "src/requests/cookies.py",
+             "line": 128,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "<http.client.HTTPMessage object at 0x10da055b0>",
+             "tl": 301
+            }
+           ],
+           "returned": "None",
+           "tl": 292
+          },
+          {
+           "fn": "SessionRedirectMixin.resolve_redirects",
+           "file": "src/requests/sessions.py",
+           "line": 186,
+           "called_from": "sessions.py:805",
+           "args": {
+            "self": "<Session>",
+            "resp": "<Response [200]>",
+            "req": "<PreparedRequest [GET]>",
+            "stream": "False",
+            "timeout": "None",
+            "verify": "True",
+            "cert": "None",
+            "proxies": "OrderedDict()",
+            "yield_requests": "False"
+           },
+           "calls": [
+            {
+             "fn": "SessionRedirectMixin.get_redirect_target",
+             "file": "src/requests/sessions.py",
+             "line": 134,
+             "called_from": "sessions.py:202",
+             "args": {
+              "self": "<Session>",
+              "resp": "<Response [200]>"
+             },
+             "calls": [
+              {
+               "fn": "Response.is_redirect",
+               "file": "src/requests/models.py",
+               "line": 876,
+               "called_from": "sessions.py:142",
+               "args": {
+                "self": "<Response>"
+               },
+               "calls": [
+                {
+                 "fn": "CaseInsensitiveDict.__getitem__",
+                 "file": "src/requests/structures.py",
+                 "line": 64,
+                 "called_from": "<frozen _collections_abc>:817",
+                 "args": {
+                  "self": "<CaseInsensitiveDict>",
+                  "key": "'location'"
+                 },
+                 "calls": [],
+                 "raised": "KeyError('location')",
+                 "returned": "None",
+                 "tl": 306
+                }
+               ],
+               "returned": "False",
+               "tl": 305
+              }
+             ],
+             "returned": "None",
+             "tl": 304
+            }
+           ],
+           "returned": "None",
+           "tl": 303
+          },
+          {
+           "fn": "Response.content",
+           "file": "src/requests/models.py",
+           "line": 1034,
+           "called_from": "sessions.py:827",
+           "args": {
+            "self": "<Response>"
+           },
+           "calls": [
+            {
+             "fn": "Response.iter_content",
+             "file": "src/requests/models.py",
+             "line": 914,
+             "called_from": "models.py:1046",
+             "args": {
+              "self": "<Response>",
+              "chunk_size": "10240",
+              "decode_unicode": "False"
+             },
+             "calls": [],
+             "returned": "<generator object Response.iter_content.<locals>.generate at 0x10c9fa4d0>",
+             "tl": 312
+            },
+            {
+             "fn": "Response.iter_content.<locals>.generate",
+             "file": "src/requests/models.py",
+             "line": 935,
+             "called_from": "models.py:1046",
+             "args": {},
+             "calls": [],
+             "returned": "b'{\"authenticated\": true, \"user\": \"user\"}'",
+             "tl": 314
+            },
+            {
+             "fn": "Response.iter_content.<locals>.generate",
+             "file": "src/requests/models.py",
+             "line": 935,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "None",
+             "tl": 316
+            }
+           ],
+           "returned": "b'{\"authenticated\": true, \"user\": \"user\"}'",
+           "tl": 311
+          }
+         ],
+         "returned": "<Response [200]>",
+         "tl": 212
+        }
+       ],
+       "returned": "<Response [200]>",
+       "tl": 39
+      },
+      {
+       "fn": "Session.__exit__",
+       "file": "src/requests/sessions.py",
+       "line": 508,
+       "called_from": "api.py:70",
+       "args": {
+        "self": "<Session>"
+       },
+       "calls": [
+        {
+         "fn": "Session.close",
+         "file": "src/requests/sessions.py",
+         "line": 883,
+         "called_from": "sessions.py:509",
+         "args": {
+          "self": "<Session>"
+         },
+         "calls": [
+          {
+           "fn": "HTTPAdapter.close",
+           "file": "src/requests/adapters.py",
+           "line": 555,
+           "called_from": "sessions.py:886",
+           "args": {
+            "self": "<HTTPAdapter>"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 322
+          },
+          {
+           "fn": "HTTPAdapter.close",
+           "file": "src/requests/adapters.py",
+           "line": 555,
+           "args": {},
+           "calls": [],
+           "repeat": 1,
+           "returned": "None",
+           "tl": 324
+          }
+         ],
+         "returned": "None",
+         "tl": 321
+        }
+       ],
+       "returned": "None",
+       "tl": 320
+      }
+     ],
+     "returned": "<Response [200]>",
+     "tl": 3
+    }
+   ],
+   "returned": "<Response [200]>",
+   "tl": 2
+  },
+  {
+   "fn": "CaseInsensitiveDict.__getitem__",
+   "file": "src/requests/structures.py",
+   "line": 64,
+   "called_from": "scenario.py:44",
+   "args": {
+    "self": "<CaseInsensitiveDict>",
+    "key": "'content-type'"
+   },
+   "calls": [],
+   "returned": "'application/json; charset=utf-8'",
+   "tl": 329
+  },
+  {
+   "fn": "Response.text",
+   "file": "src/requests/models.py",
+   "line": 1053,
+   "called_from": "scenario.py:46",
+   "args": {
+    "self": "<Response>"
+   },
+   "calls": [
+    {
+     "fn": "Response.content",
+     "file": "src/requests/models.py",
+     "line": 1034,
+     "called_from": "models.py:1070",
+     "args": {
+      "self": "<Response>"
+     },
+     "calls": [],
+     "returned": "b'{\"authenticated\": true, \"user\": \"user\"}'",
+     "tl": 332
+    },
+    {
+     "fn": "Response.content",
+     "file": "src/requests/models.py",
+     "line": 1034,
+     "args": {},
+     "calls": [],
+     "repeat": 1,
+     "returned": "b'{\"authenticated\": true, \"user\": \"user\"}'",
+     "tl": 334
+    }
+   ],
+   "returned": "'{\"authenticated\": true, \"user\": \"user\"}'",
+   "tl": 331
+  },
+  {
+   "fn": "Response.json",
+   "file": "src/requests/models.py",
+   "line": 1091,
+   "called_from": "scenario.py:47",
+   "args": {
+    "self": "<Response>"
+   },
+   "calls": [
+    {
+     "fn": "Response.text",
+     "file": "src/requests/models.py",
+     "line": 1053,
+     "called_from": "models.py:1120",
+     "args": {
+      "self": "<Response>"
+     },
+     "calls": [
+      {
+       "fn": "Response.content",
+       "file": "src/requests/models.py",
+       "line": 1034,
+       "called_from": "models.py:1070",
+       "args": {
+        "self": "<Response>"
+       },
+       "calls": [],
+       "returned": "b'{\"authenticated\": true, \"user\": \"user\"}'",
+       "tl": 338
+      },
+      {
+       "fn": "Response.content",
+       "file": "src/requests/models.py",
+       "line": 1034,
+       "args": {},
+       "calls": [],
+       "repeat": 1,
+       "returned": "b'{\"authenticated\": true, \"user\": \"user\"}'",
+       "tl": 340
+      }
+     ],
+     "returned": "'{\"authenticated\": true, \"user\": \"user\"}'",
+     "tl": 337
+    }
+   ],
+   "returned": "{'authenticated': True, 'user': 'user'}",
+   "tl": 336
+  },
+  {
+   "fn": "CaseInsensitiveDict.__getitem__",
+   "file": "src/requests/structures.py",
+   "line": 64,
+   "called_from": "scenario.py:59",
+   "args": {
+    "self": "<CaseInsensitiveDict>",
+    "key": "'content-type'"
+   },
+   "calls": [],
+   "returned": "'application/json; charset=utf-8'",
+   "tl": 343
+  },
+  {
+   "fn": "Response.json",
+   "file": "src/requests/models.py",
+   "line": 1091,
+   "called_from": "scenario.py:61",
+   "args": {
+    "self": "<Response>"
+   },
+   "calls": [
+    {
+     "fn": "Response.text",
+     "file": "src/requests/models.py",
+     "line": 1053,
+     "called_from": "models.py:1120",
+     "args": {
+      "self": "<Response>"
+     },
+     "calls": [
+      {
+       "fn": "Response.content",
+       "file": "src/requests/models.py",
+       "line": 1034,
+       "called_from": "models.py:1070",
+       "args": {
+        "self": "<Response>"
+       },
+       "calls": [],
+       "returned": "b'{\"authenticated\": true, \"user\": \"user\"}'",
+       "tl": 347
+      },
+      {
+       "fn": "Response.content",
+       "file": "src/requests/models.py",
+       "line": 1034,
+       "args": {},
+       "calls": [],
+       "repeat": 1,
+       "returned": "b'{\"authenticated\": true, \"user\": \"user\"}'",
+       "tl": 349
+      }
+     ],
+     "returned": "'{\"authenticated\": true, \"user\": \"user\"}'",
+     "tl": 346
+    }
+   ],
+   "returned": "{'authenticated': True, 'user': 'user'}",
+   "tl": 345
+  }
+ ],
+ "lines": {
+  "src/requests/_internal_utils.py": [
+   31,
+   32,
+   34,
+   36,
+   46,
+   47,
+   48,
+   49
+  ],
+  "src/requests/_types.py": [
+   34,
+   49,
+   52
+  ],
+  "src/requests/adapters.py": [
+   91,
+   92,
+   93,
+   94,
+   95,
+   97,
+   98,
+   100,
+   105,
+   106,
+   114,
+   115,
+   116,
+   117,
+   119,
+   126,
+   208,
+   209,
+   212,
+   213,
+   215,
+   217,
+   218,
+   219,
+   221,
+   258,
+   259,
+   260,
+   262,
+   263,
+   264,
+   265,
+   266,
+   321,
+   344,
+   345,
+   346,
+   348,
+   375,
+   376,
+   379,
+   382,
+   385,
+   386,
+   387,
+   389,
+   392,
+   395,
+   398,
+   399,
+   401,
+   453,
+   481,
+   483,
+   484,
+   485,
+   486,
+   487,
+   488,
+   492,
+   506,
+   507,
+   510,
+   561,
+   562,
+   581,
+   583,
+   584,
+   586,
+   587,
+   588,
+   592,
+   594,
+   597,
+   611,
+   659,
+   661,
+   662,
+   663,
+   668,
+   669,
+   670,
+   671,
+   672,
+   673,
+   674,
+   675,
+   676,
+   679,
+   681,
+   690,
+   693,
+   695,
+   696,
+   697,
+   698,
+   699,
+   700,
+   701,
+   702,
+   703,
+   704,
+   705,
+   706,
+   707,
+   748
+  ],
+  "src/requests/api.py": [
+   70,
+   71,
+   87
+  ],
+  "src/requests/auth.py": [
+   44,
+   54,
+   65,
+   66,
+   68,
+   69,
+   71,
+   72,
+   75,
+   97,
+   98,
+   112,
+   113
+  ],
+  "src/requests/cookies.py": [
+   46,
+   47,
+   48,
+   49,
+   99,
+   126,
+   129,
+   144,
+   147,
+   149,
+   150,
+   159,
+   160,
+   161,
+   350,
+   395,
+   396,
+   592,
+   593,
+   595,
+   596,
+   597,
+   601,
+   613,
+   616,
+   618,
+   619,
+   620,
+   625
+  ],
+  "src/requests/hooks.py": [
+   26,
+   39,
+   40,
+   41,
+   48
+  ],
+  "src/requests/models.py": [
+   115,
+   117,
+   119,
+   120,
+   123,
+   125,
+   126,
+   130,
+   161,
+   163,
+   165,
+   166,
+   167,
+   178,
+   262,
+   265,
+   267,
+   268,
+   269,
+   337,
+   338,
+   339,
+   340,
+   341,
+   343,
+   344,
+   347,
+   348,
+   349,
+   350,
+   351,
+   352,
+   353,
+   354,
+   355,
+   409,
+   411,
+   413,
+   416,
+   418,
+   420,
+   422,
+   439,
+   440,
+   441,
+   442,
+   443,
+   444,
+   445,
+   451,
+   469,
+   470,
+   471,
+   494,
+   497,
+   500,
+   505,
+   510,
+   511,
+   515,
+   521,
+   528,
+   533,
+   537,
+   538,
+   540,
+   541,
+   542,
+   545,
+   548,
+   551,
+   552,
+   556,
+   562,
+   563,
+   568,
+   569,
+   570,
+   572,
+   573,
+   574,
+   585,
+   586,
+   588,
+   602,
+   603,
+   633,
+   636,
+   639,
+   646,
+   649,
+   652,
+   656,
+   663,
+   678,
+   682,
+   683,
+   685,
+   691,
+   694,
+   697,
+   712,
+   713,
+   717,
+   718,
+   719,
+   727,
+   728,
+   729,
+   766,
+   767,
+   768,
+   771,
+   776,
+   781,
+   784,
+   787,
+   792,
+   795,
+   798,
+   806,
+   810,
+   881,
+   935,
+   937,
+   938,
+   939,
+   956,
+   958,
+   960,
+   961,
+   967,
+   972,
+   974,
+   977,
+   1038,
+   1040,
+   1043,
+   1046,
+   1048,
+   1051,
+   1067,
+   1068,
+   1070,
+   1074,
+   1078,
+   1079,
+   1089,
+   1101,
+   1119,
+   1120
+  ],
+  "src/requests/sessions.py": [
+   84,
+   85,
+   87,
+   88,
+   92,
+   96,
+   97,
+   101,
+   102,
+   105,
+   118,
+   119,
+   142,
+   152,
+   200,
+   202,
+   203,
+   204,
+   446,
+   450,
+   455,
+   458,
+   463,
+   466,
+   478,
+   482,
+   488,
+   492,
+   498,
+   501,
+   502,
+   503,
+   506,
+   509,
+   521,
+   522,
+   524,
+   527,
+   528,
+   531,
+   532,
+   536,
+   537,
+   540,
+   541,
+   542,
+   543,
+   544,
+   545,
+   546,
+   547,
+   548,
+   550,
+   551,
+   552,
+   553,
+   555,
+   619,
+   623,
+   624,
+   625,
+   626,
+   627,
+   628,
+   629,
+   630,
+   631,
+   632,
+   633,
+   635,
+   637,
+   639,
+   641,
+   642,
+   646,
+   647,
+   648,
+   650,
+   651,
+   653,
+   759,
+   760,
+   761,
+   762,
+   767,
+   770,
+   773,
+   774,
+   775,
+   778,
+   781,
+   784,
+   787,
+   788,
+   791,
+   794,
+   799,
+   802,
+   804,
+   805,
+   810,
+   818,
+   826,
+   827,
+   829,
+   845,
+   847,
+   848,
+   849,
+   850,
+   855,
+   856,
+   857,
+   858,
+   859,
+   863,
+   864,
+   865,
+   866,
+   868,
+   876,
+   877,
+   878,
+   885,
+   886,
+   893,
+   894,
+   896
+  ],
+  "src/requests/structures.py": [
+   54,
+   55,
+   56,
+   57,
+   62,
+   65,
+   71,
+   74,
+   90
+  ],
+  "src/requests/utils.py": [
+   395,
+   398,
+   401,
+   402,
+   555,
+   556,
+   557,
+   558,
+   560,
+   561,
+   562,
+   563,
+   564,
+   565,
+   566,
+   576,
+   578,
+   581,
+   583,
+   584,
+   686,
+   687,
+   701,
+   712,
+   713,
+   714,
+   718,
+   795,
+   796,
+   797,
+   800,
+   801,
+   803,
+   819,
+   820,
+   824,
+   825,
+   826,
+   827,
+   828,
+   830,
+   834,
+   861,
+   862,
+   863,
+   867,
+   870,
+   879,
+   882,
+   891,
+   892,
+   893,
+   896,
+   897,
+   898,
+   899,
+   900,
+   902,
+   903,
+   904,
+   908,
+   948,
+   955,
+   956,
+   957,
+   958,
+   959,
+   960,
+   1093,
+   1094,
+   1095,
+   1103,
+   1104,
+   1114
+  ]
+ },
+ "tl": 1
+}

@@ -1,0 +1,4605 @@
+{
+ "fn": "scenario",
+ "file": "scenario.py",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "tqdm.__new__",
+   "file": "tqdm/std.py",
+   "line": 664,
+   "called_from": "scenario.py:15",
+   "args": {
+    "cls": "<type>"
+   },
+   "calls": [
+    {
+     "fn": "tqdm.get_lock",
+     "file": "tqdm/std.py",
+     "line": 766,
+     "called_from": "std.py:666",
+     "args": {
+      "cls": "<type>"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.__init__",
+       "file": "tqdm/std.py",
+       "line": 88,
+       "called_from": "std.py:770",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [
+        {
+         "fn": "TqdmDefaultWriteLock.create_mp_lock",
+         "file": "tqdm/std.py",
+         "line": 114,
+         "called_from": "std.py:95",
+         "args": {
+          "cls": "<type>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 5
+        }
+       ],
+       "returned": "None",
+       "tl": 4
+      }
+     ],
+     "returned": "<tqdm.std.TqdmDefaultWriteLock object at 0x109742a50>",
+     "tl": 3
+    },
+    {
+     "fn": "TqdmDefaultWriteLock.__enter__",
+     "file": "tqdm/std.py",
+     "line": 108,
+     "called_from": "std.py:666",
+     "args": {
+      "self": "<TqdmDefaultWriteLock>"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.acquire",
+       "file": "tqdm/std.py",
+       "line": 100,
+       "called_from": "std.py:109",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 10
+      }
+     ],
+     "returned": "None",
+     "tl": 9
+    },
+    {
+     "fn": "tqdm.__hash__",
+     "file": "tqdm/std.py",
+     "line": 1163,
+     "called_from": "_weakrefset.py:88",
+     "args": {
+      "self": "<tqdm>"
+     },
+     "calls": [],
+     "returned": "4453575920",
+     "tl": 13
+    },
+    {
+     "fn": "TMonitor.__init__",
+     "file": "tqdm/_monitor.py",
+     "line": 31,
+     "called_from": "std.py:672",
+     "args": {
+      "self": "<TMonitor>",
+      "tqdm_cls": "<class 'tqdm.std.tqdm'>",
+      "sleep_interval": "10"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 15
+    },
+    {
+     "fn": "TqdmDefaultWriteLock.__exit__",
+     "file": "tqdm/std.py",
+     "line": 111,
+     "called_from": "std.py:666",
+     "args": {
+      "self": "<TqdmDefaultWriteLock>"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.release",
+       "file": "tqdm/std.py",
+       "line": 104,
+       "called_from": "std.py:112",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 18
+      }
+     ],
+     "returned": "None",
+     "tl": 17
+    }
+   ],
+   "returned": "<tqdm.std.tqdm object at 0x109742cf0>",
+   "tl": 2
+  },
+  {
+   "fn": "tqdm.__init__",
+   "file": "tqdm/std.py",
+   "line": 958,
+   "called_from": "scenario.py:15",
+   "args": {
+    "self": "<tqdm>",
+    "iterable": "['a', 'b', 'c', 'd']",
+    "desc": "None",
+    "total": "None",
+    "leave": "True",
+    "file": "None",
+    "ncols": "None",
+    "mininterval": "0.1",
+    "maxinterval": "10.0",
+    "miniters": "None",
+    "ascii": "None",
+    "disable": "False",
+    "unit": "'it'",
+    "unit_scale": "False",
+    "dynamic_ncols": "False",
+    "smoothing": "0.3",
+    "bar_format": "None",
+    "initial": "0",
+    "position": "None",
+    "postfix": "None",
+    "unit_divisor": "1000",
+    "write_bytes": "False",
+    "lock_args": "None",
+    "nrows": "None",
+    "colour": "None",
+    "delay": "0.0",
+    "gui": "False"
+   },
+   "calls": [
+    {
+     "fn": "DisableOnWriteError.__init__",
+     "file": "tqdm/utils.py",
+     "line": 196,
+     "called_from": "std.py:977",
+     "args": {
+      "self": "<DisableOnWriteError>",
+      "wrapped": "<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>",
+      "tqdm_instance": "<tqdm.std.tqdm object at 0x109742cf0>"
+     },
+     "calls": [
+      {
+       "fn": "ObjectWrapper.__init__",
+       "file": "tqdm/utils.py",
+       "line": 139,
+       "called_from": "utils.py:197",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "wrapped": "<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>"
+       },
+       "calls": [
+        {
+         "fn": "ObjectWrapper.wrapper_setattr",
+         "file": "tqdm/utils.py",
+         "line": 135,
+         "called_from": "utils.py:143",
+         "args": {
+          "self": "<DisableOnWriteError>",
+          "name": "'_wrapped'",
+          "value": "<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 25
+        }
+       ],
+       "returned": "None",
+       "tl": 24
+      },
+      {
+       "fn": "DisableOnWriteError.disable_on_exception",
+       "file": "tqdm/utils.py",
+       "line": 170,
+       "called_from": "utils.py:200",
+       "args": {
+        "tqdm_instance": "<tqdm.std.tqdm object at 0x109742cf0>",
+        "func": "<built-in method write of _io.TextIOWrapper object at 0x10861ec00>"
+       },
+       "calls": [],
+       "returned": "<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b2ab60>",
+       "tl": 28
+      },
+      {
+       "fn": "ObjectWrapper.wrapper_setattr",
+       "file": "tqdm/utils.py",
+       "line": 135,
+       "called_from": "utils.py:199",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "name": "'write'",
+        "value": "<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b2ab60>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 30
+      },
+      {
+       "fn": "DisableOnWriteError.disable_on_exception",
+       "file": "tqdm/utils.py",
+       "line": 170,
+       "called_from": "utils.py:203",
+       "args": {
+        "tqdm_instance": "<tqdm.std.tqdm object at 0x109742cf0>",
+        "func": "<built-in method flush of _io.TextIOWrapper object at 0x10861ec00>"
+       },
+       "calls": [],
+       "returned": "<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b2ad40>",
+       "tl": 32
+      },
+      {
+       "fn": "ObjectWrapper.wrapper_setattr",
+       "file": "tqdm/utils.py",
+       "line": 135,
+       "called_from": "utils.py:202",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "name": "'flush'",
+        "value": "<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b2ad40>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 34
+      }
+     ],
+     "returned": "None",
+     "tl": 23
+    },
+    {
+     "fn": "DisableOnWriteError.__eq__",
+     "file": "tqdm/utils.py",
+     "line": 205,
+     "called_from": "std.py:1016",
+     "args": {
+      "self": "<DisableOnWriteError>",
+      "other": "<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>"
+     },
+     "calls": [],
+     "returned": "True",
+     "tl": 37
+    },
+    {
+     "fn": "_screen_shape_wrapper",
+     "file": "tqdm/utils.py",
+     "line": 265,
+     "called_from": "std.py:1023",
+     "args": {},
+     "calls": [],
+     "returned": "<function _screen_shape_wrapper.<locals>.inner at 0x109b2afc0>",
+     "tl": 39
+    },
+    {
+     "fn": "_screen_shape_wrapper.<locals>.inner",
+     "file": "tqdm/utils.py",
+     "line": 270,
+     "called_from": "std.py:1025",
+     "args": {
+      "fp": "<tqdm.utils.DisableOnWriteError object at 0x109a05a90>"
+     },
+     "calls": [
+      {
+       "fn": "ObjectWrapper.__getattr__",
+       "file": "tqdm/utils.py",
+       "line": 122,
+       "called_from": "utils.py:273",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "name": "'fileno'"
+       },
+       "calls": [],
+       "returned": "<built-in method fileno of _io.TextIOWrapper object at 0x10861ec00>",
+       "tl": 42
+      }
+     ],
+     "raised": "OSError(25, 'Inappropriate ioctl for device')",
+     "returned": "(None, None)",
+     "tl": 41
+    },
+    {
+     "fn": "_supports_unicode",
+     "file": "tqdm/utils.py",
+     "line": 249,
+     "called_from": "std.py:1044",
+     "args": {
+      "fp": "<tqdm.utils.DisableOnWriteError object at 0x109a05a90>"
+     },
+     "calls": [
+      {
+       "fn": "ObjectWrapper.__getattr__",
+       "file": "tqdm/utils.py",
+       "line": 122,
+       "called_from": "utils.py:251",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "name": "'encoding'"
+       },
+       "calls": [],
+       "returned": "'utf-8'",
+       "tl": 46
+      },
+      {
+       "fn": "_is_utf",
+       "file": "tqdm/utils.py",
+       "line": 235,
+       "called_from": "utils.py:251",
+       "args": {
+        "encoding": "'utf-8'"
+       },
+       "calls": [],
+       "returned": "True",
+       "tl": 48
+      }
+     ],
+     "returned": "True",
+     "tl": 45
+    },
+    {
+     "fn": "EMA.__init__",
+     "file": "tqdm/std.py",
+     "line": 223,
+     "called_from": "std.py:1076",
+     "args": {
+      "self": "<EMA>",
+      "smoothing": "0.3"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 51
+    },
+    {
+     "fn": "EMA.__init__",
+     "file": "tqdm/std.py",
+     "line": 223,
+     "args": {},
+     "calls": [],
+     "repeat": 2,
+     "returned": "None",
+     "tl": 53
+    },
+    {
+     "fn": "TqdmDefaultWriteLock.__enter__",
+     "file": "tqdm/std.py",
+     "line": 108,
+     "called_from": "std.py:1095",
+     "args": {
+      "self": "<TqdmDefaultWriteLock>"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.acquire",
+       "file": "tqdm/std.py",
+       "line": 100,
+       "called_from": "std.py:109",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 55
+      }
+     ],
+     "returned": "None",
+     "tl": 54
+    },
+    {
+     "fn": "tqdm._get_free_pos",
+     "file": "tqdm/std.py",
+     "line": 680,
+     "called_from": "std.py:1097",
+     "args": {
+      "cls": "<type>",
+      "instance": "<tqdm.std.tqdm object at 0x109742cf0>"
+     },
+     "calls": [],
+     "returned": "0",
+     "tl": 58
+    },
+    {
+     "fn": "TqdmDefaultWriteLock.__exit__",
+     "file": "tqdm/std.py",
+     "line": 111,
+     "called_from": "std.py:1095",
+     "args": {
+      "self": "<TqdmDefaultWriteLock>"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.release",
+       "file": "tqdm/std.py",
+       "line": 104,
+       "called_from": "std.py:112",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 61
+      }
+     ],
+     "returned": "None",
+     "tl": 60
+    },
+    {
+     "fn": "tqdm.status_printer",
+     "file": "tqdm/std.py",
+     "line": 436,
+     "called_from": "std.py:1101",
+     "args": {
+      "file": "<tqdm.utils.DisableOnWriteError object at 0x109a05a90>"
+     },
+     "calls": [
+      {
+       "fn": "DisableOnWriteError.__eq__",
+       "file": "tqdm/utils.py",
+       "line": 205,
+       "called_from": "std.py:445",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "other": "<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>"
+       },
+       "calls": [],
+       "returned": "True",
+       "tl": 65
+      }
+     ],
+     "returned": "<function tqdm.status_printer.<locals>.print_status at 0x109b2bc40>",
+     "tl": 64
+    },
+    {
+     "fn": "tqdm.refresh",
+     "file": "tqdm/std.py",
+     "line": 1332,
+     "called_from": "std.py:1103",
+     "args": {
+      "self": "<tqdm>",
+      "nolock": "False",
+      "lock_args": "None"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.acquire",
+       "file": "tqdm/std.py",
+       "line": 100,
+       "called_from": "std.py:1353",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 69
+      },
+      {
+       "fn": "tqdm.display",
+       "file": "tqdm/std.py",
+       "line": 1471,
+       "called_from": "std.py:1354",
+       "args": {
+        "self": "<tqdm>",
+        "msg": "None",
+        "pos": "None"
+       },
+       "calls": [
+        {
+         "fn": "tqdm.__str__",
+         "file": "tqdm/std.py",
+         "line": 1156,
+         "called_from": "std.py:1502",
+         "args": {
+          "self": "<tqdm>"
+         },
+         "calls": [
+          {
+           "fn": "tqdm.format_dict",
+           "file": "tqdm/std.py",
+           "line": 1453,
+           "called_from": "std.py:1157",
+           "args": {
+            "self": "<tqdm>"
+           },
+           "calls": [
+            {
+             "fn": "EMA.__call__",
+             "file": "tqdm/std.py",
+             "line": 228,
+             "called_from": "std.py:1466",
+             "args": {
+              "self": "<EMA>",
+              "x": "None"
+             },
+             "calls": [],
+             "returned": "0",
+             "tl": 74
+            }
+           ],
+           "returned": "{'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0, 'initial': 0, 'n': 0, ...}",
+           "tl": 73
+          },
+          {
+           "fn": "tqdm.format_meter",
+           "file": "tqdm/std.py",
+           "line": 462,
+           "called_from": "std.py:1157",
+           "args": {
+            "n": "0",
+            "total": "4",
+            "elapsed": "0",
+            "ncols": "None",
+            "prefix": "''",
+            "ascii": "False",
+            "unit": "'it'",
+            "unit_scale": "False",
+            "rate": "None",
+            "bar_format": "None",
+            "postfix": "None",
+            "unit_divisor": "1000",
+            "initial": "0",
+            "colour": "None"
+           },
+           "calls": [
+            {
+             "fn": "tqdm.format_interval",
+             "file": "tqdm/std.py",
+             "line": 397,
+             "called_from": "std.py:546",
+             "args": {
+              "t": "0"
+             },
+             "calls": [],
+             "returned": "'00:00'",
+             "tl": 78
+            },
+            {
+             "fn": "FormatReplace.__init__",
+             "file": "tqdm/utils.py",
+             "line": 91,
+             "called_from": "std.py:630",
+             "args": {
+              "self": "<FormatReplace>",
+              "replace": "''"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 80
+            },
+            {
+             "fn": "FormatReplace.__format__",
+             "file": "tqdm/utils.py",
+             "line": 95,
+             "called_from": "std.py:631",
+             "args": {
+              "self": "<FormatReplace>",
+              "_": "''"
+             },
+             "calls": [],
+             "returned": "''",
+             "tl": 82
+            },
+            {
+             "fn": "Bar.__init__",
+             "file": "tqdm/std.py",
+             "line": 151,
+             "called_from": "std.py:636",
+             "args": {
+              "self": "<Bar>",
+              "frac": "0.0",
+              "default_len": "10",
+              "charset": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'",
+              "colour": "None"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 165,
+               "called_from": "std.py:159",
+               "args": {
+                "self": "<Bar>",
+                "value": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 85
+              }
+             ],
+             "returned": "None",
+             "tl": 84
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "called_from": "std.py:640",
+             "args": {
+              "s": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'"
+             },
+             "calls": [],
+             "returned": "False",
+             "tl": 88
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "True",
+             "tl": 90
+            },
+            {
+             "fn": "Bar.__format__",
+             "file": "tqdm/std.py",
+             "line": 183,
+             "called_from": "std.py:642",
+             "args": {
+              "self": "<Bar>",
+              "format_spec": "''"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 161,
+               "called_from": "std.py:208",
+               "args": {
+                "self": "<Bar>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 92
+              }
+             ],
+             "returned": "'          '",
+             "tl": 91
+            }
+           ],
+           "returned": "'  0%|          | 0/4 [00:00<?, ?it/s]'",
+           "tl": 77
+          }
+         ],
+         "returned": "'  0%|          | 0/4 [00:00<?, ?it/s]'",
+         "tl": 72
+        },
+        {
+         "fn": "tqdm.status_printer.<locals>.print_status",
+         "file": "tqdm/std.py",
+         "line": 455,
+         "called_from": "std.py:1502",
+         "args": {
+          "s": "'  0%|          | 0/4 [00:00<?, ?it/s]'"
+         },
+         "calls": [
+          {
+           "fn": "disp_len",
+           "file": "tqdm/utils.py",
+           "line": 307,
+           "called_from": "std.py:456",
+           "args": {
+            "data": "'  0%|          | 0/4 [00:00<?, ?it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "_text_width",
+             "file": "tqdm/utils.py",
+             "line": 303,
+             "called_from": "utils.py:312",
+             "args": {
+              "s": "'  0%|          | 0/4 [00:00<?, ?it/s]'"
+             },
+             "calls": [],
+             "returned": "37",
+             "tl": 99
+            }
+           ],
+           "returned": "37",
+           "tl": 98
+          },
+          {
+           "fn": "tqdm.status_printer.<locals>.fp_write",
+           "file": "tqdm/std.py",
+           "line": 449,
+           "called_from": "std.py:457",
+           "args": {
+            "s": "'\\r  0%|          | 0/4 [00:00<?, ?it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "called_from": "std.py:450",
+             "args": {},
+             "calls": [],
+             "returned": "38",
+             "tl": 103
+            },
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "None",
+             "tl": 105
+            }
+           ],
+           "returned": "None",
+           "tl": 102
+          }
+         ],
+         "returned": "None",
+         "tl": 97
+        }
+       ],
+       "returned": "True",
+       "tl": 71
+      },
+      {
+       "fn": "TqdmDefaultWriteLock.release",
+       "file": "tqdm/std.py",
+       "line": 104,
+       "called_from": "std.py:1356",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 109
+      }
+     ],
+     "returned": "True",
+     "tl": 68
+    }
+   ],
+   "returned": "None",
+   "tl": 22
+  },
+  {
+   "fn": "tqdm.__iter__",
+   "file": "tqdm/std.py",
+   "line": 1166,
+   "called_from": "scenario.py:15",
+   "args": {
+    "self": "<tqdm>"
+   },
+   "calls": [],
+   "returned": "'a'",
+   "tl": 113
+  },
+  {
+   "fn": "tqdm.__iter__",
+   "file": "tqdm/std.py",
+   "line": 1166,
+   "args": {},
+   "calls": [],
+   "repeat": 4,
+   "returned": "(various)",
+   "tl": 115
+  },
+  {
+   "fn": "tqdm.__del__",
+   "file": "tqdm/std.py",
+   "line": 1153,
+   "called_from": "scenario.py:15",
+   "args": {
+    "self": "<tqdm>"
+   },
+   "calls": [
+    {
+     "fn": "tqdm.close",
+     "file": "tqdm/std.py",
+     "line": 1270,
+     "called_from": "std.py:1154",
+     "args": {
+      "self": "<tqdm>"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 117
+    }
+   ],
+   "returned": "None",
+   "tl": 116
+  },
+  {
+   "fn": "tqdm.__new__",
+   "file": "tqdm/std.py",
+   "line": 664,
+   "called_from": "scenario.py:20",
+   "args": {
+    "cls": "<type>"
+   },
+   "calls": [
+    {
+     "fn": "tqdm.get_lock",
+     "file": "tqdm/std.py",
+     "line": 766,
+     "called_from": "std.py:666",
+     "args": {
+      "cls": "<type>"
+     },
+     "calls": [],
+     "returned": "<tqdm.std.TqdmDefaultWriteLock object at 0x109742a50>",
+     "tl": 121
+    },
+    {
+     "fn": "TqdmDefaultWriteLock.__enter__",
+     "file": "tqdm/std.py",
+     "line": 108,
+     "called_from": "std.py:666",
+     "args": {
+      "self": "<TqdmDefaultWriteLock>"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.acquire",
+       "file": "tqdm/std.py",
+       "line": 100,
+       "called_from": "std.py:109",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 124
+      }
+     ],
+     "returned": "None",
+     "tl": 123
+    },
+    {
+     "fn": "tqdm.__hash__",
+     "file": "tqdm/std.py",
+     "line": 1163,
+     "called_from": "_weakrefset.py:88",
+     "args": {
+      "self": "<tqdm>"
+     },
+     "calls": [],
+     "returned": "4456456720",
+     "tl": 127
+    },
+    {
+     "fn": "TMonitor.report",
+     "file": "tqdm/_monitor.py",
+     "line": 103,
+     "called_from": "std.py:670",
+     "args": {
+      "self": "<TMonitor>"
+     },
+     "calls": [],
+     "returned": "True",
+     "tl": 129
+    },
+    {
+     "fn": "TqdmDefaultWriteLock.__exit__",
+     "file": "tqdm/std.py",
+     "line": 111,
+     "called_from": "std.py:666",
+     "args": {
+      "self": "<TqdmDefaultWriteLock>"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.release",
+       "file": "tqdm/std.py",
+       "line": 104,
+       "called_from": "std.py:112",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 132
+      }
+     ],
+     "returned": "None",
+     "tl": 131
+    }
+   ],
+   "returned": "<tqdm.std.tqdm object at 0x109a02210>",
+   "tl": 120
+  },
+  {
+   "fn": "tqdm.__init__",
+   "file": "tqdm/std.py",
+   "line": 958,
+   "called_from": "scenario.py:20",
+   "args": {
+    "self": "<tqdm>",
+    "iterable": "['a', 'b', 'c', 'd']",
+    "desc": "'Processing'",
+    "total": "None",
+    "leave": "True",
+    "file": "None",
+    "ncols": "None",
+    "mininterval": "0.1",
+    "maxinterval": "10.0",
+    "miniters": "None",
+    "ascii": "None",
+    "disable": "False",
+    "unit": "'it'",
+    "unit_scale": "False",
+    "dynamic_ncols": "False",
+    "smoothing": "0.3",
+    "bar_format": "None",
+    "initial": "0",
+    "position": "None",
+    "postfix": "None",
+    "unit_divisor": "1000",
+    "write_bytes": "False",
+    "lock_args": "None",
+    "nrows": "None",
+    "colour": "None",
+    "delay": "0.0",
+    "gui": "False"
+   },
+   "calls": [
+    {
+     "fn": "DisableOnWriteError.__init__",
+     "file": "tqdm/utils.py",
+     "line": 196,
+     "called_from": "std.py:977",
+     "args": {
+      "self": "<DisableOnWriteError>",
+      "wrapped": "<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>",
+      "tqdm_instance": "<tqdm.std.tqdm object at 0x109a02210>"
+     },
+     "calls": [
+      {
+       "fn": "ObjectWrapper.__init__",
+       "file": "tqdm/utils.py",
+       "line": 139,
+       "called_from": "utils.py:197",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "wrapped": "<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>"
+       },
+       "calls": [
+        {
+         "fn": "ObjectWrapper.wrapper_setattr",
+         "file": "tqdm/utils.py",
+         "line": 135,
+         "called_from": "utils.py:143",
+         "args": {
+          "self": "<DisableOnWriteError>",
+          "name": "'_wrapped'",
+          "value": "<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 139
+        }
+       ],
+       "returned": "None",
+       "tl": 138
+      },
+      {
+       "fn": "DisableOnWriteError.disable_on_exception",
+       "file": "tqdm/utils.py",
+       "line": 170,
+       "called_from": "utils.py:200",
+       "args": {
+        "tqdm_instance": "<tqdm.std.tqdm object at 0x109a02210>",
+        "func": "<built-in method write of _io.TextIOWrapper object at 0x10861ec00>"
+       },
+       "calls": [],
+       "returned": "<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b42ac0>",
+       "tl": 142
+      },
+      {
+       "fn": "ObjectWrapper.wrapper_setattr",
+       "file": "tqdm/utils.py",
+       "line": 135,
+       "called_from": "utils.py:199",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "name": "'write'",
+        "value": "<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b42ac0>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 144
+      },
+      {
+       "fn": "DisableOnWriteError.disable_on_exception",
+       "file": "tqdm/utils.py",
+       "line": 170,
+       "called_from": "utils.py:203",
+       "args": {
+        "tqdm_instance": "<tqdm.std.tqdm object at 0x109a02210>",
+        "func": "<built-in method flush of _io.TextIOWrapper object at 0x10861ec00>"
+       },
+       "calls": [],
+       "returned": "<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b428e0>",
+       "tl": 146
+      },
+      {
+       "fn": "ObjectWrapper.wrapper_setattr",
+       "file": "tqdm/utils.py",
+       "line": 135,
+       "called_from": "utils.py:202",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "name": "'flush'",
+        "value": "<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b428e0>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 148
+      }
+     ],
+     "returned": "None",
+     "tl": 137
+    },
+    {
+     "fn": "DisableOnWriteError.__eq__",
+     "file": "tqdm/utils.py",
+     "line": 205,
+     "called_from": "std.py:1016",
+     "args": {
+      "self": "<DisableOnWriteError>",
+      "other": "<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>"
+     },
+     "calls": [],
+     "returned": "True",
+     "tl": 151
+    },
+    {
+     "fn": "_screen_shape_wrapper",
+     "file": "tqdm/utils.py",
+     "line": 265,
+     "called_from": "std.py:1023",
+     "args": {},
+     "calls": [],
+     "returned": "<function _screen_shape_wrapper.<locals>.inner at 0x109b42660>",
+     "tl": 153
+    },
+    {
+     "fn": "_screen_shape_wrapper.<locals>.inner",
+     "file": "tqdm/utils.py",
+     "line": 270,
+     "called_from": "std.py:1025",
+     "args": {
+      "fp": "<tqdm.utils.DisableOnWriteError object at 0x109a020d0>"
+     },
+     "calls": [
+      {
+       "fn": "ObjectWrapper.__getattr__",
+       "file": "tqdm/utils.py",
+       "line": 122,
+       "called_from": "utils.py:273",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "name": "'fileno'"
+       },
+       "calls": [],
+       "returned": "<built-in method fileno of _io.TextIOWrapper object at 0x10861ec00>",
+       "tl": 156
+      }
+     ],
+     "raised": "OSError(25, 'Inappropriate ioctl for device')",
+     "returned": "(None, None)",
+     "tl": 155
+    },
+    {
+     "fn": "_supports_unicode",
+     "file": "tqdm/utils.py",
+     "line": 249,
+     "called_from": "std.py:1044",
+     "args": {
+      "fp": "<tqdm.utils.DisableOnWriteError object at 0x109a020d0>"
+     },
+     "calls": [
+      {
+       "fn": "ObjectWrapper.__getattr__",
+       "file": "tqdm/utils.py",
+       "line": 122,
+       "called_from": "utils.py:251",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "name": "'encoding'"
+       },
+       "calls": [],
+       "returned": "'utf-8'",
+       "tl": 160
+      },
+      {
+       "fn": "_is_utf",
+       "file": "tqdm/utils.py",
+       "line": 235,
+       "called_from": "utils.py:251",
+       "args": {
+        "encoding": "'utf-8'"
+       },
+       "calls": [],
+       "returned": "True",
+       "tl": 162
+      }
+     ],
+     "returned": "True",
+     "tl": 159
+    },
+    {
+     "fn": "EMA.__init__",
+     "file": "tqdm/std.py",
+     "line": 223,
+     "called_from": "std.py:1076",
+     "args": {
+      "self": "<EMA>",
+      "smoothing": "0.3"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 165
+    },
+    {
+     "fn": "EMA.__init__",
+     "file": "tqdm/std.py",
+     "line": 223,
+     "args": {},
+     "calls": [],
+     "repeat": 2,
+     "returned": "None",
+     "tl": 167
+    },
+    {
+     "fn": "TqdmDefaultWriteLock.__enter__",
+     "file": "tqdm/std.py",
+     "line": 108,
+     "called_from": "std.py:1095",
+     "args": {
+      "self": "<TqdmDefaultWriteLock>"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.acquire",
+       "file": "tqdm/std.py",
+       "line": 100,
+       "called_from": "std.py:109",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 169
+      }
+     ],
+     "returned": "None",
+     "tl": 168
+    },
+    {
+     "fn": "tqdm._get_free_pos",
+     "file": "tqdm/std.py",
+     "line": 680,
+     "called_from": "std.py:1097",
+     "args": {
+      "cls": "<type>",
+      "instance": "<tqdm.std.tqdm object at 0x109a02210>"
+     },
+     "calls": [],
+     "returned": "0",
+     "tl": 172
+    },
+    {
+     "fn": "TqdmDefaultWriteLock.__exit__",
+     "file": "tqdm/std.py",
+     "line": 111,
+     "called_from": "std.py:1095",
+     "args": {
+      "self": "<TqdmDefaultWriteLock>"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.release",
+       "file": "tqdm/std.py",
+       "line": 104,
+       "called_from": "std.py:112",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 175
+      }
+     ],
+     "returned": "None",
+     "tl": 174
+    },
+    {
+     "fn": "tqdm.status_printer",
+     "file": "tqdm/std.py",
+     "line": 436,
+     "called_from": "std.py:1101",
+     "args": {
+      "file": "<tqdm.utils.DisableOnWriteError object at 0x109a020d0>"
+     },
+     "calls": [
+      {
+       "fn": "DisableOnWriteError.__eq__",
+       "file": "tqdm/utils.py",
+       "line": 205,
+       "called_from": "std.py:445",
+       "args": {
+        "self": "<DisableOnWriteError>",
+        "other": "<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>"
+       },
+       "calls": [],
+       "returned": "True",
+       "tl": 179
+      }
+     ],
+     "returned": "<function tqdm.status_printer.<locals>.print_status at 0x109b41c60>",
+     "tl": 178
+    },
+    {
+     "fn": "tqdm.refresh",
+     "file": "tqdm/std.py",
+     "line": 1332,
+     "called_from": "std.py:1103",
+     "args": {
+      "self": "<tqdm>",
+      "nolock": "False",
+      "lock_args": "None"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.acquire",
+       "file": "tqdm/std.py",
+       "line": 100,
+       "called_from": "std.py:1353",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 183
+      },
+      {
+       "fn": "tqdm.display",
+       "file": "tqdm/std.py",
+       "line": 1471,
+       "called_from": "std.py:1354",
+       "args": {
+        "self": "<tqdm>",
+        "msg": "None",
+        "pos": "None"
+       },
+       "calls": [
+        {
+         "fn": "tqdm.__str__",
+         "file": "tqdm/std.py",
+         "line": 1156,
+         "called_from": "std.py:1502",
+         "args": {
+          "self": "<tqdm>"
+         },
+         "calls": [
+          {
+           "fn": "tqdm.format_dict",
+           "file": "tqdm/std.py",
+           "line": 1453,
+           "called_from": "std.py:1157",
+           "args": {
+            "self": "<tqdm>"
+           },
+           "calls": [
+            {
+             "fn": "EMA.__call__",
+             "file": "tqdm/std.py",
+             "line": 228,
+             "called_from": "std.py:1466",
+             "args": {
+              "self": "<EMA>",
+              "x": "None"
+             },
+             "calls": [],
+             "returned": "0",
+             "tl": 188
+            }
+           ],
+           "returned": "{'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0, 'initial': 0, 'n': 0, ...}",
+           "tl": 187
+          },
+          {
+           "fn": "tqdm.format_meter",
+           "file": "tqdm/std.py",
+           "line": 462,
+           "called_from": "std.py:1157",
+           "args": {
+            "n": "0",
+            "total": "4",
+            "elapsed": "0",
+            "ncols": "None",
+            "prefix": "'Processing'",
+            "ascii": "False",
+            "unit": "'it'",
+            "unit_scale": "False",
+            "rate": "None",
+            "bar_format": "None",
+            "postfix": "None",
+            "unit_divisor": "1000",
+            "initial": "0",
+            "colour": "None"
+           },
+           "calls": [
+            {
+             "fn": "tqdm.format_interval",
+             "file": "tqdm/std.py",
+             "line": 397,
+             "called_from": "std.py:546",
+             "args": {
+              "t": "0"
+             },
+             "calls": [],
+             "returned": "'00:00'",
+             "tl": 192
+            },
+            {
+             "fn": "FormatReplace.__init__",
+             "file": "tqdm/utils.py",
+             "line": 91,
+             "called_from": "std.py:630",
+             "args": {
+              "self": "<FormatReplace>",
+              "replace": "''"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 194
+            },
+            {
+             "fn": "FormatReplace.__format__",
+             "file": "tqdm/utils.py",
+             "line": 95,
+             "called_from": "std.py:631",
+             "args": {
+              "self": "<FormatReplace>",
+              "_": "''"
+             },
+             "calls": [],
+             "returned": "''",
+             "tl": 196
+            },
+            {
+             "fn": "Bar.__init__",
+             "file": "tqdm/std.py",
+             "line": 151,
+             "called_from": "std.py:636",
+             "args": {
+              "self": "<Bar>",
+              "frac": "0.0",
+              "default_len": "10",
+              "charset": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'",
+              "colour": "None"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 165,
+               "called_from": "std.py:159",
+               "args": {
+                "self": "<Bar>",
+                "value": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 199
+              }
+             ],
+             "returned": "None",
+             "tl": 198
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "called_from": "std.py:640",
+             "args": {
+              "s": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'"
+             },
+             "calls": [],
+             "returned": "False",
+             "tl": 202
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "True",
+             "tl": 204
+            },
+            {
+             "fn": "Bar.__format__",
+             "file": "tqdm/std.py",
+             "line": 183,
+             "called_from": "std.py:642",
+             "args": {
+              "self": "<Bar>",
+              "format_spec": "''"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 161,
+               "called_from": "std.py:208",
+               "args": {
+                "self": "<Bar>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 206
+              }
+             ],
+             "returned": "'          '",
+             "tl": 205
+            }
+           ],
+           "returned": "'Processing:   0%|          | 0/4 [00:00<?, ?it/s]'",
+           "tl": 191
+          }
+         ],
+         "returned": "'Processing:   0%|          | 0/4 [00:00<?, ?it/s]'",
+         "tl": 186
+        },
+        {
+         "fn": "tqdm.status_printer.<locals>.print_status",
+         "file": "tqdm/std.py",
+         "line": 455,
+         "called_from": "std.py:1502",
+         "args": {
+          "s": "'Processing:   0%|          | 0/4 [00:00<?, ?it/s]'"
+         },
+         "calls": [
+          {
+           "fn": "disp_len",
+           "file": "tqdm/utils.py",
+           "line": 307,
+           "called_from": "std.py:456",
+           "args": {
+            "data": "'Processing:   0%|          | 0/4 [00:00<?, ?it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "_text_width",
+             "file": "tqdm/utils.py",
+             "line": 303,
+             "called_from": "utils.py:312",
+             "args": {
+              "s": "'Processing:   0%|          | 0/4 [00:00<?, ?it/s]'"
+             },
+             "calls": [],
+             "returned": "49",
+             "tl": 213
+            }
+           ],
+           "returned": "49",
+           "tl": 212
+          },
+          {
+           "fn": "tqdm.status_printer.<locals>.fp_write",
+           "file": "tqdm/std.py",
+           "line": 449,
+           "called_from": "std.py:457",
+           "args": {
+            "s": "'\\rProcessing:   0%|          | 0/4 [00:00<?, ?it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "called_from": "std.py:450",
+             "args": {},
+             "calls": [],
+             "returned": "50",
+             "tl": 217
+            },
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "None",
+             "tl": 219
+            }
+           ],
+           "returned": "None",
+           "tl": 216
+          }
+         ],
+         "returned": "None",
+         "tl": 211
+        }
+       ],
+       "returned": "True",
+       "tl": 185
+      },
+      {
+       "fn": "TqdmDefaultWriteLock.release",
+       "file": "tqdm/std.py",
+       "line": 104,
+       "called_from": "std.py:1356",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 223
+      }
+     ],
+     "returned": "True",
+     "tl": 182
+    }
+   ],
+   "returned": "None",
+   "tl": 136
+  },
+  {
+   "fn": "tqdm.__iter__",
+   "file": "tqdm/std.py",
+   "line": 1166,
+   "called_from": "scenario.py:21",
+   "args": {
+    "self": "<tqdm>"
+   },
+   "calls": [],
+   "returned": "'a'",
+   "tl": 227
+  },
+  {
+   "fn": "tqdm.set_description",
+   "file": "tqdm/std.py",
+   "line": 1389,
+   "called_from": "scenario.py:23",
+   "args": {
+    "self": "<tqdm>",
+    "desc": "'Processing a'",
+    "refresh": "True"
+   },
+   "calls": [
+    {
+     "fn": "tqdm.refresh",
+     "file": "tqdm/std.py",
+     "line": 1332,
+     "called_from": "std.py:1401",
+     "args": {
+      "self": "<tqdm>",
+      "nolock": "False",
+      "lock_args": "None"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.acquire",
+       "file": "tqdm/std.py",
+       "line": 100,
+       "called_from": "std.py:1353",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 231
+      },
+      {
+       "fn": "tqdm.display",
+       "file": "tqdm/std.py",
+       "line": 1471,
+       "called_from": "std.py:1354",
+       "args": {
+        "self": "<tqdm>",
+        "msg": "None",
+        "pos": "None"
+       },
+       "calls": [
+        {
+         "fn": "tqdm.__str__",
+         "file": "tqdm/std.py",
+         "line": 1156,
+         "called_from": "std.py:1502",
+         "args": {
+          "self": "<tqdm>"
+         },
+         "calls": [
+          {
+           "fn": "tqdm.format_dict",
+           "file": "tqdm/std.py",
+           "line": 1453,
+           "called_from": "std.py:1157",
+           "args": {
+            "self": "<tqdm>"
+           },
+           "calls": [
+            {
+             "fn": "EMA.__call__",
+             "file": "tqdm/std.py",
+             "line": 228,
+             "called_from": "std.py:1466",
+             "args": {
+              "self": "<EMA>",
+              "x": "None"
+             },
+             "calls": [],
+             "returned": "0",
+             "tl": 236
+            }
+           ],
+           "returned": "{'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.05352497100830078, 'initial': 0, 'n': 0, ...}",
+           "tl": 235
+          },
+          {
+           "fn": "tqdm.format_meter",
+           "file": "tqdm/std.py",
+           "line": 462,
+           "called_from": "std.py:1157",
+           "args": {
+            "n": "0",
+            "total": "4",
+            "elapsed": "0.05352497100830078",
+            "ncols": "None",
+            "prefix": "'Processing a: '",
+            "ascii": "False",
+            "unit": "'it'",
+            "unit_scale": "False",
+            "rate": "None",
+            "bar_format": "None",
+            "postfix": "None",
+            "unit_divisor": "1000",
+            "initial": "0",
+            "colour": "None"
+           },
+           "calls": [
+            {
+             "fn": "tqdm.format_interval",
+             "file": "tqdm/std.py",
+             "line": 397,
+             "called_from": "std.py:546",
+             "args": {
+              "t": "0.05352497100830078"
+             },
+             "calls": [],
+             "returned": "'00:00'",
+             "tl": 240
+            },
+            {
+             "fn": "FormatReplace.__init__",
+             "file": "tqdm/utils.py",
+             "line": 91,
+             "called_from": "std.py:630",
+             "args": {
+              "self": "<FormatReplace>",
+              "replace": "''"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 242
+            },
+            {
+             "fn": "FormatReplace.__format__",
+             "file": "tqdm/utils.py",
+             "line": 95,
+             "called_from": "std.py:631",
+             "args": {
+              "self": "<FormatReplace>",
+              "_": "''"
+             },
+             "calls": [],
+             "returned": "''",
+             "tl": 244
+            },
+            {
+             "fn": "Bar.__init__",
+             "file": "tqdm/std.py",
+             "line": 151,
+             "called_from": "std.py:636",
+             "args": {
+              "self": "<Bar>",
+              "frac": "0.0",
+              "default_len": "10",
+              "charset": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'",
+              "colour": "None"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 165,
+               "called_from": "std.py:159",
+               "args": {
+                "self": "<Bar>",
+                "value": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 247
+              }
+             ],
+             "returned": "None",
+             "tl": 246
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "called_from": "std.py:640",
+             "args": {
+              "s": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'"
+             },
+             "calls": [],
+             "returned": "False",
+             "tl": 250
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "True",
+             "tl": 252
+            },
+            {
+             "fn": "Bar.__format__",
+             "file": "tqdm/std.py",
+             "line": 183,
+             "called_from": "std.py:642",
+             "args": {
+              "self": "<Bar>",
+              "format_spec": "''"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 161,
+               "called_from": "std.py:208",
+               "args": {
+                "self": "<Bar>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 254
+              }
+             ],
+             "returned": "'          '",
+             "tl": 253
+            }
+           ],
+           "returned": "'Processing a:   0%|          | 0/4 [00:00<?, ?it/s]'",
+           "tl": 239
+          }
+         ],
+         "returned": "'Processing a:   0%|          | 0/4 [00:00<?, ?it/s]'",
+         "tl": 234
+        },
+        {
+         "fn": "tqdm.status_printer.<locals>.print_status",
+         "file": "tqdm/std.py",
+         "line": 455,
+         "called_from": "std.py:1502",
+         "args": {
+          "s": "'Processing a:   0%|          | 0/4 [00:00<?, ?it/s]'"
+         },
+         "calls": [
+          {
+           "fn": "disp_len",
+           "file": "tqdm/utils.py",
+           "line": 307,
+           "called_from": "std.py:456",
+           "args": {
+            "data": "'Processing a:   0%|          | 0/4 [00:00<?, ?it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "_text_width",
+             "file": "tqdm/utils.py",
+             "line": 303,
+             "called_from": "utils.py:312",
+             "args": {
+              "s": "'Processing a:   0%|          | 0/4 [00:00<?, ?it/s]'"
+             },
+             "calls": [],
+             "returned": "51",
+             "tl": 261
+            }
+           ],
+           "returned": "51",
+           "tl": 260
+          },
+          {
+           "fn": "tqdm.status_printer.<locals>.fp_write",
+           "file": "tqdm/std.py",
+           "line": 449,
+           "called_from": "std.py:457",
+           "args": {
+            "s": "'\\rProcessing a:   0%|          | 0/4 [00:00<?, ?it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "called_from": "std.py:450",
+             "args": {},
+             "calls": [],
+             "returned": "52",
+             "tl": 265
+            },
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "None",
+             "tl": 267
+            }
+           ],
+           "returned": "None",
+           "tl": 264
+          }
+         ],
+         "returned": "None",
+         "tl": 259
+        }
+       ],
+       "returned": "True",
+       "tl": 233
+      },
+      {
+       "fn": "TqdmDefaultWriteLock.release",
+       "file": "tqdm/std.py",
+       "line": 104,
+       "called_from": "std.py:1356",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 271
+      }
+     ],
+     "returned": "True",
+     "tl": 230
+    }
+   ],
+   "returned": "None",
+   "tl": 229
+  },
+  {
+   "fn": "tqdm.__iter__",
+   "file": "tqdm/std.py",
+   "line": 1166,
+   "called_from": "scenario.py:21",
+   "args": {
+    "self": "<tqdm>"
+   },
+   "calls": [],
+   "returned": "'b'",
+   "tl": 275
+  },
+  {
+   "fn": "tqdm.set_description",
+   "file": "tqdm/std.py",
+   "line": 1389,
+   "called_from": "scenario.py:23",
+   "args": {
+    "self": "<tqdm>",
+    "desc": "'Processing b'",
+    "refresh": "True"
+   },
+   "calls": [
+    {
+     "fn": "tqdm.refresh",
+     "file": "tqdm/std.py",
+     "line": 1332,
+     "called_from": "std.py:1401",
+     "args": {
+      "self": "<tqdm>",
+      "nolock": "False",
+      "lock_args": "None"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.acquire",
+       "file": "tqdm/std.py",
+       "line": 100,
+       "called_from": "std.py:1353",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 279
+      },
+      {
+       "fn": "tqdm.display",
+       "file": "tqdm/std.py",
+       "line": 1471,
+       "called_from": "std.py:1354",
+       "args": {
+        "self": "<tqdm>",
+        "msg": "None",
+        "pos": "None"
+       },
+       "calls": [
+        {
+         "fn": "tqdm.__str__",
+         "file": "tqdm/std.py",
+         "line": 1156,
+         "called_from": "std.py:1502",
+         "args": {
+          "self": "<tqdm>"
+         },
+         "calls": [
+          {
+           "fn": "tqdm.format_dict",
+           "file": "tqdm/std.py",
+           "line": 1453,
+           "called_from": "std.py:1157",
+           "args": {
+            "self": "<tqdm>"
+           },
+           "calls": [
+            {
+             "fn": "EMA.__call__",
+             "file": "tqdm/std.py",
+             "line": 228,
+             "called_from": "std.py:1466",
+             "args": {
+              "self": "<EMA>",
+              "x": "None"
+             },
+             "calls": [],
+             "returned": "0",
+             "tl": 284
+            }
+           ],
+           "returned": "{'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.10843706130981445, 'initial': 0, 'n': 0, ...}",
+           "tl": 283
+          },
+          {
+           "fn": "tqdm.format_meter",
+           "file": "tqdm/std.py",
+           "line": 462,
+           "called_from": "std.py:1157",
+           "args": {
+            "n": "0",
+            "total": "4",
+            "elapsed": "0.10843706130981445",
+            "ncols": "None",
+            "prefix": "'Processing b: '",
+            "ascii": "False",
+            "unit": "'it'",
+            "unit_scale": "False",
+            "rate": "None",
+            "bar_format": "None",
+            "postfix": "None",
+            "unit_divisor": "1000",
+            "initial": "0",
+            "colour": "None"
+           },
+           "calls": [
+            {
+             "fn": "tqdm.format_interval",
+             "file": "tqdm/std.py",
+             "line": 397,
+             "called_from": "std.py:546",
+             "args": {
+              "t": "0.10843706130981445"
+             },
+             "calls": [],
+             "returned": "'00:00'",
+             "tl": 288
+            },
+            {
+             "fn": "FormatReplace.__init__",
+             "file": "tqdm/utils.py",
+             "line": 91,
+             "called_from": "std.py:630",
+             "args": {
+              "self": "<FormatReplace>",
+              "replace": "''"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 290
+            },
+            {
+             "fn": "FormatReplace.__format__",
+             "file": "tqdm/utils.py",
+             "line": 95,
+             "called_from": "std.py:631",
+             "args": {
+              "self": "<FormatReplace>",
+              "_": "''"
+             },
+             "calls": [],
+             "returned": "''",
+             "tl": 292
+            },
+            {
+             "fn": "Bar.__init__",
+             "file": "tqdm/std.py",
+             "line": 151,
+             "called_from": "std.py:636",
+             "args": {
+              "self": "<Bar>",
+              "frac": "0.0",
+              "default_len": "10",
+              "charset": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'",
+              "colour": "None"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 165,
+               "called_from": "std.py:159",
+               "args": {
+                "self": "<Bar>",
+                "value": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 295
+              }
+             ],
+             "returned": "None",
+             "tl": 294
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "called_from": "std.py:640",
+             "args": {
+              "s": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'"
+             },
+             "calls": [],
+             "returned": "False",
+             "tl": 298
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "True",
+             "tl": 300
+            },
+            {
+             "fn": "Bar.__format__",
+             "file": "tqdm/std.py",
+             "line": 183,
+             "called_from": "std.py:642",
+             "args": {
+              "self": "<Bar>",
+              "format_spec": "''"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 161,
+               "called_from": "std.py:208",
+               "args": {
+                "self": "<Bar>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 302
+              }
+             ],
+             "returned": "'          '",
+             "tl": 301
+            }
+           ],
+           "returned": "'Processing b:   0%|          | 0/4 [00:00<?, ?it/s]'",
+           "tl": 287
+          }
+         ],
+         "returned": "'Processing b:   0%|          | 0/4 [00:00<?, ?it/s]'",
+         "tl": 282
+        },
+        {
+         "fn": "tqdm.status_printer.<locals>.print_status",
+         "file": "tqdm/std.py",
+         "line": 455,
+         "called_from": "std.py:1502",
+         "args": {
+          "s": "'Processing b:   0%|          | 0/4 [00:00<?, ?it/s]'"
+         },
+         "calls": [
+          {
+           "fn": "disp_len",
+           "file": "tqdm/utils.py",
+           "line": 307,
+           "called_from": "std.py:456",
+           "args": {
+            "data": "'Processing b:   0%|          | 0/4 [00:00<?, ?it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "_text_width",
+             "file": "tqdm/utils.py",
+             "line": 303,
+             "called_from": "utils.py:312",
+             "args": {
+              "s": "'Processing b:   0%|          | 0/4 [00:00<?, ?it/s]'"
+             },
+             "calls": [],
+             "returned": "51",
+             "tl": 309
+            }
+           ],
+           "returned": "51",
+           "tl": 308
+          },
+          {
+           "fn": "tqdm.status_printer.<locals>.fp_write",
+           "file": "tqdm/std.py",
+           "line": 449,
+           "called_from": "std.py:457",
+           "args": {
+            "s": "'\\rProcessing b:   0%|          | 0/4 [00:00<?, ?it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "called_from": "std.py:450",
+             "args": {},
+             "calls": [],
+             "returned": "52",
+             "tl": 313
+            },
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "None",
+             "tl": 315
+            }
+           ],
+           "returned": "None",
+           "tl": 312
+          }
+         ],
+         "returned": "None",
+         "tl": 307
+        }
+       ],
+       "returned": "True",
+       "tl": 281
+      },
+      {
+       "fn": "TqdmDefaultWriteLock.release",
+       "file": "tqdm/std.py",
+       "line": 104,
+       "called_from": "std.py:1356",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 319
+      }
+     ],
+     "returned": "True",
+     "tl": 278
+    }
+   ],
+   "returned": "None",
+   "tl": 277
+  },
+  {
+   "fn": "tqdm.__iter__",
+   "file": "tqdm/std.py",
+   "line": 1166,
+   "called_from": "scenario.py:21",
+   "args": {
+    "self": "<tqdm>"
+   },
+   "calls": [
+    {
+     "fn": "tqdm.update",
+     "file": "tqdm/std.py",
+     "line": 1203,
+     "called_from": "std.py:1196",
+     "args": {
+      "self": "<tqdm>",
+      "n": "2"
+     },
+     "calls": [
+      {
+       "fn": "EMA.__call__",
+       "file": "tqdm/std.py",
+       "line": 228,
+       "called_from": "std.py:1245",
+       "args": {
+        "self": "<EMA>",
+        "x": "2"
+       },
+       "calls": [],
+       "returned": "1.9999999999999996",
+       "tl": 325
+      },
+      {
+       "fn": "EMA.__call__",
+       "file": "tqdm/std.py",
+       "line": 228,
+       "args": {},
+       "calls": [],
+       "repeat": 1,
+       "returned": "0.11034297943115233",
+       "tl": 327
+      },
+      {
+       "fn": "tqdm.refresh",
+       "file": "tqdm/std.py",
+       "line": 1332,
+       "called_from": "std.py:1247",
+       "args": {
+        "self": "<tqdm>",
+        "nolock": "False",
+        "lock_args": "None"
+       },
+       "calls": [
+        {
+         "fn": "TqdmDefaultWriteLock.acquire",
+         "file": "tqdm/std.py",
+         "line": 100,
+         "called_from": "std.py:1353",
+         "args": {
+          "self": "<TqdmDefaultWriteLock>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 329
+        },
+        {
+         "fn": "tqdm.display",
+         "file": "tqdm/std.py",
+         "line": 1471,
+         "called_from": "std.py:1354",
+         "args": {
+          "self": "<tqdm>",
+          "msg": "None",
+          "pos": "None"
+         },
+         "calls": [
+          {
+           "fn": "tqdm.__str__",
+           "file": "tqdm/std.py",
+           "line": 1156,
+           "called_from": "std.py:1502",
+           "args": {
+            "self": "<tqdm>"
+           },
+           "calls": [
+            {
+             "fn": "tqdm.format_dict",
+             "file": "tqdm/std.py",
+             "line": 1453,
+             "called_from": "std.py:1157",
+             "args": {
+              "self": "<tqdm>"
+             },
+             "calls": [
+              {
+               "fn": "EMA.__call__",
+               "file": "tqdm/std.py",
+               "line": 228,
+               "called_from": "std.py:1466",
+               "args": {
+                "self": "<EMA>",
+                "x": "None"
+               },
+               "calls": [],
+               "returned": "0.11034297943115233",
+               "tl": 334
+              },
+              {
+               "fn": "EMA.__call__",
+               "file": "tqdm/std.py",
+               "line": 228,
+               "args": {},
+               "calls": [],
+               "repeat": 2,
+               "returned": "(various)",
+               "tl": 336
+              }
+             ],
+             "returned": "{'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.1105039119720459, 'initial': 0, 'n': 2, ...}",
+             "tl": 333
+            },
+            {
+             "fn": "tqdm.format_meter",
+             "file": "tqdm/std.py",
+             "line": 462,
+             "called_from": "std.py:1157",
+             "args": {
+              "n": "2",
+              "total": "4",
+              "elapsed": "0.1105039119720459",
+              "ncols": "None",
+              "prefix": "'Processing b: '",
+              "ascii": "False",
+              "unit": "'it'",
+              "unit_scale": "False",
+              "rate": "18.125303578991037",
+              "bar_format": "None",
+              "postfix": "None",
+              "unit_divisor": "1000",
+              "initial": "0",
+              "colour": "None"
+             },
+             "calls": [
+              {
+               "fn": "tqdm.format_interval",
+               "file": "tqdm/std.py",
+               "line": 397,
+               "called_from": "std.py:546",
+               "args": {
+                "t": "0.1105039119720459"
+               },
+               "calls": [],
+               "returned": "'00:00'",
+               "tl": 339
+              },
+              {
+               "fn": "tqdm.format_interval",
+               "file": "tqdm/std.py",
+               "line": 397,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "'00:00'",
+               "tl": 341
+              },
+              {
+               "fn": "FormatReplace.__init__",
+               "file": "tqdm/utils.py",
+               "line": 91,
+               "called_from": "std.py:630",
+               "args": {
+                "self": "<FormatReplace>",
+                "replace": "''"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 342
+              },
+              {
+               "fn": "FormatReplace.__format__",
+               "file": "tqdm/utils.py",
+               "line": 95,
+               "called_from": "std.py:631",
+               "args": {
+                "self": "<FormatReplace>",
+                "_": "''"
+               },
+               "calls": [],
+               "returned": "''",
+               "tl": 344
+              },
+              {
+               "fn": "Bar.__init__",
+               "file": "tqdm/std.py",
+               "line": 151,
+               "called_from": "std.py:636",
+               "args": {
+                "self": "<Bar>",
+                "frac": "0.5",
+                "default_len": "10",
+                "charset": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'",
+                "colour": "None"
+               },
+               "calls": [
+                {
+                 "fn": "Bar.colour",
+                 "file": "tqdm/std.py",
+                 "line": 165,
+                 "called_from": "std.py:159",
+                 "args": {
+                  "self": "<Bar>",
+                  "value": "None"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 347
+                }
+               ],
+               "returned": "None",
+               "tl": 346
+              },
+              {
+               "fn": "_is_ascii",
+               "file": "tqdm/utils.py",
+               "line": 256,
+               "called_from": "std.py:640",
+               "args": {
+                "s": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 350
+              },
+              {
+               "fn": "_is_ascii",
+               "file": "tqdm/utils.py",
+               "line": 256,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "True",
+               "tl": 352
+              },
+              {
+               "fn": "Bar.__format__",
+               "file": "tqdm/std.py",
+               "line": 183,
+               "called_from": "std.py:642",
+               "args": {
+                "self": "<Bar>",
+                "format_spec": "''"
+               },
+               "calls": [
+                {
+                 "fn": "Bar.colour",
+                 "file": "tqdm/std.py",
+                 "line": 161,
+                 "called_from": "std.py:208",
+                 "args": {
+                  "self": "<Bar>"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 354
+                }
+               ],
+               "returned": "'\u2588\u2588\u2588\u2588\u2588     '",
+               "tl": 353
+              }
+             ],
+             "returned": "'Processing b:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'",
+             "tl": 338
+            }
+           ],
+           "returned": "'Processing b:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'",
+           "tl": 332
+          },
+          {
+           "fn": "tqdm.status_printer.<locals>.print_status",
+           "file": "tqdm/std.py",
+           "line": 455,
+           "called_from": "std.py:1502",
+           "args": {
+            "s": "'Processing b:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "disp_len",
+             "file": "tqdm/utils.py",
+             "line": 307,
+             "called_from": "std.py:456",
+             "args": {
+              "data": "'Processing b:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+             },
+             "calls": [
+              {
+               "fn": "_text_width",
+               "file": "tqdm/utils.py",
+               "line": 303,
+               "called_from": "utils.py:312",
+               "args": {
+                "s": "'Processing b:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+               },
+               "calls": [],
+               "returned": "59",
+               "tl": 361
+              }
+             ],
+             "returned": "59",
+             "tl": 360
+            },
+            {
+             "fn": "tqdm.status_printer.<locals>.fp_write",
+             "file": "tqdm/std.py",
+             "line": 449,
+             "called_from": "std.py:457",
+             "args": {
+              "s": "'\\rProcessing b:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+             },
+             "calls": [
+              {
+               "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+               "file": "tqdm/utils.py",
+               "line": 177,
+               "called_from": "std.py:450",
+               "args": {},
+               "calls": [],
+               "returned": "60",
+               "tl": 365
+              },
+              {
+               "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+               "file": "tqdm/utils.py",
+               "line": 177,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "None",
+               "tl": 367
+              }
+             ],
+             "returned": "None",
+             "tl": 364
+            }
+           ],
+           "returned": "None",
+           "tl": 359
+          }
+         ],
+         "returned": "True",
+         "tl": 331
+        },
+        {
+         "fn": "TqdmDefaultWriteLock.release",
+         "file": "tqdm/std.py",
+         "line": 104,
+         "called_from": "std.py:1356",
+         "args": {
+          "self": "<TqdmDefaultWriteLock>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 371
+        }
+       ],
+       "returned": "True",
+       "tl": 328
+      },
+      {
+       "fn": "EMA.__call__",
+       "file": "tqdm/std.py",
+       "line": 228,
+       "called_from": "std.py:1258",
+       "args": {
+        "self": "<EMA>",
+        "x": "1.8125303578991039"
+       },
+       "calls": [],
+       "returned": "1.8125303578991034",
+       "tl": 374
+      }
+     ],
+     "returned": "True",
+     "tl": 324
+    }
+   ],
+   "returned": "'c'",
+   "tl": 323
+  },
+  {
+   "fn": "tqdm.set_description",
+   "file": "tqdm/std.py",
+   "line": 1389,
+   "called_from": "scenario.py:23",
+   "args": {
+    "self": "<tqdm>",
+    "desc": "'Processing c'",
+    "refresh": "True"
+   },
+   "calls": [
+    {
+     "fn": "tqdm.refresh",
+     "file": "tqdm/std.py",
+     "line": 1332,
+     "called_from": "std.py:1401",
+     "args": {
+      "self": "<tqdm>",
+      "nolock": "False",
+      "lock_args": "None"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.acquire",
+       "file": "tqdm/std.py",
+       "line": 100,
+       "called_from": "std.py:1353",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 380
+      },
+      {
+       "fn": "tqdm.display",
+       "file": "tqdm/std.py",
+       "line": 1471,
+       "called_from": "std.py:1354",
+       "args": {
+        "self": "<tqdm>",
+        "msg": "None",
+        "pos": "None"
+       },
+       "calls": [
+        {
+         "fn": "tqdm.__str__",
+         "file": "tqdm/std.py",
+         "line": 1156,
+         "called_from": "std.py:1502",
+         "args": {
+          "self": "<tqdm>"
+         },
+         "calls": [
+          {
+           "fn": "tqdm.format_dict",
+           "file": "tqdm/std.py",
+           "line": 1453,
+           "called_from": "std.py:1157",
+           "args": {
+            "self": "<tqdm>"
+           },
+           "calls": [
+            {
+             "fn": "EMA.__call__",
+             "file": "tqdm/std.py",
+             "line": 228,
+             "called_from": "std.py:1466",
+             "args": {
+              "self": "<EMA>",
+              "x": "None"
+             },
+             "calls": [],
+             "returned": "0.11034297943115233",
+             "tl": 385
+            },
+            {
+             "fn": "EMA.__call__",
+             "file": "tqdm/std.py",
+             "line": 228,
+             "args": {},
+             "calls": [],
+             "repeat": 2,
+             "returned": "(various)",
+             "tl": 387
+            }
+           ],
+           "returned": "{'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.1675429344177246, 'initial': 0, 'n': 2, ...}",
+           "tl": 384
+          },
+          {
+           "fn": "tqdm.format_meter",
+           "file": "tqdm/std.py",
+           "line": 462,
+           "called_from": "std.py:1157",
+           "args": {
+            "n": "2",
+            "total": "4",
+            "elapsed": "0.1675429344177246",
+            "ncols": "None",
+            "prefix": "'Processing c: '",
+            "ascii": "False",
+            "unit": "'it'",
+            "unit_scale": "False",
+            "rate": "18.125303578991037",
+            "bar_format": "None",
+            "postfix": "None",
+            "unit_divisor": "1000",
+            "initial": "0",
+            "colour": "None"
+           },
+           "calls": [
+            {
+             "fn": "tqdm.format_interval",
+             "file": "tqdm/std.py",
+             "line": 397,
+             "called_from": "std.py:546",
+             "args": {
+              "t": "0.1675429344177246"
+             },
+             "calls": [],
+             "returned": "'00:00'",
+             "tl": 390
+            },
+            {
+             "fn": "tqdm.format_interval",
+             "file": "tqdm/std.py",
+             "line": 397,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "'00:00'",
+             "tl": 392
+            },
+            {
+             "fn": "FormatReplace.__init__",
+             "file": "tqdm/utils.py",
+             "line": 91,
+             "called_from": "std.py:630",
+             "args": {
+              "self": "<FormatReplace>",
+              "replace": "''"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 393
+            },
+            {
+             "fn": "FormatReplace.__format__",
+             "file": "tqdm/utils.py",
+             "line": 95,
+             "called_from": "std.py:631",
+             "args": {
+              "self": "<FormatReplace>",
+              "_": "''"
+             },
+             "calls": [],
+             "returned": "''",
+             "tl": 395
+            },
+            {
+             "fn": "Bar.__init__",
+             "file": "tqdm/std.py",
+             "line": 151,
+             "called_from": "std.py:636",
+             "args": {
+              "self": "<Bar>",
+              "frac": "0.5",
+              "default_len": "10",
+              "charset": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'",
+              "colour": "None"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 165,
+               "called_from": "std.py:159",
+               "args": {
+                "self": "<Bar>",
+                "value": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 398
+              }
+             ],
+             "returned": "None",
+             "tl": 397
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "called_from": "std.py:640",
+             "args": {
+              "s": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'"
+             },
+             "calls": [],
+             "returned": "False",
+             "tl": 401
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "True",
+             "tl": 403
+            },
+            {
+             "fn": "Bar.__format__",
+             "file": "tqdm/std.py",
+             "line": 183,
+             "called_from": "std.py:642",
+             "args": {
+              "self": "<Bar>",
+              "format_spec": "''"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 161,
+               "called_from": "std.py:208",
+               "args": {
+                "self": "<Bar>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 405
+              }
+             ],
+             "returned": "'\u2588\u2588\u2588\u2588\u2588     '",
+             "tl": 404
+            }
+           ],
+           "returned": "'Processing c:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'",
+           "tl": 389
+          }
+         ],
+         "returned": "'Processing c:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'",
+         "tl": 383
+        },
+        {
+         "fn": "tqdm.status_printer.<locals>.print_status",
+         "file": "tqdm/std.py",
+         "line": 455,
+         "called_from": "std.py:1502",
+         "args": {
+          "s": "'Processing c:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+         },
+         "calls": [
+          {
+           "fn": "disp_len",
+           "file": "tqdm/utils.py",
+           "line": 307,
+           "called_from": "std.py:456",
+           "args": {
+            "data": "'Processing c:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "_text_width",
+             "file": "tqdm/utils.py",
+             "line": 303,
+             "called_from": "utils.py:312",
+             "args": {
+              "s": "'Processing c:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+             },
+             "calls": [],
+             "returned": "59",
+             "tl": 412
+            }
+           ],
+           "returned": "59",
+           "tl": 411
+          },
+          {
+           "fn": "tqdm.status_printer.<locals>.fp_write",
+           "file": "tqdm/std.py",
+           "line": 449,
+           "called_from": "std.py:457",
+           "args": {
+            "s": "'\\rProcessing c:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "called_from": "std.py:450",
+             "args": {},
+             "calls": [],
+             "returned": "60",
+             "tl": 416
+            },
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "None",
+             "tl": 418
+            }
+           ],
+           "returned": "None",
+           "tl": 415
+          }
+         ],
+         "returned": "None",
+         "tl": 410
+        }
+       ],
+       "returned": "True",
+       "tl": 382
+      },
+      {
+       "fn": "TqdmDefaultWriteLock.release",
+       "file": "tqdm/std.py",
+       "line": 104,
+       "called_from": "std.py:1356",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 422
+      }
+     ],
+     "returned": "True",
+     "tl": 379
+    }
+   ],
+   "returned": "None",
+   "tl": 378
+  },
+  {
+   "fn": "tqdm.__iter__",
+   "file": "tqdm/std.py",
+   "line": 1166,
+   "called_from": "scenario.py:21",
+   "args": {
+    "self": "<tqdm>"
+   },
+   "calls": [],
+   "returned": "'d'",
+   "tl": 426
+  },
+  {
+   "fn": "tqdm.set_description",
+   "file": "tqdm/std.py",
+   "line": 1389,
+   "called_from": "scenario.py:23",
+   "args": {
+    "self": "<tqdm>",
+    "desc": "'Processing d'",
+    "refresh": "True"
+   },
+   "calls": [
+    {
+     "fn": "tqdm.refresh",
+     "file": "tqdm/std.py",
+     "line": 1332,
+     "called_from": "std.py:1401",
+     "args": {
+      "self": "<tqdm>",
+      "nolock": "False",
+      "lock_args": "None"
+     },
+     "calls": [
+      {
+       "fn": "TqdmDefaultWriteLock.acquire",
+       "file": "tqdm/std.py",
+       "line": 100,
+       "called_from": "std.py:1353",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 430
+      },
+      {
+       "fn": "tqdm.display",
+       "file": "tqdm/std.py",
+       "line": 1471,
+       "called_from": "std.py:1354",
+       "args": {
+        "self": "<tqdm>",
+        "msg": "None",
+        "pos": "None"
+       },
+       "calls": [
+        {
+         "fn": "tqdm.__str__",
+         "file": "tqdm/std.py",
+         "line": 1156,
+         "called_from": "std.py:1502",
+         "args": {
+          "self": "<tqdm>"
+         },
+         "calls": [
+          {
+           "fn": "tqdm.format_dict",
+           "file": "tqdm/std.py",
+           "line": 1453,
+           "called_from": "std.py:1157",
+           "args": {
+            "self": "<tqdm>"
+           },
+           "calls": [
+            {
+             "fn": "EMA.__call__",
+             "file": "tqdm/std.py",
+             "line": 228,
+             "called_from": "std.py:1466",
+             "args": {
+              "self": "<EMA>",
+              "x": "None"
+             },
+             "calls": [],
+             "returned": "0.11034297943115233",
+             "tl": 435
+            },
+            {
+             "fn": "EMA.__call__",
+             "file": "tqdm/std.py",
+             "line": 228,
+             "args": {},
+             "calls": [],
+             "repeat": 2,
+             "returned": "(various)",
+             "tl": 437
+            }
+           ],
+           "returned": "{'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.22532391548156738, 'initial': 0, 'n': 2, ...}",
+           "tl": 434
+          },
+          {
+           "fn": "tqdm.format_meter",
+           "file": "tqdm/std.py",
+           "line": 462,
+           "called_from": "std.py:1157",
+           "args": {
+            "n": "2",
+            "total": "4",
+            "elapsed": "0.22532391548156738",
+            "ncols": "None",
+            "prefix": "'Processing d: '",
+            "ascii": "False",
+            "unit": "'it'",
+            "unit_scale": "False",
+            "rate": "18.125303578991037",
+            "bar_format": "None",
+            "postfix": "None",
+            "unit_divisor": "1000",
+            "initial": "0",
+            "colour": "None"
+           },
+           "calls": [
+            {
+             "fn": "tqdm.format_interval",
+             "file": "tqdm/std.py",
+             "line": 397,
+             "called_from": "std.py:546",
+             "args": {
+              "t": "0.22532391548156738"
+             },
+             "calls": [],
+             "returned": "'00:00'",
+             "tl": 440
+            },
+            {
+             "fn": "tqdm.format_interval",
+             "file": "tqdm/std.py",
+             "line": 397,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "'00:00'",
+             "tl": 442
+            },
+            {
+             "fn": "FormatReplace.__init__",
+             "file": "tqdm/utils.py",
+             "line": 91,
+             "called_from": "std.py:630",
+             "args": {
+              "self": "<FormatReplace>",
+              "replace": "''"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 443
+            },
+            {
+             "fn": "FormatReplace.__format__",
+             "file": "tqdm/utils.py",
+             "line": 95,
+             "called_from": "std.py:631",
+             "args": {
+              "self": "<FormatReplace>",
+              "_": "''"
+             },
+             "calls": [],
+             "returned": "''",
+             "tl": 445
+            },
+            {
+             "fn": "Bar.__init__",
+             "file": "tqdm/std.py",
+             "line": 151,
+             "called_from": "std.py:636",
+             "args": {
+              "self": "<Bar>",
+              "frac": "0.5",
+              "default_len": "10",
+              "charset": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'",
+              "colour": "None"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 165,
+               "called_from": "std.py:159",
+               "args": {
+                "self": "<Bar>",
+                "value": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 448
+              }
+             ],
+             "returned": "None",
+             "tl": 447
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "called_from": "std.py:640",
+             "args": {
+              "s": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'"
+             },
+             "calls": [],
+             "returned": "False",
+             "tl": 451
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "True",
+             "tl": 453
+            },
+            {
+             "fn": "Bar.__format__",
+             "file": "tqdm/std.py",
+             "line": 183,
+             "called_from": "std.py:642",
+             "args": {
+              "self": "<Bar>",
+              "format_spec": "''"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 161,
+               "called_from": "std.py:208",
+               "args": {
+                "self": "<Bar>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 455
+              }
+             ],
+             "returned": "'\u2588\u2588\u2588\u2588\u2588     '",
+             "tl": 454
+            }
+           ],
+           "returned": "'Processing d:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'",
+           "tl": 439
+          }
+         ],
+         "returned": "'Processing d:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'",
+         "tl": 433
+        },
+        {
+         "fn": "tqdm.status_printer.<locals>.print_status",
+         "file": "tqdm/std.py",
+         "line": 455,
+         "called_from": "std.py:1502",
+         "args": {
+          "s": "'Processing d:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+         },
+         "calls": [
+          {
+           "fn": "disp_len",
+           "file": "tqdm/utils.py",
+           "line": 307,
+           "called_from": "std.py:456",
+           "args": {
+            "data": "'Processing d:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "_text_width",
+             "file": "tqdm/utils.py",
+             "line": 303,
+             "called_from": "utils.py:312",
+             "args": {
+              "s": "'Processing d:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+             },
+             "calls": [],
+             "returned": "59",
+             "tl": 462
+            }
+           ],
+           "returned": "59",
+           "tl": 461
+          },
+          {
+           "fn": "tqdm.status_printer.<locals>.fp_write",
+           "file": "tqdm/std.py",
+           "line": 449,
+           "called_from": "std.py:457",
+           "args": {
+            "s": "'\\rProcessing d:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "called_from": "std.py:450",
+             "args": {},
+             "calls": [],
+             "returned": "60",
+             "tl": 466
+            },
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "None",
+             "tl": 468
+            }
+           ],
+           "returned": "None",
+           "tl": 465
+          }
+         ],
+         "returned": "None",
+         "tl": 460
+        }
+       ],
+       "returned": "True",
+       "tl": 432
+      },
+      {
+       "fn": "TqdmDefaultWriteLock.release",
+       "file": "tqdm/std.py",
+       "line": 104,
+       "called_from": "std.py:1356",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 472
+      }
+     ],
+     "returned": "True",
+     "tl": 429
+    }
+   ],
+   "returned": "None",
+   "tl": 428
+  },
+  {
+   "fn": "tqdm.__iter__",
+   "file": "tqdm/std.py",
+   "line": 1166,
+   "called_from": "scenario.py:21",
+   "args": {
+    "self": "<tqdm>"
+   },
+   "calls": [
+    {
+     "fn": "tqdm.update",
+     "file": "tqdm/std.py",
+     "line": 1203,
+     "called_from": "std.py:1196",
+     "args": {
+      "self": "<tqdm>",
+      "n": "2"
+     },
+     "calls": [
+      {
+       "fn": "EMA.__call__",
+       "file": "tqdm/std.py",
+       "line": 228,
+       "called_from": "std.py:1245",
+       "args": {
+        "self": "<EMA>",
+        "x": "2"
+       },
+       "calls": [],
+       "returned": "2.0",
+       "tl": 478
+      },
+      {
+       "fn": "EMA.__call__",
+       "file": "tqdm/std.py",
+       "line": 228,
+       "args": {},
+       "calls": [],
+       "repeat": 1,
+       "returned": "0.1142889471615062",
+       "tl": 480
+      },
+      {
+       "fn": "tqdm.refresh",
+       "file": "tqdm/std.py",
+       "line": 1332,
+       "called_from": "std.py:1247",
+       "args": {
+        "self": "<tqdm>",
+        "nolock": "False",
+        "lock_args": "None"
+       },
+       "calls": [
+        {
+         "fn": "TqdmDefaultWriteLock.acquire",
+         "file": "tqdm/std.py",
+         "line": 100,
+         "called_from": "std.py:1353",
+         "args": {
+          "self": "<TqdmDefaultWriteLock>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 482
+        },
+        {
+         "fn": "tqdm.display",
+         "file": "tqdm/std.py",
+         "line": 1471,
+         "called_from": "std.py:1354",
+         "args": {
+          "self": "<tqdm>",
+          "msg": "None",
+          "pos": "None"
+         },
+         "calls": [
+          {
+           "fn": "tqdm.__str__",
+           "file": "tqdm/std.py",
+           "line": 1156,
+           "called_from": "std.py:1502",
+           "args": {
+            "self": "<tqdm>"
+           },
+           "calls": [
+            {
+             "fn": "tqdm.format_dict",
+             "file": "tqdm/std.py",
+             "line": 1453,
+             "called_from": "std.py:1157",
+             "args": {
+              "self": "<tqdm>"
+             },
+             "calls": [
+              {
+               "fn": "EMA.__call__",
+               "file": "tqdm/std.py",
+               "line": 228,
+               "called_from": "std.py:1466",
+               "args": {
+                "self": "<EMA>",
+                "x": "None"
+               },
+               "calls": [],
+               "returned": "0.1142889471615062",
+               "tl": 487
+              },
+              {
+               "fn": "EMA.__call__",
+               "file": "tqdm/std.py",
+               "line": 228,
+               "args": {},
+               "calls": [],
+               "repeat": 2,
+               "returned": "(various)",
+               "tl": 489
+              }
+             ],
+             "returned": "{'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.22755885124206543, 'initial': 0, 'n': 4, ...}",
+             "tl": 486
+            },
+            {
+             "fn": "tqdm.format_meter",
+             "file": "tqdm/std.py",
+             "line": 462,
+             "called_from": "std.py:1157",
+             "args": {
+              "n": "4",
+              "total": "4",
+              "elapsed": "0.22755885124206543",
+              "ncols": "None",
+              "prefix": "'Processing d: '",
+              "ascii": "False",
+              "unit": "'it'",
+              "unit_scale": "False",
+              "rate": "17.499504979897324",
+              "bar_format": "None",
+              "postfix": "None",
+              "unit_divisor": "1000",
+              "initial": "0",
+              "colour": "None"
+             },
+             "calls": [
+              {
+               "fn": "tqdm.format_interval",
+               "file": "tqdm/std.py",
+               "line": 397,
+               "called_from": "std.py:546",
+               "args": {
+                "t": "0.22755885124206543"
+               },
+               "calls": [],
+               "returned": "'00:00'",
+               "tl": 492
+              },
+              {
+               "fn": "tqdm.format_interval",
+               "file": "tqdm/std.py",
+               "line": 397,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "'00:00'",
+               "tl": 494
+              },
+              {
+               "fn": "FormatReplace.__init__",
+               "file": "tqdm/utils.py",
+               "line": 91,
+               "called_from": "std.py:630",
+               "args": {
+                "self": "<FormatReplace>",
+                "replace": "''"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 495
+              },
+              {
+               "fn": "FormatReplace.__format__",
+               "file": "tqdm/utils.py",
+               "line": 95,
+               "called_from": "std.py:631",
+               "args": {
+                "self": "<FormatReplace>",
+                "_": "''"
+               },
+               "calls": [],
+               "returned": "''",
+               "tl": 497
+              },
+              {
+               "fn": "Bar.__init__",
+               "file": "tqdm/std.py",
+               "line": 151,
+               "called_from": "std.py:636",
+               "args": {
+                "self": "<Bar>",
+                "frac": "1.0",
+                "default_len": "10",
+                "charset": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'",
+                "colour": "None"
+               },
+               "calls": [
+                {
+                 "fn": "Bar.colour",
+                 "file": "tqdm/std.py",
+                 "line": 165,
+                 "called_from": "std.py:159",
+                 "args": {
+                  "self": "<Bar>",
+                  "value": "None"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 500
+                }
+               ],
+               "returned": "None",
+               "tl": 499
+              },
+              {
+               "fn": "_is_ascii",
+               "file": "tqdm/utils.py",
+               "line": 256,
+               "called_from": "std.py:640",
+               "args": {
+                "s": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'"
+               },
+               "calls": [],
+               "returned": "False",
+               "tl": 503
+              },
+              {
+               "fn": "_is_ascii",
+               "file": "tqdm/utils.py",
+               "line": 256,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "True",
+               "tl": 505
+              },
+              {
+               "fn": "Bar.__format__",
+               "file": "tqdm/std.py",
+               "line": 183,
+               "called_from": "std.py:642",
+               "args": {
+                "self": "<Bar>",
+                "format_spec": "''"
+               },
+               "calls": [
+                {
+                 "fn": "Bar.colour",
+                 "file": "tqdm/std.py",
+                 "line": 161,
+                 "called_from": "std.py:208",
+                 "args": {
+                  "self": "<Bar>"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 507
+                }
+               ],
+               "returned": "'\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588'",
+               "tl": 506
+              }
+             ],
+             "returned": "'Processing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.50it/s]'",
+             "tl": 491
+            }
+           ],
+           "returned": "'Processing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.50it/s]'",
+           "tl": 485
+          },
+          {
+           "fn": "tqdm.status_printer.<locals>.print_status",
+           "file": "tqdm/std.py",
+           "line": 455,
+           "called_from": "std.py:1502",
+           "args": {
+            "s": "'Processing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.50it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "disp_len",
+             "file": "tqdm/utils.py",
+             "line": 307,
+             "called_from": "std.py:456",
+             "args": {
+              "data": "'Processing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.50it/s]'"
+             },
+             "calls": [
+              {
+               "fn": "_text_width",
+               "file": "tqdm/utils.py",
+               "line": 303,
+               "called_from": "utils.py:312",
+               "args": {
+                "s": "'Processing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.50it/s]'"
+               },
+               "calls": [],
+               "returned": "59",
+               "tl": 514
+              }
+             ],
+             "returned": "59",
+             "tl": 513
+            },
+            {
+             "fn": "tqdm.status_printer.<locals>.fp_write",
+             "file": "tqdm/std.py",
+             "line": 449,
+             "called_from": "std.py:457",
+             "args": {
+              "s": "'\\rProcessing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.50it/s]'"
+             },
+             "calls": [
+              {
+               "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+               "file": "tqdm/utils.py",
+               "line": 177,
+               "called_from": "std.py:450",
+               "args": {},
+               "calls": [],
+               "returned": "60",
+               "tl": 518
+              },
+              {
+               "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+               "file": "tqdm/utils.py",
+               "line": 177,
+               "args": {},
+               "calls": [],
+               "repeat": 1,
+               "returned": "None",
+               "tl": 520
+              }
+             ],
+             "returned": "None",
+             "tl": 517
+            }
+           ],
+           "returned": "None",
+           "tl": 512
+          }
+         ],
+         "returned": "True",
+         "tl": 484
+        },
+        {
+         "fn": "TqdmDefaultWriteLock.release",
+         "file": "tqdm/std.py",
+         "line": 104,
+         "called_from": "std.py:1356",
+         "args": {
+          "self": "<TqdmDefaultWriteLock>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 524
+        }
+       ],
+       "returned": "True",
+       "tl": 481
+      },
+      {
+       "fn": "EMA.__call__",
+       "file": "tqdm/std.py",
+       "line": 228,
+       "called_from": "std.py:1258",
+       "args": {
+        "self": "<EMA>",
+        "x": "1.7086550917816143"
+       },
+       "calls": [],
+       "returned": "1.7514272601829333",
+       "tl": 527
+      }
+     ],
+     "returned": "True",
+     "tl": 477
+    },
+    {
+     "fn": "tqdm.close",
+     "file": "tqdm/std.py",
+     "line": 1270,
+     "called_from": "std.py:1201",
+     "args": {
+      "self": "<tqdm>"
+     },
+     "calls": [
+      {
+       "fn": "tqdm._decr_instances",
+       "file": "tqdm/std.py",
+       "line": 687,
+       "called_from": "std.py:1280",
+       "args": {
+        "cls": "<type>",
+        "instance": "<tqdm.std.tqdm object at 0x109a02210>"
+       },
+       "calls": [
+        {
+         "fn": "TqdmDefaultWriteLock.__enter__",
+         "file": "tqdm/std.py",
+         "line": 108,
+         "called_from": "std.py:697",
+         "args": {
+          "self": "<TqdmDefaultWriteLock>"
+         },
+         "calls": [
+          {
+           "fn": "TqdmDefaultWriteLock.acquire",
+           "file": "tqdm/std.py",
+           "line": 100,
+           "called_from": "std.py:109",
+           "args": {
+            "self": "<TqdmDefaultWriteLock>"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 533
+          }
+         ],
+         "returned": "None",
+         "tl": 532
+        },
+        {
+         "fn": "tqdm.__hash__",
+         "file": "tqdm/std.py",
+         "line": 1163,
+         "called_from": "_weakrefset.py:113",
+         "args": {
+          "self": "<tqdm>"
+         },
+         "calls": [],
+         "returned": "4456456720",
+         "tl": 536
+        },
+        {
+         "fn": "Comparable.__eq__",
+         "file": "tqdm/utils.py",
+         "line": 108,
+         "called_from": "_weakrefset.py:113",
+         "args": {
+          "self": "<tqdm>",
+          "other": "<tqdm.std.tqdm object at 0x109a02210>"
+         },
+         "calls": [
+          {
+           "fn": "tqdm._comparable",
+           "file": "tqdm/std.py",
+           "line": 1159,
+           "called_from": "utils.py:109",
+           "args": {
+            "self": "<tqdm>"
+           },
+           "calls": [],
+           "returned": "0",
+           "tl": 539
+          },
+          {
+           "fn": "tqdm._comparable",
+           "file": "tqdm/std.py",
+           "line": 1159,
+           "args": {},
+           "calls": [],
+           "repeat": 1,
+           "returned": "0",
+           "tl": 541
+          }
+         ],
+         "returned": "True",
+         "tl": 538
+        },
+        {
+         "fn": "TqdmDefaultWriteLock.__exit__",
+         "file": "tqdm/std.py",
+         "line": 111,
+         "called_from": "std.py:697",
+         "args": {
+          "self": "<TqdmDefaultWriteLock>"
+         },
+         "calls": [
+          {
+           "fn": "TqdmDefaultWriteLock.release",
+           "file": "tqdm/std.py",
+           "line": 104,
+           "called_from": "std.py:112",
+           "args": {
+            "self": "<TqdmDefaultWriteLock>"
+           },
+           "calls": [],
+           "returned": "None",
+           "tl": 544
+          }
+         ],
+         "returned": "None",
+         "tl": 543
+        }
+       ],
+       "returned": "None",
+       "tl": 531
+      },
+      {
+       "fn": "tqdm.close.<locals>.fp_write",
+       "file": "tqdm/std.py",
+       "line": 1293,
+       "called_from": "std.py:1297",
+       "args": {
+        "s": "''"
+       },
+       "calls": [
+        {
+         "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+         "file": "tqdm/utils.py",
+         "line": 177,
+         "called_from": "std.py:1294",
+         "args": {},
+         "calls": [],
+         "returned": "0",
+         "tl": 549
+        }
+       ],
+       "returned": "None",
+       "tl": 548
+      },
+      {
+       "fn": "TqdmDefaultWriteLock.__enter__",
+       "file": "tqdm/std.py",
+       "line": 108,
+       "called_from": "std.py:1305",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [
+        {
+         "fn": "TqdmDefaultWriteLock.acquire",
+         "file": "tqdm/std.py",
+         "line": 100,
+         "called_from": "std.py:109",
+         "args": {
+          "self": "<TqdmDefaultWriteLock>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 553
+        }
+       ],
+       "returned": "None",
+       "tl": 552
+      },
+      {
+       "fn": "tqdm.display",
+       "file": "tqdm/std.py",
+       "line": 1471,
+       "called_from": "std.py:1309",
+       "args": {
+        "self": "<tqdm>",
+        "msg": "None",
+        "pos": "0"
+       },
+       "calls": [
+        {
+         "fn": "tqdm.__str__",
+         "file": "tqdm/std.py",
+         "line": 1156,
+         "called_from": "std.py:1502",
+         "args": {
+          "self": "<tqdm>"
+         },
+         "calls": [
+          {
+           "fn": "tqdm.format_dict",
+           "file": "tqdm/std.py",
+           "line": 1453,
+           "called_from": "std.py:1157",
+           "args": {
+            "self": "<tqdm>"
+           },
+           "calls": [],
+           "returned": "{'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.230072021484375, 'initial': 0, 'n': 4, ...}",
+           "tl": 558
+          },
+          {
+           "fn": "tqdm.format_meter",
+           "file": "tqdm/std.py",
+           "line": 462,
+           "called_from": "std.py:1157",
+           "args": {
+            "n": "4",
+            "total": "4",
+            "elapsed": "0.230072021484375",
+            "ncols": "None",
+            "prefix": "'Processing d: '",
+            "ascii": "False",
+            "unit": "'it'",
+            "unit_scale": "False",
+            "rate": "None",
+            "bar_format": "None",
+            "postfix": "None",
+            "unit_divisor": "1000",
+            "initial": "0",
+            "colour": "None"
+           },
+           "calls": [
+            {
+             "fn": "tqdm.format_interval",
+             "file": "tqdm/std.py",
+             "line": 397,
+             "called_from": "std.py:546",
+             "args": {
+              "t": "0.230072021484375"
+             },
+             "calls": [],
+             "returned": "'00:00'",
+             "tl": 561
+            },
+            {
+             "fn": "tqdm.format_interval",
+             "file": "tqdm/std.py",
+             "line": 397,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "'00:00'",
+             "tl": 563
+            },
+            {
+             "fn": "FormatReplace.__init__",
+             "file": "tqdm/utils.py",
+             "line": 91,
+             "called_from": "std.py:630",
+             "args": {
+              "self": "<FormatReplace>",
+              "replace": "''"
+             },
+             "calls": [],
+             "returned": "None",
+             "tl": 564
+            },
+            {
+             "fn": "FormatReplace.__format__",
+             "file": "tqdm/utils.py",
+             "line": 95,
+             "called_from": "std.py:631",
+             "args": {
+              "self": "<FormatReplace>",
+              "_": "''"
+             },
+             "calls": [],
+             "returned": "''",
+             "tl": 566
+            },
+            {
+             "fn": "Bar.__init__",
+             "file": "tqdm/std.py",
+             "line": 151,
+             "called_from": "std.py:636",
+             "args": {
+              "self": "<Bar>",
+              "frac": "1.0",
+              "default_len": "10",
+              "charset": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'",
+              "colour": "None"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 165,
+               "called_from": "std.py:159",
+               "args": {
+                "self": "<Bar>",
+                "value": "None"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 569
+              }
+             ],
+             "returned": "None",
+             "tl": 568
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "called_from": "std.py:640",
+             "args": {
+              "s": "' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'"
+             },
+             "calls": [],
+             "returned": "False",
+             "tl": 572
+            },
+            {
+             "fn": "_is_ascii",
+             "file": "tqdm/utils.py",
+             "line": 256,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "True",
+             "tl": 574
+            },
+            {
+             "fn": "Bar.__format__",
+             "file": "tqdm/std.py",
+             "line": 183,
+             "called_from": "std.py:642",
+             "args": {
+              "self": "<Bar>",
+              "format_spec": "''"
+             },
+             "calls": [
+              {
+               "fn": "Bar.colour",
+               "file": "tqdm/std.py",
+               "line": 161,
+               "called_from": "std.py:208",
+               "args": {
+                "self": "<Bar>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 576
+              }
+             ],
+             "returned": "'\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588'",
+             "tl": 575
+            }
+           ],
+           "returned": "'Processing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.39it/s]'",
+           "tl": 560
+          }
+         ],
+         "returned": "'Processing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.39it/s]'",
+         "tl": 557
+        },
+        {
+         "fn": "tqdm.status_printer.<locals>.print_status",
+         "file": "tqdm/std.py",
+         "line": 455,
+         "called_from": "std.py:1502",
+         "args": {
+          "s": "'Processing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.39it/s]'"
+         },
+         "calls": [
+          {
+           "fn": "disp_len",
+           "file": "tqdm/utils.py",
+           "line": 307,
+           "called_from": "std.py:456",
+           "args": {
+            "data": "'Processing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.39it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "_text_width",
+             "file": "tqdm/utils.py",
+             "line": 303,
+             "called_from": "utils.py:312",
+             "args": {
+              "s": "'Processing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.39it/s]'"
+             },
+             "calls": [],
+             "returned": "59",
+             "tl": 583
+            }
+           ],
+           "returned": "59",
+           "tl": 582
+          },
+          {
+           "fn": "tqdm.status_printer.<locals>.fp_write",
+           "file": "tqdm/std.py",
+           "line": 449,
+           "called_from": "std.py:457",
+           "args": {
+            "s": "'\\rProcessing d: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 17.39it/s]'"
+           },
+           "calls": [
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "called_from": "std.py:450",
+             "args": {},
+             "calls": [],
+             "returned": "60",
+             "tl": 587
+            },
+            {
+             "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+             "file": "tqdm/utils.py",
+             "line": 177,
+             "args": {},
+             "calls": [],
+             "repeat": 1,
+             "returned": "None",
+             "tl": 589
+            }
+           ],
+           "returned": "None",
+           "tl": 586
+          }
+         ],
+         "returned": "None",
+         "tl": 581
+        }
+       ],
+       "returned": "True",
+       "tl": 556
+      },
+      {
+       "fn": "tqdm.close.<locals>.fp_write",
+       "file": "tqdm/std.py",
+       "line": 1293,
+       "called_from": "std.py:1310",
+       "args": {
+        "s": "'\\n'"
+       },
+       "calls": [
+        {
+         "fn": "DisableOnWriteError.disable_on_exception.<locals>.inner",
+         "file": "tqdm/utils.py",
+         "line": 177,
+         "called_from": "std.py:1294",
+         "args": {},
+         "calls": [],
+         "returned": "1",
+         "tl": 594
+        }
+       ],
+       "returned": "None",
+       "tl": 593
+      },
+      {
+       "fn": "TqdmDefaultWriteLock.__exit__",
+       "file": "tqdm/std.py",
+       "line": 111,
+       "called_from": "std.py:1305",
+       "args": {
+        "self": "<TqdmDefaultWriteLock>"
+       },
+       "calls": [
+        {
+         "fn": "TqdmDefaultWriteLock.release",
+         "file": "tqdm/std.py",
+         "line": 104,
+         "called_from": "std.py:112",
+         "args": {
+          "self": "<TqdmDefaultWriteLock>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 598
+        }
+       ],
+       "returned": "None",
+       "tl": 597
+      }
+     ],
+     "returned": "None",
+     "tl": 530
+    }
+   ],
+   "returned": "None",
+   "tl": 476
+  },
+  {
+   "fn": "tqdm.format_dict",
+   "file": "tqdm/std.py",
+   "line": 1453,
+   "called_from": "scenario.py:24",
+   "args": {
+    "self": "<tqdm>"
+   },
+   "calls": [],
+   "returned": "{'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.23186588287353516, 'initial': 0, 'n': 4, ...}",
+   "tl": 603
+  },
+  {
+   "fn": "tqdm.close",
+   "file": "tqdm/std.py",
+   "line": 1270,
+   "called_from": "scenario.py:25",
+   "args": {
+    "self": "<tqdm>"
+   },
+   "calls": [],
+   "returned": "None",
+   "tl": 605
+  },
+  {
+   "fn": "tqdm.__del__",
+   "file": "tqdm/std.py",
+   "line": 1153,
+   "called_from": "scenario.py:31",
+   "args": {
+    "self": "<tqdm>"
+   },
+   "calls": [
+    {
+     "fn": "tqdm.close",
+     "file": "tqdm/std.py",
+     "line": 1270,
+     "called_from": "std.py:1154",
+     "args": {
+      "self": "<tqdm>"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 608
+    }
+   ],
+   "returned": "None",
+   "tl": 607
+  }
+ ],
+ "lines": {
+  "tqdm/_monitor.py": [
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   104
+  ],
+  "tqdm/std.py": [
+   91,
+   92,
+   93,
+   94,
+   95,
+   96,
+   97,
+   98,
+   101,
+   102,
+   105,
+   106,
+   109,
+   112,
+   116,
+   117,
+   118,
+   119,
+   152,
+   155,
+   156,
+   157,
+   158,
+   159,
+   163,
+   167,
+   168,
+   169,
+   184,
+   199,
+   200,
+   202,
+   203,
+   205,
+   206,
+   207,
+   208,
+   224,
+   225,
+   226,
+   235,
+   236,
+   237,
+   238,
+   239,
+   412,
+   413,
+   414,
+   415,
+   443,
+   444,
+   445,
+   446,
+   447,
+   449,
+   450,
+   451,
+   453,
+   455,
+   456,
+   457,
+   458,
+   460,
+   533,
+   538,
+   546,
+   550,
+   551,
+   552,
+   553,
+   554,
+   555,
+   556,
+   557,
+   558,
+   559,
+   561,
+   565,
+   566,
+   568,
+   569,
+   573,
+   574,
+   575,
+   576,
+   577,
+   582,
+   584,
+   585,
+   587,
+   589,
+   593,
+   595,
+   596,
+   597,
+   598,
+   599,
+   600,
+   601,
+   602,
+   603,
+   605,
+   606,
+   607,
+   610,
+   612,
+   613,
+   615,
+   617,
+   620,
+   621,
+   628,
+   630,
+   631,
+   632,
+   636,
+   637,
+   638,
+   639,
+   640,
+   641,
+   642,
+   643,
+   665,
+   666,
+   667,
+   669,
+   670,
+   671,
+   672,
+   678,
+   683,
+   684,
+   685,
+   697,
+   698,
+   699,
+   705,
+   706,
+   708,
+   709,
+   710,
+   712,
+   769,
+   770,
+   771,
+   968,
+   969,
+   971,
+   977,
+   979,
+   982,
+   983,
+   984,
+   987,
+   990,
+   1001,
+   1016,
+   1018,
+   1023,
+   1024,
+   1025,
+   1026,
+   1027,
+   1028,
+   1029,
+   1031,
+   1032,
+   1033,
+   1037,
+   1040,
+   1043,
+   1044,
+   1046,
+   1050,
+   1054,
+   1055,
+   1056,
+   1057,
+   1058,
+   1059,
+   1060,
+   1061,
+   1062,
+   1063,
+   1064,
+   1065,
+   1066,
+   1067,
+   1068,
+   1069,
+   1070,
+   1071,
+   1072,
+   1073,
+   1074,
+   1075,
+   1076,
+   1077,
+   1078,
+   1079,
+   1080,
+   1081,
+   1082,
+   1083,
+   1090,
+   1091,
+   1095,
+   1097,
+   1099,
+   1101,
+   1102,
+   1103,
+   1106,
+   1108,
+   1154,
+   1157,
+   1161,
+   1164,
+   1170,
+   1174,
+   1178,
+   1179,
+   1180,
+   1181,
+   1182,
+   1183,
+   1185,
+   1186,
+   1187,
+   1190,
+   1192,
+   1193,
+   1194,
+   1195,
+   1196,
+   1197,
+   1198,
+   1200,
+   1201,
+   1229,
+   1232,
+   1234,
+   1237,
+   1238,
+   1239,
+   1240,
+   1241,
+   1242,
+   1243,
+   1245,
+   1246,
+   1247,
+   1248,
+   1254,
+   1256,
+   1258,
+   1259,
+   1266,
+   1267,
+   1268,
+   1272,
+   1273,
+   1276,
+   1279,
+   1280,
+   1282,
+   1284,
+   1289,
+   1293,
+   1294,
+   1296,
+   1297,
+   1303,
+   1305,
+   1306,
+   1308,
+   1309,
+   1310,
+   1345,
+   1348,
+   1349,
+   1353,
+   1354,
+   1355,
+   1356,
+   1357,
+   1399,
+   1400,
+   1401,
+   1456,
+   1459,
+   1461,
+   1462,
+   1463,
+   1464,
+   1465,
+   1466,
+   1467,
+   1468,
+   1469,
+   1484,
+   1485,
+   1487,
+   1488,
+   1494,
+   1500,
+   1502,
+   1503,
+   1505
+  ],
+  "tqdm/utils.py": [
+   92,
+   93,
+   96,
+   97,
+   109,
+   123,
+   137,
+   143,
+   175,
+   177,
+   178,
+   179,
+   194,
+   197,
+   198,
+   199,
+   200,
+   201,
+   202,
+   203,
+   206,
+   236,
+   237,
+   246,
+   250,
+   251,
+   257,
+   258,
+   259,
+   260,
+   261,
+   270,
+   271,
+   272,
+   273,
+   275,
+   276,
+   278,
+   304,
+   312
+  ]
+ },
+ "tl": 1
+}

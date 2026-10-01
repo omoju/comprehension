@@ -1,0 +1,489 @@
+{
+  "title": "Nothing Gets Out Unescaped: A Run Through MarkupSafe",
+  "premise": "A web page wants to show a comment somebody posted: `<script>alert(document.cookie);</script>`. Printed as-is into HTML, that string stops being text and starts being code \u2014 it is a cross-site scripting payload. MarkupSafe exists to make the difference between \"text\" and \"markup\" a property of the value itself, carried in its type, so that a template can mix trusted and untrusted pieces and the untrusted ones can only ever arrive as inert characters. This story follows that one untrusted comment from the moment it is handed to `escape()` until it comes back out of a rendered fragment as plain text again, and notes at each step exactly what is guaranteed, what is merely trusted, and who is responsible for which.",
+  "reader": "owner",
+  "repo": {
+    "name": "pallets/markupsafe",
+    "url": "https://github.com/pallets/markupsafe",
+    "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+    "local_path": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+    "import_path": "src"
+  },
+  "chapters": [
+    {
+      "n": 1,
+      "title": "The Trust Boundary: escape()",
+      "trace_lines": [
+        2,
+        5
+      ],
+      "data_in": "s = '<script>alert(document.cookie);</script>' \u2014 a plain str of unknown provenance",
+      "data_out": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+      "code": [
+        "src/markupsafe/__init__.py:24-45",
+        "src/markupsafe/_native.py",
+        "src/markupsafe/_speedups.c:74-171"
+      ],
+      "inputs": [
+        "'<script>alert(document.cookie);</script>'"
+      ],
+      "characters": [
+        "escape",
+        "_escape_inner",
+        "_native._escape_inner",
+        "Markup"
+      ],
+      "facts": [
+        "`escape` tests `type(s) is str`, not `isinstance`, so the fast path is taken only by exact `str`; the comment qualifies and skips the `__html__` check entirely (__init__.py:39-40).",
+        "The comment on lines 37-38 says `type(s)` is deliberate: a proxy object can lie about `__class__`, so `isinstance` would be a trust hole; `tests/test_escape.py::test_proxy` pins this.",
+        "`_escape_inner` replaces exactly five characters \u2014 `&`, `>`, `<`, `'`, `\"` \u2014 and nothing else (_native.py:1-8). Backtick, `=`, and whitespace are untouched; safety of attribute values therefore assumes the attribute is quoted.",
+        "`_native` replaces `&` first, before the four replacements that introduce `&`; reversing that order would double-escape every entity.",
+        "At import time the C version from `_speedups` is preferred and the pure-Python `_native` is the fallback (__init__.py:7-10). The C code escapes the same five characters for 1-, 2- and 4-byte strings and returns the *same object* when nothing needs escaping (_speedups.c:84-87).",
+        "The return type is always `Markup`, never bare `str` \u2014 the escaped text is now typed as safe."
+      ],
+      "open_questions": [
+        {
+          "id": "q1.1",
+          "question": "The fast path only fires for an exact `str`. What happens when the caller hands `escape` a value that is already safe \u2014 does the text get escaped twice?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 2,
+      "title": "The Unguarded Door: Markup() itself",
+      "trace_lines": [
+        6,
+        9
+      ],
+      "data_in": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;') for repr; then the literal string '&lt;script&gt;...&lt;/script&gt;' handed straight to Markup()",
+      "data_out": "\"Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')\" and a second, equal Markup built with no escaping at all",
+      "code": [
+        "src/markupsafe/__init__.py:84-134",
+        "src/markupsafe/__init__.py:167-168"
+      ],
+      "inputs": [
+        "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+        "'&lt;script&gt;alert(document.cookie);&lt;/script&gt;'"
+      ],
+      "characters": [
+        "Markup.__new__",
+        "Markup.__repr__",
+        "Markup.__html__"
+      ],
+      "facts": [
+        "`Markup.__new__` performs no escaping whatsoever. It wraps whatever text it is given and declares it safe (__init__.py:122-131).",
+        "Before wrapping, `__new__` checks `hasattr(object, \"__html__\")` and calls it, so `Markup(obj)` of an HTML-aware object stores that object's own markup.",
+        "`__new__` accepts `encoding`/`errors` and only forwards them to `str.__new__` when `encoding is not None` \u2014 the bytes-decoding road, not taken here.",
+        "`__repr__` wraps `str.__repr__` in the class name, so a `Markup` is visually distinguishable from a `str` in logs and REPLs \u2014 a small but real safety affordance (__init__.py:167-168).",
+        "`Markup` sets `__slots__ = ()`, so instances carry no extra dict; the safety flag is the type, nothing more.",
+        "This is the project's one deliberate trust boundary in the other direction: calling `Markup(user_input)` is how an application gets a vulnerability, and the API cannot prevent it."
+      ],
+      "open_questions": [
+        {
+          "id": "q2.1",
+          "question": "If `Markup()` will bless any string at all, what stops untrusted text from being wrapped \u2014 and who is accountable when it is?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 3,
+      "title": "Idempotence: escaping something already safe",
+      "trace_lines": [
+        10,
+        17
+      ],
+      "data_in": "s = Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')",
+      "data_out": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;') \u2014 byte-for-byte the same text",
+      "code": [
+        "src/markupsafe/__init__.py:39-45",
+        "src/markupsafe/__init__.py:122-134"
+      ],
+      "inputs": [
+        "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')"
+      ],
+      "characters": [
+        "escape",
+        "Markup.__html__",
+        "Markup.__new__"
+      ],
+      "facts": [
+        "`Markup` is a `str` subclass, so `type(s) is str` is False and the fast path is skipped; the `hasattr(s, \"__html__\")` branch is taken instead (__init__.py:42-43).",
+        "`Markup.__html__` returns `self` unchanged (__init__.py:133-134), so the escaped text passes through untouched \u2014 escaping is idempotent for `Markup`.",
+        "The trace shows `__html__` called twice: once by `escape` and once again inside `Markup.__new__`, which re-checks `hasattr(object, \"__html__\")`. Harmless here because `__html__` is a pure identity, but it means a user-defined `__html__` with side effects or cost is invoked twice per `escape` call.",
+        "Had the value been a `str` subclass *without* `__html__` (e.g. `tests/test_escape.py::ReferenceStr`), the third branch `Markup(_escape_inner(str(s)))` would have run instead.",
+        "Guarantee established: `escape(escape(x)) == escape(x)` for anything escape returns."
+      ],
+      "open_questions": [
+        {
+          "id": "q3.1",
+          "question": "Escaping a `Markup` returns a `Markup` \u2014 but what if an application subclasses `Markup`? Does the subclass survive a round trip through `escape`?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q1.1",
+          "answer": "Already-safe values take the `__html__` branch, which returns their text verbatim; the five replacements never run a second time, so no double-escaping occurs."
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Delegated Trust: an object that writes its own HTML",
+      "trace_lines": [
+        18,
+        20
+      ],
+      "data_in": "s = a User instance with id=3 and name='Alice \"The <b>Great</b>\"' (its own escape call elided in the trace)",
+      "data_out": "repr string: 'Markup(\\'<span class=\"user\">Alice &#3...lt;b&gt;Great&lt;/b&gt;&#34;</span>\\')'",
+      "code": [
+        "src/markupsafe/__init__.py:42-43",
+        "docs/html.rst:1-49"
+      ],
+      "inputs": [
+        "User(3, 'Alice \"The <b>Great</b>\"')"
+      ],
+      "characters": [
+        "escape",
+        "User.__html__",
+        "Markup.__new__"
+      ],
+      "facts": [
+        "`escape` on a non-str object checks for `__html__` *before* falling back to `str(s)`; if the method exists, its return value is wrapped in `Markup` and never escaped (__init__.py:42-43).",
+        "Consequence: the result of `__html__` is trusted verbatim. The `User` class here is careful \u2014 it builds its span via `Markup(...).format(name)`, which escapes the name \u2014 but MarkupSafe has no way to check that an arbitrary `__html__` did so. `docs/html.rst:31-43` states this responsibility explicitly.",
+        "Exceptions raised inside `__html__` propagate out of `escape` rather than being swallowed; this was a historical segfault in the C path and is pinned by `tests/test_exception_custom_html.py`.",
+        "Only if an object has neither exact-`str` type nor `__html__` does `escape` do `_escape_inner(str(s))` \u2014 so `escape(None)` yields `Markup('None')`, which is why `escape_silent` exists as the None-aware alternative (__init__.py:48-61).",
+        "The surrounding `<span class=\"user\">` markup survives unescaped while the name inside it is escaped \u2014 the mixed-trust pattern the whole library is built around."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q2.1",
+          "answer": "Nothing in the library stops it: both `Markup(text)` and a loose `__html__` implementation bless text unchecked. The guarantee is one-directional \u2014 escape() output is safe; Markup()/`__html__` input is the application author's responsibility, and the docs say so."
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "title": "A Template That Escapes Its Arguments",
+      "trace_lines": [
+        21,
+        25
+      ],
+      "data_in": "'<p>User: {user:link} said: {comment}</p>' wrapped as Markup; kwargs user=User(...), comment=Markup('&lt;script&gt;...')",
+      "data_out": "a Markup template plus a freshly constructed EscapeFormatter bound to Markup.escape (__init__ returns None)",
+      "code": [
+        "src/markupsafe/__init__.py:313-323",
+        "src/markupsafe/__init__.py:332-338",
+        "src/markupsafe/__init__.py:154-165"
+      ],
+      "inputs": [
+        "Markup('<p>User: {user:link} said: {comment}</p>')",
+        "user=User(3, 'Alice \"The <b>Great</b>\"')",
+        "comment=Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')"
+      ],
+      "characters": [
+        "Markup.format",
+        "EscapeFormatter",
+        "Markup.escape (bound classmethod)",
+        "string.Formatter.vformat",
+        "_MarkupEscapeHelper"
+      ],
+      "facts": [
+        "The *template* text is trusted (it is a `Markup`); only the substituted values get escaped. Calling `.format()` on an untrusted template string would not be protected by anything here.",
+        "`Markup.format` builds a fresh `EscapeFormatter(self.escape)` per call and hands off to `string.Formatter.vformat` (__init__.py:313-315) \u2014 standard-library parsing, custom field rendering.",
+        "Because the escape callable is `self.escape` (the bound classmethod of the actual class), subclasses of `Markup` format into their own type.",
+        "`format_map` is the same machinery with an empty args tuple (__init__.py:317-323).",
+        "Road not taken: the `%` operator (`__mod__`, __init__.py:154-165) wraps each argument in `_MarkupEscapeHelper`, which escapes lazily in `__str__`/`__repr__` and passes `__int__`/`__float__` through unescaped \u2014 a different path to the same guarantee, exercised by `tests/test_markupsafe.py::test_string_interpolation`.",
+        "`EscapeFormatter` declares `__slots__` but subclasses `string.Formatter`, which does not \u2014 so the slots save nothing; cosmetic, not a risk."
+      ],
+      "open_questions": [
+        {
+          "id": "q5.1",
+          "question": "The field `{user:link}` carries a format spec. What decides whether `link` is handled by the object or by Python's normal formatting \u2014 and what happens if an object offers `__html__` but no spec handler?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 6,
+      "title": "format_field: three doors, in order",
+      "trace_lines": [
+        26,
+        29
+      ],
+      "data_in": "value = User(3, 'Alice \"The <b>Great</b>\"'), format_spec = 'link'",
+      "data_out": "control handed to User.__html_format__, which builds Markup('<a href=\"/user/{}\">{}</a>') and Markup('<span class=\"user\">{0}</span>')",
+      "code": [
+        "src/markupsafe/__init__.py:339-354",
+        "docs/formatting.rst:10-52"
+      ],
+      "inputs": [
+        "User(3, 'Alice \"The <b>Great</b>\"')",
+        "'link'"
+      ],
+      "characters": [
+        "EscapeFormatter.format_field",
+        "User.__html_format__",
+        "Markup.__new__"
+      ],
+      "facts": [
+        "`format_field` dispatches in a fixed order: `__html_format__` first, then `__html__`, then Python's default `super().format_field` (__init__.py:340-353).",
+        "Because `__html_format__` wins, the object receives the raw spec string `'link'` and decides what it means; MarkupSafe imposes no spec grammar.",
+        "Road not taken: if the object had `__html__` but no `__html_format__` *and* a non-empty spec was given, `format_field` raises `ValueError` with a message naming the type (__init__.py:343-348) rather than silently ignoring the spec.",
+        "Road not taken: `Markup.__html_format__` itself raises `ValueError(\"Unsupported format specification for Markup.\")` for any non-empty spec (__init__.py:325-329) \u2014 formatting a `Markup` with `{:>10}` is an error, not a pad.",
+        "In the default branch, the spec is coerced with `str(format_spec)` before delegating, so a `Markup` spec does not invoke the wrong `__format__` callbacks (__init__.py:351-353).",
+        "The whole dispatch is `hasattr`-based duck typing: any object claiming these method names is believed."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q5.1",
+          "answer": "`format_field` checks `__html_format__` first and passes the spec straight to it; an object with only `__html__` and a non-empty spec gets a ValueError naming the offending type, so specs are never silently dropped."
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "title": "The Innermost Escape: the user's name",
+      "trace_lines": [
+        30,
+        44
+      ],
+      "data_in": "Markup('<span class=\"user\">{0}</span>').format('Alice \"The <b>Great</b>\"')",
+      "data_out": "Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')",
+      "code": [
+        "src/markupsafe/__init__.py:339-354",
+        "src/markupsafe/__init__.py:230-240",
+        "src/markupsafe/__init__.py:24-45"
+      ],
+      "inputs": [
+        "'Alice \"The <b>Great</b>\"'",
+        "format_spec = ''"
+      ],
+      "characters": [
+        "Markup.format",
+        "EscapeFormatter.format_field",
+        "Markup.escape",
+        "escape",
+        "Markup.__new__"
+      ],
+      "facts": [
+        "The name is a plain `str` with no `__html__`, so it reaches the third branch: `super().format_field(value, str(''))` and then `str(self.escape(rv))` (__init__.py:350-354).",
+        "Escaping converts `\"` to `&#34;` and `<b>`/`</b>` to `&lt;b&gt;`/`&lt;/b&gt;`: the double quote matters because the name lands next to quoted attribute values elsewhere in the page.",
+        "`format_field` returns a plain `str`, not a `Markup` \u2014 `str(self.escape(rv))` deliberately strips the type, because `string.Formatter.vformat` concatenates fields with plain string operations.",
+        "Even an escaped field passes through `escape` only once; `escape` is called on the *rendered* field, so numbers, dates and anything else formatted by Python's default machinery are escaped too (`tests/test_markupsafe.py::test_formatting_with_objects`).",
+        "The inner `Markup('<a href=\"/user/{}\">{}</a>').format(...)` seen earlier runs the same path twice more (trace line 44, elided): once for `self.id` (an int, escaped harmlessly) and once for the already-safe span."
+      ],
+      "open_questions": [
+        {
+          "id": "q7.1",
+          "question": "`format_field` hands back a bare `str`, losing the safe type. Does the final result still come out as `Markup`, or has the guarantee leaked away mid-render?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 8,
+      "title": "Markup.escape: the type-preserving wrapper",
+      "trace_lines": [
+        45,
+        55
+      ],
+      "data_in": "s = Markup('<a href=\"/user/3\"><span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span></a>')",
+      "data_out": "'<a href=\"/user/3\"><span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span></a>' as a plain str, unchanged",
+      "code": [
+        "src/markupsafe/__init__.py:230-240",
+        "src/markupsafe/__init__.py:39-45",
+        "src/markupsafe/__init__.py:133-134"
+      ],
+      "inputs": [
+        "Markup('<a href=\"/user/3\">...</a>')"
+      ],
+      "characters": [
+        "Markup.escape",
+        "escape",
+        "Markup.__html__",
+        "Markup.__new__"
+      ],
+      "facts": [
+        "`Markup.escape` is a classmethod that calls the module-level `escape` and then, only if `rv.__class__ is not cls`, re-wraps the result in `cls` (__init__.py:235-240) \u2014 so a `Markup` subclass gets its own type back.",
+        "Here the value returned by `User.__html_format__` is already a `Markup`, so the run takes the `__html__` path and the markup survives verbatim: the `<a>` and `<span>` tags are not escaped while the name inside them stays escaped.",
+        "This is the second place idempotence pays off: a value can pass through escaping any number of nested templates without its entities being re-escaped.",
+        "The common case (`rv.__class__ is cls`) returns the object `escape` built rather than constructing another \u2014 one allocation saved on the hot path.",
+        "The trace shows the familiar double `__html__` call (once in `escape`, once in `Markup.__new__`) for every nested field."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q3.1",
+          "answer": "Yes: `Markup.escape` compares `rv.__class__` with `cls` and re-wraps when they differ, so escaping, formatting, joining and concatenation on a `Markup` subclass all return that subclass."
+        }
+      ]
+    },
+    {
+      "n": 9,
+      "title": "Reassembly: the page becomes Markup again",
+      "trace_lines": [
+        56,
+        61
+      ],
+      "data_in": "the remaining field `{comment}` = Markup('&lt;script&gt;...&lt;/script&gt;'), plus the rendered pieces",
+      "data_out": "Markup('<p>User: <a href=\"/user/3\"><span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span></a> said: &lt;script&gt;alert(document.cookie);&lt;/script&gt;</p>')",
+      "code": [
+        "src/markupsafe/__init__.py:313-315",
+        "src/markupsafe/__init__.py:339-354",
+        "src/markupsafe/__init__.py:122-131"
+      ],
+      "inputs": [
+        "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')"
+      ],
+      "characters": [
+        "EscapeFormatter.format_field",
+        "string.Formatter.vformat",
+        "Markup.format",
+        "Markup.__new__",
+        "Markup.__repr__"
+      ],
+      "facts": [
+        "The `{comment}` field (trace line 56, told once already) takes the `__html__` branch of `format_field`, so the pre-escaped comment is inserted without a second round of escaping.",
+        "`vformat` joins the trusted literal template text with the escaped field strings into one plain `str`; `Markup.format` then wraps that whole string with `self.__class__(...)` (__init__.py:315).",
+        "That final wrap is where the type-level guarantee is restored: every substituted field passed through `escape`, and the only unescaped text is the template the application wrote itself.",
+        "The resulting fragment contains `&lt;script&gt;` and never `<script>` \u2014 the scenario's `assert \"<script>\" not in page` holds by construction, not by inspection.",
+        "Failure mode worth knowing: an unmatched or malformed field in the template raises from `string.Formatter`, and a missing `%`-style argument raises `TypeError` in the `__mod__` path (`tests/test_markupsafe.py::test_missing_interpol`) \u2014 formatting errors surface loudly rather than producing partial output."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q7.1",
+          "answer": "The bare strings are only an internal convenience: `vformat` concatenates them and `Markup.format` wraps the whole joined result in `self.__class__`, so the value that leaves the call is a `Markup` again."
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "title": "Concatenation: the operand gets escaped, both ways",
+      "trace_lines": [
+        62,
+        91
+      ],
+      "data_in": "Markup('<footer>') + '</p> & <script>oops</script>', then + Markup('</footer>')",
+      "data_out": "Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')",
+      "code": [
+        "src/markupsafe/__init__.py:136-152",
+        "src/markupsafe/__init__.py:230-240",
+        "src/markupsafe/__init__.py:170-186"
+      ],
+      "inputs": [
+        "Markup('<footer>')",
+        "'</p> & <script>oops</script>'",
+        "Markup('</footer>')"
+      ],
+      "characters": [
+        "Markup.__add__",
+        "Markup.escape",
+        "escape",
+        "Markup.__new__",
+        "Markup.__repr__"
+      ],
+      "facts": [
+        "`Markup.__add__` escapes its right operand with `self.escape(value)` and wraps the concatenation in `self.__class__` (__init__.py:136-140) \u2014 so `safe + untrusted` is safe, which is the single most common real-world use after `escape` itself.",
+        "The second `+` has a `Markup` on the right; it goes through the same `Markup.escape` call and comes back unchanged, so safe + safe does not double-escape.",
+        "`__add__` guards with `isinstance(value, str) or hasattr(value, \"__html__\")` and returns `NotImplemented` otherwise; Python then raises `TypeError`. Adding an int to a `Markup` fails loudly rather than stringifying it.",
+        "`__radd__` mirrors this for `plain + markup`, escaping the left operand first (__init__.py:142-146), so direction does not matter.",
+        "The same wrap-and-escape pattern covers the rest of the `str` API: `join` escapes every element, `replace` escapes only its `new` argument, and `ljust`/`rjust`/`center` escape the fill character, while `strip`, `lstrip`, `rstrip`, `removeprefix`/`removesuffix` and `partition` deliberately do *not* escape their arguments (CHANGES.rst 3.0.0) because they are search operations, not insertion.",
+        "`split`, `rsplit`, `splitlines`, `partition` and `__getitem__` return `Markup` pieces \u2014 slicing safe markup can still split an entity in half, producing well-typed but malformed output. A real sharp edge, accepted by design."
+      ],
+      "open_questions": [
+        {
+          "id": "q10.1",
+          "question": "Everything so far has only added safety. Is there any operation here that hands back text that is *not* safe \u2014 and would the type still say so?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 11,
+      "title": "striptags: the exit back to plain text",
+      "trace_lines": [
+        92,
+        99
+      ],
+      "data_in": "the page Markup('<p>User: <a href=\"/user/3\">...&lt;/script&gt;</p>')",
+      "data_out": "'User: Alice \"The <b>Great</b>\" said: <script>alert(document.cookie);</script>' \u2014 a plain str with live script text in it",
+      "code": [
+        "src/markupsafe/__init__.py:199-228",
+        "src/markupsafe/__init__.py:188-197"
+      ],
+      "inputs": [
+        "Markup('<p>User: <a href=\"/user/3\"><span class=\"user\">Alice &#34;...&lt;/script&gt;</p>')"
+      ],
+      "characters": [
+        "Markup.striptags",
+        "Markup.unescape",
+        "html.unescape",
+        "Markup.__new__"
+      ],
+      "facts": [
+        "`striptags` strips comments first, in their own loop, then tags; the comment at __init__.py:208-210 explains why \u2014 a comment containing a `<em>` would otherwise end early and leak the rest of the comment into the output.",
+        "Both loops use plain `find` rather than regular expressions; this was changed in 2.1.4 to avoid a catastrophic-backtracking performance issue (CHANGES.rst), so input size cannot blow up the runtime.",
+        "An unterminated `<!--` or `<` makes the loop `break`, leaving the remainder in place \u2014 stripping is best-effort, not a sanitizer.",
+        "Whitespace is collapsed with `\" \".join(value.split())` before the final step.",
+        "The last step is `self.__class__(value).unescape()`, and `unescape` returns `str(self)` passed through `html.unescape` \u2014 the return type is `str`, *not* `Markup`. The escaped `&lt;script&gt;` becomes a live `<script>` again.",
+        "`striptags` and `unescape` are the documented way out of safety: their output must be re-escaped before it ever re-enters HTML. The signature says `-> str`, which is the only warning the type system gives."
+      ],
+      "open_questions": [
+        {
+          "id": "q11.1",
+          "question": "If `unescape` can hand back a live `<script>` string, is `striptags` a feature or a foot-gun \u2014 and how would a reviewer tell the difference in an application?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q10.1",
+          "answer": "Yes \u2014 `striptags` and `unescape` deliberately undo escaping and are annotated to return plain `str`, so the value loses both its entities and its safe type at the same moment."
+        }
+      ]
+    },
+    {
+      "n": 12,
+      "title": "What the Fragment Guarantees",
+      "trace_lines": [
+        100,
+        101
+      ],
+      "data_in": "'<p>User: <a href=\"/user/3\"><span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span></a> said: &lt;script&gt;alert(document.cookie);&lt;/script&gt;</p>'",
+      "data_out": "Markup('<p>User: <a href=\"/user/3\">...&lt;/script&gt;</p>') \u2014 equal to the rendered page",
+      "code": [
+        "src/markupsafe/__init__.py:122-131",
+        "src/markupsafe/__init__.py:24-45",
+        "src/markupsafe/__init__.py:48-81"
+      ],
+      "inputs": [
+        "the expected fragment as a literal str"
+      ],
+      "characters": [
+        "Markup.__new__",
+        "escape",
+        "escape_silent",
+        "soft_str"
+      ],
+      "facts": [
+        "The final `Markup(...)` is the same unguarded constructor from chapter 2, used here on a developer-written literal \u2014 the legitimate use: text the author controls.",
+        "The guarantee, stated plainly: anything that passes through `escape` (directly, or via `format`, `%`, `+`, `join`, `replace`, `ljust`/`rjust`/`center`) has `& > < ' \"` replaced and is typed `Markup`; a `Markup` fed back through any of those paths is not escaped again.",
+        "The non-guarantees: `Markup(text)` and user-defined `__html__`/`__html_format__` are trusted without checks; only five characters are escaped, so unquoted HTML attributes, javascript: URLs, inline `<script>`/`<style>` contexts and JS/CSS string contexts are out of scope; `striptags`/`unescape` return unsafe `str`; slicing can cut an entity in half.",
+        "Convenience helpers at the edge: `escape_silent(None)` yields `Markup('')` where `escape(None)` would yield `Markup('None')` (__init__.py:48-61), and `soft_str` stringifies without destroying an existing `Markup` (__init__.py:64-81) \u2014 the function to reach for instead of `str()` when passing markup around.",
+        "`__html__` may be called twice per `escape` (once in `escape`, once in `Markup.__new__`); implementations should be cheap and side-effect free.",
+        "The C and pure-Python implementations are interchangeable and chosen at import; `tests/conftest.py` runs the whole suite against both, so a missing C extension changes speed, not behaviour."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q11.1",
+          "answer": "It is a feature with a sharp edge: the signatures return `str`, which is the library's way of saying the value has left the safe world. In review, any path where the result of `striptags`/`unescape` flows back into a template without a fresh `escape` \u2014 or any `Markup(...)` wrapped around a non-literal \u2014 is the thing to flag."
+        }
+      ]
+    }
+  ]
+}

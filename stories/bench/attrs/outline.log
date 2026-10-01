@@ -1,0 +1,18 @@
+The Class That Was Rewritten: One Run Through attrs  [owner]: 14 chapters
+   1. The Door, and What It Decides Before You Knock  [trace 2-5]
+   2. Flags Become Policy  [trace 6-30]
+   3. Harvesting the Fields  [trace 31-68]
+   4. The Hook That Quietly Removed Itself  [trace 69-71]
+   5. Repr, Equality, and a Deliberate Absence  [trace 72-85]
+   6. Writing the Initializer, Line by Line  [trace 86-96]
+   7. Two Protocols, Added Only If Vacant  [trace 97-106]
+   8. One compile(), One linecache Entry  [trace 107-127]
+   9. The Class You Get Back Is Not the Class You Wrote  [trace 128-135]
+  10. An Instance, Briefly  [trace 136-137]
+  11. Flattening It Out  [trace 138-152]
+  12. A Class From Two Strings  [trace 153-166]
+  13. The Same Machine, Legacy Settings  [trace 167-241]
+  14. Patching In Place, and the Coda  [trace 242-269]
+
+tokens: 16,871 in (+0 cached, 159,950 written to cache), 20,308 out
+exit=0

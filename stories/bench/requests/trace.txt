@@ -1,0 +1,351 @@
+scenario()  [scenario.py:1]
+  get(url='http://127.0.0.1:54897/basic-auth/user/pass', params=None)  [src/requests/api.py:74]
+    request(method='get', url='http://127.0.0.1:54897/basic-auth/user/pass')  [src/requests/api.py:24]
+      Session.__init__(self=<Session>)  [src/requests/sessions.py:442]
+        default_headers()  [src/requests/utils.py:951]
+          default_user_agent(name='python-requests')  [src/requests/utils.py:942]
+            → 'python-requests/2.34.2'
+          CaseInsensitiveDict.__init__(self=<CaseInsensitiveDict>, data={'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Connection': 'keep-alive', 'User-Agent': 'python-requests/2.34.2'})  [src/requests/structures.py:49]
+            CaseInsensitiveDict.__setitem__(self=<CaseInsensitiveDict>, key='User-Agent', value='python-requests/2.34.2')  [src/requests/structures.py:59]
+              → None
+            … CaseInsensitiveDict.__setitem__ ×3 more  [src/requests/structures.py:59]
+            → None
+          → {'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'}
+        default_hooks()  [src/requests/hooks.py:25]
+          → {'response': []}
+        cookiejar_from_dict(cookie_dict={}, cookiejar=None, overwrite=True)  [src/requests/cookies.py:579]
+          RequestsCookieJar.__iter__(self=<RequestsCookieJar>)  [src/requests/cookies.py:348]
+            → <generator object deepvalues at 0x10c1e3060>
+          → <RequestsCookieJar[]>
+        HTTPAdapter.__init__(self=<HTTPAdapter>, pool_connections=10, pool_maxsize=10, max_retries=0, pool_block=False)  [src/requests/adapters.py:201]
+          BaseAdapter.__init__(self=<HTTPAdapter>)  [src/requests/adapters.py:125]
+            → None
+          HTTPAdapter.init_poolmanager(self=<HTTPAdapter>, connections=10, maxsize=10, block=False)  [src/requests/adapters.py:239]
+            → None
+          → None
+        Session.mount(self=<Session>, prefix='https://', adapter=<requests.adapters.HTTPAdapter object at 0x10da09160>)  [src/requests/sessions.py:888]
+          → None
+        HTTPAdapter.__init__(self=<HTTPAdapter>, pool_connections=10, pool_maxsize=10, max_retries=0, pool_block=False)  [src/requests/adapters.py:201]
+          BaseAdapter.__init__(self=<HTTPAdapter>)  [src/requests/adapters.py:125]
+            → None
+          HTTPAdapter.init_poolmanager(self=<HTTPAdapter>, connections=10, maxsize=10, block=False)  [src/requests/adapters.py:239]
+            → None
+          → None
+        Session.mount(self=<Session>, prefix='http://', adapter=<requests.adapters.HTTPAdapter object at 0x10da78190>)  [src/requests/sessions.py:888]
+          → None
+        → None
+      Session.__enter__(self=<Session>)  [src/requests/sessions.py:505]
+        → <requests.sessions.Session object at 0x10da08c20>
+      Session.request(self=<Session>, method='get', url='http://127.0.0.1:54897/basic-auth/user/pass', params=None, data=None, headers=None, cookies=None, files=None, auth=('user', 'pass'), timeout=None, allow_redirects=True, proxies=None, hooks=None, stream=None, verify=None, cert=None, json=None)  [src/requests/sessions.py:557]
+        Request.__init__(self=<Request>, method='GET', url='http://127.0.0.1:54897/basic-auth/user/pass', headers=None, files=None, data={}, params={}, auth=('user', 'pass'), cookies=None, hooks=None, json=None)  [src/requests/models.py:323]
+          default_hooks()  [src/requests/hooks.py:25]
+            → {'response': []}
+          → None
+        Session.prepare_request(self=<Session>, request=<Request [GET]>)  [src/requests/sessions.py:511]
+          cookiejar_from_dict(cookie_dict={}, cookiejar=None, overwrite=True)  [src/requests/cookies.py:579]
+            RequestsCookieJar.__iter__(self=<RequestsCookieJar>)  [src/requests/cookies.py:348]
+              → <generator object deepvalues at 0x10da2db60>
+            → <RequestsCookieJar[]>
+          merge_cookies(cookiejar=<RequestsCookieJar[]>, cookies=<RequestsCookieJar[]>)  [src/requests/cookies.py:604]
+            RequestsCookieJar.update(self=<RequestsCookieJar>, other=<RequestsCookieJar[]>)  [src/requests/cookies.py:391]
+              RequestsCookieJar.__iter__(self=<RequestsCookieJar>)  [src/requests/cookies.py:348]
+                → <generator object deepvalues at 0x10da2db60>
+              → None
+            → <RequestsCookieJar[]>
+          … merge_cookies ×1 more  [src/requests/cookies.py:604]
+          PreparedRequest.__init__(self=<PreparedRequest>)  [src/requests/models.py:407]
+            default_hooks()  [src/requests/hooks.py:25]
+              → {'response': []}
+            → None
+          merge_setting(request_setting={}, session_setting={'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'}, dict_class=<class 'requests.structures.CaseInsensitiveDict'>)  [src/requests/sessions.py:76]
+            to_key_val_list(value={'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'})  [src/requests/utils.py:376]
+              CaseInsensitiveDict.__len__(self=<CaseInsensitiveDict>)  [src/requests/structures.py:73]
+                → 4
+              CaseInsensitiveDict.__iter__(self=<CaseInsensitiveDict>)  [src/requests/structures.py:70]
+                → <generator object CaseInsensitiveDict....er__.<locals>.<genexpr> at 0x10da93100>
+              CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='User-Agent')  [src/requests/structures.py:64]
+                → 'python-requests/2.34.2'
+              … CaseInsensitiveDict.__getitem__ ×3 more  [src/requests/structures.py:64]
+              → [('User-Agent', 'python-requests/2.34.2'), ('Accept-Encoding', 'gzip, deflate'), ('Accept', '*/*'), ('Connection', 'keep-alive')]
+            CaseInsensitiveDict.__init__(self=<CaseInsensitiveDict>, data=[('User-Agent', 'python-requests/2.34.2'), ('Accept-Encoding', 'gzip, deflate'), ('Accept', '*/*'), ('Connection', 'keep-alive')])  [src/requests/structures.py:49]
+              CaseInsensitiveDict.__setitem__(self=<CaseInsensitiveDict>, key='User-Agent', value='python-requests/2.34.2')  [src/requests/structures.py:59]
+                → None
+              … CaseInsensitiveDict.__setitem__ ×3 more  [src/requests/structures.py:59]
+              → None
+            to_key_val_list(value={})  [src/requests/utils.py:376]
+              → []
+            CaseInsensitiveDict.__iter__(self=<CaseInsensitiveDict>)  [src/requests/structures.py:70]
+              → <generator object CaseInsensitiveDict....er__.<locals>.<genexpr> at 0x10da93e00>
+            CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='User-Agent')  [src/requests/structures.py:64]
+              → 'python-requests/2.34.2'
+            … CaseInsensitiveDict.__getitem__ ×3 more  [src/requests/structures.py:64]
+            → {'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'}
+          … merge_setting ×2 more  [src/requests/sessions.py:76]
+          merge_hooks(request_hooks={'response': []}, session_hooks={'response': []}, dict_class=<class 'collections.OrderedDict'>)  [src/requests/sessions.py:108]
+            → {'response': []}
+          PreparedRequest.prepare(self=<PreparedRequest>, method='GET', url='http://127.0.0.1:54897/basic-auth/user/pass', headers={'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'}, files=[], data={}, params=OrderedDict(), auth=('user', 'pass'), cookies=<RequestsCookieJar[]>, hooks={'response': []}, json=None)  [src/requests/models.py:424]
+            PreparedRequest.prepare_method(self=<PreparedRequest>, method='GET')  [src/requests/models.py:467]
+              to_native_string(string='GET', encoding='ascii')  [src/requests/_internal_utils.py:26]
+                → 'GET'
+              → None
+            PreparedRequest.prepare_url(self=<PreparedRequest>, url='http://127.0.0.1:54897/basic-auth/user/pass', params=OrderedDict())  [src/requests/models.py:483]
+              unicode_is_ascii(u_string='127.0.0.1')  [src/requests/_internal_utils.py:39]
+                → True
+              RequestEncodingMixin._encode_params(data=OrderedDict())  [src/requests/models.py:150]
+                has_read(obj=OrderedDict())  [src/requests/_types.py:32]
+                  → False
+                to_key_val_list(value=OrderedDict())  [src/requests/utils.py:376]
+                  → []
+                → ''
+              requote_uri(uri='http://127.0.0.1:54897/basic-auth/user/pass')  [src/requests/utils.py:704]
+                unquote_unreserved(uri='http://127.0.0.1:54897/basic-auth/user/pass')  [src/requests/utils.py:680]
+                  → 'http://127.0.0.1:54897/basic-auth/user/pass'
+                → 'http://127.0.0.1:54897/basic-auth/user/pass'
+              → None
+            PreparedRequest.prepare_headers(self=<PreparedRequest>, headers={'User-Agent': 'python-requests/2.34.2...pt': '*/*', 'Connection': 'keep-alive'})  [src/requests/models.py:565]
+              CaseInsensitiveDict.__init__(self=<CaseInsensitiveDict>, data=None)  [src/requests/structures.py:49]
+                → None
+              CaseInsensitiveDict.__len__(self=<CaseInsensitiveDict>)  [src/requests/structures.py:73]
+                → 4
+              CaseInsensitiveDict.__iter__(self=<CaseInsensitiveDict>)  [src/requests/structures.py:70]
+                → <generator object CaseInsensitiveDict....er__.<locals>.<genexpr> at 0x10da6d630>
+              CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='User-Agent')  [src/requests/structures.py:64]
+                → 'python-requests/2.34.2'
+              check_header_validity(header=('User-Agent', 'python-requests/2.34.2'))  [src/requests/utils.py:1087]
+                _validate_header_part(header=('User-Agent', 'python-requests/2.34.2'), header_part='User-Agent', header_validator_index=0)  [src/requests/utils.py:1098]
+                  → None
+                … _validate_header_part ×1 more  [src/requests/utils.py:1098]
+                → None
+              to_native_string(string='User-Agent', encoding='ascii')  [src/requests/_internal_utils.py:26]
+                → 'User-Agent'
+              CaseInsensitiveDict.__setitem__(self=<CaseInsensitiveDict>, key='User-Agent', value='python-requests/2.34.2')  [src/requests/structures.py:59]
+                → None
+              CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='Accept-Encoding')  [src/requests/structures.py:64]
+                → 'gzip, deflate'
+              check_header_validity(header=('Accept-Encoding', 'gzip, deflate'))  [src/requests/utils.py:1087]
+                _validate_header_part(header=('Accept-Encoding', 'gzip, deflate'), header_part='Accept-Encoding', header_validator_index=0)  [src/requests/utils.py:1098]
+                  → None
+                … _validate_header_part ×1 more  [src/requests/utils.py:1098]
+                → None
+              to_native_string(string='Accept-Encoding', encoding='ascii')  [src/requests/_internal_utils.py:26]
+                → 'Accept-Encoding'
+              CaseInsensitiveDict.__setitem__(self=<CaseInsensitiveDict>, key='Accept-Encoding', value='gzip, deflate')  [src/requests/structures.py:59]
+                → None
+              CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='Accept')  [src/requests/structures.py:64]
+                → '*/*'
+              check_header_validity(header=('Accept', '*/*'))  [src/requests/utils.py:1087]
+                _validate_header_part(header=('Accept', '*/*'), header_part='Accept', header_validator_index=0)  [src/requests/utils.py:1098]
+                  → None
+                … _validate_header_part ×1 more  [src/requests/utils.py:1098]
+                → None
+              to_native_string(string='Accept', encoding='ascii')  [src/requests/_internal_utils.py:26]
+                → 'Accept'
+              CaseInsensitiveDict.__setitem__(self=<CaseInsensitiveDict>, key='Accept', value='*/*')  [src/requests/structures.py:59]
+                → None
+              CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='Connection')  [src/requests/structures.py:64]
+                → 'keep-alive'
+              check_header_validity(header=('Connection', 'keep-alive'))  [src/requests/utils.py:1087]
+                _validate_header_part(header=('Connection', 'keep-alive'), header_part='Connection', header_validator_index=0)  [src/requests/utils.py:1098]
+                  → None
+                … _validate_header_part ×1 more  [src/requests/utils.py:1098]
+                → None
+              to_native_string(string='Connection', encoding='ascii')  [src/requests/_internal_utils.py:26]
+                → 'Connection'
+              CaseInsensitiveDict.__setitem__(self=<CaseInsensitiveDict>, key='Connection', value='keep-alive')  [src/requests/structures.py:59]
+                → None
+              → None
+            PreparedRequest.prepare_cookies(self=<PreparedRequest>, cookies=<RequestsCookieJar[]>)  [src/requests/models.py:699]
+              get_cookie_header(jar=<RequestsCookieJar[]>, request=<PreparedRequest [GET]>)  [src/requests/cookies.py:153]
+                MockRequest.__init__(self=<MockRequest>, request=<PreparedRequest [GET]>)  [src/requests/cookies.py:45]
+                  is_prepared(request=<PreparedRequest [GET]>)  [src/requests/_types.py:47]
+                    → True
+                  → None
+                RequestsCookieJar.__iter__(self=<RequestsCookieJar>)  [src/requests/cookies.py:348]
+                  → <generator object deepvalues at 0x10da2f140>
+                MockRequest.get_new_headers(self=<MockRequest>)  [src/requests/cookies.py:98]
+                  → {}
+                → None
+              → None
+            PreparedRequest.prepare_body(self=<PreparedRequest>, data={}, files=[], json=None)  [src/requests/models.py:576]
+              PreparedRequest.prepare_content_length(self=<PreparedRequest>, body=None)  [src/requests/models.py:654]
+                → None
+              → None
+            PreparedRequest.prepare_auth(self=<PreparedRequest>, auth=('user', 'pass'), url='http://127.0.0.1:54897/basic-auth/user/pass')  [src/requests/models.py:670]
+              HTTPBasicAuth.__init__(self=<HTTPBasicAuth>, username='user', password='pass')  [src/requests/auth.py:96]
+                → None
+              HTTPBasicAuth.__call__(self=<HTTPBasicAuth>, r=<PreparedRequest [GET]>)  [src/requests/auth.py:111]
+                _basic_auth_str(username='user', password='pass')  [src/requests/auth.py:34]
+                  to_native_string(string=b'dXNlcjpwYXNz', encoding='ascii')  [src/requests/_internal_utils.py:26]
+                    → 'dXNlcjpwYXNz'
+                  → 'Basic dXNlcjpwYXNz'
+                CaseInsensitiveDict.__setitem__(self=<CaseInsensitiveDict>, key='Authorization', value='Basic dXNlcjpwYXNz')  [src/requests/structures.py:59]
+                  → None
+                → <PreparedRequest [GET]>
+              PreparedRequest.prepare_content_length(self=<PreparedRequest>, body=None)  [src/requests/models.py:654]
+                → None
+              → None
+            PreparedRequest.prepare_hooks(self=<PreparedRequest>, hooks={'response': []})  [src/requests/models.py:722]
+              RequestHooksMixin.register_hook(self=<PreparedRequest>, event='response', hook=[])  [src/requests/models.py:257]
+                → None
+              → None
+            → None
+          → <PreparedRequest [GET]>
+        is_prepared(request=<PreparedRequest [GET]>)  [src/requests/_types.py:47]
+          → True
+        Session.merge_environment_settings(self=<Session>, url='http://127.0.0.1:54897/basic-auth/user/pass', proxies={}, stream=None, verify=None, cert=None)  [src/requests/sessions.py:831]
+          get_environ_proxies(url='http://127.0.0.1:54897/basic-auth/user/pass', no_proxy=None)  [src/requests/utils.py:873]
+            should_bypass_proxies(url='http://127.0.0.1:54897/basic-auth/user/pass', no_proxy=None)  [src/requests/utils.py:810]
+              should_bypass_proxies.<locals>.get_proxy(key='no_proxy')  [src/requests/utils.py:819]
+                → None
+              set_environ(env_name='no_proxy', value=None)  [src/requests/utils.py:787]
+                → None
+              … set_environ ×1 more  [src/requests/utils.py:787]
+              → False
+            → {}
+          merge_setting(request_setting={}, session_setting={}, dict_class=<class 'collections.OrderedDict'>)  [src/requests/sessions.py:76]
+            to_key_val_list(value={})  [src/requests/utils.py:376]
+              → []
+            … to_key_val_list ×1 more  [src/requests/utils.py:376]
+            → OrderedDict()
+          … merge_setting ×3 more  [src/requests/sessions.py:76]
+          → {'cert': None, 'proxies': OrderedDict(), 'stream': False, 'verify': True}
+        Session.send(self=<Session>, request=<PreparedRequest [GET]>)  [src/requests/sessions.py:752]
+          is_prepared(request=<PreparedRequest [GET]>)  [src/requests/_types.py:47]
+            → True
+          Session.get_adapter(self=<Session>, url='http://127.0.0.1:54897/basic-auth/user/pass')  [src/requests/sessions.py:870]
+            → <requests.adapters.HTTPAdapter object at 0x10da78190>
+          HTTPAdapter.send(self=<HTTPAdapter>, request=<PreparedRequest [GET]>, stream=False, timeout=None, verify=True, cert=None, proxies=OrderedDict())  [src/requests/adapters.py:634]
+            is_prepared(request=<PreparedRequest [GET]>)  [src/requests/_types.py:47]
+              → True
+            HTTPAdapter.get_connection_with_tls_context(self=<HTTPAdapter>, request=<PreparedRequest [GET]>, verify=True, proxies=OrderedDict(), cert=None)  [src/requests/adapters.py:455]
+              is_prepared(request=<PreparedRequest [GET]>)  [src/requests/_types.py:47]
+                → True
+              select_proxy(url='http://127.0.0.1:54897/basic-auth/user/pass', proxies=OrderedDict())  [src/requests/utils.py:885]
+                → None
+              HTTPAdapter.build_connection_pool_key_attributes(self=<HTTPAdapter>, request=<PreparedRequest [GET]>, verify=True, cert=None)  [src/requests/adapters.py:403]
+                _urllib3_request_context(request=<PreparedRequest [GET]>, verify=True, client_cert=None, poolmanager=<urllib3.poolmanager.PoolManager object at 0x10da78410>)  [src/requests/adapters.py:85]
+                  → ({'host': '127.0.0.1', 'port': 54897, 'scheme': 'http'}, {'cert_reqs': 'CERT_REQUIRED'})
+                → ({'host': '127.0.0.1', 'port': 54897, 'scheme': 'http'}, {'cert_reqs': 'CERT_REQUIRED'})
+              → <urllib3.connectionpool.HTTPConnectionPool object at 0x10da09400>
+            HTTPAdapter.cert_verify(self=<HTTPAdapter>, conn=<urllib3.connectionpool.HTTPConnectionPool object at 0x10da09400>, url='http://127.0.0.1:54897/basic-auth/user/pass', verify=True, cert=None)  [src/requests/adapters.py:307]
+              → None
+            HTTPAdapter.request_url(self=<HTTPAdapter>, request=<PreparedRequest [GET]>, proxies=OrderedDict())  [src/requests/adapters.py:565]
+              is_prepared(request=<PreparedRequest [GET]>)  [src/requests/_types.py:47]
+                → True
+              select_proxy(url='http://127.0.0.1:54897/basic-auth/user/pass', proxies=OrderedDict())  [src/requests/utils.py:885]
+                → None
+              RequestEncodingMixin.path_url(self=<PreparedRequest>)  [src/requests/models.py:111]
+                → '/basic-auth/user/pass'
+              → '/basic-auth/user/pass'
+            HTTPAdapter.add_headers(self=<HTTPAdapter>, request=<PreparedRequest [GET]>)  [src/requests/adapters.py:599]
+              → None
+            CaseInsensitiveDict.copy(self=<CaseInsensitiveDict>)  [src/requests/structures.py:89]
+              CaseInsensitiveDict.__init__(self=<CaseInsensitiveDict>, data=odict_values([('User-Agent', 'python-r...Authorization', 'Basic dXNlcjpwYXNz')]))  [src/requests/structures.py:49]
+                CaseInsensitiveDict.__setitem__(self=<CaseInsensitiveDict>, key='User-Agent', value='python-requests/2.34.2')  [src/requests/structures.py:59]
+                  → None
+                … CaseInsensitiveDict.__setitem__ ×4 more  [src/requests/structures.py:59]
+                → None
+              → {'User-Agent': 'python-requests/2.34.2... 'Authorization': 'Basic dXNlcjpwYXNz'}
+            CaseInsensitiveDict.__iter__(self=<CaseInsensitiveDict>)  [src/requests/structures.py:70]
+              → <generator object CaseInsensitiveDict....er__.<locals>.<genexpr> at 0x10da61ff0>
+            … CaseInsensitiveDict.__iter__ ×1 more  [src/requests/structures.py:70]
+            CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='User-Agent')  [src/requests/structures.py:64]
+              → 'python-requests/2.34.2'
+            … CaseInsensitiveDict.__getitem__ ×4 more  [src/requests/structures.py:64]
+            HTTPAdapter.build_response(self=<HTTPAdapter>, req=<PreparedRequest [GET]>, resp=<urllib3.response.HTTPResponse object at 0x10c23f910>)  [src/requests/adapters.py:365]
+              is_prepared(request=<PreparedRequest [GET]>)  [src/requests/_types.py:47]
+                → True
+              Response.__init__(self=<Response>)  [src/requests/models.py:765]
+                CaseInsensitiveDict.__init__(self=<CaseInsensitiveDict>, data=None)  [src/requests/structures.py:49]
+                  → None
+                cookiejar_from_dict(cookie_dict={}, cookiejar=None, overwrite=True)  [src/requests/cookies.py:579]
+                  RequestsCookieJar.__iter__(self=<RequestsCookieJar>)  [src/requests/cookies.py:348]
+                    → <generator object deepvalues at 0x10da2f840>
+                  → <RequestsCookieJar[]>
+                → None
+              CaseInsensitiveDict.__init__(self=<CaseInsensitiveDict>, data=HTTPHeaderDict({'Server': 'BaseHTTP/0....harset=utf-8', 'Content-Length': '39'}))  [src/requests/structures.py:49]
+                CaseInsensitiveDict.__setitem__(self=<CaseInsensitiveDict>, key='Server', value='BaseHTTP/0.6 Python/3.13.1')  [src/requests/structures.py:59]
+                  → None
+                … CaseInsensitiveDict.__setitem__ ×3 more  [src/requests/structures.py:59]
+                → None
+              get_encoding_from_headers(headers={'Server': 'BaseHTTP/0.6 Python/3.13.1...charset=utf-8', 'Content-Length': '39'})  [src/requests/utils.py:569]
+                CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='content-type')  [src/requests/structures.py:64]
+                  → 'application/json; charset=utf-8'
+                _parse_content_type_header(header='application/json; charset=utf-8')  [src/requests/utils.py:547]
+                  → ('application/json', {'charset': 'utf-8'})
+                → 'utf-8'
+              extract_cookies_to_jar(jar=<RequestsCookieJar[]>, request=<PreparedRequest [GET]>, response=<urllib3.response.HTTPResponse object at 0x10c23f910>)  [src/requests/cookies.py:135]
+                MockRequest.__init__(self=<MockRequest>, request=<PreparedRequest [GET]>)  [src/requests/cookies.py:45]
+                  is_prepared(request=<PreparedRequest [GET]>)  [src/requests/_types.py:47]
+                    → True
+                  → None
+                MockResponse.__init__(self=<MockResponse>, headers=<http.client.HTTPMessage object at 0x10da055b0>)  [src/requests/cookies.py:121]
+                  → None
+                MockResponse.info(self=<MockResponse>)  [src/requests/cookies.py:128]
+                  → <http.client.HTTPMessage object at 0x10da055b0>
+                … MockResponse.info ×1 more  [src/requests/cookies.py:128]
+                → None
+              → <Response [200]>
+            → <Response [200]>
+          dispatch_hook(key='response', hooks={'response': []}, hook_data=<Response [200]>)  [src/requests/hooks.py:32]
+            → <Response [200]>
+          extract_cookies_to_jar(jar=<RequestsCookieJar[]>, request=<PreparedRequest [GET]>, response=<urllib3.response.HTTPResponse object at 0x10c23f910>)  [src/requests/cookies.py:135]
+            MockRequest.__init__(self=<MockRequest>, request=<PreparedRequest [GET]>)  [src/requests/cookies.py:45]
+              is_prepared(request=<PreparedRequest [GET]>)  [src/requests/_types.py:47]
+                → True
+              → None
+            MockResponse.__init__(self=<MockResponse>, headers=<http.client.HTTPMessage object at 0x10da055b0>)  [src/requests/cookies.py:121]
+              → None
+            MockResponse.info(self=<MockResponse>)  [src/requests/cookies.py:128]
+              → <http.client.HTTPMessage object at 0x10da055b0>
+            … MockResponse.info ×1 more  [src/requests/cookies.py:128]
+            → None
+          SessionRedirectMixin.resolve_redirects(self=<Session>, resp=<Response [200]>, req=<PreparedRequest [GET]>, stream=False, timeout=None, verify=True, cert=None, proxies=OrderedDict(), yield_requests=False)  [src/requests/sessions.py:186]
+            SessionRedirectMixin.get_redirect_target(self=<Session>, resp=<Response [200]>)  [src/requests/sessions.py:134]
+              Response.is_redirect(self=<Response>)  [src/requests/models.py:876]
+                CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='location')  [src/requests/structures.py:64]
+                  → None
+                → False
+              → None
+            → None
+          Response.content(self=<Response>)  [src/requests/models.py:1034]
+            Response.iter_content(self=<Response>, chunk_size=10240, decode_unicode=False)  [src/requests/models.py:914]
+              → <generator object Response.iter_content.<locals>.generate at 0x10c9fa4d0>
+            Response.iter_content.<locals>.generate()  [src/requests/models.py:935]
+              → b'{"authenticated": true, "user": "user"}'
+            … Response.iter_content.<locals>.generate ×1 more  [src/requests/models.py:935]
+            → b'{"authenticated": true, "user": "user"}'
+          → <Response [200]>
+        → <Response [200]>
+      Session.__exit__(self=<Session>)  [src/requests/sessions.py:508]
+        Session.close(self=<Session>)  [src/requests/sessions.py:883]
+          HTTPAdapter.close(self=<HTTPAdapter>)  [src/requests/adapters.py:555]
+            → None
+          … HTTPAdapter.close ×1 more  [src/requests/adapters.py:555]
+          → None
+        → None
+      → <Response [200]>
+    → <Response [200]>
+  CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='content-type')  [src/requests/structures.py:64]
+    → 'application/json; charset=utf-8'
+  Response.text(self=<Response>)  [src/requests/models.py:1053]
+    Response.content(self=<Response>)  [src/requests/models.py:1034]
+      → b'{"authenticated": true, "user": "user"}'
+    … Response.content ×1 more  [src/requests/models.py:1034]
+    → '{"authenticated": true, "user": "user"}'
+  Response.json(self=<Response>)  [src/requests/models.py:1091]
+    Response.text(self=<Response>)  [src/requests/models.py:1053]
+      Response.content(self=<Response>)  [src/requests/models.py:1034]
+        → b'{"authenticated": true, "user": "user"}'
+      … Response.content ×1 more  [src/requests/models.py:1034]
+      → '{"authenticated": true, "user": "user"}'
+    → {'authenticated': True, 'user': 'user'}
+  CaseInsensitiveDict.__getitem__(self=<CaseInsensitiveDict>, key='content-type')  [src/requests/structures.py:64]
+    → 'application/json; charset=utf-8'
+  Response.json(self=<Response>)  [src/requests/models.py:1091]
+    Response.text(self=<Response>)  [src/requests/models.py:1053]
+      Response.content(self=<Response>)  [src/requests/models.py:1034]
+        → b'{"authenticated": true, "user": "user"}'
+      … Response.content ×1 more  [src/requests/models.py:1034]
+      → '{"authenticated": true, "user": "user"}'
+    → {'authenticated': True, 'user': 'user'}

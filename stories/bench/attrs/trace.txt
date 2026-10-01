@@ -1,0 +1,269 @@
+scenario()  [scenario.py:1]
+  Factory.__init__(self=<Factory>, factory=<class 'list'>, takes_self=False)  [src/attr/_make.py:3105]
+    → None
+  define(maybe_cls=<class '__main__.SomeClass'>, these=None, repr=None, unsafe_hash=None, hash=None, init=None, slots=True, frozen=False, weakref_slot=True, str=False, auto_attribs=None, kw_only=False, cache_hash=False, auto_exc=True, eq=None, order=False, auto_detect=True, getstate_setstate=None, on_setattr=None, field_transformer=None, match_args=True, force_kw_only=False)  [src/attr/_next_gen.py:23]
+    define.<locals>.wrap(cls=<type>)  [src/attr/_next_gen.py:389]
+      define.<locals>.do_it(cls=<type>, auto_attribs=True)  [src/attr/_next_gen.py:362]
+        attrs(maybe_cls=<class '__main__.SomeClass'>, these=None, repr_ns=None, repr=None, cmp=None, hash=None, init=None, slots=True, frozen=False, weakref_slot=True, str=False, auto_attribs=True, kw_only=False, cache_hash=False, auto_exc=True, eq=None, order=False, auto_detect=True, collect_by_mro=True, getstate_setstate=None, on_setattr=<function pipe.<locals>.wrapped_pipe at 0x10d5a7100>, field_transformer=None, match_args=True, unsafe_hash=None, force_kw_only=False)  [src/attr/_make.py:1353]
+          _determine_attrs_eq_order(cmp=None, eq=None, order=False, default_eq=None)  [src/attr/_make.py:1256]
+            → (None, False)
+          attrs.<locals>.wrap(cls=<type>)  [src/attr/_make.py:1478]
+            _has_frozen_base_class(cls=<type>)  [src/attr/_make.py:1626]
+              → False
+            _has_own_attribute(cls=<type>, attrib_name='__setattr__')  [src/attr/_make.py:313]
+              → False
+            _determine_whether_to_implement(cls=<type>, flag=None, auto_detect=True, dunders=('__eq__', '__ne__'), default=True)  [src/attr/_make.py:1327]
+              _has_own_attribute(cls=<type>, attrib_name='__eq__')  [src/attr/_make.py:313]
+                → False
+              … _has_own_attribute ×1 more  [src/attr/_make.py:313]
+              → True
+            _has_own_attribute(cls=<type>, attrib_name='__hash__')  [src/attr/_make.py:313]
+              → False
+            _determine_whether_to_implement(cls=<type>, flag=None, auto_detect=True, dunders=('__init__',), default=True)  [src/attr/_make.py:1327]
+              _has_own_attribute(cls=<type>, attrib_name='__init__')  [src/attr/_make.py:313]
+                → False
+              → True
+            … _determine_whether_to_implement ×3 more  [src/attr/_make.py:1327]
+            ClassProps.__init__(self=<ClassProps>, is_exception=False, is_slotted=True, has_weakref_slot=True, is_frozen=False, kw_only=<KeywordOnly.NO: 'no'>, collected_fields_by_mro=True, added_init=True, added_repr=True, added_eq=True, added_ordering=False, hashability=<Hashability.UNHASHABLE: 'unhashable'>, added_match_args=True, added_str=False, added_pickling=True, on_setattr_hook=<function pipe.<locals>.wrapped_pipe at 0x10d5a7100>, field_transformer=None)  [src/attr/_make.py:3020]
+              → None
+            ClassProps.is_hashable(self=<ClassProps>)  [src/attr/_make.py:3056]
+              → False
+            _ClassBuilder.__init__(self=<_ClassBuilder>, cls=<type>, these=None, auto_attribs=True, props=ClassProps(is_exception=False, is_slot...t 0x10d5a7100>, field_transformer=None), has_custom_setattr=False)  [src/attr/_make.py:676]
+              _transform_attrs(cls=<type>, these=None, auto_attribs=True, kw_only=<KeywordOnly.NO: 'no'>, collect_by_mro=True, field_transformer=None)  [src/attr/_make.py:381]
+                _get_annotations(cls=<type>)  [src/attr/_compat.py:30]
+                  → {'a_number': <class 'int'>, 'list_of_numbers': list[int]}
+                _is_class_var(annot=<class 'int'>)  [src/attr/_make.py:295]
+                  → False
+                attrib(default=42, validator=None, repr=True, cmp=None, hash=None, init=True, metadata=None, type=None, converter=None, factory=None, kw_only=None, eq=None, order=None, on_setattr=None, alias=None)  [src/attr/_make.py:104]
+                  _determine_attrib_eq_order(cmp=None, eq=None, order=None, default_eq=True)  [src/attr/_make.py:1284]
+                    → (True, None, True, None)
+                  _CountingAttr.__init__(self=<_CountingAttr>, default=42, validator=None, repr=True, cmp=None, hash=None, init=True, converter=None, metadata={}, type=None, kw_only=None, eq=True, eq_key=None, order=True, order_key=None, on_setattr=None, alias=None)  [src/attr/_make.py:2809]
+                    → None
+                  → _CountingAttr(counter=6, _default=42, ..._setattr=None, alias=None, metadata={})
+                _is_class_var(annot=list[int])  [src/attr/_make.py:295]
+                  → False
+                attrib(default=Factory(factory=<class 'list'>, takes_self=False), validator=None, repr=True, cmp=None, hash=None, init=True, metadata=None, type=None, converter=None, factory=None, kw_only=None, eq=None, order=None, on_setattr=None, alias=None)  [src/attr/_make.py:104]
+                  _determine_attrib_eq_order(cmp=None, eq=None, order=None, default_eq=True)  [src/attr/_make.py:1284]
+                    → (True, None, True, None)
+                  _CountingAttr.__init__(self=<_CountingAttr>, default=Factory(factory=<class 'list'>, takes_self=False), validator=None, repr=True, cmp=None, hash=None, init=True, converter=None, metadata={}, type=None, kw_only=None, eq=True, eq_key=None, order=True, order_key=None, on_setattr=None, alias=None)  [src/attr/_make.py:2809]
+                    → None
+                  → _CountingAttr(counter=7, _default=Fact..._setattr=None, alias=None, metadata={})
+                Attribute.from_counting_attr(cls=<type>, name='a_number', ca=_CountingAttr(counter=6, _default=42, ..._setattr=None, alias=None, metadata={}), kw_only=False, type=<class 'int'>)  [src/attr/_make.py:2594]
+                  Attribute.__init__(self=<Attribute>, name='a_number', default=42, validator=None, repr=True, cmp=None, hash=None, init=True, inherited=False, metadata={}, type=<class 'int'>, converter=None, kw_only=False, eq=True, eq_key=None, order=True, order_key=None, on_setattr=None, alias=None, alias_is_default=True)  [src/attr/_make.py:2531]
+                    _determine_attrib_eq_order(cmp=None, eq=True, order=True, default_eq=True)  [src/attr/_make.py:1284]
+                      _determine_attrib_eq_order.<locals>.decide_callable_or_boolean(value=True)  [src/attr/_make.py:1293]
+                        → (True, None)
+                      … _determine_attrib_eq_order.<locals>.decide_callable_or_boolean ×1 more  [src/attr/_make.py:1293]
+                      → (True, None, True, None)
+                    → None
+                  → Attribute(name='a_number', default=42,...ted=False, on_setattr=None, alias=None)
+                … Attribute.from_counting_attr ×1 more  [src/attr/_make.py:2594]
+                _collect_base_attrs(cls=<type>, taken_attr_names={'a_number', 'list_of_numbers'})  [src/attr/_make.py:320]
+                  → ([], {})
+                _default_init_alias_for(name='a_number')  [src/attr/_make.py:2451]
+                  → 'a_number'
+                … _default_init_alias_for ×1 more  [src/attr/_make.py:2451]
+                _make_attr_tuple_class(cls_name='SomeClass', attr_names=['a_number', 'list_of_numbers'])  [src/attr/_make.py:266]
+                  → <class 'attr._make.SomeClassAttributes'>
+                → _Attributes(attrs=(Attribute(name='a_n...s')), base_attrs=[], base_attrs_map={})
+              _ClassBuilder._make_getstate_setstate(self=<_ClassBuilder>)  [src/attr/_make.py:1025]
+                → (<function _ClassBuilder._make_getstate...<locals>.slots_getstate at 0x10e172ac0>, <function _ClassBuilder._make_getstate...<locals>.slots_setstate at 0x10e172d40>)
+              → None
+            _ClassBuilder.add_repr(self=<_ClassBuilder>, ns=None)  [src/attr/_make.py:1004]
+              _make_repr_script(attrs=(Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers')), ns=None)  [src/attr/_make.py:1852]
+                → ('def __repr__(self):\n  try:\n    alre...\n    already_repring.remove(id(self))', {'AttributeError': <class 'AttributeError'>, 'NOTHING': NOTHING, '_compat': <module 'attr._compat' from '/Users/om.../demo-repos/attrs/src/attr/_compat.py'>})
+              → <_ClassBuilder(cls=SomeClass)>
+            _ClassBuilder.add_eq(self=<_ClassBuilder>)  [src/attr/_make.py:1150]
+              _make_eq_script(attrs=(Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers')))  [src/attr/_make.py:1742]
+                → ('def __eq__(self, other):\n    if othe...umbers == other.list_of_numbers\n    )', {})
+              → <_ClassBuilder(cls=SomeClass)>
+            _ClassBuilder.add_setattr(self=<_ClassBuilder>)  [src/attr/_make.py:1174]
+              → <_ClassBuilder(cls=SomeClass)>
+            ClassProps.is_hashable(self=<ClassProps>)  [src/attr/_make.py:3056]
+              → False
+            _ClassBuilder.make_unhashable(self=<_ClassBuilder>)  [src/attr/_make.py:1066]
+              → <_ClassBuilder(cls=SomeClass)>
+            _ClassBuilder.add_init(self=<_ClassBuilder>)  [src/attr/_make.py:1085]
+              _make_init_script(cls=<type>, attrs=(Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers')), pre_init=False, pre_init_has_args=False, post_init=False, frozen=False, slots=True, cache_hash=False, base_attr_map={}, is_exc=False, cls_on_setattr=None, attrs_init=False)  [src/attr/_make.py:2030]
+                _attrs_to_init_script(attrs=[Attribute(name='a_number', default=42,...lse, on_setattr=None, alias='a_number'), Attribute(name='list_of_numbers', defa..._setattr=None, alias='list_of_numbers')], is_frozen=False, is_slotted=True, call_pre_init=False, pre_init_has_args=False, call_post_init=False, does_cache_hash=False, base_attr_map={}, is_exc=False, needs_cached_setattr=False, has_cls_on_setattr=False, method_name='__init__')  [src/attr/_make.py:2187]
+                  _determine_setters(frozen=False, slots=True, base_attr_map={})  [src/attr/_make.py:2140]
+                    → ((), <function _assign at 0x10e18bb00>, <function _assign_with_converter at 0x10e18bba0>)
+                  _assign(attr_name='a_number', value='a_number', has_on_setattr=False)  [src/attr/_make.py:2116]
+                    → 'self.a_number = a_number'
+                  … _assign ×2 more  [src/attr/_make.py:2116]
+                  → ('def __init__(self, a_number=attr_dict...s = __attr_factory_list_of_numbers()\n', {'__attr_factory_list_of_numbers': <class 'list'>}, {'a_number': <class 'int'>, 'list_of_numbers': list[int], 'return': None})
+                → ('def __init__(self, a_number=attr_dict...s = __attr_factory_list_of_numbers()\n', {'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, '__cached__': None, ...}, {'a_number': <class 'int'>, 'list_of_numbers': list[int], 'return': None})
+              → <_ClassBuilder(cls=SomeClass)>
+            _has_own_attribute(cls=<type>, attrib_name='__replace__')  [src/attr/_make.py:313]
+              → False
+            _ClassBuilder.add_replace(self=<_ClassBuilder>)  [src/attr/_make.py:1110]
+              _ClassBuilder._add_method_dunders_unsafe(self=<_ClassBuilder>, method=<function _ClassBuilder.add_replace.<locals>.__replace__ at 0x10e173ba0>)  [src/attr/_make.py:1226]
+                → <function SomeClass.__replace__ at 0x10e173ba0>
+              → <_ClassBuilder(cls=SomeClass)>
+            _has_own_attribute(cls=<type>, attrib_name='__match_args__')  [src/attr/_make.py:313]
+              → False
+            _ClassBuilder.add_match_args(self=<_ClassBuilder>)  [src/attr/_make.py:1118]
+              → None
+            _ClassBuilder.build_class(self=<_ClassBuilder>)  [src/attr/_make.py:800]
+              _ClassBuilder._eval_snippets(self=<_ClassBuilder>)  [src/attr/_make.py:782]
+                _generate_unique_filename(cls=<type>, func_name='methods')  [src/attr/_make.py:1634]
+                  → '<attrs generated methods __main__.SomeClass>'
+                _linecache_and_compile(script='def __repr__(self):\n  try:\n    alre...s = __attr_factory_list_of_numbers()\n', filename='<attrs generated methods __main__.SomeClass>', globs={'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}, locals=None)  [src/attr/_make.py:231]
+                  _compile_and_eval(script='def __repr__(self):\n  try:\n    alre...s = __attr_factory_list_of_numbers()\n', globs={'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}, locs={}, filename='<attrs generated methods __main__.SomeClass>')  [src/attr/_make.py:217]
+                    → None
+                  → {'__eq__': <function __eq__ at 0x10e15c4a0>, '__init__': <function __init__ at 0x10e15c540>, '__repr__': <function __repr__ at 0x10e15c400>}
+                _ClassBuilder.add_repr.<locals>._attach_repr(cls_dict={'__annotations__': {'a_number': <class 'int'>, 'list_of_numbers': list[int]}, '__attrs_attrs__': (Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers')), '__attrs_props__': ClassProps(is_exception=False, is_slot...t 0x10d5a7100>, field_transformer=None), '__dict__': <attribute '__dict__' of 'SomeClass' objects>, '__doc__': None, '__firstlineno__': 15, ...}, globs={'__eq__': <function __eq__ at 0x10e15c4a0>, '__init__': <function __init__ at 0x10e15c540>, '__repr__': <function __repr__ at 0x10e15c400>})  [src/attr/_make.py:1007]
+                  _ClassBuilder._add_method_dunders_unsafe(self=<_ClassBuilder>, method=<function __repr__ at 0x10e15c400>)  [src/attr/_make.py:1226]
+                    → <function SomeClass.__repr__ at 0x10e15c400>
+                  → None
+                _ClassBuilder.add_eq.<locals>._attach_eq(cls_dict={'__annotations__': {'a_number': <class 'int'>, 'list_of_numbers': list[int]}, '__attrs_attrs__': (Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers')), '__attrs_props__': ClassProps(is_exception=False, is_slot...t 0x10d5a7100>, field_transformer=None), '__dict__': <attribute '__dict__' of 'SomeClass' objects>, '__doc__': None, '__firstlineno__': 15, ...}, globs={'__eq__': <function __eq__ at 0x10e15c4a0>, '__init__': <function __init__ at 0x10e15c540>, '__repr__': <function SomeClass.__repr__ at 0x10e15c400>})  [src/attr/_make.py:1155]
+                  _ClassBuilder._add_method_dunders_unsafe(self=<_ClassBuilder>, method=<function __eq__ at 0x10e15c4a0>)  [src/attr/_make.py:1226]
+                    → <function SomeClass.__eq__ at 0x10e15c4a0>
+                  → None
+                _ClassBuilder.add_init.<locals>._attach_init(cls_dict={'__annotations__': {'a_number': <class 'int'>, 'list_of_numbers': list[int]}, '__attrs_attrs__': (Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers')), '__attrs_props__': ClassProps(is_exception=False, is_slot...t 0x10d5a7100>, field_transformer=None), '__dict__': <attribute '__dict__' of 'SomeClass' objects>, '__doc__': None, '__eq__': <function SomeClass.__eq__ at 0x10e15c4a0>, ...}, globs={'__eq__': <function SomeClass.__eq__ at 0x10e15c4a0>, '__init__': <function __init__ at 0x10e15c540>, '__repr__': <function SomeClass.__repr__ at 0x10e15c400>})  [src/attr/_make.py:1101]
+                  _ClassBuilder._add_method_dunders_unsafe(self=<_ClassBuilder>, method=<function __init__ at 0x10e15c540>)  [src/attr/_make.py:1226]
+                    → <function SomeClass.__init__ at 0x10e15c540>
+                  → None
+                → None
+              _ClassBuilder._create_slots_class(self=<_ClassBuilder>)  [src/attr/_make.py:859]
+                → <class '__main__.SomeClass'>
+              → <class '__main__.SomeClass'>
+            → <class '__main__.SomeClass'>
+          → <class '__main__.SomeClass'>
+        → <class '__main__.SomeClass'>
+      → <class '__main__.SomeClass'>
+    → <class '__main__.SomeClass'>
+  __ne__(self=<SomeClass>, other=SomeClass(a_number=2, list_of_numbers=[3, 2, 1]))  [src/attr/_make.py:1730]
+    → True
+  asdict(inst=SomeClass(a_number=1, list_of_numbers=[1, 2, 3]), recurse=True, filter=None, value_serializer=None)  [src/attr/_next_gen.py:627]
+    asdict(inst=SomeClass(a_number=1, list_of_numbers=[1, 2, 3]), recurse=True, filter=None, dict_factory=<class 'dict'>, retain_collection_types=True, value_serializer=None)  [src/attr/_funcs.py:26]
+      fields(cls=<type>)  [src/attr/_make.py:1924]
+        get_generic_base(cl=<class '__main__.SomeClass'>)  [src/attr/_compat.py:98]
+          → None
+        → (Attribute(name='a_number', default=42...setattr=None, alias='list_of_numbers'))
+      has(cls=<type>)  [src/attr/_funcs.py:352]
+        get_generic_base(cl=<class 'list'>)  [src/attr/_compat.py:98]
+          → None
+        → False
+      _asdict_anything(val=1, is_key=False, filter=None, dict_factory=<class 'dict'>, retain_collection_types=True, value_serializer=None)  [src/attr/_funcs.py:152]
+        → 1
+      … _asdict_anything ×2 more  [src/attr/_funcs.py:152]
+      → {'a_number': 1, 'list_of_numbers': [1, 2, 3]}
+    → {'a_number': 1, 'list_of_numbers': [1, 2, 3]}
+  make_class(name='C', attrs=['a', 'b'], bases=(<class 'object'>,), class_body=None)  [src/attr/_make.py:3261]
+    attrib(default=NOTHING, validator=None, repr=True, cmp=None, hash=None, init=True, metadata=None, type=None, converter=None, factory=None, kw_only=None, eq=None, order=None, on_setattr=None, alias=None)  [src/attr/_make.py:104]
+      _determine_attrib_eq_order(cmp=None, eq=None, order=None, default_eq=True)  [src/attr/_make.py:1284]
+        → (True, None, True, None)
+      _CountingAttr.__init__(self=<_CountingAttr>, default=NOTHING, validator=None, repr=True, cmp=None, hash=None, init=True, converter=None, metadata={}, type=None, kw_only=None, eq=True, eq_key=None, order=True, order_key=None, on_setattr=None, alias=None)  [src/attr/_make.py:2809]
+        → None
+      → _CountingAttr(counter=8, _default=NOTH..._setattr=None, alias=None, metadata={})
+    … attrib ×1 more  [src/attr/_make.py:104]
+    _determine_attrs_eq_order(cmp=None, eq=None, order=None, default_eq=True)  [src/attr/_make.py:1256]
+      → (True, True)
+    attrs(maybe_cls=None, these={'a': _CountingAttr(counter=8, _default=NOTH..._setattr=None, alias=None, metadata={}), 'b': _CountingAttr(counter=9, _default=NOTH..._setattr=None, alias=None, metadata={})}, repr_ns=None, repr=None, cmp=None, hash=None, init=None, slots=False, frozen=False, weakref_slot=True, str=False, auto_attribs=False, kw_only=False, cache_hash=False, auto_exc=False, eq=True, order=True, auto_detect=False, collect_by_mro=False, getstate_setstate=None, on_setattr=None, field_transformer=None, match_args=True, unsafe_hash=None, force_kw_only=True)  [src/attr/_make.py:1353]
+      _determine_attrs_eq_order(cmp=None, eq=True, order=True, default_eq=None)  [src/attr/_make.py:1256]
+        → (True, True)
+      → <function attrs.<locals>.wrap at 0x10e15d6c0>
+    attrs.<locals>.wrap(cls=<type>)  [src/attr/_make.py:1478]
+      _has_frozen_base_class(cls=<type>)  [src/attr/_make.py:1626]
+        → False
+      _determine_whether_to_implement(cls=<type>, flag=True, auto_detect=False, dunders=('__eq__', '__ne__'), default=True)  [src/attr/_make.py:1327]
+        → True
+      … _determine_whether_to_implement ×4 more  [src/attr/_make.py:1327]
+      ClassProps.__init__(self=<ClassProps>, is_exception=False, is_slotted=False, has_weakref_slot=True, is_frozen=False, kw_only=<KeywordOnly.NO: 'no'>, collected_fields_by_mro=False, added_init=True, added_repr=True, added_eq=True, added_ordering=True, hashability=<Hashability.UNHASHABLE: 'unhashable'>, added_match_args=True, added_str=False, added_pickling=False, on_setattr_hook=None, field_transformer=None)  [src/attr/_make.py:3020]
+        → None
+      ClassProps.is_hashable(self=<ClassProps>)  [src/attr/_make.py:3056]
+        → False
+      _ClassBuilder.__init__(self=<_ClassBuilder>, cls=<type>, these={'a': _CountingAttr(counter=8, _default=NOTH..._setattr=None, alias=None, metadata={}), 'b': _CountingAttr(counter=9, _default=NOTH..._setattr=None, alias=None, metadata={})}, auto_attribs=False, props=ClassProps(is_exception=False, is_slot...attr_hook=None, field_transformer=None), has_custom_setattr=False)  [src/attr/_make.py:676]
+        _transform_attrs(cls=<type>, these={'a': _CountingAttr(counter=8, _default=NOTH..._setattr=None, alias=None, metadata={}), 'b': _CountingAttr(counter=9, _default=NOTH..._setattr=None, alias=None, metadata={})}, auto_attribs=False, kw_only=<KeywordOnly.NO: 'no'>, collect_by_mro=False, field_transformer=None)  [src/attr/_make.py:381]
+          _get_annotations(cls=<type>)  [src/attr/_compat.py:30]
+            → {}
+          Attribute.from_counting_attr(cls=<type>, name='a', ca=_CountingAttr(counter=8, _default=NOTH..._setattr=None, alias=None, metadata={}), kw_only=False, type=None)  [src/attr/_make.py:2594]
+            Attribute.__init__(self=<Attribute>, name='a', default=NOTHING, validator=None, repr=True, cmp=None, hash=None, init=True, inherited=False, metadata={}, type=None, converter=None, kw_only=False, eq=True, eq_key=None, order=True, order_key=None, on_setattr=None, alias=None, alias_is_default=True)  [src/attr/_make.py:2531]
+              _determine_attrib_eq_order(cmp=None, eq=True, order=True, default_eq=True)  [src/attr/_make.py:1284]
+                _determine_attrib_eq_order.<locals>.decide_callable_or_boolean(value=True)  [src/attr/_make.py:1293]
+                  → (True, None)
+                … _determine_attrib_eq_order.<locals>.decide_callable_or_boolean ×1 more  [src/attr/_make.py:1293]
+                → (True, None, True, None)
+              → None
+            → Attribute(name='a', default=NOTHING, v...ted=False, on_setattr=None, alias=None)
+          … Attribute.from_counting_attr ×1 more  [src/attr/_make.py:2594]
+          _collect_base_attrs_broken(cls=<type>, taken_attr_names={'a', 'b'})  [src/attr/_make.py:353]
+            → ([], {})
+          _default_init_alias_for(name='a')  [src/attr/_make.py:2451]
+            → 'a'
+          … _default_init_alias_for ×1 more  [src/attr/_make.py:2451]
+          _make_attr_tuple_class(cls_name='C', attr_names=['a', 'b'])  [src/attr/_make.py:266]
+            → <class 'attr._make.CAttributes'>
+          → _Attributes(attrs=(Attribute(name='a',...b')), base_attrs=[], base_attrs_map={})
+        → None
+      _ClassBuilder.add_repr(self=<_ClassBuilder>, ns=None)  [src/attr/_make.py:1004]
+        _make_repr_script(attrs=(Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b')), ns=None)  [src/attr/_make.py:1852]
+          → ('def __repr__(self):\n  try:\n    alre...\n    already_repring.remove(id(self))', {'AttributeError': <class 'AttributeError'>, 'NOTHING': NOTHING, '_compat': <module 'attr._compat' from '/Users/om.../demo-repos/attrs/src/attr/_compat.py'>})
+        → <_ClassBuilder(cls=C)>
+      _ClassBuilder.add_eq(self=<_ClassBuilder>)  [src/attr/_make.py:1150]
+        _make_eq_script(attrs=(Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b')))  [src/attr/_make.py:1742]
+          → ('def __eq__(self, other):\n    if othe... and\n        self.b == other.b\n    )', {})
+        → <_ClassBuilder(cls=C)>
+      _ClassBuilder.add_order(self=<_ClassBuilder>)  [src/attr/_make.py:1164]
+        _make_order(cls=<type>, attrs=(Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b')))  [src/attr/_make.py:1779]
+          → (<function _make_order.<locals>.__lt__ at 0x10e172fc0>, <function _make_order.<locals>.__le__ at 0x10e172e80>, <function _make_order.<locals>.__gt__ at 0x10e172de0>, <function _make_order.<locals>.__ge__ at 0x10e172ca0>)
+        _ClassBuilder._add_method_dunders_unsafe(self=<_ClassBuilder>, method=<function _make_order.<locals>.__lt__ at 0x10e172fc0>)  [src/attr/_make.py:1226]
+          → <function C.__lt__ at 0x10e172fc0>
+        … _ClassBuilder._add_method_dunders_unsafe ×3 more  [src/attr/_make.py:1226]
+        → <_ClassBuilder(cls=C)>
+      _ClassBuilder.add_setattr(self=<_ClassBuilder>)  [src/attr/_make.py:1174]
+        → <_ClassBuilder(cls=C)>
+      ClassProps.is_hashable(self=<ClassProps>)  [src/attr/_make.py:3056]
+        → False
+      _ClassBuilder.make_unhashable(self=<_ClassBuilder>)  [src/attr/_make.py:1066]
+        → <_ClassBuilder(cls=C)>
+      _ClassBuilder.add_init(self=<_ClassBuilder>)  [src/attr/_make.py:1085]
+        _make_init_script(cls=<type>, attrs=(Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b')), pre_init=False, pre_init_has_args=False, post_init=False, frozen=False, slots=False, cache_hash=False, base_attr_map={}, is_exc=False, cls_on_setattr=None, attrs_init=False)  [src/attr/_make.py:2030]
+          _attrs_to_init_script(attrs=[Attribute(name='a', default=NOTHING, v...ited=False, on_setattr=None, alias='a'), Attribute(name='b', default=NOTHING, v...ited=False, on_setattr=None, alias='b')], is_frozen=False, is_slotted=False, call_pre_init=False, pre_init_has_args=False, call_post_init=False, does_cache_hash=False, base_attr_map={}, is_exc=False, needs_cached_setattr=False, has_cls_on_setattr=False, method_name='__init__')  [src/attr/_make.py:2187]
+            _determine_setters(frozen=False, slots=False, base_attr_map={})  [src/attr/_make.py:2140]
+              → ((), <function _assign at 0x10e18bb00>, <function _assign_with_converter at 0x10e18bba0>)
+            _assign(attr_name='a', value='a', has_on_setattr=False)  [src/attr/_make.py:2116]
+              → 'self.a = a'
+            … _assign ×1 more  [src/attr/_make.py:2116]
+            → ('def __init__(self, a, b):\n    self.a = a\n    self.b = b\n', {}, {'return': None})
+          → ('def __init__(self, a, b):\n    self.a = a\n    self.b = b\n', {'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, '__cached__': None, ...}, {'return': None})
+        → <_ClassBuilder(cls=C)>
+      _has_own_attribute(cls=<type>, attrib_name='__replace__')  [src/attr/_make.py:313]
+        → False
+      _ClassBuilder.add_replace(self=<_ClassBuilder>)  [src/attr/_make.py:1110]
+        _ClassBuilder._add_method_dunders_unsafe(self=<_ClassBuilder>, method=<function _ClassBuilder.add_replace.<locals>.__replace__ at 0x10e171f80>)  [src/attr/_make.py:1226]
+          → <function C.__replace__ at 0x10e171f80>
+        → <_ClassBuilder(cls=C)>
+      _has_own_attribute(cls=<type>, attrib_name='__match_args__')  [src/attr/_make.py:313]
+        → False
+      _ClassBuilder.add_match_args(self=<_ClassBuilder>)  [src/attr/_make.py:1118]
+        → None
+      _ClassBuilder.build_class(self=<_ClassBuilder>)  [src/attr/_make.py:800]
+        _ClassBuilder._eval_snippets(self=<_ClassBuilder>)  [src/attr/_make.py:782]
+          _generate_unique_filename(cls=<type>, func_name='methods')  [src/attr/_make.py:1634]
+            → '<attrs generated methods __main__.C>'
+          _linecache_and_compile(script='def __repr__(self):\n  try:\n    alre... b):\n    self.a = a\n    self.b = b\n', filename='<attrs generated methods __main__.C>', globs={'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}, locals=None)  [src/attr/_make.py:231]
+            _compile_and_eval(script='def __repr__(self):\n  try:\n    alre... b):\n    self.a = a\n    self.b = b\n', globs={'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}, locs={}, filename='<attrs generated methods __main__.C>')  [src/attr/_make.py:217]
+              → None
+            → {'__eq__': <function __eq__ at 0x10e1732e0>, '__init__': <function __init__ at 0x10e1739c0>, '__repr__': <function __repr__ at 0x10e172f20>}
+          _ClassBuilder.add_repr.<locals>._attach_repr(cls_dict={'__attrs_attrs__': (Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b')), '__attrs_props__': ClassProps(is_exception=False, is_slot...attr_hook=None, field_transformer=None), '__ge__': <function C.__ge__ at 0x10e172ca0>, '__gt__': <function C.__gt__ at 0x10e172de0>, '__hash__': None, '__le__': <function C.__le__ at 0x10e172e80>, ...}, globs={'__eq__': <function __eq__ at 0x10e1732e0>, '__init__': <function __init__ at 0x10e1739c0>, '__repr__': <function __repr__ at 0x10e172f20>})  [src/attr/_make.py:1007]
+            _ClassBuilder._add_method_dunders_unsafe(self=<_ClassBuilder>, method=<function __repr__ at 0x10e172f20>)  [src/attr/_make.py:1226]
+              → <function C.__repr__ at 0x10e172f20>
+            → None
+          _ClassBuilder.add_eq.<locals>._attach_eq(cls_dict={'__attrs_attrs__': (Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b')), '__attrs_props__': ClassProps(is_exception=False, is_slot...attr_hook=None, field_transformer=None), '__ge__': <function C.__ge__ at 0x10e172ca0>, '__gt__': <function C.__gt__ at 0x10e172de0>, '__hash__': None, '__le__': <function C.__le__ at 0x10e172e80>, ...}, globs={'__eq__': <function __eq__ at 0x10e1732e0>, '__init__': <function __init__ at 0x10e1739c0>, '__repr__': <function C.__repr__ at 0x10e172f20>})  [src/attr/_make.py:1155]
+            _ClassBuilder._add_method_dunders_unsafe(self=<_ClassBuilder>, method=<function __eq__ at 0x10e1732e0>)  [src/attr/_make.py:1226]
+              → <function C.__eq__ at 0x10e1732e0>
+            → None
+          _ClassBuilder.add_init.<locals>._attach_init(cls_dict={'__attrs_attrs__': (Attribute(name='a', default=NOTHING, ...ted=False, on_setattr=None, alias='b')), '__attrs_props__': ClassProps(is_exception=False, is_slot...attr_hook=None, field_transformer=None), '__eq__': <function C.__eq__ at 0x10e1732e0>, '__ge__': <function C.__ge__ at 0x10e172ca0>, '__gt__': <function C.__gt__ at 0x10e172de0>, '__hash__': None, ...}, globs={'__eq__': <function C.__eq__ at 0x10e1732e0>, '__init__': <function __init__ at 0x10e1739c0>, '__repr__': <function C.__repr__ at 0x10e172f20>})  [src/attr/_make.py:1101]
+            _ClassBuilder._add_method_dunders_unsafe(self=<_ClassBuilder>, method=<function __init__ at 0x10e1739c0>)  [src/attr/_make.py:1226]
+              → <function C.__init__ at 0x10e1739c0>
+            → None
+          → None
+        _ClassBuilder._patch_original_class(self=<_ClassBuilder>)  [src/attr/_make.py:823]
+          → <class '__main__.C'>
+        → <class '__main__.C'>
+      → <class '__main__.C'>
+    → <class '__main__.C'>
+  __ne__(self=<SomeClass>, other=SomeClass(a_number=2, list_of_numbers=[3, 2, 1]))  [src/attr/_make.py:1730]
+    → True

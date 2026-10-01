@@ -1,0 +1,3883 @@
+{
+ "fn": "scenario",
+ "file": "scenario.py",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "DictLoader.__init__",
+   "file": "src/jinja2/loaders.py",
+   "line": 441,
+   "called_from": "scenario.py:46",
+   "args": {
+    "self": "<DictLoader>",
+    "mapping": "{'base.html': '<!DOCTYPE html>\\n<html lang=\"en\">\\n<h... endblock %}</div>\\n</body>\\n</html>\\n', 'members.html': '{% extends \"base.html\" %}\\n{% block t...% endfor %}\\n  </ul>\\n{% endblock %}\\n'}"
+   },
+   "calls": [],
+   "returned": "None",
+   "tl": 2
+  },
+  {
+   "fn": "select_autoescape",
+   "file": "src/jinja2/utils.py",
+   "line": 581,
+   "called_from": "scenario.py:47",
+   "args": {
+    "enabled_extensions": "['html', 'htm', 'xml']",
+    "disabled_extensions": "()",
+    "default_for_string": "True",
+    "default": "False"
+   },
+   "calls": [],
+   "returned": "<function select_autoescape.<locals>.autoescape at 0x10a5bcea0>",
+   "tl": 4
+  },
+  {
+   "fn": "Environment.__init__",
+   "file": "src/jinja2/environment.py",
+   "line": 295,
+   "called_from": "scenario.py:45",
+   "args": {
+    "self": "<Environment>",
+    "block_start_string": "'{%'",
+    "block_end_string": "'%}'",
+    "variable_start_string": "'{{'",
+    "variable_end_string": "'}}'",
+    "comment_start_string": "'{#'",
+    "comment_end_string": "'#}'",
+    "line_statement_prefix": "None",
+    "line_comment_prefix": "None",
+    "trim_blocks": "False",
+    "lstrip_blocks": "False",
+    "newline_sequence": "'\\n'",
+    "keep_trailing_newline": "False",
+    "extensions": "()",
+    "optimized": "True",
+    "undefined": "<class 'jinja2.runtime.Undefined'>",
+    "finalize": "None",
+    "autoescape": "<function select_autoescape.<locals>.autoescape at 0x10a5bcea0>",
+    "loader": "<jinja2.loaders.DictLoader object at 0x10969d550>",
+    "cache_size": "400",
+    "auto_reload": "True",
+    "bytecode_cache": "None",
+    "enable_async": "False"
+   },
+   "calls": [
+    {
+     "fn": "create_cache",
+     "file": "src/jinja2/environment.py",
+     "line": 83,
+     "called_from": "environment.py:358",
+     "args": {
+      "size": "400"
+     },
+     "calls": [
+      {
+       "fn": "LRUCache.__init__",
+       "file": "src/jinja2/utils.py",
+       "line": 439,
+       "called_from": "environment.py:93",
+       "args": {
+        "self": "<LRUCache>",
+        "capacity": "400"
+       },
+       "calls": [
+        {
+         "fn": "LRUCache._postinit",
+         "file": "src/jinja2/utils.py",
+         "line": 445,
+         "called_from": "utils.py:443",
+         "args": {
+          "self": "<LRUCache>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 9
+        }
+       ],
+       "returned": "None",
+       "tl": 8
+      }
+     ],
+     "returned": "<LRUCache {}>",
+     "tl": 7
+    },
+    {
+     "fn": "load_extensions",
+     "file": "src/jinja2/environment.py",
+     "line": 109,
+     "called_from": "environment.py:366",
+     "args": {
+      "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+      "extensions": "()"
+     },
+     "calls": [],
+     "returned": "{}",
+     "tl": 13
+    },
+    {
+     "fn": "_environment_config_check",
+     "file": "src/jinja2/environment.py",
+     "line": 127,
+     "called_from": "environment.py:369",
+     "args": {
+      "environment": "<jinja2.environment.Environment object at 0x10a51c830>"
+     },
+     "calls": [],
+     "returned": "<jinja2.environment.Environment object at 0x10a51c830>",
+     "tl": 15
+    }
+   ],
+   "returned": "None",
+   "tl": 6
+  },
+  {
+   "fn": "Environment.get_template",
+   "file": "src/jinja2/environment.py",
+   "line": 980,
+   "called_from": "scenario.py:49",
+   "args": {
+    "self": "<Environment>",
+    "name": "'members.html'",
+    "parent": "None",
+    "globals": "None"
+   },
+   "calls": [
+    {
+     "fn": "Environment._load_template",
+     "file": "src/jinja2/environment.py",
+     "line": 955,
+     "called_from": "environment.py:1015",
+     "args": {
+      "self": "<Environment>",
+      "name": "'members.html'",
+      "globals": "None"
+     },
+     "calls": [
+      {
+       "fn": "LRUCache.get",
+       "file": "src/jinja2/utils.py",
+       "line": 474,
+       "called_from": "environment.py:963",
+       "args": {
+        "self": "<LRUCache>",
+        "key": "(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'members.html')",
+        "default": "None"
+       },
+       "calls": [
+        {
+         "fn": "LRUCache.__getitem__",
+         "file": "src/jinja2/utils.py",
+         "line": 508,
+         "called_from": "utils.py:477",
+         "args": {
+          "self": "<LRUCache>",
+          "key": "(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'members.html')"
+         },
+         "calls": [],
+         "raised": "KeyError((<weakref at 0x10a5edf80; to ...ader' at 0x10969d550>, 'members.html'))",
+         "returned": "None",
+         "tl": 21
+        }
+       ],
+       "raised": "KeyError((<weakref at 0x10a5edf80; to ...ader' at 0x10969d550>, 'members.html'))",
+       "returned": "None",
+       "tl": 20
+      },
+      {
+       "fn": "Environment.make_globals",
+       "file": "src/jinja2/environment.py",
+       "line": 1110,
+       "called_from": "environment.py:974",
+       "args": {
+        "self": "<Environment>",
+        "d": "None"
+       },
+       "calls": [],
+       "returned": "ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})",
+       "tl": 24
+      },
+      {
+       "fn": "BaseLoader.load",
+       "file": "src/jinja2/loaders.py",
+       "line": 107,
+       "called_from": "environment.py:974",
+       "args": {
+        "self": "<DictLoader>",
+        "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+        "name": "'members.html'",
+        "globals": "ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})"
+       },
+       "calls": [
+        {
+         "fn": "DictLoader.get_source",
+         "file": "src/jinja2/loaders.py",
+         "line": 444,
+         "called_from": "loaders.py:126",
+         "args": {
+          "self": "<DictLoader>",
+          "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+          "template": "'members.html'"
+         },
+         "calls": [],
+         "returned": "('{% extends \"base.html\" %}\\n{% block t...% endfor %}\\n  </ul>\\n{% endblock %}\\n', None, <function DictLoader.get_source.<locals>.<lambda> at 0x10a5be5c0>)",
+         "tl": 27
+        },
+        {
+         "fn": "Environment.compile",
+         "file": "src/jinja2/environment.py",
+         "line": 730,
+         "called_from": "loaders.py:138",
+         "args": {
+          "self": "<Environment>",
+          "source": "'{% extends \"base.html\" %}\\n{% block t...% endfor %}\\n  </ul>\\n{% endblock %}\\n'",
+          "name": "'members.html'",
+          "filename": "None",
+          "raw": "False",
+          "defer_init": "False"
+         },
+         "calls": [
+          {
+           "fn": "Environment._parse",
+           "file": "src/jinja2/environment.py",
+           "line": 617,
+           "called_from": "environment.py:762",
+           "args": {
+            "self": "<Environment>",
+            "source": "'{% extends \"base.html\" %}\\n{% block t...% endfor %}\\n  </ul>\\n{% endblock %}\\n'",
+            "name": "'members.html'",
+            "filename": "None"
+           },
+           "calls": [
+            {
+             "fn": "Parser.__init__",
+             "file": "src/jinja2/parser.py",
+             "line": 53,
+             "called_from": "environment.py:621",
+             "args": {
+              "self": "<Parser>",
+              "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+              "source": "'{% extends \"base.html\" %}\\n{% block t...% endfor %}\\n  </ul>\\n{% endblock %}\\n'",
+              "name": "'members.html'",
+              "filename": "None",
+              "state": "None"
+             },
+             "calls": [
+              {
+               "fn": "Environment._tokenize",
+               "file": "src/jinja2/environment.py",
+               "line": 660,
+               "called_from": "parser.py:62",
+               "args": {
+                "self": "<Environment>",
+                "source": "'{% extends \"base.html\" %}\\n{% block t...% endfor %}\\n  </ul>\\n{% endblock %}\\n'",
+                "name": "'members.html'",
+                "filename": "None",
+                "state": "None"
+               },
+               "calls": [
+                {
+                 "fn": "Environment.preprocess",
+                 "file": "src/jinja2/environment.py",
+                 "line": 644,
+                 "called_from": "environment.py:670",
+                 "args": {
+                  "self": "<Environment>",
+                  "source": "'{% extends \"base.html\" %}\\n{% block t...% endfor %}\\n  </ul>\\n{% endblock %}\\n'",
+                  "name": "'members.html'",
+                  "filename": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Environment.iter_extensions",
+                   "file": "src/jinja2/environment.py",
+                   "line": 463,
+                   "called_from": "environment.py:656",
+                   "args": {
+                    "self": "<Environment>"
+                   },
+                   "calls": [],
+                   "returned": "<list_iterator object at 0x10a4bfe50>",
+                   "tl": 34
+                  }
+                 ],
+                 "returned": "'{% extends \"base.html\" %}\\n{% block t...% endfor %}\\n  </ul>\\n{% endblock %}\\n'",
+                 "tl": 33
+                },
+                {
+                 "fn": "Environment.lexer",
+                 "file": "src/jinja2/environment.py",
+                 "line": 458,
+                 "called_from": "environment.py:671",
+                 "args": {
+                  "self": "<Environment>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "get_lexer",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 428,
+                   "called_from": "environment.py:461",
+                   "args": {
+                    "environment": "<jinja2.environment.Environment object at 0x10a51c830>"
+                   },
+                   "calls": [],
+                   "returned": "<jinja2.lexer.Lexer object at 0x10a51cd70>",
+                   "tl": 38,
+                   "elided": 17
+                  }
+                 ],
+                 "returned": "<jinja2.lexer.Lexer object at 0x10a51cd70>",
+                 "tl": 37
+                },
+                {
+                 "fn": "Lexer.tokenize",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 604,
+                 "called_from": "environment.py:671",
+                 "args": {
+                  "self": "<Lexer>",
+                  "source": "'{% extends \"base.html\" %}\\n{% block t...% endfor %}\\n  </ul>\\n{% endblock %}\\n'",
+                  "name": "'members.html'",
+                  "filename": "None",
+                  "state": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "TokenStream.__init__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 325,
+                   "called_from": "lexer.py:613",
+                   "args": {
+                    "self": "<TokenStream>",
+                    "generator": "<generator object Lexer.wrap at 0x10a5775b0>",
+                    "name": "'members.html'",
+                    "filename": "None"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 43,
+                   "elided": 3
+                  }
+                 ],
+                 "returned": "<jinja2.lexer.TokenStream object at 0x10a51d2b0>",
+                 "tl": 42
+                },
+                {
+                 "fn": "Environment.iter_extensions",
+                 "file": "src/jinja2/environment.py",
+                 "line": 463,
+                 "called_from": "environment.py:673",
+                 "args": {
+                  "self": "<Environment>"
+                 },
+                 "calls": [],
+                 "returned": "<list_iterator object at 0x10a4d1de0>",
+                 "tl": 47
+                }
+               ],
+               "returned": "<jinja2.lexer.TokenStream object at 0x10a51d2b0>",
+               "tl": 32
+              },
+              {
+               "fn": "Environment.iter_extensions",
+               "file": "src/jinja2/environment.py",
+               "line": 463,
+               "called_from": "parser.py:69",
+               "args": {
+                "self": "<Environment>"
+               },
+               "calls": [],
+               "returned": "<list_iterator object at 0x10a4d1e40>",
+               "tl": 50
+              }
+             ],
+             "returned": "None",
+             "tl": 31
+            },
+            {
+             "fn": "Parser.parse",
+             "file": "src/jinja2/parser.py",
+             "line": 1037,
+             "called_from": "environment.py:621",
+             "args": {
+              "self": "<Parser>"
+             },
+             "calls": [
+              {
+               "fn": "Parser.subparse",
+               "file": "src/jinja2/parser.py",
+               "line": 990,
+               "called_from": "parser.py:1039",
+               "args": {
+                "self": "<Parser>",
+                "end_tokens": "None"
+               },
+               "calls": [
+                {
+                 "fn": "TokenStream.__bool__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 342,
+                 "called_from": "parser.py:1005",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [],
+                 "returned": "True",
+                 "tl": 55
+                },
+                {
+                 "fn": "Parser.subparse.<locals>.flush_data",
+                 "file": "src/jinja2/parser.py",
+                 "line": 998,
+                 "called_from": "parser.py:1016",
+                 "args": {},
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 57
+                },
+                {
+                 "fn": "TokenStream.__next__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 380,
+                 "called_from": "parser.py:1017",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Lexer.wrap",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 615,
+                   "called_from": "lexer.py:391",
+                   "args": {
+                    "self": "<Lexer>",
+                    "stream": "<generator object Lexer.tokeniter at 0x10a32a2b0>",
+                    "name": "'members.html'",
+                    "filename": "None"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=1, type='name', value='extends')",
+                   "tl": 60,
+                   "elided": 2
+                  }
+                 ],
+                 "returned": "Token(lineno=1, type='block_begin', value='{%')",
+                 "tl": 59
+                },
+                {
+                 "fn": "Parser.parse_statement",
+                 "file": "src/jinja2/parser.py",
+                 "line": 163,
+                 "called_from": "parser.py:1022",
+                 "args": {
+                  "self": "<Parser>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Parser.parse_extends",
+                   "file": "src/jinja2/parser.py",
+                   "line": 324,
+                   "called_from": "parser.py:173",
+                   "args": {
+                    "self": "<Parser>"
+                   },
+                   "calls": [],
+                   "returned": "Extends(template=Const(value='base.html'))",
+                   "tl": 65,
+                   "elided": 39
+                  }
+                 ],
+                 "returned": "Extends(template=Const(value='base.html'))",
+                 "tl": 64
+                },
+                {
+                 "fn": "TokenStream.expect",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 403,
+                 "called_from": "parser.py:1027",
+                 "args": {
+                  "self": "<TokenStream>",
+                  "expr": "'block_end'"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Token.test",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 277,
+                   "called_from": "lexer.py:407",
+                   "args": {
+                    "self": "<Token>",
+                    "expr": "'block_end'"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 70
+                  },
+                  {
+                   "fn": "TokenStream.__next__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 380,
+                   "called_from": "lexer.py:425",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=1, type='block_end', value='%}')",
+                   "tl": 72,
+                   "elided": 3
+                  }
+                 ],
+                 "returned": "Token(lineno=1, type='block_end', value='%}')",
+                 "tl": 69
+                },
+                {
+                 "fn": "TokenStream.__bool__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 342,
+                 "called_from": "parser.py:1005",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [],
+                 "returned": "True",
+                 "tl": 76
+                },
+                {
+                 "fn": "Node.__init__",
+                 "file": "src/jinja2/nodes.py",
+                 "line": 129,
+                 "called_from": "parser.py:1009",
+                 "args": {
+                  "self": "<TemplateData>"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 78
+                },
+                {
+                 "fn": "TokenStream.__next__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 380,
+                 "called_from": "parser.py:1010",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Lexer.wrap",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 615,
+                   "called_from": "lexer.py:391",
+                   "args": {
+                    "self": "<Lexer>",
+                    "stream": "<generator object Lexer.tokeniter at 0x10a32a2b0>",
+                    "name": "'members.html'",
+                    "filename": "None"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=2, type='block_begin', value='{%')",
+                   "tl": 81,
+                   "elided": 1
+                  }
+                 ],
+                 "returned": "Token(lineno=1, type='data', value='\\n')",
+                 "tl": 80
+                },
+                {
+                 "fn": "TokenStream.__bool__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 342,
+                 "called_from": "parser.py:1005",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [],
+                 "returned": "True",
+                 "tl": 85
+                },
+                {
+                 "fn": "Parser.subparse.<locals>.flush_data",
+                 "file": "src/jinja2/parser.py",
+                 "line": 998,
+                 "called_from": "parser.py:1016",
+                 "args": {},
+                 "calls": [
+                  {
+                   "fn": "Node.__init__",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 129,
+                   "called_from": "parser.py:1001",
+                   "args": {
+                    "self": "<Output>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 88
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 87
+                },
+                {
+                 "fn": "TokenStream.__next__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 380,
+                 "called_from": "parser.py:1017",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Lexer.wrap",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 615,
+                   "called_from": "lexer.py:391",
+                   "args": {
+                    "self": "<Lexer>",
+                    "stream": "<generator object Lexer.tokeniter at 0x10a32a2b0>",
+                    "name": "'members.html'",
+                    "filename": "None"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=2, type='name', value='block')",
+                   "tl": 92,
+                   "elided": 2
+                  }
+                 ],
+                 "returned": "Token(lineno=2, type='block_begin', value='{%')",
+                 "tl": 91
+                },
+                {
+                 "fn": "Parser.parse_statement",
+                 "file": "src/jinja2/parser.py",
+                 "line": 163,
+                 "called_from": "parser.py:1022",
+                 "args": {
+                  "self": "<Parser>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Parser.parse_block",
+                   "file": "src/jinja2/parser.py",
+                   "line": 292,
+                   "called_from": "parser.py:173",
+                   "args": {
+                    "self": "<Parser>"
+                   },
+                   "calls": [],
+                   "returned": "Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False)",
+                   "tl": 97,
+                   "elided": 47
+                  }
+                 ],
+                 "returned": "Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False)",
+                 "tl": 96
+                },
+                {
+                 "fn": "TokenStream.expect",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 403,
+                 "called_from": "parser.py:1027",
+                 "args": {
+                  "self": "<TokenStream>",
+                  "expr": "'block_end'"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Token.test",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 277,
+                   "called_from": "lexer.py:407",
+                   "args": {
+                    "self": "<Token>",
+                    "expr": "'block_end'"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 102
+                  },
+                  {
+                   "fn": "TokenStream.__next__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 380,
+                   "called_from": "lexer.py:425",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=2, type='block_end', value='%}')",
+                   "tl": 104,
+                   "elided": 3
+                  }
+                 ],
+                 "returned": "Token(lineno=2, type='block_end', value='%}')",
+                 "tl": 101
+                },
+                {
+                 "fn": "TokenStream.__bool__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 342,
+                 "called_from": "parser.py:1005",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [],
+                 "returned": "True",
+                 "tl": 108
+                },
+                {
+                 "fn": "Node.__init__",
+                 "file": "src/jinja2/nodes.py",
+                 "line": 129,
+                 "called_from": "parser.py:1009",
+                 "args": {
+                  "self": "<TemplateData>"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 110
+                },
+                {
+                 "fn": "TokenStream.__next__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 380,
+                 "called_from": "parser.py:1010",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Lexer.wrap",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 615,
+                   "called_from": "lexer.py:391",
+                   "args": {
+                    "self": "<Lexer>",
+                    "stream": "<generator object Lexer.tokeniter at 0x10a32a2b0>",
+                    "name": "'members.html'",
+                    "filename": "None"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=3, type='block_begin', value='{%')",
+                   "tl": 113,
+                   "elided": 1
+                  }
+                 ],
+                 "returned": "Token(lineno=2, type='data', value='\\n')",
+                 "tl": 112
+                },
+                {
+                 "fn": "TokenStream.__bool__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 342,
+                 "called_from": "parser.py:1005",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [],
+                 "returned": "True",
+                 "tl": 117
+                },
+                {
+                 "fn": "Parser.subparse.<locals>.flush_data",
+                 "file": "src/jinja2/parser.py",
+                 "line": 998,
+                 "called_from": "parser.py:1016",
+                 "args": {},
+                 "calls": [
+                  {
+                   "fn": "Node.__init__",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 129,
+                   "called_from": "parser.py:1001",
+                   "args": {
+                    "self": "<Output>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 120
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 119
+                },
+                {
+                 "fn": "TokenStream.__next__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 380,
+                 "called_from": "parser.py:1017",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Lexer.wrap",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 615,
+                   "called_from": "lexer.py:391",
+                   "args": {
+                    "self": "<Lexer>",
+                    "stream": "<generator object Lexer.tokeniter at 0x10a32a2b0>",
+                    "name": "'members.html'",
+                    "filename": "None"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=3, type='name', value='block')",
+                   "tl": 124,
+                   "elided": 2
+                  }
+                 ],
+                 "returned": "Token(lineno=3, type='block_begin', value='{%')",
+                 "tl": 123
+                },
+                {
+                 "fn": "Parser.parse_statement",
+                 "file": "src/jinja2/parser.py",
+                 "line": 163,
+                 "called_from": "parser.py:1022",
+                 "args": {
+                  "self": "<Parser>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Parser.parse_block",
+                   "file": "src/jinja2/parser.py",
+                   "line": 292,
+                   "called_from": "parser.py:173",
+                   "args": {
+                    "self": "<Parser>"
+                   },
+                   "calls": [],
+                   "returned": "Block(name='content', body=[Output(nod...>\\n')])], scoped=False, required=False)",
+                   "tl": 129,
+                   "elided": 280
+                  }
+                 ],
+                 "returned": "Block(name='content', body=[Output(nod...>\\n')])], scoped=False, required=False)",
+                 "tl": 128
+                },
+                {
+                 "fn": "TokenStream.expect",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 403,
+                 "called_from": "parser.py:1027",
+                 "args": {
+                  "self": "<TokenStream>",
+                  "expr": "'block_end'"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Token.test",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 277,
+                   "called_from": "lexer.py:407",
+                   "args": {
+                    "self": "<Token>",
+                    "expr": "'block_end'"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 134
+                  },
+                  {
+                   "fn": "TokenStream.__next__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 380,
+                   "called_from": "lexer.py:425",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "raised": "StopIteration()",
+                   "returned": "Token(lineno=9, type='block_end', value='%}')",
+                   "tl": 136,
+                   "elided": 3
+                  }
+                 ],
+                 "returned": "Token(lineno=9, type='block_end', value='%}')",
+                 "tl": 133
+                },
+                {
+                 "fn": "TokenStream.__bool__",
+                 "file": "src/jinja2/lexer.py",
+                 "line": 342,
+                 "called_from": "parser.py:1005",
+                 "args": {
+                  "self": "<TokenStream>"
+                 },
+                 "calls": [],
+                 "returned": "False",
+                 "tl": 140
+                },
+                {
+                 "fn": "Parser.subparse.<locals>.flush_data",
+                 "file": "src/jinja2/parser.py",
+                 "line": 998,
+                 "called_from": "parser.py:1031",
+                 "args": {},
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 142
+                }
+               ],
+               "returned": "[Extends(template=Const(value='base.html')), Output(nodes=[TemplateData(data='\\n')]), Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), Output(nodes=[TemplateData(data='\\n')]), Block(name='content', body=[Output(nod...>\\n')])], scoped=False, required=False)]",
+               "tl": 54
+              },
+              {
+               "fn": "Node.__init__",
+               "file": "src/jinja2/nodes.py",
+               "line": 129,
+               "called_from": "parser.py:1039",
+               "args": {
+                "self": "<Template>"
+               },
+               "calls": [],
+               "returned": "None",
+               "tl": 145
+              },
+              {
+               "fn": "Node.set_environment",
+               "file": "src/jinja2/nodes.py",
+               "line": 231,
+               "called_from": "parser.py:1040",
+               "args": {
+                "self": "<Template>",
+                "environment": "<jinja2.environment.Environment object at 0x10a51c830>"
+               },
+               "calls": [
+                {
+                 "fn": "Node.iter_child_nodes",
+                 "file": "src/jinja2/nodes.py",
+                 "line": 169,
+                 "called_from": "nodes.py:237",
+                 "args": {
+                  "self": "<Template>",
+                  "exclude": "None",
+                  "only": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Node.iter_fields",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 147,
+                   "called_from": "nodes.py:178",
+                   "args": {
+                    "self": "<Template>",
+                    "exclude": "None",
+                    "only": "None"
+                   },
+                   "calls": [],
+                   "returned": "('body', [Extends(template=Const(value='base.html')), Output(nodes=[TemplateData(data='\\n')]), Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), Output(nodes=[TemplateData(data='\\n')]), Block(name='content', body=[Output(nod...>\\n')])], scoped=False, required=False)])",
+                   "tl": 149
+                  }
+                 ],
+                 "returned": "Extends(template=Const(value='base.html'))",
+                 "tl": 148
+                },
+                {
+                 "fn": "Node.iter_child_nodes",
+                 "file": "src/jinja2/nodes.py",
+                 "line": 169,
+                 "args": {},
+                 "calls": [],
+                 "repeat": 50,
+                 "returned": "(various)",
+                 "tl": 152
+                }
+               ],
+               "returned": "Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])",
+               "tl": 147
+              }
+             ],
+             "returned": "Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])",
+             "tl": 53
+            }
+           ],
+           "returned": "Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])",
+           "tl": 30
+          },
+          {
+           "fn": "Environment._generate",
+           "file": "src/jinja2/environment.py",
+           "line": 681,
+           "called_from": "environment.py:763",
+           "args": {
+            "self": "<Environment>",
+            "source": "Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])",
+            "name": "'members.html'",
+            "filename": "None",
+            "defer_init": "False"
+           },
+           "calls": [
+            {
+             "fn": "generate",
+             "file": "src/jinja2/compiler.py",
+             "line": 101,
+             "called_from": "environment.py:693",
+             "args": {
+              "node": "Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])",
+              "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+              "name": "'members.html'",
+              "filename": "None",
+              "stream": "None",
+              "defer_init": "False",
+              "optimized": "True"
+             },
+             "calls": [
+              {
+               "fn": "CodeGenerator.__init__",
+               "file": "src/jinja2/compiler.py",
+               "line": 299,
+               "called_from": "compiler.py:114",
+               "args": {
+                "self": "<CodeGenerator>",
+                "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+                "name": "'members.html'",
+                "filename": "None",
+                "stream": "None",
+                "defer_init": "False",
+                "optimized": "True"
+               },
+               "calls": [
+                {
+                 "fn": "Optimizer.__init__",
+                 "file": "src/jinja2/optimizer.py",
+                 "line": 28,
+                 "called_from": "compiler.py:319",
+                 "args": {
+                  "self": "<Optimizer>",
+                  "environment": "<jinja2.environment.Environment object at 0x10a51c830>"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 159
+                }
+               ],
+               "returned": "None",
+               "tl": 158
+              },
+              {
+               "fn": "NodeVisitor.visit",
+               "file": "src/jinja2/visitor.py",
+               "line": 35,
+               "called_from": "compiler.py:117",
+               "args": {
+                "self": "<CodeGenerator>",
+                "node": "Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])"
+               },
+               "calls": [
+                {
+                 "fn": "NodeVisitor.get_visitor",
+                 "file": "src/jinja2/visitor.py",
+                 "line": 28,
+                 "called_from": "visitor.py:37",
+                 "args": {
+                  "self": "<CodeGenerator>",
+                  "node": "Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])"
+                 },
+                 "calls": [],
+                 "returned": "<bound method CodeGenerator.visit_Temp...r.CodeGenerator object at 0x10a51cc20>>",
+                 "tl": 163
+                },
+                {
+                 "fn": "CodeGenerator.visit_Template",
+                 "file": "src/jinja2/compiler.py",
+                 "line": 825,
+                 "called_from": "visitor.py:40",
+                 "args": {
+                  "self": "<CodeGenerator>",
+                  "node": "Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])",
+                  "frame": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "EvalContext.__init__",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 76,
+                   "called_from": "compiler.py:827",
+                   "args": {
+                    "self": "<EvalContext>",
+                    "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+                    "template_name": "'members.html'"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 166,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "called_from": "compiler.py:837",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "x": "'from jinja2.runtime import LoopContex...alcode, markup_join, missing, str_join'",
+                    "node": "None",
+                    "extra": "0"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 169,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "Node.find",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 186,
+                   "called_from": "compiler.py:845",
+                   "args": {
+                    "self": "<Template>",
+                    "node_type": "<class 'jinja2.nodes.Extends'>"
+                   },
+                   "calls": [],
+                   "returned": "Extends(template=Const(value='base.html'))",
+                   "tl": 172,
+                   "elided": 4
+                  },
+                  {
+                   "fn": "Node.find_all",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 195,
+                   "called_from": "compiler.py:848",
+                   "args": {
+                    "self": "<Template>",
+                    "node_type": "<class 'jinja2.nodes.Block'>"
+                   },
+                   "calls": [],
+                   "raised": "StopIteration()",
+                   "returned": "Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False)",
+                   "tl": 175,
+                   "elided": 22
+                  },
+                  {
+                   "fn": "Node.find_all",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 195,
+                   "args": {},
+                   "calls": [],
+                   "repeat": 3,
+                   "returned": "(various)",
+                   "tl": 178
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "called_from": "compiler.py:865",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "x": "\"name = 'members.html'\"",
+                    "node": "None",
+                    "extra": "0"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 179,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "CodeGenerator.func",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 607,
+                   "called_from": "compiler.py:869",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "name": "'root'"
+                   },
+                   "calls": [],
+                   "returned": "'def root'",
+                   "tl": 182,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "called_from": "compiler.py:868",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "x": "'def root(context, missing=missing, environment=environment):'",
+                    "node": "None",
+                    "extra": "1"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 185,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "CodeGenerator.indent",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 412,
+                   "called_from": "compiler.py:871",
+                   "args": {
+                    "self": "<CodeGenerator>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 188
+                  },
+                  {
+                   "fn": "CodeGenerator.write_commons",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 719,
+                   "called_from": "compiler.py:872",
+                   "args": {
+                    "self": "<CodeGenerator>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 190,
+                   "elided": 4
+                  },
+                  {
+                   "fn": "Frame.__init__",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 166,
+                   "called_from": "compiler.py:875",
+                   "args": {
+                    "self": "<Frame>",
+                    "eval_ctx": "<jinja2.nodes.EvalContext object at 0x10a51e3c0>",
+                    "parent": "None",
+                    "level": "None"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 193,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "find_undeclared",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 142,
+                   "called_from": "compiler.py:876",
+                   "args": {
+                    "nodes": "[Extends(template=Const(value='base.html')), Output(nodes=[TemplateData(data='\\n')]), Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), Output(nodes=[TemplateData(data='\\n')]), Block(name='content', body=[Output(nod...>\\n')])], scoped=False, required=False)]",
+                    "names": "('self',)"
+                   },
+                   "calls": [],
+                   "returned": "set()",
+                   "tl": 196,
+                   "elided": 15
+                  },
+                  {
+                   "fn": "Symbols.analyze_node",
+                   "file": "src/jinja2/idtracking.py",
+                   "line": 49,
+                   "called_from": "compiler.py:879",
+                   "args": {
+                    "self": "<Symbols>",
+                    "node": "Template(body=[Extends(template=Const(...n')])], scoped=False, required=False)])"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 199,
+                   "elided": 58
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "called_from": "compiler.py:883",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "x": "'parent_template = None'",
+                    "node": "None",
+                    "extra": "0"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 202,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "CodeGenerator.enter_frame",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 580,
+                   "called_from": "compiler.py:884",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "frame": "<jinja2.compiler.Frame object at 0x10a51e510>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 205
+                  },
+                  {
+                   "fn": "CodeGenerator.pull_dependencies",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 534,
+                   "called_from": "compiler.py:885",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "nodes": "[Extends(template=Const(value='base.html')), Output(nodes=[TemplateData(data='\\n')]), Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), Output(nodes=[TemplateData(data='\\n')]), Block(name='content', body=[Output(nod...>\\n')])], scoped=False, required=False)]"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 207,
+                   "elided": 15
+                  },
+                  {
+                   "fn": "CodeGenerator.blockvisit",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 440,
+                   "called_from": "compiler.py:886",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "nodes": "[Extends(template=Const(value='base.html')), Output(nodes=[TemplateData(data='\\n')]), Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False), Output(nodes=[TemplateData(data='\\n')]), Block(name='content', body=[Output(nod...>\\n')])], scoped=False, required=False)]",
+                    "frame": "<jinja2.compiler.Frame object at 0x10a51e510>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 210,
+                   "elided": 24
+                  },
+                  {
+                   "fn": "CodeGenerator.leave_frame",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 596,
+                   "called_from": "compiler.py:887",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "frame": "<jinja2.compiler.Frame object at 0x10a51e510>",
+                    "with_python_scope": "True"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 213
+                  },
+                  {
+                   "fn": "CodeGenerator.outdent",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 416,
+                   "called_from": "compiler.py:888",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "step": "1"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 215
+                  },
+                  {
+                   "fn": "CodeGenerator.indent",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 412,
+                   "called_from": "compiler.py:895",
+                   "args": {
+                    "self": "<CodeGenerator>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 217
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "called_from": "compiler.py:897",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "x": "'yield from parent_template.root_render_func(context)'",
+                    "node": "None",
+                    "extra": "0"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 219,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "CodeGenerator.outdent",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 416,
+                   "called_from": "compiler.py:908",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "step": "1"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 222
+                  },
+                  {
+                   "fn": "CodeGenerator.func",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 607,
+                   "called_from": "compiler.py:913",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "name": "'block_title'"
+                   },
+                   "calls": [],
+                   "returned": "'def block_title'",
+                   "tl": 224,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "called_from": "compiler.py:912",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "x": "'def block_title(context, missing=missing, environment=environment):'",
+                    "node": "Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False)",
+                    "extra": "1"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 227,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "CodeGenerator.indent",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 412,
+                   "called_from": "compiler.py:917",
+                   "args": {
+                    "self": "<CodeGenerator>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 230
+                  },
+                  {
+                   "fn": "CodeGenerator.write_commons",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 719,
+                   "called_from": "compiler.py:918",
+                   "args": {
+                    "self": "<CodeGenerator>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 232,
+                   "elided": 4
+                  },
+                  {
+                   "fn": "Frame.__init__",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 166,
+                   "called_from": "compiler.py:922",
+                   "args": {
+                    "self": "<Frame>",
+                    "eval_ctx": "<jinja2.nodes.EvalContext object at 0x10a51e3c0>",
+                    "parent": "None",
+                    "level": "None"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 235,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "find_undeclared",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 142,
+                   "called_from": "compiler.py:924",
+                   "args": {
+                    "nodes": "[Output(nodes=[TemplateData(data='Members')])]",
+                    "names": "('self', 'super')"
+                   },
+                   "calls": [],
+                   "returned": "set()",
+                   "tl": 238,
+                   "elided": 14
+                  },
+                  {
+                   "fn": "Symbols.analyze_node",
+                   "file": "src/jinja2/idtracking.py",
+                   "line": 49,
+                   "called_from": "compiler.py:931",
+                   "args": {
+                    "self": "<Symbols>",
+                    "node": "Block(name='title', body=[Output(nodes...ers')])], scoped=False, required=False)"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 241,
+                   "elided": 24
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "called_from": "compiler.py:933",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "x": "'_block_vars = {}'",
+                    "node": "None",
+                    "extra": "0"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 244,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "CodeGenerator.enter_frame",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 580,
+                   "called_from": "compiler.py:934",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "frame": "<jinja2.compiler.Frame object at 0x10a579e50>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 247
+                  },
+                  {
+                   "fn": "CodeGenerator.pull_dependencies",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 534,
+                   "called_from": "compiler.py:935",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "nodes": "[Output(nodes=[TemplateData(data='Members')])]"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 249,
+                   "elided": 14
+                  },
+                  {
+                   "fn": "CodeGenerator.blockvisit",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 440,
+                   "called_from": "compiler.py:936",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "nodes": "[Output(nodes=[TemplateData(data='Members')])]",
+                    "frame": "<jinja2.compiler.Frame object at 0x10a579e50>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 252,
+                   "elided": 14
+                  },
+                  {
+                   "fn": "CodeGenerator.leave_frame",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 596,
+                   "called_from": "compiler.py:937",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "frame": "<jinja2.compiler.Frame object at 0x10a579e50>",
+                    "with_python_scope": "True"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 255
+                  },
+                  {
+                   "fn": "CodeGenerator.outdent",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 416,
+                   "called_from": "compiler.py:938",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "step": "1"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 257
+                  },
+                  {
+                   "fn": "CodeGenerator.func",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 607,
+                   "called_from": "compiler.py:913",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "name": "'block_content'"
+                   },
+                   "calls": [],
+                   "returned": "'def block_content'",
+                   "tl": 259,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "called_from": "compiler.py:912",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "x": "'def block_content(context, missing=missing, environment=environment):'",
+                    "node": "Block(name='content', body=[Output(nod...>\\n')])], scoped=False, required=False)",
+                    "extra": "1"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 262,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "CodeGenerator.indent",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 412,
+                   "called_from": "compiler.py:917",
+                   "args": {
+                    "self": "<CodeGenerator>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 265
+                  },
+                  {
+                   "fn": "CodeGenerator.write_commons",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 719,
+                   "called_from": "compiler.py:918",
+                   "args": {
+                    "self": "<CodeGenerator>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 267,
+                   "elided": 4
+                  },
+                  {
+                   "fn": "Frame.__init__",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 166,
+                   "called_from": "compiler.py:922",
+                   "args": {
+                    "self": "<Frame>",
+                    "eval_ctx": "<jinja2.nodes.EvalContext object at 0x10a51e3c0>",
+                    "parent": "None",
+                    "level": "None"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 270,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "find_undeclared",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 142,
+                   "called_from": "compiler.py:924",
+                   "args": {
+                    "nodes": "[Output(nodes=[TemplateData(data='\\n  <ul>\\n  ')]), For(target=Name(name='user', ctx='stor..., else_=[], test=None, recursive=False), Output(nodes=[TemplateData(data='\\n  </ul>\\n')])]",
+                    "names": "('self', 'super')"
+                   },
+                   "calls": [],
+                   "returned": "set()",
+                   "tl": 273,
+                   "elided": 15
+                  },
+                  {
+                   "fn": "Symbols.analyze_node",
+                   "file": "src/jinja2/idtracking.py",
+                   "line": 49,
+                   "called_from": "compiler.py:931",
+                   "args": {
+                    "self": "<Symbols>",
+                    "node": "Block(name='content', body=[Output(nod...>\\n')])], scoped=False, required=False)"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 276,
+                   "elided": 48
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "called_from": "compiler.py:933",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "x": "'_block_vars = {}'",
+                    "node": "None",
+                    "extra": "0"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 279,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "CodeGenerator.enter_frame",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 580,
+                   "called_from": "compiler.py:934",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "frame": "<jinja2.compiler.Frame object at 0x10a57a210>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 282,
+                   "elided": 4
+                  },
+                  {
+                   "fn": "CodeGenerator.pull_dependencies",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 534,
+                   "called_from": "compiler.py:935",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "nodes": "[Output(nodes=[TemplateData(data='\\n  <ul>\\n  ')]), For(target=Name(name='user', ctx='stor..., else_=[], test=None, recursive=False), Output(nodes=[TemplateData(data='\\n  </ul>\\n')])]"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 285,
+                   "elided": 15
+                  },
+                  {
+                   "fn": "CodeGenerator.blockvisit",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 440,
+                   "called_from": "compiler.py:936",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "nodes": "[Output(nodes=[TemplateData(data='\\n  <ul>\\n  ')]), For(target=Name(name='user', ctx='stor..., else_=[], test=None, recursive=False), Output(nodes=[TemplateData(data='\\n  </ul>\\n')])]",
+                    "frame": "<jinja2.compiler.Frame object at 0x10a57a210>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 288,
+                   "elided": 15
+                  },
+                  {
+                   "fn": "CodeGenerator.leave_frame",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 596,
+                   "called_from": "compiler.py:937",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "frame": "<jinja2.compiler.Frame object at 0x10a57a210>",
+                    "with_python_scope": "True"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 291
+                  },
+                  {
+                   "fn": "CodeGenerator.outdent",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 416,
+                   "called_from": "compiler.py:938",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "step": "1"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 293
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "called_from": "compiler.py:941",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "x": "\"blocks = {'title': block_title, 'content': block_content}\"",
+                    "node": "None",
+                    "extra": "1"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 295,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "CodeGenerator.writeline",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 465,
+                   "args": {},
+                   "calls": [],
+                   "repeat": 1,
+                   "returned": "None",
+                   "tl": 298
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 165
+                }
+               ],
+               "returned": "None",
+               "tl": 162
+              }
+             ],
+             "returned": "\"from jinja2.runtime import LoopContex...ebug_info = '1=12&2=17&3=27&5=37&6=41'\"",
+             "tl": 157
+            }
+           ],
+           "returned": "\"from jinja2.runtime import LoopContex...ebug_info = '1=12&2=17&3=27&5=37&6=41'\"",
+           "tl": 156
+          },
+          {
+           "fn": "Environment._compile",
+           "file": "src/jinja2/environment.py",
+           "line": 702,
+           "called_from": "environment.py:768",
+           "args": {
+            "self": "<Environment>",
+            "source": "\"from jinja2.runtime import LoopContex...ebug_info = '1=12&2=17&3=27&5=37&6=41'\"",
+            "filename": "'<template>'"
+           },
+           "calls": [],
+           "returned": "<code object <module> at 0x10a51dfb0, file \"<template>\", line 1>",
+           "tl": 303
+          }
+         ],
+         "returned": "<code object <module> at 0x10a51dfb0, file \"<template>\", line 1>",
+         "tl": 29
+        },
+        {
+         "fn": "Template.from_code",
+         "file": "src/jinja2/environment.py",
+         "line": 1213,
+         "called_from": "loaders.py:147",
+         "args": {
+          "cls": "<type>",
+          "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+          "code": "<code object <module> at 0x10a51dfb0, file \"<template>\", line 1>",
+          "globals": "ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})",
+          "uptodate": "<function DictLoader.get_source.<locals>.<lambda> at 0x10a5be5c0>"
+         },
+         "calls": [
+          {
+           "fn": "Template._from_namespace",
+           "file": "src/jinja2/environment.py",
+           "line": 1244,
+           "called_from": "environment.py:1226",
+           "args": {
+            "cls": "<type>",
+            "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+            "namespace": "{'LoopContext': <class 'jinja2.runtime.LoopContext'>, 'Macro': <class 'jinja2.runtime.Macro'>, 'Markup': <class 'markupsafe.Markup'>, 'Namespace': <class 'jinja2.utils.Namespace'>, 'TemplateNotFound': <class 'jinja2.exceptions.TemplateNotFound'>, 'TemplateReference': <class 'jinja2.runtime.TemplateReference'>, ...}",
+            "globals": "ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})"
+           },
+           "calls": [],
+           "returned": "<Template 'members.html'>",
+           "tl": 307
+          }
+         ],
+         "returned": "<Template 'members.html'>",
+         "tl": 306
+        }
+       ],
+       "returned": "<Template 'members.html'>",
+       "tl": 26
+      },
+      {
+       "fn": "LRUCache.__setitem__",
+       "file": "src/jinja2/utils.py",
+       "line": 530,
+       "called_from": "environment.py:977",
+       "args": {
+        "self": "<LRUCache>",
+        "key": "(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'members.html')",
+        "value": "<Template 'members.html'>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 311
+      }
+     ],
+     "returned": "<Template 'members.html'>",
+     "tl": 19
+    }
+   ],
+   "returned": "<Template 'members.html'>",
+   "tl": 18
+  },
+  {
+   "fn": "Template.render",
+   "file": "src/jinja2/environment.py",
+   "line": 1272,
+   "called_from": "scenario.py:57",
+   "args": {
+    "self": "<Template>"
+   },
+   "calls": [
+    {
+     "fn": "Template.new_context",
+     "file": "src/jinja2/environment.py",
+     "line": 1369,
+     "called_from": "environment.py:1287",
+     "args": {
+      "self": "<Template>",
+      "vars": "{'users': [{'url': '/user/1', 'username': 'ada'}, {'url': '/user/2', 'username': 'grace'}, {'url': '/user/3', 'username': 'Tom & Jerry'}]}",
+      "shared": "False",
+      "locals": "None"
+     },
+     "calls": [
+      {
+       "fn": "new_context",
+       "file": "src/jinja2/runtime.py",
+       "line": 93,
+       "called_from": "environment.py:1382",
+       "args": {
+        "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+        "template_name": "'members.html'",
+        "blocks": "{'content': <function block_content at 0x10a528d60>, 'title': <function block_title at 0x10a528e00>}",
+        "vars": "{'users': [{'url': '/user/1', 'username': 'ada'}, {'url': '/user/2', 'username': 'grace'}, {'url': '/user/3', 'username': 'Tom & Jerry'}]}",
+        "shared": "False",
+        "globals": "ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})",
+        "locals": "None"
+       },
+       "calls": [
+        {
+         "fn": "Context.__init__",
+         "file": "src/jinja2/runtime.py",
+         "line": 165,
+         "called_from": "runtime.py:117",
+         "args": {
+          "self": "<Context>",
+          "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+          "parent": "{'cycler': <class 'jinja2.utils.Cycler'>, 'dict': <class 'dict'>, 'joiner': <class 'jinja2.utils.Joiner'>, 'lipsum': <function generate_lorem_ipsum at 0x10a48cc20>, 'namespace': <class 'jinja2.utils.Namespace'>, 'range': <class 'range'>, ...}",
+          "name": "'members.html'",
+          "blocks": "{'content': <function block_content at 0x10a528d60>, 'title': <function block_title at 0x10a528e00>}",
+          "globals": "ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})"
+         },
+         "calls": [
+          {
+           "fn": "EvalContext.__init__",
+           "file": "src/jinja2/nodes.py",
+           "line": 76,
+           "called_from": "runtime.py:176",
+           "args": {
+            "self": "<EvalContext>",
+            "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+            "template_name": "'members.html'"
+           },
+           "calls": [
+            {
+             "fn": "select_autoescape.<locals>.autoescape",
+             "file": "src/jinja2/utils.py",
+             "line": 624,
+             "called_from": "nodes.py:81",
+             "args": {
+              "template_name": "'members.html'"
+             },
+             "calls": [],
+             "returned": "True",
+             "tl": 320
+            }
+           ],
+           "returned": "None",
+           "tl": 319
+          }
+         ],
+         "returned": "None",
+         "tl": 318
+        }
+       ],
+       "returned": "<Context {'range': <class 'range'>, 'd...e': 'Tom & Jerry'}]} of 'members.html'>",
+       "tl": 317
+      }
+     ],
+     "returned": "<Context {'range': <class 'range'>, 'd...e': 'Tom & Jerry'}]} of 'members.html'>",
+     "tl": 316
+    },
+    {
+     "fn": "Environment.get_template",
+     "file": "src/jinja2/environment.py",
+     "line": 980,
+     "called_from": "<template>:12",
+     "args": {
+      "self": "<Environment>",
+      "name": "'base.html'",
+      "parent": "'members.html'",
+      "globals": "None"
+     },
+     "calls": [
+      {
+       "fn": "Environment.join_path",
+       "file": "src/jinja2/environment.py",
+       "line": 943,
+       "called_from": "environment.py:1013",
+       "args": {
+        "self": "<Environment>",
+        "template": "'base.html'",
+        "parent": "'members.html'"
+       },
+       "calls": [],
+       "returned": "'base.html'",
+       "tl": 327
+      },
+      {
+       "fn": "Environment._load_template",
+       "file": "src/jinja2/environment.py",
+       "line": 955,
+       "called_from": "environment.py:1015",
+       "args": {
+        "self": "<Environment>",
+        "name": "'base.html'",
+        "globals": "None"
+       },
+       "calls": [
+        {
+         "fn": "LRUCache.get",
+         "file": "src/jinja2/utils.py",
+         "line": 474,
+         "called_from": "environment.py:963",
+         "args": {
+          "self": "<LRUCache>",
+          "key": "(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'base.html')",
+          "default": "None"
+         },
+         "calls": [
+          {
+           "fn": "LRUCache.__getitem__",
+           "file": "src/jinja2/utils.py",
+           "line": 508,
+           "called_from": "utils.py:477",
+           "args": {
+            "self": "<LRUCache>",
+            "key": "(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'base.html')"
+           },
+           "calls": [],
+           "raised": "KeyError((<weakref at 0x10a5edf80; to ...tLoader' at 0x10969d550>, 'base.html'))",
+           "returned": "None",
+           "tl": 331
+          }
+         ],
+         "raised": "KeyError((<weakref at 0x10a5edf80; to ...tLoader' at 0x10969d550>, 'base.html'))",
+         "returned": "None",
+         "tl": 330
+        },
+        {
+         "fn": "Environment.make_globals",
+         "file": "src/jinja2/environment.py",
+         "line": 1110,
+         "called_from": "environment.py:974",
+         "args": {
+          "self": "<Environment>",
+          "d": "None"
+         },
+         "calls": [],
+         "returned": "ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})",
+         "tl": 334
+        },
+        {
+         "fn": "BaseLoader.load",
+         "file": "src/jinja2/loaders.py",
+         "line": 107,
+         "called_from": "environment.py:974",
+         "args": {
+          "self": "<DictLoader>",
+          "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+          "name": "'base.html'",
+          "globals": "ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})"
+         },
+         "calls": [
+          {
+           "fn": "DictLoader.get_source",
+           "file": "src/jinja2/loaders.py",
+           "line": 444,
+           "called_from": "loaders.py:126",
+           "args": {
+            "self": "<DictLoader>",
+            "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+            "template": "'base.html'"
+           },
+           "calls": [],
+           "returned": "('<!DOCTYPE html>\\n<html lang=\"en\">\\n<h... endblock %}</div>\\n</body>\\n</html>\\n', None, <function DictLoader.get_source.<locals>.<lambda> at 0x10a528040>)",
+           "tl": 337
+          },
+          {
+           "fn": "Environment.compile",
+           "file": "src/jinja2/environment.py",
+           "line": 730,
+           "called_from": "loaders.py:138",
+           "args": {
+            "self": "<Environment>",
+            "source": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n<h... endblock %}</div>\\n</body>\\n</html>\\n'",
+            "name": "'base.html'",
+            "filename": "None",
+            "raw": "False",
+            "defer_init": "False"
+           },
+           "calls": [
+            {
+             "fn": "Environment._parse",
+             "file": "src/jinja2/environment.py",
+             "line": 617,
+             "called_from": "environment.py:762",
+             "args": {
+              "self": "<Environment>",
+              "source": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n<h... endblock %}</div>\\n</body>\\n</html>\\n'",
+              "name": "'base.html'",
+              "filename": "None"
+             },
+             "calls": [
+              {
+               "fn": "Parser.__init__",
+               "file": "src/jinja2/parser.py",
+               "line": 53,
+               "called_from": "environment.py:621",
+               "args": {
+                "self": "<Parser>",
+                "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+                "source": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n<h... endblock %}</div>\\n</body>\\n</html>\\n'",
+                "name": "'base.html'",
+                "filename": "None",
+                "state": "None"
+               },
+               "calls": [
+                {
+                 "fn": "Environment._tokenize",
+                 "file": "src/jinja2/environment.py",
+                 "line": 660,
+                 "called_from": "parser.py:62",
+                 "args": {
+                  "self": "<Environment>",
+                  "source": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n<h... endblock %}</div>\\n</body>\\n</html>\\n'",
+                  "name": "'base.html'",
+                  "filename": "None",
+                  "state": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Environment.preprocess",
+                   "file": "src/jinja2/environment.py",
+                   "line": 644,
+                   "called_from": "environment.py:670",
+                   "args": {
+                    "self": "<Environment>",
+                    "source": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n<h... endblock %}</div>\\n</body>\\n</html>\\n'",
+                    "name": "'base.html'",
+                    "filename": "None"
+                   },
+                   "calls": [],
+                   "returned": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n<h... endblock %}</div>\\n</body>\\n</html>\\n'",
+                   "tl": 343,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "Environment.lexer",
+                   "file": "src/jinja2/environment.py",
+                   "line": 458,
+                   "called_from": "environment.py:671",
+                   "args": {
+                    "self": "<Environment>"
+                   },
+                   "calls": [],
+                   "returned": "<jinja2.lexer.Lexer object at 0x10a51cd70>",
+                   "tl": 346,
+                   "elided": 3
+                  },
+                  {
+                   "fn": "Lexer.tokenize",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 604,
+                   "called_from": "environment.py:671",
+                   "args": {
+                    "self": "<Lexer>",
+                    "source": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n<h... endblock %}</div>\\n</body>\\n</html>\\n'",
+                    "name": "'base.html'",
+                    "filename": "None",
+                    "state": "None"
+                   },
+                   "calls": [],
+                   "returned": "<jinja2.lexer.TokenStream object at 0x10a579a90>",
+                   "tl": 349,
+                   "elided": 5
+                  },
+                  {
+                   "fn": "Environment.iter_extensions",
+                   "file": "src/jinja2/environment.py",
+                   "line": 463,
+                   "called_from": "environment.py:673",
+                   "args": {
+                    "self": "<Environment>"
+                   },
+                   "calls": [],
+                   "returned": "<list_iterator object at 0x10a56a2c0>",
+                   "tl": 352
+                  }
+                 ],
+                 "returned": "<jinja2.lexer.TokenStream object at 0x10a579a90>",
+                 "tl": 342
+                },
+                {
+                 "fn": "Environment.iter_extensions",
+                 "file": "src/jinja2/environment.py",
+                 "line": 463,
+                 "called_from": "parser.py:69",
+                 "args": {
+                  "self": "<Environment>"
+                 },
+                 "calls": [],
+                 "returned": "<list_iterator object at 0x10a5688e0>",
+                 "tl": 355
+                }
+               ],
+               "returned": "None",
+               "tl": 341
+              },
+              {
+               "fn": "Parser.parse",
+               "file": "src/jinja2/parser.py",
+               "line": 1037,
+               "called_from": "environment.py:621",
+               "args": {
+                "self": "<Parser>"
+               },
+               "calls": [
+                {
+                 "fn": "Parser.subparse",
+                 "file": "src/jinja2/parser.py",
+                 "line": 990,
+                 "called_from": "parser.py:1039",
+                 "args": {
+                  "self": "<Parser>",
+                  "end_tokens": "None"
+                 },
+                 "calls": [
+                  {
+                   "fn": "TokenStream.__bool__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 342,
+                   "called_from": "parser.py:1005",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 360
+                  },
+                  {
+                   "fn": "Node.__init__",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 129,
+                   "called_from": "parser.py:1009",
+                   "args": {
+                    "self": "<TemplateData>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 362
+                  },
+                  {
+                   "fn": "TokenStream.__next__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 380,
+                   "called_from": "parser.py:1010",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=1, type='data', value='<!...<html lang=\"en\">\\n<head>\\n    <title>')",
+                   "tl": 364,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "TokenStream.__bool__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 342,
+                   "called_from": "parser.py:1005",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 367
+                  },
+                  {
+                   "fn": "Parser.subparse.<locals>.flush_data",
+                   "file": "src/jinja2/parser.py",
+                   "line": 998,
+                   "called_from": "parser.py:1016",
+                   "args": {},
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 369,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "TokenStream.__next__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 380,
+                   "called_from": "parser.py:1017",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=4, type='block_begin', value='{%')",
+                   "tl": 372,
+                   "elided": 3
+                  },
+                  {
+                   "fn": "Parser.parse_statement",
+                   "file": "src/jinja2/parser.py",
+                   "line": 163,
+                   "called_from": "parser.py:1022",
+                   "args": {
+                    "self": "<Parser>"
+                   },
+                   "calls": [],
+                   "returned": "Block(name='title', body=[], scoped=False, required=False)",
+                   "tl": 375,
+                   "elided": 41
+                  },
+                  {
+                   "fn": "TokenStream.expect",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 403,
+                   "called_from": "parser.py:1027",
+                   "args": {
+                    "self": "<TokenStream>",
+                    "expr": "'block_end'"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=4, type='block_end', value='%}')",
+                   "tl": 378,
+                   "elided": 5
+                  },
+                  {
+                   "fn": "TokenStream.__bool__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 342,
+                   "called_from": "parser.py:1005",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 381
+                  },
+                  {
+                   "fn": "Node.__init__",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 129,
+                   "called_from": "parser.py:1009",
+                   "args": {
+                    "self": "<TemplateData>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 383
+                  },
+                  {
+                   "fn": "TokenStream.__next__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 380,
+                   "called_from": "parser.py:1010",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=4, type='data', value=' -...head>\\n<body>\\n    <div id=\"content\">')",
+                   "tl": 385,
+                   "elided": 2
+                  },
+                  {
+                   "fn": "TokenStream.__bool__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 342,
+                   "called_from": "parser.py:1005",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 388
+                  },
+                  {
+                   "fn": "Parser.subparse.<locals>.flush_data",
+                   "file": "src/jinja2/parser.py",
+                   "line": 998,
+                   "called_from": "parser.py:1016",
+                   "args": {},
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 390,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "TokenStream.__next__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 380,
+                   "called_from": "parser.py:1017",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=7, type='block_begin', value='{%')",
+                   "tl": 393,
+                   "elided": 3
+                  },
+                  {
+                   "fn": "Parser.parse_statement",
+                   "file": "src/jinja2/parser.py",
+                   "line": 163,
+                   "called_from": "parser.py:1022",
+                   "args": {
+                    "self": "<Parser>"
+                   },
+                   "calls": [],
+                   "returned": "Block(name='content', body=[], scoped=False, required=False)",
+                   "tl": 396,
+                   "elided": 41
+                  },
+                  {
+                   "fn": "TokenStream.expect",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 403,
+                   "called_from": "parser.py:1027",
+                   "args": {
+                    "self": "<TokenStream>",
+                    "expr": "'block_end'"
+                   },
+                   "calls": [],
+                   "returned": "Token(lineno=7, type='block_end', value='%}')",
+                   "tl": 399,
+                   "elided": 5
+                  },
+                  {
+                   "fn": "TokenStream.__bool__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 342,
+                   "called_from": "parser.py:1005",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "True",
+                   "tl": 402
+                  },
+                  {
+                   "fn": "Node.__init__",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 129,
+                   "called_from": "parser.py:1009",
+                   "args": {
+                    "self": "<TemplateData>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 404
+                  },
+                  {
+                   "fn": "TokenStream.__next__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 380,
+                   "called_from": "parser.py:1010",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "raised": "StopIteration()",
+                   "returned": "Token(lineno=7, type='data', value='</div>\\n</body>\\n</html>')",
+                   "tl": 406,
+                   "elided": 3
+                  },
+                  {
+                   "fn": "TokenStream.__bool__",
+                   "file": "src/jinja2/lexer.py",
+                   "line": 342,
+                   "called_from": "parser.py:1005",
+                   "args": {
+                    "self": "<TokenStream>"
+                   },
+                   "calls": [],
+                   "returned": "False",
+                   "tl": 409
+                  },
+                  {
+                   "fn": "Parser.subparse.<locals>.flush_data",
+                   "file": "src/jinja2/parser.py",
+                   "line": 998,
+                   "called_from": "parser.py:1031",
+                   "args": {},
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 411,
+                   "elided": 1
+                  }
+                 ],
+                 "returned": "[Output(nodes=[TemplateData(data='<!DOC...tml lang=\"en\">\\n<head>\\n    <title>')]), Block(name='title', body=[], scoped=False, required=False), Output(nodes=[TemplateData(data=' - My...ad>\\n<body>\\n    <div id=\"content\">')]), Block(name='content', body=[], scoped=False, required=False), Output(nodes=[TemplateData(data='</div>\\n</body>\\n</html>')])]",
+                 "tl": 359
+                },
+                {
+                 "fn": "Node.__init__",
+                 "file": "src/jinja2/nodes.py",
+                 "line": 129,
+                 "called_from": "parser.py:1039",
+                 "args": {
+                  "self": "<Template>"
+                 },
+                 "calls": [],
+                 "returned": "None",
+                 "tl": 415
+                },
+                {
+                 "fn": "Node.set_environment",
+                 "file": "src/jinja2/nodes.py",
+                 "line": 231,
+                 "called_from": "parser.py:1040",
+                 "args": {
+                  "self": "<Template>",
+                  "environment": "<jinja2.environment.Environment object at 0x10a51c830>"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Node.iter_child_nodes",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 169,
+                   "called_from": "nodes.py:237",
+                   "args": {
+                    "self": "<Template>",
+                    "exclude": "None",
+                    "only": "None"
+                   },
+                   "calls": [],
+                   "returned": "Output(nodes=[TemplateData(data='<!DOC...tml lang=\"en\">\\n<head>\\n    <title>')])",
+                   "tl": 418,
+                   "elided": 1
+                  },
+                  {
+                   "fn": "Node.iter_child_nodes",
+                   "file": "src/jinja2/nodes.py",
+                   "line": 169,
+                   "args": {},
+                   "calls": [],
+                   "repeat": 16,
+                   "returned": "(various)",
+                   "tl": 421
+                  }
+                 ],
+                 "returned": "Template(body=[Output(nodes=[TemplateD...ta(data='</div>\\n</body>\\n</html>')])])",
+                 "tl": 417
+                }
+               ],
+               "returned": "Template(body=[Output(nodes=[TemplateD...ta(data='</div>\\n</body>\\n</html>')])])",
+               "tl": 358
+              }
+             ],
+             "returned": "Template(body=[Output(nodes=[TemplateD...ta(data='</div>\\n</body>\\n</html>')])])",
+             "tl": 340
+            },
+            {
+             "fn": "Environment._generate",
+             "file": "src/jinja2/environment.py",
+             "line": 681,
+             "called_from": "environment.py:763",
+             "args": {
+              "self": "<Environment>",
+              "source": "Template(body=[Output(nodes=[TemplateD...ta(data='</div>\\n</body>\\n</html>')])])",
+              "name": "'base.html'",
+              "filename": "None",
+              "defer_init": "False"
+             },
+             "calls": [
+              {
+               "fn": "generate",
+               "file": "src/jinja2/compiler.py",
+               "line": 101,
+               "called_from": "environment.py:693",
+               "args": {
+                "node": "Template(body=[Output(nodes=[TemplateD...ta(data='</div>\\n</body>\\n</html>')])])",
+                "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+                "name": "'base.html'",
+                "filename": "None",
+                "stream": "None",
+                "defer_init": "False",
+                "optimized": "True"
+               },
+               "calls": [
+                {
+                 "fn": "CodeGenerator.__init__",
+                 "file": "src/jinja2/compiler.py",
+                 "line": 299,
+                 "called_from": "compiler.py:114",
+                 "args": {
+                  "self": "<CodeGenerator>",
+                  "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+                  "name": "'base.html'",
+                  "filename": "None",
+                  "stream": "None",
+                  "defer_init": "False",
+                  "optimized": "True"
+                 },
+                 "calls": [
+                  {
+                   "fn": "Optimizer.__init__",
+                   "file": "src/jinja2/optimizer.py",
+                   "line": 28,
+                   "called_from": "compiler.py:319",
+                   "args": {
+                    "self": "<Optimizer>",
+                    "environment": "<jinja2.environment.Environment object at 0x10a51c830>"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 428
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 427
+                },
+                {
+                 "fn": "NodeVisitor.visit",
+                 "file": "src/jinja2/visitor.py",
+                 "line": 35,
+                 "called_from": "compiler.py:117",
+                 "args": {
+                  "self": "<CodeGenerator>",
+                  "node": "Template(body=[Output(nodes=[TemplateD...ta(data='</div>\\n</body>\\n</html>')])])"
+                 },
+                 "calls": [
+                  {
+                   "fn": "NodeVisitor.get_visitor",
+                   "file": "src/jinja2/visitor.py",
+                   "line": 28,
+                   "called_from": "visitor.py:37",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "node": "Template(body=[Output(nodes=[TemplateD...ta(data='</div>\\n</body>\\n</html>')])])"
+                   },
+                   "calls": [],
+                   "returned": "<bound method CodeGenerator.visit_Temp...r.CodeGenerator object at 0x10a579810>>",
+                   "tl": 432
+                  },
+                  {
+                   "fn": "CodeGenerator.visit_Template",
+                   "file": "src/jinja2/compiler.py",
+                   "line": 825,
+                   "called_from": "visitor.py:40",
+                   "args": {
+                    "self": "<CodeGenerator>",
+                    "node": "Template(body=[Output(nodes=[TemplateD...ta(data='</div>\\n</body>\\n</html>')])])",
+                    "frame": "None"
+                   },
+                   "calls": [],
+                   "returned": "None",
+                   "tl": 434,
+                   "elided": 266
+                  }
+                 ],
+                 "returned": "None",
+                 "tl": 431
+                }
+               ],
+               "returned": "\"from jinja2.runtime import LoopContex...t}\\ndebug_info = '4=12&7=14&4=17&7=26'\"",
+               "tl": 426
+              }
+             ],
+             "returned": "\"from jinja2.runtime import LoopContex...t}\\ndebug_info = '4=12&7=14&4=17&7=26'\"",
+             "tl": 425
+            },
+            {
+             "fn": "Environment._compile",
+             "file": "src/jinja2/environment.py",
+             "line": 702,
+             "called_from": "environment.py:768",
+             "args": {
+              "self": "<Environment>",
+              "source": "\"from jinja2.runtime import LoopContex...t}\\ndebug_info = '4=12&7=14&4=17&7=26'\"",
+              "filename": "'<template>'"
+             },
+             "calls": [],
+             "returned": "<code object <module> at 0x10a51d680, file \"<template>\", line 1>",
+             "tl": 440
+            }
+           ],
+           "returned": "<code object <module> at 0x10a51d680, file \"<template>\", line 1>",
+           "tl": 339
+          },
+          {
+           "fn": "Template.from_code",
+           "file": "src/jinja2/environment.py",
+           "line": 1213,
+           "called_from": "loaders.py:147",
+           "args": {
+            "cls": "<type>",
+            "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+            "code": "<code object <module> at 0x10a51d680, file \"<template>\", line 1>",
+            "globals": "ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})",
+            "uptodate": "<function DictLoader.get_source.<locals>.<lambda> at 0x10a528040>"
+           },
+           "calls": [
+            {
+             "fn": "Template._from_namespace",
+             "file": "src/jinja2/environment.py",
+             "line": 1244,
+             "called_from": "environment.py:1226",
+             "args": {
+              "cls": "<type>",
+              "environment": "<jinja2.environment.Environment object at 0x10a51c830>",
+              "namespace": "{'LoopContext': <class 'jinja2.runtime.LoopContext'>, 'Macro': <class 'jinja2.runtime.Macro'>, 'Markup': <class 'markupsafe.Markup'>, 'Namespace': <class 'jinja2.utils.Namespace'>, 'TemplateNotFound': <class 'jinja2.exceptions.TemplateNotFound'>, 'TemplateReference': <class 'jinja2.runtime.TemplateReference'>, ...}",
+              "globals": "ChainMap({}, {'range': <class 'range'>...ce': <class 'jinja2.utils.Namespace'>})"
+             },
+             "calls": [],
+             "returned": "<Template 'base.html'>",
+             "tl": 444
+            }
+           ],
+           "returned": "<Template 'base.html'>",
+           "tl": 443
+          }
+         ],
+         "returned": "<Template 'base.html'>",
+         "tl": 336
+        },
+        {
+         "fn": "LRUCache.__setitem__",
+         "file": "src/jinja2/utils.py",
+         "line": 530,
+         "called_from": "environment.py:977",
+         "args": {
+          "self": "<LRUCache>",
+          "key": "(<weakref at 0x10a5edf80; to 'jinja2.loaders.DictLoader' at 0x10969d550>, 'base.html')",
+          "value": "<Template 'base.html'>"
+         },
+         "calls": [],
+         "returned": "None",
+         "tl": 448
+        }
+       ],
+       "returned": "<Template 'base.html'>",
+       "tl": 329
+      }
+     ],
+     "returned": "<Template 'base.html'>",
+     "tl": 326
+    },
+    {
+     "fn": "Context.resolve_or_missing",
+     "file": "src/jinja2/runtime.py",
+     "line": 229,
+     "called_from": "<template>:34",
+     "args": {
+      "self": "<Context>",
+      "key": "'users'"
+     },
+     "calls": [],
+     "returned": "[{'url': '/user/1', 'username': 'ada'}, {'url': '/user/2', 'username': 'grace'}, {'url': '/user/3', 'username': 'Tom & Jerry'}]",
+     "tl": 452
+    },
+    {
+     "fn": "Environment.getattr",
+     "file": "src/jinja2/environment.py",
+     "line": 484,
+     "called_from": "<template>:41",
+     "args": {
+      "self": "<Environment>",
+      "obj": "{'url': '/user/1', 'username': 'ada'}",
+      "attribute": "'url'"
+     },
+     "calls": [],
+     "raised": "AttributeError(\"'dict' object has no attribute 'url'\")",
+     "returned": "'/user/1'",
+     "tl": 454
+    },
+    {
+     "fn": "Environment.getattr",
+     "file": "src/jinja2/environment.py",
+     "line": 484,
+     "args": {},
+     "calls": [],
+     "repeat": 5,
+     "returned": "(various)",
+     "tl": 456
+    }
+   ],
+   "returned": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n<h...n  \\n  </ul>\\n</div>\\n</body>\\n</html>'",
+   "tl": 315
+  }
+ ],
+ "lines": {
+  "src/jinja2/compiler.py": [
+   50,
+   51,
+   53,
+   56,
+   111,
+   114,
+   115,
+   117,
+   119,
+   120,
+   146,
+   147,
+   148,
+   149,
+   152,
+   172,
+   175,
+   177,
+   178,
+   182,
+   188,
+   191,
+   194,
+   195,
+   196,
+   197,
+   200,
+   205,
+   209,
+   210,
+   215,
+   226,
+   228,
+   254,
+   255,
+   265,
+   276,
+   277,
+   280,
+   285,
+   287,
+   308,
+   309,
+   310,
+   311,
+   312,
+   313,
+   314,
+   315,
+   316,
+   318,
+   319,
+   322,
+   326,
+   329,
+   334,
+   337,
+   340,
+   341,
+   344,
+   345,
+   348,
+   351,
+   354,
+   358,
+   361,
+   364,
+   367,
+   370,
+   414,
+   418,
+   444,
+   445,
+   446,
+   447,
+   453,
+   454,
+   455,
+   456,
+   457,
+   458,
+   459,
+   460,
+   461,
+   462,
+   463,
+   467,
+   468,
+   472,
+   473,
+   474,
+   475,
+   545,
+   547,
+   548,
+   550,
+   551,
+   552,
+   553,
+   554,
+   555,
+   558,
+   581,
+   582,
+   583,
+   584,
+   585,
+   586,
+   593,
+   597,
+   598,
+   599,
+   600,
+   601,
+   602,
+   605,
+   608,
+   724,
+   725,
+   726,
+   729,
+   730,
+   759,
+   762,
+   763,
+   764,
+   772,
+   773,
+   826,
+   827,
+   829,
+   830,
+   832,
+   835,
+   837,
+   841,
+   845,
+   848,
+   849,
+   851,
+   854,
+   865,
+   868,
+   869,
+   871,
+   872,
+   875,
+   876,
+   879,
+   880,
+   881,
+   882,
+   883,
+   884,
+   885,
+   886,
+   887,
+   888,
+   891,
+   892,
+   895,
+   896,
+   897,
+   908,
+   911,
+   912,
+   913,
+   914,
+   915,
+   917,
+   918,
+   922,
+   923,
+   924,
+   925,
+   928,
+   931,
+   932,
+   933,
+   934,
+   935,
+   936,
+   937,
+   938,
+   940,
+   941,
+   942,
+   943,
+   947,
+   948,
+   951,
+   952,
+   953,
+   958,
+   961,
+   963,
+   972,
+   973,
+   974,
+   992,
+   996,
+   1002,
+   1019,
+   1020,
+   1021,
+   1022,
+   1023,
+   1024,
+   1025,
+   1030,
+   1031,
+   1034,
+   1176,
+   1177,
+   1178,
+   1179,
+   1184,
+   1185,
+   1186,
+   1187,
+   1188,
+   1191,
+   1192,
+   1195,
+   1196,
+   1199,
+   1223,
+   1235,
+   1238,
+   1239,
+   1245,
+   1249,
+   1250,
+   1251,
+   1254,
+   1256,
+   1258,
+   1261,
+   1263,
+   1264,
+   1266,
+   1269,
+   1272,
+   1274,
+   1275,
+   1277,
+   1278,
+   1279,
+   1281,
+   1282,
+   1283,
+   1286,
+   1296,
+   1311,
+   1407,
+   1408,
+   1411,
+   1412,
+   1414,
+   1439,
+   1440,
+   1447,
+   1459,
+   1461,
+   1462,
+   1465,
+   1466,
+   1476,
+   1478,
+   1479,
+   1483,
+   1492,
+   1494,
+   1499,
+   1501,
+   1502,
+   1507,
+   1508,
+   1513,
+   1514,
+   1518,
+   1525,
+   1526,
+   1530,
+   1531,
+   1533,
+   1536,
+   1538,
+   1546,
+   1547,
+   1549,
+   1551,
+   1552,
+   1556,
+   1557,
+   1562,
+   1563,
+   1564,
+   1566,
+   1569,
+   1573,
+   1632,
+   1633,
+   1635,
+   1637,
+   1642,
+   1643,
+   1645,
+   1646,
+   1647,
+   1649,
+   1650,
+   1652,
+   1654,
+   1665,
+   1666,
+   1669,
+   1747,
+   1750,
+   1751,
+   1752,
+   1754
+  ],
+  "src/jinja2/environment.py": [
+   87,
+   90,
+   93,
+   116,
+   118,
+   124,
+   129,
+   133,
+   134,
+   135,
+   137,
+   142,
+   332,
+   333,
+   334,
+   335,
+   336,
+   337,
+   338,
+   339,
+   340,
+   341,
+   342,
+   343,
+   346,
+   347,
+   348,
+   349,
+   352,
+   353,
+   354,
+   357,
+   358,
+   359,
+   360,
+   363,
+   366,
+   368,
+   369,
+   461,
+   465,
+   488,
+   489,
+   490,
+   491,
+   492,
+   493,
+   621,
+   654,
+   655,
+   656,
+   657,
+   670,
+   671,
+   673,
+   679,
+   693,
+   694,
+   695,
+   696,
+   697,
+   698,
+   699,
+   708,
+   758,
+   759,
+   760,
+   761,
+   762,
+   763,
+   764,
+   766,
+   767,
+   768,
+   953,
+   959,
+   961,
+   962,
+   963,
+   964,
+   974,
+   976,
+   977,
+   978,
+   1010,
+   1012,
+   1013,
+   1015,
+   1127,
+   1128,
+   1130,
+   1224,
+   1225,
+   1226,
+   1227,
+   1228,
+   1251,
+   1252,
+   1253,
+   1254,
+   1255,
+   1256,
+   1259,
+   1260,
+   1263,
+   1264,
+   1267,
+   1268,
+   1270,
+   1282,
+   1287,
+   1289,
+   1290,
+   1382,
+   1383
+  ],
+  "src/jinja2/idtracking.py": [
+   37,
+   38,
+   39,
+   41,
+   43,
+   44,
+   45,
+   46,
+   47,
+   50,
+   51,
+   54,
+   55,
+   56,
+   57,
+   58,
+   61,
+   62,
+   70,
+   71,
+   73,
+   76,
+   79,
+   80,
+   85,
+   114,
+   115,
+   118,
+   119,
+   174,
+   177,
+   178,
+   203,
+   204,
+   205,
+   216,
+   217,
+   218,
+   234,
+   240,
+   241,
+   242,
+   244,
+   245,
+   293,
+   312
+  ],
+  "src/jinja2/lexer.py": [
+   215,
+   216,
+   217,
+   218,
+   219,
+   220,
+   222,
+   223,
+   224,
+   225,
+   227,
+   228,
+   229,
+   230,
+   234,
+   242,
+   251,
+   262,
+   263,
+   284,
+   285,
+   287,
+   288,
+   290,
+   294,
+   331,
+   332,
+   333,
+   334,
+   335,
+   336,
+   337,
+   343,
+   371,
+   374,
+   378,
+   385,
+   387,
+   389,
+   390,
+   391,
+   392,
+   393,
+   395,
+   399,
+   400,
+   401,
+   407,
+   425,
+   430,
+   431,
+   432,
+   433,
+   434,
+   435,
+   436,
+   437,
+   438,
+   439,
+   440,
+   441,
+   442,
+   444,
+   446,
+   447,
+   449,
+   462,
+   481,
+   483,
+   484,
+   487,
+   488,
+   489,
+   490,
+   491,
+   492,
+   493,
+   502,
+   504,
+   505,
+   506,
+   507,
+   510,
+   512,
+   514,
+   515,
+   517,
+   518,
+   519,
+   521,
+   522,
+   526,
+   527,
+   529,
+   530,
+   531,
+   532,
+   535,
+   538,
+   539,
+   540,
+   541,
+   542,
+   544,
+   545,
+   547,
+   550,
+   551,
+   552,
+   553,
+   554,
+   556,
+   557,
+   560,
+   562,
+   563,
+   564,
+   565,
+   566,
+   569,
+   571,
+   572,
+   573,
+   574,
+   575,
+   576,
+   578,
+   579,
+   581,
+   584,
+   585,
+   587,
+   589,
+   590,
+   591,
+   592,
+   593,
+   602,
+   612,
+   613,
+   624,
+   625,
+   626,
+   628,
+   630,
+   632,
+   635,
+   637,
+   638,
+   639,
+   641,
+   642,
+   644,
+   648,
+   650,
+   651,
+   652,
+   653,
+   654,
+   659,
+   661,
+   664,
+   665,
+   667,
+   683,
+   685,
+   686,
+   688,
+   689,
+   690,
+   691,
+   693,
+   697,
+   698,
+   699,
+   700,
+   701,
+   703,
+   705,
+   706,
+   709,
+   710,
+   716,
+   724,
+   725,
+   727,
+   730,
+   734,
+   736,
+   743,
+   745,
+   758,
+   760,
+   765,
+   766,
+   767,
+   768,
+   769,
+   770,
+   778,
+   780,
+   781,
+   783,
+   784,
+   788,
+   791,
+   792,
+   794,
+   796,
+   798,
+   815,
+   816,
+   818,
+   820,
+   824,
+   827,
+   829,
+   830,
+   832,
+   833,
+   834,
+   835,
+   836,
+   846,
+   850,
+   856,
+   857,
+   862,
+   863
+  ],
+  "src/jinja2/loaders.py": [
+   120,
+   121,
+   126,
+   130,
+   131,
+   137,
+   138,
+   143,
+   147,
+   148,
+   442,
+   447,
+   448,
+   449
+  ],
+  "src/jinja2/nodes.py": [
+   79,
+   80,
+   81,
+   84,
+   95,
+   102,
+   130,
+   132,
+   133,
+   140,
+   141,
+   142,
+   143,
+   144,
+   158,
+   160,
+   161,
+   162,
+   164,
+   165,
+   166,
+   178,
+   179,
+   180,
+   181,
+   182,
+   183,
+   184,
+   190,
+   191,
+   193,
+   201,
+   202,
+   203,
+   204,
+   212,
+   213,
+   214,
+   215,
+   216,
+   217,
+   218,
+   233,
+   234,
+   235,
+   236,
+   237,
+   238,
+   241,
+   244,
+   483,
+   553,
+   588,
+   615,
+   616,
+   618,
+   619,
+   862,
+   865,
+   867,
+   868,
+   869,
+   870
+  ],
+  "src/jinja2/optimizer.py": [
+   29,
+   34,
+   38,
+   39,
+   40,
+   41,
+   45,
+   46,
+   48
+  ],
+  "src/jinja2/parser.py": [
+   61,
+   62,
+   63,
+   64,
+   65,
+   66,
+   68,
+   69,
+   72,
+   73,
+   74,
+   150,
+   152,
+   153,
+   154,
+   165,
+   166,
+   168,
+   169,
+   170,
+   171,
+   172,
+   173,
+   189,
+   190,
+   205,
+   209,
+   210,
+   214,
+   217,
+   218,
+   219,
+   234,
+   235,
+   236,
+   237,
+   238,
+   240,
+   241,
+   243,
+   244,
+   245,
+   246,
+   249,
+   293,
+   294,
+   295,
+   296,
+   301,
+   307,
+   312,
+   321,
+   322,
+   325,
+   326,
+   327,
+   486,
+   490,
+   491,
+   492,
+   493,
+   494,
+   499,
+   501,
+   506,
+   513,
+   514,
+   515,
+   518,
+   519,
+   522,
+   530,
+   533,
+   534,
+   535,
+   539,
+   542,
+   543,
+   544,
+   548,
+   551,
+   554,
+   557,
+   558,
+   559,
+   560,
+   561,
+   562,
+   565,
+   567,
+   573,
+   575,
+   576,
+   580,
+   581,
+   582,
+   588,
+   591,
+   592,
+   593,
+   596,
+   597,
+   601,
+   602,
+   603,
+   609,
+   612,
+   613,
+   614,
+   619,
+   622,
+   623,
+   626,
+   629,
+   633,
+   634,
+   635,
+   636,
+   637,
+   642,
+   644,
+   645,
+   646,
+   648,
+   650,
+   657,
+   658,
+   659,
+   660,
+   661,
+   662,
+   665,
+   679,
+   708,
+   709,
+   711,
+   712,
+   716,
+   717,
+   719,
+   720,
+   722,
+   723,
+   725,
+   727,
+   728,
+   731,
+   734,
+   735,
+   736,
+   778,
+   779,
+   780,
+   781,
+   784,
+   787,
+   788,
+   791,
+   792,
+   793,
+   795,
+   799,
+   802,
+   803,
+   806,
+   809,
+   810,
+   811,
+   812,
+   813,
+   814,
+   991,
+   992,
+   993,
+   995,
+   996,
+   998,
+   999,
+   1000,
+   1001,
+   1002,
+   1004,
+   1005,
+   1006,
+   1007,
+   1008,
+   1009,
+   1010,
+   1011,
+   1012,
+   1013,
+   1014,
+   1015,
+   1016,
+   1017,
+   1018,
+   1019,
+   1021,
+   1022,
+   1023,
+   1026,
+   1027,
+   1031,
+   1033,
+   1034,
+   1035,
+   1039,
+   1040,
+   1041
+  ],
+  "src/jinja2/runtime.py": [
+   103,
+   105,
+   108,
+   109,
+   117,
+   118,
+   173,
+   174,
+   175,
+   176,
+   177,
+   178,
+   179,
+   184,
+   239,
+   242,
+   243
+  ],
+  "src/jinja2/utils.py": [
+   440,
+   441,
+   442,
+   443,
+   447,
+   448,
+   449,
+   450,
+   451,
+   476,
+   477,
+   478,
+   479,
+   514,
+   515,
+   517,
+   528,
+   534,
+   535,
+   537,
+   540,
+   541,
+   621,
+   622,
+   624,
+   625,
+   627,
+   628,
+   629,
+   634
+  ],
+  "src/jinja2/visitor.py": [
+   33,
+   37,
+   39,
+   40,
+   42,
+   46,
+   47,
+   62,
+   63,
+   75,
+   76,
+   77,
+   80,
+   81
+  ]
+ },
+ "tl": 1
+}

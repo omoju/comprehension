@@ -1,0 +1,458 @@
+scenario()  [scenario.py:1]
+  WSGITransport.__init__(self=<WSGITransport>, app=<function app at 0x10cb5da80>, raise_app_exceptions=True, script_name='', remote_addr='127.0.0.1', wsgi_errors=None)  [httpx/_transports/wsgi.py:77]
+    → None
+  Client.__init__(self=<Client>, auth=None, params=None, headers=None, cookies=None, verify=True, cert=None, trust_env=True, http1=True, http2=False, proxy=None, mounts=None, timeout=Timeout(timeout=5.0), follow_redirects=False, limits=Limits(max_connections=100, max_keepalive_connections=20, keepalive_expiry=5.0), max_redirects=20, event_hooks=None, base_url='http://testserver', transport=<httpx.WSGITransport object at 0x10e7f70e0>, default_encoding='utf-8')  [httpx/_client.py:639]
+    BaseClient.__init__(self=<Client>, auth=None, params=None, headers=None, cookies=None, timeout=Timeout(timeout=5.0), follow_redirects=False, max_redirects=20, event_hooks=None, base_url='http://testserver', trust_env=True, default_encoding='utf-8')  [httpx/_client.py:189]
+      URL.__init__(self=<URL>, url='http://testserver')  [httpx/_urls.py:77]
+        urlparse(url='http://testserver')  [httpx/_urlparse.py:213]
+          quote(string='', safe="!$%&'()*+,-.0123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~")  [httpx/_urlparse.py:497]
+            → ''
+          encode_host(host='testserver')  [httpx/_urlparse.py:348]
+            quote(string='testserver', safe='!$&\'()*+,;="`{}%|\\')  [httpx/_urlparse.py:497]
+              percent_encoded(string='testserver', safe='!$&\'()*+,;="`{}%|\\')  [httpx/_urlparse.py:482]
+                → 'testserver'
+              → 'testserver'
+            → 'testserver'
+          normalize_port(port='', scheme='http')  [httpx/_urlparse.py:395]
+            → None
+          validate_path(path='', has_scheme=True, has_authority=True)  [httpx/_urlparse.py:422]
+            → None
+          normalize_path(path='')  [httpx/_urlparse.py:447]
+            → ''
+          quote(string='', safe="!$%&'()*+,-./0123456789:;=@ABCDEFGHIJ...WXYZ[\\]^_abcdefghijklmnopqrstuvwxyz|~")  [httpx/_urlparse.py:497]
+            → ''
+          → ParseResult(scheme='http', userinfo=''...ne, path='', query=None, fragment=None)
+        → None
+      BaseClient._enforce_trailing_slash(self=<Client>, url=URL('http://testserver'))  [httpx/_client.py:234]
+        URL.raw_path(self=<URL>)  [httpx/_urls.py:282]
+          → b'/'
+        → URL('http://testserver')
+      BaseClient._build_auth(self=<Client>, auth=None)  [httpx/_client.py:445]
+        → None
+      QueryParams.__init__(self=<QueryParams>)  [httpx/_urls.py:425]
+        → None
+      Headers.__init__(self=<Headers>, headers=None, encoding=None)  [httpx/_models.py:144]
+        → None
+      BaseClient.headers(self=<Client>, headers=Headers({}))  [httpx/_client.py:305]
+        Headers.__init__(self=<Headers>, headers={b'Accept': b'*/*', b'Accept-Encoding': b'gzip, deflate', b'Connection': b'keep-alive', b'User-Agent': b'python-httpx/0.28.1'}, encoding=None)  [httpx/_models.py:144]
+          _normalize_header_key(key=b'Accept', encoding=None)  [httpx/_models.py:67]
+            → b'Accept'
+          _normalize_header_value(value=b'*/*', encoding=None)  [httpx/_models.py:74]
+            → b'*/*'
+          _normalize_header_key(key=b'Accept-Encoding', encoding=None)  [httpx/_models.py:67]
+            → b'Accept-Encoding'
+          _normalize_header_value(value=b'gzip, deflate', encoding=None)  [httpx/_models.py:74]
+            → b'gzip, deflate'
+          _normalize_header_key(key=b'Connection', encoding=None)  [httpx/_models.py:67]
+            → b'Connection'
+          _normalize_header_value(value=b'keep-alive', encoding=None)  [httpx/_models.py:74]
+            → b'keep-alive'
+          _normalize_header_key(key=b'User-Agent', encoding=None)  [httpx/_models.py:67]
+            → b'User-Agent'
+          _normalize_header_value(value=b'python-httpx/0.28.1', encoding=None)  [httpx/_models.py:74]
+            → b'python-httpx/0.28.1'
+          → None
+        Headers.update(self=<Headers>, headers=Headers({}))  [httpx/_models.py:274]
+          Headers.__init__(self=<Headers>, headers=Headers({}), encoding=None)  [httpx/_models.py:144]
+            → None
+          Headers.keys(self=<Headers>)  [httpx/_models.py:202]
+            → dict_keys([])
+          → None
+        → None
+      Cookies.__init__(self=<Cookies>, cookies=None)  [httpx/_models.py:1084]
+        → None
+      Timeout.__init__(self=<Timeout>, timeout=Timeout(timeout=5.0), connect=<httpx._config.UnsetType object at 0x10cafb230>, read=<httpx._config.UnsetType object at 0x10cafb230>, write=<httpx._config.UnsetType object at 0x10cafb230>, pool=<httpx._config.UnsetType object at 0x10cafb230>)  [httpx/_config.py:86]
+        → None
+      → None
+    BaseClient._get_proxy_map(self=<Client>, proxy=None, allow_env_proxies=False)  [httpx/_client.py:239]
+      → {}
+    Client._init_transport(self=<Client>, verify=True, cert=None, trust_env=True, http1=True, http2=False, limits=Limits(max_connections=100, max_keepalive_connections=20, keepalive_expiry=5.0), transport=<httpx.WSGITransport object at 0x10e7f70e0>)  [httpx/_client.py:718]
+      → <httpx.WSGITransport object at 0x10e7f70e0>
+    → None
+  Client.__enter__(self=<Client>)  [httpx/_client.py:1275]
+    BaseTransport.__enter__(self=<WSGITransport>)  [httpx/_transports/base.py:15]
+      → <httpx.WSGITransport object at 0x10e7f70e0>
+    → <httpx.Client object at 0x10e7f6f90>
+  Client.get(self=<Client>, url='/', params=None, headers={'X-Custom': 'value'}, cookies=None, auth=<httpx._client.UseClientDefault object at 0x10e7f67b0>, follow_redirects=<httpx._client.UseClientDefault object at 0x10e7f67b0>, timeout=<httpx._client.UseClientDefault object at 0x10e7f67b0>, extensions=None)  [httpx/_client.py:1036]
+    Client.request(self=<Client>, method='GET', url='/', content=None, data=None, files=None, json=None, params=None, headers={'X-Custom': 'value'}, cookies=None, auth=<httpx._client.UseClientDefault object at 0x10e7f67b0>, follow_redirects=<httpx._client.UseClientDefault object at 0x10e7f67b0>, timeout=<httpx._client.UseClientDefault object at 0x10e7f67b0>, extensions=None)  [httpx/_client.py:771]
+      BaseClient.build_request(self=<Client>, method='GET', url='/', content=None, data=None, files=None, json=None, params=None, headers={'X-Custom': 'value'}, cookies=None, timeout=<httpx._client.UseClientDefault object at 0x10e7f67b0>, extensions=None)  [httpx/_client.py:340]
+        BaseClient._merge_url(self=<Client>, url='/')  [httpx/_client.py:391]
+          URL.__init__(self=<URL>, url='/')  [httpx/_urls.py:77]
+            urlparse(url='/')  [httpx/_urlparse.py:213]
+              quote(string='', safe="!$%&'()*+,-.0123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~")  [httpx/_urlparse.py:497]
+                → ''
+              encode_host(host='')  [httpx/_urlparse.py:348]
+                → ''
+              normalize_port(port='', scheme='')  [httpx/_urlparse.py:395]
+                → None
+              validate_path(path='/', has_scheme=False, has_authority=False)  [httpx/_urlparse.py:422]
+                → None
+              quote(string='/', safe="!$%&'()*+,-./0123456789:;=@ABCDEFGHIJ...WXYZ[\\]^_abcdefghijklmnopqrstuvwxyz|~")  [httpx/_urlparse.py:497]
+                percent_encoded(string='/', safe="!$%&'()*+,-./0123456789:;=@ABCDEFGHIJ...WXYZ[\\]^_abcdefghijklmnopqrstuvwxyz|~")  [httpx/_urlparse.py:482]
+                  → '/'
+                → '/'
+              → ParseResult(scheme='', userinfo='', ho...e, path='/', query=None, fragment=None)
+            → None
+          URL.is_relative_url(self=<URL>)  [httpx/_urls.py:319]
+            URL.is_absolute_url(self=<URL>)  [httpx/_urls.py:307]
+              → False
+            → True
+          BaseClient.base_url(self=<Client>)  [httpx/_client.py:287]
+            → URL('http://testserver')
+          URL.raw_path(self=<URL>)  [httpx/_urls.py:282]
+            → b'/'
+          … URL.raw_path ×1 more  [httpx/_urls.py:282]
+          BaseClient.base_url(self=<Client>)  [httpx/_client.py:287]
+            → URL('http://testserver')
+          URL.copy_with(self=<URL>)  [httpx/_urls.py:327]
+            URL.__init__(self=<URL>, url=URL('http://testserver'))  [httpx/_urls.py:77]
+              ParseResult.copy_with(self=<ParseResult>)  [httpx/_urlparse.py:186]
+                ParseResult.authority(self=<ParseResult>)  [httpx/_urlparse.py:167]
+                  → 'testserver'
+                urlparse(url='')  [httpx/_urlparse.py:213]
+                  quote(string='', safe="!$%&'()*+,-.0123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~")  [httpx/_urlparse.py:497]
+                    → ''
+                  encode_host(host='testserver')  [httpx/_urlparse.py:348]
+                    quote(string='testserver', safe='!$&\'()*+,;="`{}%|\\')  [httpx/_urlparse.py:497]
+                      percent_encoded(string='testserver', safe='!$&\'()*+,;="`{}%|\\')  [httpx/_urlparse.py:482]
+                        → 'testserver'
+                      → 'testserver'
+                    → 'testserver'
+                  normalize_port(port='', scheme='http')  [httpx/_urlparse.py:395]
+                    → None
+                  validate_path(path='/', has_scheme=True, has_authority=True)  [httpx/_urlparse.py:422]
+                    → None
+                  normalize_path(path='/')  [httpx/_urlparse.py:447]
+                    → '/'
+                  quote(string='/', safe="!$%&'()*+,-./0123456789:;=@ABCDEFGHIJ...WXYZ[\\]^_abcdefghijklmnopqrstuvwxyz|~")  [httpx/_urlparse.py:497]
+                    percent_encoded(string='/', safe="!$%&'()*+,-./0123456789:;=@ABCDEFGHIJ...WXYZ[\\]^_abcdefghijklmnopqrstuvwxyz|~")  [httpx/_urlparse.py:482]
+                      → '/'
+                    → '/'
+                  → ParseResult(scheme='http', userinfo=''...e, path='/', query=None, fragment=None)
+                → ParseResult(scheme='http', userinfo=''...e, path='/', query=None, fragment=None)
+              → None
+            → URL('http://testserver/')
+          → URL('http://testserver/')
+        BaseClient._merge_headers(self=<Client>, headers={'X-Custom': 'value'})  [httpx/_client.py:424]
+          BaseClient.headers(self=<Client>)  [httpx/_client.py:298]
+            → Headers({'accept': '*/*', 'accept-enco..., 'user-agent': 'python-httpx/0.28.1'})
+          Headers.__init__(self=<Headers>, headers=Headers({'accept': '*/*', 'accept-enco..., 'user-agent': 'python-httpx/0.28.1'}), encoding=None)  [httpx/_models.py:144]
+            → None
+          Headers.update(self=<Headers>, headers={'X-Custom': 'value'})  [httpx/_models.py:274]
+            Headers.__init__(self=<Headers>, headers={'X-Custom': 'value'}, encoding=None)  [httpx/_models.py:144]
+              _normalize_header_key(key='X-Custom', encoding=None)  [httpx/_models.py:67]
+                → b'X-Custom'
+              _normalize_header_value(value='value', encoding=None)  [httpx/_models.py:74]
+                → b'value'
+              → None
+            Headers.keys(self=<Headers>)  [httpx/_models.py:202]
+              Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+                Headers.raw(self=<Headers>)  [httpx/_models.py:195]
+                  → [(b'X-Custom', b'value')]
+                → 'ascii'
+              → dict_keys(['x-custom'])
+            Headers.__contains__(self=<Headers>, key='x-custom')  [httpx/_models.py:346]
+              Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+                Headers.raw(self=<Headers>)  [httpx/_models.py:195]
+                  → [(b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1')]
+                → 'ascii'
+              → False
+            → None
+          → Headers({'accept': '*/*', 'accept-enco...on-httpx/0.28.1', 'x-custom': 'value'})
+        BaseClient._merge_cookies(self=<Client>, cookies=None)  [httpx/_client.py:413]
+          BaseClient.cookies(self=<Client>)  [httpx/_client.py:318]
+            → <Cookies[]>
+          Cookies.__bool__(self=<Cookies>)  [httpx/_models.py:1228]
+            → False
+          → None
+        BaseClient._merge_queryparams(self=<Client>, params=None)  [httpx/_client.py:433]
+          BaseClient.params(self=<Client>)  [httpx/_client.py:329]
+            → QueryParams('')
+          QueryParams.__bool__(self=<QueryParams>)  [httpx/_urls.py:612]
+            → False
+          → None
+        BaseClient.timeout(self=<Client>)  [httpx/_client.py:253]
+          → Timeout(timeout=5.0)
+        Timeout.as_dict(self=<Timeout>)  [httpx/_config.py:132]
+          → {'connect': 5.0, 'pool': 5.0, 'read': 5.0, 'write': 5.0}
+        Request.__init__(self=<Request>, method='GET', url=URL('http://testserver/'), params=None, headers=Headers({'accept': '*/*', 'accept-enco...on-httpx/0.28.1', 'x-custom': 'value'}), cookies=None, content=None, data=None, files=None, json=None, stream=None, extensions={'timeout': {'connect': 5.0, 'pool': 5.0, 'read': 5.0, 'write': 5.0}})  [httpx/_models.py:383]
+          URL.__init__(self=<URL>, url=URL('http://testserver/'))  [httpx/_urls.py:77]
+            ParseResult.copy_with(self=<ParseResult>)  [httpx/_urlparse.py:186]
+              → ParseResult(scheme='http', userinfo=''...e, path='/', query=None, fragment=None)
+            → None
+          Headers.__init__(self=<Headers>, headers=Headers({'accept': '*/*', 'accept-enco...on-httpx/0.28.1', 'x-custom': 'value'}), encoding=None)  [httpx/_models.py:144]
+            → None
+          Headers.get(self=<Headers>, key='content-type', default=None)  [httpx/_models.py:242]
+            Headers.__getitem__(self=<Headers>, key='content-type')  [httpx/_models.py:284]
+              Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+                Headers.raw(self=<Headers>)  [httpx/_models.py:195]
+                  → [(b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1'), (b'X-Custom', b'value')]
+                → 'ascii'
+              → None
+            → None
+          get_multipart_boundary_from_content_type(content_type=None)  [httpx/_multipart.py:56]
+            → None
+          encode_request(content=None, data=None, files=None, json=None, boundary=None)  [httpx/_content.py:186]
+            ByteStream.__init__(self=<ByteStream>, stream=b'')  [httpx/_content.py:32]
+              → None
+            → ({}, <httpx.ByteStream object at 0x10e7f7a10>)
+          Request._prepare(self=<Request>, default_headers={})  [httpx/_models.py:441]
+            Headers.__contains__(self=<Headers>, key='Host')  [httpx/_models.py:346]
+              Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+                → 'ascii'
+              → False
+            … Headers.__contains__ ×2 more  [httpx/_models.py:346]
+            URL.host(self=<URL>)  [httpx/_urls.py:168]
+              → 'testserver'
+            URL.netloc(self=<URL>)  [httpx/_urls.py:233]
+              ParseResult.netloc(self=<ParseResult>)  [httpx/_urlparse.py:177]
+                → 'testserver'
+              → b'testserver'
+            Headers.raw(self=<Headers>)  [httpx/_models.py:195]
+              → [(b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1'), (b'X-Custom', b'value')]
+            Headers.__init__(self=<Headers>, headers=[(b'Host', b'testserver'), (b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1'), (b'X-Custom', b'value')], encoding=None)  [httpx/_models.py:144]
+              _normalize_header_key(key=b'Host', encoding=None)  [httpx/_models.py:67]
+                → b'Host'
+              _normalize_header_value(value=b'testserver', encoding=None)  [httpx/_models.py:74]
+                → b'testserver'
+              _normalize_header_key(key=b'Accept', encoding=None)  [httpx/_models.py:67]
+                → b'Accept'
+              _normalize_header_value(value=b'*/*', encoding=None)  [httpx/_models.py:74]
+                → b'*/*'
+              _normalize_header_key(key=b'Accept-Encoding', encoding=None)  [httpx/_models.py:67]
+                → b'Accept-Encoding'
+              _normalize_header_value(value=b'gzip, deflate', encoding=None)  [httpx/_models.py:74]
+                → b'gzip, deflate'
+              _normalize_header_key(key=b'Connection', encoding=None)  [httpx/_models.py:67]
+                → b'Connection'
+              _normalize_header_value(value=b'keep-alive', encoding=None)  [httpx/_models.py:74]
+                → b'keep-alive'
+              _normalize_header_key(key=b'User-Agent', encoding=None)  [httpx/_models.py:67]
+                → b'User-Agent'
+              _normalize_header_value(value=b'python-httpx/0.28.1', encoding=None)  [httpx/_models.py:74]
+                → b'python-httpx/0.28.1'
+              _normalize_header_key(key=b'X-Custom', encoding=None)  [httpx/_models.py:67]
+                → b'X-Custom'
+              _normalize_header_value(value=b'value', encoding=None)  [httpx/_models.py:74]
+                → b'value'
+              → None
+            → None
+          Request.read(self=<Request>)  [httpx/_models.py:468]
+            ByteStream.__iter__(self=<ByteStream>)  [httpx/_content.py:35]
+              → b''
+            … ByteStream.__iter__ ×1 more  [httpx/_content.py:35]
+            → b''
+          → None
+        → <Request('GET', 'http://testserver/')>
+      Client.send(self=<Client>, request=<Request('GET', 'http://testserver/')>, stream=False, auth=<httpx._client.UseClientDefault object at 0x10e7f67b0>, follow_redirects=<httpx._client.UseClientDefault object at 0x10e7f67b0>)  [httpx/_client.py:879]
+        BaseClient._set_timeout(self=<Client>, request=<Request('GET', 'http://testserver/')>)  [httpx/_client.py:584]
+          → None
+        BaseClient._build_request_auth(self=<Client>, request=<Request('GET', 'http://testserver/')>, auth=<httpx._client.UseClientDefault object at 0x10e7f67b0>)  [httpx/_client.py:457]
+          URL.username(self=<URL>)  [httpx/_urls.py:150]
+            → ''
+          URL.password(self=<URL>)  [httpx/_urls.py:159]
+            → ''
+          → <httpx.Auth object at 0x10e7f7cb0>
+        Client._send_handling_auth(self=<Client>, request=<Request('GET', 'http://testserver/')>, auth=<httpx.Auth object at 0x10e7f7cb0>, follow_redirects=False, history=[])  [httpx/_client.py:930]
+          Auth.sync_auth_flow(self=<Auth>, request=<Request('GET', 'http://testserver/')>)  [httpx/_auth.py:62]
+            Auth.auth_flow(self=<Auth>, request=<Request('GET', 'http://testserver/')>)  [httpx/_auth.py:38]
+              → <Request('GET', 'http://testserver/')>
+            → <Request('GET', 'http://testserver/')>
+          Client._send_handling_redirects(self=<Client>, request=<Request('GET', 'http://testserver/')>, follow_redirects=False, history=[])  [httpx/_client.py:964]
+            Client._send_single_request(self=<Client>, request=<Request('GET', 'http://testserver/')>)  [httpx/_client.py:1001]
+              Client._transport_for_url(self=<Client>, url=URL('http://testserver/'))  [httpx/_client.py:760]
+                → <httpx.WSGITransport object at 0x10e7f70e0>
+              request_context(request=<Request('GET', 'http://testserver/')>)  [httpx/_exceptions.py:364]
+                → None
+              WSGITransport.handle_request(self=<WSGITransport>, request=<Request('GET', 'http://testserver/')>)  [httpx/_transports/wsgi.py:91]
+                Request.read(self=<Request>)  [httpx/_models.py:468]
+                  → b''
+                Request.content(self=<Request>)  [httpx/_models.py:462]
+                  → b''
+                URL.port(self=<URL>)  [httpx/_urls.py:217]
+                  → None
+                URL.scheme(self=<URL>)  [httpx/_urls.py:126]
+                  → 'http'
+                … URL.scheme ×1 more  [httpx/_urls.py:126]
+                URL.path(self=<URL>)  [httpx/_urls.py:244]
+                  → '/'
+                URL.query(self=<URL>)  [httpx/_urls.py:257]
+                  → b''
+                URL.host(self=<URL>)  [httpx/_urls.py:168]
+                  → 'testserver'
+                Headers.raw(self=<Headers>)  [httpx/_models.py:195]
+                  → [(b'Host', b'testserver'), (b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1'), (b'X-Custom', b'value')]
+                WSGITransport.handle_request.<locals>.start_response(status='200 OK', response_headers=[('Content-Type', 'text/plain; charset=utf-8'), ('Content-Length', '12')], exc_info=None)  [httpx/_transports/wsgi.py:123]
+                  → <function WSGITransport.handle_request...ponse.<locals>.<lambda> at 0x10e91dc60>
+                WSGIByteStream.__init__(self=<WSGIByteStream>, result=[b'Hello World!'])  [httpx/_transports/wsgi.py:31]
+                  _skip_leading_empty_chunks(body=[b'Hello World!'])  [httpx/_transports/wsgi.py:22]
+                    → <itertools.chain object at 0x10e8ec760>
+                  → None
+                Response.__init__(self=<Response>, status_code=200, headers=[(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'12')], content=None, text=None, html=None, json=None, stream=<httpx._transports.wsgi.WSGIByteStream object at 0x10e958050>, request=None, extensions=None, history=None, default_encoding='utf-8')  [httpx/_models.py:516]
+                  Headers.__init__(self=<Headers>, headers=[(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'12')], encoding=None)  [httpx/_models.py:144]
+                    _normalize_header_key(key=b'Content-Type', encoding=None)  [httpx/_models.py:67]
+                      → b'Content-Type'
+                    _normalize_header_value(value=b'text/plain; charset=utf-8', encoding=None)  [httpx/_models.py:74]
+                      → b'text/plain; charset=utf-8'
+                    _normalize_header_key(key=b'Content-Length', encoding=None)  [httpx/_models.py:67]
+                      → b'Content-Length'
+                    _normalize_header_value(value=b'12', encoding=None)  [httpx/_models.py:74]
+                      → b'12'
+                    → None
+                  → None
+                → <Response [200 OK]>
+              request_context(request=<Request('GET', 'http://testserver/')>)  [httpx/_exceptions.py:364]
+                → None
+              Response.request(self=<Response>, value=<Request('GET', 'http://testserver/')>)  [httpx/_models.py:606]
+                → None
+              BoundSyncStream.__init__(self=<BoundSyncStream>, stream=<httpx._transports.wsgi.WSGIByteStream object at 0x10e958050>, response=<Response [200 OK]>, start=428800.362486125)  [httpx/_client.py:145]
+                → None
+              BaseClient.cookies(self=<Client>)  [httpx/_client.py:318]
+                → <Cookies[]>
+              Cookies.extract_cookies(self=<Cookies>, response=<Response [200 OK]>)  [httpx/_models.py:1101]
+                Cookies._CookieCompatResponse.__init__(self=<_CookieCompatResponse>, response=<Response [200 OK]>)  [httpx/_models.py:1267]
+                  → None
+                Response.request(self=<Response>)  [httpx/_models.py:595]
+                  → <Request('GET', 'http://testserver/')>
+                Cookies._CookieCompatRequest.__init__(self=<_CookieCompatRequest>, request=<Request('GET', 'http://testserver/')>)  [httpx/_models.py:1249]
+                  URL.__str__(self=<URL>)  [httpx/_urls.py:374]
+                    ParseResult.__str__(self=<ParseResult>)  [httpx/_urlparse.py:200]
+                      ParseResult.authority(self=<ParseResult>)  [httpx/_urlparse.py:167]
+                        → 'testserver'
+                      → 'http://testserver/'
+                    → 'http://testserver/'
+                  Headers.keys(self=<Headers>)  [httpx/_models.py:202]
+                    Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+                      Headers.raw(self=<Headers>)  [httpx/_models.py:195]
+                        → [(b'Host', b'testserver'), (b'Accept', b'*/*'), (b'Accept-Encoding', b'gzip, deflate'), (b'Connection', b'keep-alive'), (b'User-Agent', b'python-httpx/0.28.1'), (b'X-Custom', b'value')]
+                      → 'ascii'
+                    … Headers.encoding ×5 more  [httpx/_models.py:166]
+                    → dict_keys(['host', 'accept', 'accept-e...connection', 'user-agent', 'x-custom'])
+                  Headers.__getitem__(self=<Headers>, key='host')  [httpx/_models.py:284]
+                    Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+                      → 'ascii'
+                    … Headers.encoding ×1 more  [httpx/_models.py:166]
+                    → 'testserver'
+                  … Headers.__getitem__ ×5 more  [httpx/_models.py:284]
+                  → None
+                Cookies._CookieCompatResponse.info(self=<_CookieCompatResponse>)  [httpx/_models.py:1270]
+                  Headers.multi_items(self=<Headers>)  [httpx/_models.py:231]
+                    Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+                      Headers.raw(self=<Headers>)  [httpx/_models.py:195]
+                        → [(b'Content-Type', b'text/plain; charset=utf-8'), (b'Content-Length', b'12')]
+                      → 'ascii'
+                    … Headers.encoding ×3 more  [httpx/_models.py:166]
+                    → [('content-type', 'text/plain; charset=utf-8'), ('content-length', '12')]
+                  → <email.message.Message object at 0x10e9586e0>
+                … Cookies._CookieCompatResponse.info ×1 more  [httpx/_models.py:1270]
+                → None
+              Response.http_version(self=<Response>)  [httpx/_models.py:610]
+                → 'HTTP/1.1'
+              Response.reason_phrase(self=<Response>)  [httpx/_models.py:619]
+                codes.get_reason_phrase(cls=<EnumType>, value=200)  [httpx/_status_codes.py:38]
+                  → 'OK'
+                → 'OK'
+              → <Response [200 OK]>
+            Response.has_redirect_location(self=<Response>)  [httpx/_models.py:771]
+              → False
+            → <Response [200 OK]>
+          Auth.sync_auth_flow(self=<Auth>, request=<Request('GET', 'http://testserver/')>)  [httpx/_auth.py:62]
+            Auth.auth_flow(self=<Auth>, request=<Request('GET', 'http://testserver/')>)  [httpx/_auth.py:38]
+              → None
+            → None
+          → <Response [200 OK]>
+        Response.read(self=<Response>)  [httpx/_models.py:876]
+          Response.iter_bytes(self=<Response>, chunk_size=None)  [httpx/_models.py:884]
+            Response._get_content_decoder(self=<Response>)  [httpx/_models.py:699]
+              Headers.get_list(self=<Headers>, key='content-encoding', split_commas=True)  [httpx/_models.py:252]
+                Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+                  → 'ascii'
+                → []
+              → <httpx._decoders.IdentityDecoder object at 0x10e9582f0>
+            ByteChunker.__init__(self=<ByteChunker>, chunk_size=None)  [httpx/_decoders.py:233]
+              → None
+            request_context(request=<Request('GET', 'http://testserver/')>)  [httpx/_exceptions.py:364]
+              → None
+            Response.iter_raw(self=<Response>, chunk_size=None)  [httpx/_models.py:935]
+              ByteChunker.__init__(self=<ByteChunker>, chunk_size=None)  [httpx/_decoders.py:233]
+                → None
+              request_context(request=<Request('GET', 'http://testserver/')>)  [httpx/_exceptions.py:364]
+                → None
+              BoundSyncStream.__iter__(self=<BoundSyncStream>)  [httpx/_client.py:152]
+                WSGIByteStream.__iter__(self=<WSGIByteStream>)  [httpx/_transports/wsgi.py:35]
+                  → b'Hello World!'
+                → b'Hello World!'
+              ByteChunker.decode(self=<ByteChunker>, content=b'Hello World!')  [httpx/_decoders.py:237]
+                → [b'Hello World!']
+              → b'Hello World!'
+            IdentityDecoder.decode(self=<IdentityDecoder>, data=b'Hello World!')  [httpx/_decoders.py:49]
+              → b'Hello World!'
+            ByteChunker.decode(self=<ByteChunker>, content=b'Hello World!')  [httpx/_decoders.py:237]
+              → [b'Hello World!']
+            → b'Hello World!'
+          … Response.iter_bytes ×1 more  [httpx/_models.py:884]
+          → b'Hello World!'
+        → <Response [200 OK]>
+      → <Response [200 OK]>
+    → <Response [200 OK]>
+  Response.__repr__(self=<Response>)  [httpx/_models.py:859]
+    Response.reason_phrase(self=<Response>)  [httpx/_models.py:619]
+      codes.get_reason_phrase(cls=<EnumType>, value=200)  [httpx/_status_codes.py:38]
+        → 'OK'
+      → 'OK'
+    → '<Response [200 OK]>'
+  Response.request(self=<Response>)  [httpx/_models.py:595]
+    → <Request('GET', 'http://testserver/')>
+  URL.__str__(self=<URL>)  [httpx/_urls.py:374]
+    ParseResult.__str__(self=<ParseResult>)  [httpx/_urlparse.py:200]
+      ParseResult.authority(self=<ParseResult>)  [httpx/_urlparse.py:167]
+        → 'testserver'
+      → 'http://testserver/'
+    → 'http://testserver/'
+  Headers.__getitem__(self=<Headers>, key='content-type')  [httpx/_models.py:284]
+    Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+      → 'ascii'
+    … Headers.encoding ×1 more  [httpx/_models.py:166]
+    → 'text/plain; charset=utf-8'
+  Response.text(self=<Response>)  [httpx/_models.py:641]
+    Response.content(self=<Response>)  [httpx/_models.py:635]
+      → b'Hello World!'
+    Response.encoding(self=<Response>)  [httpx/_models.py:652]
+      Response.charset_encoding(self=<Response>)  [httpx/_models.py:688]
+        Headers.get(self=<Headers>, key='Content-Type', default=None)  [httpx/_models.py:242]
+          Headers.__getitem__(self=<Headers>, key='Content-Type')  [httpx/_models.py:284]
+            Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+              → 'ascii'
+            … Headers.encoding ×1 more  [httpx/_models.py:166]
+            → 'text/plain; charset=utf-8'
+          → 'text/plain; charset=utf-8'
+        _parse_content_type_charset(content_type='text/plain; charset=utf-8')  [httpx/_models.py:85]
+          → 'utf-8'
+        → 'utf-8'
+      _is_known_encoding(encoding='utf-8')  [httpx/_models.py:56]
+        → True
+      → 'utf-8'
+    TextDecoder.__init__(self=<TextDecoder>, encoding='utf-8')  [httpx/_decoders.py:311]
+      → None
+    Response.content(self=<Response>)  [httpx/_models.py:635]
+      → b'Hello World!'
+    TextDecoder.decode(self=<TextDecoder>, data=b'Hello World!')  [httpx/_decoders.py:314]
+      → 'Hello World!'
+    TextDecoder.flush(self=<TextDecoder>)  [httpx/_decoders.py:317]
+      → ''
+    → 'Hello World!'
+  Response.request(self=<Response>)  [httpx/_models.py:595]
+    → <Request('GET', 'http://testserver/')>
+  Headers.__getitem__(self=<Headers>, key='X-Custom')  [httpx/_models.py:284]
+    Headers.encoding(self=<Headers>)  [httpx/_models.py:166]
+      → 'ascii'
+    … Headers.encoding ×1 more  [httpx/_models.py:166]
+    → 'value'
+  Response.text(self=<Response>)  [httpx/_models.py:641]
+    → 'Hello World!'
+  Client.__exit__(self=<Client>, exc_type=None, exc_value=None, traceback=None)  [httpx/_client.py:1293]
+    BaseTransport.__exit__(self=<WSGITransport>, exc_type=None, exc_value=None, traceback=None)  [httpx/_transports/base.py:18]
+      BaseTransport.close(self=<WSGITransport>)  [httpx/_transports/base.py:61]
+        → None
+      → None
+    → None

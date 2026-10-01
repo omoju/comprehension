@@ -1,0 +1,610 @@
+scenario()  [scenario.py:1]
+  tqdm.__new__(cls=<type>)  [tqdm/std.py:664]
+    tqdm.get_lock(cls=<type>)  [tqdm/std.py:766]
+      TqdmDefaultWriteLock.__init__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:88]
+        TqdmDefaultWriteLock.create_mp_lock(cls=<type>)  [tqdm/std.py:114]
+          → None
+        → None
+      → <tqdm.std.TqdmDefaultWriteLock object at 0x109742a50>
+    TqdmDefaultWriteLock.__enter__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:108]
+      TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+        → None
+      → None
+    tqdm.__hash__(self=<tqdm>)  [tqdm/std.py:1163]
+      → 4453575920
+    TMonitor.__init__(self=<TMonitor>, tqdm_cls=<class 'tqdm.std.tqdm'>, sleep_interval=10)  [tqdm/_monitor.py:31]
+      → None
+    TqdmDefaultWriteLock.__exit__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:111]
+      TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+        → None
+      → None
+    → <tqdm.std.tqdm object at 0x109742cf0>
+  tqdm.__init__(self=<tqdm>, iterable=['a', 'b', 'c', 'd'], desc=None, total=None, leave=True, file=None, ncols=None, mininterval=0.1, maxinterval=10.0, miniters=None, ascii=None, disable=False, unit='it', unit_scale=False, dynamic_ncols=False, smoothing=0.3, bar_format=None, initial=0, position=None, postfix=None, unit_divisor=1000, write_bytes=False, lock_args=None, nrows=None, colour=None, delay=0.0, gui=False)  [tqdm/std.py:958]
+    DisableOnWriteError.__init__(self=<DisableOnWriteError>, wrapped=<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>, tqdm_instance=<tqdm.std.tqdm object at 0x109742cf0>)  [tqdm/utils.py:196]
+      ObjectWrapper.__init__(self=<DisableOnWriteError>, wrapped=<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>)  [tqdm/utils.py:139]
+        ObjectWrapper.wrapper_setattr(self=<DisableOnWriteError>, name='_wrapped', value=<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>)  [tqdm/utils.py:135]
+          → None
+        → None
+      DisableOnWriteError.disable_on_exception(tqdm_instance=<tqdm.std.tqdm object at 0x109742cf0>, func=<built-in method write of _io.TextIOWrapper object at 0x10861ec00>)  [tqdm/utils.py:170]
+        → <function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b2ab60>
+      ObjectWrapper.wrapper_setattr(self=<DisableOnWriteError>, name='write', value=<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b2ab60>)  [tqdm/utils.py:135]
+        → None
+      DisableOnWriteError.disable_on_exception(tqdm_instance=<tqdm.std.tqdm object at 0x109742cf0>, func=<built-in method flush of _io.TextIOWrapper object at 0x10861ec00>)  [tqdm/utils.py:170]
+        → <function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b2ad40>
+      ObjectWrapper.wrapper_setattr(self=<DisableOnWriteError>, name='flush', value=<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b2ad40>)  [tqdm/utils.py:135]
+        → None
+      → None
+    DisableOnWriteError.__eq__(self=<DisableOnWriteError>, other=<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>)  [tqdm/utils.py:205]
+      → True
+    _screen_shape_wrapper()  [tqdm/utils.py:265]
+      → <function _screen_shape_wrapper.<locals>.inner at 0x109b2afc0>
+    _screen_shape_wrapper.<locals>.inner(fp=<tqdm.utils.DisableOnWriteError object at 0x109a05a90>)  [tqdm/utils.py:270]
+      ObjectWrapper.__getattr__(self=<DisableOnWriteError>, name='fileno')  [tqdm/utils.py:122]
+        → <built-in method fileno of _io.TextIOWrapper object at 0x10861ec00>
+      → (None, None)
+    _supports_unicode(fp=<tqdm.utils.DisableOnWriteError object at 0x109a05a90>)  [tqdm/utils.py:249]
+      ObjectWrapper.__getattr__(self=<DisableOnWriteError>, name='encoding')  [tqdm/utils.py:122]
+        → 'utf-8'
+      _is_utf(encoding='utf-8')  [tqdm/utils.py:235]
+        → True
+      → True
+    EMA.__init__(self=<EMA>, smoothing=0.3)  [tqdm/std.py:223]
+      → None
+    … EMA.__init__ ×2 more  [tqdm/std.py:223]
+    TqdmDefaultWriteLock.__enter__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:108]
+      TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+        → None
+      → None
+    tqdm._get_free_pos(cls=<type>, instance=<tqdm.std.tqdm object at 0x109742cf0>)  [tqdm/std.py:680]
+      → 0
+    TqdmDefaultWriteLock.__exit__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:111]
+      TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+        → None
+      → None
+    tqdm.status_printer(file=<tqdm.utils.DisableOnWriteError object at 0x109a05a90>)  [tqdm/std.py:436]
+      DisableOnWriteError.__eq__(self=<DisableOnWriteError>, other=<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>)  [tqdm/utils.py:205]
+        → True
+      → <function tqdm.status_printer.<locals>.print_status at 0x109b2bc40>
+    tqdm.refresh(self=<tqdm>, nolock=False, lock_args=None)  [tqdm/std.py:1332]
+      TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+        → None
+      tqdm.display(self=<tqdm>, msg=None, pos=None)  [tqdm/std.py:1471]
+        tqdm.__str__(self=<tqdm>)  [tqdm/std.py:1156]
+          tqdm.format_dict(self=<tqdm>)  [tqdm/std.py:1453]
+            EMA.__call__(self=<EMA>, x=None)  [tqdm/std.py:228]
+              → 0
+            → {'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0, 'initial': 0, 'n': 0, ...}
+          tqdm.format_meter(n=0, total=4, elapsed=0, ncols=None, prefix='', ascii=False, unit='it', unit_scale=False, rate=None, bar_format=None, postfix=None, unit_divisor=1000, initial=0, colour=None)  [tqdm/std.py:462]
+            tqdm.format_interval(t=0)  [tqdm/std.py:397]
+              → '00:00'
+            FormatReplace.__init__(self=<FormatReplace>, replace='')  [tqdm/utils.py:91]
+              → None
+            FormatReplace.__format__(self=<FormatReplace>, _='')  [tqdm/utils.py:95]
+              → ''
+            Bar.__init__(self=<Bar>, frac=0.0, default_len=10, charset=' ▏▎▍▌▋▊▉█', colour=None)  [tqdm/std.py:151]
+              Bar.colour(self=<Bar>, value=None)  [tqdm/std.py:165]
+                → None
+              → None
+            _is_ascii(s=' ▏▎▍▌▋▊▉█')  [tqdm/utils.py:256]
+              → False
+            … _is_ascii ×1 more  [tqdm/utils.py:256]
+            Bar.__format__(self=<Bar>, format_spec='')  [tqdm/std.py:183]
+              Bar.colour(self=<Bar>)  [tqdm/std.py:161]
+                → None
+              → '          '
+            → '  0%|          | 0/4 [00:00<?, ?it/s]'
+          → '  0%|          | 0/4 [00:00<?, ?it/s]'
+        tqdm.status_printer.<locals>.print_status(s='  0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/std.py:455]
+          disp_len(data='  0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/utils.py:307]
+            _text_width(s='  0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/utils.py:303]
+              → 37
+            → 37
+          tqdm.status_printer.<locals>.fp_write(s='\r  0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/std.py:449]
+            DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+              → 38
+            … DisableOnWriteError.disable_on_exception.<locals>.inner ×1 more  [tqdm/utils.py:177]
+            → None
+          → None
+        → True
+      TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+        → None
+      → True
+    → None
+  tqdm.__iter__(self=<tqdm>)  [tqdm/std.py:1166]
+    → 'a'
+  … tqdm.__iter__ ×4 more  [tqdm/std.py:1166]
+  tqdm.__del__(self=<tqdm>)  [tqdm/std.py:1153]
+    tqdm.close(self=<tqdm>)  [tqdm/std.py:1270]
+      → None
+    → None
+  tqdm.__new__(cls=<type>)  [tqdm/std.py:664]
+    tqdm.get_lock(cls=<type>)  [tqdm/std.py:766]
+      → <tqdm.std.TqdmDefaultWriteLock object at 0x109742a50>
+    TqdmDefaultWriteLock.__enter__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:108]
+      TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+        → None
+      → None
+    tqdm.__hash__(self=<tqdm>)  [tqdm/std.py:1163]
+      → 4456456720
+    TMonitor.report(self=<TMonitor>)  [tqdm/_monitor.py:103]
+      → True
+    TqdmDefaultWriteLock.__exit__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:111]
+      TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+        → None
+      → None
+    → <tqdm.std.tqdm object at 0x109a02210>
+  tqdm.__init__(self=<tqdm>, iterable=['a', 'b', 'c', 'd'], desc='Processing', total=None, leave=True, file=None, ncols=None, mininterval=0.1, maxinterval=10.0, miniters=None, ascii=None, disable=False, unit='it', unit_scale=False, dynamic_ncols=False, smoothing=0.3, bar_format=None, initial=0, position=None, postfix=None, unit_divisor=1000, write_bytes=False, lock_args=None, nrows=None, colour=None, delay=0.0, gui=False)  [tqdm/std.py:958]
+    DisableOnWriteError.__init__(self=<DisableOnWriteError>, wrapped=<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>, tqdm_instance=<tqdm.std.tqdm object at 0x109a02210>)  [tqdm/utils.py:196]
+      ObjectWrapper.__init__(self=<DisableOnWriteError>, wrapped=<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>)  [tqdm/utils.py:139]
+        ObjectWrapper.wrapper_setattr(self=<DisableOnWriteError>, name='_wrapped', value=<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>)  [tqdm/utils.py:135]
+          → None
+        → None
+      DisableOnWriteError.disable_on_exception(tqdm_instance=<tqdm.std.tqdm object at 0x109a02210>, func=<built-in method write of _io.TextIOWrapper object at 0x10861ec00>)  [tqdm/utils.py:170]
+        → <function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b42ac0>
+      ObjectWrapper.wrapper_setattr(self=<DisableOnWriteError>, name='write', value=<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b42ac0>)  [tqdm/utils.py:135]
+        → None
+      DisableOnWriteError.disable_on_exception(tqdm_instance=<tqdm.std.tqdm object at 0x109a02210>, func=<built-in method flush of _io.TextIOWrapper object at 0x10861ec00>)  [tqdm/utils.py:170]
+        → <function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b428e0>
+      ObjectWrapper.wrapper_setattr(self=<DisableOnWriteError>, name='flush', value=<function DisableOnWriteError.disable_...xception.<locals>.inner at 0x109b428e0>)  [tqdm/utils.py:135]
+        → None
+      → None
+    DisableOnWriteError.__eq__(self=<DisableOnWriteError>, other=<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>)  [tqdm/utils.py:205]
+      → True
+    _screen_shape_wrapper()  [tqdm/utils.py:265]
+      → <function _screen_shape_wrapper.<locals>.inner at 0x109b42660>
+    _screen_shape_wrapper.<locals>.inner(fp=<tqdm.utils.DisableOnWriteError object at 0x109a020d0>)  [tqdm/utils.py:270]
+      ObjectWrapper.__getattr__(self=<DisableOnWriteError>, name='fileno')  [tqdm/utils.py:122]
+        → <built-in method fileno of _io.TextIOWrapper object at 0x10861ec00>
+      → (None, None)
+    _supports_unicode(fp=<tqdm.utils.DisableOnWriteError object at 0x109a020d0>)  [tqdm/utils.py:249]
+      ObjectWrapper.__getattr__(self=<DisableOnWriteError>, name='encoding')  [tqdm/utils.py:122]
+        → 'utf-8'
+      _is_utf(encoding='utf-8')  [tqdm/utils.py:235]
+        → True
+      → True
+    EMA.__init__(self=<EMA>, smoothing=0.3)  [tqdm/std.py:223]
+      → None
+    … EMA.__init__ ×2 more  [tqdm/std.py:223]
+    TqdmDefaultWriteLock.__enter__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:108]
+      TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+        → None
+      → None
+    tqdm._get_free_pos(cls=<type>, instance=<tqdm.std.tqdm object at 0x109a02210>)  [tqdm/std.py:680]
+      → 0
+    TqdmDefaultWriteLock.__exit__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:111]
+      TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+        → None
+      → None
+    tqdm.status_printer(file=<tqdm.utils.DisableOnWriteError object at 0x109a020d0>)  [tqdm/std.py:436]
+      DisableOnWriteError.__eq__(self=<DisableOnWriteError>, other=<_io.TextIOWrapper name='<stderr>' mode='w' encoding='utf-8'>)  [tqdm/utils.py:205]
+        → True
+      → <function tqdm.status_printer.<locals>.print_status at 0x109b41c60>
+    tqdm.refresh(self=<tqdm>, nolock=False, lock_args=None)  [tqdm/std.py:1332]
+      TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+        → None
+      tqdm.display(self=<tqdm>, msg=None, pos=None)  [tqdm/std.py:1471]
+        tqdm.__str__(self=<tqdm>)  [tqdm/std.py:1156]
+          tqdm.format_dict(self=<tqdm>)  [tqdm/std.py:1453]
+            EMA.__call__(self=<EMA>, x=None)  [tqdm/std.py:228]
+              → 0
+            → {'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0, 'initial': 0, 'n': 0, ...}
+          tqdm.format_meter(n=0, total=4, elapsed=0, ncols=None, prefix='Processing', ascii=False, unit='it', unit_scale=False, rate=None, bar_format=None, postfix=None, unit_divisor=1000, initial=0, colour=None)  [tqdm/std.py:462]
+            tqdm.format_interval(t=0)  [tqdm/std.py:397]
+              → '00:00'
+            FormatReplace.__init__(self=<FormatReplace>, replace='')  [tqdm/utils.py:91]
+              → None
+            FormatReplace.__format__(self=<FormatReplace>, _='')  [tqdm/utils.py:95]
+              → ''
+            Bar.__init__(self=<Bar>, frac=0.0, default_len=10, charset=' ▏▎▍▌▋▊▉█', colour=None)  [tqdm/std.py:151]
+              Bar.colour(self=<Bar>, value=None)  [tqdm/std.py:165]
+                → None
+              → None
+            _is_ascii(s=' ▏▎▍▌▋▊▉█')  [tqdm/utils.py:256]
+              → False
+            … _is_ascii ×1 more  [tqdm/utils.py:256]
+            Bar.__format__(self=<Bar>, format_spec='')  [tqdm/std.py:183]
+              Bar.colour(self=<Bar>)  [tqdm/std.py:161]
+                → None
+              → '          '
+            → 'Processing:   0%|          | 0/4 [00:00<?, ?it/s]'
+          → 'Processing:   0%|          | 0/4 [00:00<?, ?it/s]'
+        tqdm.status_printer.<locals>.print_status(s='Processing:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/std.py:455]
+          disp_len(data='Processing:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/utils.py:307]
+            _text_width(s='Processing:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/utils.py:303]
+              → 49
+            → 49
+          tqdm.status_printer.<locals>.fp_write(s='\rProcessing:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/std.py:449]
+            DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+              → 50
+            … DisableOnWriteError.disable_on_exception.<locals>.inner ×1 more  [tqdm/utils.py:177]
+            → None
+          → None
+        → True
+      TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+        → None
+      → True
+    → None
+  tqdm.__iter__(self=<tqdm>)  [tqdm/std.py:1166]
+    → 'a'
+  tqdm.set_description(self=<tqdm>, desc='Processing a', refresh=True)  [tqdm/std.py:1389]
+    tqdm.refresh(self=<tqdm>, nolock=False, lock_args=None)  [tqdm/std.py:1332]
+      TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+        → None
+      tqdm.display(self=<tqdm>, msg=None, pos=None)  [tqdm/std.py:1471]
+        tqdm.__str__(self=<tqdm>)  [tqdm/std.py:1156]
+          tqdm.format_dict(self=<tqdm>)  [tqdm/std.py:1453]
+            EMA.__call__(self=<EMA>, x=None)  [tqdm/std.py:228]
+              → 0
+            → {'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.05352497100830078, 'initial': 0, 'n': 0, ...}
+          tqdm.format_meter(n=0, total=4, elapsed=0.05352497100830078, ncols=None, prefix='Processing a: ', ascii=False, unit='it', unit_scale=False, rate=None, bar_format=None, postfix=None, unit_divisor=1000, initial=0, colour=None)  [tqdm/std.py:462]
+            tqdm.format_interval(t=0.05352497100830078)  [tqdm/std.py:397]
+              → '00:00'
+            FormatReplace.__init__(self=<FormatReplace>, replace='')  [tqdm/utils.py:91]
+              → None
+            FormatReplace.__format__(self=<FormatReplace>, _='')  [tqdm/utils.py:95]
+              → ''
+            Bar.__init__(self=<Bar>, frac=0.0, default_len=10, charset=' ▏▎▍▌▋▊▉█', colour=None)  [tqdm/std.py:151]
+              Bar.colour(self=<Bar>, value=None)  [tqdm/std.py:165]
+                → None
+              → None
+            _is_ascii(s=' ▏▎▍▌▋▊▉█')  [tqdm/utils.py:256]
+              → False
+            … _is_ascii ×1 more  [tqdm/utils.py:256]
+            Bar.__format__(self=<Bar>, format_spec='')  [tqdm/std.py:183]
+              Bar.colour(self=<Bar>)  [tqdm/std.py:161]
+                → None
+              → '          '
+            → 'Processing a:   0%|          | 0/4 [00:00<?, ?it/s]'
+          → 'Processing a:   0%|          | 0/4 [00:00<?, ?it/s]'
+        tqdm.status_printer.<locals>.print_status(s='Processing a:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/std.py:455]
+          disp_len(data='Processing a:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/utils.py:307]
+            _text_width(s='Processing a:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/utils.py:303]
+              → 51
+            → 51
+          tqdm.status_printer.<locals>.fp_write(s='\rProcessing a:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/std.py:449]
+            DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+              → 52
+            … DisableOnWriteError.disable_on_exception.<locals>.inner ×1 more  [tqdm/utils.py:177]
+            → None
+          → None
+        → True
+      TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+        → None
+      → True
+    → None
+  tqdm.__iter__(self=<tqdm>)  [tqdm/std.py:1166]
+    → 'b'
+  tqdm.set_description(self=<tqdm>, desc='Processing b', refresh=True)  [tqdm/std.py:1389]
+    tqdm.refresh(self=<tqdm>, nolock=False, lock_args=None)  [tqdm/std.py:1332]
+      TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+        → None
+      tqdm.display(self=<tqdm>, msg=None, pos=None)  [tqdm/std.py:1471]
+        tqdm.__str__(self=<tqdm>)  [tqdm/std.py:1156]
+          tqdm.format_dict(self=<tqdm>)  [tqdm/std.py:1453]
+            EMA.__call__(self=<EMA>, x=None)  [tqdm/std.py:228]
+              → 0
+            → {'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.10843706130981445, 'initial': 0, 'n': 0, ...}
+          tqdm.format_meter(n=0, total=4, elapsed=0.10843706130981445, ncols=None, prefix='Processing b: ', ascii=False, unit='it', unit_scale=False, rate=None, bar_format=None, postfix=None, unit_divisor=1000, initial=0, colour=None)  [tqdm/std.py:462]
+            tqdm.format_interval(t=0.10843706130981445)  [tqdm/std.py:397]
+              → '00:00'
+            FormatReplace.__init__(self=<FormatReplace>, replace='')  [tqdm/utils.py:91]
+              → None
+            FormatReplace.__format__(self=<FormatReplace>, _='')  [tqdm/utils.py:95]
+              → ''
+            Bar.__init__(self=<Bar>, frac=0.0, default_len=10, charset=' ▏▎▍▌▋▊▉█', colour=None)  [tqdm/std.py:151]
+              Bar.colour(self=<Bar>, value=None)  [tqdm/std.py:165]
+                → None
+              → None
+            _is_ascii(s=' ▏▎▍▌▋▊▉█')  [tqdm/utils.py:256]
+              → False
+            … _is_ascii ×1 more  [tqdm/utils.py:256]
+            Bar.__format__(self=<Bar>, format_spec='')  [tqdm/std.py:183]
+              Bar.colour(self=<Bar>)  [tqdm/std.py:161]
+                → None
+              → '          '
+            → 'Processing b:   0%|          | 0/4 [00:00<?, ?it/s]'
+          → 'Processing b:   0%|          | 0/4 [00:00<?, ?it/s]'
+        tqdm.status_printer.<locals>.print_status(s='Processing b:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/std.py:455]
+          disp_len(data='Processing b:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/utils.py:307]
+            _text_width(s='Processing b:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/utils.py:303]
+              → 51
+            → 51
+          tqdm.status_printer.<locals>.fp_write(s='\rProcessing b:   0%|          | 0/4 [00:00<?, ?it/s]')  [tqdm/std.py:449]
+            DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+              → 52
+            … DisableOnWriteError.disable_on_exception.<locals>.inner ×1 more  [tqdm/utils.py:177]
+            → None
+          → None
+        → True
+      TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+        → None
+      → True
+    → None
+  tqdm.__iter__(self=<tqdm>)  [tqdm/std.py:1166]
+    tqdm.update(self=<tqdm>, n=2)  [tqdm/std.py:1203]
+      EMA.__call__(self=<EMA>, x=2)  [tqdm/std.py:228]
+        → 1.9999999999999996
+      … EMA.__call__ ×1 more  [tqdm/std.py:228]
+      tqdm.refresh(self=<tqdm>, nolock=False, lock_args=None)  [tqdm/std.py:1332]
+        TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+          → None
+        tqdm.display(self=<tqdm>, msg=None, pos=None)  [tqdm/std.py:1471]
+          tqdm.__str__(self=<tqdm>)  [tqdm/std.py:1156]
+            tqdm.format_dict(self=<tqdm>)  [tqdm/std.py:1453]
+              EMA.__call__(self=<EMA>, x=None)  [tqdm/std.py:228]
+                → 0.11034297943115233
+              … EMA.__call__ ×2 more  [tqdm/std.py:228]
+              → {'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.1105039119720459, 'initial': 0, 'n': 2, ...}
+            tqdm.format_meter(n=2, total=4, elapsed=0.1105039119720459, ncols=None, prefix='Processing b: ', ascii=False, unit='it', unit_scale=False, rate=18.125303578991037, bar_format=None, postfix=None, unit_divisor=1000, initial=0, colour=None)  [tqdm/std.py:462]
+              tqdm.format_interval(t=0.1105039119720459)  [tqdm/std.py:397]
+                → '00:00'
+              … tqdm.format_interval ×1 more  [tqdm/std.py:397]
+              FormatReplace.__init__(self=<FormatReplace>, replace='')  [tqdm/utils.py:91]
+                → None
+              FormatReplace.__format__(self=<FormatReplace>, _='')  [tqdm/utils.py:95]
+                → ''
+              Bar.__init__(self=<Bar>, frac=0.5, default_len=10, charset=' ▏▎▍▌▋▊▉█', colour=None)  [tqdm/std.py:151]
+                Bar.colour(self=<Bar>, value=None)  [tqdm/std.py:165]
+                  → None
+                → None
+              _is_ascii(s=' ▏▎▍▌▋▊▉█')  [tqdm/utils.py:256]
+                → False
+              … _is_ascii ×1 more  [tqdm/utils.py:256]
+              Bar.__format__(self=<Bar>, format_spec='')  [tqdm/std.py:183]
+                Bar.colour(self=<Bar>)  [tqdm/std.py:161]
+                  → None
+                → '█████     '
+              → 'Processing b:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]'
+            → 'Processing b:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]'
+          tqdm.status_printer.<locals>.print_status(s='Processing b:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/std.py:455]
+            disp_len(data='Processing b:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/utils.py:307]
+              _text_width(s='Processing b:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/utils.py:303]
+                → 59
+              → 59
+            tqdm.status_printer.<locals>.fp_write(s='\rProcessing b:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/std.py:449]
+              DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+                → 60
+              … DisableOnWriteError.disable_on_exception.<locals>.inner ×1 more  [tqdm/utils.py:177]
+              → None
+            → None
+          → True
+        TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+          → None
+        → True
+      EMA.__call__(self=<EMA>, x=1.8125303578991039)  [tqdm/std.py:228]
+        → 1.8125303578991034
+      → True
+    → 'c'
+  tqdm.set_description(self=<tqdm>, desc='Processing c', refresh=True)  [tqdm/std.py:1389]
+    tqdm.refresh(self=<tqdm>, nolock=False, lock_args=None)  [tqdm/std.py:1332]
+      TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+        → None
+      tqdm.display(self=<tqdm>, msg=None, pos=None)  [tqdm/std.py:1471]
+        tqdm.__str__(self=<tqdm>)  [tqdm/std.py:1156]
+          tqdm.format_dict(self=<tqdm>)  [tqdm/std.py:1453]
+            EMA.__call__(self=<EMA>, x=None)  [tqdm/std.py:228]
+              → 0.11034297943115233
+            … EMA.__call__ ×2 more  [tqdm/std.py:228]
+            → {'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.1675429344177246, 'initial': 0, 'n': 2, ...}
+          tqdm.format_meter(n=2, total=4, elapsed=0.1675429344177246, ncols=None, prefix='Processing c: ', ascii=False, unit='it', unit_scale=False, rate=18.125303578991037, bar_format=None, postfix=None, unit_divisor=1000, initial=0, colour=None)  [tqdm/std.py:462]
+            tqdm.format_interval(t=0.1675429344177246)  [tqdm/std.py:397]
+              → '00:00'
+            … tqdm.format_interval ×1 more  [tqdm/std.py:397]
+            FormatReplace.__init__(self=<FormatReplace>, replace='')  [tqdm/utils.py:91]
+              → None
+            FormatReplace.__format__(self=<FormatReplace>, _='')  [tqdm/utils.py:95]
+              → ''
+            Bar.__init__(self=<Bar>, frac=0.5, default_len=10, charset=' ▏▎▍▌▋▊▉█', colour=None)  [tqdm/std.py:151]
+              Bar.colour(self=<Bar>, value=None)  [tqdm/std.py:165]
+                → None
+              → None
+            _is_ascii(s=' ▏▎▍▌▋▊▉█')  [tqdm/utils.py:256]
+              → False
+            … _is_ascii ×1 more  [tqdm/utils.py:256]
+            Bar.__format__(self=<Bar>, format_spec='')  [tqdm/std.py:183]
+              Bar.colour(self=<Bar>)  [tqdm/std.py:161]
+                → None
+              → '█████     '
+            → 'Processing c:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]'
+          → 'Processing c:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]'
+        tqdm.status_printer.<locals>.print_status(s='Processing c:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/std.py:455]
+          disp_len(data='Processing c:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/utils.py:307]
+            _text_width(s='Processing c:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/utils.py:303]
+              → 59
+            → 59
+          tqdm.status_printer.<locals>.fp_write(s='\rProcessing c:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/std.py:449]
+            DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+              → 60
+            … DisableOnWriteError.disable_on_exception.<locals>.inner ×1 more  [tqdm/utils.py:177]
+            → None
+          → None
+        → True
+      TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+        → None
+      → True
+    → None
+  tqdm.__iter__(self=<tqdm>)  [tqdm/std.py:1166]
+    → 'd'
+  tqdm.set_description(self=<tqdm>, desc='Processing d', refresh=True)  [tqdm/std.py:1389]
+    tqdm.refresh(self=<tqdm>, nolock=False, lock_args=None)  [tqdm/std.py:1332]
+      TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+        → None
+      tqdm.display(self=<tqdm>, msg=None, pos=None)  [tqdm/std.py:1471]
+        tqdm.__str__(self=<tqdm>)  [tqdm/std.py:1156]
+          tqdm.format_dict(self=<tqdm>)  [tqdm/std.py:1453]
+            EMA.__call__(self=<EMA>, x=None)  [tqdm/std.py:228]
+              → 0.11034297943115233
+            … EMA.__call__ ×2 more  [tqdm/std.py:228]
+            → {'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.22532391548156738, 'initial': 0, 'n': 2, ...}
+          tqdm.format_meter(n=2, total=4, elapsed=0.22532391548156738, ncols=None, prefix='Processing d: ', ascii=False, unit='it', unit_scale=False, rate=18.125303578991037, bar_format=None, postfix=None, unit_divisor=1000, initial=0, colour=None)  [tqdm/std.py:462]
+            tqdm.format_interval(t=0.22532391548156738)  [tqdm/std.py:397]
+              → '00:00'
+            … tqdm.format_interval ×1 more  [tqdm/std.py:397]
+            FormatReplace.__init__(self=<FormatReplace>, replace='')  [tqdm/utils.py:91]
+              → None
+            FormatReplace.__format__(self=<FormatReplace>, _='')  [tqdm/utils.py:95]
+              → ''
+            Bar.__init__(self=<Bar>, frac=0.5, default_len=10, charset=' ▏▎▍▌▋▊▉█', colour=None)  [tqdm/std.py:151]
+              Bar.colour(self=<Bar>, value=None)  [tqdm/std.py:165]
+                → None
+              → None
+            _is_ascii(s=' ▏▎▍▌▋▊▉█')  [tqdm/utils.py:256]
+              → False
+            … _is_ascii ×1 more  [tqdm/utils.py:256]
+            Bar.__format__(self=<Bar>, format_spec='')  [tqdm/std.py:183]
+              Bar.colour(self=<Bar>)  [tqdm/std.py:161]
+                → None
+              → '█████     '
+            → 'Processing d:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]'
+          → 'Processing d:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]'
+        tqdm.status_printer.<locals>.print_status(s='Processing d:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/std.py:455]
+          disp_len(data='Processing d:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/utils.py:307]
+            _text_width(s='Processing d:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/utils.py:303]
+              → 59
+            → 59
+          tqdm.status_printer.<locals>.fp_write(s='\rProcessing d:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]')  [tqdm/std.py:449]
+            DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+              → 60
+            … DisableOnWriteError.disable_on_exception.<locals>.inner ×1 more  [tqdm/utils.py:177]
+            → None
+          → None
+        → True
+      TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+        → None
+      → True
+    → None
+  tqdm.__iter__(self=<tqdm>)  [tqdm/std.py:1166]
+    tqdm.update(self=<tqdm>, n=2)  [tqdm/std.py:1203]
+      EMA.__call__(self=<EMA>, x=2)  [tqdm/std.py:228]
+        → 2.0
+      … EMA.__call__ ×1 more  [tqdm/std.py:228]
+      tqdm.refresh(self=<tqdm>, nolock=False, lock_args=None)  [tqdm/std.py:1332]
+        TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+          → None
+        tqdm.display(self=<tqdm>, msg=None, pos=None)  [tqdm/std.py:1471]
+          tqdm.__str__(self=<tqdm>)  [tqdm/std.py:1156]
+            tqdm.format_dict(self=<tqdm>)  [tqdm/std.py:1453]
+              EMA.__call__(self=<EMA>, x=None)  [tqdm/std.py:228]
+                → 0.1142889471615062
+              … EMA.__call__ ×2 more  [tqdm/std.py:228]
+              → {'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.22755885124206543, 'initial': 0, 'n': 4, ...}
+            tqdm.format_meter(n=4, total=4, elapsed=0.22755885124206543, ncols=None, prefix='Processing d: ', ascii=False, unit='it', unit_scale=False, rate=17.499504979897324, bar_format=None, postfix=None, unit_divisor=1000, initial=0, colour=None)  [tqdm/std.py:462]
+              tqdm.format_interval(t=0.22755885124206543)  [tqdm/std.py:397]
+                → '00:00'
+              … tqdm.format_interval ×1 more  [tqdm/std.py:397]
+              FormatReplace.__init__(self=<FormatReplace>, replace='')  [tqdm/utils.py:91]
+                → None
+              FormatReplace.__format__(self=<FormatReplace>, _='')  [tqdm/utils.py:95]
+                → ''
+              Bar.__init__(self=<Bar>, frac=1.0, default_len=10, charset=' ▏▎▍▌▋▊▉█', colour=None)  [tqdm/std.py:151]
+                Bar.colour(self=<Bar>, value=None)  [tqdm/std.py:165]
+                  → None
+                → None
+              _is_ascii(s=' ▏▎▍▌▋▊▉█')  [tqdm/utils.py:256]
+                → False
+              … _is_ascii ×1 more  [tqdm/utils.py:256]
+              Bar.__format__(self=<Bar>, format_spec='')  [tqdm/std.py:183]
+                Bar.colour(self=<Bar>)  [tqdm/std.py:161]
+                  → None
+                → '██████████'
+              → 'Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.50it/s]'
+            → 'Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.50it/s]'
+          tqdm.status_printer.<locals>.print_status(s='Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.50it/s]')  [tqdm/std.py:455]
+            disp_len(data='Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.50it/s]')  [tqdm/utils.py:307]
+              _text_width(s='Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.50it/s]')  [tqdm/utils.py:303]
+                → 59
+              → 59
+            tqdm.status_printer.<locals>.fp_write(s='\rProcessing d: 100%|██████████| 4/4 [00:00<00:00, 17.50it/s]')  [tqdm/std.py:449]
+              DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+                → 60
+              … DisableOnWriteError.disable_on_exception.<locals>.inner ×1 more  [tqdm/utils.py:177]
+              → None
+            → None
+          → True
+        TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+          → None
+        → True
+      EMA.__call__(self=<EMA>, x=1.7086550917816143)  [tqdm/std.py:228]
+        → 1.7514272601829333
+      → True
+    tqdm.close(self=<tqdm>)  [tqdm/std.py:1270]
+      tqdm._decr_instances(cls=<type>, instance=<tqdm.std.tqdm object at 0x109a02210>)  [tqdm/std.py:687]
+        TqdmDefaultWriteLock.__enter__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:108]
+          TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+            → None
+          → None
+        tqdm.__hash__(self=<tqdm>)  [tqdm/std.py:1163]
+          → 4456456720
+        Comparable.__eq__(self=<tqdm>, other=<tqdm.std.tqdm object at 0x109a02210>)  [tqdm/utils.py:108]
+          tqdm._comparable(self=<tqdm>)  [tqdm/std.py:1159]
+            → 0
+          … tqdm._comparable ×1 more  [tqdm/std.py:1159]
+          → True
+        TqdmDefaultWriteLock.__exit__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:111]
+          TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+            → None
+          → None
+        → None
+      tqdm.close.<locals>.fp_write(s='')  [tqdm/std.py:1293]
+        DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+          → 0
+        → None
+      TqdmDefaultWriteLock.__enter__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:108]
+        TqdmDefaultWriteLock.acquire(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:100]
+          → None
+        → None
+      tqdm.display(self=<tqdm>, msg=None, pos=0)  [tqdm/std.py:1471]
+        tqdm.__str__(self=<tqdm>)  [tqdm/std.py:1156]
+          tqdm.format_dict(self=<tqdm>)  [tqdm/std.py:1453]
+            → {'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.230072021484375, 'initial': 0, 'n': 4, ...}
+          tqdm.format_meter(n=4, total=4, elapsed=0.230072021484375, ncols=None, prefix='Processing d: ', ascii=False, unit='it', unit_scale=False, rate=None, bar_format=None, postfix=None, unit_divisor=1000, initial=0, colour=None)  [tqdm/std.py:462]
+            tqdm.format_interval(t=0.230072021484375)  [tqdm/std.py:397]
+              → '00:00'
+            … tqdm.format_interval ×1 more  [tqdm/std.py:397]
+            FormatReplace.__init__(self=<FormatReplace>, replace='')  [tqdm/utils.py:91]
+              → None
+            FormatReplace.__format__(self=<FormatReplace>, _='')  [tqdm/utils.py:95]
+              → ''
+            Bar.__init__(self=<Bar>, frac=1.0, default_len=10, charset=' ▏▎▍▌▋▊▉█', colour=None)  [tqdm/std.py:151]
+              Bar.colour(self=<Bar>, value=None)  [tqdm/std.py:165]
+                → None
+              → None
+            _is_ascii(s=' ▏▎▍▌▋▊▉█')  [tqdm/utils.py:256]
+              → False
+            … _is_ascii ×1 more  [tqdm/utils.py:256]
+            Bar.__format__(self=<Bar>, format_spec='')  [tqdm/std.py:183]
+              Bar.colour(self=<Bar>)  [tqdm/std.py:161]
+                → None
+              → '██████████'
+            → 'Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.39it/s]'
+          → 'Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.39it/s]'
+        tqdm.status_printer.<locals>.print_status(s='Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.39it/s]')  [tqdm/std.py:455]
+          disp_len(data='Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.39it/s]')  [tqdm/utils.py:307]
+            _text_width(s='Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.39it/s]')  [tqdm/utils.py:303]
+              → 59
+            → 59
+          tqdm.status_printer.<locals>.fp_write(s='\rProcessing d: 100%|██████████| 4/4 [00:00<00:00, 17.39it/s]')  [tqdm/std.py:449]
+            DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+              → 60
+            … DisableOnWriteError.disable_on_exception.<locals>.inner ×1 more  [tqdm/utils.py:177]
+            → None
+          → None
+        → True
+      tqdm.close.<locals>.fp_write(s='\n')  [tqdm/std.py:1293]
+        DisableOnWriteError.disable_on_exception.<locals>.inner()  [tqdm/utils.py:177]
+          → 1
+        → None
+      TqdmDefaultWriteLock.__exit__(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:111]
+        TqdmDefaultWriteLock.release(self=<TqdmDefaultWriteLock>)  [tqdm/std.py:104]
+          → None
+        → None
+      → None
+    → None
+  tqdm.format_dict(self=<tqdm>)  [tqdm/std.py:1453]
+    → {'ascii': False, 'bar_format': None, 'colour': None, 'elapsed': 0.23186588287353516, 'initial': 0, 'n': 4, ...}
+  tqdm.close(self=<tqdm>)  [tqdm/std.py:1270]
+    → None
+  tqdm.__del__(self=<tqdm>)  [tqdm/std.py:1153]
+    tqdm.close(self=<tqdm>)  [tqdm/std.py:1270]
+      → None
+    → None

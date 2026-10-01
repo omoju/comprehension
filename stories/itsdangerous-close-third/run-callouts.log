@@ -1,0 +1,8 @@
+   1. 01-the-world-the-dict-enters.md  833 words, 16 citations, 47s, $0.52  → ok
+   2. 02-becoming-a-payload.md  845 words, 9 citations, 60s, $0.18  → ok
+   3. 03-a-signer-is-built-for-the-job.md  1007 words, 15 citations, 51s, $0.16  → 1 check errors, 1 contradicted
+   4. 04-the-signature-and-the-token-leaves-home.md  1074 words, 17 citations, 56s, $0.18  → ok
+   5. 05-back-from-the-untrusted-world.md  1185 words, 13 citations, 52s, $0.17  → 0 check errors, 1 contradicted
+   6. 06-splitting-the-token-apart.md  1054 words, 22 citations, 79s, $0.24  → ok
+   7. 07-the-verdict.md  1059 words, 17 citations, 73s, $0.23  → ok
+   8. 08-home-again-and-what-was-promised.md  948 words, 20 citations, 52s, $0.17  → ok

@@ -1,0 +1,466 @@
+{
+  "title": "ItsDangerous: What the Signature Actually Promises",
+  "premise": "Your application needs to hand data to someone it does not trust \ntoken in a cookie, an activation link in an email, a state blob passed through a browser \nand get it back later without having stored it server-side. The only thing standing between that round trip and a forged session is a few hundred lines in src/itsdangerous. Someone has to vouch for them: state what they guarantee, under what conditions the guarantee holds, and where a reasonable developer can misuse them into a hole. This story walks the data from the public entry points down through encoding, key derivation, signing, timestamps, serialization and URL-safe packing, and ends with the defaults you would question before signing off.",
+  "reader": "owner",
+  "repo": {
+    "name": "pallets/itsdangerous",
+    "url": "https://github.com/pallets/itsdangerous",
+    "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+    "local_path": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+    "import_path": "src"
+  },
+  "chapters": [
+    {
+      "n": 1,
+      "title": "The Promise at the Front Door",
+      "code": [
+        "src/itsdangerous/__init__.py",
+        "README.md:1-32",
+        "docs/index.rst:10-47",
+        "docs/concepts.rst:1-35"
+      ],
+      "inputs": [],
+      "characters": [
+        "the `itsdangerous` package namespace",
+        "`Signer`",
+        "`Serializer`",
+        "`URLSafeSerializer`",
+        "`TimestampSigner`",
+        "the secret key"
+      ],
+      "facts": [
+        "The package's entire public surface is 17 re-exports in `src/itsdangerous/__init__.py`: three encoding helpers, six exception types, and eight signer/serializer classes. There is no other API.",
+        "There are exactly two layers: `Signer` signs and verifies raw bytes; `Serializer` wraps a signer so non-bytes objects can be serialized, signed, and recovered. Docs steer users to the serializer layer (`docs/concepts.rst`, 'Serializer vs Signer').",
+        "The documented guarantee is tamper detection, not secrecy: 'The receiver can see the data, but they can not modify it unless they also have your key' (`docs/index.rst`).",
+        "Security rests entirely on one input, `secret_key`, which the docs say must be long, random, kept out of source control, and rotated if compromised (`docs/concepts.rst`, 'The Secret Key').",
+        "The README's own example shows the payload of a real token as recognizable base64 of the input dict, so the data in a token is not hidden from its holder."
+      ],
+      "open_questions": [
+        {
+          "id": "q1.1",
+          "question": "A signature is computed over what, exactly \nand what makes a token signed for 'activation' invalid for 'upgrade'?"
+        },
+        {
+          "id": "q1.2",
+          "question": "When verification fails, what does the caller get: an exception, a falsy value, or a partially trusted result?"
+        },
+        {
+          "id": "q1.3",
+          "question": "If the payload is visible in the token, can anyone decode it without the key \nand is any of it encoding rather than encryption?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 2,
+      "title": "Bytes In, Bytes Out: the Encoding Layer",
+      "code": [
+        "src/itsdangerous/encoding.py"
+      ],
+      "inputs": [
+        "The two-layer API and the claim that tokens are readable but not modifiable (ch1)"
+      ],
+      "characters": [
+        "`want_bytes`",
+        "`base64_encode`",
+        "`base64_decode`",
+        "`_base64_alphabet`",
+        "`int_to_bytes` / `bytes_to_int`",
+        "`BadData`"
+      ],
+      "facts": [
+        "`want_bytes` coerces `str` to UTF-8 bytes with `errors='strict'`; everything downstream operates on bytes, so a token's text/bytes distinction is erased before signing.",
+        "`base64_encode` uses `base64.urlsafe_b64encode` and strips `=` padding, so signatures and payloads only ever contain `A-Za-z0-9-_`.",
+        "`base64_decode` is deliberately lenient: it decodes input as ASCII with `errors='ignore'` (silently dropping non-ASCII characters) and re-adds padding before decoding. Only a genuine decode failure raises `BadData`, the library's base exception \nso bad base64 becomes a library error, not a `TypeError` leaking to the caller.",
+        "`_base64_alphabet` is the exact set of characters a signature can contain; it exists so the signer can reject a separator that could collide with a signature.",
+        "`int_to_bytes`/`bytes_to_int` use a fixed `>Q` (8-byte) struct: values above 2**64-1 or byte strings longer than 8 bytes raise `struct.error`, which is *not* a `BadData` subclass."
+      ],
+      "open_questions": [
+        {
+          "id": "q2.1",
+          "question": "`base64_decode` silently discards characters it does not understand. Can an attacker exploit that leniency to make a bad signature decode into a good one?"
+        },
+        {
+          "id": "q2.2",
+          "question": "`bytes_to_int` raises a raw `struct.error` on oversized input. Who catches that, and does it reach the caller as a library exception?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q1.3",
+          "answer": "Everything in a token is base64url encoding, not encryption: `base64_encode` is public, keyless, and reversible by anyone. A token holder can always read the payload."
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "title": "The Failure Vocabulary",
+      "code": [
+        "src/itsdangerous/exc.py",
+        "docs/exceptions.rst"
+      ],
+      "inputs": [
+        "`BadData` as the base error raised by decoding (ch2)"
+      ],
+      "characters": [
+        "`BadData`",
+        "`BadSignature` and its `.payload`",
+        "`BadTimeSignature` and its `.date_signed`",
+        "`SignatureExpired`",
+        "`BadHeader`",
+        "`BadPayload` and its `.original_error`"
+      ],
+      "facts": [
+        "`BadData` is the root of every exception the library defines; catching it catches everything intentional.",
+        "`BadSignature` carries `.payload`: the untrusted value that failed verification. This is deliberate \nthe docstring says you might still want to inspect it \nand it means tampered bytes are handed back to application code by design.",
+        "`SignatureExpired` subclasses `BadTimeSignature` subclasses `BadSignature`, so a broad `except BadSignature` cannot distinguish 'forged' from merely 'too old' unless the handler checks the type.",
+        "`BadTimeSignature.date_signed` is a timezone-aware `datetime` or `None`; since 2.0 it is never a naive datetime or an int (see CHANGES 2.0).",
+        "`BadPayload` descends from `BadData` but **not** from `BadSignature`. It means the signature side is finished and deserialization itself failed, carrying `.original_error`.",
+        "`BadHeader` exists for serializers with a signed header; nothing in this codebase raises it any more (JWS support was removed in 2.1), so it is API surface without a live producer."
+      ],
+      "open_questions": [
+        {
+          "id": "q3.1",
+          "question": "`BadPayload` sits outside the `BadSignature` branch. Does that change how a retry/fallback loop behaves when deserialization fails?"
+        },
+        {
+          "id": "q3.2",
+          "question": "Exceptions hand back the tampered payload. Is that payload ever deserialized automatically, without the application asking?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q1.2",
+          "answer": "Failure is always an exception derived from `BadData`; there is no falsy-return path in the verified API. The one exception-free entry point, `loads_unsafe`, returns a `(valid, payload)` tuple and is documented as dangerous."
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Keys, Salts, and the Choice of Algorithm",
+      "code": [
+        "src/itsdangerous/signer.py:15-73",
+        "src/itsdangerous/signer.py:113-173",
+        "docs/concepts.rst:56-99"
+      ],
+      "inputs": [
+        "`want_bytes` and `_base64_alphabet` (ch2)",
+        "`BadSignature` (ch3)",
+        "The claim that one secret key backs everything (ch1)"
+      ],
+      "characters": [
+        "`SigningAlgorithm`",
+        "`NoneAlgorithm`",
+        "`HMACAlgorithm`",
+        "`_lazy_sha1`",
+        "`_make_keys_list`",
+        "`Signer.__init__`",
+        "`Signer.derive_key`"
+      ],
+      "facts": [
+        "`_make_keys_list` accepts a single `str`/`bytes` or any iterable of them and normalizes to `list[bytes]`, ordered oldest to newest; `Signer.secret_key` is just `secret_keys[-1]`.",
+        "The salt is not a cryptographic salt: `derive_key` mixes it with the secret key to produce a per-context key. Different salts produce different signatures for the same data, which is what stops an 'activate' token from working as an 'upgrade' token (`docs/concepts.rst`).",
+        "`derive_key` supports four schemes. `concat` and the default `django-concat` hash `salt + [b'signer' +] secret_key`; `hmac` HMACs the salt under the secret key; `none` returns the raw secret key unchanged, performing no derivation at all.",
+        "An unrecognized `key_derivation` string is accepted by the constructor and only raises `TypeError` when `derive_key` is first called \na misconfiguration that surfaces at sign/verify time, not at startup.",
+        "`HMACAlgorithm.verify_signature` compares with `hmac.compare_digest`, i.e. constant time, so signature comparison does not leak timing.",
+        "The default digest is `_lazy_sha1`, a wrapper that defers touching `hashlib.sha1` until called. This exists because FIPS builds may not ship SHA-1 and an import-time reference would break before the developer could override it (CHANGES 2.2.0).",
+        "`NoneAlgorithm` returns `b''` as the signature. It is exported in the docs (`docs/signer.rst`) and, if selected, makes every token verify \na genuine footgun living in the public API.",
+        "`SigningAlgorithm.get_signature` raises `NotImplementedError`, so custom algorithms must implement it; `verify_signature` defaults to constant-time comparison against `get_signature`, meaning asymmetric schemes must override both."
+      ],
+      "open_questions": [
+        {
+          "id": "q4.1",
+          "question": "With a list of keys, which one actually signs, and are all of them tried on verification (and in what order)?"
+        },
+        {
+          "id": "q4.2",
+          "question": "SHA-1 is the default digest in 2025. Is that a defensible choice or a finding?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q1.1",
+          "answer": "The signature covers the value bytes only, under a key derived from `secret_key` + `salt`. Context separation comes from the salt: it changes the derived key, so a token signed under one salt fails verification under another."
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Sign and Unsign: the Core Guarantee",
+      "code": [
+        "src/itsdangerous/signer.py:140-158",
+        "src/itsdangerous/signer.py:175-266",
+        "docs/signer.rst"
+      ],
+      "inputs": [
+        "`derive_key`, the algorithm object, and the key list ordering (ch4)",
+        "`base64_encode`/`base64_decode` and their leniency (ch2)",
+        "`BadSignature.payload` (ch3)"
+      ],
+      "characters": [
+        "`Signer.sign`",
+        "`Signer.get_signature`",
+        "`Signer.verify_signature`",
+        "`Signer.unsign`",
+        "`Signer.validate`",
+        "`sep`"
+      ],
+      "facts": [
+        "`sign(value)` returns `value + sep + base64(HMAC(derived_key, value))`. The original value is passed through verbatim \nthe token is the plaintext plus a tag.",
+        "The constructor rejects any `sep` that appears in `_base64_alphabet` with a `ValueError`, because a separator that can occur inside a signature would make parsing ambiguous. Default is `b'.'`.",
+        "`unsign` splits with `rsplit(sep, 1)`, so the value may itself contain the separator; only the final segment is treated as the signature.",
+        "`verify_signature` iterates `reversed(self.secret_keys)` \nnewest key first \nand returns `True` on the first match, giving key rotation: sign with the newest, accept any listed key.",
+        "If base64-decoding the signature raises at all, `verify_signature` returns `False` rather than propagating; a malformed signature is simply an invalid one.",
+        "On mismatch, `unsign` raises `BadSignature(..., payload=value)`: the caller gets the unverified value attached to the exception.",
+        "`validate` is `unsign` wrapped in `except BadSignature: return False` \nit swallows only signature errors, not programming errors like the `TypeError` from an unknown key derivation.",
+        "The guarantee, stated precisely: given a secret key the attacker does not hold and an algorithm that is not `NoneAlgorithm`, `unsign` returns only byte strings that were produced by `sign` under one of the configured keys and the same salt/derivation/digest. It says nothing about freshness, uniqueness, or who the token belongs to."
+      ],
+      "open_questions": [
+        {
+          "id": "q5.1",
+          "question": "Nothing here binds a token to a moment in time; a valid token is valid forever and can be replayed. How is expiry added, and does it change the verification guarantee?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q2.1",
+          "answer": "No. The lenient base64 decode is applied only to the *presented signature*, which is then compared with `hmac.compare_digest` against a freshly computed digest. Dropping characters can only produce a different byte string, which fails the comparison; it cannot make a wrong signature equal the right one."
+        },
+        {
+          "id": "q4.1",
+          "answer": "`get_signature` (and therefore `sign`) uses `derive_key()` with no argument, which takes `secret_keys[-1]` \nthe newest key. `verify_signature` tries every key from newest to oldest. So rotation means: append the new key, drop the oldest, old tokens keep validating until their key falls off the list."
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "title": "Adding Time: TimestampSigner",
+      "code": [
+        "src/itsdangerous/timed.py:22-167",
+        "docs/timed.rst"
+      ],
+      "inputs": [
+        "`Signer.sign`/`unsign` and the plaintext-plus-tag token shape (ch5)",
+        "`int_to_bytes`/`bytes_to_int` and their 8-byte limit (ch2)",
+        "`BadTimeSignature`, `SignatureExpired`, `.date_signed` (ch3)"
+      ],
+      "characters": [
+        "`TimestampSigner`",
+        "`get_timestamp`",
+        "`timestamp_to_datetime`",
+        "`TimestampSigner.sign`",
+        "`TimestampSigner.unsign`",
+        "`max_age`"
+      ],
+      "facts": [
+        "`sign` appends `sep + base64(int_to_bytes(now))` to the value *before* computing the signature, so the timestamp is covered by the HMAC and cannot be edited \nbut it is plainly readable in the token.",
+        "`get_timestamp` is `int(time.time())`: whole seconds from the host clock. Token validity therefore depends on the machine's clock being right, and there is no nonce \nthe same value signed twice in the same second yields the identical token.",
+        "`unsign` does not bail out on a signature error immediately: it catches `BadSignature`, keeps `e.payload` as the working value, splits off the timestamp, and then raises `BadTimeSignature(str(sig_error), payload=value, date_signed=ts_dt)`. A forged token still gets its (attacker-supplied) timestamp parsed and reported.",
+        "If the separator is absent from the result, a stored signature error is re-raised; otherwise `BadTimeSignature('timestamp missing')` \nwhich is what happens when a plain `Signer` token is fed to a `TimestampSigner`.",
+        "Converting the timestamp to a datetime is wrapped against `ValueError`, `OSError` (Windows) and `OverflowError` (32-bit) and turned into `BadTimeSignature('Malformed timestamp')` \nthese are the 2.1.1/2.1.2 overflow fixes in CHANGES.",
+        "With `max_age` set, `age > max_age` raises `SignatureExpired`; so does `age < 0`. A token signed on a host whose clock runs ahead of the verifier's is rejected as expired, by design (CHANGES 2.0, issue 126) \nclock skew across machines is a real operational failure mode.",
+        "`max_age` is optional. Calling `unsign` without it validates the signature and ignores the age entirely, so an expiring token only expires if every call site remembers to pass `max_age`."
+      ],
+      "open_questions": [
+        {
+          "id": "q6.1",
+          "question": "`SignatureExpired` is a `BadSignature` subclass. In a serializer that retries with fallback signers or older keys, does an expired token get retried \nand could it eventually be accepted?"
+        },
+        {
+          "id": "q6.2",
+          "question": "`unsign` returns bytes. How does a caller get a dict back, and is the payload deserialized before or after the signature is checked?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q2.2",
+          "answer": "`TimestampSigner.unsign` wraps `bytes_to_int(base64_decode(ts_bytes))` in a bare `except Exception: pass`, leaving `ts_int` as `None`, which then becomes `BadTimeSignature('Malformed timestamp')`. The raw `struct.error` never escapes; the test `test_malformed_future_timestamp` pins this."
+        },
+        {
+          "id": "q5.1",
+          "answer": "`TimestampSigner` folds the signing time into the signed bytes and checks it at unsign time. The signature guarantee is unchanged; freshness is an extra, opt-in check driven by `max_age` and the host clock. Replay within the window is still possible, and there is no revocation."
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Serializer: Turning Objects Into Signed Strings",
+      "code": [
+        "src/itsdangerous/serializer.py:24-38",
+        "src/itsdangerous/serializer.py:190-234",
+        "src/itsdangerous/serializer.py:236-347",
+        "src/itsdangerous/serializer.py:349-404",
+        "docs/serializer.rst"
+      ],
+      "inputs": [
+        "`Signer` construction and the sign/unsign contract (ch4, ch5)",
+        "`BadPayload` vs `BadSignature` (ch3)",
+        "The tampered `.payload` on exceptions (ch3)"
+      ],
+      "characters": [
+        "`Serializer`",
+        "`default_serializer` (stdlib `json`)",
+        "`is_text_serializer`",
+        "`dump_payload` / `load_payload`",
+        "`make_signer` / `iter_unsigners`",
+        "`dumps` / `loads`",
+        "`loads_unsafe` / `_loads_unsafe_impl`",
+        "`fallback_signers`"
+      ],
+      "facts": [
+        "`loads` verifies first and deserializes second: `self.load_payload(signer.unsign(s))`. Deserialization of a token never runs unless the HMAC matched under some configured key. That ordering is the whole safety argument for allowing pluggable serializers.",
+        "`load_payload` catches *every* exception from the underlying serializer and re-raises `BadPayload(..., original_error=e)`, so serializer-specific errors never leak to the caller.",
+        "The default data serializer is the stdlib `json` module; `is_text_serializer` detects text vs binary by actually calling `serializer.dumps({})` once at construction and checking for `str`. A serializer that errors on `{}` will fail at construction time.",
+        "The default salt is `b'itsdangerous'` (different from `Signer`'s own `b'itsdangerous.Signer'`); passing `salt=None` falls through to the signer's default rather than disabling the salt.",
+        "`iter_unsigners` yields the primary signer first (which holds the full key list and rotates internally), then, for each fallback entry, one signer *per secret key* \ndict means 'same signer class, these kwargs', a class means 'this class, my kwargs', a tuple means both. This is the documented upgrade path for changing a digest method without invalidating old tokens (`docs/serializer.rst`, 'Fallback Signers').",
+        "`loads` catches only `BadSignature` inside the loop and re-raises the last one if every signer fails, so the caller sees a signature error, never a silent `None`.",
+        "`loads_unsafe` deliberately deserializes an unverified payload and returns `(False, payload)`; its docstring warns 'do not use it with a pickle serializer'. `docs/serializer.rst` also shows an explicit `load_payload(e.payload)` recovery pattern with the same caveat.",
+        "The `serializer=` parameter accepts any object with `dumps`/`loads` \nincluding `pickle`, which the test suite parametrizes over. Combining a pickle serializer with `loads_unsafe` or with the documented recovery pattern is remote code execution on attacker-controlled input."
+      ],
+      "open_questions": [
+        {
+          "id": "q7.1",
+          "question": "`dumps` can return either text or bytes, and JSON output can contain characters that are awkward in a URL or cookie. What makes a token safe to put in a URL, and what does that add to the pipeline?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q3.1",
+          "answer": "Yes, materially. The retry loop in `loads` catches `BadSignature` only. Because `BadPayload` is outside that branch, a signature that verifies but whose body fails to deserialize aborts immediately and propagates \nno further fallback signers or keys are tried, and the caller sees `BadPayload`, not `BadSignature`."
+        },
+        {
+          "id": "q3.2",
+          "answer": "Not by `loads`. The tampered payload is only deserialized if the application opts in \neither by calling `loads_unsafe`/`load_unsafe`, or by following the docs' pattern of calling `load_payload(e.payload)` in the exception handler. Both are explicitly flagged as unsafe with a non-JSON serializer."
+        },
+        {
+          "id": "q6.2",
+          "answer": "Through `Serializer.loads`, which calls `signer.unsign(s)` and only then `load_payload` on the result. Verification strictly precedes deserialization on the safe path."
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "title": "TimedSerializer: Expiry Through the Serializer Layer",
+      "code": [
+        "src/itsdangerous/timed.py:170-228"
+      ],
+      "inputs": [
+        "`TimestampSigner.unsign` with `max_age`/`return_timestamp` (ch6)",
+        "`Serializer.loads` and its fallback loop (ch7)",
+        "`SignatureExpired` and its position in the exception tree (ch3)"
+      ],
+      "characters": [
+        "`TimedSerializer`",
+        "`default_signer = TimestampSigner`",
+        "`TimedSerializer.loads`",
+        "`TimedSerializer.loads_unsafe`"
+      ],
+      "facts": [
+        "`TimedSerializer` changes exactly one default \n`default_signer` becomes `TimestampSigner` \nand overrides `loads`/`loads_unsafe` to thread `max_age` through.",
+        "`loads` always calls the signer with `return_timestamp=True` and discards the timestamp unless the caller asked for it, so the age check happens on every call where `max_age` is given.",
+        "`SignatureExpired` is re-raised immediately inside the loop, with an explicit comment: the signature verified, so trying older keys or fallback signers would be pointless. Only other `BadSignature` failures continue the loop.",
+        "The override is signature-incompatible with the base class: `Serializer.loads(s, salt=...)` has `salt` second, while `TimedSerializer.loads(s, max_age, return_timestamp, salt)` has it fourth. Code written against the base class that passes `salt` positionally will silently pass it as `max_age`. The source carries a `# TODO` and a `type: ignore[override]` admitting this.",
+        "`loads_unsafe` routes through `_loads_unsafe_impl` with `load_kwargs={'max_age': max_age}`, so the unsafe path still applies the age check on the verified attempt \nbut on failure it still deserializes the unverified payload."
+      ],
+      "open_questions": [
+        {
+          "id": "q8.1",
+          "question": "When a token is valid but expired, the application often still wants to know who it was for. Is that data recoverable, and at what risk?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q6.1",
+          "answer": "No. `SignatureExpired` is caught by its own `except` clause before the generic `except BadSignature` and re-raised, so the fallback/rotation loop stops. An expired token cannot become valid by being retried against another key or digest."
+        }
+      ]
+    },
+    {
+      "n": 9,
+      "title": "URL-Safe Packing and the Compression Decision",
+      "code": [
+        "src/itsdangerous/url_safe.py",
+        "src/itsdangerous/_json.py",
+        "docs/url_safe.rst"
+      ],
+      "inputs": [
+        "`dump_payload`/`load_payload` as the extension points (ch7)",
+        "`base64_encode`/`base64_decode` and `BadPayload` (ch2, ch3)",
+        "`TimedSerializer` as the timed base (ch8)"
+      ],
+      "characters": [
+        "`URLSafeSerializerMixin`",
+        "`_CompactJSON`",
+        "`URLSafeSerializer`",
+        "`URLSafeTimedSerializer`",
+        "`zlib`"
+      ],
+      "facts": [
+        "The mixin overrides only `dump_payload` and `load_payload`; signing, key rotation and expiry behaviour are inherited unchanged from `Serializer`/`TimedSerializer`.",
+        "`_CompactJSON` is stdlib json with `separators=(',',':')` and `ensure_ascii=False` \nsmaller tokens, and non-ASCII survives as UTF-8 rather than `\\uXXXX` escapes.",
+        "`dump_payload` zlib-compresses and keeps the compressed form only if it saves more than one byte, then base64url-encodes and prefixes `b'.'` to mark compression. The resulting alphabet is letters, digits, `-`, `_`, `.` \nsafe in URLs and cookies.",
+        "The compression marker `.` is the same character as the default separator, which is harmless only because `unsign` splits on the *last* separator (ch5).",
+        "`load_payload` reports base64 failure and zlib failure as two distinct `BadPayload` messages, each carrying `original_error`, before delegating to the base `load_payload` for JSON decoding.",
+        "On the safe path (`loads`), decompression runs only after the signature verified, so `zlib.decompress` is never fed attacker-chosen bytes. On the `loads_unsafe`/`load_payload(e.payload)` path it is \nand `zlib.decompress` here is unbounded, so a decompression bomb is a denial-of-service on exactly those unsafe paths.",
+        "Compression is applied to the whole payload before signing. If a token ever mixes a secret with attacker-influenced data, the token's *length* leaks information about their overlap \nthe classic CRIME-style side channel. Nothing in the library warns about this.",
+        "`URLSafeTimedSerializer(URLSafeSerializerMixin, TimedSerializer[str])` gets its `dump_payload`/`load_payload` from the mixin (first in MRO) and its `loads`/`default_signer` from `TimedSerializer`."
+      ],
+      "open_questions": [
+        {
+          "id": "q9.1",
+          "question": "Given that the payload is readable and its compressed length is observable, can a token carry anything the recipient should not know?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q7.1",
+          "answer": "`URLSafeSerializerMixin` base64url-encodes the serialized payload (optionally zlib-compressed, flagged by a leading `.`), restricting the token to `A-Za-z0-9-_.`. It is a payload-encoding layer bolted onto the same signing pipeline, not a separate security mechanism."
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "title": "The Sign-Off: Defaults, Failure Modes, and What to Ask",
+      "code": [
+        "docs/concepts.rst:101-154",
+        "src/itsdangerous/signer.py:114-127",
+        "src/itsdangerous/serializer.py:92-104",
+        "CHANGES.rst:1-97"
+      ],
+      "inputs": [
+        "The full pipeline: encoding (ch2), errors (ch3), keys and algorithms (ch4), sign/unsign (ch5), timestamps (ch6), serialization (ch7), expiry (ch8), URL packing (ch9)"
+      ],
+      "characters": [
+        "`default_digest_method` (`_lazy_sha1`)",
+        "`default_key_derivation` ('django-concat')",
+        "`default_fallback_signers` (empty)",
+        "`default_serializer` (json)",
+        "`NoneAlgorithm`",
+        "`loads_unsafe`"
+      ],
+      "facts": [
+        "The guarantee in one sentence: with a secret key the attacker does not hold, `loads`/`unsign` return only values this library produced under one of the configured keys, the same salt, and compatible signing parameters \nand, if `max_age` is passed, signed within that window according to the verifying host's clock.",
+        "What it does not guarantee: confidentiality (payloads are plain base64), revocation (no server state), uniqueness (no nonce; identical input in the same second yields an identical token), binding to a recipient or session, and protection against replay inside the validity window.",
+        "Deliberate defaults that carry risk: SHA-1 as `default_digest_method`, `django-concat` key derivation, empty `default_fallback_signers` (the SHA-512 fallback was removed in 2.0, CHANGES issue 155), and `max_age` being optional on every timed call.",
+        "Deliberate escape hatches that carry risk: `NoneAlgorithm`, `key_derivation='none'`, an arbitrary `serializer=` (pickle is supported and tested), and `loads_unsafe`/`load_unsafe`, which deserialize unverified data by contract.",
+        "The library's own operational advice lives in `docs/concepts.rst`: keep the secret key out of source control, use distinct salts per context, and rotate by passing a key list oldest-to-newest \nrotation logic itself is explicitly out of scope.",
+        "Questions worth asking a team before sign-off: is `max_age` passed at every timed call site; are `loads_unsafe`/`load_payload(e.payload)` used anywhere, and with which serializer; is `serializer=` ever non-JSON; are salts distinct per context; how is the secret key supplied and rotated; and is `TimedSerializer.loads` ever called with a positional third argument that was meant to be `salt`."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q4.2",
+          "answer": "Defensible, and argued explicitly in `docs/concepts.rst`, 'Digest Method Security': SHA-1's collision weakness does not transfer to its use as the iterated inner hash of HMAC (even MD5 remains secure there). A team that must satisfy a policy can pass `digest_method=hashlib.sha512` and add a SHA-1 `fallback_signers` entry to keep old tokens valid, at the cost of longer tokens. The separate FIPS concern is handled by `_lazy_sha1` deferring the `hashlib.sha1` lookup to call time."
+        },
+        {
+          "id": "q8.1",
+          "answer": "Yes: `SignatureExpired` inherits `.payload` from `BadSignature`, and because expiry is raised only after the HMAC verified, that payload is authentic \n`test_max_age` in tests/test_itsdangerous/test_timed.py asserts `serializer.load_payload(exc.payload) == value`. The risk is that the identical code path also exists for genuinely forged tokens, where `.payload` is attacker-controlled; handlers must distinguish `SignatureExpired` from plain `BadSignature` before trusting it."
+        },
+        {
+          "id": "q9.1",
+          "answer": "No. The payload is base64url of the serialized object \nkeyless and reversible (ch2) \nand with the URL-safe serializers the compressed length additionally leaks structural information about the contents. Tokens are for data the holder may read; anything secret must be encrypted separately or kept server-side and referenced by an opaque id."
+        }
+      ]
+    }
+  ]
+}

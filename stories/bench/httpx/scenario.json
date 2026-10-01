@@ -1,0 +1,4 @@
+{
+  "why": "The docs' WSGI transport example (docs/advanced/transports.md, \"WSGI Transport\" \u2192 `transport = httpx.WSGITransport(app=app)`, `with httpx.Client(transport=transport, base_url=\"http://testserver\") as client: r = client.get(\"/\")`, asserting `r.status_code == 200` and `r.text == \"Hello World!\"`) is the canonical first-shown usage that needs no network, and it exercises the full intended journey: request building/header merging in `Client`, dispatch through the transport, and response decoding into text.",
+  "attempts": 1
+}

@@ -1,0 +1,310 @@
+scenario()  [scenario.py:1]
+  command(name=None, cls=<NoneType>)  [src/click/decorators.py:168]
+    → <function command.<locals>.decorator at 0x10bc09ee0>
+  option(cls=<NoneType>)  [src/click/decorators.py:352]
+    → <function option.<locals>.decorator at 0x10bc40e00>
+  … option ×1 more  [src/click/decorators.py:352]
+  option.<locals>.decorator(f=<function hello at 0x10bc41800>)  [src/click/decorators.py:373]
+    Option.__init__(self=<Option>, param_decls=('--name',), show_default=None, prompt='Your name', confirmation_prompt=False, prompt_required=True, hide_input=False, is_flag=None, flag_value=Sentinel.UNSET, multiple=False, count=False, allow_from_autoenv=True, type=None, help='The person to greet.', hidden=False, show_choices=True, show_envvar=False, deprecated=False)  [src/click/core.py:3055]
+      Parameter.__init__(self=<Option>, param_decls=('--name',), type=None, required=False, default=Sentinel.UNSET, callback=None, nargs=None, multiple=False, metavar=None, expose_value=True, is_eager=False, envvar=None, shell_complete=None, deprecated=False, help='The person to greet.')  [src/click/core.py:2356]
+        Option._parse_decls(self=<Option>, decls=('--name',), expose_value=True)  [src/click/core.py:3355]
+          _split_opt(opt='--name')  [src/click/parser.py:111]
+            → ('--', 'name')
+          Parameter._check_name_is_usable(self=<Option>, name='name', decls=('--name',))  [src/click/core.py:2482]
+            → None
+          → ('name', ['--name'], [])
+        convert_type(ty=None, default=Sentinel.UNSET)  [src/click/types.py:1356]
+          _guess_type(ty=None, default=Sentinel.UNSET)  [src/click/types.py:1311]
+            → <enum 'Sentinel'>
+          → STRING
+        → None
+      Option._infer_flag_kind(self=<Option>, is_flag=None, flag_value=Sentinel.UNSET)  [src/click/core.py:3155]
+        → (False, False)
+      Option._pick_type(self=<Option>, type_arg=None, flag_value=Sentinel.UNSET, count=False, is_flag=False)  [src/click/core.py:3188]
+        → STRING
+      Option._validate(self=<Option>, prompt='Your name', deprecated=False)  [src/click/core.py:3251]
+        Option.is_bool_flag(self=<Option>)  [src/click/core.py:3133]
+          → False
+        … Option.is_bool_flag ×1 more  [src/click/core.py:3133]
+        → None
+      → None
+    _param_memo(f=<function hello at 0x10bc41800>, param=<Option name>)  [src/click/decorators.py:314]
+      → None
+    → <function hello at 0x10bc41800>
+  … option.<locals>.decorator ×1 more  [src/click/decorators.py:373]
+  command.<locals>.decorator(f=<function hello at 0x10bc41800>)  [src/click/decorators.py:217]
+    Command.__init__(self=<Command>, name='hello', context_settings=None, callback=<function hello at 0x10bc41800>, params=[<Option count>, <Option name>], help='Simple program that greets NAME for a total of COUNT times.', epilog=None, short_help=None, options_metavar='[OPTIONS]', add_help_option=True, no_args_is_help=False, hidden=False, deprecated=False)  [src/click/core.py:1061]
+      → None
+    → <Command hello>
+  CliRunner.__init__(self=<CliRunner>, charset='utf-8', env=None, echo_stdin=False, catch_exceptions=True, capture='sys')  [src/click/testing.py:360]
+    → None
+  CliRunner.invoke(self=<CliRunner>, cli=<Command hello>, args=['--count=3'], input='Click\n', env=None, catch_exceptions=None, color=False)  [src/click/testing.py:596]
+    CliRunner.isolation(self=<CliRunner>, input='Click\n', env=None, color=False)  [src/click/testing.py:398]
+      make_input_stream(input='Click\n', charset='utf-8')  [src/click/testing.py:211]
+        → <_io.BytesIO object at 0x10bc49760>
+      CliRunner.make_env(self=<CliRunner>, overrides=None)  [src/click/testing.py:389]
+        → {}
+      StreamMixer.__init__(self=<StreamMixer>)  [src/click/testing.py:150]
+        BytesIOCopy.__init__(self=<BytesIOCopy>, copy_to=<_io.BytesIO object at 0x10bc498a0>)  [src/click/testing.py:125]
+          → None
+        … BytesIOCopy.__init__ ×1 more  [src/click/testing.py:125]
+        → None
+      _NamedTextIOWrapper.__init__(self=<_NamedTextIOWrapper>, buffer=<_io.BytesIO object at 0x10bc49760>, name='<stdin>', mode='r')  [src/click/testing.py:172]
+        → None
+      … _NamedTextIOWrapper.__init__ ×2 more  [src/click/testing.py:172]
+      → (<click.testing.BytesIOCopy object at 0x10bc498f0>, <click.testing.BytesIOCopy object at 0x10bc499e0>, <_io.BytesIO object at 0x10bc498a0>)
+    CliRunner.get_default_prog_name(self=<CliRunner>, cli=<Command hello>)  [src/click/testing.py:382]
+      → 'hello'
+    Command.main(self=<Command>, args=['--count=3'], prog_name='hello', complete_var=None, standalone_mode=True, windows_expand_args=True)  [src/click/core.py:1511]
+      Command._main_shell_completion(self=<Command>, ctx_args={}, prog_name='hello', complete_var=None)  [src/click/core.py:1647]
+        → None
+      Command.make_context(self=<Command>, info_name='hello', args=['--count=3'], parent=None)  [src/click/core.py:1355]
+        Context.__init__(self=<Context>, command=<Command hello>, parent=None, info_name='hello', obj=None, auto_envvar_prefix=None, default_map=None, terminal_width=None, max_content_width=None, resilient_parsing=False, allow_extra_args=None, allow_interspersed_args=None, ignore_unknown_options=None, help_option_names=None, token_normalize_func=None, color=None, show_default=None)  [src/click/core.py:366]
+          → None
+        Context.scope(self=<Context>, cleanup=False)  [src/click/core.py:594]
+          Context.__enter__(self=<Context>)  [src/click/core.py:575]
+            push_context(ctx=<click.core.Context object at 0x10bc11400>)  [src/click/globals.py:44]
+              → None
+            → <click.core.Context object at 0x10bc11400>
+          → <click.core.Context object at 0x10bc11400>
+        Command.parse_args(self=<Command>, ctx=<click.core.Context object at 0x10bc11400>, args=['--count=3'])  [src/click/core.py:1392]
+          Command.make_parser(self=<Command>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:1252]
+            _OptionParser.__init__(self=<_OptionParser>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/parser.py:241]
+              → None
+            Command.get_params(self=<Command>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:1128]
+              Command.get_help_option(self=<Command>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:1218]
+                Command.get_help_option_names(self=<Command>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:1203]
+                  → ['--help']
+                help_option()  [src/click/decorators.py:603]
+                  option(cls=<NoneType>)  [src/click/decorators.py:352]
+                    → <function option.<locals>.decorator at 0x10bc43d80>
+                  → <function option.<locals>.decorator at 0x10bc43d80>
+                option.<locals>.decorator(f=<Command hello>)  [src/click/decorators.py:373]
+                  Option.__init__(self=<Option>, param_decls=('--help', '_click_default_help'), show_default=None, prompt=False, confirmation_prompt=False, prompt_required=True, hide_input=False, is_flag=True, flag_value=Sentinel.UNSET, multiple=False, count=False, allow_from_autoenv=True, type=None, help='Show this message and exit.', hidden=False, show_choices=True, show_envvar=False, deprecated=False)  [src/click/core.py:3055]
+                    Parameter.__init__(self=<Option>, param_decls=('--help', '_click_default_help'), type=None, required=False, default=Sentinel.UNSET, callback=<function help_option.<locals>.show_help at 0x10bc43ba0>, nargs=None, multiple=False, metavar=None, expose_value=False, is_eager=True, envvar=None, shell_complete=None, deprecated=False, help='Show this message and exit.')  [src/click/core.py:2356]
+                      Option._parse_decls(self=<Option>, decls=('--help', '_click_default_help'), expose_value=False)  [src/click/core.py:3355]
+                        _split_opt(opt='--help')  [src/click/parser.py:111]
+                          → ('--', 'help')
+                        Option._check_name_is_normalized(self=<Option>, name='_click_default_help', decls=('--help', '_click_default_help'))  [src/click/core.py:3335]
+                          → None
+                        Parameter._check_name_is_usable(self=<Option>, name='_click_default_help', decls=('--help', '_click_default_help'))  [src/click/core.py:2482]
+                          → None
+                        → ('_click_default_help', ['--help'], [])
+                      convert_type(ty=None, default=Sentinel.UNSET)  [src/click/types.py:1356]
+                        _guess_type(ty=None, default=Sentinel.UNSET)  [src/click/types.py:1311]
+                          → <enum 'Sentinel'>
+                        → STRING
+                      → None
+                    Option._infer_flag_kind(self=<Option>, is_flag=True, flag_value=Sentinel.UNSET)  [src/click/core.py:3155]
+                      → (True, False)
+                    Option._pick_type(self=<Option>, type_arg=None, flag_value=Sentinel.UNSET, count=False, is_flag=True)  [src/click/core.py:3188]
+                      → BOOL
+                    Option._validate(self=<Option>, prompt=False, deprecated=False)  [src/click/core.py:3251]
+                      Option.is_bool_flag(self=<Option>)  [src/click/core.py:3133]
+                        → True
+                      … Option.is_bool_flag ×1 more  [src/click/core.py:3133]
+                      → None
+                    → None
+                  _param_memo(f=<Command hello>, param=<Option _click_default_help>)  [src/click/decorators.py:314]
+                    → None
+                  → <Command hello>
+                → <Option _click_default_help>
+              → [<Option count>, <Option name>, <Option _click_default_help>]
+            Option.add_to_parser(self=<Option>, parser=<click.parser._OptionParser object at 0x10bc11550>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:3422]
+              _OptionParser.add_option(self=<_OptionParser>, obj=<Option count>, opts=['--count'], dest='count', action='store', nargs=1, const=None)  [src/click/parser.py:265]
+                _normalize_opt(opt='--count', ctx=<click.core.Context object at 0x10bc11400>)  [src/click/parser.py:120]
+                  → '--count'
+                _Option.__init__(self=<_Option>, obj=<Option count>, opts=['--count'], dest='count', action='store', nargs=1, const=None)  [src/click/parser.py:128]
+                  _split_opt(opt='--count')  [src/click/parser.py:111]
+                    → ('--', 'count')
+                  → None
+                → None
+              → None
+            … Option.add_to_parser ×2 more  [src/click/core.py:3422]
+            → <click.parser._OptionParser object at 0x10bc11550>
+          _OptionParser.parse_args(self=<_OptionParser>, args=['--count=3'])  [src/click/parser.py:298]
+            _ParsingState.__init__(self=<_ParsingState>, rargs=['--count=3'])  [src/click/parser.py:217]
+              → None
+            _OptionParser._process_args_for_options(self=<_OptionParser>, state=<click.parser._ParsingState object at 0x10bc11fd0>)  [src/click/parser.py:327]
+              _OptionParser._process_opts(self=<_OptionParser>, arg='--count=3', state=<click.parser._ParsingState object at 0x10bc11fd0>)  [src/click/parser.py:470]
+                _normalize_opt(opt='--count', ctx=<click.core.Context object at 0x10bc11400>)  [src/click/parser.py:120]
+                  → '--count'
+                _OptionParser._match_long_opt(self=<_OptionParser>, opt='--count', explicit_value='3', state=<click.parser._ParsingState object at 0x10bc11fd0>)  [src/click/parser.py:363]
+                  _Option.takes_value(self=<_Option>)  [src/click/parser.py:165]
+                    → True
+                  _OptionParser._get_value_from_state(self=<_OptionParser>, option_name='--count', option=<click.parser._Option object at 0x10bc11d30>, state=<click.parser._ParsingState object at 0x10bc11fd0>)  [src/click/parser.py:430]
+                    → '3'
+                  _Option.process(self=<_Option>, value='3', state=<click.parser._ParsingState object at 0x10bc11fd0>)  [src/click/parser.py:169]
+                    → None
+                  → None
+                → None
+              → None
+            _OptionParser._process_args_for_args(self=<_OptionParser>, state=<click.parser._ParsingState object at 0x10bc11fd0>)  [src/click/parser.py:316]
+              _unpack_args(args=[], nargs_spec=[])  [src/click/parser.py:51]
+                → ((), [])
+              → None
+            → ({'count': '3'}, [], [<Option count>])
+          Command.get_params(self=<Command>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:1128]
+            Command.get_help_option(self=<Command>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:1218]
+              Command.get_help_option_names(self=<Command>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:1203]
+                → ['--help']
+              → <Option _click_default_help>
+            → [<Option count>, <Option name>, <Option _click_default_help>]
+          iter_params_for_processing(invocation_order=[<Option count>], declaration_order=[<Option count>, <Option name>, <Option _click_default_help>])  [src/click/core.py:168]
+            iter_params_for_processing.<locals>.sort_key(item=<Option count>)  [src/click/core.py:184]
+              → (True, 0)
+            … iter_params_for_processing.<locals>.sort_key ×2 more  [src/click/core.py:184]
+            → [<Option _click_default_help>, <Option count>, <Option name>]
+          Parameter.handle_parse_result(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>, opts={'count': '3'}, args=[])  [src/click/core.py:2835]
+            Context.get_parameter_source(self=<Context>, name='_click_default_help')  [src/click/core.py:966]
+              → None
+            augment_usage_errors(ctx=<click.core.Context object at 0x10bc11400>, param=<Option _click_default_help>)  [src/click/core.py:149]
+              → None
+            Option.consume_value(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>, opts={'count': '3'})  [src/click/core.py:3726]
+              Parameter.consume_value(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>, opts={'count': '3'})  [src/click/core.py:2586]
+                Option.value_from_envvar(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:3678]
+                  Option.resolve_envvar_value(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:3654]
+                    Parameter.resolve_envvar_value(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:2774]
+                      → None
+                    → None
+                  → None
+                Context.lookup_default(self=<Context>, name='_click_default_help', call=True)  [src/click/core.py:811]
+                  Context._default_map_has(self=<Context>, name='_click_default_help')  [src/click/core.py:787]
+                    → False
+                  → None
+                Context._default_map_has(self=<Context>, name='_click_default_help')  [src/click/core.py:787]
+                  → False
+                Option.get_default(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>, call=True)  [src/click/core.py:3295]
+                  Parameter.get_default(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>, call=False)  [src/click/core.py:2550]
+                    Context.lookup_default(self=<Context>, name='_click_default_help', call=False)  [src/click/core.py:811]
+                      Context._default_map_has(self=<Context>, name='_click_default_help')  [src/click/core.py:787]
+                        → False
+                      → None
+                    Context._default_map_has(self=<Context>, name='_click_default_help')  [src/click/core.py:787]
+                      → False
+                    → Sentinel.UNSET
+                  Option._resolve_lazy_default(self=<Option>, value=Sentinel.UNSET)  [src/click/core.py:3227]
+                    Option.is_bool_flag(self=<Option>)  [src/click/core.py:3133]
+                      → True
+                    → False
+                  → False
+                → (False, <ParameterSource.DEFAULT: 5>)
+              → (False, <ParameterSource.DEFAULT: 5>)
+            Context.set_parameter_source(self=<Context>, name='_click_default_help', source=<ParameterSource.DEFAULT: 5>)  [src/click/core.py:957]
+              → None
+            Option.process_value(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>, value=False)  [src/click/core.py:3782]
+              Option.is_bool_flag(self=<Option>)  [src/click/core.py:3133]
+                → True
+              Parameter.process_value(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>, value=False)  [src/click/core.py:2708]
+                Parameter.type_cast_value(self=<Option>, ctx=<click.core.Context object at 0x10bc11400>, value=False)  [src/click/core.py:2634]
+                  Parameter.type_cast_value.<locals>.convert(value=False)  [src/click/core.py:2659]
+                    ParamType.__call__(self=<BoolParamType>, value=False, param=<Option _click_default_help>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/types.py:159]
+                      BoolParamType.convert(self=<BoolParamType>, value=False, param=<Option _click_default_help>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/types.py:870]
+                        BoolParamType.str_to_bool(value=False)  [src/click/types.py:855]
+                          → False
+                        → False
+                      → False
+                    → False
+                  → False
+                help_option.<locals>.show_help(ctx=<click.core.Context object at 0x10bc11400>, param=<Option _click_default_help>, value=False)  [src/click/decorators.py:612]
+                  → None
+                → None
+              → None
+            augment_usage_errors(ctx=<click.core.Context object at 0x10bc11400>, param=<Option _click_default_help>)  [src/click/core.py:149]
+              → None
+            → (None, [])
+          … Parameter.handle_parse_result ×2 more  [src/click/core.py:2835]
+          → []
+        Context.scope(self=<Context>, cleanup=False)  [src/click/core.py:594]
+          Context.__exit__(self=<Context>, exc_type=None, exc_value=None, tb=None)  [src/click/core.py:580]
+            pop_context()  [src/click/globals.py:49]
+              → None
+            → None
+          → None
+        → <click.core.Context object at 0x10bc11400>
+      Context.__enter__(self=<Context>)  [src/click/core.py:575]
+        push_context(ctx=<click.core.Context object at 0x10bc11400>)  [src/click/globals.py:44]
+          → None
+        → <click.core.Context object at 0x10bc11400>
+      Command.invoke(self=<Command>, ctx=<click.core.Context object at 0x10bc11400>)  [src/click/core.py:1428]
+        Context.invoke(self=<Context>, callback=<function hello at 0x10bc41800>)  [src/click/core.py:883]
+          augment_usage_errors(ctx=<click.core.Context object at 0x10bc11400>, param=None)  [src/click/core.py:149]
+            → None
+          Context.__enter__(self=<Context>)  [src/click/core.py:575]
+            push_context(ctx=<click.core.Context object at 0x10bc11400>)  [src/click/globals.py:44]
+              → None
+            → <click.core.Context object at 0x10bc11400>
+          echo(message='Hello, Click!', file=None, nl=True, err=False, color=None)  [src/click/utils.py:240]
+            _make_cached_stream_func.<locals>.func()  [src/click/_compat.py:553]
+              get_text_stdout(encoding=None, errors=None)  [src/click/_compat.py:347]
+                _get_windows_console_stream(f=<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>, encoding=None, errors=None)  [src/click/_compat.py:530]
+                  → None
+                _force_correct_text_writer(text_writer=<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>, encoding=None, errors=None, force_writable=True)  [src/click/_compat.py:303]
+                  _force_correct_text_stream(text_stream=<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>, encoding=None, errors=None, is_binary=<function _is_binary_writer at 0x10bb645e0>, find_binary=<function _find_binary_writer at 0x10bb64720>, force_readable=False, force_writable=True)  [src/click/_compat.py:241]
+                    _is_binary_writer(stream=<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>, default=False)  [src/click/_compat.py:163]
+                      → False
+                    _is_compatible_text_stream(stream=<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>, encoding=None, errors=None)  [src/click/_compat.py:230]
+                      _is_compat_stream_attr(stream=<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>, attr='encoding', value=None)  [src/click/_compat.py:221]
+                        → True
+                      … _is_compat_stream_attr ×1 more  [src/click/_compat.py:221]
+                      → True
+                    _stream_is_misconfigured(stream=<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>)  [src/click/_compat.py:212]
+                      is_ascii_encoding(encoding='utf-8')  [src/click/_compat.py:43]
+                        → False
+                      → False
+                    → <_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+                  → <_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+                → <_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+              → <_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+            resolve_color_default(color=None)  [src/click/globals.py:54]
+              get_current_context(silent=True)  [src/click/globals.py:20]
+                → <click.core.Context object at 0x10bc11400>
+              → None
+            CliRunner.isolation.<locals>.should_strip_ansi(stream=<_NamedTextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>, color=None)  [src/click/testing.py:506]
+              → True
+            strip_ansi(value='Hello, Click!\n')  [src/click/_compat.py:491]
+              → 'Hello, Click!\n'
+            BytesIOCopy.write(self=<BytesIOCopy>, b=b'Hello, Click!\n')  [src/click/testing.py:133]
+              → 14
+            BytesIOCopy.flush(self=<BytesIOCopy>)  [src/click/testing.py:129]
+              → None
+            → None
+          … echo ×2 more  [src/click/utils.py:240]
+          Context.__exit__(self=<Context>, exc_type=None, exc_value=None, tb=None)  [src/click/core.py:580]
+            pop_context()  [src/click/globals.py:49]
+              → None
+            → None
+          augment_usage_errors(ctx=<click.core.Context object at 0x10bc11400>, param=None)  [src/click/core.py:149]
+            → None
+          → None
+        → None
+      Context.exit(self=<Context>, code=0)  [src/click/core.py:845]
+        Context.close(self=<Context>)  [src/click/core.py:715]
+          Context._close_with_exception_info(self=<Context>, exc_type=None, exc_value=None, tb=None)  [src/click/core.py:722]
+            → False
+          → None
+        Exit.__init__(self=<Exit>, code=0)  [src/click/exceptions.py:377]
+          → None
+        → None
+      Context.__exit__(self=<Context>, exc_type=<class 'click.exceptions.Exit'>, exc_value=Exit(0), tb=<traceback object at 0x10bc98700>)  [src/click/core.py:580]
+        Context._close_with_exception_info(self=<Context>, exc_type=<class 'click.exceptions.Exit'>, exc_value=Exit(0), tb=<traceback object at 0x10bc98700>)  [src/click/core.py:722]
+          → False
+        pop_context()  [src/click/globals.py:49]
+          → None
+        → False
+      → None
+    BytesIOCopy.flush(self=<BytesIOCopy>)  [src/click/testing.py:129]
+      → None
+    … BytesIOCopy.flush ×1 more  [src/click/testing.py:129]
+    CliRunner.isolation(self=<CliRunner>, input='Click\n', env={}, color=False)  [src/click/testing.py:398]
+      _NamedTextIOWrapper.close(self=<_NamedTextIOWrapper>)  [src/click/testing.py:184]
+        → None
+      → None
+    _NamedTextIOWrapper.close(self=<_NamedTextIOWrapper>)  [src/click/testing.py:184]
+      → None
+    Result.__init__(self=<Result>, runner=<click.testing.CliRunner object at 0x10bc102f0>, stdout_bytes=b'Your name: Click\nHello, Click!\nHello, Click!\nHello, Click!\n', stderr_bytes=b'', output_bytes=b'Your name: Click\nHello, Click!\nHello, Click!\nHello, Click!\n', return_value=None, exit_code=0, exception=None, exc_info=(<class 'SystemExit'>, SystemExit(0), <traceback object at 0x10b9e7780>))  [src/click/testing.py:262]
+      → None
+    → <Result okay>
+  Result.output(self=<Result>)  [src/click/testing.py:282]
+    → 'Your name: Click\nHello, Click!\nHello, Click!\nHello, Click!\n'
+  … Result.output ×1 more  [src/click/testing.py:282]

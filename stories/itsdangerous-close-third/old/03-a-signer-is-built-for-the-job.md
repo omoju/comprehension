@@ -1,0 +1,36 @@
+# Chapter 3 · A Signer Is Built for the Job
+
+> **Enters as:** `b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'` — the base64 payload, back in `dumps`, unsigned
+
+The payload comes back from `dump_payload` and is immediately passed through `want_bytes` one more time ([serializer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/serializer.py#L314)). It is already bytes, so the function returns it untouched — the trace records the call and the identical return, `b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'` ([encoding.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/encoding.py#L11-L17)). Belt and braces: `dump_payload` is documented to return bytes, but it is also the method users override, so `dumps` does not take its word for it.
+
+Now the payload waits while a signer is assembled around it. Nothing has been hashed yet.
+
+**Which salt.** `make_signer` is called with `salt=None`, and its first line substitutes the serializer's own salt: `if salt is None: salt = self.salt` ([serializer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/serializer.py#L278-L285)). That is `b'auth'`, stored in chapter 1. This one-line default is what guarantees that a `dumps` and a later `loads` on the same serializer, both without an explicit salt, land in the same signing context. If you pass a salt to one and not the other — as the project's `test_alt_salt` does deliberately — the signatures will not match, and that is the feature.
+
+**Which keys.** The last line hands over `self.secret_keys` — the *whole list*, `[b'secret key']` — plus the salt and `**self.signer_kwargs` (empty here) ([serializer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/serializer.py#L285)). Not one key: all of them. The `Signer` will decide for itself which key signs and which keys verify, and that asymmetry is the whole of key rotation. We will see it resolve in the next chapter.
+
+**The Signer's own construction.** `Signer.__init__` receives `secret_key=[b'secret key']`, `salt=b'auth'`, `sep=b'.'`, and `None` for `key_derivation`, `digest_method` and `algorithm` ([signer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L129-L173)).
+
+It runs the list through `_make_keys_list` again ([signer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L67-L73)) — the argument is not a `str` or `bytes`, so it takes the comprehension branch and `want_bytes` each element, producing `[b'secret key']` a second time. Idempotent, and it means a `Signer` constructed directly by a user gets the same normalisation the `Serializer` already did.
+
+Then `sep` is normalised to bytes, and the check that matters most in this constructor:
+
+```python
+if self.sep in _base64_alphabet:
+    raise ValueError(...)
+```
+
+([signer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L146-L151)). `_base64_alphabet` is the byte string of every ASCII letter, digit, and `-_=` ([encoding.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/encoding.py#L42)) — precisely the characters `base64_encode` can emit. **This is a road our data does not take**, and reader, it is the one I would point to in review. If the separator could appear inside a signature, the `rsplit` on the return trip would cut the token in the wrong place and the failure would be silent and data-dependent — the sort of bug that shows up in one token in a thousand. The library refuses at construction time instead, loudly, with a `ValueError`. `b'.'` is not in that alphabet, so construction proceeds.
+
+Salt is not `None`, so `want_bytes(b'auth')` returns it as-is; had it been `None`, the Signer would have fallen back to its own `b"itsdangerous.Signer"` ([signer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L153-L158)). The remaining defaults fill in: `key_derivation = "django-concat"` and `digest_method = _lazy_sha1` ([signer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L160-L168), defaults declared at [L120](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L120-L127)).
+
+Two things about these defaults deserve a sentence each. `_lazy_sha1` is a function, not `hashlib.sha1` itself — it looks the hash up only when called ([signer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L40-L45)), so on a FIPS build where SHA-1 is absent the import and the construction still succeed and a developer can swap the default before anything blows up. And `key_derivation` is *not* validated here: a typo like `"djangoconcat"` is accepted silently and only raises `TypeError("Unknown key derivation method")` later, from inside `derive_key` ([signer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L212-L213)). A reviewer could reasonably ask why the separator gets an eager check and the derivation scheme does not.
+
+Finally, with no `algorithm` given, an `HMACAlgorithm` is built around the digest method ([signer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L170-L173), [L56-L60](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L56-L60)) — the trace shows `HMACAlgorithm.__init__(digest_method=<function _lazy_sha1>)`. A caller may substitute any `SigningAlgorithm`, including `NoneAlgorithm`, which returns `b""` for every signature and would make every token trivially forgeable ([signer.py](https://github.com/pallets/itsdangerous/blob/672971d66a2ef9f85151e53283113f33d642dabd/src/itsdangerous/signer.py#L31-L37)). The default is the safe one; the escape hatch exists for asymmetric schemes and tests.
+
+`make_signer` returns the fresh object, and the trace records its address: `<itsdangerous.signer.Signer object at 0x10cd174d0>`. Note *fresh* — a new signer is constructed for this single `dumps`, and another will be constructed on the return trip. Signers carry configuration, never per-message state, so there is nothing to reset and nothing to share across threads.
+
+The payload has not changed a byte. What has changed is that there is now something in the room that knows how to vouch for it.
+
+> **Leaves as:** the same `b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'`, now held by a fresh `Signer(secret_keys=[b'secret key'], salt=b'auth', sep=b'.', key_derivation='django-concat', algorithm=HMACAlgorithm(_lazy_sha1))`

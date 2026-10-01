@@ -1,0 +1,15 @@
+== outline
+A Token and Its Word: One Round Trip Through ItsDangerous  [owner]: 8 chapters
+   1. The World the Dict Enters  [trace 4-15]
+   2. Becoming a Payload  [trace 16-28]
+   3. A Signer Is Built for the Job  [trace 29-44]
+   4. The Signature, and the Token Leaves Home  [trace 45-67]
+   5. Back From the Untrusted World  [trace 68-86]
+   6. Splitting the Token Apart  [trace 87-96]
+   7. The Verdict  [trace 97-112]
+   8. Home Again, and What Was Promised  [trace 113-123]
+
+tokens: 7,098 in (+0 cached, 50,476 written to cache), 9,443 out
+== chapters 1-2
+   1. 01-the-world-the-dict-enters.md  675 words, 19 citations, 45s, $0.52  → ok
+   2. 02-becoming-a-payload.md  570 words, 9 citations, 40s, $0.13  → ok
