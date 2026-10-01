@@ -6,8 +6,8 @@ lessons, a short log (newest first), and Omoju's opening paragraph. Code and git
 **State.** CodeStories works end to end. itsdangerous has a complete 8-chapter owner story, all checks passing, on a
 reading page with a control-flow chart of the run: https://claude.ai/artifact/JyeDNbyYZyMt1ivYxWwshL (private; source
 `stories/itsdangerous-close-third/index.html`, rebuild with `render.py`). The other 9 repos (`stories/bench/`) have
-scenarios, compressed traces and **owner outlines that all pass their checks at 10 chapters** (repaired today;
-the previous plans are in `outline.prev.json`). **Chapters for the 9 are not yet generated** (≈ $40–60, ~15 min in
+scenarios, compressed traces and **owner outlines that all pass their checks** (6–10 chapters, every chapter ≥ 5
+calls; repaired today, previous plans in `outline.prev.json`). Pipeline diagram and data-flow table: `codestory/README.md`. **Chapters for the 9 are not yet generated** (≈ $40–60, ~15 min in
 parallel; Omoju's call). Stage 3 (repair loop) is built into `outline.py` and `chapter.py`. No jobs running.
 
 **First thing next session**
@@ -17,12 +17,10 @@ parallel; Omoju's call). Stage 3 (repair loop) is built into `outline.py` and `c
 
 **Open decisions (Omoju)**
 1. When to generate chapters for the 9 repos. The pipeline is ready: `chapter.py stories/bench/<repo>` for each.
-2. The length budget is a count cap (`MAX_CHAPTERS = 10`, `--max-chapters N`). markupsafe met it by merging the
-   minimum: ch1 is 4 trace lines, ch10 is 2. Tighten (a minimum span, or a per-repo cap from the trace), or accept?
-3. Self-story on this repo: `pyproject.toml`, `.codestoryignore`, then run.
-4. A second, cross-vendor judge for the comparison (the code-review paper's cross-model point), or Jev + Claude only?
-5. Keep the "note to Sha" reminder in `NOTES.md`, or move it out before the repo is published?
-6. Optional: `PREREGISTRATION.md` §9 sentences on what "it helps" would feel like.
+2. Self-story on this repo: `pyproject.toml`, `.codestoryignore`, then run.
+3. A second, cross-vendor judge for the comparison (the code-review paper's cross-model point), or Jev + Claude only?
+4. Keep the "note to Sha" reminder in `NOTES.md`, or move it out before the repo is published?
+5. Optional: `PREREGISTRATION.md` §9 sentences on what "it helps" would feel like.
 
 **Next work, in parallel tracks**
 - Generate the 9 stories (decision 1), then read the reports: repairs per chapter is the first number stage 3 gives us.
@@ -41,7 +39,7 @@ story is the stage-3 pass. The judge is reported, never repaired on.
 Checks: `verify.py <dir>` (citations, drift, proofs), `claims.py <dir> <chapter>` (Jev contradiction judge).
 Each repo gets its own environment at `demo-repos/<repo>/.codestory-venv` (created on first use).
 
-**Spend so far:** ≈ $31 on Anthropic (≈ $20 to 09-30; 10-01: 7 outline repairs ≈ $10, repair-loop test ≈ $1.5), pennies on Jev.
+**Spend so far:** ≈ $43 on Anthropic (≈ $20 to 09-30; 10-01: 15 outline repairs ≈ $21, repair-loop test ≈ $1.5), pennies on Jev.
 
 ## The plan to Tuesday 6 October
 Question: is a CodeStory better than generated documentation? Head-to-head against DeepWiki on 10 pure-Python repos
@@ -84,6 +82,9 @@ left, design for verification, context engineering, the quality loop, cross-mode
 - **The reading page** keeps: title, real-world premise, the control-flow chart of *this run*, code beside the text (09-30).
 - **The formal decision rule decides** on 6 October; Omoju's read is recorded first but doesn't override it (09-30).
 - **CLAUDE.md is about the prototypes only**; no personal context in the repo (09-30).
+- **The length budget is two-sided** (10-01): at most `MAX_CHAPTERS` = 10, and every chapter ≥ `MIN_CALLS` = 5 calls
+  of the trace, the minimum in the itsdangerous story that read well. The minimum is what does the work: the
+  trace fixes the total, so a thin span can only pass by merging. With it, the model chose 6–10 chapters itself.
 
 ## Lessons (agentic engineering, with the evidence)
 - **Context is the design surface.** First prompt: 79k tokens for a 1,200-line library, half of it `uv.lock`.
@@ -106,7 +107,8 @@ left, design for verification, context engineering, the quality loop, cross-mode
   failed; the cached context makes the retry cost a fraction of the first turn. Seven outlines fixed in one repair
   each; a chapter with a planted bad citation and a broken proof came back passing in one.
 - **A check on a count gets the minimum.** "At most 10 chapters" was met by merging the two thinnest spans and
-  leaving 2- and 4-line chapters. The check decides what the model optimises; say what you actually want.
+  leaving 1-call chapters. The check decides what the model optimises; say what you actually want (≥ 5 calls per
+  chapter), and calibrate the number on an answer you already know is good.
 - **"Fix only what is named" is a request, not a guarantee.** The repaired chapter also re-cited every link, cut a
   sentence from a callout and rewrote the proof's strategy. Everything still passed; the diff is bigger than the fix.
   Repair from what the checker checked (the file on disk), not from what the model once said.
@@ -117,7 +119,9 @@ left, design for verification, context engineering, the quality loop, cross-mode
   (≈ $1.40 each, dominated by rewriting the repo into cache). `chapter.py`: same loop on deterministic check
   errors; existing chapters are rechecked and repaired on a rerun (the stage-3 pass over a finished story);
   report gains a repairs column. Tested on a copy of itsdangerous ch2 with a planted bad line range + failing
-  assert: fixed in one repair, $1.00.
+  assert: fixed in one repair, $1.00. Then `MIN_CALLS` = 5 added; 8 outlines repaired again (6 in one turn, flask
+  and jinja in two; the second turn read 149k tokens from cache, wrote none). Final: attrs 9, click 9, flask 8,
+  httpx 8, jinja 8, markupsafe 6, requests 10, rich 9, tqdm 9 chapters. `codestory/README.md`: pipeline diagram.
 - **09-30 late** · Repo list approved (prereg §3). To derisk, the riskiest step moved from Friday to now: scenarios for
   all 9 new repos in parallel (`stories/bench/<repo>/`). **9/9 ran**, 8 first try (requests retried: imported the
   repo's tests). Network handled locally (requests: stdlib HTTP server; httpx: WSGITransport). Traces: 81–5,007

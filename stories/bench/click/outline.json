@@ -119,16 +119,21 @@
     },
     {
       "n": 3,
-      "title": "main(): the policy at the door",
+      "title": "main(): the policy at the door, and a context to live in",
       "trace_lines": [
         58,
-        60
+        69
       ],
       "data_in": "`args=['--count=3']`, `prog_name='hello'`, `standalone_mode=True`",
-      "data_out": "an untouched arg list, a completion check that found nothing, and control handed to `make_context` inside a layered `try`",
+      "data_out": "a `Context` with empty `params`, empty `args`, `help_option_names=['--help']`, a fresh `ExitStack`, pushed onto the thread-local stack with `_depth == 2`",
       "code": [
         "src/click/core.py:1511,1562-1645",
-        "src/click/core.py:1647,1665-1677"
+        "src/click/core.py:1647,1665-1677",
+        "src/click/core.py:1355,1382-1390",
+        "src/click/core.py:366-540",
+        "src/click/core.py:594-630",
+        "src/click/core.py:575-592",
+        "src/click/globals.py:44-51"
       ],
       "inputs": [
         "--count=3"
@@ -140,14 +145,25 @@
         "Abort",
         "ClickException",
         "_PacifyFlushWrapper",
-        "_echo_aborted"
+        "_echo_aborted",
+        "Command.make_context",
+        "Context.__init__",
+        "Context.scope",
+        "Context.__enter__",
+        "push_context",
+        "ExitStack"
       ],
       "facts": [
         "`args` was given explicitly, so `sys.argv[1:]` is not read and Windows glob/env expansion (`_expand_args`) is skipped; that expansion only happens when `args is None` and `os.name == 'nt'`.",
         "Before any parsing, `_main_shell_completion` reads the environment variable `_HELLO_COMPLETE` (derived from `prog_name`, with `-` and `.` mapped to `_`). If that variable is set, Click runs the completion machinery and calls `sys.exit` \nu2014 the program never reaches its own logic. This is a real trust boundary: an attacker-controlled environment can divert the invocation.",
         "`standalone_mode=True` (the default) is the contract that `main` never returns normally: every path ends in `sys.exit`. With `standalone_mode=False`, exceptions propagate to the caller and the invoke return value comes back instead.",
         "Each handler in the ladder does the same two things: re-raise when not standalone, otherwise set `report` (a callable that writes the message) and `exit_code`; the writing and exiting happen once, after the `try`.",
-        "`exit_code` is initialised to `1`, so any path that sets a message but no code reports failure. An `OSError` with `errno == EPIPE` is swallowed by wrapping `sys.stdout/stderr` in `_PacifyFlushWrapper`; any other `OSError` is re-raised."
+        "`exit_code` is initialised to `1`, so any path that sets a message but no code reports failure. An `OSError` with `errno == EPIPE` is swallowed by wrapping `sys.stdout/stderr` in `_PacifyFlushWrapper`; any other `OSError` is re-raised.",
+        "`make_context` merges `self.context_settings` into the keyword arguments only for keys the caller did not already pass, so explicit arguments to `main`/`invoke` win over command-level settings.",
+        "With no parent, defaults are taken from the command and from hard-coded values: `allow_extra_args = Command.allow_extra_args` (False), `allow_interspersed_args` True, `ignore_unknown_options` False, `help_option_names = ['--help']`, `resilient_parsing` False.",
+        "`auto_envvar_prefix` is `None` here, so no implicit environment variable lookup is enabled for any option. Automatic env reading only turns on when the caller opts in by passing a prefix.",
+        "`Context.scope(cleanup=False)` bumps `_depth` before entering, so the matching `__exit__` cannot run the close callbacks: resources opened during parsing (a `click.File` argument, say) stay open for the command body.",
+        "The context is pushed onto a `threading.local` stack; `get_current_context()` and therefore `pass_context`, `echo`'s colour default, and `resolve_color_default` all read from that stack."
       ],
       "open_questions": [
         {
@@ -157,52 +173,16 @@
         {
           "id": "q3.2",
           "question": "`--count=3` happens to be valid. Had it been `--count=x`, which handler would have caught it and what would the user have seen?"
-        }
-      ],
-      "answers": []
-    },
-    {
-      "n": 4,
-      "title": "A context to live in",
-      "trace_lines": [
-        61,
-        69
-      ],
-      "data_in": "`info_name='hello'`, `args=['--count=3']`, `parent=None`",
-      "data_out": "a `Context` with empty `params`, empty `args`, `help_option_names=['--help']`, a fresh `ExitStack`, pushed onto the thread-local stack with `_depth == 2`",
-      "code": [
-        "src/click/core.py:1355,1382-1390",
-        "src/click/core.py:366-540",
-        "src/click/core.py:594-630",
-        "src/click/core.py:575-592",
-        "src/click/globals.py:44-51"
-      ],
-      "inputs": [],
-      "characters": [
-        "Context.__init__",
-        "Context.scope",
-        "Context.__enter__",
-        "push_context",
-        "ExitStack",
-        "Command.context_class"
-      ],
-      "facts": [
-        "`make_context` merges `self.context_settings` into the keyword arguments only for keys the caller did not already pass, so explicit arguments to `main`/`invoke` win over command-level settings.",
-        "With no parent, defaults are taken from the command and from hard-coded values: `allow_extra_args = Command.allow_extra_args` (False), `allow_interspersed_args` True, `ignore_unknown_options` False, `help_option_names = ['--help']`, `resilient_parsing` False.",
-        "`auto_envvar_prefix` is `None` here, so no implicit environment variable lookup is enabled for any option. Automatic env reading only turns on when the caller opts in by passing a prefix.",
-        "`Context.scope(cleanup=False)` bumps `_depth` before entering, so the matching `__exit__` cannot run the close callbacks: resources opened during parsing (a `click.File` argument, say) stay open for the command body.",
-        "The context is pushed onto a `threading.local` stack; `get_current_context()` and therefore `pass_context`, `echo`'s colour default, and `resolve_color_default` all read from that stack."
-      ],
-      "open_questions": [
+        },
         {
-          "id": "q4.1",
+          "id": "q3.3",
           "question": "Parsing registers close callbacks on the context's ExitStack but is told not to clean up. When does anything actually get closed?"
         }
       ],
       "answers": []
     },
     {
-      "n": 5,
+      "n": 4,
       "title": "Building the parser, and the help option nobody declared",
       "trace_lines": [
         70,
@@ -241,14 +221,14 @@
       ],
       "open_questions": [
         {
-          "id": "q5.1",
+          "id": "q4.1",
           "question": "A `--help` option now exists that the author never asked for, and its value will be computed on every run. Does it cost anything on a run that does not pass `--help`?"
         }
       ],
       "answers": []
     },
     {
-      "n": 6,
+      "n": 5,
       "title": "Tokens become a raw dict",
       "trace_lines": [
         125,
@@ -293,7 +273,7 @@
       "answers": []
     },
     {
-      "n": 7,
+      "n": 6,
       "title": "Deciding who goes first, and the help option that was never passed",
       "trace_lines": [
         147,
@@ -349,20 +329,20 @@
       "open_questions": [],
       "answers": [
         {
-          "id": "q5.1",
+          "id": "q4.1",
           "answer": "The injected help option is evaluated on every run: envvar lookup, default resolution, a `BoolParamType` conversion of `False`, and a callback call that returns at once. The cost is a handful of calls and no observable effect, because `expose_value=False` keeps it out of `ctx.params`."
         }
       ]
     },
     {
-      "n": 8,
-      "title": "The caller's '3' and the user's 'Click'",
+      "n": 7,
+      "title": "The caller's '3', the user's 'Click', and the handover to the function",
       "trace_lines": [
         216,
-        217
+        236
       ],
-      "data_in": "`opts={'count': '3'}`, and for `--name` nothing at all",
-      "data_out": "`ctx.params == {'count': 3, 'name': 'Click'}`; `parse_args` returns `[]` leftovers",
+      "data_in": "`opts={'count': '3'}`, nothing at all for `--name`, and a context whose `_depth` is about to unwind",
+      "data_out": "`ctx.params == {'count': 3, 'name': 'Click'}`, `parse_args` returns `[]` leftovers, and the context is re-entered by `main` ready to call `hello`",
       "code": [
         "src/click/core.py:3726-3780",
         "src/click/core.py:3604-3652",
@@ -370,7 +350,11 @@
         "src/click/core.py:2708-2772",
         "src/click/core.py:1400-1426",
         "src/click/types.py:593-610",
-        "src/click/testing.py:474-483"
+        "src/click/testing.py:474-483",
+        "src/click/core.py:594-630",
+        "src/click/core.py:575-592",
+        "src/click/core.py:1585-1598",
+        "src/click/globals.py:44-51"
       ],
       "inputs": [
         "--count=3",
@@ -386,7 +370,12 @@
         "StringParamType",
         "MissingParameter",
         "ParameterSource.PROMPT",
-        "ParameterSource.COMMANDLINE"
+        "ParameterSource.COMMANDLINE",
+        "Context.scope",
+        "Context.__exit__",
+        "Context.__enter__",
+        "push_context",
+        "pop_context"
       ],
       "facts": [
         "`--count` is found in `opts`, so its source is `COMMANDLINE` and `type_cast_value` runs `IntParamType` on `'3'`, producing `3`. Had the token been `'x'`, `_NumberParamTypeBase.convert` would have called `fail`, raising `BadParameter` \nu2014 a `UsageError` subclass with `exit_code = 2`.",
@@ -395,7 +384,8 @@
         "Under isolation, `termui.visible_prompt_func` is the runner's `visible_input`: it writes the prompt to the captured stdout, reads one line from the `BytesIO` stdin, echoes it back, and strips the newline. That is why the expected output begins with `Your name: Click`.",
         "If stdin were exhausted, `visible_input` raises `EOFError`; `main`'s handler turns `EOFError`/`KeyboardInterrupt` into a blank line on stderr plus `Aborted!` and a non-zero exit. A prompting option therefore fails loudly, not silently, in a non-interactive pipeline.",
         "Had `--name` had no prompt and no default, `process_value` would have raised `MissingParameter` instead; with `prompt` and `resilient_parsing` set (completion), the prompt is skipped entirely.",
-        "After all parameters are processed, `parse_args` sweeps `ctx.params` and rewrites any remaining `UNSET` to `None`, so the sentinel is never visible to user code. Leftover args would have triggered `ctx.fail('Got unexpected extra argument...')` here, because `allow_extra_args` is False for a plain `Command`."
+        "After all parameters are processed, `parse_args` sweeps `ctx.params` and rewrites any remaining `UNSET` to `None`, so the sentinel is never visible to user code. Leftover args would have triggered `ctx.fail('Got unexpected extra argument...')` here, because `allow_extra_args` is False for a plain `Command`.",
+        "The `scope(cleanup=False)` exit drops `_depth` from 2 to 1, so `_close_with_exception_info` is not called: nothing opened during parsing is closed yet. `main` then re-enters the same context with `with`, taking `_depth` back to 1 and arming a real teardown for later."
       ],
       "open_questions": [],
       "answers": [
@@ -406,22 +396,23 @@
         {
           "id": "q1.2",
           "answer": "`Parameter.type_cast_value` applies the inferred `IntParamType` to the parser's raw `'3'`, yielding `3`. A non-numeric token makes the type call `fail`, raising `BadParameter` \nu2014 a `UsageError`, exit code 2, with the offending option named via `augment_usage_errors`."
+        },
+        {
+          "id": "q3.3",
+          "answer": "Nothing closes at the end of parsing: `scope(cleanup=False)` keeps `_depth` above zero. The ExitStack is unwound later, by `ctx.exit()`/`Context.__exit__` once `main`'s `with` block finishes \nu2014 after the command body has had its chance to use the resources."
         }
       ]
     },
     {
-      "n": 9,
+      "n": 8,
       "title": "Into the call, and out through echo",
       "trace_lines": [
-        218,
+        237,
         280
       ],
-      "data_in": "the context with `params={'count': 3, 'name': 'Click'}` and `_depth` unwinding to 0",
-      "data_out": "`hello(count=3, name='Click')` called; `b'Hello, Click!\\n'` written and flushed three times into the captured stdout buffer and mirrored into the mixed output buffer; the callback returns `None`",
+      "data_in": "the context with `params={'count': 3, 'name': 'Click'}` and the callback about to run",
+      "data_out": "`b'Hello, Click!\\n'` written and flushed three times into the captured stdout buffer and mirrored into the mixed output buffer; the callback returns `None`",
       "code": [
-        "src/click/core.py:594-630",
-        "src/click/core.py:575-592",
-        "src/click/core.py:1585-1598",
         "src/click/core.py:1428-1442",
         "src/click/core.py:883-936",
         "src/click/utils.py:240-334",
@@ -434,9 +425,6 @@
       ],
       "inputs": [],
       "characters": [
-        "Context.scope",
-        "Context.__exit__",
-        "pop_context",
         "Command.invoke",
         "Context.invoke",
         "augment_usage_errors",
@@ -452,7 +440,6 @@
         "BytesIOCopy"
       ],
       "facts": [
-        "The `scope(cleanup=False)` exit drops `_depth` from 2 to 1, so `_close_with_exception_info` is not called: nothing opened during parsing is closed yet. `main` then re-enters the same context with `with`, taking `_depth` back to 1 and arming a real teardown for later.",
         "`Command.invoke` would echo a red `DeprecationWarning:` line to stderr first if the command were marked `deprecated`; it is not, so it goes straight to the callback.",
         "`ctx.invoke(self.callback, **ctx.params)` splats the parameter dict as keyword arguments. That is the reason parameter names must be valid Python identifiers, and why a name like `from` is only reachable through `**kwargs`.",
         "`augment_usage_errors(self)` wraps the callback call, so a `UsageError` raised inside user code still carries the context and prints usage.",
@@ -467,17 +454,13 @@
       "open_questions": [],
       "answers": [
         {
-          "id": "q4.1",
-          "answer": "Nothing closes at the end of parsing: `scope(cleanup=False)` keeps `_depth` above zero. The ExitStack is unwound later, by `ctx.exit()`/`Context.__exit__` once `main`'s `with` block finishes \nu2014 after the command body has had its chance to use the resources."
-        },
-        {
           "id": "q2.2",
           "answer": "Every write to the captured stdout or stderr goes through `BytesIOCopy.write`, which first appends the same bytes to the single shared `output` buffer. Ordering in `Result.output` is therefore the real write order across both streams, including the prompt echo that `visible_input` wrote before the three greetings."
         }
       ]
     },
     {
-      "n": 10,
+      "n": 9,
       "title": "Exit is an exception, and what the caller gets back",
       "trace_lines": [
         281,

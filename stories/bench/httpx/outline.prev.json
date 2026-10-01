@@ -1,6 +1,6 @@
 {
   "title": "A Request That Never Touches the Network",
-  "premise": "A caller wants to exercise a plain Python WSGI application through the real httpx client \u2014 same headers, same cookie jar, same response model \u2014 but with no socket, no DNS and no TLS anywhere in the path. The input is modest: the string \"/\" and one custom header, handed to `client.get()`. Everything interesting is what the client does to that input on the way down, and what it guarantees about what comes back up. The reader following it is the person who has to sign off on that stack: which defaults are in force, where a failure would surface, and what the transport boundary does and does not promise.",
+  "premise": "A caller wants to exercise a plain Python WSGI application through the real httpx client \ter\n \ter \ter \ter \ter \ter \ter\n\nsame headers, same cookie jar, same response model \ter but with no socket, no DNS and no TLS anywhere in the path. The input is modest: the string \"/\" and one custom header, handed to `client.get()`. Everything interesting is what the client does to that input on the way down, and what it guarantees about what comes back up. The reader following it is the person who has to sign off on that stack: which defaults are in force, where a failure would surface, and what the transport boundary does and does not promise.",
   "reader": "owner",
   "repo": {
     "name": "encode/httpx",
@@ -45,7 +45,7 @@
         "`allow_env_proxies = trust_env and transport is None`, so passing an explicit transport disables environment-variable proxying even though trust_env stays True; the trace shows `_get_proxy_map(proxy=None, allow_env_proxies=False)` returning `{}` (_client.py:685-686, 239-251).",
         "`_init_transport` returns the caller's transport unchanged when one is supplied, so no HTTPTransport, SSL context or connection pool is ever constructed (_client.py:728-738).",
         "The headers setter always injects four client defaults (Accept, Accept-Encoding, Connection, User-Agent) and then `update()`s the caller's headers over them (_client.py:305-316).",
-        "`Accept-Encoding` is advertised as 'gzip, deflate' \u2014 derived from SUPPORTED_DECODERS minus 'identity' \u2014 so the client promises to decode whatever it asked for (_client.py:120-122).",
+        "`Accept-Encoding` is advertised as 'gzip, deflate' \ter derived from SUPPORTED_DECODERS minus 'identity' \ter so the client promises to decode whatever it asked for (_client.py:120-122).",
         "Default timeout is `Timeout(5.0)` on all four phases (connect/read/write/pool); default `follow_redirects` is False, deliberately unlike `requests` (_config.py:246, _client.py:654).",
         "`__enter__` raises RuntimeError if the client is not UNOPENED, so a client cannot be re-entered or reopened after close (_client.py:1275-1283).",
         "`_enforce_trailing_slash` leaves 'http://testserver' alone because its raw_path is already b'/' (_client.py:234-237, trace 26-29)."
@@ -57,7 +57,7 @@
         },
         {
           "id": "q1.2",
-          "question": "`follow_redirects` is False by default \u2014 what reaches the caller if the application answers with a 302?"
+          "question": "`follow_redirects` is False by default \ter what reaches the caller if the application answers with a 302?"
         }
       ],
       "answers": []
@@ -70,7 +70,7 @@
         135
       ],
       "data_in": "url='/' as handed to client.get(), together with the client's base_url",
-      "data_out": "URL('http://testserver/') \u2014 scheme 'http', host 'testserver', port None, path '/', no query, no fragment",
+      "data_out": "URL('http://testserver/') \ter scheme 'http', host 'testserver', port None, path '/', no query, no fragment",
       "code": [
         "httpx/_client.py:1036-1063",
         "httpx/_client.py:771-825",
@@ -100,8 +100,8 @@
       "facts": [
         "`client.get()` is a thin forwarder to `client.request('GET', ...)`, which forwards to `build_request()` + `send()` (_client.py:1053-1063, 812-825).",
         "Relative URLs are merged by appending to the base path with the leading '/' stripped, so a relative argument can never retarget the request at a different host (_client.py:409-410).",
-        "An *absolute* url argument would bypass base_url entirely \u2014 `_merge_url` returns it as-is when `is_relative_url` is False (road not taken here; _client.py:396-411).",
-        "`urlparse` hard-rejects URLs over 65536 characters and any ASCII control character (\\t, \\r, \\n) with InvalidURL \u2014 that is the client's injection guard on request targets (_urlparse.py:218-229).",
+        "An *absolute* url argument would bypass base_url entirely \ter `_merge_url` returns it as-is when `is_relative_url` is False (road not taken here; _client.py:396-411).",
+        "`urlparse` hard-rejects URLs over 65536 characters and any ASCII control character (\\t, \\r, \\n) with InvalidURL \ter that is the client's injection guard on request targets (_urlparse.py:218-229).",
         "Normalisation is lossy on purpose: scheme lowercased, default ports dropped to None, '.'/'..' path segments removed, hostnames IDNA-encoded or rejected with InvalidURL (_urlparse.py:318-345, 348-392, 447-475).",
         "`request()` emits a DeprecationWarning if per-request `cookies=` is passed; here cookies is None so that branch is skipped (_client.py:804-810)."
       ],
@@ -115,19 +115,24 @@
     },
     {
       "n": 3,
-      "title": "Merging: one custom header, no cookies, no params, and a timeout smuggled in extensions",
+      "title": "Merging, then becoming a Request",
       "trace_lines": [
         136,
-        177
+        246
       ],
-      "data_in": "headers={'X-Custom': 'value'}, cookies=None, params=None, timeout=USE_CLIENT_DEFAULT",
-      "data_out": "Headers({'accept','accept-encoding','connection','user-agent','x-custom'}), cookies=None, params=None, extensions={'timeout': {'connect': 5.0, 'pool': 5.0, 'read': 5.0, 'write': 5.0}}",
+      "data_in": "headers={'X-Custom': 'value'}, cookies=None, params=None, timeout=USE_CLIENT_DEFAULT, plus the URL from chapter 2",
+      "data_out": "<Request('GET', 'http://testserver/')> with Host first in headers, X-Custom present, stream=ByteStream(b''), _content=b'', extensions={'timeout': {'connect': 5.0, 'pool': 5.0, 'read': 5.0, 'write': 5.0}}",
       "code": [
         "httpx/_client.py:366-389",
         "httpx/_client.py:413-443",
         "httpx/_models.py:274-279",
         "httpx/_models.py:144-164",
-        "httpx/_config.py:132-138"
+        "httpx/_config.py:132-138",
+        "httpx/_models.py:383-460",
+        "httpx/_models.py:462-480",
+        "httpx/_content.py:186-218",
+        "httpx/_content.py:31-39",
+        "httpx/_multipart.py:56-67"
       ],
       "inputs": [
         "headers={'X-Custom': 'value'}"
@@ -139,14 +144,25 @@
         "Headers.update",
         "QueryParams",
         "Timeout.as_dict",
-        "UseClientDefault"
+        "UseClientDefault",
+        "Request",
+        "encode_request",
+        "ByteStream",
+        "Request._prepare",
+        "Request.read"
       ],
       "facts": [
         "`Headers.update` pops any existing entry with the same lower-cased key before extending, so a per-request header replaces the client-level one rather than duplicating it (_models.py:274-279).",
         "Header keys are compared case-insensitively against a cached lower-cased form; 'X-Custom' is stored with its original casing for the wire and 'x-custom' for lookup (_models.py:144-164, 346-348).",
         "`_merge_cookies` returns the argument unchanged (None) when neither the request nor the client has cookies, so no Cookie header is built at request-build time (_client.py:413-422, trace 162-167).",
         "The resolved timeout is placed into `request.extensions['timeout']` as a plain dict, so timeouts travel with the request object rather than as a side channel (_client.py:371-377).",
-        "If the caller had supplied `extensions={'timeout': ...}` themselves, the client-level timeout would be left out entirely \u2014 caller-supplied extensions win (_client.py:371)."
+        "If the caller had supplied `extensions={'timeout': ...}` themselves, the client-level timeout would be left out entirely \ter caller-supplied extensions win (_client.py:371).",
+        "With no content/data/files/json, `encode_request` returns `({}, ByteStream(b''))` \ter no Content-Type, no Content-Length (_content.py:218).",
+        "Because the stream is a `ByteStream`, the body is read immediately in `__init__`, so `request.content` is available and the stream is replayable (_models.py:422-423, 468-480).",
+        "`_prepare` auto-adds a `Host` header from `url.netloc` only when the caller did not set one, and auto-adds `Content-Length: 0` only for POST/PUT/PATCH \ter this GET gets no Content-Length (_models.py:450-458).",
+        "A `Transfer-Encoding` default header is dropped when Content-Length was set explicitly, preventing a contradictory framing pair (_models.py:443-445).",
+        "Headers are rebuilt as `auto_headers + existing raw`, so Host is emitted first while caller order is otherwise preserved (_models.py:460).",
+        "`data=<bytes/str>` would have been rerouted to `encode_content` with a DeprecationWarning \ter a compatibility shim, not the intended API (road not taken; _content.py:197-207)."
       ],
       "open_questions": [
         {
@@ -156,70 +172,34 @@
         {
           "id": "q3.2",
           "question": "A 5-second timeout is now attached to the request. Who is responsible for enforcing it on this path?"
+        },
+        {
+          "id": "q3.3",
+          "question": "The body was consumed at build time. If this request had to be sent twice \ter auth retry or redirect \ter would the body still be there?"
         }
       ],
       "answers": []
     },
     {
       "n": 4,
-      "title": "Becoming a Request: empty body, auto Host, read eagerly",
-      "trace_lines": [
-        178,
-        246
-      ],
-      "data_in": "method='GET', url=URL('http://testserver/'), merged Headers, content/data/files/json all None, stream=None, extensions with timeout",
-      "data_out": "<Request('GET', 'http://testserver/')> with Host first in headers, stream=ByteStream(b''), _content=b''",
-      "code": [
-        "httpx/_models.py:383-460",
-        "httpx/_models.py:462-480",
-        "httpx/_content.py:186-218",
-        "httpx/_content.py:31-39",
-        "httpx/_multipart.py:56-67"
-      ],
-      "inputs": [
-        "the merged Headers and URL from chapter 3"
-      ],
-      "characters": [
-        "Request",
-        "encode_request",
-        "ByteStream",
-        "Request._prepare",
-        "Request.read",
-        "get_multipart_boundary_from_content_type"
-      ],
-      "facts": [
-        "With no content/data/files/json, `encode_request` returns `({}, ByteStream(b''))` \u2014 no Content-Type, no Content-Length (_content.py:218).",
-        "Because the stream is a `ByteStream`, the body is read immediately in `__init__`, so `request.content` is available and the stream is replayable (_models.py:422-423, 468-480).",
-        "`_prepare` auto-adds a `Host` header from `url.netloc` only when the caller did not set one, and auto-adds `Content-Length: 0` only for POST/PUT/PATCH \u2014 this GET gets no Content-Length (_models.py:450-458).",
-        "A `Transfer-Encoding` default header is dropped when Content-Length was set explicitly, preventing a contradictory framing pair (_models.py:443-445).",
-        "Headers are rebuilt as `auto_headers + existing raw`, so Host is emitted first while caller order is otherwise preserved (_models.py:460).",
-        "`data=<bytes/str>` would have been rerouted to `encode_content` with a DeprecationWarning \u2014 a compatibility shim, not the intended API (road not taken; _content.py:197-207)."
-      ],
-      "open_questions": [
-        {
-          "id": "q4.1",
-          "question": "The body was consumed at build time. If this request had to be sent twice \u2014 auth retry or redirect \u2014 would the body still be there?"
-        }
-      ],
-      "answers": []
-    },
-    {
-      "n": 5,
-      "title": "send(): state, timeouts, and the auth that was never configured",
+      "title": "send(): state, auth resolution, and one pass through the auth generator",
       "trace_lines": [
         247,
-        255
+        260
       ],
       "data_in": "<Request('GET','http://testserver/')>, stream=False, auth=USE_CLIENT_DEFAULT, follow_redirects=USE_CLIENT_DEFAULT",
-      "data_out": "state=OPENED, follow_redirects resolved to False, auth resolved to a bare <httpx.Auth> instance, history=[]",
+      "data_out": "state=OPENED, follow_redirects resolved to False, auth resolved to a bare <httpx.Auth>, history=[], and the same Request handed onward to the redirect layer",
       "code": [
         "httpx/_client.py:879-928",
         "httpx/_client.py:584-591",
         "httpx/_client.py:457-473",
-        "httpx/_urls.py:150-166"
+        "httpx/_urls.py:150-166",
+        "httpx/_client.py:930-962",
+        "httpx/_auth.py:22-85",
+        "httpx/_client.py:573-582"
       ],
       "inputs": [
-        "the Request from chapter 4"
+        "the Request from chapter 3"
       ],
       "characters": [
         "Client.send",
@@ -227,67 +207,31 @@
         "BaseClient._build_request_auth",
         "Auth",
         "BasicAuth",
-        "URL.username",
-        "URL.password"
+        "Client._send_handling_auth",
+        "Auth.sync_auth_flow",
+        "Auth.auth_flow"
       ],
       "facts": [
         "Sending on a CLOSED client raises `RuntimeError('Cannot send a request, as the client has been closed.')`; sending on an UNOPENED one silently moves it to OPENED (_client.py:900-903).",
         "`_set_timeout` is a no-op here because `build_request` already populated `extensions['timeout']`; it exists for hand-built `httpx.Request` objects passed straight to `send()` (_client.py:584-591).",
         "`_build_request_auth` falls back to the URL's userinfo: a URL containing `user:pass@` silently becomes a BasicAuth header. That is a documented-but-sharp default worth knowing about (_client.py:469-471).",
         "With no auth anywhere, the fallback is a plain `Auth()` instance, whose flow is a single unmodified yield (_client.py:473, _auth.py:38-60).",
-        "`send()` wraps the read step in try/except BaseException and closes the response on any failure, so an error during body read cannot leak an open stream (_client.py:920-928)."
-      ],
-      "open_questions": [
-        {
-          "id": "q5.1",
-          "question": "A bare `Auth()` is now in the path. Does it touch the request, and how many times can it make the client re-send?"
-        }
-      ],
-      "answers": []
-    },
-    {
-      "n": 6,
-      "title": "The auth generator: one yield, one pass",
-      "trace_lines": [
-        256,
-        260
-      ],
-      "data_in": "<Request('GET','http://testserver/')> plus the bare Auth instance, history=[]",
-      "data_out": "the same Request object, handed onward to the redirect layer",
-      "code": [
-        "httpx/_client.py:930-962",
-        "httpx/_auth.py:22-85",
-        "httpx/_client.py:573-582"
-      ],
-      "inputs": [
-        "the Request and Auth from chapter 5"
-      ],
-      "characters": [
-        "Client._send_handling_auth",
-        "Auth.sync_auth_flow",
-        "Auth.auth_flow"
-      ],
-      "facts": [
+        "`send()` wraps the read step in try/except BaseException and closes the response on any failure, so an error during body read cannot leak an open stream (_client.py:920-928).",
         "`sync_auth_flow` only pre-reads the request body when the scheme sets `requires_request_body = True`; the base Auth does not, so nothing is read here (_auth.py:71-75).",
         "The flow is driven as a generator: `next(flow)` gives the request to send, and each response is pushed back in with `flow.send(response)`; StopIteration ends the loop and returns the last response (_client.py:937-951).",
-        "Every intermediate response in a multi-step auth flow is fully read into memory and appended to `history` before the next request goes out \u2014 so a custom auth scheme implies buffering (_client.py:953-956).",
-        "`auth_flow.close()` runs in a `finally`, so a generator-based auth scheme is always finalised even when the caller's request raises (_client.py:961-962).",
-        "Answering replay: `_redirect_stream` hands the *same* `request.stream` to the follow-up request; a `ByteStream` (the case here, and for bytes/str/json bodies) replays fine, whereas a generator body raises `StreamConsumed` on the second pass (_client.py:573-582, _content.py:50-53)."
+        "Every intermediate response in a multi-step auth flow is fully read into memory and appended to `history` before the next request goes out \ter so a custom auth scheme implies buffering (_client.py:953-956).",
+        "`auth_flow.close()` runs in a `finally`, so a generator-based auth scheme is always finalised even when the caller's request raises (_client.py:961-962)."
       ],
       "open_questions": [],
       "answers": [
         {
-          "id": "q4.1",
-          "answer": "Yes for this request. The body is a ByteStream, which `Request.read()` buffered into `_content`; redirect and auth retries reuse `request.stream` directly, and ByteStream re-yields its bytes. A generator/file-iterator body would instead raise `StreamConsumed` on the second send \u2014 which is exactly why eagerly-read ByteStream bodies are the safe default."
-        },
-        {
-          "id": "q5.1",
-          "answer": "It does nothing to the request: `Auth.auth_flow` yields it unchanged and ends. The trace shows one `sync_auth_flow` entry, one request out, then a second resumption that returns None (StopIteration) \u2014 a single network pass with no extra round trips."
+          "id": "q3.3",
+          "answer": "Yes for this request. The body is a ByteStream, which `Request.read()` buffered into `_content`; redirect and auth retries reuse `request.stream` directly (`_redirect_stream`, _client.py:573-582), and ByteStream re-yields its bytes. A generator/file-iterator body would instead raise `StreamConsumed` on the second send \ter which is exactly why eagerly-read ByteStream bodies are the safe default."
         }
       ]
     },
     {
-      "n": 7,
+      "n": 5,
       "title": "Choosing the transport, and the exception-tagging boundary",
       "trace_lines": [
         261,
@@ -302,7 +246,7 @@
         "httpx/_exceptions.py:364-377"
       ],
       "inputs": [
-        "the Request from chapter 6"
+        "the Request from chapter 4"
       ],
       "characters": [
         "Client._send_handling_redirects",
@@ -312,27 +256,27 @@
         "URLPattern"
       ],
       "facts": [
-        "The redirect loop checks `len(history) > self.max_redirects` first and raises `TooManyRedirects` \u2014 a bounded loop by construction, default 20 (_client.py:970-974).",
+        "The redirect loop checks `len(history) > self.max_redirects` first and raises `TooManyRedirects` \ter a bounded loop by construction, default 20 (_client.py:970-974).",
         "Request event hooks run here, before the transport call; the list is empty in this run (_client.py:976-977).",
         "`_transport_for_url` scans `_mounts` for a matching URLPattern and falls through to `self._transport`; with `_mounts == {}` the caller's transport always wins (_client.py:760-769).",
-        "`_send_single_request` asserts the request stream is a `SyncByteStream` and otherwise raises `RuntimeError('Attempted to send an async request with a sync Client instance.')` \u2014 the sync/async mix-up is caught before the transport is touched (_client.py:1008-1011).",
+        "`_send_single_request` asserts the request stream is a `SyncByteStream` and otherwise raises `RuntimeError('Attempted to send an async request with a sync Client instance.')` \ter the sync/async mix-up is caught before the transport is touched (_client.py:1008-1011).",
         "`request_context` is a context manager that attaches `.request` to any `httpx.RequestError` raised inside the block; it re-raises everything else untouched (_exceptions.py:364-377)."
       ],
       "open_questions": [
         {
-          "id": "q7.1",
+          "id": "q5.1",
           "question": "The application is about to be called inside `request_context`. What does that wrapper guarantee about exceptions the application itself throws?"
         }
       ],
       "answers": [
         {
           "id": "q1.1",
-          "answer": "Yes. `_transport_for_url` iterates `_mounts`, which is empty because `_get_proxy_map` returned `{}` and no `mounts=` argument was given, so it returns `self._transport` \u2014 the WSGITransport \u2014 for every URL."
+          "answer": "Yes. `_transport_for_url` iterates `_mounts`, which is empty because `_get_proxy_map` returned `{}` and no `mounts=` argument was given, so it returns `self._transport` \ter the WSGITransport \ter for every URL."
         }
       ]
     },
     {
-      "n": 8,
+      "n": 6,
       "title": "Across the boundary: the request becomes a WSGI environ",
       "trace_lines": [
         267,
@@ -346,7 +290,7 @@
         "httpx/_models.py:516-576"
       ],
       "inputs": [
-        "the Request from chapter 7",
+        "the Request from chapter 5",
         "the app callable"
       ],
       "characters": [
@@ -358,22 +302,22 @@
       ],
       "facts": [
         "The body is read into an `io.BytesIO` and passed as `wsgi.input`; this transport buffers the whole request body in memory (wsgi.py:92-93).",
-        "`SERVER_PORT` is derived from the URL or defaults from the scheme \u2014 `{'http': 80, 'https': 443}[scheme]`, which raises KeyError for any other scheme (wsgi.py:95).",
-        "Request headers are uppercased, '-'\u2192'_' and prefixed with HTTP_ except CONTENT_TYPE and CONTENT_LENGTH, per WSGI (wsgi.py:113-117); `X-Custom: value` arrives as `HTTP_X_CUSTOM`.",
-        "The app is called synchronously in-process; no socket, no DNS lookup of 'testserver', no TLS, and `request.extensions['timeout']` is never consulted \u2014 this transport enforces no timeouts at all (wsgi.py:134).",
-        "An app that returns without calling `start_response` trips `assert seen_status is not None` \u2014 an AssertionError, not an httpx exception (wsgi.py:138-139).",
+        "`SERVER_PORT` is derived from the URL or defaults from the scheme \ter `{'http': 80, 'https': 443}[scheme]`, which raises KeyError for any other scheme (wsgi.py:95).",
+        "Request headers are uppercased, '-'\ter'_' and prefixed with HTTP_ except CONTENT_TYPE and CONTENT_LENGTH, per WSGI (wsgi.py:113-117); `X-Custom: value` arrives as `HTTP_X_CUSTOM`.",
+        "The app is called synchronously in-process; no socket, no DNS lookup of 'testserver', no TLS, and `request.extensions['timeout']` is never consulted \ter this transport enforces no timeouts at all (wsgi.py:134).",
+        "An app that returns without calling `start_response` trips `assert seen_status is not None` \ter an AssertionError, not an httpx exception (wsgi.py:138-139).",
         "`raise_app_exceptions=True` (the default) re-raises the application's exception from `exc_info`; setting it False is what lets tests inspect a 500 body instead (wsgi.py:140-141).",
-        "Status is parsed as `int(seen_status.split()[0])` and header names/values are `.encode('ascii')` \u2014 a non-ASCII or malformed status/header from the app surfaces as ValueError/UnicodeEncodeError, uncaught (wsgi.py:143-147).",
+        "Status is parsed as `int(seen_status.split()[0])` and header names/values are `.encode('ascii')` \ter a non-ASCII or malformed status/header from the app surfaces as ValueError/UnicodeEncodeError, uncaught (wsgi.py:143-147).",
         "`_skip_leading_empty_chunks` drops leading empty byte strings before the stream is exposed, so an app that yields b'' first does not look like an empty body (wsgi.py:22-27).",
-        "The Response is constructed with `stream=`, which deliberately skips auto-populating content headers and skips the eager read \u2014 the body stays lazy (_models.py:555-567)."
+        "The Response is constructed with `stream=`, which deliberately skips auto-populating content headers and skips the eager read \ter the body stays lazy (_models.py:555-567)."
       ],
       "open_questions": [
         {
-          "id": "q8.1",
+          "id": "q6.1",
           "question": "The app returned a plain list, and WSGIByteStream captured its `close` attribute. When, if ever, is that close called?"
         },
         {
-          "id": "q8.2",
+          "id": "q6.2",
           "question": "This Response has no request attached and no http_version extension. Who fills those in, and what happens if nobody does?"
         }
       ],
@@ -387,13 +331,13 @@
           "answer": "Nobody, on this path. `WSGITransport.handle_request` never looks at `request.extensions`, so the 5-second timeout dict is inert; timeouts are enforced by the real HTTP transports (httpcore), not by the client core."
         },
         {
-          "id": "q7.1",
-          "answer": "Very little. `request_context` only catches `httpx.RequestError` subclasses and stamps `.request` on them. An arbitrary exception raised by the WSGI app \u2014 or the AssertionError from a missing `start_response` \u2014 propagates out of `client.get()` unwrapped and untagged."
+          "id": "q5.1",
+          "answer": "Very little. `request_context` only catches `httpx.RequestError` subclasses and stamps `.request` on them. An arbitrary exception raised by the WSGI app \ter or the AssertionError from a missing `start_response` \ter propagates out of `client.get()` unwrapped and untagged."
         }
       ]
     },
     {
-      "n": 9,
+      "n": 7,
       "title": "Dressing the response: identity, timing stream, cookies, log line",
       "trace_lines": [
         304,
@@ -409,7 +353,7 @@
         "httpx/_models.py:610-626"
       ],
       "inputs": [
-        "the Response from chapter 8"
+        "the Response from chapter 6"
       ],
       "characters": [
         "BoundSyncStream",
@@ -423,26 +367,26 @@
       "facts": [
         "`assert isinstance(response.stream, SyncByteStream)` enforces the transport contract before anything else touches the response (_client.py:1016).",
         "The transport's stream is wrapped in `BoundSyncStream`, which exists solely so that closing the body sets `response.elapsed` from the perf counter taken before the transport call (_client.py:139-159).",
-        "Cookies are extracted into the *client's* jar immediately after headers arrive and before the body is read, using urllib's CookieJar through two compatibility shims \u2014 so any `Set-Cookie` from the app would persist for subsequent requests on this client (_client.py:1022, _models.py:1101-1115).",
-        "Missing response extensions degrade gracefully: `http_version` defaults to 'HTTP/1.1' and `reason_phrase` falls back to the status-code table \u2014 which is why this WSGI response reports HTTP/1.1 and 'OK' (_models.py:610-626).",
-        "The client logs `'HTTP Request: %s %s \"%s %d %s\"'` at INFO on logger 'httpx', including the full URL \u2014 note that userinfo-free URLs are fine, but query strings are logged verbatim (_client.py:1025-1032).",
-        "`response.default_encoding` is set from the client's `default_encoding` here, not at Response construction \u2014 the client's text-decoding policy is attached per response (_client.py:1023)."
+        "Cookies are extracted into the *client's* jar immediately after headers arrive and before the body is read, using urllib's CookieJar through two compatibility shims \ter so any `Set-Cookie` from the app would persist for subsequent requests on this client (_client.py:1022, _models.py:1101-1115).",
+        "Missing response extensions degrade gracefully: `http_version` defaults to 'HTTP/1.1' and `reason_phrase` falls back to the status-code table \ter which is why this WSGI response reports HTTP/1.1 and 'OK' (_models.py:610-626).",
+        "The client logs `'HTTP Request: %s %s \"%s %d %s\"'` at INFO on logger 'httpx', including the full URL \ter note that userinfo-free URLs are fine, but query strings are logged verbatim (_client.py:1025-1032).",
+        "`response.default_encoding` is set from the client's `default_encoding` here, not at Response construction \ter the client's text-decoding policy is attached per response (_client.py:1023)."
       ],
       "open_questions": [
         {
-          "id": "q9.1",
+          "id": "q7.1",
           "question": "Timing started before the app was called, but `elapsed` is only set on close. When does that actually happen for a non-streaming request?"
         }
       ],
       "answers": [
         {
-          "id": "q8.2",
-          "answer": "`_send_single_request` sets `response.request = request` right after the transport returns; without it, `response.url`, `raise_for_status()` and cookie extraction would raise RuntimeError('The request instance has not been set on this response.'). The absent `http_version`/`reason_phrase` extensions are not filled in at all \u2014 the properties fall back to 'HTTP/1.1' and the status-code reason table."
+          "id": "q6.2",
+          "answer": "`_send_single_request` sets `response.request = request` right after the transport returns; without it, `response.url`, `raise_for_status()` and cookie extraction would raise RuntimeError('The request instance has not been set on this response.'). The absent `http_version`/`reason_phrase` extensions are not filled in at all \ter the properties fall back to 'HTTP/1.1' and the status-code reason table."
         }
       ]
     },
     {
-      "n": 10,
+      "n": 8,
       "title": "Not a redirect: the two loops unwind",
       "trace_lines": [
         356,
@@ -457,7 +401,7 @@
         "httpx/_client.py:947-962"
       ],
       "inputs": [
-        "the Response from chapter 9"
+        "the Response from chapter 7"
       ],
       "characters": [
         "Response.has_redirect_location",
@@ -468,34 +412,30 @@
       "facts": [
         "`has_redirect_location` requires both a status in {301,302,303,307,308} *and* a `Location` header; a 3xx without Location is handed back as an ordinary response (_models.py:771-792).",
         "Because this is a 200, `_send_handling_redirects` returns at the first iteration; the auth generator is then resumed, raises StopIteration, and the response is returned as-is (_client.py:985, 947-951).",
-        "Response event hooks and the redirect-building code sit inside `try/except BaseException: response.close(); raise` \u2014 any exception from a hook closes the response before propagating, so hook bugs cannot leak the connection (_client.py:980-999).",
+        "Response event hooks and the redirect-building code sit inside `try/except BaseException: response.close(); raise` \ter any exception from a hook closes the response before propagating, so hook bugs cannot leak the connection (_client.py:980-999).",
         "When `follow_redirects` is False and a redirect *is* seen, the client does not raise: it sets `response.next_request` and returns the 3xx, leaving the decision to the caller (_client.py:991-995).",
-        "Had a redirect been followed cross-origin, `_redirect_headers` would pop `Authorization` (except for a plain http\u2192https upgrade of the same host), rewrite `Host`, drop `Content-Length`/`Transfer-Encoding` when the method flips to GET, and always drop `Cookie` so the client jar is the single source of cookies (_client.py:546-571).",
+        "Had a redirect been followed cross-origin, `_redirect_headers` would pop `Authorization` (except for a plain http\terhttps upgrade of the same host), rewrite `Host`, drop `Content-Length`/`Transfer-Encoding` when the method flips to GET, and always drop `Cookie` so the client jar is the single source of cookies (_client.py:546-571).",
         "Method rewriting on redirect follows browsers rather than the RFC: 303 and 302 become GET for non-HEAD, and a POST answered with 301 becomes GET (_client.py:494-515)."
       ],
       "open_questions": [
         {
-          "id": "q10.1",
+          "id": "q8.1",
           "question": "The response comes back with its body untouched. Who reads it, and what would change if the caller had asked to stream?"
         }
       ],
       "answers": [
         {
           "id": "q1.2",
-          "answer": "A 302 with a Location header would satisfy `has_redirect_location`, and since `follow_redirects` resolved to False the client would set `response.next_request` to the prepared follow-up and hand the 302 straight back to the caller \u2014 no automatic second request, no exception."
+          "answer": "A 302 with a Location header would satisfy `has_redirect_location`, and since `follow_redirects` resolved to False the client would set `response.next_request` to the prepared follow-up and hand the 302 straight back to the caller \ter no automatic second request, no exception."
         },
         {
           "id": "q3.1",
-          "answer": "On a cross-origin redirect `_redirect_headers` copies the request headers but strips `Authorization` (unless it is a same-host http\u2192https upgrade), rewrites `Host` to the new netloc, and always removes `Cookie` so cookies are re-derived from the client jar. A custom header like `X-Custom` is *not* stripped \u2014 it follows the redirect to the new origin."
-        },
-        {
-          "id": "q6.1",
-          "answer": "Hooks run inside the loop's try block; an exception from a request or response hook triggers `response.close()` and is re-raised, and `send()`'s own handler closes again if needed. A failing hook therefore aborts the call without leaving the body stream open."
+          "answer": "On a cross-origin redirect `_redirect_headers` copies the request headers but strips `Authorization` (unless it is a same-host http\terhttps upgrade), rewrites `Host` to the new netloc, and always removes `Cookie` so cookies are re-derived from the client jar. A custom header like `X-Custom` is *not* stripped \ter it follows the redirect to the new origin."
         }
       ]
     },
     {
-      "n": 11,
+      "n": 9,
       "title": "Reading the body: decoders, chunker, and the close that sets elapsed",
       "trace_lines": [
         364,
@@ -514,7 +454,7 @@
         "httpx/_transports/wsgi.py:35-41"
       ],
       "inputs": [
-        "the Response from chapter 10"
+        "the Response from chapter 8"
       ],
       "characters": [
         "Response.read",
@@ -529,41 +469,41 @@
       "facts": [
         "`_get_content_decoder` reads `content-encoding` with `split_commas=True`; unknown encoding names are silently skipped (`except KeyError: continue`), multiple encodings compose into a MultiDecoder, and none at all yields IdentityDecoder (_models.py:699-722).",
         "A corrupt gzip/deflate/brotli/zstd body raises `DecodingError`, and because `iter_bytes` runs inside `request_context`, the error carries `.request` (_decoders.py:95-105, _models.py:896).",
-        "`iter_raw` refuses to run twice: `is_stream_consumed` \u2192 StreamConsumed, `is_closed` \u2192 StreamClosed, and an async stream on a sync iterator \u2192 RuntimeError (_models.py:939-944).",
-        "`read()` joins the whole decoded body into `_content` with no size cap \u2014 a hostile or buggy app can make the client allocate unbounded memory unless the caller streams instead (_models.py:880-882).",
-        "`iter_raw` calls `self.close()` when the stream is exhausted, which goes through `BoundSyncStream.close` \u2192 sets `response.elapsed` \u2192 `WSGIByteStream.close()` \u2192 the app iterable's `close()` if it has one (_models.py:959, _client.py:156-159, wsgi.py:39-41).",
+        "`iter_raw` refuses to run twice: `is_stream_consumed` \ter StreamConsumed, `is_closed` \ter StreamClosed, and an async stream on a sync iterator \ter RuntimeError (_models.py:939-944).",
+        "`read()` joins the whole decoded body into `_content` with no size cap \ter a hostile or buggy app can make the client allocate unbounded memory unless the caller streams instead (_models.py:880-882).",
+        "`iter_raw` calls `self.close()` when the stream is exhausted, which goes through `BoundSyncStream.close` \ter sets `response.elapsed` \ter `WSGIByteStream.close()` \ter the app iterable's `close()` if it has one (_models.py:959, _client.py:156-159, wsgi.py:39-41).",
         "`num_bytes_downloaded` is accumulated from the raw (pre-decode) chunks, which is why it is the correct basis for progress reporting on compressed responses (_models.py:947-952)."
       ],
       "open_questions": [
         {
-          "id": "q11.1",
+          "id": "q9.1",
           "question": "`_content` is bytes. Which encoding will be used when the caller asks for text, and can that step fail?"
         }
       ],
       "answers": [
         {
-          "id": "q8.1",
-          "answer": "At the end of `iter_raw`: exhausting the stream calls `response.close()`, which runs `BoundSyncStream.close()` and then `WSGIByteStream.close()`, which invokes the app iterable's `close` if it exposed one. A plain list has none, so it is a no-op here \u2014 but a generator-based or file-backed WSGI app does get closed."
+          "id": "q6.1",
+          "answer": "At the end of `iter_raw`: exhausting the stream calls `response.close()`, which runs `BoundSyncStream.close()` and then `WSGIByteStream.close()`, which invokes the app iterable's `close` if it exposed one. A plain list has none, so it is a no-op here \ter but a generator-based or file-backed WSGI app does get closed."
         },
         {
-          "id": "q9.1",
+          "id": "q7.1",
           "answer": "On that same close. `BoundSyncStream.close` computes `time.perf_counter() - start` and assigns `response.elapsed` before delegating to the underlying stream, so for a non-streaming request `elapsed` is set as soon as `send()`'s `response.read()` finishes. Accessing `.elapsed` before a read or close raises RuntimeError."
         },
         {
-          "id": "q10.1",
-          "answer": "`Client.send` reads it: `if not stream: response.read()`, with a BaseException handler that closes the response on failure. With `stream=True` (as `client.stream(...)` uses) the read is skipped and the caller owns closing \u2014 `stream()` does it in a `finally`, but a hand-rolled `send(stream=True)` that forgets leaks the stream."
+          "id": "q8.1",
+          "answer": "`Client.send` reads it: `if not stream: response.read()`, with a BaseException handler that closes the response on failure. With `stream=True` (as `client.stream(...)` uses) the read is skipped and the caller owns closing \ter `stream()` does it in a `finally`, but a hand-rolled `send(stream=True)` that forgets leaks the stream."
         }
       ]
     },
     {
-      "n": 12,
-      "title": "Out to the caller: repr, headers, and text decoding policy",
+      "n": 10,
+      "title": "Out to the caller, and closing a client that owns nothing",
       "trace_lines": [
         398,
-        452
+        458
       ],
-      "data_in": "<Response [200 OK]> with _content == b'Hello World!' and Content-Type: text/plain; charset=utf-8",
-      "data_out": "'<Response [200 OK]>', 'http://testserver/', 'text/plain; charset=utf-8', 'Hello World!'; request.headers['X-Custom'] == 'value'",
+      "data_in": "<Response [200 OK]> with _content == b'Hello World!' and Content-Type: text/plain; charset=utf-8, inside a Client in state OPENED",
+      "data_out": "'<Response [200 OK]>', 'http://testserver/', 'text/plain; charset=utf-8', 'Hello World!'; request.headers['X-Custom'] == 'value'; client state CLOSED",
       "code": [
         "httpx/_models.py:859-860",
         "httpx/_models.py:641-697",
@@ -571,10 +511,14 @@
         "httpx/_models.py:284-302",
         "httpx/_models.py:166-189",
         "httpx/_decoders.py:306-318",
-        "httpx/_urls.py:374-375"
+        "httpx/_urls.py:374-375",
+        "httpx/_client.py:1293-1304",
+        "httpx/_client.py:1263-1273",
+        "httpx/_transports/base.py:14-62"
       ],
       "inputs": [
-        "response attribute accesses from the scenario"
+        "response attribute accesses from the scenario",
+        "exit of the `with` block"
       ],
       "characters": [
         "Response.__repr__",
@@ -585,65 +529,29 @@
         "_is_known_encoding",
         "TextDecoder",
         "Headers.__getitem__",
-        "Headers.encoding"
-      ],
-      "facts": [
-        "Encoding priority is: explicitly assigned `.encoding`, then the Content-Type charset, then `default_encoding` (which may be a string or a callable for autodetection), finally 'utf-8' (_models.py:652-672).",
-        "A charset that `codecs.lookup` does not know is discarded by `_is_known_encoding` and the default is used instead \u2014 a bogus server charset cannot break text decoding (_models.py:56-64, 666).",
-        "`TextDecoder` is built with `errors='replace'`, so `.text` never raises on malformed bytes; it silently substitutes U+FFFD. Byte-exactness requires `.content` (_decoders.py:311-315).",
-        "Setting `.encoding` after `.text` has been accessed raises ValueError, preventing a response from reporting two different texts (_models.py:674-686).",
-        "`Headers.__getitem__` joins duplicate headers with ', ' per RFC 7230 and raises KeyError when absent; `.get()` is the non-raising form (_models.py:242-302).",
-        "`Headers.encoding` sniffs ascii, then utf-8, then falls back to iso-8859-1, which can never fail to decode \u2014 so header access is total (_models.py:166-189).",
-        "`Response.__repr__` and `reason_phrase` go through the status-code table, so a response with an unknown status still reprs rather than erroring (_models.py:859-860, 619-626).",
-        "`response.request.headers['X-Custom']` confirms the caller's header reached the request that was actually sent \u2014 the request object is the audit trail (trace 444-450)."
-      ],
-      "open_questions": [
-        {
-          "id": "q12.1",
-          "question": "The body is fully buffered and the stream is closed. Is there anything left for the `with` block to clean up, and is the response still usable afterwards?"
-        }
-      ],
-      "answers": [
-        {
-          "id": "q11.1",
-          "answer": "The Content-Type charset 'utf-8' is parsed out via `email.message.Message.get_content_charset`, validated by `_is_known_encoding`, and used to build a TextDecoder with `errors='replace'`. It cannot raise: an unknown charset falls back to `default_encoding` ('utf-8' here), and undecodable bytes become replacement characters rather than an exception."
-        }
-      ]
-    },
-    {
-      "n": 13,
-      "title": "Leaving: closing a client that owns nothing",
-      "trace_lines": [
-        453,
-        458
-      ],
-      "data_in": "the Client in state OPENED, with _transport=WSGITransport and _mounts={}",
-      "data_out": "state CLOSED; BaseTransport.__exit__ \u2192 close(), a no-op for WSGITransport; the Response remains readable",
-      "code": [
-        "httpx/_client.py:1293-1304",
-        "httpx/_client.py:1263-1273",
-        "httpx/_transports/base.py:14-62"
-      ],
-      "inputs": [
-        "exit of the `with` block"
-      ],
-      "characters": [
+        "Headers.encoding",
         "Client.__exit__",
         "Client.close",
-        "BaseTransport.__exit__",
         "BaseTransport.close"
       ],
       "facts": [
+        "Encoding priority is: explicitly assigned `.encoding`, then the Content-Type charset, then `default_encoding` (which may be a string or a callable for autodetection), finally 'utf-8' (_models.py:652-672).",
+        "A charset that `codecs.lookup` does not know is discarded by `_is_known_encoding` and the default is used instead \ter a bogus server charset cannot break text decoding (_models.py:56-64, 666).",
+        "`TextDecoder` is built with `errors='replace'`, so `.text` never raises on malformed bytes; it silently substitutes U+FFFD. Byte-exactness requires `.content` (_decoders.py:311-315).",
+        "Setting `.encoding` after `.text` has been accessed raises ValueError, preventing a response from reporting two different texts (_models.py:674-686).",
+        "`Headers.__getitem__` joins duplicate headers with ', ' per RFC 7230 and raises KeyError when absent; `.get()` is the non-raising form (_models.py:242-302).",
+        "`Headers.encoding` sniffs ascii, then utf-8, then falls back to iso-8859-1, which can never fail to decode \ter so header access is total (_models.py:166-189).",
+        "`response.request.headers['X-Custom']` confirms the caller's header reached the request that was actually sent \ter the request object is the audit trail (trace 444-450).",
         "`__exit__` sets the state to CLOSED unconditionally, then closes the main transport and every mounted transport; after this, `send()` raises RuntimeError and the client cannot be reopened (_client.py:1293-1304, 900-901, 1275-1283).",
-        "`WSGITransport` does not override `close()`, so cleanup is `BaseTransport.close`'s `pass` \u2014 this client holds no sockets, file handles or pool to release (base.py:61-62).",
+        "`WSGITransport` does not override `close()`, so cleanup is `BaseTransport.close`'s `pass` \ter this client holds no sockets, file handles or pool to release (base.py:61-62).",
         "For a real `HTTPTransport` this same exit is what closes the connection pool; a client that is never closed or context-managed leaks keep-alive connections, which is why the context-manager form is the documented usage (_client.py:1270-1273).",
-        "Because the body was already buffered into `_content`, `response.text` and `response.content` keep working after the client is closed \u2014 the scenario's final `response.text` access happens before exit, but the buffered content would survive it (_models.py:636-650)."
+        "Because the body was already buffered into `_content`, `response.text` and `response.content` keep working after the client is closed (_models.py:636-650)."
       ],
       "open_questions": [],
       "answers": [
         {
-          "id": "q12.1",
-          "answer": "Nothing substantive for this transport: `__exit__` flips the client to CLOSED and calls `BaseTransport.close`, which is a no-op for WSGITransport. The response stays fully usable because its body was buffered into `_content` and its stream was already closed during the read. The guarantee that matters is the state change \u2014 a closed client rejects any further `send()` with RuntimeError."
+          "id": "q9.1",
+          "answer": "The Content-Type charset 'utf-8' is parsed out via `email.message.Message.get_content_charset`, validated by `_is_known_encoding`, and used to build a TextDecoder with `errors='replace'`. It cannot raise: an unknown charset falls back to `default_encoding` ('utf-8' here), and undecodable bytes become replacement characters rather than an exception."
         }
       ]
     }

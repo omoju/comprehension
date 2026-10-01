@@ -1,6 +1,6 @@
 {
   "title": "Hello, Click: one value's round trip through a command line",
-  "premise": "A caller has a Python function, `hello(count, name)`, and wants it to behave like a real command line program: `--count=3` typed on the command line, a name asked for interactively, output captured so a test can assert on it. Nothing in the function knows about argv, prompts, encodings, or exit codes. The data that arrives \u2014 the argument list `['--count=3']` and the keystrokes `'Click\\n'` \u2014 has to cross from an untrusted outside world into a typed Python call, and a result has to come back out with an exit code that means something. This is the story of that crossing, and of the guarantees Click makes along the way.",
+  "premise": "A caller has a Python function, `hello(count, name)`, and wants it to behave like a real command line program: `--count=3` typed on the command line, a name asked for interactively, output captured so a test can assert on it. Nothing in the function knows about argv, prompts, encodings, or exit codes. The data that arrives \nu2014 the argument list `['--count=3']` and the keystrokes `'Click\\n'` \nu2014 has to cross from an untrusted outside world into a typed Python call, and a result has to come back out with an exit code that means something. This is the story of that crossing, and of the guarantees Click makes along the way.",
   "reader": "owner",
   "repo": {
     "name": "pallets/click",
@@ -53,7 +53,7 @@
         "`--name` has no explicit `default`, so `Parameter.__init__` stores the sentinel `UNSET` and records `_default_explicit = False`. The sentinel is how Click later distinguishes \"the user never supplied a default\" from \"the default is None\".",
         "Type is inferred, not required: `convert_type(None, UNSET)` falls through `_guess_type` to `STRING` for `--name`; the collapsed `--count` declaration passes `default=1`, so `_guess_type` returns `int` and the type becomes `INT`.",
         "`_infer_flag_kind(is_flag=None, flag_value=UNSET)` returns `(False, False)` for `--name`: no flag_value, no secondary opts, `prompt_required` left at True, so it is an ordinary value option.",
-        "`_parse_decls` derives the Python name from the longest declaration: `'--name'` becomes `name`. `_check_name_is_usable` warns (DeprecationWarning, not an error) if that name is a Python keyword or not an identifier \u2014 a name that will become a `TypeError` in Click 9.0.",
+        "`_parse_decls` derives the Python name from the longest declaration: `'--name'` becomes `name`. `_check_name_is_usable` warns (DeprecationWarning, not an error) if that name is a Python keyword or not an identifier \nu2014 a name that will become a `TypeError` in Click 9.0.",
         "`_validate` runs only under `__debug__`; running Python with `-O` silences the illegal-combination checks (`nargs=-1` on an option, secondary flags on a non-boolean, `count` with `multiple`)."
       ],
       "open_questions": [
@@ -108,7 +108,7 @@
       "open_questions": [
         {
           "id": "q2.1",
-          "question": "All of this global state is swapped before the command runs. If the command raises \u2014 or calls `sys.exit` \u2014 does the process get its streams, env and prompt hooks back?"
+          "question": "All of this global state is swapped before the command runs. If the command raises \nu2014 or calls `sys.exit` \nu2014 does the process get its streams, env and prompt hooks back?"
         },
         {
           "id": "q2.2",
@@ -144,7 +144,7 @@
       ],
       "facts": [
         "`args` was given explicitly, so `sys.argv[1:]` is not read and Windows glob/env expansion (`_expand_args`) is skipped; that expansion only happens when `args is None` and `os.name == 'nt'`.",
-        "Before any parsing, `_main_shell_completion` reads the environment variable `_HELLO_COMPLETE` (derived from `prog_name`, with `-` and `.` mapped to `_`). If that variable is set, Click runs the completion machinery and calls `sys.exit` \u2014 the program never reaches its own logic. This is a real trust boundary: an attacker-controlled environment can divert the invocation.",
+        "Before any parsing, `_main_shell_completion` reads the environment variable `_HELLO_COMPLETE` (derived from `prog_name`, with `-` and `.` mapped to `_`). If that variable is set, Click runs the completion machinery and calls `sys.exit` \nu2014 the program never reaches its own logic. This is a real trust boundary: an attacker-controlled environment can divert the invocation.",
         "`standalone_mode=True` (the default) is the contract that `main` never returns normally: every path ends in `sys.exit`. With `standalone_mode=False`, exceptions propagate to the caller and the invoke return value comes back instead.",
         "Each handler in the ladder does the same two things: re-raise when not standalone, otherwise set `report` (a callable that writes the message) and `exit_code`; the writing and exiting happen once, after the `try`.",
         "`exit_code` is initialised to `1`, so any path that sets a message but no code reports failure. An `OSError` with `errno == EPIPE` is swallowed by wrapping `sys.stdout/stderr` in `_PacifyFlushWrapper`; any other `OSError` is re-raised."
@@ -237,7 +237,7 @@
         "The automatic help option stores its value under the reserved name `_click_default_help`, which is why a user parameter literally named `help` no longer breaks parsing (`_HELP_OPTION_STORAGE_NAME`, core.py:61).",
         "The help option object is cached in `Command._help_option` because `iter_params_for_processing` sorts by object identity; recreating it per call would break callback ordering.",
         "`get_params` also runs the duplicate-name policing: a repeated option spelling, a user parameter squatting on the reserved help name, or an `Argument` sharing a storage name with another parameter each raise a `UserWarning`. All of this lives inside `if __debug__`, so under `python -O` the silent-overwrite footguns are not reported at all.",
-        "`Option.add_to_parser` translates declarative settings into parser actions: `store` here, `append` for `multiple`, `count` for counters, and `*_const` for flags with `const=self.flag_activation_value` \u2014 the resolver that turns an `UNSET` `flag_value` into `True` for boolean flags."
+        "`Option.add_to_parser` translates declarative settings into parser actions: `store` here, `append` for `multiple`, `count` for counters, and `*_const` for flags with `const=self.flag_activation_value` \nu2014 the resolver that turns an `UNSET` `flag_value` into `True` for boolean flags."
       ],
       "open_questions": [
         {
@@ -255,7 +255,7 @@
         146
       ],
       "data_in": "`['--count=3']`",
-      "data_out": "`({'count': '3'}, [], [<Option count>])` \u2014 a raw string value, no leftovers, and the invocation order",
+      "data_out": "`({'count': '3'}, [], [<Option count>])` \nu2014 a raw string value, no leftovers, and the invocation order",
       "code": [
         "src/click/parser.py:298-314",
         "src/click/parser.py:327-341",
@@ -286,7 +286,7 @@
         "The parser performs no type conversion and no validation: it yields the string `'3'`. Types are a higher layer entirely.",
         "`state.order` records parameters in the order the user mentioned them. That list, not the declaration list, drives callback ordering later.",
         "Roads not taken, all visible in this code: a bare `--` returns early and stops option parsing; an unknown long option raises `NoSuchOption` with `difflib` close matches unless `ignore_unknown_options` pushes it into leftovers; an option that needs a value but sees the next token starting with a prefix yields the `FLAG_NEEDS_VALUE` sentinel if `_flag_needs_value`, otherwise raises `BadOptionUsage`.",
-        "`parse_args` swallows `UsageError` entirely when `ctx.resilient_parsing` is set \u2014 the mode shell completion runs in. In normal operation it propagates.",
+        "`parse_args` swallows `UsageError` entirely when `ctx.resilient_parsing` is set \nu2014 the mode shell completion runs in. In normal operation it propagates.",
         "With no positional parameters declared, `_unpack_args([], [])` returns `((), [])` and there are no leftover args."
       ],
       "open_questions": [],
@@ -294,41 +294,16 @@
     },
     {
       "n": 7,
-      "title": "Deciding who goes first",
+      "title": "Deciding who goes first, and the help option that was never passed",
       "trace_lines": [
         147,
-        157
-      ],
-      "data_in": "invocation order `[<Option count>]`, declaration order `[count, name, _click_default_help]`",
-      "data_out": "processing order `[<Option _click_default_help>, <Option count>, <Option name>]`",
-      "code": [
-        "src/click/core.py:1399",
-        "src/click/core.py:168-192"
-      ],
-      "inputs": [],
-      "characters": [
-        "iter_params_for_processing",
-        "sort_key",
-        "Option.is_eager"
-      ],
-      "facts": [
-        "The sort key is `(not is_eager, index-in-invocation-order)`, with `float('inf')` for parameters the user never mentioned. Eager parameters therefore always run before non-eager ones, and within each group the user's command line order is respected.",
-        "Because `--help` (and `--version`, built the same way) is eager, its callback can print and exit before any other parameter is validated \u2014 that is the guarantee that `prog --help` works even when required options are missing.",
-        "`--name`, never mentioned on the command line, sorts last. Parameters that were absent still get processed, which is what makes a missing-value prompt or a default-from-another-parameter callback possible."
-      ],
-      "open_questions": [],
-      "answers": []
-    },
-    {
-      "n": 8,
-      "title": "The help option that was never passed",
-      "trace_lines": [
-        158,
         215
       ],
-      "data_in": "`opts={'count': '3'}` and the help option, which appears nowhere in it",
-      "data_out": "`(None, [])` \u2014 value `False`, source `DEFAULT`, callback invoked and did nothing, `ctx.params` untouched",
+      "data_in": "invocation order `[<Option count>]`, declaration order `[count, name, _click_default_help]`, and `opts={'count': '3'}` in which the help option appears nowhere",
+      "data_out": "processing order `[_click_default_help, count, name]`, and for the help option `(None, [])` \nu2014 value `False`, source `DEFAULT`, callback invoked and did nothing, `ctx.params` untouched",
       "code": [
+        "src/click/core.py:1399",
+        "src/click/core.py:168-192",
         "src/click/core.py:2835-2921",
         "src/click/core.py:3726-3780",
         "src/click/core.py:2586-2632",
@@ -343,6 +318,8 @@
       ],
       "inputs": [],
       "characters": [
+        "iter_params_for_processing",
+        "sort_key",
         "Parameter.handle_parse_result",
         "Option.consume_value",
         "Parameter.consume_value",
@@ -357,13 +334,16 @@
         "ParameterSource"
       ],
       "facts": [
+        "The sort key is `(not is_eager, index-in-invocation-order)`, with `float('inf')` for parameters the user never mentioned. Eager parameters therefore always run before non-eager ones, and within each group the user's command line order is respected.",
+        "Because `--help` (and `--version`, built the same way) is eager, its callback can print and exit before any other parameter is validated \nu2014 that is the guarantee that `prog --help` works even when required options are missing.",
+        "`--name`, never mentioned on the command line, sorts last. Parameters that were absent still get processed, which is what makes a missing-value prompt or a default-from-another-parameter callback possible.",
         "`consume_value` establishes a fixed precedence, most explicit first: command line, then environment variable, then `ctx.default_map`, then the parameter's own default. The resulting `ParameterSource` is recorded on the context and is queryable by user code via `ctx.get_parameter_source(name)`.",
         "No envvar was declared and `auto_envvar_prefix` is None, so `resolve_envvar_value` returns None without reading `os.environ` at all.",
         "The raw `default` is still the `UNSET` sentinel; `_resolve_lazy_default` turns it into `False` because this is a non-required boolean flag. Resolving lazily here (rather than in `__init__`) is what keeps `default is UNSET` a reliable answer to \"did the author pass a default?\".",
         "The callback runs even though the user never passed `--help`: `show_help` receives `value=False` and returns immediately. The same shape guards `version_option`, which also returns early under `ctx.resilient_parsing` so completion never prints a version.",
         "The result is discarded: `expose_value=False` means the winner of the slot arbitration does not write `ctx.params`, so the function signature never has to mention `_click_default_help`.",
         "`handle_parse_result` arbitrates when several parameters share a storage name (feature switches): a more explicit source wins; on a tie, an explicitly-set default beats an auto-derived one; a loser's source is restored so later lookups stay truthful.",
-        "`augment_usage_errors` wraps the whole block, attaching `ctx` and `param` to any `BadParameter`/`UsageError` raised inside \u2014 that is how a type failure in a callback still reports which option caused it.",
+        "`augment_usage_errors` wraps the whole block, attaching `ctx` and `param` to any `BadParameter`/`UsageError` raised inside \nu2014 that is how a type failure in a callback still reports which option caused it.",
         "In `resilient_parsing` mode a conversion failure here is swallowed and the value reset to `UNSET`, so an invalid value cannot stop `--help` or shell completion from working."
       ],
       "open_questions": [],
@@ -375,7 +355,7 @@
       ]
     },
     {
-      "n": 9,
+      "n": 8,
       "title": "The caller's '3' and the user's 'Click'",
       "trace_lines": [
         216,
@@ -409,9 +389,9 @@
         "ParameterSource.COMMANDLINE"
       ],
       "facts": [
-        "`--count` is found in `opts`, so its source is `COMMANDLINE` and `type_cast_value` runs `IntParamType` on `'3'`, producing `3`. Had the token been `'x'`, `_NumberParamTypeBase.convert` would have called `fail`, raising `BadParameter` \u2014 a `UsageError` subclass with `exit_code = 2`.",
+        "`--count` is found in `opts`, so its source is `COMMANDLINE` and `type_cast_value` runs `IntParamType` on `'3'`, producing `3`. Had the token been `'x'`, `_NumberParamTypeBase.convert` would have called `fail`, raising `BadParameter` \nu2014 a `UsageError` subclass with `exit_code = 2`.",
         "`--name` is absent from `opts`, has no envvar, no default map entry, and its default is still `UNSET`. Because `prompt` is set, `prompt_required` is True and `resilient_parsing` is False, `consume_value` calls `prompt_for_value` and records the source as `PROMPT`.",
-        "`prompt_for_value` computes the default *before* any interaction, then calls `termui.prompt` with `value_proc=lambda x: self.process_value(ctx, x)` \u2014 so the parameter's type and callback validate prompted input exactly as they validate command line input, and an invalid answer re-asks rather than crashing.",
+        "`prompt_for_value` computes the default *before* any interaction, then calls `termui.prompt` with `value_proc=lambda x: self.process_value(ctx, x)` \nu2014 so the parameter's type and callback validate prompted input exactly as they validate command line input, and an invalid answer re-asks rather than crashing.",
         "Under isolation, `termui.visible_prompt_func` is the runner's `visible_input`: it writes the prompt to the captured stdout, reads one line from the `BytesIO` stdin, echoes it back, and strips the newline. That is why the expected output begins with `Your name: Click`.",
         "If stdin were exhausted, `visible_input` raises `EOFError`; `main`'s handler turns `EOFError`/`KeyboardInterrupt` into a blank line on stderr plus `Aborted!` and a non-zero exit. A prompting option therefore fails loudly, not silently, in a non-interactive pipeline.",
         "Had `--name` had no prompt and no default, `process_value` would have raised `MissingParameter` instead; with `prompt` and `resilient_parsing` set (completion), the prompt is skipped entirely.",
@@ -425,61 +405,25 @@
         },
         {
           "id": "q1.2",
-          "answer": "`Parameter.type_cast_value` applies the inferred `IntParamType` to the parser's raw `'3'`, yielding `3`. A non-numeric token makes the type call `fail`, raising `BadParameter` \u2014 a `UsageError`, exit code 2, with the offending option named via `augment_usage_errors`."
+          "answer": "`Parameter.type_cast_value` applies the inferred `IntParamType` to the parser's raw `'3'`, yielding `3`. A non-numeric token makes the type call `fail`, raising `BadParameter` \nu2014 a `UsageError`, exit code 2, with the offending option named via `augment_usage_errors`."
         }
       ]
     },
     {
-      "n": 10,
-      "title": "Out of parsing, into the call",
+      "n": 9,
+      "title": "Into the call, and out through echo",
       "trace_lines": [
         218,
-        236
+        280
       ],
       "data_in": "the context with `params={'count': 3, 'name': 'Click'}` and `_depth` unwinding to 0",
-      "data_out": "the context re-entered by `main`, then by `ctx.invoke`, with the callback about to be called as `hello(count=3, name='Click')`",
+      "data_out": "`hello(count=3, name='Click')` called; `b'Hello, Click!\\n'` written and flushed three times into the captured stdout buffer and mirrored into the mixed output buffer; the callback returns `None`",
       "code": [
         "src/click/core.py:594-630",
         "src/click/core.py:575-592",
         "src/click/core.py:1585-1598",
         "src/click/core.py:1428-1442",
-        "src/click/core.py:883-936"
-      ],
-      "inputs": [],
-      "characters": [
-        "Context.scope",
-        "Context.__exit__",
-        "pop_context",
-        "Command.invoke",
-        "Context.invoke",
-        "augment_usage_errors",
-        "Command.deprecated"
-      ],
-      "facts": [
-        "The `scope(cleanup=False)` exit drops `_depth` from 2 to 1, so `_close_with_exception_info` is not called: nothing opened during parsing is closed yet. `main` then re-enters the same context with `with`, taking `_depth` back to 1 and arming a real teardown for later.",
-        "`Command.invoke` would echo a red `DeprecationWarning:` line to stderr first if the command were marked `deprecated`; it is not, so it goes straight to the callback.",
-        "`ctx.invoke(self.callback, **ctx.params)` splats the parameter dict as keyword arguments. That is the reason parameter names must be valid Python identifiers, and why a name like `from` is only reachable through `**kwargs`.",
-        "`augment_usage_errors(self)` wraps the callback call, so a `UsageError` raised inside user code still carries the context and prints usage.",
-        "When `invoke` is handed a `Command` rather than a plain callable, it builds a sub-context and fills every missing parameter from `get_default`, mapping `UNSET` to `None` because the sentinel is deliberately kept out of the public API."
-      ],
-      "open_questions": [],
-      "answers": [
-        {
-          "id": "q4.1",
-          "answer": "Nothing closes at the end of parsing: `scope(cleanup=False)` keeps `_depth` above zero. The ExitStack is unwound later, by `ctx.exit()`/`Context.__exit__` once `main`'s `with` block finishes \u2014 after the command body has had its chance to use the resources."
-        }
-      ]
-    },
-    {
-      "n": 11,
-      "title": "echo, three times",
-      "trace_lines": [
-        237,
-        280
-      ],
-      "data_in": "the string `'Hello, Click!'`, emitted once per iteration of `range(3)`",
-      "data_out": "`b'Hello, Click!\\n'` written and flushed into the captured stdout buffer and mirrored into the mixed output buffer; the callback returns `None`",
-      "code": [
+        "src/click/core.py:883-936",
         "src/click/utils.py:240-334",
         "src/click/_compat.py:547-577",
         "src/click/_compat.py:347-351",
@@ -490,28 +434,42 @@
       ],
       "inputs": [],
       "characters": [
+        "Context.scope",
+        "Context.__exit__",
+        "pop_context",
+        "Command.invoke",
+        "Context.invoke",
+        "augment_usage_errors",
+        "Command.deprecated",
         "echo",
         "_default_text_stdout",
         "get_text_stdout",
         "_force_correct_text_writer",
         "_force_correct_text_stream",
-        "_is_compatible_text_stream",
-        "_stream_is_misconfigured",
         "should_strip_ansi",
         "strip_ansi",
         "resolve_color_default",
         "BytesIOCopy"
       ],
       "facts": [
+        "The `scope(cleanup=False)` exit drops `_depth` from 2 to 1, so `_close_with_exception_info` is not called: nothing opened during parsing is closed yet. `main` then re-enters the same context with `with`, taking `_depth` back to 1 and arming a real teardown for later.",
+        "`Command.invoke` would echo a red `DeprecationWarning:` line to stderr first if the command were marked `deprecated`; it is not, so it goes straight to the callback.",
+        "`ctx.invoke(self.callback, **ctx.params)` splats the parameter dict as keyword arguments. That is the reason parameter names must be valid Python identifiers, and why a name like `from` is only reachable through `**kwargs`.",
+        "`augment_usage_errors(self)` wraps the callback call, so a `UsageError` raised inside user code still carries the context and prints usage.",
+        "When `invoke` is handed a `Command` rather than a plain callable, it builds a sub-context and fills every missing parameter from `get_default`, mapping `UNSET` to `None` because the sentinel is deliberately kept out of the public API.",
         "With `file=None`, `echo` resolves the stream through a `WeakKeyDictionary`-backed cache keyed on the current `sys.stdout`, so the wrapper is built once per stream, and swapping `sys.stdout` (as the runner does) yields a different cache entry rather than a stale one.",
-        "`_force_correct_text_stream` returns the runner's UTF-8 wrapper unchanged because its `encoding`/`errors` are compatible and `_stream_is_misconfigured` is False. The rewrap path exists for the ASCII-encoding case, where Click deliberately forces UTF-8 with `errors='replace'` \u2014 mojibake instead of a crash.",
+        "`_force_correct_text_stream` returns the runner's UTF-8 wrapper unchanged because its `encoding`/`errors` are compatible and `_stream_is_misconfigured` is False. The rewrap path exists for the ASCII-encoding case, where Click deliberately forces UTF-8 with `errors='replace'` \nu2014 mojibake instead of a crash.",
         "Colour handling is a default with teeth: `color=None` consults `resolve_color_default`, which reads `ctx.color` (None here), and then `should_strip_ansi`. Normally that answers \"strip unless `isatty()`\", so piping output removes ANSI codes; here the runner's patched version answers True because `color=False` was requested.",
         "`echo` always flushes, and routes `bytes`/`bytearray` to the underlying binary writer when one can be found, so writing bytes to a text stream works instead of raising.",
-        "`BytesIOCopy.write` writes to the shared mixed buffer *before* its own, and `flush` flushes both \u2014 that is the mechanism behind faithful stdout/stderr interleaving.",
+        "`BytesIOCopy.write` writes to the shared mixed buffer *before* its own, and `flush` flushes both \nu2014 that is the mechanism behind faithful stdout/stderr interleaving.",
         "If no standard stream exists at all (pythonw on Windows), `echo` returns silently rather than raising."
       ],
       "open_questions": [],
       "answers": [
+        {
+          "id": "q4.1",
+          "answer": "Nothing closes at the end of parsing: `scope(cleanup=False)` keeps `_depth` above zero. The ExitStack is unwound later, by `ctx.exit()`/`Context.__exit__` once `main`'s `with` block finishes \nu2014 after the command body has had its chance to use the resources."
+        },
         {
           "id": "q2.2",
           "answer": "Every write to the captured stdout or stderr goes through `BytesIOCopy.write`, which first appends the same bytes to the single shared `output` buffer. Ordering in `Result.output` is therefore the real write order across both streams, including the prompt echo that `visible_input` wrote before the three greetings."
@@ -519,21 +477,25 @@
       ]
     },
     {
-      "n": 12,
-      "title": "Exit is an exception",
+      "n": 10,
+      "title": "Exit is an exception, and what the caller gets back",
       "trace_lines": [
         281,
-        295
+        310
       ],
       "data_in": "the callback's return value `None`, discarded; `ctx.exit(0)`",
-      "data_out": "`Exit(0)` raised, the ExitStack unwound with the exception info, caught by `main`, `sys.exit(0)`",
+      "data_out": "`Result(exit_code=0, exception=None, output_bytes=b'Your name: Click\\nHello, Click!\\n...')` and `result.output` as a `str`",
       "code": [
         "src/click/core.py:845-853",
         "src/click/core.py:715-738",
         "src/click/core.py:580-592",
         "src/click/exceptions.py:366-378",
         "src/click/core.py:1589-1645",
-        "src/click/exceptions.py:35-111"
+        "src/click/exceptions.py:35-111",
+        "src/click/testing.py:681-739",
+        "src/click/testing.py:576-594",
+        "src/click/testing.py:184-190",
+        "src/click/testing.py:262-314"
       ],
       "inputs": [],
       "characters": [
@@ -544,14 +506,25 @@
         "Context.__exit__",
         "ClickException.show",
         "UsageError.show",
-        "_echo_aborted"
+        "_echo_aborted",
+        "CliRunner.invoke",
+        "Result",
+        "Result.output",
+        "_NamedTextIOWrapper.close",
+        "_FDCapture"
       ],
       "facts": [
         "The return value of the command is deliberately *not* used as the exit code. The comment at core.py:1591-1597 spells out why: a callback returning `1`, or a chained group returning `[None, None]`, would make truthiness a misleading success signal. Success is always `ctx.exit()` with code 0.",
         "`ctx.exit` closes the context *before* raising `Exit`, so `call_on_close` callbacks and `with_resource` context managers run even on an early exit (changed in 8.2).",
         "`Context.__exit__` forwards the live exception type, value and traceback into `ExitStack.__exit__`, so a registered resource can observe and even suppress the failure; its return value becomes the `with` block's result. After unwinding, a fresh `ExitStack` is installed so the context can be reused.",
         "`main` catches `Exit`, takes `e.exit_code` as the process exit code, leaves `report` unset, and falls through to `sys.exit(0)`.",
-        "The outermost `except (EOFError, KeyboardInterrupt)` wraps even the reporting step: if the user interrupts while the error message is being written, the message may be lost but the intended exit code still wins. That is a stated policy choice, not an oversight."
+        "The outermost `except (EOFError, KeyboardInterrupt)` wraps even the reporting step: if the user interrupts while the error message is being written, the message may be lost but the intended exit code still wins. That is a stated policy choice, not an oversight.",
+        "`SystemExit` is caught separately from other exceptions by the runner: a code of `None` becomes 0, a non-zero code is also stored as `result.exception`, and a non-integer code is written to stdout and coerced to 1. So `exit_code == 0` with `exception is None` is the success signal.",
+        "`catch_exceptions` defaults to True, which means a genuine bug in the command surfaces only as `exit_code == 1` plus `result.exception`/`exc_info`. A test that asserts only on `output` can pass while the command crashed \nu2014 a real misuse hazard, mitigated by passing `catch_exceptions=False`.",
+        "The `finally` inside `invoke` flushes both streams and, in `fd` mode, stops the `_FDCapture`s and merges their bytes into the same buffers, so late or C-level writes are not lost.",
+        "`isolation`'s own `finally` restores `sys.std*`, `os.environ`, the `termui` prompt hooks, both `should_strip_ansi` references, `FORCED_WIDTH` and `pdb.Pdb.__init__` \nu2014 unconditionally, whatever happened inside.",
+        "`_NamedTextIOWrapper.close` is a deliberate no-op: the buffer belongs to the `StreamMixer`, so the default `__del__` must not close it out from under the `Result`.",
+        "`Result.output` decodes with `errors='replace'` and normalises `\\r\\n` to `\\n`, so undecodable bytes never raise when a test reads the output."
       ],
       "open_questions": [],
       "answers": [
@@ -562,46 +535,10 @@
         {
           "id": "q3.2",
           "answer": "`--count=x` would raise `BadParameter` inside `handle_parse_result`; `main`'s `except ClickException` would set `report = e.show` and `exit_code = e.exit_code` (2 for a `UsageError`). `UsageError.show` prints the usage line, a `Try 'hello --help' for help.` hint built from the longest help name, then `Error: Invalid value for '--count': ...` to stderr."
-        }
-      ]
-    },
-    {
-      "n": 13,
-      "title": "What the caller gets back",
-      "trace_lines": [
-        296,
-        310
-      ],
-      "data_in": "the `SystemExit(0)` escaping `cli.main`, plus the three byte buffers",
-      "data_out": "`Result(exit_code=0, exception=None, output_bytes=b'Your name: Click\\nHello, Click!\\n...')` and `result.output` as a `str`",
-      "code": [
-        "src/click/testing.py:681-739",
-        "src/click/testing.py:576-594",
-        "src/click/testing.py:184-190",
-        "src/click/testing.py:262-314"
-      ],
-      "inputs": [],
-      "characters": [
-        "CliRunner.invoke",
-        "Result",
-        "Result.output",
-        "_NamedTextIOWrapper.close",
-        "CliRunner.isolation (finally)",
-        "_FDCapture"
-      ],
-      "facts": [
-        "`SystemExit` is caught separately from other exceptions: a code of `None` becomes 0, a non-zero code is also stored as `result.exception`, and a non-integer code is written to stdout and coerced to 1. So `exit_code == 0` with `exception is None` is the success signal.",
-        "`catch_exceptions` defaults to True, which means a genuine bug in the command surfaces only as `exit_code == 1` plus `result.exception`/`exc_info`. A test that asserts only on `output` can pass while the command crashed \u2014 a real misuse hazard, mitigated by passing `catch_exceptions=False`.",
-        "The `finally` inside `invoke` flushes both streams and, in `fd` mode, stops the `_FDCapture`s and merges their bytes into the same buffers, so late or C-level writes are not lost.",
-        "`isolation`'s own `finally` restores `sys.std*`, `os.environ`, the `termui` prompt hooks, both `should_strip_ansi` references, `FORCED_WIDTH` and `pdb.Pdb.__init__` \u2014 unconditionally, whatever happened inside.",
-        "`_NamedTextIOWrapper.close` is a deliberate no-op: the buffer belongs to the `StreamMixer`, so the default `__del__` must not close it out from under the `Result`.",
-        "`Result.output` decodes with `errors='replace'` and normalises `\\r\\n` to `\\n`, so undecodable bytes never raise when a test reads the output."
-      ],
-      "open_questions": [],
-      "answers": [
+        },
         {
           "id": "q2.1",
-          "answer": "Yes. Both teardown paths are `finally` blocks: `invoke`'s flushes and merges the captured bytes, and `isolation`'s restores every piece of swapped global state \u2014 streams, environment keys, prompt hooks, `should_strip_ansi`, forced width and the pdb patch \u2014 regardless of whether the command returned, exited, or raised."
+          "answer": "Yes. Both teardown paths are `finally` blocks: `invoke`'s flushes and merges the captured bytes, and `isolation`'s restores every piece of swapped global state \nu2014 streams, environment keys, prompt hooks, `should_strip_ansi`, forced width and the pdb patch \nu2014 regardless of whether the command returned, exited, or raised."
         }
       ]
     }

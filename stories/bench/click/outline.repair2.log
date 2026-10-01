@@ -1,0 +1,27 @@
+Hello, Click: one value's round trip through a command line  [owner]: 10 chapters
+   1. Before the data: declarations become objects  [trace 2-38]
+   2. An isolated world: the runner swaps the process out from under you  [trace 39-57]
+   3. main(): the policy at the door  [trace 58-60]
+   4. A context to live in  [trace 61-69]
+   5. Building the parser, and the help option nobody declared  [trace 70-124]
+   6. Tokens become a raw dict  [trace 125-146]
+   7. Deciding who goes first, and the help option that was never passed  [trace 147-215]
+   8. The caller's '3' and the user's 'Click'  [trace 216-217]
+   9. Into the call, and out through echo  [trace 218-280]
+  10. Exit is an exception, and what the caller gets back  [trace 281-310]
+  ! ch3 covers only 2 calls (trace lines 58-60); a chapter needs at least 5: fold it into a neighbour
+  ! ch8 covers only 1 call (trace lines 216-217); a chapter needs at least 5: fold it into a neighbour
+
+repair 1/2
+Hello, Click: one value's round trip through a command line  [owner]: 9 chapters
+   1. Before the data: declarations become objects  [trace 2-38]
+   2. An isolated world: the runner swaps the process out from under you  [trace 39-57]
+   3. main(): the policy at the door, and a context to live in  [trace 58-69]
+   4. Building the parser, and the help option nobody declared  [trace 70-124]
+   5. Tokens become a raw dict  [trace 125-146]
+   6. Deciding who goes first, and the help option that was never passed  [trace 147-215]
+   7. The caller's '3', the user's 'Click', and the handover to the function  [trace 216-236]
+   8. Into the call, and out through echo  [trace 237-280]
+   9. Exit is an exception, and what the caller gets back  [trace 281-310]
+
+.repair1 tokens: 23,476 in (+0 cached, 150,814 written to cache), 11,654 out

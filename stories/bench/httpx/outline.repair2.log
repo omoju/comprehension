@@ -1,0 +1,26 @@
+A Request That Never Touches the Network  [owner]: 10 chapters
+   1. The world it enters: a client wired to a function, not a socket  [trace 2-75]
+   2. "/" becomes an absolute URL  [trace 76-135]
+   3. Merging, then becoming a Request  [trace 136-246]
+   4. send(): state, auth resolution, and one pass through the auth generator  [trace 247-260]
+   5. Choosing the transport, and the exception-tagging boundary  [trace 261-266]
+   6. Across the boundary: the request becomes a WSGI environ  [trace 267-303]
+   7. Dressing the response: identity, timing stream, cookies, log line  [trace 304-355]
+   8. Not a redirect: the two loops unwind  [trace 356-363]
+   9. Reading the body: decoders, chunker, and the close that sets elapsed  [trace 364-395]
+  10. Out to the caller, and closing a client that owns nothing  [trace 398-458]
+  ! ch5 covers only 4 calls (trace lines 261-266); a chapter needs at least 5: fold it into a neighbour
+  ! ch8 covers only 3 calls (trace lines 356-363); a chapter needs at least 5: fold it into a neighbour
+
+repair 1/2
+A Request That Never Touches the Network  [owner]: 8 chapters
+   1. The world it enters: a client wired to a function, not a socket  [trace 2-75]
+   2. "/" becomes an absolute URL  [trace 76-135]
+   3. Merging, then becoming a Request  [trace 136-246]
+   4. send(): state, auth resolution, transport selection  [trace 247-266]
+   5. Across the boundary: the request becomes a WSGI environ  [trace 267-303]
+   6. Dressing the response, then unwinding the redirect and auth loops  [trace 304-363]
+   7. Reading the body: decoders, chunker, and the close that sets elapsed  [trace 364-395]
+   8. Out to the caller, and closing a client that owns nothing  [trace 398-458]
+
+.repair1 tokens: 27,500 in (+0 cached, 152,633 written to cache), 11,312 out

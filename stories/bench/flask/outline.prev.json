@@ -1,6 +1,6 @@
 {
   "title": "One Request Through Flask: What the Framework Promises Between `environ` and `200 OK`",
-  "premise": "A ten-line application \n\n`app = Flask(__name__)`, one route returning `\"Hello, World!\"` \n\n is the smallest thing anyone can be asked to sign off on. Nothing is configured: no secret key, no error handlers, no blueprints, no before/after hooks. Everything that happens between the client's `GET /` and the `200 OK` it gets back is Flask's own behaviour, running on its defaults. This story follows one WSGI environ dict from the moment the test client builds it to the moment the response iterator closes, and asks at each step: what is guaranteed here, what are the defaults, and what happens when something goes wrong.",
+  "premise": "A ten-line application \u2014 `app = Flask(__name__)`, one route returning `\"Hello, World!\"` \u2014 is the smallest thing anyone can be asked to sign off on. Nothing is configured: no secret key, no error handlers, no blueprints, no before/after hooks. Everything that happens between the client's `GET /` and the `200 OK` it gets back is Flask's own behaviour, running on its defaults. This story follows one WSGI environ dict from the moment the test client builds it to the moment the response iterator closes, and asks at each step: what is guaranteed here, what are the defaults, and what happens when something goes wrong.",
   "reader": "owner",
   "repo": {
     "name": "pallets/flask",
@@ -18,7 +18,7 @@
         60
       ],
       "data_in": "`import_name='__main__'`, with every other constructor argument left at its default (`static_folder='static'`, `host_matching=False`, `subdomain_matching=False`, `instance_relative_config=False`).",
-      "data_out": "A `Flask` instance carrying a `Config` of 29 defaults (`DEBUG=False`, `SECRET_KEY=None`, `TESTING=False`, `PROPAGATE_EXCEPTIONS=None`, `PROVIDE_AUTOMATIC_OPTIONS=True`, \ngg), a `url_map` holding two rules \n\n `/static/<path:filename>` \n `static` and `/` \n `hello` \n\n and `_got_first_request = False`.",
+      "data_out": "A `Flask` instance carrying a `Config` of 29 defaults (`DEBUG=False`, `SECRET_KEY=None`, `TESTING=False`, `PROPAGATE_EXCEPTIONS=None`, `PROVIDE_AUTOMATIC_OPTIONS=True`, \u2026), a `url_map` holding two rules \u2014 `/static/<path:filename>` \u2192 `static` and `/` \u2192 `hello` \u2014 and `_got_first_request = False`.",
       "code": [
         "src/flask/app.py:311-364",
         "src/flask/sansio/app.py:279-408",
@@ -44,7 +44,7 @@
       ],
       "facts": [
         "`App.make_config` copies `Flask.default_config` and then overwrites `DEBUG` with `get_debug_flag()`, which reads the `FLASK_DEBUG` environment variable; here it returned `False` (trace line 19-20), so debug mode is off and is driven by the environment, not by code.",
-        "`SECRET_KEY` defaults to `None` and nothing in this app sets it \n\n a fact that decides the behaviour of sessions later.",
+        "`SECRET_KEY` defaults to `None` and nothing in this app sets it \u2014 a fact that decides the behaviour of sessions later.",
         "A static route is registered unconditionally whenever `static_folder` is set, without checking that the directory exists (`src/flask/app.py:352-364`); the view is held through a `weakref.ref` to the app to avoid a reference cycle (#3761).",
         "`add_url_rule` defaults the methods to `('GET',)` and, because `PROVIDE_AUTOMATIC_OPTIONS` is `True` and `OPTIONS` is not in the declared methods, adds `OPTIONS` to the rule and sets `provide_automatic_options = True` on it.",
         "Every registration method is wrapped by `setupmethod`, which calls `_check_setup_finished` first; while `_got_first_request` is `False` the check passes silently (trace lines 38-40, 52-54)."
@@ -68,8 +68,8 @@
         61,
         73
       ],
-      "data_in": "`client.get(\"/\")` \n\n positional args `('/',)` and `kwargs={'method': 'GET'}`.",
-      "data_out": "A `Request` object wrapping a WSGI environ: `{'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'REMOTE_ADDR': '127.0.0.1', \ngg}`.",
+      "data_in": "`client.get(\"/\")` \u2014 positional args `('/',)` and `kwargs={'method': 'GET'}`.",
+      "data_out": "A `Request` object wrapping a WSGI environ: `{'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'REMOTE_ADDR': '127.0.0.1', \u2026}`.",
       "code": [
         "src/flask/app.py:758-814",
         "src/flask/testing.py:125-133",
@@ -90,9 +90,9 @@
       ],
       "facts": [
         "`FlaskClient.__init__` seeds `environ_base` with `REMOTE_ADDR='127.0.0.1'` and a Werkzeug `HTTP_USER_AGENT`; every request the client makes inherits those (trace lines 62-70).",
-        "Flask's `EnvironBuilder` fills the host from `SERVER_NAME` or falls back to the literal `'localhost'`, and the scheme from `PREFERRED_URL_SCHEME` (`'http'` by default) \n\n so the test request's `Host` header is a Flask config decision, not the caller's.",
+        "Flask's `EnvironBuilder` fills the host from `SERVER_NAME` or falls back to the literal `'localhost'`, and the scheme from `PREFERRED_URL_SCHEME` (`'http'` by default) \u2014 so the test request's `Host` header is a Flask config decision, not the caller's.",
         "`FlaskClient.open` closes `self._context_stack` before dispatching, so contexts preserved by a previous request are not carried across requests or redirects.",
-        "`preserve_context` is only set inside a `with client:` block; here it is `False`, so `werkzeug.debug.preserve_context` is never added to the environ \n\n which matters for whether the context survives the request."
+        "`preserve_context` is only set inside a `with client:` block; here it is `False`, so `werkzeug.debug.preserve_context` is never added to the environ \u2014 which matters for whether the context survives the request."
       ],
       "open_questions": [
         {
@@ -110,7 +110,7 @@
         83
       ],
       "data_in": "The environ dict plus a `start_response` callable, arriving at `Flask.__call__`.",
-      "data_out": "`<AppContext 4557234128 of scenario, GET 'http://localhost/'>` \n\n a context holding the app, a fresh `g`, the `Request`, and a bound `MapAdapter`; not yet pushed.",
+      "data_out": "`<AppContext 4557234128 of scenario, GET 'http://localhost/'>` \u2014 a context holding the app, a fresh `g`, the `Request`, and a bound `MapAdapter`; not yet pushed.",
       "code": [
         "src/flask/app.py:1621-1628",
         "src/flask/app.py:1569-1619",
@@ -135,7 +135,7 @@
         "`__call__` delegates to `wsgi_app` purely so middleware can wrap `app.wsgi_app` without losing the app object (`src/flask/app.py:1621-1628`).",
         "`create_url_adapter` sets `request.trusted_hosts` from the `TRUSTED_HOSTS` config and then recomputes `request.host` via `get_host(environ, trusted_hosts)`; `TRUSTED_HOSTS` defaults to `None`, meaning every `Host` header is accepted and a `SecurityError` (400) is only possible if the owner opts in.",
         "Because `subdomain_matching` is `False`, `create_url_adapter` forces `subdomain` to the map's default (the empty string), so a request to `foo.localhost` would still match app-level routes.",
-        "`AppContext.__init__` catches an `HTTPException` raised while binding the URL adapter and stores it on `request.routing_exception` instead of letting it escape \n\n binding failures become a normal response, not a crash.",
+        "`AppContext.__init__` catches an `HTTPException` raised while binding the URL adapter and stores it on `request.routing_exception` instead of letting it escape \u2014 binding failures become a normal response, not a crash.",
         "The whole of `push()` + `full_dispatch_request` sits inside a `try/except Exception` in `wsgi_app`, with `ctx.pop(error)` in a `finally`: the context is popped even on unhandled errors."
       ],
       "open_questions": [
@@ -147,7 +147,7 @@
       "answers": [
         {
           "id": "q2.1",
-          "answer": "Yes \n\n `create_url_adapter` recomputes `request.host` from the environ, and with the default `TRUSTED_HOSTS = None` no host is rejected. Host validation is opt-in config, not a built-in guarantee."
+          "answer": "Yes \u2014 `create_url_adapter` recomputes `request.host` from the environ, and with the default `TRUSTED_HOSTS = None` no host is rejected. Host validation is opt-in config, not a built-in guarantee."
         }
       ]
     },
@@ -184,7 +184,7 @@
       "facts": [
         "`push()` is idempotent-by-count: `_push_count` is incremented every time, and if `_cv_token` is already set it returns immediately, so signals and routing fire only on the first push (`src/flask/ctx.py:428-432`).",
         "The order is deliberate: the session is opened first, then `match_request()` runs, so custom URL converters and `open_session` implementations can see the request context (`src/flask/ctx.py:437-444`).",
-        "`get_signing_serializer` returns `None` when `app.secret_key` is falsy (trace lines 89-93); `open_session` then returns `None` and `_get_session` substitutes a `NullSession` \n\n reads return empty, and `__setitem__`, `pop`, `update`, `setdefault` etc. all raise `RuntimeError(\"The session is unavailable because no secret key was set\ngg\")`.",
+        "`get_signing_serializer` returns `None` when `app.secret_key` is falsy (trace lines 89-93); `open_session` then returns `None` and `_get_session` substitutes a `NullSession` \u2014 reads return empty, and `__setitem__`, `pop`, `update`, `setdefault` etc. all raise `RuntimeError(\"The session is unavailable because no secret key was set\u2026\")`.",
         "`match_request` catches `HTTPException` from `url_adapter.match()` and parks it on `request.routing_exception`; a 404 or 405 is therefore decided here but not raised here.",
         "Routing is skipped entirely if `url_adapter is None` (no `SERVER_NAME` and no request), leaving `url_rule` unset."
       ],
@@ -213,7 +213,7 @@
         112
       ],
       "data_in": "The pushed `AppContext` (`GET 'http://localhost/'`, matched endpoint `hello`).",
-      "data_out": "`None` from `preprocess_request` \n\n no before-request hook short-circuited, so dispatch proceeds.",
+      "data_out": "`None` from `preprocess_request` \u2014 no before-request hook short-circuited, so dispatch proceeds.",
       "code": [
         "src/flask/app.py:995-1022",
         "src/flask/app.py:1369-1395",
@@ -231,11 +231,11 @@
         "_got_first_request"
       ],
       "facts": [
-        "`self._got_first_request = True` is set here, before dispatch; from this request onward every `setupmethod` (`route`, `add_url_rule`, `before_request`, `errorhandler`, \ngg) raises `AssertionError` \n\n late registration is refused rather than silently half-applied.",
-        "`request_started.send(...)`, `preprocess_request(ctx)` and `dispatch_request(ctx)` all run inside one `try/except Exception as e: rv = self.handle_user_exception(ctx, e)` \n\n a failing `before_request` hook is handled exactly like a failing view.",
+        "`self._got_first_request = True` is set here, before dispatch; from this request onward every `setupmethod` (`route`, `add_url_rule`, `before_request`, `errorhandler`, \u2026) raises `AssertionError` \u2014 late registration is refused rather than silently half-applied.",
+        "`request_started.send(...)`, `preprocess_request(ctx)` and `dispatch_request(ctx)` all run inside one `try/except Exception as e: rv = self.handle_user_exception(ctx, e)` \u2014 a failing `before_request` hook is handled exactly like a failing view.",
         "`preprocess_request` runs URL value preprocessors for all names first, then before-request functions; any non-`None` return from a before-request function becomes the response and dispatch is skipped entirely (`src/flask/app.py:1390-1393`).",
         "Scope order is app-first for preprocessing: `names = (None, *reversed(req.blueprints))`. Here `req.blueprints` is `[]` because the endpoint `'hello'` contains no dot (trace lines 106-111), so only app-level hooks are considered.",
-        "`full_dispatch_request` also emits a `DeprecationWarning` on the first request if `should_ignore_error` has been overridden \n\n a deprecated hook scheduled for removal in Flask 3.3."
+        "`full_dispatch_request` also emits a `DeprecationWarning` on the first request if `should_ignore_error` has been overridden \u2014 a deprecated hook scheduled for removal in Flask 3.3."
       ],
       "open_questions": [
         {
@@ -252,20 +252,18 @@
     },
     {
       "n": 6,
-      "title": "Dispatch and `make_response`: The Branches Not Taken, and the String That Becomes a Response",
+      "title": "`dispatch_request`: The Three Branches, Two Not Taken",
       "trace_lines": [
         113,
-        121
+        118
       ],
       "data_in": "The pushed `AppContext` with `request.url_rule` pointing at the `/` rule and `view_args = {}`.",
-      "data_out": "`<Response 13 bytes [200 OK]>`, built from the view's raw return value `'Hello, World!'`.",
+      "data_out": "`'Hello, World!'` \u2014 the raw return value of the view function.",
       "code": [
         "src/flask/app.py:969-993",
         "src/flask/app.py:563-589",
         "src/flask/app.py:1056-1066",
-        "src/flask/app.py:1068-1103",
-        "src/flask/app.py:1024-1054",
-        "src/flask/app.py:1227-1367"
+        "src/flask/app.py:1068-1103"
       ],
       "inputs": [
         "ctx"
@@ -274,34 +272,61 @@
         "Flask.dispatch_request",
         "Flask.raise_routing_exception",
         "Flask.make_default_options_response",
-        "Flask.ensure_sync",
-        "Flask.finalize_request",
-        "Flask.make_response",
-        "Response"
+        "Flask.ensure_sync"
       ],
       "facts": [
-        "The first branch of `dispatch_request` checks `req.routing_exception is not None` and calls `raise_routing_exception`, which re-raises the stored exception \n\n so a 404 parked during `match_request` surfaces here, inside the error boundary, and becomes a normal error response.",
+        "The first branch checks `req.routing_exception is not None` and calls `raise_routing_exception`, which re-raises the stored exception \u2014 so a 404 parked during `match_request` surfaces here, inside the error boundary, and becomes a normal error response.",
         "`raise_routing_exception` only substitutes a debug-only `FormDataRoutingRedirect` when debug mode is on, the exception is a `RequestRedirect` with a code other than 307/308, and the method is not GET/HEAD/OPTIONS; with `DEBUG=False` the original exception is always re-raised unchanged.",
         "The second branch returns `make_default_options_response(ctx)` when the matched rule has `provide_automatic_options` and the method is `OPTIONS`; that rule flag was set during registration in Chapter 1. Here the method is `GET`, so the branch is skipped.",
-        "`ensure_sync` inspects the view with `iscoroutinefunction`; a plain `def` is returned unchanged (trace lines 116-117). An `async def` view would go through `async_to_sync`, which raises `RuntimeError(\"Install Flask with the 'async' extra\ngg\")` if `asgiref` is missing.",
-        "`make_response` unpacks tuple returns first: a 3-tuple is `(body, status, headers)`, a 2-tuple is disambiguated by whether the second item is a `Headers`/`dict`/`tuple`/`list`; any other length raises `TypeError` naming the allowed forms.",
-        "Returning `None` (or falling off the end of a view) raises `TypeError` naming the endpoint \n\n it is never silently turned into an empty 200; `dict` and `list` go through `self.json.response(...)`, a `BaseResponse` or callable is coerced via `force_type`, and anything else raises `TypeError`.",
-        "`finalize_request` wraps `process_response` and the `request_finished` signal in a `try`; failures only get swallowed (and logged) when `from_error_handler=True`, which is set only by `handle_exception` \n\n in the normal path a failing `after_request` propagates."
+        "`ensure_sync` inspects the view with `iscoroutinefunction`; a plain `def` is returned unchanged (trace lines 116-117). An `async def` view would go through `async_to_sync`, which raises `RuntimeError(\"Install Flask with the 'async' extra\u2026\")` if `asgiref` is missing.",
+        "The view is called as `self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)` \u2014 the endpoint-to-function mapping, not the rule, decides what runs."
       ],
       "open_questions": [],
       "answers": [
         {
           "id": "q4.1",
           "answer": "`dispatch_request` does, as its very first act: `raise_routing_exception(req)` re-raises the stored `HTTPException` inside `full_dispatch_request`'s `try`, where `handle_user_exception` converts it into a response."
-        },
-        {
-          "id": "q5.1",
-          "answer": "`make_response` normalizes the view's return value, creating a `Response` from the `str` body. Unsupported return types \n\n `None`, odd-length tuples, arbitrary objects \n\n raise `TypeError` with a message naming the allowed forms, so misuse fails loudly rather than producing a broken response."
         }
       ]
     },
     {
       "n": 7,
+      "title": "`make_response`: Turning a `str` Into a `Response`, or Refusing To",
+      "trace_lines": [
+        119,
+        121
+      ],
+      "data_in": "`rv = 'Hello, World!'` (a bare `str`), handed to `finalize_request`.",
+      "data_out": "`<Response 13 bytes [200 OK]>`.",
+      "code": [
+        "src/flask/app.py:1024-1054",
+        "src/flask/app.py:1227-1367"
+      ],
+      "inputs": [
+        "rv='Hello, World!'"
+      ],
+      "characters": [
+        "Flask.finalize_request",
+        "Flask.make_response",
+        "Response"
+      ],
+      "facts": [
+        "Tuple returns are unpacked first: a 3-tuple is `(body, status, headers)`, a 2-tuple is disambiguated by whether the second item is a `Headers`/`dict`/`tuple`/`list`; any other length raises `TypeError` with an explicit message about the allowed forms.",
+        "Returning `None` (or falling off the end of a view) raises `TypeError` naming the endpoint \u2014 it is never silently turned into an empty 200.",
+        "`str`, `bytes`, `bytearray` and iterators are passed to `response_class` directly so the class can apply status and headers itself; `dict` and `list` go through `self.json.response(...)`; a `BaseResponse` or any callable is coerced via `response_class.force_type` as a WSGI app; anything else raises `TypeError` listing the valid return types.",
+        "`DefaultJSONProvider.response` uses compact separators out of debug mode and 2-space indentation in debug mode, and `sort_keys`/`ensure_ascii` default to `True` \u2014 JSON output shape depends on `DEBUG`.",
+        "`finalize_request` wraps `process_response` and the `request_finished` signal in a `try`; failures only get swallowed (and logged) when `from_error_handler=True`, which is set only by `handle_exception` \u2014 in the normal path a failing `after_request` propagates."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q5.1",
+          "answer": "`make_response` normalizes the view's return value, creating a `Response` from the `str` body. Unsupported return types \u2014 `None`, odd-length tuples, arbitrary objects \u2014 raise `TypeError` with a message naming the allowed forms, so misuse fails loudly rather than producing a broken response."
+        }
+      ]
+    },
+    {
+      "n": 8,
       "title": "`process_response`: After-Request Hooks and the Cookie That Isn't Written",
       "trace_lines": [
         122,
@@ -326,11 +351,11 @@
         "SecureCookieSessionInterface.save_session"
       ],
       "facts": [
-        "Per-request callbacks registered with `after_this_request` run first, then registered `after_request` functions; blueprint scopes run before the app scope (`chain(ctx.request.blueprints, (None,))`) and within each scope in reverse registration order \n\n the inverse of `preprocess_request`'s ordering.",
+        "Per-request callbacks registered with `after_this_request` run first, then registered `after_request` functions; blueprint scopes run before the app scope (`chain(ctx.request.blueprints, (None,))`) and within each scope in reverse registration order \u2014 the inverse of `preprocess_request`'s ordering.",
         "Each after-request function must return a response; its return value replaces `response` for the next function, so a hook that forgets to return breaks the chain.",
         "`save_session` is called only when `is_null_session(ctx._get_session())` is `False`. Here the session is a `NullSession`, so the call is skipped entirely (trace lines 131-134) and no cookie is written.",
-        "When a real session is in play, `save_session` adds `Vary: Cookie` whenever `session.accessed` is true, deletes the cookie if the session was emptied and modified, and otherwise only sets it if `should_set_cookie` \n\n modified, or permanent with `SESSION_REFRESH_EACH_REQUEST`.",
-        "Cookie defaults are conservative-but-not-strict: `SESSION_COOKIE_HTTPONLY=True`, but `SESSION_COOKIE_SECURE=False`, `SESSION_COOKIE_SAMESITE=None`, `SESSION_COOKIE_PARTITIONED=False` \n\n secure/SameSite hardening is the owner's job."
+        "When a real session is in play, `save_session` adds `Vary: Cookie` whenever `session.accessed` is true, deletes the cookie if the session was emptied and modified, and otherwise only sets it if `should_set_cookie` \u2014 modified, or permanent with `SESSION_REFRESH_EACH_REQUEST`.",
+        "Cookie defaults are conservative-but-not-strict: `SESSION_COOKIE_HTTPONLY=True`, but `SESSION_COOKIE_SECURE=False`, `SESSION_COOKIE_SAMESITE=None`, `SESSION_COOKIE_PARTITIONED=False` \u2014 secure/SameSite hardening is the owner's job."
       ],
       "open_questions": [],
       "answers": [
@@ -341,29 +366,23 @@
       ]
     },
     {
-      "n": 8,
-      "title": "`pop` and the Way Out: Teardown That Runs Everything, Even When It Fails",
+      "n": 9,
+      "title": "`pop`: Teardown That Runs Everything, Even When It Fails",
       "trace_lines": [
         138,
-        190
+        187
       ],
       "data_in": "The active `AppContext` and `exc=None` (no error occurred during dispatch).",
-      "data_out": "`<werkzeug.wsgi.ClosingIterator object at 0x10fa1ef90>` returned from `wsgi_app`, surfacing to the caller as `<WrapperTestResponse streamed [200 OK]>` with body `'Hello, World!'`; the context is popped, `_cv_app` reset, `_cv_token = None`, request closed, no errors collected.",
+      "data_out": "`None` \u2014 context popped, `_cv_app` reset, `_cv_token = None`, request closed, no errors collected.",
       "code": [
         "src/flask/ctx.py:446-504",
         "src/flask/app.py:1423-1454",
         "src/flask/app.py:1456-1482",
-        "src/flask/helpers.py:654-682",
-        "src/flask/app.py:1595-1619",
-        "src/flask/app.py:900-951",
-        "src/flask/app.py:868-898",
-        "src/flask/app.py:833-866"
+        "src/flask/helpers.py:654-682"
       ],
       "inputs": [
         "ctx",
-        "exc=None",
-        "environ",
-        "start_response"
+        "exc=None"
       ],
       "characters": [
         "AppContext.pop",
@@ -371,26 +390,58 @@
         "Flask.do_teardown_request",
         "Flask.do_teardown_appcontext",
         "Request.close",
-        "appcontext_popped",
+        "appcontext_popped"
+      ],
+      "facts": [
+        "`pop` refuses to run against the wrong context: it raises `RuntimeError` if `_cv_token` is `None`, if no context is active, or if the active context is not `self` \u2014 mismatched push/pop is a hard error, not corruption.",
+        "`_push_count` is decremented and cleanup is skipped while it is still positive, so a context pushed N times (streaming, `stream_with_context`, test preservation) only tears down on the Nth pop.",
+        "Every teardown step runs inside a `_CollectErrors` block whose `__exit__` records the exception and returns `True` (swallowing it); `raise_any` then raises a `BaseExceptionGroup` on Python \u22653.11 (or the first error otherwise). Guarantee: one failing teardown callback does not prevent the others, `request.close()`, or the contextvar reset from running (trace lines 139-187).",
+        "Teardown order is fixed: request teardowns (blueprint scopes then app, reverse registration order) \u2192 `request_tearing_down` signal \u2192 `request.close()` \u2192 appcontext teardowns reversed \u2192 `appcontext_tearing_down` \u2192 reset `_cv_app` \u2192 `appcontext_popped`.",
+        "`exc` is forwarded to every teardown function; if an error handler already produced a response, `wsgi_app` passes `error=e` only for exceptions that escaped `full_dispatch_request`, so handled errors are not seen by teardown."
+      ],
+      "open_questions": [],
+      "answers": []
+    },
+    {
+      "n": 10,
+      "title": "Out the Door: The Response Iterator, and the Path Not Taken",
+      "trace_lines": [
+        188,
+        190
+      ],
+      "data_in": "`<Response 13 bytes [200 OK]>` called as a WSGI app with `(environ, start_response)`.",
+      "data_out": "`<werkzeug.wsgi.ClosingIterator object at 0x10fa1ef90>`, surfacing to the caller as `<WrapperTestResponse streamed [200 OK]>` with body `'Hello, World!'`.",
+      "code": [
+        "src/flask/app.py:1595-1619",
+        "src/flask/app.py:900-951",
+        "src/flask/app.py:868-898",
+        "src/flask/app.py:833-866",
+        "src/flask/app.py:953-967"
+      ],
+      "inputs": [
+        "environ",
+        "start_response"
+      ],
+      "characters": [
         "Flask.wsgi_app",
         "Flask.handle_exception",
         "Flask.handle_user_exception",
+        "Flask.handle_http_exception",
+        "Flask.log_exception",
         "got_request_exception"
       ],
       "facts": [
-        "`pop` refuses to run against the wrong context: it raises `RuntimeError` if `_cv_token` is `None`, if no context is active, or if the active context is not `self` \n\n mismatched push/pop is a hard error, not corruption.",
-        "`_push_count` is decremented and cleanup is skipped while it is still positive, so a context pushed N times (streaming, `stream_with_context`, test preservation) only tears down on the Nth pop.",
-        "Every teardown step runs inside a `_CollectErrors` block whose `__exit__` records the exception and returns `True` (swallowing it); `raise_any` then raises a `BaseExceptionGroup` on Python \ngg3.11 (or the first error otherwise). Guarantee: one failing teardown callback does not prevent the others, `request.close()`, or the contextvar reset from running (trace lines 139-187).",
-        "Teardown order is fixed: request teardowns (blueprint scopes then app, reverse registration order) \n `request_tearing_down` signal \n `request.close()` \n appcontext teardowns reversed \n `appcontext_tearing_down` \n reset `_cv_app` \n `appcontext_popped`.",
-        "`return response(environ, start_response)` happens inside the `try`, so the `finally` \n\n and therefore `ctx.pop(error)` \n\n runs before the body is iterated by the server; the response is already materialized by then.",
-        "Had the view raised, `handle_user_exception` would look up a handler by status code and MRO across blueprint then app scope; with no handler for a non-HTTP exception it re-raises into `handle_exception`, which always sends `got_request_exception`, then checks `PROPAGATE_EXCEPTIONS` \n\n defaulting to `None`, which resolves to `self.testing or self.debug`, both `False` here.",
-        "The default 500 path still goes through `finalize_request(..., from_error_handler=True)`, so `after_request` functions and session saving run even for the generic error response, and failures there are logged instead of raised."
+        "`return response(environ, start_response)` happens inside the `try`, so the `finally` \u2014 and therefore `ctx.pop(error)` \u2014 runs before the body is iterated by the server; the response is already materialized by then.",
+        "Had the view raised, `handle_user_exception` would look up a handler by status code and MRO across blueprint then app scope; `HTTPException`s go to `handle_http_exception` unless `trap_http_exception` says otherwise. With no handler registered for a non-HTTP exception it re-raises, falling through to `handle_exception`.",
+        "`handle_exception` always sends `got_request_exception`, then checks `PROPAGATE_EXCEPTIONS`; it defaults to `None`, which resolves to `self.testing or self.debug`. In this app both are `False`, so the exception would be logged via `log_exception` and the client would get a generic 500 `InternalServerError` with the original error attached as `original_exception` \u2014 the traceback is never sent to the client unless debug or testing is on.",
+        "The 500 path still goes through `finalize_request(..., from_error_handler=True)`, so `after_request` functions and session saving run even for the default 500 response, and failures there are logged instead of raised.",
+        "The `finally` block also restores the context for the Werkzeug debugger when `werkzeug.debug.preserve_context` is in the environ, and clears `error` when the deprecated `should_ignore_error` hook claims it \u2014 both inactive here."
       ],
       "open_questions": [],
       "answers": [
         {
           "id": "q3.1",
-          "answer": "An exception that escapes dispatch is caught by `wsgi_app`, sent to `handle_exception`, announced on `got_request_exception`, and \n\n because `PROPAGATE_EXCEPTIONS` resolves to `testing or debug`, both `False` here \n\n logged server-side and returned to the client as a generic 500 with no traceback. Flip `TESTING` or `DEBUG` on and the same exception is re-raised instead."
+          "answer": "An exception that escapes dispatch is caught by `wsgi_app`, sent to `handle_exception`, announced on `got_request_exception`, and \u2014 because `PROPAGATE_EXCEPTIONS` resolves to `testing or debug`, both `False` here \u2014 logged server-side and returned to the client as a generic 500. Flip `TESTING` or `DEBUG` on and the same exception is re-raised instead."
         }
       ]
     }

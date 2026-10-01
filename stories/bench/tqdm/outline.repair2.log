@@ -1,0 +1,26 @@
+Four Characters and a Progress Bar: What tqdm Promises While It Prints  [owner]: 10 chapters
+   1. Before the list is even looked at: a lock, a registry, a thread  [trace 2-21]
+   2. Accepting the arguments: a wrapped stderr, a borrowed `len`, and a guess about Unicode  [trace 22-53]
+   3. Claiming a line: position under lock and a printer with a memory  [trace 54-67]
+   4. The first frame: rendering 0/4 and committing it to stderr  [trace 68-112]
+   5. Four items, no repaint: the loop runs and the bar closes itself  [trace 113-119]
+   6. A second bar is born: the thread is reused, not replaced  [trace 120-135]
+   7. The same setup again, with a prefix  [trace 136-226]
+   8. Describing without counting: forced refreshes that show stale progress  [trace 227-322]
+   9. The gates open: update(2), the EMA rate, self-tuned miniters, and the run to 100%  [trace 323-529]
+  10. Closing down: leaving the registry, the truth about the rate, and reading a dead bar  [trace 530-610]
+  ! ch5 covers only 4 calls (trace lines 113-119); a chapter needs at least 5: fold it into a neighbour
+
+repair 1/2
+Four Characters and a Progress Bar: What tqdm Promises While It Prints  [owner]: 9 chapters
+   1. Before the list is even looked at: a lock, a registry, a thread  [trace 2-21]
+   2. Accepting the arguments: a wrapped stderr, a borrowed `len`, and a guess about Unicode  [trace 22-53]
+   3. Claiming a line: position under lock and a printer with a memory  [trace 54-67]
+   4. The first frame, then four silent items and an automatic close  [trace 68-119]
+   5. A second bar is born: the thread is reused, not replaced  [trace 120-135]
+   6. The same setup again, with a prefix  [trace 136-226]
+   7. Describing without counting: forced refreshes that show stale progress  [trace 227-322]
+   8. The gates open: update(2), the EMA rate, self-tuned miniters, and the run to 100%  [trace 323-529]
+   9. Closing down: leaving the registry, the truth about the rate, and reading a dead bar  [trace 530-610]
+
+.repair1 tokens: 32,428 in (+0 cached, 170,452 written to cache), 11,136 out

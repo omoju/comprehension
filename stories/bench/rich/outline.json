@@ -466,13 +466,13 @@
     },
     {
       "n": 9,
-      "title": "One Last Crop, Styles Spent, Text Written",
+      "title": "One Last Crop, Styles Spent, and Reading Back What Was Printed",
       "trace_lines": [
         545,
-        704
+        706
       ],
       "data_in": "~80 Segments of table output, self.width == 100",
-      "data_out": "'\\u250f\\u2501\\u2501\\u2501\\u2026\\u2513\\n\\u2026\\u2514\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2518\\n' written once to stdout and flushed; the same segments copied into _record_buffer; buffer cleared",
+      "data_out": "'\\u250f\\u2501\\u2501\\u2501\\u2026\\u2513\\n\\u2026\\u2514\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2518\\n' written once to stdout and flushed, copied into _record_buffer, then export_text returning 'Hello World!\\nWhere there is a Will t\\u2026\\u2534\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2518\\n' and emptying that buffer",
       "code": [
         "rich/console.py:1749-1756",
         "rich/segment.py:306-351",
@@ -485,13 +485,16 @@
         "rich/console.py:2059-2130",
         "rich/console.py:2132-2154",
         "rich/style.py:694-718",
-        "rich/style.py:340-342"
+        "rich/style.py:340-342",
+        "rich/console.py:2192-2222",
+        "rich/console.py:2224-2242"
       ],
       "inputs": [
         "table Segments",
         "self.width == 100",
         "record=True",
-        "_color_system is None"
+        "_color_system is None",
+        "export_text(clear=True, styles=False)"
       ],
       "characters": [
         "Segment.split_and_crop_lines",
@@ -506,7 +509,9 @@
         "Console._render_buffer",
         "Style.render",
         "Style.__bool__",
-        "Segment.remove_color"
+        "Segment.remove_color",
+        "Console.export_text",
+        "_record_buffer"
       ],
       "facts": [
         "The crop measures the Unicode box-drawing top border as 89 cells (cell_len of the heavy box characters is 1 each), comfortably under 100, so nothing is truncated \\u2014 but the check runs on every line regardless of what produced it.",
@@ -517,56 +522,16 @@
         "_render_buffer walks the buffer once: segments with a truthy style go through Style.render, styleless segments are appended verbatim, and control segments are dropped when the target is not a terminal.",
         "Every Style.render call in this run returns its input unchanged because color_system is None \\u2014 the trace shows 'Date        ', 'Solo' and '$1,332,539,889' coming back exactly as given, which is how the plain-text assertions in the scenario succeed.",
         "The entire table is a single file.write followed by a flush: no partial frames, and a crash mid-render leaves nothing on screen rather than half a table.",
-        "If the sink raises BrokenPipeError the console goes quiet and the process exits with SystemExit(1); if it raises UnicodeEncodeError the error is re-raised with an added PYTHONIOENCODING hint. Neither is swallowed."
-      ],
-      "open_questions": [
-        {
-          "id": "q9.1",
-          "question": "The record buffer now holds styled segments. Does the caller's export see the styles, and does reading it twice return the same thing?"
-        }
-      ],
-      "answers": [
-        {
-          "id": "q1.2",
-          "answer": "In Console._write_buffer, under _record_buffer_lock, immediately before the real write and only when _buffer_index is 0 \\u2014 so exactly the content that reached the file is recorded, once per flush. The copy is a list of Segments (text plus Style references), it is never bounded or trimmed, and it is only emptied by export_text/export_html/export_svg with clear=True (the default). Enabling record on a long-lived console is a memory-growth decision, not a free option."
-        }
-      ]
-    },
-    {
-      "n": 10,
-      "title": "Reading Back What Was Printed",
-      "trace_lines": [
-        705,
-        706
-      ],
-      "data_in": "Console.export_text(clear=True, styles=False) over the accumulated _record_buffer",
-      "data_out": "'Hello World!\\nWhere there is a Will t\\u2026\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2534\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2518\\n' and an emptied record buffer",
-      "code": [
-        "rich/console.py:2192-2222",
-        "rich/console.py:2224-2242"
-      ],
-      "inputs": [
-        "clear=True",
-        "styles=False"
-      ],
-      "characters": [
-        "Console.export_text",
-        "_record_buffer",
-        "_record_buffer_lock",
-        "Segment.control"
-      ],
-      "facts": [
-        "export_text asserts self.record and otherwise fails with an AssertionError whose message tells you to pass record=True \\u2014 a hard precondition, and one that disappears under `python -O`.",
-        "With styles=False (the default) only segment.text is joined and control segments are skipped, so the result is exactly the visible characters: 'Hello World!', the markup-stripped 'Where there is a Will there is a way.', and the table body including '$1,332,539,889'.",
-        "With styles=True each segment is re-rendered through Style.render at the default TRUECOLOR color system \\u2014 notably independent of the console's own detected color system, so an export can contain ANSI codes even when the live output did not.",
-        "clear defaults to True, so the record buffer is drained on export: a second export_text with no further printing returns an empty string. save_text, export_html and save_svg share the same buffer and the same clearing semantics, so calling two exporters in a row without clear=False loses the content for the second.",
-        "All record-buffer access is guarded by _record_buffer_lock, which is separate from the output lock, so exporting from one thread while printing from another does not interleave."
+        "If the sink raises BrokenPipeError the console goes quiet and the process exits with SystemExit(1); if it raises UnicodeEncodeError the error is re-raised with an added PYTHONIOENCODING hint. Neither is swallowed.",
+        "export_text asserts self.record and otherwise fails with an AssertionError telling you to pass record=True \\u2014 a hard precondition that disappears under `python -O`.",
+        "With styles=False (the default) only segment.text is joined and control segments are skipped, so the result is exactly the visible characters; styles=True would instead re-render each stored Style at the default TRUECOLOR color system, independent of the console's own detected system.",
+        "clear defaults to True, so the record buffer is drained on export; save_text, export_html and export_svg share the same buffer and the same clearing semantics, and all record-buffer access is guarded by the separate _record_buffer_lock."
       ],
       "open_questions": [],
       "answers": [
         {
-          "id": "q9.1",
-          "answer": "By default the export is plain: styles=False joins segment text only and drops control segments, which is why the scenario's substring assertions hold. styles=True would re-render the stored Styles at TRUECOLOR regardless of the console's detected color system. And it is read-once by default \\u2014 clear=True empties _record_buffer, so a second export (or a second exporter, e.g. export_html after export_text) sees nothing unless clear=False was passed."
+          "id": "q1.2",
+          "answer": "In Console._write_buffer, under _record_buffer_lock, immediately before the real write and only when _buffer_index is 0 \\u2014 so exactly the content that reached the file is recorded, once per flush. The copy is a list of Segments (text plus Style references), it is never bounded or trimmed, and it is only emptied by export_text/export_html/export_svg with clear=True (the default). Enabling record on a long-lived console is a memory-growth decision, not a free option. The export at the end of this run reads it once, returns the plain visible text, and leaves the buffer empty \\u2014 a second export, or a second exporter, would see nothing unless clear=False was passed."
         }
       ]
     }

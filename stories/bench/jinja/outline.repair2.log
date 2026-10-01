@@ -1,0 +1,41 @@
+The Template That Knew Its Parent  [owner]: 10 chapters
+   1. The World It Enters  [trace 2-17]
+   2. Asked For By Name  [trace 18-28]
+   3. Cut Into Tokens  [trace 29-52]
+   4. A Shape Instead Of A String  [trace 53-155]
+   5. The Question Is Asked: Code For The Root  [trace 156-223]
+   6. Two Functions Named After Holes  [trace 224-302]
+   7. From Text To Executable  [trace 303-314]
+   8. Handing Over The Data  [trace 315-325]
+   9. Fetching The Parent, Mid-Render  [trace 326-451]
+  10. Ampersand, Escaped  [trace 452-457]
+  ! ch7 covers only 4 calls (trace lines 303-314); a chapter needs at least 5: fold it into a neighbour
+  ! ch10 covers only 3 calls (trace lines 452-457); a chapter needs at least 5: fold it into a neighbour
+
+repair 1/2
+The Template That Knew Its Parent  [owner]: 9 chapters
+   1. The World It Enters  [trace 2-17]
+   2. Asked For By Name  [trace 18-28]
+   3. Cut Into Tokens  [trace 29-52]
+   4. A Shape Instead Of A String  [trace 53-155]
+   5. The Question Is Asked: Code For The Root  [trace 156-223]
+   6. Two Functions Named After Holes, Then Made Real  [trace 224-314]
+   7. Handing Over The Data  [trace 315-325]
+   8. Fetching The Parent, Mid-Render  [trace 326-451]
+   9. Ampersand, Escaped  [trace 452-457]
+  ! ch9 covers only 3 calls (trace lines 452-457); a chapter needs at least 5: fold it into a neighbour
+
+repair 2/2
+The Template That Knew Its Parent  [owner]: 8 chapters
+   1. The World It Enters  [trace 2-17]
+   2. Asked For By Name  [trace 18-28]
+   3. Cut Into Tokens  [trace 29-52]
+   4. A Shape Instead Of A String  [trace 53-155]
+   5. The Question Is Asked: Code For The Root  [trace 156-223]
+   6. Two Functions Named After Holes, Then Made Real  [trace 224-314]
+   7. Handing Over The Data  [trace 315-325]
+   8. Fetching The Parent, Then Escaping The Ampersand  [trace 326-457]
+
+.repair1 tokens: 28,579 in (+0 cached, 147,381 written to cache), 7,863 out
+
+.repair2 tokens: 36,557 in (+147,381 cached, 0 written to cache), 7,678 out

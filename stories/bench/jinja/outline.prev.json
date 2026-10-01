@@ -1,6 +1,6 @@
 {
   "title": "The Template That Knew Its Parent",
-  "premise": "A web page is two files: a layout with holes in it, and a member list that fills the holes. Jinja's job is to turn that pair of strings into one correct, injection-safe HTML document \ni\n\n and to do it fast enough to be worth caching. The story follows one string, the source of `members.html`, from the moment a DictLoader hands it over, through lexing, parsing, code generation and `exec`, until it comes back as rendered HTML with an ampersand safely escaped. Along the way it passes every decision an owner has to vouch for: what gets cached and when it goes stale, when the autoescape question is actually asked, what the generated Python is allowed to do, and who decides which file a template may pull in.",
+  "premise": "A web page is two files: a layout with holes in it, and a member list that fills the holes. Jinja's job is to turn that pair of strings into one correct, injection-safe HTML document \u2014 and to do it fast enough to be worth caching. The story follows one string, the source of `members.html`, from the moment a DictLoader hands it over, through lexing, parsing, code generation and `exec`, until it comes back as rendered HTML with an ampersand safely escaped. Along the way it passes every decision an owner has to vouch for: what gets cached and when it goes stale, when the autoescape question is actually asked, what the generated Python is allowed to do, and who decides which file a template may pull in.",
   "reader": "owner",
   "repo": {
     "name": "pallets/jinja",
@@ -17,7 +17,7 @@
         2,
         17
       ],
-      "data_in": "mapping={'base.html': '<!DOCTYPE html>\\u2026', 'members.html': '{% extends \"base.html\" %}\\u2026'}, autoescape=select_autoescape(['html','htm','xml'])",
+      "data_in": "mapping={'base.html': '<!DOCTYPE html>\u2026', 'members.html': '{% extends \"base.html\" %}\u2026'}, autoescape=select_autoescape(['html','htm','xml'])",
       "data_out": "a configured Environment: loader=DictLoader, cache=LRUCache(400), extensions={}, is_async=False, autoescape=<function select_autoescape.<locals>.autoescape>",
       "code": [
         "src/jinja2/loaders.py:432-453",
@@ -42,7 +42,7 @@
         "`cache_size=400` becomes an `LRUCache(400)`; `0` disables template caching entirely and a negative size gives an unbounded dict (environment.py:83-93).",
         "`auto_reload` defaults to `True`, so a cached template will be re-checked against its uptodate function before reuse.",
         "`bytecode_cache` is None, so every template miss costs a full parse and compile in-process.",
-        "`_environment_config_check` uses `assert` for its invariants (undefined must subclass Undefined, delimiters must differ) \nu2014 those checks disappear under `python -O`.",
+        "`_environment_config_check` uses `assert` for its invariants (undefined must subclass Undefined, delimiters must differ) \u2014 those checks disappear under `python -O`.",
         "`load_extensions(env, ())` returns `{}`: in this run no extension can preprocess the source or rewrite the token stream."
       ],
       "open_questions": [
@@ -61,7 +61,7 @@
         28
       ],
       "data_in": "Environment.get_template(name='members.html', parent=None, globals=None)",
-      "data_out": "the raw source `'{% extends \"base.html\" %}\\n{% block t\\u2026'`, filename None, and an uptodate lambda, handed to Environment.compile",
+      "data_out": "the raw source `'{% extends \"base.html\" %}\\n{% block t\u2026'`, filename None, and an uptodate lambda, handed to Environment.compile",
       "code": [
         "src/jinja2/environment.py:980-1015",
         "src/jinja2/environment.py:955-978",
@@ -82,12 +82,12 @@
         "DictLoader.get_source"
       ],
       "facts": [
-        "`parent is None`, so `join_path` is skipped and the caller's name goes straight to the loader \nu2014 the name is the whole authorisation check.",
+        "`parent is None`, so `join_path` is skipped and the caller's name goes straight to the loader \u2014 the name is the whole authorisation check.",
         "The cache key is `(weakref.ref(self.loader), name)`: two loaders cannot collide, and entries die with their loader.",
         "`make_globals` returns `ChainMap({}, env.globals)`, so per-template globals can never mutate the environment's globals.",
         "`BaseLoader.load` calls `get_source` first and only then considers the bytecode cache; with no bytecode cache the source is compiled every time it is loaded.",
         "`DictLoader.get_source` returns `filename=None`; tracebacks for this template will say `<template>` rather than a path.",
-        "DictLoader does no path sanitisation at all \nu2014 it is a dict lookup. The loaders that touch a filesystem (`FileSystemLoader`, `PackageLoader`) route names through `split_template_path`, which rejects `..` segments."
+        "DictLoader does no path sanitisation at all \u2014 it is a dict lookup. The loaders that touch a filesystem (`FileSystemLoader`, `PackageLoader`) route names through `split_template_path`, which rejects `..` segments."
       ],
       "open_questions": [
         {
@@ -104,7 +104,7 @@
         29,
         52
       ],
-      "data_in": "source string + name='members.html' into Environment.compile \\u2192 _parse \\u2192 Parser.__init__",
+      "data_in": "source string + name='members.html' into Environment.compile \u2192 _parse \u2192 Parser.__init__",
       "data_out": "a TokenStream positioned at Token(lineno=1, type='block_begin', value='{%')",
       "code": [
         "src/jinja2/environment.py:730-770",
@@ -129,9 +129,9 @@
       "facts": [
         "`Environment.compile` wraps the whole pipeline in `except TemplateSyntaxError: self.handle_exception(...)`, which re-raises through `debug.rewrite_traceback_stack` so the error points at a template line, not at compiler internals.",
         "`preprocess` folds the source through every extension in priority order; with no extensions it returns the string unchanged.",
-        "`get_lexer` caches Lexer objects in a module-global `LRUCache(50)` keyed by the twelve syntax options \nu2014 lexers are shared across environments that happen to use the same delimiters.",
+        "`get_lexer` caches Lexer objects in a module-global `LRUCache(50)` keyed by the twelve syntax options \u2014 lexers are shared across environments that happen to use the same delimiters.",
         "The lexer only classifies characters: unbalanced braces or a stray character raise `TemplateSyntaxError`; no template expression is evaluated here.",
-        "Newlines are normalised (`\\r\\n|\\r|\\n` \\u2192 the configured sequence) and, because `keep_trailing_newline` is False, a single trailing newline is dropped before tokenising."
+        "Newlines are normalised (`\\r\\n|\\r|\\n` \u2192 the configured sequence) and, because `keep_trailing_newline` is False, a single trailing newline is dropped before tokenising."
       ],
       "open_questions": [
         {
@@ -149,7 +149,7 @@
         155
       ],
       "data_in": "TokenStream over members.html",
-      "data_out": "Template(body=[Extends(template=Const('base.html')), Output([TemplateData('\\n')]), Block(name='title',\\u2026), Output([TemplateData('\\n')]), Block(name='content',\\u2026)]) with the environment attached to every node",
+      "data_out": "Template(body=[Extends(template=Const('base.html')), Output([TemplateData('\\n')]), Block(name='title',\u2026), Output([TemplateData('\\n')]), Block(name='content',\u2026)]) with the environment attached to every node",
       "code": [
         "src/jinja2/parser.py:990-1041",
         "src/jinja2/parser.py:163-191",
@@ -171,9 +171,9 @@
         "Node.set_environment"
       ],
       "facts": [
-        "`subparse` recognises exactly three token kinds \nu2014 data, `{{ \\u2026 }}`, `{% \\u2026 %}` \nu2014 and `parse_statement` dispatches on a frozen keyword set plus extension-registered tags; anything else goes to `fail_unknown_tag` with a nesting hint.",
+        "`subparse` recognises exactly three token kinds \u2014 data, `{{ \u2026 }}`, `{% \u2026 %}` \u2014 and `parse_statement` dispatches on a frozen keyword set plus extension-registered tags; anything else goes to `fail_unknown_tag` with a nesting hint.",
         "Every statement must be closed by `expect('block_end')`; a mismatch raises `TemplateSyntaxError` carrying lineno, template name and filename.",
-        "Literal text becomes `TemplateData` inside an `Output` node \nu2014 including the lone `'\\n'` that sits between `{% extends %}` and `{% block title %}`.",
+        "Literal text becomes `TemplateData` inside an `Output` node \u2014 including the lone `'\\n'` that sits between `{% extends %}` and `{% block title %}`.",
         "`parse_block` rejects hyphenated block names with a targeted error message and enforces that `required` blocks contain only whitespace or comments.",
         "`set_environment` walks the whole tree and attaches the environment to each node; that is what later lets `as_const()` call real filters during constant folding."
       ],
@@ -197,7 +197,7 @@
         223
       ],
       "data_in": "the Template AST + environment + name='members.html' into generate()",
-      "data_out": "generated source so far: imports, `name = 'members.html'`, `def root(context, \\u2026)` whose body sets `parent_template = None`, runs the extends, and ends with `yield from parent_template.root_render_func(context)`",
+      "data_out": "generated source so far: imports, `name = 'members.html'`, `def root(context, \u2026)` whose body sets `parent_template = None`, runs the extends, and ends with `yield from parent_template.root_render_func(context)`",
       "code": [
         "src/jinja2/compiler.py:101-122",
         "src/jinja2/compiler.py:825-943",
@@ -219,10 +219,10 @@
         "visit_Extends"
       ],
       "facts": [
-        "`visit_Template` constructs `EvalContext(environment, 'members.html')`, and `EvalContext.__init__` calls the autoescape callable with the template name \nu2014 this is the first time the question is asked, and the answer is frozen into the emitted code.",
+        "`visit_Template` constructs `EvalContext(environment, 'members.html')`, and `EvalContext.__init__` calls the autoescape callable with the template name \u2014 this is the first time the question is asked, and the answer is frozen into the emitted code.",
         "`node.find(Extends)` is not None, so `have_extends` is set: the root function declares `parent_template = None` and output statements become conditional.",
-        "All `Block` nodes are collected up front; a repeated block name fails compilation with `TemplateAssertionError('block \\u2026 defined twice')`.",
-        "`visit_Extends` runs at rootlevel, so `has_known_extends` becomes True and `visit_Output` returns immediately for the remaining top-level nodes \nu2014 the stray `'\\n'` text is discarded at compile time, never emitted.",
+        "All `Block` nodes are collected up front; a repeated block name fails compilation with `TemplateAssertionError('block \u2026 defined twice')`.",
+        "`visit_Extends` runs at rootlevel, so `has_known_extends` becomes True and `visit_Output` returns immediately for the remaining top-level nodes \u2014 the stray `'\\n'` text is discarded at compile time, never emitted.",
         "A second `{% extends %}` would emit `raise TemplateRuntimeError(\"extended multiple times\")`, or abort the rest of the top-level body via `CompilerExit` when the first extends was already known.",
         "The root function's last act is `yield from parent_template.root_render_func(context)`: a child template never renders its own body directly."
       ],
@@ -245,21 +245,19 @@
     },
     {
       "n": 6,
-      "title": "Two Functions Named After Holes, Then Made Real",
+      "title": "Two Functions Named After Holes",
       "trace_lines": [
         224,
-        314
+        302
       ],
-      "data_in": "the collected blocks {'title': Block(\\u2026), 'content': Block(\\u2026)} and the shared EvalContext",
-      "data_out": "<Template 'members.html'>, stored in the LRUCache under (weakref(DictLoader), 'members.html')",
+      "data_in": "the collected blocks {'title': Block(\u2026), 'content': Block(\u2026)} and the shared EvalContext",
+      "data_out": "complete module source ending `blocks = {'title': block_title, 'content': block_content}` and `debug_info = '1=12&2=17&3=27&5=37&6=41'`",
       "code": [
         "src/jinja2/compiler.py:910-943",
         "src/jinja2/compiler.py:534-579",
         "src/jinja2/compiler.py:1497-1574",
         "src/jinja2/compiler.py:1175-1312",
-        "src/jinja2/environment.py:702-708",
-        "src/jinja2/environment.py:1213-1270",
-        "src/jinja2/environment.py:962-978"
+        "src/jinja2/idtracking.py:33-169"
       ],
       "inputs": [
         "Block('title') and Block('content') ASTs"
@@ -271,10 +269,7 @@
         "Symbols",
         "pull_dependencies",
         "visit_Output",
-        "Environment._compile",
-        "Template.from_code",
-        "exec",
-        "LRUCache.__setitem__"
+        "visit_For"
       ],
       "facts": [
         "Each block becomes a module-level `def block_<name>(context, missing=missing, environment=environment)` with a Frame that is deliberately *not* a child of the root frame, to keep identifier tracking from leaking between them.",
@@ -282,10 +277,7 @@
         "`self` and `super` are only wired into a block when `find_undeclared` spots them in that block's body; here neither appears, so neither is created.",
         "`pull_dependencies` emits a `try/except KeyError` wrapper per filter and test so an unknown name fails as a `TemplateRuntimeError` when called, not when the module loads; this template uses none, so nothing was emitted.",
         "Because the compile-time eval context says autoescape and is not volatile, `visit_Output` escapes constant text at compile time and wraps runtime expressions in `escape(...)` in the generated source.",
-        "`debug_info = '1=12&2=17&3=27&5=37&6=41'` maps template line numbers to generated line numbers; it is the mechanism behind template-accurate tracebacks.",
-        "`_compile` is the builtin `compile(source, '<template>', 'exec')`; `from_code` then `exec`s the code object in a fresh namespace pre-seeded with `environment` and `__file__`, which only *defines* functions \nu2014 no template expression runs yet.",
-        "`_from_namespace` lifts `name`, `blocks`, `root` and `debug_info` out of the namespace and plants a `__jinja_template__` back-reference in it.",
-        "Nothing here sandboxes the generated code. Sandboxing is a different `Environment` subclass that changes *code generation* (`environment.sandboxed`), so it must be chosen before anything is compiled."
+        "`debug_info` maps template line numbers to generated line numbers; it is the mechanism behind template-accurate tracebacks."
       ],
       "open_questions": [
         {
@@ -297,26 +289,64 @@
         {
           "id": "q5.1",
           "answer": "In the per-block functions: everything the child actually renders lives inside `block_title` and `block_content`, which are exported through the module-level `blocks` dict."
-        },
-        {
-          "id": "q2.1",
-          "answer": "The compiled Template is cached under (weakref(loader), name); a second lookup returns it after `is_up_to_date` consults DictLoader's uptodate closure, which compares the original source against the current mapping \nu2014 so an edited mapping forces a recompile, but only because `auto_reload` is on."
-        },
-        {
-          "id": "q3.1",
-          "answer": "No. Lexing, parsing and code generation never run template code; the only execution is the `exec` of the generated module, and it merely defines `root` and the block functions."
         }
       ]
     },
     {
       "n": 7,
+      "title": "From Text To Executable",
+      "trace_lines": [
+        303,
+        314
+      ],
+      "data_in": "generated Python source `\"from jinja2.runtime import \u2026debug_info = '1=12&2=17&3=27&5=37&6=41'\"`",
+      "data_out": "<Template 'members.html'>, stored in the LRUCache under (weakref(DictLoader), 'members.html')",
+      "code": [
+        "src/jinja2/environment.py:702-708",
+        "src/jinja2/environment.py:1213-1270",
+        "src/jinja2/environment.py:962-978",
+        "src/jinja2/loaders.py:444-450",
+        "src/jinja2/utils.py:530"
+      ],
+      "inputs": [
+        "generated module source from chapters 5-6"
+      ],
+      "characters": [
+        "Environment._compile",
+        "Template.from_code",
+        "exec",
+        "Template._from_namespace",
+        "LRUCache.__setitem__",
+        "DictLoader's uptodate lambda"
+      ],
+      "facts": [
+        "`_compile` is the builtin `compile(source, '<template>', 'exec')`; `from_code` then `exec`s the code object in a fresh namespace pre-seeded with `environment` and `__file__`.",
+        "Executing that module only *defines* functions. The first template expression runs when `root_render_func` is iterated, which has not happened yet.",
+        "`_from_namespace` lifts `name`, `blocks`, `root` and `debug_info` out of the namespace and plants a `__jinja_template__` back-reference in it.",
+        "The finished Template is stored in the LRUCache; on a later lookup `auto_reload` makes `is_up_to_date` call DictLoader's closure, which compares the captured source against the current mapping \u2014 mutate the dict and the entry is rebuilt, replace the loader and the whole keyspace goes away.",
+        "Nothing in this step sandboxes the generated code. Sandboxing is a different `Environment` subclass that changes *code generation* (`environment.sandboxed`), so it must be chosen before anything is compiled."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q2.1",
+          "answer": "The compiled Template is cached under (weakref(loader), name); a second lookup returns it after `is_up_to_date` consults DictLoader's uptodate closure, which compares the original source against the current mapping \u2014 so an edited mapping forces a recompile, but only because `auto_reload` is on."
+        },
+        {
+          "id": "q3.1",
+          "answer": "No. Lexing, parsing and code generation never run template code; the only execution is this `exec`, and it merely defines `root` and the block functions."
+        }
+      ]
+    },
+    {
+      "n": 8,
       "title": "Handing Over The Data",
       "trace_lines": [
         315,
         325
       ],
-      "data_in": "Template.render(users=[{'url':'/user/1','username':'ada'}, \\u2026, {'url':'/user/3','username':'Tom & Jerry'}])",
-      "data_out": "<Context {'range': \\u2026, 'users': [...]} of 'members.html'> with eval_ctx.autoescape = True",
+      "data_in": "Template.render(users=[{'url':'/user/1','username':'ada'}, \u2026, {'url':'/user/3','username':'Tom & Jerry'}])",
+      "data_out": "<Context {'range': \u2026, 'users': [...]} of 'members.html'> with eval_ctx.autoescape = True",
       "code": [
         "src/jinja2/environment.py:1272-1292",
         "src/jinja2/environment.py:1369-1384",
@@ -337,40 +367,35 @@
       ],
       "facts": [
         "Caller variables are merged with the globals into `Context.parent`; `Context.vars` starts empty and is reserved for assignments made by generated code.",
-        "`Context.__init__` builds a *second* `EvalContext`, so the autoescape callable is consulted again \nu2014 this time at render time, returning True for 'members.html'.",
+        "`Context.__init__` builds a *second* `EvalContext`, so the autoescape callable is consulted again \u2014 this time at render time, returning True for 'members.html'.",
         "`environment.is_async` is False, so the synchronous path is taken; `render_async` on this template would raise `RuntimeError('The environment was not created with async mode enabled.')`.",
         "`render` wraps the entire render in `except Exception: self.environment.handle_exception()`, which re-raises with a template-aware traceback; `generate()` instead *yields* the handled exception into the stream."
       ],
       "open_questions": [
         {
-          "id": "q7.1",
+          "id": "q8.1",
           "question": "Escaping was already decided and baked in at compile time, and now a second EvalContext has answered the same question. If the two ever disagreed, which one governs the output?"
         }
       ],
       "answers": []
     },
     {
-      "n": 8,
-      "title": "Fetching The Parent, Then Escaping The Ampersand",
+      "n": 9,
+      "title": "Fetching The Parent, Mid-Render",
       "trace_lines": [
         326,
-        457
+        451
       ],
       "data_in": "root_render_func(ctx) reaching `parent_template = environment.get_template('base.html', 'members.html')`",
-      "data_out": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n\\u2026\\n  </ul>\\n</div>\\n</body>\\n</html>' \nu2014 with `Tom &amp; Jerry` in it",
+      "data_out": "<Template 'base.html'> compiled and cached; context.blocks grown to {'title': [child, parent], 'content': [child, parent]}",
       "code": [
         "src/jinja2/compiler.py:1019-1034",
         "src/jinja2/environment.py:980-1015",
         "src/jinja2/environment.py:943-953",
-        "src/jinja2/runtime.py:184-198",
-        "src/jinja2/runtime.py:229-245",
-        "src/jinja2/environment.py:484-495",
-        "src/jinja2/compiler.py:1470-1495",
-        "src/jinja2/environment.py:1287-1292"
+        "src/jinja2/runtime.py:184-198"
       ],
       "inputs": [
-        "the constant 'base.html' from the child template's extends",
-        "the users list, now inside the Context"
+        "the constant 'base.html' from the child template's extends"
       ],
       "characters": [
         "Environment.get_template",
@@ -378,7 +403,47 @@
         "Environment._load_template",
         "DictLoader.get_source",
         "CodeGenerator.visit_Template (for base.html)",
-        "context.blocks",
+        "context.blocks"
+      ],
+      "facts": [
+        "Template inheritance is resolved at *render* time, not compile time: the first line of the child's root function performs a live `get_template` call.",
+        "`parent` is now 'members.html', so `join_path` runs; the default implementation returns the name unchanged \u2014 it is the documented hook for making names relative to the importing template.",
+        "The parent travels the identical load \u2192 lex \u2192 parse \u2192 generate \u2192 exec path and lands in the same LRUCache, so inheritance costs one extra compile per process, not per render.",
+        "Which file an `{% extends %}` / `{% include %}` may reach is delegated entirely to the loader. A template-controlled name is exactly as safe as the loader allows: DictLoader is a key lookup, FileSystemLoader applies `split_template_path` and rejects `..`.",
+        "The generated code then runs `for name, parent_block in parent_template.blocks.items(): context.blocks.setdefault(name, []).append(parent_block)` \u2014 the child's implementation is already at index 0 and the parent's is appended behind it; that ordering is precisely what `super()` walks."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q4.1",
+          "answer": "Nothing in the compiler changes \u2014 `visit_Extends` emits a runtime `environment.get_template(<expr>, 'members.html')`, so a variable target is resolved at render time and the loader is the only thing standing between user data and which template gets loaded."
+        },
+        {
+          "id": "q6.1",
+          "answer": "At render time the child's `context.blocks` already holds its own functions; the extends code appends the parent's blocks behind them, and the parent's root function calls `context.blocks['title'][0](context)` \u2014 index 0, the child's."
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "title": "Ampersand, Escaped",
+      "trace_lines": [
+        452,
+        457
+      ],
+      "data_in": "the parent's root yielding into block_content: context.resolve_or_missing('users') \u2192 the three user dicts",
+      "data_out": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n\u2026\\n  </ul>\\n</div>\\n</body>\\n</html>' \u2014 with `Tom &amp; Jerry` in it",
+      "code": [
+        "src/jinja2/runtime.py:229-245",
+        "src/jinja2/environment.py:484-495",
+        "src/jinja2/compiler.py:1470-1495",
+        "src/jinja2/compiler.py:1175-1281",
+        "src/jinja2/environment.py:1287-1292"
+      ],
+      "inputs": [
+        "the users list, now inside the Context"
+      ],
+      "characters": [
         "Context.resolve_or_missing",
         "Environment.getattr",
         "escape (markupsafe)",
@@ -386,30 +451,16 @@
         "environment.concat"
       ],
       "facts": [
-        "Template inheritance is resolved at *render* time, not compile time: the first line of the child's root function performs a live `get_template` call.",
-        "`parent` is now 'members.html', so `join_path` runs; the default implementation returns the name unchanged \nu2014 it is the documented hook for making names relative to the importing template.",
-        "The parent travels the identical load \\u2192 lex \\u2192 parse \\u2192 generate \\u2192 exec path and lands in the same LRUCache, so inheritance costs one extra compile per process, not per render.",
-        "Which file an `{% extends %}` / `{% include %}` may reach is delegated entirely to the loader. A template-controlled name is exactly as safe as the loader allows: DictLoader is a key lookup, FileSystemLoader applies `split_template_path` and rejects `..`.",
-        "The generated code then runs `for name, parent_block in parent_template.blocks.items(): context.blocks.setdefault(name, []).append(parent_block)` \nu2014 the child's implementation is already at index 0 and the parent's is appended behind it; that ordering is precisely what `super()` walks.",
-        "`resolve_or_missing` checks `vars` then `parent`; a name found in neither becomes `environment.undefined(name=...)`, and the default `Undefined` renders as an empty string instead of failing \nu2014 `StrictUndefined` is the opt-in that turns that into an `UndefinedError`.",
+        "`resolve_or_missing` checks `vars` then `parent`; a name found in neither becomes `environment.undefined(name=...)`, and the default `Undefined` renders as an empty string instead of failing \u2014 `StrictUndefined` is the opt-in that turns that into an `UndefinedError`.",
         "`user.url` compiles to `environment.getattr(user, 'url')`, which tries the attribute first and then item access, so dict keys are reachable with dot syntax; both failing yields an `Undefined`.",
-        "Each interpolated value is wrapped in the `escape(...)` chosen during code generation \nu2014 that is why `'Tom & Jerry'` arrives in the output as `Tom &amp; Jerry`.",
-        "The loop compiled to a plain Python `for` over the resolved list with no `LoopContext`, because `find_undeclared` found no use of `loop` in the body \nu2014 the extended loop object is only built when something needs it.",
-        "The six `Environment.getattr` calls are the whole dynamic surface of this render: two attribute lookups per user, nothing else reaches outside the context.",
+        "Each interpolated value is wrapped in the `escape(...)` chosen during code generation \u2014 that is why `'Tom & Jerry'` arrives in the output as `Tom &amp; Jerry`.",
+        "The loop compiled to a plain Python `for` over the resolved list with no `LoopContext`, because `find_undeclared` found no use of `loop` in the body \u2014 the extended loop object is only built when something needs it.",
         "The final string is `environment.concat` (`''.join`) over the whole generator, and the child's top-level newlines are absent, exactly as the compiler decided in chapter 5."
       ],
       "open_questions": [],
       "answers": [
         {
-          "id": "q4.1",
-          "answer": "Nothing in the compiler changes \nu2014 `visit_Extends` emits a runtime `environment.get_template(<expr>, 'members.html')`, so a variable target is resolved at render time and the loader is the only thing standing between user data and which template gets loaded."
-        },
-        {
-          "id": "q6.1",
-          "answer": "At render time the child's `context.blocks` already holds its own functions; the extends code appends the parent's blocks behind them, and the parent's root function calls `context.blocks['title'][0](context)` \nu2014 index 0, the child's."
-        },
-        {
-          "id": "q7.1",
+          "id": "q8.1",
           "answer": "The compile-time decision governs the output: `escape(...)` is literally written into the cached module. The runtime EvalContext only matters for things left volatile (Markup joins, macro autoescape defaults, `context.eval_ctx.autoescape` checks). A callable that changes its answer later will not re-trigger compilation, because the compiled template is cached."
         }
       ]

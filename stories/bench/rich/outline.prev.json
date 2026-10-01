@@ -1,6 +1,6 @@
 {
   "title": "What Actually Reaches the Terminal: Two Strings and a Table Through Rich",
-  "premise": "A caller wants styled, laid-out text on a terminal: colours, markup tags like [bold cyan]\u2026[/bold cyan], and a four-column table that fits the available width \u2014 without hand-writing ANSI escape sequences, without overflowing the line, and with the option to capture whatever was produced for later inspection. The data handed in is ordinary Python: two plain strings, one markup string, and a table of cell strings. Everything between that data and the bytes on the file object is Rich's job, and the owner of this code has to vouch for it: what it promises, where it decides on the caller's behalf, and how it fails.",
+  "premise": "A caller wants styled, laid-out text on a terminal: colours, markup tags like [bold cyan]\\u2026[/bold cyan], and a four-column table that fits the available width \\u2014 without hand-writing ANSI escape sequences, without overflowing the line, and with the option to capture whatever was produced for later inspection. The data handed in is ordinary Python: two plain strings, one markup string, and a table of cell strings. Everything between that data and the bytes on the file object is Rich's job, and the owner of this code has to vouch for it: what it promises, where it decides on the caller's behalf, and how it fails.",
   "reader": "owner",
   "repo": {
     "name": "Textualize/rich",
@@ -45,7 +45,7 @@
       ],
       "facts": [
         "color_system='auto' calls Console._detect_color_system, which returns None when is_terminal is False or the terminal is dumb; the trace shows is_terminal False (stdout.isatty() is False under the harness) so _color_system is None.",
-        "A _color_system of None is the switch that later makes Style.render return text unchanged \u2014 no ANSI codes are emitted at all (rich/style.py:710-711).",
+        "A _color_system of None is the switch that later makes Style.render return text unchanged \\u2014 no ANSI codes are emitted at all (rich/style.py:710-711).",
         "is_terminal consults, in order: an explicit force_terminal, an Idle check, Jupyter, TTY_COMPATIBLE, FORCE_COLOR, then file.isatty(); a ValueError from isatty() on a closed file is swallowed and treated as not-a-terminal.",
         "Passing width=100 pins Console.size, so output width no longer depends on the real terminal or on COLUMNS/LINES environment variables.",
         "record=True makes every rendered segment also accumulate in self._record_buffer, which is only drained by an explicit export_* call.",
@@ -58,7 +58,7 @@
         },
         {
           "id": "q1.2",
-          "question": "record=True quietly keeps a copy of everything rendered \u2014 where does that copy get made, and what is the cost?"
+          "question": "record=True quietly keeps a copy of everything rendered \\u2014 where does that copy get made, and what is the cost?"
         }
       ],
       "answers": []
@@ -71,7 +71,7 @@
         129
       ],
       "data_in": "objects=('Hello', 'World!'), sep=' ', end='\\n'",
-      "data_out": "[<text 'Hello World!' [] ''>] \u2014 a single Text with no style spans",
+      "data_out": "[<text 'Hello World!' [] ''>] \\u2014 a single Text with no style spans",
       "code": [
         "rich/console.py:1652-1713",
         "rich/console.py:1500-1587",
@@ -105,17 +105,17 @@
       ],
       "facts": [
         "Every object is first passed through rich_cast, which calls __rich__ repeatedly (guarding against cycles and against objects that claim every attribute) before anything else looks at it.",
-        "render_str decides three things from console defaults when the per-call argument is None: emoji, markup and highlight \u2014 here all three are on, because the Console was constructed with the defaults markup=True, emoji=True, highlight=True.",
+        "render_str decides three things from console defaults when the per-call argument is None: emoji, markup and highlight \\u2014 here all three are on, because the Console was constructed with the defaults markup=True, emoji=True, highlight=True.",
         "markup.render takes a fast path when '[' is not in the string: it only runs emoji substitution and builds a plain Text, so 'Hello' and 'World!' never enter the tag parser.",
         "_emoji_replace substitutes :name: codes and leaves unknown codes untouched (KeyError inside do_replace returns the original text), so a stray colon-word cannot raise.",
-        "Text.__init__ runs strip_control_codes on every string, permanently deleting bell, backspace, vertical tab, form feed and carriage return \u2014 a sanitisation guarantee that applies to all text printed through Rich.",
+        "Text.__init__ runs strip_control_codes on every string, permanently deleting bell, backspace, vertical tab, form feed and carriage return \\u2014 a sanitisation guarantee that applies to all text printed through Rich.",
         "Because highlight is on, the string is additionally re-wrapped by ReprHighlighter: a fresh Text is built, four regex passes run over it, and the resulting spans are merged back with copy_styles. Here highlight_regex returned 0 matches, so no spans appear.",
         "check_text joins accumulated Text pieces with a separator Text(sep) via Text.join, which recomputes span offsets so styles survive the concatenation; the result is one renderable, not two."
       ],
       "open_questions": [
         {
           "id": "q2.1",
-          "question": "The next print passes real markup tags. Where are '[bold cyan]\u2026[/bold cyan]' turned into styles, and what happens if a tag is malformed?"
+          "question": "The next print passes real markup tags. Where are '[bold cyan]\\u2026[/bold cyan]' turned into styles, and what happens if a tag is malformed?"
         },
         {
           "id": "q2.2",
@@ -162,9 +162,9 @@
         "ConsoleOptions is the only channel through which width, encoding, justify, overflow, no_wrap, markup and highlight are handed down the render tree; every mutation goes through copy(), so a renderable cannot corrupt its parent's options.",
         "ConsoleOptions.encoding drives ascii_only, which is what later lets Box.substitute downgrade Unicode box characters on non-UTF terminals.",
         "get_style first asks the thread-local ThemeStack for a named style and only falls back to Style.parse for a definition string; 'bold red' is not a theme name, so it is parsed.",
-        "Style.parse is lru_cached (maxsize 4096) on the definition string and raises StyleSyntaxError for unknown words; get_style converts that into errors.MissingStyle unless a default was supplied \u2014 so a typo in a style name is a loud failure at print time, not silent plain text.",
+        "Style.parse is lru_cached (maxsize 4096) on the definition string and raises StyleSyntaxError for unknown words; get_style converts that into errors.MissingStyle unless a default was supplied \\u2014 so a typo in a style name is a loud failure at print time, not silent plain text.",
         "A style carrying a link is copied on retrieval (style.copy() when style.link), because link ids must be unique per use; non-link styles are shared immutably.",
-        "print's width argument, had it been given, would have been clamped with min(width, self.width) \u2014 the console width is a hard ceiling the caller cannot exceed."
+        "print's width argument, had it been given, would have been clamped with min(width, self.width) \\u2014 the console width is a hard ceiling the caller cannot exceed."
       ],
       "open_questions": [
         {
@@ -220,16 +220,16 @@
         "Console.render accepts exactly three shapes: an object with __rich_console__, a str, or something rich_cast could convert; anything else raises errors.NotRenderableError naming the object.",
         "Wrapping is measured in terminal cells, not characters: divide_line sums cell_len per word, and cell_len uses a per-Unicode-version width table (cached, lru_cache 4096) so CJK and emoji count as two cells.",
         "'Hello World!' is 12 cells against a width of 100, so divide_line returns no break positions and the text passes through as a single line.",
-        "Text.render turns spans into Segments by walking a sorted list of span open/close events and combining the active styles through a cache \u2014 overlapping spans compose rather than clobber, and the last-opened span wins for conflicting attributes.",
+        "Text.render turns spans into Segments by walking a sorted list of span open/close events and combining the active styles through a cache \\u2014 overlapping spans compose rather than clobber, and the last-opened span wins for conflicting attributes.",
         "Because print was given style='bold red', each rendered line is pushed through Segment.apply_style, which prepends the style under the segment's own style (style + segment.style); control segments are left unstyled so escape codes are never wrapped in SGR codes.",
-        "Style.__add__ / _add is lru_cached and merges attribute bitmasks, with the right-hand style's set attributes overriding \u2014 a per-call style therefore cannot erase a more specific span style, only sit beneath it.",
-        "The generator returned by Console.render is consumed twice in this path (split_lines_terminator is called again at trace line 313 and yields nothing the second time) \u2014 harmless here, but a reminder that render() is lazy and single-use."
+        "Style.__add__ / _add is lru_cached and merges attribute bitmasks, with the right-hand style's set attributes overriding \\u2014 a per-call style therefore cannot erase a more specific span style, only sit beneath it.",
+        "The generator returned by Console.render is consumed twice in this path (split_lines_terminator is called again at trace line 313 and yields nothing the second time) \\u2014 harmless here, but a reminder that render() is lazy and single-use."
       ],
       "open_questions": [],
       "answers": [
         {
           "id": "q2.2",
-          "answer": "Yes \u2014 highlighting is a style-adding pass over the caller's own text, and it is on by default for both print and log. Here ReprHighlighter matched nothing, so the Text arrives at render with zero spans; but numbers, paths, URLs, quoted strings, True/False/None and anything resembling a tag would have acquired 'repr.*' spans that compose with the caller's style in Text.render. The escape hatches are highlight=False per call or highlighter=None / highlight=False on the Console."
+          "answer": "Yes \\u2014 highlighting is a style-adding pass over the caller's own text, and it is on by default for both print and log. Here ReprHighlighter matched nothing, so the Text arrives at render with zero spans; but numbers, paths, URLs, quoted strings, True/False/None and anything resembling a tag would have acquired 'repr.*' spans that compose with the caller's style in Text.render. The escape hatches are highlight=False per call or highlighter=None / highlight=False on the Console."
         }
       ]
     },
@@ -238,10 +238,10 @@
       "title": "Cropping, the Buffer, and the Single Write",
       "trace_lines": [
         321,
-        376
+        377
       ],
-      "data_in": "[Segment('Hello World!', Style(red, bold)), Segment('\\n')]",
-      "data_out": "the string 'Hello World!\\n' written to stdout and flushed; self._buffer emptied",
+      "data_in": "[Segment('Hello World!', Style(red, bold)), Segment('\\n')], then the markup string 'Where there is a [bold cyan]Will[/bold cyan] there [u]is[/u] a [i]way[/i].'",
+      "data_out": "'Hello World!\\n' and then 'Where there is a Will there is a way.\\n' written to stdout and flushed; self._buffer emptied each time",
       "code": [
         "rich/console.py:1743-1756",
         "rich/segment.py:306-351",
@@ -250,12 +250,18 @@
         "rich/console.py:2044-2057",
         "rich/console.py:2059-2130",
         "rich/console.py:2132-2154",
-        "rich/style.py:694-718"
+        "rich/style.py:694-718",
+        "rich/markup.py:73-104",
+        "rich/markup.py:106-231",
+        "rich/markup.py:48-70",
+        "rich/style.py:387-402"
       ],
       "inputs": [
         "new_segments",
         "self.width == 100",
-        "crop=True"
+        "crop=True",
+        "the markup string",
+        "markup=True (console default)"
       ],
       "characters": [
         "Segment.split_and_crop_lines",
@@ -265,48 +271,7 @@
         "Console._write_buffer",
         "Console._render_buffer",
         "Style.render",
-        "Console.on_broken_pipe"
-      ],
-      "facts": [
-        "crop defaults to True on print: every line is passed through split_and_crop_lines at self.width, and adjust_line_length truncates any over-long line with set_cell_size (which can replace a split double-width glyph with spaces) \u2014 this is the enforcement point for the width promise.",
-        "Output is buffered per thread (_thread_locals.buffer) and only flushed when the outermost buffer context exits (_buffer_index reaches 0), so one print is one write \u2014 nested prints and Live updates cannot interleave partial lines.",
-        "_check_buffer discards the buffer entirely and returns when Console.quiet is True; a BrokenPipeError from the write is routed to on_broken_pipe, whose default behaviour is to set quiet, redirect stdout to /dev/null and raise SystemExit(1).",
-        "On Windows, _write_buffer splits writes into ~8K-character batches to avoid a CPython bug writing more than 32Kb at once; a UnicodeEncodeError is re-raised with an added hint about PYTHONIOENCODING.",
-        "_render_buffer drops color entirely when no_color is set, and skips control-code segments when the target is not a terminal \u2014 so piping output to a file yields no cursor-movement junk.",
-        "Style.render returns the text unchanged when color_system is None, which is why the 'bold red' Style survives the whole pipeline inside the Segment and then produces no escape codes at the final step."
-      ],
-      "open_questions": [],
-      "answers": [
-        {
-          "id": "q1.1",
-          "answer": "No. The style travels the whole way as a real Style object attached to the Segment, but the last step \u2014 Style.render with color_system=None \u2014 returns the text verbatim (rich/style.py:710). Styling is decided once, at construction, by _detect_color_system; because stdout is not a tty here, every style in this run is rendered as plain text. force_terminal=True or a FORCE_COLOR/TTY_COMPATIBLE environment variable would flip that, and then exactly the same Segments would emit SGR sequences."
-        },
-        {
-          "id": "q3.1",
-          "answer": "Segment.split_and_crop_lines together with Segment.adjust_line_length, called from print with length=self.width. This is the only hard guarantee; max_width in ConsoleOptions is advice that well-behaved renderables honour, while the crop step is unconditional for print(crop=True). Note the inverse: soft_wrap=True (or crop=False) disables it, and then a renderable that ignores max_width can emit lines wider than the console."
-        }
-      ]
-    },
-    {
-      "n": 6,
-      "title": "The Markup Round",
-      "trace_lines": [
-        377,
-        377
-      ],
-      "data_in": "'Where there is a [bold cyan]Will[/bold cyan] there [u]is[/u] a [i]way[/i].'",
-      "data_out": "'Where there is a Will there is a way.\\n' in the buffer, with three style spans that render to nothing under color_system=None",
-      "code": [
-        "rich/markup.py:73-104",
-        "rich/markup.py:106-231",
-        "rich/markup.py:48-70",
-        "rich/style.py:387-402"
-      ],
-      "inputs": [
-        "the markup string",
-        "markup=True (console default)"
-      ],
-      "characters": [
+        "Console.on_broken_pipe",
         "markup.render",
         "_parse",
         "RE_TAGS",
@@ -316,22 +281,35 @@
         "markup.escape"
       ],
       "facts": [
-        "This string contains '[', so render takes the full path: _parse yields (position, text, tag) triples, opening tags are pushed on a stack with the current text length, and closing tags pop the matching entry and emit a Span over the enclosed range.",
+        "crop defaults to True on print: every line is passed through split_and_crop_lines at self.width, and adjust_line_length truncates any over-long line with set_cell_size (which can replace a split double-width glyph with spaces) \\u2014 this is the enforcement point for the width promise.",
+        "Output is buffered per thread (_thread_locals.buffer) and only flushed when the outermost buffer context exits (_buffer_index reaches 0), so one print is one write \\u2014 nested prints and Live updates cannot interleave partial lines.",
+        "_check_buffer discards the buffer entirely and returns when Console.quiet is True; a BrokenPipeError from the write is routed to on_broken_pipe, whose default behaviour is to set quiet, redirect stdout to /dev/null and raise SystemExit(1).",
+        "On Windows, _write_buffer splits writes into ~8K-character batches to avoid a CPython bug writing more than 32Kb at once; a UnicodeEncodeError is re-raised with an added hint about PYTHONIOENCODING.",
+        "_render_buffer drops color entirely when no_color is set, and skips control-code segments when the target is not a terminal \\u2014 so piping output to a file yields no cursor-movement junk.",
+        "Style.render returns the text unchanged when color_system is None, which is why the 'bold red' Style survives the whole pipeline inside the Segment and then produces no escape codes at the final step.",
+        "The second print contains '[', so markup.render takes the full path: _parse yields (position, text, tag) triples, opening tags are pushed on a stack with the current text length, and closing tags pop the matching entry and emit a Span over the enclosed range.",
         "Tag names are normalised through Style.normalize before matching, so '[bold cyan]' and '[/bold cyan]' pair up regardless of spelling variations that parse to the same style.",
         "Unbalanced markup is a loud failure: a closing tag with no matching open tag raises MarkupError, as does '[/]' with an empty stack, and a malformed '@handler' parameter list. Tags left open at the end of the string are simply closed at text_length rather than raising.",
-        "Backslash escaping is handled in _parse (even counts become literal backslashes, an odd count escapes the following tag), and rich.markup.escape is the supported way to insert untrusted content \u2014 the relevant risk is that any caller-supplied string printed with markup enabled is interpreted, so user data containing '[...]' can inject styles or raise MarkupError. markup=False per call, or console-wide, is the mitigation.",
-        "Emoji substitution still runs on the plain-text pieces inside markup, so ':warning:' inside a tagged region is replaced too."
+        "Backslash escaping is handled in _parse (even counts become literal backslashes, an odd count escapes the following tag), and rich.markup.escape is the supported way to insert untrusted content \\u2014 the relevant risk is that any caller-supplied string printed with markup enabled is interpreted, so user data containing '[...]' can inject styles or raise MarkupError. markup=False per call, or console-wide, is the mitigation."
       ],
       "open_questions": [],
       "answers": [
         {
+          "id": "q1.1",
+          "answer": "No. The style travels the whole way as a real Style object attached to the Segment, but the last step \\u2014 Style.render with color_system=None \\u2014 returns the text verbatim (rich/style.py:710). Styling is decided once, at construction, by _detect_color_system; because stdout is not a tty here, every style in this run is rendered as plain text. force_terminal=True or a FORCE_COLOR/TTY_COMPATIBLE environment variable would flip that, and then exactly the same Segments would emit SGR sequences."
+        },
+        {
+          "id": "q3.1",
+          "answer": "Segment.split_and_crop_lines together with Segment.adjust_line_length, called from print with length=self.width. This is the only hard guarantee; max_width in ConsoleOptions is advice that well-behaved renderables honour, while the crop step is unconditional for print(crop=True). Note the inverse: soft_wrap=True (or crop=False) disables it, and then a renderable that ignores max_width can emit lines wider than the console."
+        },
+        {
           "id": "q2.1",
-          "answer": "In markup.render, reached from Console.render_str when markup is enabled. Tags become Spans on a Text; they are never re-parsed later, and they are not re-escaped on output. Malformed markup raises rich.errors.MarkupError from inside print \u2014 meaning a bad tag in caller data turns a print into an exception, not a garbled line."
+          "answer": "In markup.render, reached from Console.render_str when markup is enabled. Tags become Spans on a Text; they are never re-parsed later, and they are not re-escaped on output. Malformed markup raises rich.errors.MarkupError from inside print \\u2014 meaning a bad tag in caller data turns a print into an exception, not a garbled line."
         }
       ]
     },
     {
-      "n": 7,
+      "n": 6,
       "title": "Building the Table: Columns, Cells, and the Renderability Gate",
       "trace_lines": [
         378,
@@ -361,26 +339,26 @@
         "is_renderable"
       ],
       "facts": [
-        "add_row validates each value with is_renderable (str, or an object with __rich__ / __rich_console__) and raises errors.NotRenderableError naming the offending type otherwise \u2014 the one place a caller's bad cell is rejected, and it fails at add time rather than at render time.",
+        "add_row validates each value with is_renderable (str, or an object with __rich__ / __rich_console__) and raises errors.NotRenderableError naming the offending type otherwise \\u2014 the one place a caller's bad cell is rejected, and it fails at add time rather than at render time.",
         "Short rows are padded with None, and None becomes an empty-string cell; a row longer than the current columns silently grows the table, back-filling existing rows with Text('') so columns stay rectangular.",
-        "Cells are stored as given \u2014 the markup in '[red]Solo[/red]' is still an uninterpreted string at this point, held on Column._cells.",
+        "Cells are stored as given \\u2014 the markup in '[red]Solo[/red]' is still an uninterpreted string at this point, held on Column._cells.",
         "padding=(0, 1) is normalised once by Padding.unpack into (top, right, bottom, left) = (0, 1, 0, 1); 1, 2 or 4 integers are accepted and anything else raises ValueError.",
         "Table.expand is True whenever width is not None, so setting a fixed width implies filling it; here both are unset, so the table will size to its content."
       ],
       "open_questions": [
         {
-          "id": "q7.1",
+          "id": "q6.1",
           "question": "The cells are still raw strings with markup in them. When do they become Text, and does the table's own highlight setting override the console's?"
         },
         {
-          "id": "q7.2",
+          "id": "q6.2",
           "question": "Column 'Date' asked for width=12 and the others for nothing. What decides the final widths, and what gives way when the total does not fit?"
         }
       ],
       "answers": []
     },
     {
-      "n": 8,
+      "n": 7,
       "title": "Deciding the Shape: Column Measurement and Collapse",
       "trace_lines": [
         404,
@@ -416,30 +394,30 @@
         "ratio_reduce"
       ],
       "facts": [
-        "_collect_renderables recognises the Table as a ConsoleRenderable (duck-typed via the runtime-checkable protocol), so it is appended untouched \u2014 no pretty-printing, no highlighting at this level.",
+        "_collect_renderables recognises the Table as a ConsoleRenderable (duck-typed via the runtime-checkable protocol), so it is appended untouched \\u2014 no pretty-printing, no highlighting at this level.",
         "_extra_width reserves 2 cells for the outer border plus one per column divider: 2 + 3 = 5, leaving 95 cells of content budget out of 100.",
         "_measure_column returns a fixed Measurement for a column with an explicit width (12 + 2 padding = 14, clamped by with_maximum) and otherwise measures every cell, including header and footer, taking max of minimums and max of maximums.",
-        "When the natural total exceeds max_width, _collapse_widths repeatedly shaves the widest shrinkable column (those with width None and no_wrap False) down toward the second widest; if that still does not fit, ratio_reduce reduces all columns evenly. Columns with an explicit width or no_wrap=True are protected from shrinking \u2014 so an over-constrained table can still overflow, and the final crop in Chapter 10 is what saves the line.",
-        "Here the natural widths sum to 84 (+5 = 89 \u2264 100) and expand is False, so no collapsing and no padding-out happens; the table renders narrower than the console.",
-        "render_options are updated with highlight=self.highlight (False) and height=None before any cell is rendered \u2014 the table deliberately turns the console's automatic highlighting off for its contents."
+        "When the natural total exceeds max_width, _collapse_widths repeatedly shaves the widest shrinkable column (those with width None and no_wrap False) down toward the second widest; if that still does not fit, ratio_reduce reduces all columns evenly. Columns with an explicit width or no_wrap=True are protected from shrinking \\u2014 so an over-constrained table can still overflow, and the final crop in Chapter 9 is what saves the line.",
+        "Here the natural widths sum to 84 (+5 = 89 \\u2264 100) and expand is False, so no collapsing and no padding-out happens; the table renders narrower than the console.",
+        "render_options are updated with highlight=self.highlight (False) and height=None before any cell is rendered \\u2014 the table deliberately turns the console's automatic highlighting off for its contents."
       ],
       "open_questions": [],
       "answers": [
         {
-          "id": "q7.2",
+          "id": "q6.2",
           "answer": "Table._calculate_column_widths: each column is measured (fixed width honoured exactly, flexible columns measured from their content), ratio columns are then distributed into the leftover space when expand is set, and if the total exceeds the budget _collapse_widths shrinks only columns that are both width=None and no_wrap=False, falling back to an even ratio_reduce. Here the measurements fit, giving [14, 35, 19, 16]."
         }
       ]
     },
     {
-      "n": 9,
+      "n": 8,
       "title": "Drawing the Table: Padding, Box Characters, and Per-Cell Styles",
       "trace_lines": [
         475,
         544
       ],
       "data_in": "widths=[14, 35, 19, 16] and the raw cell strings",
-      "data_out": "a stream of Segments beginning Segment('\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2026\u2513', Style()), then Segment('\\n'), Segment('\u2503', Style()), Segment('Date        ', Style(magenta, bold)), \u2026",
+      "data_out": "a stream of Segments beginning Segment('\\u250f\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2533\\u2026\\u2513', Style()), then Segment('\\n'), Segment('\\u2503', Style()), Segment('Date        ', Style(magenta, bold)), \\u2026",
       "code": [
         "rich/table.py:755-935",
         "rich/table.py:627-698",
@@ -472,66 +450,35 @@
       "facts": [
         "Box.substitute is consulted before drawing: with safe_box (pick_bool of table then console, True here) it swaps HEAVY_HEAD for SQUARE on legacy Windows, and ConsoleOptions.ascii_only forces plain ASCII when the terminal encoding is not utf-*. That is the guarantee behind 'the table always draws, even on cmd.exe'.",
         "Each cell is wrapped in a Padding renderable carrying the computed (top, right, bottom, left); pad_edge and collapse_padding adjust the first/last column and row, and padding is cached per (first_row, last_row).",
-        "Cell styles are composed as console.get_style(cell.style) + row_style, where cell.style is header_style+column.header_style for the header row, column.style for body cells, and footer_style for the footer \u2014 so the magenta bold header and the dim Date column arrive as real Styles on the Segments.",
+        "Cell styles are composed as console.get_style(cell.style) + row_style, where cell.style is header_style+column.header_style for the header row, column.style for body cells, and footer_style for the footer \\u2014 so the magenta bold header and the dim Date column arrive as real Styles on the Segments.",
         "Cells are rendered through Console.render_lines at the column width, which both crops to width and pads short lines; Segment.set_shape and align_top/middle/bottom then force every cell in a row to the same height, so the box characters always line up even when one cell wraps to several lines.",
         "Because render_options set highlight=False, cell strings go through render_str with markup still enabled: the markup in '[red]Solo[/red]' and '[bold]$1,332,539,889[/bold]' is interpreted into spans here, while numbers and dates are not auto-highlighted.",
         "Whitespace column dividers are re-styled with the row's background style so that zebra row_styles do not show gaps between columns.",
-        "Column overflow defaults to 'ellipsis': content wider than its column is truncated with '\u2026' rather than breaking the layout \u2014 content loss is the chosen failure mode for a too-narrow column."
+        "Column overflow defaults to 'ellipsis': content wider than its column is truncated with '\\u2026' rather than breaking the layout \\u2014 content loss is the chosen failure mode for a too-narrow column."
       ],
       "open_questions": [],
       "answers": [
         {
-          "id": "q7.1",
-          "answer": "Inside Table._render / Console.render_lines, one cell at a time: each str cell is wrapped in Padding and rendered at the column's width, which routes it through Console.render \u2192 render_str, where markup is still honoured (so '[red]Solo[/red]' becomes styled 'Solo'). The table's highlight flag is pushed into the render options (highlight=False by default), so it overrides the console's automatic highlighting for cell contents; per-column highlight=True re-enables it."
+          "id": "q6.1",
+          "answer": "Inside Table._render / Console.render_lines, one cell at a time: each str cell is wrapped in Padding and rendered at the column's width, which routes it through Console.render \\u2192 render_str, where markup is still honoured (so '[red]Solo[/red]' becomes styled 'Solo'). The table's highlight flag is pushed into the render options (highlight=False by default), so it overrides the console's automatic highlighting for cell contents; per-column highlight=True re-enables it."
         }
       ]
     },
     {
-      "n": 10,
-      "title": "One Last Crop",
+      "n": 9,
+      "title": "One Last Crop, Styles Spent, Text Written",
       "trace_lines": [
         545,
-        569
+        704
       ],
       "data_in": "~80 Segments of table output, self.width == 100",
-      "data_out": "lines of Segments, each adjusted to \u2264 100 cells, appended to the thread-local buffer",
+      "data_out": "'\\u250f\\u2501\\u2501\\u2501\\u2026\\u2513\\n\\u2026\\u2514\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2518\\n' written once to stdout and flushed; the same segments copied into _record_buffer; buffer cleared",
       "code": [
         "rich/console.py:1749-1756",
         "rich/segment.py:306-351",
         "rich/segment.py:353-396",
         "rich/cells.py:98-110",
-        "rich/console.py:1056-1063"
-      ],
-      "inputs": [
-        "table Segments",
-        "self.width == 100"
-      ],
-      "characters": [
-        "Segment.split_and_crop_lines",
-        "Segment.adjust_line_length",
-        "Segment.cell_length",
-        "cell_len",
-        "Console.width"
-      ],
-      "facts": [
-        "The crop measures the Unicode box-drawing top border as 89 cells (cell_len of the heavy box characters is 1 each), comfortably under 100, so nothing is truncated \u2014 but the check runs on every line regardless of what produced it.",
-        "adjust_line_length counts segment.cell_length, which is 0 for control segments, so cursor codes never consume visible width in the accounting.",
-        "With pad=False (print's choice) short lines are left short rather than space-filled, which is what keeps exported text free of trailing whitespace.",
-        "This step is renderable-agnostic: a third-party renderable that ignores ConsoleOptions.max_width is still cropped here, which is the practical boundary of trust between Rich and custom __rich_console__ implementations."
-      ],
-      "open_questions": [],
-      "answers": []
-    },
-    {
-      "n": 11,
-      "title": "Styles Spent, Text Written",
-      "trace_lines": [
-        570,
-        704
-      ],
-      "data_in": "the buffer: Segment('\u250f\u2026\u2513', Style()), Segment('\\n'), Segment('\u2503', Style()), Segment('Date        ', Style(magenta, bold)), \u2026 about 300 segments",
-      "data_out": "'\u250f\u2501\u2501\u2501\u2026\u2513\\n\u2026\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\\n' written once to stdout and flushed; the same segments copied into _record_buffer; buffer cleared",
-      "code": [
+        "rich/console.py:1056-1063",
         "rich/console.py:862-864",
         "rich/console.py:817-820",
         "rich/console.py:2044-2057",
@@ -541,11 +488,17 @@
         "rich/style.py:340-342"
       ],
       "inputs": [
-        "the segment buffer",
+        "table Segments",
+        "self.width == 100",
         "record=True",
         "_color_system is None"
       ],
       "characters": [
+        "Segment.split_and_crop_lines",
+        "Segment.adjust_line_length",
+        "Segment.cell_length",
+        "cell_len",
+        "Console.width",
         "Console.__exit__",
         "Console._exit_buffer",
         "Console._check_buffer",
@@ -556,34 +509,38 @@
         "Segment.remove_color"
       ],
       "facts": [
-        "_write_buffer takes self._lock and, when record is set and _buffer_index is 0, extends _record_buffer with a copy of the buffer before writing \u2014 recording is append-only and unbounded until an export clears it, so long-running processes with record=True grow memory.",
+        "The crop measures the Unicode box-drawing top border as 89 cells (cell_len of the heavy box characters is 1 each), comfortably under 100, so nothing is truncated \\u2014 but the check runs on every line regardless of what produced it.",
+        "adjust_line_length counts segment.cell_length, which is 0 for control segments, so cursor codes never consume visible width in the accounting.",
+        "With pad=False (print's choice) short lines are left short rather than space-filled, which is what keeps exported text free of trailing whitespace.",
+        "This step is renderable-agnostic: a third-party renderable that ignores ConsoleOptions.max_width is still cropped here, which is the practical boundary of trust between Rich and custom __rich_console__ implementations.",
+        "_write_buffer takes self._lock and, when record is set and _buffer_index is 0, extends _record_buffer with a copy of the buffer before writing \\u2014 recording is append-only and unbounded until an export clears it, so long-running processes with record=True grow memory.",
         "_render_buffer walks the buffer once: segments with a truthy style go through Style.render, styleless segments are appended verbatim, and control segments are dropped when the target is not a terminal.",
-        "Every Style.render call in this run returns its input unchanged because color_system is None \u2014 the trace shows 'Date        ', 'Solo' and '$1,332,539,889' coming back exactly as given, which is how the plain-text assertions in the scenario succeed.",
+        "Every Style.render call in this run returns its input unchanged because color_system is None \\u2014 the trace shows 'Date        ', 'Solo' and '$1,332,539,889' coming back exactly as given, which is how the plain-text assertions in the scenario succeed.",
         "The entire table is a single file.write followed by a flush: no partial frames, and a crash mid-render leaves nothing on screen rather than half a table.",
         "If the sink raises BrokenPipeError the console goes quiet and the process exits with SystemExit(1); if it raises UnicodeEncodeError the error is re-raised with an added PYTHONIOENCODING hint. Neither is swallowed."
       ],
       "open_questions": [
         {
-          "id": "q11.1",
+          "id": "q9.1",
           "question": "The record buffer now holds styled segments. Does the caller's export see the styles, and does reading it twice return the same thing?"
         }
       ],
       "answers": [
         {
           "id": "q1.2",
-          "answer": "In Console._write_buffer, under _record_buffer_lock, immediately before the real write and only when _buffer_index is 0 \u2014 so exactly the content that reached the file is recorded, once per flush. The copy is a list of Segments (text plus Style references), it is never bounded or trimmed, and it is only emptied by export_text/export_html/export_svg with clear=True (the default). Enabling record on a long-lived console is a memory-growth decision, not a free option."
+          "answer": "In Console._write_buffer, under _record_buffer_lock, immediately before the real write and only when _buffer_index is 0 \\u2014 so exactly the content that reached the file is recorded, once per flush. The copy is a list of Segments (text plus Style references), it is never bounded or trimmed, and it is only emptied by export_text/export_html/export_svg with clear=True (the default). Enabling record on a long-lived console is a memory-growth decision, not a free option."
         }
       ]
     },
     {
-      "n": 12,
+      "n": 10,
       "title": "Reading Back What Was Printed",
       "trace_lines": [
         705,
         706
       ],
       "data_in": "Console.export_text(clear=True, styles=False) over the accumulated _record_buffer",
-      "data_out": "'Hello World!\\nWhere there is a Will t\u2026\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\\n' and an emptied record buffer",
+      "data_out": "'Hello World!\\nWhere there is a Will t\\u2026\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2534\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2518\\n' and an emptied record buffer",
       "code": [
         "rich/console.py:2192-2222",
         "rich/console.py:2224-2242"
@@ -599,17 +556,17 @@
         "Segment.control"
       ],
       "facts": [
-        "export_text asserts self.record and otherwise fails with an AssertionError whose message tells you to pass record=True \u2014 a hard precondition, and one that disappears under `python -O`.",
+        "export_text asserts self.record and otherwise fails with an AssertionError whose message tells you to pass record=True \\u2014 a hard precondition, and one that disappears under `python -O`.",
         "With styles=False (the default) only segment.text is joined and control segments are skipped, so the result is exactly the visible characters: 'Hello World!', the markup-stripped 'Where there is a Will there is a way.', and the table body including '$1,332,539,889'.",
-        "With styles=True each segment is re-rendered through Style.render at the default TRUECOLOR color system \u2014 notably independent of the console's own detected color system, so an export can contain ANSI codes even when the live output did not.",
+        "With styles=True each segment is re-rendered through Style.render at the default TRUECOLOR color system \\u2014 notably independent of the console's own detected color system, so an export can contain ANSI codes even when the live output did not.",
         "clear defaults to True, so the record buffer is drained on export: a second export_text with no further printing returns an empty string. save_text, export_html and save_svg share the same buffer and the same clearing semantics, so calling two exporters in a row without clear=False loses the content for the second.",
         "All record-buffer access is guarded by _record_buffer_lock, which is separate from the output lock, so exporting from one thread while printing from another does not interleave."
       ],
       "open_questions": [],
       "answers": [
         {
-          "id": "q11.1",
-          "answer": "By default the export is plain: styles=False joins segment text only and drops control segments, which is why the scenario's substring assertions hold. styles=True would re-render the stored Styles at TRUECOLOR regardless of the console's detected color system. And it is read-once by default \u2014 clear=True empties _record_buffer, so a second export (or a second exporter, e.g. export_html after export_text) sees nothing unless clear=False was passed."
+          "id": "q9.1",
+          "answer": "By default the export is plain: styles=False joins segment text only and drops control segments, which is why the scenario's substring assertions hold. styles=True would re-render the stored Styles at TRUECOLOR regardless of the console's detected color system. And it is read-once by default \\u2014 clear=True empties _record_buffer, so a second export (or a second exporter, e.g. export_html after export_text) sees nothing unless clear=False was passed."
         }
       ]
     }

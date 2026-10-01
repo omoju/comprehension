@@ -1,6 +1,6 @@
 {
   "title": "The Class That Was Rewritten: One Run Through attrs",
-  "premise": "Writing a Python class with a handful of data fields means hand-writing nine or more dunder methods \u2014 `__init__`, `__repr__`, `__eq__`, `__ne__`, ordering, hashing, pickling \u2014 and keeping them in sync forever. *attrs* offers to write them for you. The price is that a decorator gets to inspect your class body at import time and, for slotted classes, hand you back a *different class object* than the one you wrote. This story follows one real run of the README example: a class body with two annotated fields walks into `@define`, comes out as a finished, slotted, unhashable, convert-on-setattr-free class; an instance of it is compared, serialized to a dict; and finally a second class is conjured at runtime from nothing but two strings. The reader is the person who has to sign off on all of that: what is guaranteed, what is silently decided, and where it can bite.",
+  "premise": "Writing a Python class with a handful of data fields means hand-writing nine or more dunder methods \n\n\n\n `__init__`, `__repr__`, `__eq__`, `__ne__`, ordering, hashing, pickling \n\n\n\n and keeping them in sync forever. *attrs* offers to write them for you. The price is that a decorator gets to inspect your class body at import time and, for slotted classes, hand you back a *different class object* than the one you wrote. This story follows one real run of the README example: a class body with two annotated fields walks into `@define`, comes out as a finished, slotted, unhashable class; an instance of it is compared and serialized to a dict; and finally a second class is conjured at runtime from nothing but two strings. The reader is the person who has to sign off on all of that: what is guaranteed, what is silently decided, and where it can bite.",
   "reader": "owner",
   "repo": {
     "name": "python-attrs/attrs",
@@ -12,17 +12,21 @@
   "chapters": [
     {
       "n": 1,
-      "title": "The Door, and What It Decides Before You Knock",
+      "title": "The Door, and the Flags That Become Policy",
       "trace_lines": [
         2,
-        5
+        30
       ],
       "data_in": "`class SomeClass` with annotations `a_number: int = 42` and `list_of_numbers: list[int] = Factory(list)`, handed to `@define` as `maybe_cls`",
-      "data_out": "`define.<locals>.wrap` calls `do_it(cls, auto_attribs=True)` \u2014 frozen-ness checked against the bases, `on_setattr` already replaced by `_DEFAULT_ON_SETATTR` (`pipe(convert, validate)`)",
+      "data_out": "`ClassProps(is_exception=False, is_slotted=True, has_weakref_slot=True, is_frozen=False, kw_only=NO, collected_fields_by_mro=True, added_init=True, added_repr=True, added_eq=True, added_ordering=False, hashability=UNHASHABLE, added_match_args=True, added_str=False, added_pickling=True, on_setattr_hook=<wrapped_pipe>, field_transformer=None)`",
       "code": [
         "src/attr/_next_gen.py:23-47",
         "src/attr/_next_gen.py:389-427",
-        "src/attr/_make.py:3105-3107"
+        "src/attr/_make.py:3105-3107",
+        "src/attr/_make.py:1469-1566",
+        "src/attr/_make.py:1256-1281",
+        "src/attr/_make.py:1327-1350",
+        "src/attr/_make.py:2902-3061"
       ],
       "inputs": [
         "SomeClass class object (pre-attrs)",
@@ -33,14 +37,24 @@
         "define.<locals>.wrap",
         "Factory",
         "_DEFAULT_ON_SETATTR",
-        "setters.NO_OP"
+        "attrs",
+        "_determine_attrs_eq_order",
+        "_determine_whether_to_implement",
+        "_has_own_attribute",
+        "ClassProps",
+        "ClassProps.Hashability"
       ],
       "facts": [
-        "`Factory(list)` is evaluated at class-body time and merely stores the callable and `takes_self=False`; nothing is called yet (trace line 2-3).",
-        "`define` defaults differ from `attr.s`: `slots=True`, `auto_exc=True`, `auto_detect=True`, `order=False`, `force_kw_only=False` \u2014 visible in the trace's argument list on line 4.",
+        "`Factory(list)` is evaluated at class-body time and merely stores the callable and `takes_self=False`; nothing is called yet (trace lines 2-3).",
+        "`define` defaults differ from `attr.s`: `slots=True`, `auto_exc=True`, `auto_detect=True`, `order=False`, `force_kw_only=False` \n\n\n\n visible in the trace's argument list on line 4.",
         "`wrap` mutates the decorator's own `on_setattr`: when the class is not frozen and the caller passed nothing, it installs `pipe(convert, validate)`, so by default assignment after construction re-runs converters and validators.",
         "`wrap` walks `cls.__bases__` and, if any base has `__setattr__ is _frozen_setattrs`, inherits frozen-ness and forces `on_setattr = NO_OP`; if the caller had explicitly asked for an on_setattr hook, this combination raises `ValueError` instead of silently ignoring it.",
-        "`auto_attribs` was left `None`, so attrs guesses: it calls `do_it(cls, True)` first and only falls back to `do_it(cls, False)` if `UnannotatedAttributeError` is raised."
+        "`auto_attribs` was left `None`, so attrs guesses: it calls `do_it(cls, True)` first and only falls back to `do_it(cls, False)` if `UnannotatedAttributeError` is raised.",
+        "`auto_detect=True` means every `None` flag is resolved by asking `_has_own_attribute(cls, dunder)` \n\n\n\n a check of `cls.__dict__` only, so an inherited `__eq__`/`__init__` does *not* stop attrs from writing its own (trace lines 15-26).",
+        "Hashability is derived, not asked for: `hash is None` + `eq True` + `frozen False` \n\n\n\n `UNHASHABLE`. The class will be deliberately made un-hashable, matching Python's rule that customizing equality invalidates identity hashing.",
+        "`added_pickling` defaults to the value of `slots`, so slotted classes get `__getstate__`/`__setstate__` written unless `auto_detect` finds the user's own.",
+        "`cache_hash=True` with a non-hashable outcome is rejected with `TypeError` before any class is built \n\n\n\n a road not taken here because `cache_hash=False`.",
+        "The resolved `ClassProps` is stored on the class as `__attrs_props__`, which is what `attrs.inspect()` later reads back."
       ],
       "open_questions": [
         {
@@ -50,61 +64,20 @@
         {
           "id": "q1.2",
           "question": "The auto_attribs guess is a try/except around the entire class build. What exactly triggers the fallback, and can a half-built class leak out of the failed attempt?"
-        }
-      ],
-      "answers": []
-    },
-    {
-      "n": 2,
-      "title": "Flags Become Policy",
-      "trace_lines": [
-        6,
-        30
-      ],
-      "data_in": "`attrs(maybe_cls=SomeClass, repr=None, hash=None, init=None, slots=True, frozen=False, eq=None, order=False, auto_detect=True, collect_by_mro=True, on_setattr=<wrapped_pipe>, ...)`",
-      "data_out": "`ClassProps(is_exception=False, is_slotted=True, has_weakref_slot=True, is_frozen=False, kw_only=NO, collected_fields_by_mro=True, added_init=True, added_repr=True, added_eq=True, added_ordering=False, hashability=UNHASHABLE, added_match_args=True, added_str=False, added_pickling=True, on_setattr_hook=<wrapped_pipe>, field_transformer=None)`",
-      "code": [
-        "src/attr/_make.py:1469-1476",
-        "src/attr/_make.py:1478-1566",
-        "src/attr/_make.py:1256-1281",
-        "src/attr/_make.py:1327-1350",
-        "src/attr/_make.py:2902-3061"
-      ],
-      "inputs": [
-        "the class object",
-        "the resolved decorator flags from chapter 1"
-      ],
-      "characters": [
-        "attrs",
-        "_determine_attrs_eq_order",
-        "_determine_whether_to_implement",
-        "_has_own_attribute",
-        "ClassProps",
-        "ClassProps.Hashability",
-        "ClassProps.KeywordOnly"
-      ],
-      "facts": [
-        "`auto_detect=True` means every `None` flag is resolved by asking `_has_own_attribute(cls, dunder)` \u2014 a check of `cls.__dict__` only, so an inherited `__eq__`/`__init__` does *not* stop attrs from writing its own (trace lines 15-26 show `__eq__`, `__ne__`, `__init__` all absent).",
-        "Hashability is derived, not asked for: `hash is None` + `eq True` + `frozen False` \u21d2 `UNHASHABLE`. The class will be deliberately made un-hashable, matching Python's rule that customizing equality invalidates identity hashing.",
-        "`added_pickling` defaults to the value of `slots`, so slotted classes get `__getstate__`/`__setstate__` written unless `auto_detect` finds the user's own.",
-        "`cache_hash=True` with a non-hashable outcome is rejected with `TypeError` before any class is built \u2014 a road not taken here because `cache_hash=False`.",
-        "The resolved `ClassProps` is not merely internal bookkeeping: `_ClassBuilder` stores it on the class as `__attrs_props__`, which is what `attrs.inspect()` later reads back.",
-        "`repr_ns` is deprecated and would emit a `DeprecationWarning`; it was `None` here."
-      ],
-      "open_questions": [
+        },
         {
-          "id": "q2.1",
+          "id": "q1.3",
           "question": "`hashability=UNHASHABLE` is a decision made for the user. What is physically done to the class, and can a base class's `__hash__` survive it?"
         },
         {
-          "id": "q2.2",
+          "id": "q1.4",
           "question": "`added_pickling=True` was chosen because the class is slotted. What exactly gets written, and what does it do with state it doesn't recognize?"
         }
       ],
       "answers": []
     },
     {
-      "n": 3,
+      "n": 2,
       "title": "Harvesting the Fields",
       "trace_lines": [
         31,
@@ -123,7 +96,7 @@
       ],
       "inputs": [
         "cls.__dict__ values (42, Factory(list), hard_math)",
-        "`_get_annotations(cls)` \u2192 {'a_number': int, 'list_of_numbers': list[int]}"
+        "`_get_annotations(cls)` \n\n\n\n {'a_number': int, 'list_of_numbers': list[int]}"
       ],
       "characters": [
         "_transform_attrs",
@@ -138,15 +111,15 @@
       ],
       "facts": [
         "In `auto_attribs` mode the *annotations* drive the field list; a bare class attribute without an annotation is invisible, and plain values (`42`) are auto-wrapped by `attrib()` into a `_CountingAttr` (trace lines 37-50).",
-        "`_is_class_var` decides ClassVar-ness by **string matching** the annotation against `('typing.ClassVar', 't.ClassVar', 'ClassVar', 'typing_extensions.ClassVar')` \u2014 deliberately avoiding evaluation of string annotations, at the cost of being fooled by unusual aliasing.",
-        "The `UnannotatedAttributeError` that chapter 1's guess relies on is raised right here: any `attr.ib()`/`field()` in the class body without an annotation is collected into `unannotated` and rejected. The exception escapes before any class is created, so the retry in `wrap` starts from the untouched original class \u2014 nothing has been mutated yet.",
+        "`_is_class_var` decides ClassVar-ness by **string matching** the annotation against `('typing.ClassVar', 't.ClassVar', 'ClassVar', 'typing_extensions.ClassVar')` \n\n\n\n deliberately avoiding evaluation of string annotations, at the cost of being fooled by unusual aliasing.",
+        "The `UnannotatedAttributeError` that chapter 1's guess relies on is raised right here: any `attr.ib()`/`field()` in the class body without an annotation is collected into `unannotated` and rejected. The exception escapes before any class is created, so the retry in `wrap` starts from the untouched original class.",
         "Because `collect_by_mro=True` (set unconditionally by `define`), base-class fields are gathered by reversed MRO and deduplicated, keeping only the freshest definition. `define` users never get the legacy ordering bug of issue #428.",
         "Any field without an explicit alias gets `alias = name.lstrip('_')` and `alias_is_default = True`, written in via `object.__setattr__` because `Attribute` is frozen. This happens *before* `field_transformer` runs so hooks see usable aliases.",
-        "After the (absent) `field_transformer`, attrs enforces that no mandatory non-kw-only field follows one with a default \u2014 a `ValueError` at import time, not a `TypeError` at call time."
+        "After the (absent) `field_transformer`, attrs enforces that no mandatory non-kw-only field follows one with a default \n\n\n\n a `ValueError` at import time, not a `TypeError` at call time."
       ],
       "open_questions": [
         {
-          "id": "q3.1",
+          "id": "q2.1",
           "question": "Every field now carries an `alias` equal to its name minus leading underscores. Where does that string actually surface where a caller can see it?"
         }
       ],
@@ -158,63 +131,17 @@
       ]
     },
     {
-      "n": 4,
+      "n": 3,
       "title": "The Hook That Quietly Removed Itself",
       "trace_lines": [
         69,
-        71
-      ],
-      "data_in": "the `_Attributes` tuple plus `ClassProps`, inside `_ClassBuilder.__init__`",
-      "data_out": "a builder holding `_cls_dict = {'__attrs_attrs__': (...), '__attrs_props__': ClassProps(...), '__getstate__': slots_getstate, '__setstate__': slots_setstate}` and `self._on_setattr` reset to `None`",
-      "code": [
-        "src/attr/_make.py:676-778",
-        "src/attr/_make.py:1025-1064"
-      ],
-      "inputs": [
-        "attrs tuple from chapter 3",
-        "props.on_setattr_hook = pipe(convert, validate)"
-      ],
-      "characters": [
-        "_ClassBuilder",
-        "_DEFAULT_ON_SETATTR",
-        "slots_getstate",
-        "slots_setstate",
-        "_HASH_CACHE_FIELD"
-      ],
-      "facts": [
-        "The builder scans every field for a validator or converter; because `SomeClass` has neither, the class-level `pipe(convert, validate)` hook is dropped (`self._on_setattr = None`). The optimization applies only to the three known hooks `_DEFAULT_ON_SETATTR`, `setters.validate`, `setters.convert` \u2014 a custom callable is always kept.",
-        "`__attrs_attrs__` and `__attrs_props__` are placed on the class, which is the entire public introspection surface other tools (and `fields()`, `has()`, `inspect()`) rely on.",
-        "`slots_setstate` accepts both the modern dict state and a legacy tuple (pre-22.2.0 pickles), and silently skips names missing from the state \u2014 a slotted instance unpickled from an older/partial payload can come back with unset slots rather than an error.",
-        "If hash caching were enabled, `slots_setstate` would reset `_attrs_cached_hash` to `None` so a restored object recomputes rather than trusting a serialized hash (GH #613).",
-        "For frozen classes the builder would instead install `_frozen_setattrs`/`_frozen_delattrs` here and mark `_wrote_own_setattr`; that branch was not taken."
-      ],
-      "open_questions": [
-        {
-          "id": "q4.1",
-          "question": "Nothing executable has been produced yet \u2014 `__repr__`, `__eq__`, `__init__` don't exist. When and how do the strings become functions, and against which namespace?"
-        }
-      ],
-      "answers": [
-        {
-          "id": "q1.1",
-          "answer": "No. Because no field has a converter or a validator, `_ClassBuilder.__init__` sets `self._on_setattr = None`, so the convert+validate hook is discarded before any `__setattr__` is written."
-        },
-        {
-          "id": "q2.2",
-          "answer": "`_make_getstate_setstate` returns `slots_getstate`/`slots_setstate` over the non-`__weakref__` field names; `slots_setstate` tolerates tuple state and missing keys."
-        }
-      ]
-    },
-    {
-      "n": 5,
-      "title": "Repr, Equality, and a Deliberate Absence",
-      "trace_lines": [
-        72,
         85
       ],
-      "data_in": "the builder with two `Attribute`s",
-      "data_out": "two queued snippets \u2014 a `__repr__` script with globs `{_compat, AttributeError, NOTHING}` and an `__eq__` script \u2014 plus `cls_dict['__ne__'] = __ne__` and `cls_dict['__hash__'] = None`; `add_setattr` returned without writing anything",
+      "data_in": "the `_Attributes` tuple plus `ClassProps`, inside `_ClassBuilder.__init__`",
+      "data_out": "a builder whose `_on_setattr` is now `None`, holding `__attrs_attrs__`, `__attrs_props__`, getstate/setstate, a queued `__repr__` and `__eq__` script, `__ne__`, and `__hash__ = None`",
       "code": [
+        "src/attr/_make.py:676-778",
+        "src/attr/_make.py:1025-1064",
         "src/attr/_make.py:1004-1012",
         "src/attr/_make.py:1852-1906",
         "src/attr/_make.py:1150-1162",
@@ -224,13 +151,15 @@
         "src/attr/_make.py:1730-1739"
       ],
       "inputs": [
-        "props.added_repr / added_eq / added_ordering",
-        "builder._on_setattr (now None)"
+        "attrs tuple from chapter 2",
+        "props.on_setattr_hook = pipe(convert, validate)"
       ],
       "characters": [
-        "_ClassBuilder.add_repr",
+        "_ClassBuilder",
+        "_DEFAULT_ON_SETATTR",
+        "slots_getstate",
+        "slots_setstate",
         "_make_repr_script",
-        "_ClassBuilder.add_eq",
         "_make_eq_script",
         "__ne__",
         "_ClassBuilder.add_setattr",
@@ -238,110 +167,101 @@
         "_compat.repr_context"
       ],
       "facts": [
-        "The generated `__repr__` guards against infinite recursion using a thread-local set of `id(self)` (`_compat.repr_context.already_repring`); a self-referential object renders as `...` rather than blowing the stack. The thread-local deliberately lives in `_compat` so generated functions don't hold a direct reference to it, which would break cloudpickle.",
-        "`__eq__` begins with `if other.__class__ is not self.__class__: return NotImplemented` \u2014 equality is type-exact, so a subclass instance never compares equal to its base, by design.",
-        "`__ne__` is a plain shared function that forwards `NotImplemented` from `__eq__` rather than inverting it.",
-        "`add_setattr` iterates the fields, finds no per-field `on_setattr` and a class hook of `None`, so `sa_attrs` is empty and it returns `self` immediately: **this class gets no custom `__setattr__` at all** \u2014 assignments are ordinary slot writes.",
-        "`make_unhashable` sets `cls_dict['__hash__'] = None`, which makes `hash(instance)` raise `TypeError`. attrs only *adds*; if a base class defined a real `__hash__`, this `None` shadows it for this class but attrs never reaches up the MRO to remove anything.",
-        "`add_str` would raise `ValueError` if a `__str__` were requested without a `__repr__`; `added_str` was False here."
+        "The builder scans every field for a validator or converter; because `SomeClass` has neither, the class-level `pipe(convert, validate)` hook is dropped (`self._on_setattr = None`). The optimization applies only to the three known hooks `_DEFAULT_ON_SETATTR`, `setters.validate`, `setters.convert` \n\n\n\n a custom callable is always kept.",
+        "`__attrs_attrs__` and `__attrs_props__` are placed on the class, which is the entire public introspection surface other tools (and `fields()`, `has()`, `inspect()`) rely on.",
+        "`slots_setstate` accepts both the modern dict state and a legacy tuple (pre-22.2.0 pickles), and silently skips names missing from the state \n\n\n\n a slotted instance unpickled from an older/partial payload can come back with unset slots rather than an error.",
+        "For frozen classes the builder would instead install `_frozen_setattrs`/`_frozen_delattrs` here and mark `_wrote_own_setattr`; that branch was not taken.",
+        "The generated `__repr__` guards against infinite recursion using a thread-local set of `id(self)` (`_compat.repr_context.already_repring`); a self-referential object renders as `...` rather than blowing the stack. The thread-local lives in `_compat` so generated functions don't hold a direct reference to it, which would break cloudpickle.",
+        "`__eq__` begins with `if other.__class__ is not self.__class__: return NotImplemented` \n\n\n\n equality is type-exact, so a subclass instance never compares equal to its base, by design. `__ne__` is a shared function that forwards `NotImplemented` rather than inverting it.",
+        "`add_setattr` finds no per-field `on_setattr` and a class hook of `None`, so `sa_attrs` is empty and it returns immediately: **this class gets no custom `__setattr__` at all** \n\n\n\n assignments are ordinary slot writes.",
+        "`make_unhashable` sets `cls_dict['__hash__'] = None`, so `hash(instance)` raises `TypeError`. attrs only *adds*; if a base class defined a real `__hash__`, this `None` shadows it for this class but attrs never reaches up the MRO to remove anything."
       ],
       "open_questions": [
         {
-          "id": "q5.1",
+          "id": "q3.1",
+          "question": "Nothing executable has been produced yet \n\n\n\n `__repr__` and `__eq__` are still strings. When and how do they become functions, and against which namespace?"
+        },
+        {
+          "id": "q3.2",
           "question": "`__eq__` short-circuits on exact class identity. What does that mean in practice for the comparisons the scenario actually performs?"
         }
       ],
       "answers": [
         {
-          "id": "q2.1",
+          "id": "q1.1",
+          "answer": "No. Because no field has a converter or a validator, `_ClassBuilder.__init__` sets `self._on_setattr = None`, so the convert+validate hook is discarded before any `__setattr__` is written."
+        },
+        {
+          "id": "q1.3",
           "answer": "`make_unhashable` writes `__hash__ = None` into the class dict, so instances raise `TypeError` when hashed; it shadows rather than deletes any inherited `__hash__`."
+        },
+        {
+          "id": "q1.4",
+          "answer": "`_make_getstate_setstate` returns `slots_getstate`/`slots_setstate` over the non-`__weakref__` field names; `slots_setstate` tolerates tuple state and missing keys."
         }
       ]
     },
     {
-      "n": 6,
-      "title": "Writing the Initializer, Line by Line",
+      "n": 4,
+      "title": "Writing the Initializer, and Two Protocols Added Only If Vacant",
       "trace_lines": [
         86,
-        96
+        106
       ],
       "data_in": "`_make_init_script(cls, attrs, pre_init=False, post_init=False, frozen=False, slots=True, cache_hash=False, base_attr_map={}, is_exc=False, cls_on_setattr=None, attrs_init=False)`",
-      "data_out": "script `def __init__(self, a_number=attr_dict['a_number'].default, list_of_numbers=NOTHING): ... self.list_of_numbers = __attr_factory_list_of_numbers()`, globs containing `NOTHING`, `attr_dict`, `__attr_factory_list_of_numbers` **and the whole defining module's `__dict__`**, annotations `{'a_number': int, 'list_of_numbers': list[int], 'return': None}`",
+      "data_out": "init script `def __init__(self, a_number=attr_dict['a_number'].default, list_of_numbers=NOTHING): ... self.list_of_numbers = __attr_factory_list_of_numbers()` with globs including the defining module's `__dict__`; plus `cls_dict['__replace__']` and `cls_dict['__match_args__'] = ('a_number', 'list_of_numbers')`",
       "code": [
         "src/attr/_make.py:2030-2096",
         "src/attr/_make.py:2187-2448",
         "src/attr/_make.py:2099-2184",
-        "src/attr/_make.py:1085-1108"
-      ],
-      "inputs": [
-        "the two Attributes with their defaults and aliases",
-        "sys.modules[cls.__module__].__dict__"
-      ],
-      "characters": [
-        "_make_init_script",
-        "_attrs_to_init_script",
-        "_determine_setters",
-        "_assign",
-        "Converter",
-        "NOTHING"
-      ],
-      "facts": [
-        "The parameter names in the signature come from `a.alias`, not `a.name` \u2014 this is where chapter 3's underscore stripping becomes the public `__init__` contract.",
-        "A plain default is referenced indirectly as `attr_dict['a_number'].default`, so the `Attribute` object stays the single source of truth; a `Factory` default instead becomes `arg=NOTHING` plus an `if arg is not NOTHING: ... else: self.x = __attr_factory_x()`, which is why each instance gets a *fresh* list rather than a shared one.",
-        "Because the class is neither frozen nor hash-caching, `_determine_setters` returns the plain `_assign` strategy: the generated body is literally `self.a_number = a_number`. Frozen classes would instead go through a cached `object.__setattr__` or direct `__dict__` writes.",
-        "`_make_init_script` updates the generated function's globals with `sys.modules[cls.__module__].__dict__` so that `typing.get_type_hints(C.__init__)` can resolve string annotations. This means the generated `__init__` closes over a snapshot of the defining module's namespace \u2014 a deliberate trade of namespace purity for working type resolution.",
-        "Validators, when present, are emitted as a single `if _config._run_validators is True:` block after all assignments, so validators see a fully populated instance and can be globally disabled at runtime.",
-        "`init=False` on the decorator would route the identical script to `__attrs_init__` instead, leaving the user's own `__init__` in place."
-      ],
-      "open_questions": [
-        {
-          "id": "q6.1",
-          "question": "The initializer's globals now include every name in the defining module. Is that live, and what is the blast radius if the module later rebinds a name?"
-        }
-      ],
-      "answers": [
-        {
-          "id": "q3.1",
-          "answer": "The alias is used verbatim as the `__init__` parameter name in `_attrs_to_init_script` (`arg_name = a.alias`), which is why `_x` becomes `x` in the public signature."
-        }
-      ]
-    },
-    {
-      "n": 7,
-      "title": "Two Protocols, Added Only If Vacant",
-      "trace_lines": [
-        97,
-        106
-      ],
-      "data_in": "`_has_own_attribute(cls, '__replace__')` \u2192 False, `_has_own_attribute(cls, '__match_args__')` \u2192 False",
-      "data_out": "`cls_dict['__replace__'] = <function SomeClass.__replace__>` and `cls_dict['__match_args__'] = ('a_number', 'list_of_numbers')`",
-      "code": [
+        "src/attr/_make.py:1085-1108",
         "src/attr/_make.py:1110-1123",
         "src/attr/_make.py:1603-1607",
         "src/attr/_make.py:589-644",
         "src/attr/_make.py:1226-1253"
       ],
       "inputs": [
-        "PY_3_13_PLUS",
-        "props.added_match_args"
+        "the two Attributes with their defaults and aliases",
+        "sys.modules[cls.__module__].__dict__",
+        "PY_3_13_PLUS"
       ],
       "characters": [
+        "_make_init_script",
+        "_attrs_to_init_script",
+        "_determine_setters",
+        "_assign",
+        "NOTHING",
         "_ClassBuilder.add_replace",
         "evolve",
         "_ClassBuilder.add_match_args",
         "_add_method_dunders_unsafe"
       ],
       "facts": [
-        "`__replace__` (the `copy.replace` protocol, Python 3.13+) is a thin proxy to `attrs.evolve`, which rebuilds the instance **through `__init__`** using each field's alias \u2014 so `init=False` fields cannot be replaced and all validators/converters re-run on the copy.",
-        "Both additions are skipped when the class defines its own `__replace__`/`__match_args__` in its own `__dict__`; inherited versions do not count.",
-        "`__match_args__` only lists fields that are `init=True` and not `kw_only`, so positional pattern matching mirrors the positional part of `__init__`.",
-        "`_add_method_dunders_unsafe` rewrites `__module__`, `__qualname__` and `__doc__` on every attached method; the `_safe` variant (chosen at builder construction if the class lacks `__module__`/`__qualname__`) suppresses `AttributeError` instead."
+        "The parameter names in the signature come from `a.alias`, not `a.name` \n\n\n\n this is where chapter 2's underscore stripping becomes the public `__init__` contract.",
+        "A plain default is referenced indirectly as `attr_dict['a_number'].default`, so the `Attribute` object stays the single source of truth; a `Factory` default instead becomes `arg=NOTHING` plus an `if arg is not NOTHING: ... else: self.x = __attr_factory_x()`, which is why each instance gets a *fresh* list rather than a shared one.",
+        "Because the class is neither frozen nor hash-caching, `_determine_setters` returns the plain `_assign` strategy: the generated body is literally `self.a_number = a_number`. Frozen classes would instead go through a cached `object.__setattr__` or direct `__dict__` writes.",
+        "`_make_init_script` updates the generated function's globals with `sys.modules[cls.__module__].__dict__` so `typing.get_type_hints(C.__init__)` can resolve string annotations \n\n\n\n a deliberate trade of namespace purity for working type resolution.",
+        "Validators, when present, are emitted as a single `if _config._run_validators is True:` block after all assignments, so validators see a fully populated instance and can be globally disabled at runtime.",
+        "`init=False` on the decorator would route the identical script to `__attrs_init__` instead, leaving the user's own `__init__` in place.",
+        "`__replace__` (the `copy.replace` protocol, 3.13+) is a thin proxy to `attrs.evolve`, which rebuilds the instance **through `__init__`** using each field's alias \n\n\n\n so `init=False` fields cannot be replaced and all validators/converters re-run on the copy.",
+        "Both `__replace__` and `__match_args__` are skipped when the class defines its own in its own `__dict__`; inherited versions do not count. `__match_args__` lists only `init=True`, non-kw-only fields.",
+        "`_add_method_dunders_unsafe` rewrites `__module__`, `__qualname__` and `__doc__` on every attached method; the `_safe` variant suppresses `AttributeError` instead."
       ],
-      "open_questions": [],
-      "answers": []
+      "open_questions": [
+        {
+          "id": "q4.1",
+          "question": "The initializer's globals now include every name in the defining module. Is that live, and what is the blast radius if the module later rebinds a name?"
+        }
+      ],
+      "answers": [
+        {
+          "id": "q2.1",
+          "answer": "The alias is used verbatim as the `__init__` parameter name in `_attrs_to_init_script` (`arg_name = a.alias`), which is why `_x` becomes `x` in the public signature."
+        }
+      ]
     },
     {
-      "n": 8,
+      "n": 5,
       "title": "One compile(), One linecache Entry",
       "trace_lines": [
         107,
@@ -356,7 +276,7 @@
         "src/attr/_make.py:1634-1641"
       ],
       "inputs": [
-        "the snippet list accumulated in chapters 5-6"
+        "the snippet list accumulated in chapters 3-4"
       ],
       "characters": [
         "_ClassBuilder._eval_snippets",
@@ -366,129 +286,90 @@
         "linecache.cache"
       ],
       "facts": [
-        "All snippets are concatenated and compiled **once** per class, and their globs dicts are merged into a single namespace \u2014 so a name used by one generated method is visible to all of them.",
+        "All snippets are concatenated and compiled **once** per class, and their globs dicts are merged into a single namespace \n\n\n\n so a name used by one generated method is visible to all of them.",
         "The source is registered in `linecache.cache` under a synthetic filename, which is what lets a debugger step through `__init__` and tracebacks show real source lines; collisions append a counter until a free filename is found.",
-        "`eval` is called on compiled bytecode built from strings attrs itself constructed from field *names*. Field names come from the class body or from `make_class` \u2014 attrs explicitly documents that validating identifiers is the caller's duty (see `make_class`'s warning), so a hostile or malformed name is an injection surface the library does not police.",
-        "The globs dict passed to `eval` becomes the function's `__globals__` \u2014 it is a live dict, but it was built by *copying* the module's `__dict__` at class-creation time, so later rebindings in the module are **not** seen by the generated code.",
+        "`eval` is called on compiled bytecode built from strings attrs itself constructed from field *names*. Field names come from the class body or from `make_class` \n\n\n\n attrs explicitly documents that validating identifiers is the caller's duty, so a hostile or malformed name is an injection surface the library does not police.",
+        "The globs dict passed to `eval` becomes the function's `__globals__` \n\n\n\n it is a live dict, but it was built by *copying* the module's `__dict__` at class-creation time, so later rebindings in the module are **not** seen by the generated code.",
         "Attaching happens via per-snippet hooks (`_attach_repr`, `_attach_eq`, `_attach_init`) that pull the function out of the eval'd namespace and stamp it with the owning class's dunders."
       ],
       "open_questions": [
         {
-          "id": "q8.1",
-          "question": "These functions were compiled while the original class object still existed, and some of them (plus user methods) may hold it in a closure cell. The class is about to be replaced \u2014 what happens to those references?"
+          "id": "q5.1",
+          "question": "These functions were compiled while the original class object still existed, and some of them (plus user methods) may hold it in a closure cell. The class is about to be replaced \n\n\n\n what happens to those references?"
         }
       ],
       "answers": [
         {
-          "id": "q4.1",
+          "id": "q3.1",
           "answer": "`_eval_snippets` joins all snippets, compiles them once under a unique synthetic filename registered with `linecache`, and `eval`s them into a merged globals dict; the resulting functions are then attached to `cls_dict`."
         },
         {
-          "id": "q6.1",
+          "id": "q4.1",
           "answer": "It is a copy taken at class-creation time, not a live view of the module: `globs.update(sys.modules[...].__dict__)` snapshots the namespace, so later rebindings in the module don't reach the generated `__init__`."
         }
       ]
     },
     {
-      "n": 9,
+      "n": 6,
       "title": "The Class You Get Back Is Not the Class You Wrote",
       "trace_lines": [
         128,
-        135
+        137
       ],
       "data_in": "`cls_dict` (methods, `__attrs_attrs__`, `__attrs_props__`, getstate/setstate) plus the original `SomeClass` type object",
-      "data_out": "a brand-new `<class '__main__.SomeClass'>` with `__slots__ = ('a_number', 'list_of_numbers', '__weakref__')`, returned all the way up through `attrs` \u2192 `do_it` \u2192 `wrap` \u2192 `define`",
+      "data_out": "a brand-new `<class '__main__.SomeClass'>` with `__slots__ = ('a_number', 'list_of_numbers', '__weakref__')`, returned up through `attrs` \n\n\n\n `do_it` \n\n\n\n `wrap` \n\n\n\n `define`; then `sc != SomeClass(2, [3, 2, 1])` \n\n\n\n `True`",
       "code": [
         "src/attr/_make.py:800-821",
         "src/attr/_make.py:859-1002",
-        "src/attr/_make.py:509-558"
+        "src/attr/_make.py:509-558",
+        "src/attr/_make.py:1730-1739"
       ],
       "inputs": [
         "builder._cls_dict",
         "builder._attr_names",
-        "props.has_weakref_slot"
+        "props.has_weakref_slot",
+        "two SomeClass instances"
       ],
       "characters": [
         "_ClassBuilder.build_class",
         "_create_slots_class",
         "weakref.ref",
         "cached_property",
-        "_make_cached_property_getattr"
-      ],
-      "facts": [
-        "Slotted classes cannot be retrofitted, so attrs builds a *new* type with the same name and bases and drops the field names from the class dict into `__slots__`. The original class survives only as `OriginalCls.__attrs_base_of_slotted__`, a weak reference to the replacement.",
-        "Because of the swap, methods that used bare `super()` or `__class__` carry a closure cell pointing at the *old* class; `_create_slots_class` walks `cls.__dict__.values()` (unwrapping class/staticmethods and properties) and rewrites any cell whose contents are the old class. This is the documented fix for issue #102 and the reason `functools.cached_property` and bare `super()` keep working.",
-        "Only non-inherited names are slotted, and slots already defined by a base are re-bound from `existing_slots` rather than redefined, so parent descriptors aren't shadowed incorrectly.",
-        "A `__weakref__` slot is added unless the class or an ancestor already has one \u2014 so by default slotted attrs instances stay weak-referenceable.",
-        "Consequences of the swap are real and documented: `object.__init_subclass__` fires for both the old and the new class, and the dead original lingers in `type.__subclasses__` until a GC pass (issue #407).",
-        "After construction, `build_class` calls `cls.__attrs_init_subclass__()` if one is *inherited* (not defined on this class) \u2014 attrs' replacement for the `__init_subclass__` hook it breaks.",
-        "The non-slotted path would instead call `_patch_original_class` and run `abc.update_abstractmethods` on the result."
-      ],
-      "open_questions": [
-        {
-          "id": "q9.1",
-          "question": "Everything so far happened at import time. Once instances exist, is attrs still in the call path?"
-        },
-        {
-          "id": "q9.2",
-          "question": "These instances have no `__dict__` at all. How does a helper like `asdict` find out what they contain?"
-        }
-      ],
-      "answers": [
-        {
-          "id": "q8.1",
-          "answer": "`_create_slots_class` iterates the new class's members plus the collected cached-property/`__getattr__` functions and rewrites every closure cell whose contents are the old class to point at the replacement."
-        }
-      ]
-    },
-    {
-      "n": 10,
-      "title": "An Instance, Briefly",
-      "trace_lines": [
-        136,
-        137
-      ],
-      "data_in": "`sc = SomeClass(1, [1, 2, 3])`; `sc != SomeClass(2, [3, 2, 1])`",
-      "data_out": "`__ne__` \u2192 `True` (and, from the generated methods the trace doesn't re-enter, `repr(sc) == \"SomeClass(a_number=1, list_of_numbers=[1, 2, 3])\"`, `sc.hard_math(3) == 19`, `sc == SomeClass(1, [1, 2, 3])`)",
-      "code": [
-        "src/attr/_make.py:1730-1739",
-        "src/attr/_make.py:1742-1776",
-        "src/attr/_make.py:1852-1906"
-      ],
-      "inputs": [
-        "two SomeClass instances"
-      ],
-      "characters": [
-        "generated __init__",
-        "generated __eq__",
-        "generated __repr__",
+        "_make_cached_property_getattr",
         "__ne__"
       ],
       "facts": [
-        "The trace shows exactly one attrs-owned function in the whole instance lifetime of this comparison: `__ne__`. Construction, repr and `__eq__` are generated code living on the class, not library calls \u2014 the runtime overhead claim in the docs is visible here as an absence.",
-        "`__ne__` calls `self.__eq__(other)`, gets a real `False` (both operands are `SomeClass`), and returns `True`. Had the operands been of different classes, `__eq__` would return `NotImplemented` and `__ne__` would forward it, letting Python fall back to identity comparison.",
-        "`sc == SomeClass(1, [1, 2, 3])` holds because `__eq__` compares field values with `==`, field by field, in a single `and` chain \u2014 not by building tuples, which also means uncomparable values like `math.nan` behave as they would in hand-written code.",
-        "`hard_math` is untouched user code: attrs added methods around it and never wrapped it."
+        "Slotted classes cannot be retrofitted, so attrs builds a *new* type with the same name and bases and drops the field names into `__slots__`. The original class survives only as `OriginalCls.__attrs_base_of_slotted__`, a weak reference to the replacement.",
+        "Because of the swap, methods that used bare `super()` or `__class__` carry a closure cell pointing at the *old* class; `_create_slots_class` walks `cls.__dict__.values()` (unwrapping class/staticmethods and properties) and rewrites any cell whose contents are the old class. This is the documented fix for issue #102 and the reason `functools.cached_property` and bare `super()` keep working.",
+        "Only non-inherited names are slotted, and slots already defined by a base are re-bound from `existing_slots` rather than redefined, so parent descriptors aren't shadowed incorrectly. A `__weakref__` slot is added unless the class or an ancestor already has one.",
+        "Consequences of the swap are real and documented: `object.__init_subclass__` fires for both the old and the new class, and the dead original lingers in `type.__subclasses__` until a GC pass (issue #407).",
+        "After construction, `build_class` calls `cls.__attrs_init_subclass__()` if one is *inherited* (not defined on this class) \n\n\n\n attrs' replacement for the `__init_subclass__` hook it breaks. The non-slotted path would instead call `_patch_original_class` and run `abc.update_abstractmethods`.",
+        "The trace shows exactly one attrs-owned function in the whole instance lifetime: `__ne__`. Construction, repr and `__eq__` are generated code living on the class, not library calls \n\n\n\n the near-zero runtime overhead claim is visible here as an absence.",
+        "`__ne__` calls `self.__eq__(other)`, gets a real `False` (both operands are `SomeClass`), and returns `True`. Had the operands differed in class, `__eq__` would return `NotImplemented` and `__ne__` would forward it. `hard_math` is untouched user code."
       ],
       "open_questions": [
         {
-          "id": "q10.1",
+          "id": "q6.1",
+          "question": "These instances have no `__dict__` at all. How does a helper like `asdict` find out what they contain?"
+        },
+        {
+          "id": "q6.2",
           "question": "All of this machinery ran off a class body written by hand. Can the same pipeline be driven at runtime from nothing but a list of names?"
         }
       ],
       "answers": [
         {
           "id": "q5.1",
-          "answer": "Both comparisons in the scenario are between two `SomeClass` instances, so the identity check passes and the field-by-field chain decides; a differently-typed operand would yield `NotImplemented` instead of `False`."
+          "answer": "`_create_slots_class` iterates the new class's members plus the collected cached-property/`__getattr__` functions and rewrites every closure cell whose contents are the old class to point at the replacement."
         },
         {
-          "id": "q9.1",
-          "answer": "No. The only library function entered during instance use is the shared `__ne__`; `__init__`, `__eq__` and `__repr__` are generated functions attached to the class."
+          "id": "q3.2",
+          "answer": "Both comparisons in the scenario are between two `SomeClass` instances, so the identity check passes and the field-by-field chain decides; a differently-typed operand would yield `NotImplemented` instead of `False`."
         }
       ]
     },
     {
-      "n": 11,
+      "n": 7,
       "title": "Flattening It Out",
       "trace_lines": [
         138,
@@ -518,29 +399,29 @@
         "_ATOMIC_TYPES"
       ],
       "facts": [
-        "The `attrs`-namespace `asdict` is a thin wrapper that hard-codes `retain_collection_types=True` and `dict_factory=dict`; the `attr`-namespace version defaults to flattening tuples/sets into lists. The two namespaces therefore produce *different* output for the same input \u2014 a deliberate 'nicer defaults' choice that matters when porting code.",
+        "The `attrs`-namespace `asdict` is a thin wrapper that hard-codes `retain_collection_types=True` and `dict_factory=dict`; the `attr`-namespace version defaults to flattening tuples/sets into lists. The two namespaces therefore produce *different* output for the same input \n\n\n\n a deliberate 'nicer defaults' choice that matters when porting code.",
         "`fields(inst.__class__)` reads `__attrs_attrs__` off the class, which is how a slotted instance with no `__dict__` is still fully enumerable; `fields` raises `NotAnAttrsClassError` for a plain class and `TypeError` for a non-class non-instance.",
-        "`asdict` reads values with `getattr(inst, a.name)` \u2014 the **field name**, not the alias \u2014 so private fields come out with their leading underscores.",
+        "`asdict` reads values with `getattr(inst, a.name)` \n\n\n\n the **field name**, not the alias \n\n\n\n so private fields come out with their leading underscores.",
         "Recursion is driven by `type(v)`: exact membership in `_ATOMIC_TYPES` short-circuits, then `has(value_type)` for nested attrs classes, then tuple/list/set/frozenset, then dict; anything else is passed through unchanged. `has()` also handles specialized generics (`A[str]`) by caching `__attrs_attrs__` onto the alias.",
         "With `retain_collection_types=True`, the collection is rebuilt via `cf(items)` and falls back to `cf(*items)` only for tuple subclasses (namedtuples); a collection type whose constructor takes neither shape raises `TypeError` straight through.",
-        "The output list is a *new* list of the same elements \u2014 a shallow copy, so mutating a nested non-atomic element still reaches back into the original instance.",
+        "The output list is a *new* list of the same elements \n\n\n\n a shallow copy, so mutating a nested non-atomic element still reaches back into the original instance.",
         "`filter` runs before `value_serializer`; both were `None` here, so neither code path was exercised."
       ],
       "open_questions": [
         {
-          "id": "q11.1",
+          "id": "q7.1",
           "question": "`asdict` in the `attrs` namespace quietly differs from `attr.asdict`. Does `make_class` sit on the modern defaults too, or on the legacy ones?"
         }
       ],
       "answers": [
         {
-          "id": "q9.2",
+          "id": "q6.1",
           "answer": "Through `fields(cls)`, which reads the `__attrs_attrs__` tuple that `_ClassBuilder` stamped onto the class; the instance's lack of `__dict__` is irrelevant because the field names come from the class and the values via `getattr`."
         }
       ]
     },
     {
-      "n": 12,
+      "n": 8,
       "title": "A Class From Two Strings",
       "trace_lines": [
         153,
@@ -567,7 +448,7 @@
         "_attrs"
       ],
       "facts": [
-        "The class name is normalized with `unicodedata.normalize('NFKC', name)` to match how Python parses identifiers; beyond that, `make_class` explicitly does **not** validate that the name or the attribute names are valid identifiers \u2014 invalid ones will surface as a `SyntaxError` from the generated-code `compile()`, not as a clear error here.",
+        "The class name is normalized with `unicodedata.normalize('NFKC', name)` to match how Python parses identifiers; beyond that, `make_class` explicitly does **not** validate that the name or the attribute names are valid identifiers \n\n\n\n invalid ones will surface as a `SyntaxError` from the generated-code `compile()`, not as a clear error here.",
         "A list input becomes `{name: attrib()}` in order; a dict input is used as-is; anything else raises `TypeError`.",
         "`__attrs_pre_init__`, `__attrs_post_init__` and `__init__` are *popped* out of the attrs dict and moved into the real class body, so they are treated as methods rather than fields.",
         "`__module__` is patched from `sys._getframe(1)` so pickling works, with `AttributeError`/`ValueError` suppressed on interpreters without frame access.",
@@ -576,23 +457,23 @@
       ],
       "open_questions": [
         {
-          "id": "q12.1",
+          "id": "q8.1",
           "question": "`slots=False` this time. If attrs doesn't build a replacement type, what does it do to the class object it was handed?"
         },
         {
-          "id": "q12.2",
-          "question": "`collect_by_mro` is left at its `attr.s` default of False. Does that change anything for a class with no attrs bases \u2014 and what would it change if there were any?"
+          "id": "q8.2",
+          "question": "`collect_by_mro` is left at its `attr.s` default of False. Does that change anything for a class with no attrs bases \n\n\n\n and what would it change if there were any?"
         }
       ],
       "answers": [
         {
-          "id": "q10.1",
-          "answer": "Yes \u2014 `make_class` builds a bare type with `types.new_class`, synthesizes one `attrib()` per name, and pushes it through the exact same `attrs()` pipeline via the `these` argument."
+          "id": "q6.2",
+          "answer": "Yes \n\n\n\n `make_class` builds a bare type with `types.new_class`, synthesizes one `attrib()` per name, and pushes it through the exact same `attrs()` pipeline via the `these` argument."
         }
       ]
     },
     {
-      "n": 13,
+      "n": 9,
       "title": "The Same Machine, Legacy Settings",
       "trace_lines": [
         167,
@@ -620,9 +501,9 @@
         "_ClassBuilder.add_setattr"
       ],
       "facts": [
-        "With `these` supplied, `_transform_attrs` ignores the class body entirely and `_delete_attribs` is set False \u2014 attrs will not strip anything off the class. Annotations come back empty (trace line 179-180).",
-        "`collect_by_mro=False` routes base-class collection through `_collect_base_attrs_broken`, which walks the MRO *forward*, includes already-inherited attributes and mutates `taken_attr_names`. It reproduces the known-wrong ordering of issue #428 on purpose, for backwards compatibility. Here both base lists are empty, so the choice is invisible \u2014 but it is the behaviour any `make_class` user inherits.",
-        "`order=True` adds `__lt__`, `__le__`, `__gt__`, `__ge__`, which build tuples of the ordered fields and return `NotImplemented` unless `other.__class__ is self.__class__` \u2014 subclasses are not comparable.",
+        "With `these` supplied, `_transform_attrs` ignores the class body entirely and `_delete_attribs` is set False \n\n\n\n attrs will not strip anything off the class. Annotations come back empty (trace lines 179-180).",
+        "`collect_by_mro=False` routes base-class collection through `_collect_base_attrs_broken`, which walks the MRO *forward*, includes already-inherited attributes and mutates `taken_attr_names`. It reproduces the known-wrong ordering of issue #428 on purpose, for backwards compatibility. Here both base lists are empty, so the choice is invisible \n\n\n\n but it is the behaviour any `make_class` user inherits.",
+        "`order=True` adds `__lt__`, `__le__`, `__gt__`, `__ge__`, which build tuples of the ordered fields and return `NotImplemented` unless `other.__class__ is self.__class__` \n\n\n\n subclasses are not comparable.",
         "`add_setattr` again finds nothing to do, because `attr.s` leaves `on_setattr` at `None` by default: a `make_class` class never converts or validates on assignment, unlike a `define` class.",
         "Both fields are mandatory with no converters, so the generated `__init__` is literally the two-line body a human would write, and `annotations` is just `{'return': None}`.",
         "Ordering methods are attached directly to `cls_dict` (not compiled from a script), while repr/eq/init go through the snippet pipeline."
@@ -630,24 +511,24 @@
       "open_questions": [],
       "answers": [
         {
-          "id": "q11.1",
+          "id": "q7.1",
           "answer": "Legacy ones: `make_class` calls `_attrs` (`attr.s`), so `C` is a dict class with ordering, no `auto_detect`, no `auto_exc`, and no on_setattr hooks."
         },
         {
-          "id": "q12.2",
-          "answer": "Nothing here \u2014 `_collect_base_attrs_broken` returns `([], {})` for a class whose only base is `object`; with real attrs bases it would collect in forward-MRO order and include already-inherited attributes, reproducing issue #428."
+          "id": "q8.2",
+          "answer": "Nothing here \n\n\n\n `_collect_base_attrs_broken` returns `([], {})` for a class whose only base is `object`; with real attrs bases it would collect in forward-MRO order and include already-inherited attributes, reproducing issue #428."
         }
       ]
     },
     {
-      "n": 14,
+      "n": 10,
       "title": "Patching In Place, and the Coda",
       "trace_lines": [
         242,
         269
       ],
       "data_in": "the builder for `C` with its compiled `__repr__`/`__eq__`/`__init__` and the ordering/match-args entries",
-      "data_out": "`<class '__main__.C'>` \u2014 the *same* object `types.new_class` produced, now carrying all attrs methods; `C('foo','bar')` reprs as `C(a='foo', b='bar')`; final `sc.__ne__(SomeClass(2, [3, 2, 1]))` \u2192 `True`",
+      "data_out": "`<class '__main__.C'>` \n\n\n\n the *same* object `types.new_class` produced, now carrying all attrs methods; `C('foo','bar')` reprs as `C(a='foo', b='bar')`; final `sc.__ne__(SomeClass(2, [3, 2, 1]))` \n\n\n\n `True`",
       "code": [
         "src/attr/_make.py:800-821",
         "src/attr/_make.py:823-857",
@@ -665,16 +546,16 @@
         "__ne__"
       ],
       "facts": [
-        "For a non-slotted class, `_patch_original_class` mutates the class you handed in: it `setattr`s every entry of `cls_dict` onto it and returns the same object. No identity swap, no closure rewriting, no `__init_subclass__` double-fire \u2014 the gotchas of chapter 9 simply don't apply.",
-        "Field definitions would normally be deleted from the class body here, but `_delete_attribs` is False because `these` was used, so nothing is removed (that's the documented 18.1.0 behaviour).",
-        "If the class inherited an attrs-written `__setattr__` but this class doesn't write its own, `_patch_original_class` resets `__attrs_own_setattr__` to False and restores `object.__setattr__` \u2014 unless the user has a custom one. This is the only place an inherited hook is taken away.",
+        "For a non-slotted class, `_patch_original_class` mutates the class you handed in: it `setattr`s every entry of `cls_dict` onto it and returns the same object. No identity swap, no closure rewriting, no `__init_subclass__` double-fire \n\n\n\n the gotchas of chapter 6 simply don't apply.",
+        "Field definitions would normally be deleted from the class body here, but `_delete_attribs` is False because `these` was used, so nothing is removed (the documented 18.1.0 behaviour).",
+        "If the class inherited an attrs-written `__setattr__` but this class doesn't write its own, `_patch_original_class` resets `__attrs_own_setattr__` to False and restores `object.__setattr__` \n\n\n\n unless the user has a custom one. This is the only place an inherited hook is taken away.",
         "`build_class` wraps the result in `abc.update_abstractmethods` so a patched class with newly-implemented abstract methods stops being abstract.",
-        "The run ends where it began: a shared `__ne__` returning `True`. Across both classes, the only attrs code executing after class creation was `__ne__` and `asdict` \u2014 every other guarantee was baked into generated functions at import time."
+        "The run ends where it began: a shared `__ne__` returning `True`. Across both classes, the only attrs code executing after class creation was `__ne__` and `asdict` \n\n\n\n every other guarantee was baked into generated functions at import time."
       ],
       "open_questions": [],
       "answers": [
         {
-          "id": "q12.1",
+          "id": "q8.1",
           "answer": "It mutates it: `_patch_original_class` sets every generated method onto the original class object and returns it, so `C` keeps its identity and none of the slotted-class replacement caveats apply."
         }
       ]

@@ -1,0 +1,28 @@
+Nothing Gets Out Unescaped: A Run Through MarkupSafe  [owner]: 10 chapters
+   1. The Trust Boundary: escape()  [trace 2-5]
+   2. The Unguarded Door: Markup() itself  [trace 6-9]
+   3. Idempotence, and an Object That Writes Its Own HTML  [trace 10-20]
+   4. A Template That Escapes Its Arguments  [trace 21-25]
+   5. format_field: three doors, in order  [trace 26-29]
+   6. The Innermost Escape: the user's name  [trace 30-44]
+   7. Markup.escape and the Reassembled Page  [trace 45-61]
+   8. Concatenation: the operand gets escaped, both ways  [trace 62-91]
+   9. striptags: the exit back to plain text  [trace 92-99]
+  10. What the Fragment Guarantees  [trace 100-101]
+  ! ch1 covers only 2 calls (trace lines 2-5); a chapter needs at least 5: fold it into a neighbour
+  ! ch2 covers only 2 calls (trace lines 6-9); a chapter needs at least 5: fold it into a neighbour
+  ! ch4 covers only 3 calls (trace lines 21-25); a chapter needs at least 5: fold it into a neighbour
+  ! ch5 covers only 3 calls (trace lines 26-29); a chapter needs at least 5: fold it into a neighbour
+  ! ch9 covers only 4 calls (trace lines 92-99); a chapter needs at least 5: fold it into a neighbour
+  ! ch10 covers only 1 call (trace lines 100-101); a chapter needs at least 5: fold it into a neighbour
+
+repair 1/2
+Nothing Gets Out Unescaped: A Run Through MarkupSafe  [owner]: 6 chapters
+   1. The Trust Boundary, and the Unguarded Door Beside It  [trace 2-17]
+   2. An Object That Writes Its Own HTML, and a Template That Escapes Its Arguments  [trace 18-29]
+   3. The Innermost Escape: the user's name  [trace 30-44]
+   4. Markup.escape and the Reassembled Page  [trace 45-61]
+   5. Concatenation: the operand gets escaped, both ways  [trace 62-91]
+   6. striptags: the exit back to plain text, and what the fragment guarantees  [trace 92-101]
+
+.repair1 tokens: 16,160 in (+0 cached, 37,980 written to cache), 10,667 out

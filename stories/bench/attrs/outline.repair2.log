@@ -1,0 +1,26 @@
+The Class That Was Rewritten: One Run Through attrs  [owner]: 10 chapters
+   1. The Door, and the Flags That Become Policy  [trace 2-30]
+   2. Harvesting the Fields  [trace 31-68]
+   3. The Hook That Quietly Removed Itself  [trace 69-85]
+   4. Writing the Initializer, and Two Protocols Added Only If Vacant  [trace 86-106]
+   5. One compile(), One linecache Entry  [trace 107-127]
+   6. The Class You Get Back Is Not the Class You Wrote  [trace 128-137]
+   7. Flattening It Out  [trace 138-152]
+   8. A Class From Two Strings  [trace 153-166]
+   9. The Same Machine, Legacy Settings  [trace 167-241]
+  10. Patching In Place, and the Coda  [trace 242-269]
+  ! ch6 covers only 2 calls (trace lines 128-137); a chapter needs at least 5: fold it into a neighbour
+
+repair 1/2
+The Class That Was Rewritten: One Run Through attrs  [owner]: 9 chapters
+   1. The Door, and the Flags That Become Policy  [trace 2-30]
+   2. Harvesting the Fields  [trace 31-68]
+   3. The Hook That Quietly Removed Itself  [trace 69-85]
+   4. Writing the Initializer, and Two Protocols Added Only If Vacant  [trace 86-106]
+   5. One compile(), and the Class You Get Back Is Not the Class You Wrote  [trace 107-137]
+   6. Flattening It Out  [trace 138-152]
+   7. A Class From Two Strings  [trace 153-166]
+   8. The Same Machine, Legacy Settings  [trace 167-241]
+   9. Patching In Place, and the Coda  [trace 242-269]
+
+.repair1 tokens: 29,939 in (+0 cached, 160,009 written to cache), 12,526 out

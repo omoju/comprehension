@@ -182,13 +182,13 @@
     },
     {
       "n": 4,
-      "title": "send(): state, auth resolution, and one pass through the auth generator",
+      "title": "send(): state, auth resolution, transport selection",
       "trace_lines": [
         247,
-        260
+        266
       ],
       "data_in": "<Request('GET','http://testserver/')>, stream=False, auth=USE_CLIENT_DEFAULT, follow_redirects=USE_CLIENT_DEFAULT",
-      "data_out": "state=OPENED, follow_redirects resolved to False, auth resolved to a bare <httpx.Auth>, history=[], and the same Request handed onward to the redirect layer",
+      "data_out": "state=OPENED, follow_redirects resolved to False, auth resolved to a bare <httpx.Auth>, history=[], transport = the caller's WSGITransport, perf-counter start captured, request_context entered",
       "code": [
         "httpx/_client.py:879-928",
         "httpx/_client.py:584-591",
@@ -196,7 +196,11 @@
         "httpx/_urls.py:150-166",
         "httpx/_client.py:930-962",
         "httpx/_auth.py:22-85",
-        "httpx/_client.py:573-582"
+        "httpx/_client.py:573-582",
+        "httpx/_client.py:964-979",
+        "httpx/_client.py:1001-1014",
+        "httpx/_client.py:760-769",
+        "httpx/_exceptions.py:364-377"
       ],
       "inputs": [
         "the Request from chapter 3"
@@ -209,7 +213,12 @@
         "BasicAuth",
         "Client._send_handling_auth",
         "Auth.sync_auth_flow",
-        "Auth.auth_flow"
+        "Auth.auth_flow",
+        "Client._send_handling_redirects",
+        "Client._send_single_request",
+        "Client._transport_for_url",
+        "request_context",
+        "URLPattern"
       ],
       "facts": [
         "Sending on a CLOSED client raises `RuntimeError('Cannot send a request, as the client has been closed.')`; sending on an UNOPENED one silently moves it to OPENED (_client.py:900-903).",
@@ -220,42 +229,7 @@
         "`sync_auth_flow` only pre-reads the request body when the scheme sets `requires_request_body = True`; the base Auth does not, so nothing is read here (_auth.py:71-75).",
         "The flow is driven as a generator: `next(flow)` gives the request to send, and each response is pushed back in with `flow.send(response)`; StopIteration ends the loop and returns the last response (_client.py:937-951).",
         "Every intermediate response in a multi-step auth flow is fully read into memory and appended to `history` before the next request goes out \ter so a custom auth scheme implies buffering (_client.py:953-956).",
-        "`auth_flow.close()` runs in a `finally`, so a generator-based auth scheme is always finalised even when the caller's request raises (_client.py:961-962)."
-      ],
-      "open_questions": [],
-      "answers": [
-        {
-          "id": "q3.3",
-          "answer": "Yes for this request. The body is a ByteStream, which `Request.read()` buffered into `_content`; redirect and auth retries reuse `request.stream` directly (`_redirect_stream`, _client.py:573-582), and ByteStream re-yields its bytes. A generator/file-iterator body would instead raise `StreamConsumed` on the second send \ter which is exactly why eagerly-read ByteStream bodies are the safe default."
-        }
-      ]
-    },
-    {
-      "n": 5,
-      "title": "Choosing the transport, and the exception-tagging boundary",
-      "trace_lines": [
-        261,
-        266
-      ],
-      "data_in": "the Request, follow_redirects=False, history=[]",
-      "data_out": "transport = the caller's WSGITransport, perf-counter start captured, request_context entered",
-      "code": [
-        "httpx/_client.py:964-979",
-        "httpx/_client.py:1001-1014",
-        "httpx/_client.py:760-769",
-        "httpx/_exceptions.py:364-377"
-      ],
-      "inputs": [
-        "the Request from chapter 4"
-      ],
-      "characters": [
-        "Client._send_handling_redirects",
-        "Client._send_single_request",
-        "Client._transport_for_url",
-        "request_context",
-        "URLPattern"
-      ],
-      "facts": [
+        "`auth_flow.close()` runs in a `finally`, so a generator-based auth scheme is always finalised even when the caller's request raises (_client.py:961-962).",
         "The redirect loop checks `len(history) > self.max_redirects` first and raises `TooManyRedirects` \ter a bounded loop by construction, default 20 (_client.py:970-974).",
         "Request event hooks run here, before the transport call; the list is empty in this run (_client.py:976-977).",
         "`_transport_for_url` scans `_mounts` for a matching URLPattern and falls through to `self._transport`; with `_mounts == {}` the caller's transport always wins (_client.py:760-769).",
@@ -264,7 +238,7 @@
       ],
       "open_questions": [
         {
-          "id": "q5.1",
+          "id": "q4.1",
           "question": "The application is about to be called inside `request_context`. What does that wrapper guarantee about exceptions the application itself throws?"
         }
       ],
@@ -272,11 +246,15 @@
         {
           "id": "q1.1",
           "answer": "Yes. `_transport_for_url` iterates `_mounts`, which is empty because `_get_proxy_map` returned `{}` and no `mounts=` argument was given, so it returns `self._transport` \ter the WSGITransport \ter for every URL."
+        },
+        {
+          "id": "q3.3",
+          "answer": "Yes for this request. The body is a ByteStream, which `Request.read()` buffered into `_content`; redirect and auth retries reuse `request.stream` directly (`_redirect_stream`, _client.py:573-582), and ByteStream re-yields its bytes. A generator/file-iterator body would instead raise `StreamConsumed` on the second send \ter which is exactly why eagerly-read ByteStream bodies are the safe default."
         }
       ]
     },
     {
-      "n": 6,
+      "n": 5,
       "title": "Across the boundary: the request becomes a WSGI environ",
       "trace_lines": [
         267,
@@ -290,7 +268,7 @@
         "httpx/_models.py:516-576"
       ],
       "inputs": [
-        "the Request from chapter 5",
+        "the Request from chapter 4",
         "the app callable"
       ],
       "characters": [
@@ -313,11 +291,11 @@
       ],
       "open_questions": [
         {
-          "id": "q6.1",
+          "id": "q5.1",
           "question": "The app returned a plain list, and WSGIByteStream captured its `close` attribute. When, if ever, is that close called?"
         },
         {
-          "id": "q6.2",
+          "id": "q5.2",
           "question": "This Response has no request attached and no http_version extension. Who fills those in, and what happens if nobody does?"
         }
       ],
@@ -331,29 +309,33 @@
           "answer": "Nobody, on this path. `WSGITransport.handle_request` never looks at `request.extensions`, so the 5-second timeout dict is inert; timeouts are enforced by the real HTTP transports (httpcore), not by the client core."
         },
         {
-          "id": "q5.1",
+          "id": "q4.1",
           "answer": "Very little. `request_context` only catches `httpx.RequestError` subclasses and stamps `.request` on them. An arbitrary exception raised by the WSGI app \ter or the AssertionError from a missing `start_response` \ter propagates out of `client.get()` unwrapped and untagged."
         }
       ]
     },
     {
-      "n": 7,
-      "title": "Dressing the response: identity, timing stream, cookies, log line",
+      "n": 6,
+      "title": "Dressing the response, then unwinding the redirect and auth loops",
       "trace_lines": [
         304,
-        355
+        363
       ],
       "data_in": "<Response [200 OK]> from the transport, plus the Request and the perf-counter start",
-      "data_out": "the same Response with .request set, .stream replaced by BoundSyncStream, default_encoding='utf-8', client cookie jar updated (empty here), one INFO log record emitted",
+      "data_out": "<Response [200 OK]> with .request set, .stream wrapped in BoundSyncStream, default_encoding='utf-8', history=[], returned out of _send_handling_redirects and _send_handling_auth still unread",
       "code": [
         "httpx/_client.py:1014-1034",
         "httpx/_client.py:139-159",
         "httpx/_models.py:1101-1115",
         "httpx/_models.py:1243-1277",
-        "httpx/_models.py:610-626"
+        "httpx/_models.py:610-626",
+        "httpx/_client.py:980-999",
+        "httpx/_models.py:771-792",
+        "httpx/_client.py:475-582",
+        "httpx/_client.py:947-962"
       ],
       "inputs": [
-        "the Response from chapter 6"
+        "the Response from chapter 5"
       ],
       "characters": [
         "BoundSyncStream",
@@ -362,7 +344,11 @@
         "Cookies._CookieCompatResponse",
         "Response.http_version",
         "Response.reason_phrase",
-        "logger"
+        "logger",
+        "Response.has_redirect_location",
+        "Client._build_redirect_request",
+        "BaseClient._redirect_headers",
+        "Client._send_handling_auth"
       ],
       "facts": [
         "`assert isinstance(response.stream, SyncByteStream)` enforces the transport contract before anything else touches the response (_client.py:1016).",
@@ -370,46 +356,7 @@
         "Cookies are extracted into the *client's* jar immediately after headers arrive and before the body is read, using urllib's CookieJar through two compatibility shims \ter so any `Set-Cookie` from the app would persist for subsequent requests on this client (_client.py:1022, _models.py:1101-1115).",
         "Missing response extensions degrade gracefully: `http_version` defaults to 'HTTP/1.1' and `reason_phrase` falls back to the status-code table \ter which is why this WSGI response reports HTTP/1.1 and 'OK' (_models.py:610-626).",
         "The client logs `'HTTP Request: %s %s \"%s %d %s\"'` at INFO on logger 'httpx', including the full URL \ter note that userinfo-free URLs are fine, but query strings are logged verbatim (_client.py:1025-1032).",
-        "`response.default_encoding` is set from the client's `default_encoding` here, not at Response construction \ter the client's text-decoding policy is attached per response (_client.py:1023)."
-      ],
-      "open_questions": [
-        {
-          "id": "q7.1",
-          "question": "Timing started before the app was called, but `elapsed` is only set on close. When does that actually happen for a non-streaming request?"
-        }
-      ],
-      "answers": [
-        {
-          "id": "q6.2",
-          "answer": "`_send_single_request` sets `response.request = request` right after the transport returns; without it, `response.url`, `raise_for_status()` and cookie extraction would raise RuntimeError('The request instance has not been set on this response.'). The absent `http_version`/`reason_phrase` extensions are not filled in at all \ter the properties fall back to 'HTTP/1.1' and the status-code reason table."
-        }
-      ]
-    },
-    {
-      "n": 8,
-      "title": "Not a redirect: the two loops unwind",
-      "trace_lines": [
-        356,
-        363
-      ],
-      "data_in": "<Response [200 OK]> with .request set and history=[]",
-      "data_out": "<Response [200 OK]> returned out of _send_handling_redirects and then out of _send_handling_auth, unread",
-      "code": [
-        "httpx/_client.py:980-999",
-        "httpx/_models.py:771-792",
-        "httpx/_client.py:475-582",
-        "httpx/_client.py:947-962"
-      ],
-      "inputs": [
-        "the Response from chapter 7"
-      ],
-      "characters": [
-        "Response.has_redirect_location",
-        "Client._build_redirect_request",
-        "BaseClient._redirect_headers",
-        "Client._send_handling_auth"
-      ],
-      "facts": [
+        "`response.default_encoding` is set from the client's `default_encoding` here, not at Response construction \ter the client's text-decoding policy is attached per response (_client.py:1023).",
         "`has_redirect_location` requires both a status in {301,302,303,307,308} *and* a `Location` header; a 3xx without Location is handed back as an ordinary response (_models.py:771-792).",
         "Because this is a 200, `_send_handling_redirects` returns at the first iteration; the auth generator is then resumed, raises StopIteration, and the response is returned as-is (_client.py:985, 947-951).",
         "Response event hooks and the redirect-building code sit inside `try/except BaseException: response.close(); raise` \ter any exception from a hook closes the response before propagating, so hook bugs cannot leak the connection (_client.py:980-999).",
@@ -419,7 +366,11 @@
       ],
       "open_questions": [
         {
-          "id": "q8.1",
+          "id": "q6.1",
+          "question": "Timing started before the app was called, but `elapsed` is only set on close. When does that actually happen for a non-streaming request?"
+        },
+        {
+          "id": "q6.2",
           "question": "The response comes back with its body untouched. Who reads it, and what would change if the caller had asked to stream?"
         }
       ],
@@ -431,11 +382,15 @@
         {
           "id": "q3.1",
           "answer": "On a cross-origin redirect `_redirect_headers` copies the request headers but strips `Authorization` (unless it is a same-host http\terhttps upgrade), rewrites `Host` to the new netloc, and always removes `Cookie` so cookies are re-derived from the client jar. A custom header like `X-Custom` is *not* stripped \ter it follows the redirect to the new origin."
+        },
+        {
+          "id": "q5.2",
+          "answer": "`_send_single_request` sets `response.request = request` right after the transport returns; without it, `response.url`, `raise_for_status()` and cookie extraction would raise RuntimeError('The request instance has not been set on this response.'). The absent `http_version`/`reason_phrase` extensions are not filled in at all \ter the properties fall back to 'HTTP/1.1' and the status-code reason table."
         }
       ]
     },
     {
-      "n": 9,
+      "n": 7,
       "title": "Reading the body: decoders, chunker, and the close that sets elapsed",
       "trace_lines": [
         364,
@@ -454,7 +409,7 @@
         "httpx/_transports/wsgi.py:35-41"
       ],
       "inputs": [
-        "the Response from chapter 8"
+        "the Response from chapter 6"
       ],
       "characters": [
         "Response.read",
@@ -476,27 +431,27 @@
       ],
       "open_questions": [
         {
-          "id": "q9.1",
+          "id": "q7.1",
           "question": "`_content` is bytes. Which encoding will be used when the caller asks for text, and can that step fail?"
         }
       ],
       "answers": [
         {
-          "id": "q6.1",
+          "id": "q5.1",
           "answer": "At the end of `iter_raw`: exhausting the stream calls `response.close()`, which runs `BoundSyncStream.close()` and then `WSGIByteStream.close()`, which invokes the app iterable's `close` if it exposed one. A plain list has none, so it is a no-op here \ter but a generator-based or file-backed WSGI app does get closed."
         },
         {
-          "id": "q7.1",
+          "id": "q6.1",
           "answer": "On that same close. `BoundSyncStream.close` computes `time.perf_counter() - start` and assigns `response.elapsed` before delegating to the underlying stream, so for a non-streaming request `elapsed` is set as soon as `send()`'s `response.read()` finishes. Accessing `.elapsed` before a read or close raises RuntimeError."
         },
         {
-          "id": "q8.1",
+          "id": "q6.2",
           "answer": "`Client.send` reads it: `if not stream: response.read()`, with a BaseException handler that closes the response on failure. With `stream=True` (as `client.stream(...)` uses) the read is skipped and the caller owns closing \ter `stream()` does it in a `finally`, but a hand-rolled `send(stream=True)` that forgets leaks the stream."
         }
       ]
     },
     {
-      "n": 10,
+      "n": 8,
       "title": "Out to the caller, and closing a client that owns nothing",
       "trace_lines": [
         398,
@@ -550,7 +505,7 @@
       "open_questions": [],
       "answers": [
         {
-          "id": "q9.1",
+          "id": "q7.1",
           "answer": "The Content-Type charset 'utf-8' is parsed out via `email.message.Message.get_content_charset`, validated by `_is_known_encoding`, and used to build a TextDecoder with `errors='replace'`. It cannot raise: an unknown charset falls back to `default_encoding` ('utf-8' here), and undecodable bytes become replacement characters rather than an exception."
         }
       ]

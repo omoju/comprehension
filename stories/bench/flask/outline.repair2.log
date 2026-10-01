@@ -1,0 +1,41 @@
+One Request Through Flask: What the Framework Promises Between `environ` and `200 OK`  [owner]: 10 chapters
+   1. The World Before the Request: What `Flask(__name__)` Decides For You  [trace 2-60]
+   2. The Request Is Manufactured: `environ` Takes Shape  [trace 61-73]
+   3. Crossing the Boundary: `wsgi_app` and the Context That Wraps Everything  [trace 74-83]
+   4. Push: The Session Opens Before the URL Is Matched  [trace 84-101]
+   5. `full_dispatch_request`: The Error Boundary and the Setup Lock  [trace 102-112]
+   6. `dispatch_request`: The Three Branches, Two Not Taken  [trace 113-118]
+   7. `make_response`: Turning a `str` Into a `Response`, or Refusing To  [trace 119-121]
+   8. `process_response`: After-Request Hooks and the Cookie That Isn't Written  [trace 122-137]
+   9. `pop`: Teardown That Runs Everything, Even When It Fails  [trace 138-187]
+  10. Out the Door: The Response Iterator, and the Path Not Taken  [trace 188-190]
+  ! ch6 covers only 3 calls (trace lines 113-118); a chapter needs at least 5: fold it into a neighbour
+  ! ch7 covers only 2 calls (trace lines 119-121); a chapter needs at least 5: fold it into a neighbour
+  ! ch10 covers only 0 calls (trace lines 188-190); a chapter needs at least 5: fold it into a neighbour
+
+repair 1/2
+One Request Through Flask: What the Framework Promises Between `environ` and `200 OK`  [owner]: 8 chapters
+   1. The World Before the Request: What `Flask(__name__)` Decides For You  [trace 2-60]
+   2. The Request Is Manufactured: `environ` Takes Shape  [trace 61-73]
+   3. Crossing the Boundary: `wsgi_app` and the Context That Wraps Everything  [trace 74-83]
+   4. Push: The Session Opens Before the URL Is Matched  [trace 84-101]
+   5. `full_dispatch_request`: The Error Boundary and the Setup Lock  [trace 102-112]
+   6. Dispatch and `make_response`: The Branches Not Taken, and the String That Becomes a Response  [trace 113-121]
+   7. `process_response`: After-Request Hooks and the Cookie That Isn't Written  [trace 122-137]
+   8. `pop` and the Way Out: Teardown That Runs Everything, Even When It Fails  [trace 138-190]
+  ! ch6 answers q5.1, which was never asked
+
+repair 2/2
+One Request Through Flask: What the Framework Promises Between `environ` and `200 OK`  [owner]: 8 chapters
+   1. The World Before the Request: What `Flask(__name__)` Decides For You  [trace 2-60]
+   2. The Request Is Manufactured: `environ` Takes Shape  [trace 61-73]
+   3. Crossing the Boundary: `wsgi_app` and the Context That Wraps Everything  [trace 74-83]
+   4. Push: The Session Opens Before the URL Is Matched  [trace 84-101]
+   5. `full_dispatch_request`: The Error Boundary and the Setup Lock  [trace 102-112]
+   6. Dispatch and `make_response`: The Branches Not Taken, and the String That Becomes a Response  [trace 113-121]
+   7. `process_response`: After-Request Hooks and the Cookie That Isn't Written  [trace 122-137]
+   8. `pop` and the Way Out: Teardown That Runs Everything, Even When It Fails  [trace 138-190]
+
+.repair1 tokens: 16,954 in (+0 cached, 149,276 written to cache), 8,294 out
+
+.repair2 tokens: 25,337 in (+149,276 cached, 0 written to cache), 8,355 out

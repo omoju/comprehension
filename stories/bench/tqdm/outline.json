@@ -150,13 +150,13 @@
     },
     {
       "n": 4,
-      "title": "The first frame: rendering 0/4 and committing it to stderr",
+      "title": "The first frame, then four silent items and an automatic close",
       "trace_lines": [
         68,
-        112
+        119
       ],
-      "data_in": "`tqdm.refresh(self, nolock=False, lock_args=None)` on a bar with `n=0, total=4, elapsed=0, ncols=None`",
-      "data_out": "`'  0%|          | 0/4 [00:00<?, ?it/s]'` written as `'\\r' + s` to stderr (38 chars); `refresh` returns `True`",
+      "data_in": "`tqdm.refresh(self, nolock=False, lock_args=None)` on a bar with `n=0, total=4, elapsed=0, ncols=None`, followed by `tqdm.__iter__(self)` over `['a','b','c','d']`",
+      "data_out": "`'  0%|          | 0/4 [00:00<?, ?it/s]'` written as `'\\r' + s` to stderr (38 chars); then the four items yielded unchanged (`'a'`, `\\u2026 \\u00d74 more`), the `finally` block setting `self.n = 4` and calling `close()`, and a later `__del__` \\u2192 `close()` that returns immediately",
       "code": [
         "tqdm/std.py:1332-1357",
         "tqdm/std.py:1471-1505",
@@ -165,10 +165,15 @@
         "tqdm/std.py:129-208",
         "tqdm/utils.py:85-97",
         "tqdm/utils.py:303-328",
-        "tqdm/utils.py:170-203"
+        "tqdm/utils.py:170-203",
+        "tqdm/std.py:1166-1201",
+        "tqdm/std.py:1270-1274",
+        "tqdm/std.py:1153-1154"
       ],
       "inputs": [
-        "delay=0.0"
+        "delay=0.0",
+        "sleep(0.05) per item",
+        "mininterval=0.1"
       ],
       "characters": [
         "tqdm.refresh",
@@ -182,7 +187,11 @@
         "disp_len",
         "_text_width",
         "print_status",
-        "DisableOnWriteError.inner"
+        "DisableOnWriteError.inner",
+        "tqdm.__iter__",
+        "tqdm.update",
+        "tqdm.close",
+        "tqdm.__del__"
       ],
       "facts": [
         "`refresh` holds the global write lock around `display` unless `nolock=True`; with `lock_args` it uses a non-blocking acquire and returns `False` without printing rather than waiting \\u2014 that is how parallel bars avoid contention at the cost of dropped frames.",
@@ -193,12 +202,21 @@
         "`ncols=None` means no trimming: the bar is a fixed 10 cells and the whole line is printed untrimmed. With a known `ncols`, `disp_trim` cuts it to width and re-appends an ANSI reset if colour codes were cut.",
         "`Bar` clamps `frac` into [0,1] with a `TqdmWarning` and rejects unknown colours with a warning rather than an exception \\u2014 a bad `colour=` degrades to no colour.",
         "Line length is measured with `disp_len`, which strips ANSI codes and counts East-Asian wide characters as 2, so padding stays correct for non-Latin descriptions.",
-        "The actual `write` call goes through `DisableOnWriteError.inner`, so every frame is written inside the error-swallowing wrapper from Chapter 2."
+        "The actual `write` call goes through `DisableOnWriteError.inner`, so every frame is written inside the error-swallowing wrapper from Chapter 2.",
+        "`__iter__` yields the original objects unchanged; the decorated iterator is observationally the same sequence, and when `disable` is set it is a bare `yield from` with no bookkeeping at all.",
+        "For speed, `__iter__` inlines its own counter and never calls `update(1)` per item; it only calls `update(n - last_print_n)` when both the iteration gate (`n - last_print_n >= miniters`) and the time gate (`dt >= mininterval`) pass.",
+        "In this run the four 0.05 s items never cleared the 0.1 s `mininterval` at a moment when the counter gate also opened, so the first bar printed exactly one frame (0/4) and no intermediate progress \\u2014 throttling can mean zero visible updates for short loops.",
+        "`self.n = n; self.close()` sit in a `finally`, so the bar is closed on `break`, on exception, and on normal exhaustion \\u2014 the terminal is left in a sane state even when the loop aborts.",
+        "`close()` guards with `if getattr(self, 'disable', True): return` and then sets `disable = True`, making it idempotent; `__del__` calling it again is a no-op, and the `getattr` default protects half-constructed objects."
       ],
       "open_questions": [
         {
           "id": "q4.1",
-          "question": "One frame has been painted at 0/4; how often will the bar be repainted as the loop runs \\u2014 is any intermediate progress guaranteed?"
+          "question": "Only one frame was painted, at 0/4; how often will a bar be repainted as a loop runs \\u2014 is any intermediate progress guaranteed?"
+        },
+        {
+          "id": "q4.2",
+          "question": "The only frame this bar ever drew said 0/4 \\u2014 does a finished bar leave a wrong number on screen?"
         }
       ],
       "answers": [
@@ -214,45 +232,6 @@
     },
     {
       "n": 5,
-      "title": "Four items, no repaint: the loop runs and the bar closes itself",
-      "trace_lines": [
-        113,
-        119
-      ],
-      "data_in": "`tqdm.__iter__(self)` \\u2014 the generator wrapping `['a','b','c','d']`",
-      "data_out": "`'a'`, then the remaining items (`\\u2026 tqdm.__iter__ \\u00d74 more`); the final resumption runs the `finally` block, setting `self.n = 4` and calling `close()`; afterwards `tqdm.__del__` \\u2192 `close()` returns immediately",
-      "code": [
-        "tqdm/std.py:1166-1201",
-        "tqdm/std.py:1270-1274",
-        "tqdm/std.py:1153-1154"
-      ],
-      "inputs": [
-        "sleep(0.05) per item",
-        "mininterval=0.1"
-      ],
-      "characters": [
-        "tqdm.__iter__",
-        "tqdm.update",
-        "tqdm.close",
-        "tqdm.__del__"
-      ],
-      "facts": [
-        "`__iter__` yields the original objects unchanged; the decorated iterator is observationally the same sequence, and when `disable` is set it is a bare `yield from` with no bookkeeping at all.",
-        "For speed, `__iter__` inlines its own counter and never calls `update(1)` per item; it only calls `update(n - last_print_n)` when both the iteration gate (`n - last_print_n >= miniters`) and the time gate (`dt >= mininterval`) pass.",
-        "In this run the four 0.05 s items never cleared the 0.1 s `mininterval` at a moment when the counter gate also opened, so the first bar printed exactly one frame (0/4) and no intermediate progress \\u2014 throttling can mean zero visible updates for short loops.",
-        "`self.n = n; self.close()` sit in a `finally`, so the bar is closed on `break`, on exception, and on normal exhaustion \\u2014 the terminal is left in a sane state even when the loop aborts.",
-        "`close()` guards with `if getattr(self, 'disable', True): return` and then sets `disable = True`, making it idempotent; `__del__` calling it again is a no-op, and the `getattr` default protects half-constructed objects."
-      ],
-      "open_questions": [
-        {
-          "id": "q5.1",
-          "question": "The only frame this bar ever drew said 0/4 \\u2014 does a finished bar leave a wrong number on screen?"
-        }
-      ],
-      "answers": []
-    },
-    {
-      "n": 6,
       "title": "A second bar is born: the thread is reused, not replaced",
       "trace_lines": [
         120,
@@ -289,7 +268,7 @@
       ]
     },
     {
-      "n": 7,
+      "n": 6,
       "title": "The same setup again, with a prefix",
       "trace_lines": [
         136,
@@ -323,7 +302,7 @@
       "answers": []
     },
     {
-      "n": 8,
+      "n": 7,
       "title": "Describing without counting: forced refreshes that show stale progress",
       "trace_lines": [
         227,
@@ -355,19 +334,19 @@
       ],
       "open_questions": [
         {
-          "id": "q8.1",
+          "id": "q7.1",
           "question": "The displayed counter is two items behind reality \\u2014 does it ever catch up, and by what rule?"
         }
       ],
       "answers": [
         {
-          "id": "q5.1",
+          "id": "q4.2",
           "answer": "Not permanently: the forced refreshes here show how the display is driven by `self.n` rather than by the loop, and the closing chapter shows `close()` repainting a final, correct frame when `leave=True`. The 0/4 frame left by the first bar was itself overwritten by that bar's own closing display during the elided `__iter__` resumptions."
         }
       ]
     },
     {
-      "n": 9,
+      "n": 8,
       "title": "The gates open: update(2), the EMA rate, self-tuned miniters, and the run to 100%",
       "trace_lines": [
         323,
@@ -416,13 +395,13 @@
           "answer": "Only when both gates open. The display is repainted when the counter has advanced at least `miniters` *and* at least `mininterval` seconds have elapsed since the last print (and `delay` has passed). tqdm guarantees it will not spam the terminal; it does not guarantee any particular number of intermediate frames \\u2014 a short, fast loop may show only its first and last."
         },
         {
-          "id": "q8.1",
+          "id": "q7.1",
           "answer": "Here: `update(2)` publishes the two consumed items at once, and the frame jumps straight from `0/4` to `50%|\\u2588\\u2588\\u2588\\u2588\\u2588 | 2/4`; a second `update(2)` later jumps to 100%. The counter catches up in one step whenever the gates open, so the display is eventually consistent, never continuously accurate."
         }
       ]
     },
     {
-      "n": 10,
+      "n": 9,
       "title": "Closing down: leaving the registry, the truth about the rate, and reading a dead bar",
       "trace_lines": [
         530,

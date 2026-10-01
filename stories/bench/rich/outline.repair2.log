@@ -1,0 +1,26 @@
+What Actually Reaches the Terminal: Two Strings and a Table Through Rich  [owner]: 10 chapters
+   1. The World the Data Enters  [trace 2-21]
+   2. Two Strings Become One Text  [trace 22-129]
+   3. Measuring the Room and Naming the Colour  [trace 130-163]
+   4. From Text to Segments: Wrapping, Cells, and the Style Stack  [trace 164-320]
+   5. Cropping, the Buffer, and the Single Write  [trace 321-377]
+   6. Building the Table: Columns, Cells, and the Renderability Gate  [trace 378-403]
+   7. Deciding the Shape: Column Measurement and Collapse  [trace 404-474]
+   8. Drawing the Table: Padding, Box Characters, and Per-Cell Styles  [trace 475-544]
+   9. One Last Crop, Styles Spent, Text Written  [trace 545-704]
+  10. Reading Back What Was Printed  [trace 705-706]
+  ! ch10 covers only 1 call (trace lines 705-706); a chapter needs at least 5: fold it into a neighbour
+
+repair 1/2
+What Actually Reaches the Terminal: Two Strings and a Table Through Rich  [owner]: 9 chapters
+   1. The World the Data Enters  [trace 2-21]
+   2. Two Strings Become One Text  [trace 22-129]
+   3. Measuring the Room and Naming the Colour  [trace 130-163]
+   4. From Text to Segments: Wrapping, Cells, and the Style Stack  [trace 164-320]
+   5. Cropping, the Buffer, and the Single Write  [trace 321-377]
+   6. Building the Table: Columns, Cells, and the Renderability Gate  [trace 378-403]
+   7. Deciding the Shape: Column Measurement and Collapse  [trace 404-474]
+   8. Drawing the Table: Padding, Box Characters, and Per-Cell Styles  [trace 475-544]
+   9. One Last Crop, Styles Spent, and Reading Back What Was Printed  [trace 545-706]
+
+.repair1 tokens: 35,576 in (+0 cached, 169,941 written to cache), 11,113 out

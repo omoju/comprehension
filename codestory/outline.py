@@ -25,6 +25,7 @@ import env  # noqa: F401  (loads .env)
 MODEL = "claude-opus-5"
 CONTEXT_BUDGET = 400_000  # characters of source code to show the model (~100k tokens)
 MAX_CHAPTERS = 10  # the length budget; "as many as the journey needs" gave 12-14 for 500-line libraries
+MIN_CALLS = 5  # calls into the repo a chapter's span must cover; the itsdangerous story that read well never had fewer
 REPAIRS = 2  # how many times a failing plan goes back to the model
 
 # Generated or non-code files: they cost context and tell the story nothing.
@@ -196,12 +197,25 @@ def thread_errors(chapters: list[dict]) -> list[str]:
     return errors
 
 
-def check_plan(plan: dict, trace_len: int, max_chapters: int) -> list[str]:
-    """Everything code can decide about a plan. Empty means the plan may flow on to the chapters."""
+def calls_in(trace: list[str], span: list[int]) -> int:
+    """Calls in a span of the trace: every line that isn't a return value."""
+    return sum(1 for line in trace[span[0] - 1 : span[1]] if not line.strip().startswith("→"))
+
+
+def check_plan(plan: dict, trace: list[str], max_chapters: int) -> list[str]:
+    """Everything code can decide about a plan. Empty means the plan may flow on to the chapters.
+
+    The length budget has two sides. A cap on the count alone was met by merging the two thinnest spans and
+    leaving chapters of one call; the minimum per chapter can't be met that way, since the trace fixes the total."""
     chapters = plan["chapters"]
-    errors = span_errors(chapters, trace_len) + thread_errors(chapters)
+    errors = span_errors(chapters, len(trace)) + thread_errors(chapters)
     if len(chapters) > max_chapters:
         errors.append(f"{len(chapters)} chapters, budget is {max_chapters}: merge the thinnest spans into their neighbours")
+    for c in chapters:
+        if len(c["trace_lines"]) == 2 and (n := calls_in(trace, c["trace_lines"])) < MIN_CALLS:
+            errors.append(f"ch{c['n']} covers only {n} call{'s' if n != 1 else ''} (trace lines "
+                          f"{c['trace_lines'][0]}-{c['trace_lines'][1]}); a chapter needs at least {MIN_CALLS}: "
+                          f"fold it into a neighbour")
     return errors
 
 
@@ -245,11 +259,12 @@ def main(repo_arg: str, story_arg: str, reader: str, max_chapters: int, repair: 
     info = repo_info(repo)
     profile = (READERS / f"{reader}.md").read_text()
     scenario = (story / "scenario.py").read_text()
-    trace_len = len((story / "trace.txt").read_text().splitlines())
+    trace = (story / "trace.txt").read_text().splitlines()
     # Stable first, variable last: the repo block is cached, and runs for other readers reuse it.
     content = [repo_block(repo, info, story), {"type": "text", "text": (
         f"<scenario>\n{scenario}\n</scenario>\n\n<trace>\n{numbered_trace(story)}\n</trace>\n\n"
-        f"<reader>\n{profile}\n</reader>\n\nPlan the story for this reader, in at most {max_chapters} chapters.")}]
+        f"<reader>\n{profile}\n</reader>\n\nPlan the story for this reader, in at most {max_chapters} chapters, "
+        f"each covering at least {MIN_CALLS} calls of the trace.")}]
     messages: list[dict] = [{"role": "user", "content": content}]
 
     if dry_run:
@@ -276,19 +291,20 @@ def main(repo_arg: str, story_arg: str, reader: str, max_chapters: int, repair: 
         plan = {k: previous[k] for k in ("title", "premise", "chapters")}
     else:
         plan = ask("")
-    errors = check_plan(plan, trace_len, max_chapters)
+    errors = check_plan(plan, trace, max_chapters)
     print_plan(plan, reader, errors)
 
     # The repair loop: the plan goes back with its verdict, in the same conversation, so the model sees exactly
     # what it wrote and exactly what failed. The repo block is read from cache, so a repair costs a tenth of a plan.
+    done = len(list(story.glob("outline.response.repair*.json")))  # earlier --repair passes keep their responses
     for attempt in range(1, REPAIRS + 1):
         if not errors:
             break
         print(f"\nrepair {attempt}/{REPAIRS}")
         messages += [{"role": "assistant", "content": json.dumps(plan)},
                      {"role": "user", "content": repair_request(errors)}]
-        plan = ask(f".repair{attempt}")
-        errors = check_plan(plan, trace_len, max_chapters)
+        plan = ask(f".repair{done + attempt}")
+        errors = check_plan(plan, trace, max_chapters)
         print_plan(plan, reader, errors)
 
     if not errors:
