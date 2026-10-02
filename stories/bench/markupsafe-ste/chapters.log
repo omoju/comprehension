@@ -1,0 +1,7 @@
+      ✗ 1 check errors, repair 1/2: proof 1 failed: AssertionError
+   1. 01-the-trust-boundary-and-the-unguarded-door-beside-i.md  740 words, 14 citations, 112s, $0.66  → ok after 1 repair
+   2. 02-an-object-that-writes-its-own-html-and-a-template-.md  691 words, 14 citations, 103s, $0.29  → ok
+   3. 03-the-innermost-escape-the-user-s-name.md  523 words, 12 citations, 77s, $0.23  → ok
+   4. 04-markup-escape-and-the-reassembled-page.md  613 words, 14 citations, 79s, $0.23  → ok
+   5. 05-concatenation-the-operand-gets-escaped-both-ways.md  548 words, 21 citations, 48s, $0.16  → ok
+   6. 06-striptags-the-exit-back-to-plain-text-and-what-the.md  761 words, 20 citations, 90s, $0.25  → ok
