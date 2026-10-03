@@ -82,6 +82,11 @@ left, design for verification, context engineering, the quality loop, cross-mode
 - **The reading page** keeps: title, real-world premise, the control-flow chart of *this run*, code beside the text (09-30).
 - **The formal decision rule decides** on 6 October; Omoju's read is recorded first but doesn't override it (09-30).
 - **CLAUDE.md is about the prototypes only**; no personal context in the repo (09-30).
+- **The voice stays warm; no controlled language** (10-02). Same markupsafe plan told in ASD-STE100
+  (`readers/owner-ste.md`, `stories/bench/markupsafe-ste/`): −35% words, median sentence 12 vs 19, 1% vs 29%
+  sentences over 25 words, 0 judge flags vs 1, $1.82 vs $2.31. Omoju: "too drab." Better on every number we
+  measure, and not the story we want: the checks keep it honest, the voice makes it worth reading. Kept as
+  evidence for the write-up. STE's one keeper: callouts in the imperative.
 - **The length budget is two-sided** (10-01): at most `MAX_CHAPTERS` = 10, and every chapter ≥ `MIN_CALLS` = 5 calls
   of the trace, the minimum in the itsdangerous story that read well. The minimum is what does the work: the
   trace fixes the total, so a thin span can only pass by merging. With it, the model chose 6–10 chapters itself.
@@ -114,6 +119,10 @@ left, design for verification, context engineering, the quality loop, cross-mode
   Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-02** · markupsafe pilot with the repair loop: 6/6 green, $2.31, one real defect (ch4's proof asserted
+  `Markup.escape` returns the same object; it returns an equal new one) fixed in 2 repairs, no hand edit.
+  Reading page https://claude.ai/artifact/XvZvFsbrfAkfmqxKV8krcs; code pane now up to 880px on wide screens.
+  STE experiment run and rejected (see decisions); page https://claude.ai/artifact/VcRpz7CdPSHdHurET5AhyM.
 - **10-01** · Stage 3. `outline.py`: `check_plan` (spans, threads, numbering, length budget `MAX_CHAPTERS` = 10),
   repair loop ≤ 2, `--repair` for an existing plan. All 7 failing/oversize outlines repaired in one pass each
   (≈ $1.40 each, dominated by rewriting the repo into cache). `chapter.py`: same loop on deterministic check
