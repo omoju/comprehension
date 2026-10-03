@@ -2,33 +2,35 @@
 *The project's memory between sessions. "Pick up here" is always current; below it: the plan, settled decisions,
 lessons, a short log (newest first), and Omoju's opening paragraph. Code and git say what changed; this says why.*
 
-## ▶ Pick up here (2026-10-02)
-**State.** **All 10 stories exist and pass every deterministic check.** itsdangerous (8 ch.,
-https://claude.ai/artifact/JyeDNbyYZyMt1ivYxWwshL) plus the 9 bench repos in `stories/bench/<repo>/` (76 chapters,
-78,853 words, 1,760 citations, 9 repairs, 0 still failing, $37.94; each has `report.md` and a rendered `index.html`;
-markupsafe is published at https://claude.ai/artifact/XvZvFsbrfAkfmqxKV8krcs). Judge flags: 12 of 969 paragraphs
-(1.2%); the two inspected were one misleading sentence (attrs: "`__ne__` is not generated" beside
-`cd["__ne__"] = __ne__`) and one false positive (tqdm: the claim is true, the cited lines don't show it).
-Pipeline diagram: `codestory/README.md`. No jobs running.
+## ▶ Pick up here (2026-10-02 night)
+**State.** All 10 stories exist and pass every check (details in the 10-02 log). **The evaluation harness is built,
+tested end to end, and the judge passed its test**: `codestory/eval/` (README-level docstrings in each file;
+`run.py <repo>` does one repo in the preregistered order; `analyze.py` pools and applies §8). DeepWiki pages for
+all 10 are fetched and pinned (`eval/deepwiki/<repo>/`, checkouts at `eval/checkouts/`, ignored by git). Judge
+test on itsdangerous: Claude 20/20 planted lies caught, 0/20 truths flagged; Jev 18/20, 0 alarms. The full
+pipeline ran on itsdangerous (in-sample): every stage produced well-formed output; **its numbers are in `eval/`
+and have not been shown to Omoju** (see below). No jobs running.
 
-**First thing next session**
-1. `git status` should be clean. If `demo-repos/` is missing: `sh codestory/restore_repos.sh` (exact commits in
-   `demo-repos.lock`). Keys are in `.env` (not in git; copy `.env.example` if it's gone).
-2. Ask Omoju the open decisions below before spending.
+**First thing next session (Saturday 3 October)**
+1. **Before any out-of-sample result exists, Omoju fills in `PREREGISTRATION.md` §9.1** (what "it helps" would
+   feel like) and reads 2–3 stories. Claude has seen the in-sample numbers and is keeping them out of the
+   conversation until §9.1 is written, so Omoju's judgment stays independent of them.
+2. Then: `for r in requests flask click httpx rich attrs jinja markupsafe tqdm; do run.py $r & done` (parallel;
+   est. $6–10 per repo, $60–90 total, ~15 min), then `analyze.py` → `eval/results.md`.
+3. Omoju records a verdict (§9.2) after reading, before `results.md` is opened. Then the rule decides (Tuesday).
+4. §5.1.5: Omoju hand-checks 20 judged claims (10 per arm) from `eval/judgments/`.
 
 **Open decisions (Omoju)**
-1. Which stories to read (plan: 2–3 on Sunday). Candidates: requests (longest, 10 ch.), rich (most citations), flask.
+1. Which stories to read Saturday/Sunday. Candidates: requests (longest, 10 ch.), rich (most citations), flask.
 2. Self-story on this repo: `pyproject.toml`, `.codestoryignore`, then run.
-3. A second, cross-vendor judge for the comparison (the code-review paper's cross-model point), or Jev + Claude only?
-4. Keep the "note to Sha" reminder in `NOTES.md`, or move it out before the repo is published?
-5. Optional: `PREREGISTRATION.md` §9 sentences on what "it helps" would feel like.
+3. Keep the "note to Sha" reminder in `NOTES.md`, or move it out before the repo is published?
+4. Which reading pages to publish beyond markupsafe and itsdangerous.
 
-**Next work (Friday 2 October), in parallel tracks**
-- Fetch DeepWiki pages for all 10 via its public MCP server (`https://mcp.deepwiki.com/mcp`, tools
-  `read_wiki_structure`, `read_wiki_contents`); record the commit each page describes.
-- Eval harness: question writing (path + general), answer keys checked by execution, claim extraction, judge;
-  test the judge on planted lies in *both* stories and DeepWiki pages before use.
-- Monday, after the results page: remind Omoju to send Sha Ma a short note.
+**How the eval is wired (one line each):** `questions.py` writes 8 path + 7 general questions from repo + scenario +
+trace only, keys checked by running them (dropped if the check fails); `extract.py` pulls atomic claims from each
+arm with one prompt, samples 40 with a fixed seed; `judge.py claims` labels them blind with the whole repo at the
+arm's commit in context, then Jev re-scores from the cited lines; `read.py` answers the questions from one arm's
+text; `judge.py grade` scores correct/partly/wrong blind; `analyze.py` pools, bootstraps over repos, applies §8.
 
 **Pipeline**, run from the root with `.venv/bin/python` (Python 3.13; keys in `.env`):
 `codestory/scenario.py <repo> <dir>` → `outline.py <repo> <dir> --reader owner|maintainer|user [--max-chapters N]`
@@ -39,8 +41,8 @@ story is the stage-3 pass. The judge is reported, never repaired on.
 Checks: `verify.py <dir>` (citations, drift, proofs), `claims.py <dir> <chapter>` (Jev contradiction judge).
 Each repo gets its own environment at `demo-repos/<repo>/.codestory-venv` (created on first use).
 
-**Spend so far:** ≈ $83 on Anthropic (≈ $20 to 09-30; 10-01: 15 outline repairs ≈ $21, repair-loop test ≈ $1.5;
-10-02: 9 stories $37.94, STE experiment $1.82), pennies on Jev.
+**Spend so far:** ≈ $89 on Anthropic (≈ $20 to 09-30; 10-01: 15 outline repairs ≈ $21, repair-loop test ≈ $1.5;
+10-02: 9 stories $37.94, STE $1.82, eval build + judge test + in-sample dry run ≈ $6), pennies on Jev.
 
 ## The plan to Tuesday 6 October
 Question: is a CodeStory better than generated documentation? Head-to-head against DeepWiki on 10 pure-Python repos
@@ -53,7 +55,7 @@ ship / pivot to stories of *changes* / kill.
 |---|---|---|
 | Wed 30 | voice; full itsdangerous story; per-repo venv; trace-ordered context; preregistration | done, plus the reading page; repo list not yet approved |
 | Thu 1 | repair loop; pilot 2 repos; self-story | repair loop done (outline + chapter), outlines repaired to 10 ch.; chapters await go |
-| Fri 2 | run all 10; build the eval (questions, keys, DeepWiki + docs fetch) | all 10 run, 76/76 green ($38); eval not started |
+| Fri 2 | run all 10; build the eval (questions, keys, DeepWiki + docs fetch) | all 10 run, 76/76 green ($38); eval built, judge tested, dry run on itsdangerous |
 | Sat 3 | run the head-to-head | |
 | Sun 4 | buffer; Omoju reads 2–3 | |
 | Mon 5 | results page, README (Claude drafts; posts are Omoju's); publish. **Then remind Omoju to send Sha Ma a short note** | |
@@ -124,6 +126,11 @@ left, design for verification, context engineering, the quality loop, cross-mode
   Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-02 night** · Eval harness (`codestory/eval/`). DeepWiki fetched for all 10 via MCP: 17k–62k words each,
+  cites `[path:lines]()` with no commit, so pinned to default-branch HEAD on the fetch date (8 of 10 equal our
+  story commits); 5–10% of its own references don't resolve at HEAD. Judge: whole repo in (cached) context, batches
+  of 20 claims, both arms shuffled together, blind. Judge test PASS (20/20, 0 alarms; Jev 18/20). Dry run on
+  itsdangerous: all stages fine; the grader skipped one item once → retry for skipped ids added.
 - **10-02 later** · The 8 remaining stories in parallel, 9–20 min each, $3.34–5.29 per repo. 70 chapters, 7
   repairs, all first-round except none; 0 failing after. Repairs fixed: a proof using `__file__` under `-c`, a
   bytes/str mix-up, 4 wrong asserts, one `or True`, one accidental vacuous-assert match. Callouts now written in

@@ -139,10 +139,15 @@ def grade(client, name: str) -> dict:
         answers = json.loads((EVAL / "answers" / f"{name}.{arm}.json").read_text())["answers"]
         items = [{"id": a["id"], "question": questions[a["id"]]["question"], "key": questions[a["id"]]["key"],
                   "answer": a["answer"]} for a in answers if a["id"] in questions]
-        response = ask(client, GRADE_SYSTEM, f"<items>\n{json.dumps(items, indent=1)}\n</items>\n\nGrade every item.", GRADE_SCHEMA)
-        save_trace(EVAL / "grades" / "traces", f"{name}.{arm}", response)
-        cost += usage_cost(response.usage)
-        grades = {g["id"]: g for g in json.loads(text_of(response))["grades"]}
+        grades: dict[str, dict] = {}
+        for attempt in range(2):  # a grader that skips an item is asked once more for just the ones it skipped
+            todo = [it for it in items if it["id"] not in grades]
+            if not todo:
+                break
+            response = ask(client, GRADE_SYSTEM, f"<items>\n{json.dumps(todo, indent=1)}\n</items>\n\nGrade every item.", GRADE_SCHEMA)
+            save_trace(EVAL / "grades" / "traces", f"{name}.{arm}" + (f".retry{attempt}" if attempt else ""), response)
+            cost += usage_cost(response.usage)
+            grades.update({g["id"]: g for g in json.loads(text_of(response))["grades"] if g["id"] in {it["id"] for it in todo}})
         out["arms"][arm] = [{"id": it["id"], "kind": questions[it["id"]]["kind"], **grades.get(it["id"], {"grade": "ungraded", "reason": ""})}
                             for it in items]
     out["cost"] = round(cost, 2)

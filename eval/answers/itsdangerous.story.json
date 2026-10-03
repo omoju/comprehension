@@ -1,0 +1,63 @@
+{
+  "repo": "itsdangerous",
+  "arm": "story",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "The data serializer is `_CompactJSON` \u2014 `URLSafeSerializerMixin` overrides the class attribute (url_safe.py L21), so stdlib `json` is not used. `_CompactJSON` forces `separators=(\",\", \":\")` and `ensure_ascii=False`, so the inner `Serializer.dump_payload` yields the text `'{\"id\":5,\"name\":\"itsdangerous\"}'` which `want_bytes` encodes to UTF-8: `b'{\"id\":5,\"name\":\"itsdangerous\"}'` (30 bytes, no spaces). The token is a `str` because at construction `is_text_serializer(serializer)` probed `_CompactJSON.dumps({})`, got the `str` `'{}'`, and stored `is_text_serializer=True`; the last branch of `dumps` therefore does `return rv.decode(\"utf-8\")`. A binary serializer (e.g. pickle) would have made it return bytes."
+    },
+    {
+      "id": "p2",
+      "answer": "No \u2014 the compressed form is discarded. The mixin compresses unconditionally and then tests `if len(compressed) < (len(json) - 1):`; the `- 1` accounts for the one-byte marker (a leading `.`) that a compressed payload must carry. Thirty bytes of high-entropy JSON do not compress below that threshold, so the condition is false, `is_compressed` stays `False`, no dot is prepended, and after `base64_encode` (urlsafe alphabet, `rstrip(b\"=\")`, no padding needed for 30 bytes) the payload is `b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'` \u2014 exactly 40 characters."
+    },
+    {
+      "id": "p3",
+      "answer": "The `\"django-concat\"` branch runs \u2014 that is `Signer.default_key_derivation` and nothing overrode it. `derive_key()` is called with no argument, so it takes `secret_key = self.secret_keys[-1]` (the newest key, here `b'secret key'`), then computes `self.digest_method(self.salt + b\"signer\" + secret_key).digest()`, i.e. `_lazy_sha1(b'authsignersecret key').digest()`. The derived key is the 20 bytes `b'\\xcea\\x91\\xbb\\x97+C\\x86\\xdc\\x0f\\x82\\xd1uM\\xbf\\x16\\r\\xa8\\xff\\xd8'`. (Note this is one SHA-1 over a concatenation, not a KDF.)"
+    },
+    {
+      "id": "p4",
+      "answer": "The token is `'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg'` (69 chars, a `str`). The signature half is built by `Signer.get_signature`: derive the key (SHA-1 of `b'authsignersecret key'`), then `HMACAlgorithm.get_signature` runs `hmac.new(key, msg=value, digestmod=_lazy_sha1).digest()` over the *base64 payload bytes* `b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'`, giving the raw 20-byte digest `b'\\xe9\\x83\\xfaO@Z;\\xae\\xd7?\\xef\\xbdS4\\xeb\\x9a\\xea\\xd7Jh'`, which `base64_encode` turns into the 27-character `b'6YP6T0BaO67XP--9UzTrmurXSmg'`. `sign` then returns `value + self.sep + signature`, and `dumps` decodes it to `str`."
+    },
+    {
+      "id": "p5",
+      "answer": "Exactly one. `iter_unsigners(None)` substitutes `self.salt` (`b'auth'`) and yields `self.make_signer(b'auth')` \u2014 a brand-new `Signer` with `secret_key=[b'secret key']`, `sep=b'.'`, `HMACAlgorithm(_lazy_sha1)`. It then would loop over `self.fallback_signers`, but that list is `[]` (the `default_fallback_signers` default, empty since 2.0 \u2014 the old SHA-512 fallback was removed), so the loop body never runs and the generator is exhausted after the primary signer."
+    },
+    {
+      "id": "p6",
+      "answer": "`\"auth\"` is run through `want_bytes` in `Serializer.__init__` and stored as `self.salt = b'auth'`; `make_signer` passes it to the `Signer`, which stores it and uses it in `derive_key` as the prefix of the hashed material (`b'auth' + b'signer' + secret_key`). A serializer built with salt `\"other\"` and the same secret key therefore derives a completely different key, the recomputed HMAC will not match, `verify_signature` returns `False`, and `unsign` raises `BadSignature(\"Signature ... does not match\", payload=value)`, which `loads` re-raises. That context separation is the salt's purpose; it need not be secret."
+    },
+    {
+      "id": "p7",
+      "answer": "The token still contains a `.`, so the split succeeds; the 26-char signature is re-padded with `==` and decoded (or, if it fails to decode, `verify_signature` returns `False` via its blanket `except`). Either way the recomputed HMAC does not match, so `Signer.unsign` raises `BadSignature(f\"Signature {sig!r} does not match\", payload=value)` \u2014 carrying the *raw, still-base64, undeserialised* payload bytes `b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'` on `.payload`. `Serializer.loads` catches it, finds no further signers, and re-raises that same `BadSignature`. For `loads_unsafe` the documentation only states the no-separator case explicitly \u2014 there it returns `(False, None)`; here, since a payload is attached, it returns a `(False, <payload>)` tuple, but the docs given do not spell out whether that second element is the raw bytes or the deserialised dict, so I can't settle that part."
+    },
+    {
+      "id": "p8",
+      "answer": "`base64_decode` first does `want_bytes(string, encoding=\"ascii\", errors=\"ignore\")` (a no-op here, it is already bytes), then restores the padding `base64_encode`'s `rstrip(b\"=\")` removed: `string += b\"=\" * (-len(string) % 4)`, and `-27 % 4 == 1`, so a single `=` is appended. `base64.urlsafe_b64decode` then yields the 20 raw bytes `b'\\xe9\\x83\\xfaO@Z;\\xae\\xd7?\\xef\\xbdS4\\xeb\\x9a\\xea\\xd7Jh'`, byte-for-byte the digest produced at signing. If decoding failed (`BadData`), `verify_signature`'s total `try/except` would simply return `False`, surfacing as an ordinary `BadSignature`."
+    },
+    {
+      "id": "g1",
+      "answer": "For each entry: if it is a `dict`, it is taken as the kwargs and the class used is `self.signer`; if it is a `tuple`, it is unpacked as `(class, kwargs)`; otherwise it is treated as a signer class and `kwargs = self.signer_kwargs`. Then, for *each* key: `for secret_key in self.secret_keys: yield fallback(secret_key, salt=salt, **kwargs)` \u2014 i.e. fallbacks are constructed one key at a time, so N keys yield N signers per entry. The primary signer, which is always yielded first, instead receives the whole `secret_keys` list at once and iterates it internally (in `verify_signature`, newest first)."
+    },
+    {
+      "id": "g2",
+      "answer": "Only `BadSignature` is swallowed: each iteration's failure is stored in `last_exception` and the loop continues. `BadPayload` is a sibling under `BadData`, not a subclass of `BadSignature`, so a correctly-signed but undecodable payload escapes the loop immediately (as does any other non-`BadSignature` exception). If every signer rejects the token, the *last* stored exception is re-raised (`raise t.cast(BadSignature, last_exception)`) \u2014 not the first and not an aggregate, so the message may come from whichever signer happened to be tried last. Edge case: if a subclass made `iter_unsigners` yield nothing, `last_exception` is `None` and the `raise` produces `TypeError: exceptions must derive from BaseException`."
+    },
+    {
+      "id": "g4",
+      "answer": "`sep` is coerced with `want_bytes` and must not be a member of `_base64_alphabet` \u2014 the bytes of `A-Za-z0-9-_=` (encoding.py L42). If it is, `Signer.__init__` raises `ValueError` immediately, at construction time (e.g. `sep=\"-\"` fails). The reason: `unsign` splits with `rsplit(sep, 1)`, which is only unambiguous if the separator can never appear inside the base64-encoded signature. Enforcing it in the constructor is fail-fast \u2014 a bad separator blows up at start-up instead of producing tokens that split wrongly in production."
+    },
+    {
+      "id": "g5",
+      "answer": "Signing uses exactly one key: `derive_key()` with no argument takes `self.secret_keys[-1]`, the last/newest entry. Verification iterates `for secret_key in reversed(self.secret_keys)`, i.e. newest first, deriving a key per entry and returning `True` on the first `hmac.compare_digest` match, else `False`. That asymmetry is the key-rotation mechanism: append a new key so new tokens use it, while older keys still validate old tokens until removed. There is no per-key expiry or revocation list \u2014 dropping a key from the list is the only way to invalidate its tokens, and the rotation schedule is out of scope for the library."
+    },
+    {
+      "id": "g6",
+      "answer": "`loads_unsafe` never raises on a bad signature; it returns a two-element tuple of (signature-ok flag, payload), so you can inspect data from a token you have rejected \u2014 e.g. `(False, None)` when there is nothing to recover, such as a token with no separator, where `BadSignature.payload` is `None`. The risk is that it deserialises unauthenticated, attacker-controlled input: with the default JSON serializer that is merely unwise, with `serializer=pickle` it is remote code execution, and with the URL-safe mixin a payload marked compressed will be zlib-decompressed before verification (decompression-bomb exposure). The docs treat it as a debugging tool; finding it (or a `load_payload(e.payload)` call) in production code is a review flag. The exact contents of the second tuple element in the signature-mismatch case aren't spelled out in the documentation provided."
+    },
+    {
+      "id": "g7",
+      "answer": "`NoneAlgorithm` is a `SigningAlgorithm` subclass that returns `b\"\"` as the signature for every input. Configuring a `Signer` with it (e.g. `signer_kwargs={\"algorithm\": NoneAlgorithm()}`) means every token carries an empty signature and verification compares `b\"\"` to `b\"\"`, so anybody can forge a token \u2014 there is no authenticity guarantee at all. Nothing in `Signer.__init__` objects to this; the safe default is `HMACAlgorithm`, built automatically when `algorithm is None`."
+    }
+  ],
+  "cost": 0.34
+}

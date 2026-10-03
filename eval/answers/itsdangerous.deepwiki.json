@@ -1,0 +1,63 @@
+{
+  "repo": "itsdangerous",
+  "arm": "deepwiki",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "`URLSafeSerializer` mixes `URLSafeSerializerMixin` into `Serializer`, and the mixin's default data serializer is `_CompactJSON` (json with `ensure_ascii=False`, `separators=(\",\", \":\")`). So the inner `Serializer.dump_payload` produces the compact JSON `{\"id\":5,\"name\":\"itsdangerous\"}`, passed through `want_bytes()` as `b'{\"id\":5,\"name\":\"itsdangerous\"}'` (no spaces). The final token is a `str` because `is_text_serializer()` is true for `_CompactJSON` (its `dumps` returns `str`), so `Serializer.dumps` decodes the signed bytes with `.decode(\"utf-8\")` before returning."
+    },
+    {
+      "id": "p2",
+      "answer": "Compression is not used here. `URLSafeSerializerMixin.dump_payload` compresses with `zlib.compress` but only keeps the compressed form when `len(compressed) < len(json) - 1`; otherwise the uncompressed JSON is base64-encoded directly. For this ~30-byte JSON, zlib does not meet that threshold, which is confirmed by the documented token: the payload is `eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9` with no leading `.` marker (the `.` prefix is added only when the compressed form is used)."
+    },
+    {
+      "id": "p3",
+      "answer": "The default `key_derivation` is `\"django-concat\"`, so the branch `digest_method(salt + b\"signer\" + secret_key).digest()` runs. With salt `\"auth\"` and key `\"secret key\"` (both run through `want_bytes`), the hashed input is `b\"authsignersecret key\"` and the derived key is its SHA-1 digest (SHA-1 is the default `digest_method`, loaded lazily via `_lazy_sha1`). The documentation does not list the resulting digest bytes, so I can't give the literal value."
+    },
+    {
+      "id": "p4",
+      "answer": "The documented token is `eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg`. The signature part is produced by `Signer.get_signature`: derive the key (`derive_key()`, django-concat with salt `auth`), compute `HMACAlgorithm.get_signature()` = `hmac.new(derived_key, payload, SHA-1).digest()`, then `base64_encode()` it (URL-safe base64 with `=` padding stripped), and join it to the payload with the separator `.`."
+    },
+    {
+      "id": "p5",
+      "answer": "One. `Serializer.default_fallback_signers` is an empty list and only a single secret key was given, so `iter_unsigners()` yields just the primary signer created by `make_signer(salt)`. Fallback signers would add one instance per fallback configuration per secret key, but there are none here."
+    },
+    {
+      "id": "p6",
+      "answer": "The salt is passed to the `Signer` and is used only in key derivation \u2014 with the default `django-concat` method the derived key is `sha1(salt + b\"signer\" + secret_key)`. A serializer built with salt `\"other\"` derives a different key, so the HMAC comparison (`hmac.compare_digest`) fails and `loads()` raises `BadSignature` (with the unsigned payload available on the exception). This is exactly the purpose of salts: separating signatures used in different contexts."
+    },
+    {
+      "id": "p7",
+      "answer": "Verification fails, so `auth_s.loads` raises `BadSignature`. The exception carries the `payload` attribute (the unsigned payload bytes), which you can feed to `serializer.load_payload()` to recover `{\"id\": 5, \"name\": \"itsdangerous\"}` \u2014 this is the pattern used in the test suite. `auth_s.loads_unsafe` on the same input returns the tuple `(False, {\"id\": 5, \"name\": \"itsdangerous\"})`: `False` for the invalid signature, plus the payload it managed to deserialize."
+    },
+    {
+      "id": "p8",
+      "answer": "`base64_decode()` re-adds the stripped padding before calling `base64.urlsafe_b64decode` (27 chars gets one `=` to reach 28), so decoding succeeds and yields the raw signature bytes \u2014 the 20-byte HMAC-SHA1 digest \u2014 which `verify_signature` compares against the freshly computed digest using `hmac.compare_digest`. If the input is not valid base64 at all, `base64_decode` raises `BadData`."
+    },
+    {
+      "id": "g1",
+      "answer": "`iter_unsigners()` first yields the primary signer from `make_signer(salt)`. Then, for each entry in `fallback_signers`, it interprets the entry by type: a `dict` is treated as `signer_kwargs` (using the default signer class), a `tuple` as `(signer_class, kwargs)`, and a bare class as the signer class with no extra kwargs. The key difference is key handling: the primary `Signer` is given the whole `secret_keys` list and handles rotation internally (signs with the newest, verifies against all), whereas for each fallback configuration a separate signer instance is constructed per secret key in a loop."
+    },
+    {
+      "id": "g2",
+      "answer": "While iterating signers, `BadSignature` is caught and stored as `last_exception` so the next signer can be tried; if every signer fails, the last stored `BadSignature` is raised. For the timed variant, `SignatureExpired` is deliberately not swallowed \u2014 it propagates immediately without trying remaining signers. `BadPayload`, raised when `load_payload` cannot deserialize, is also not part of the retry loop. Note the documentation spells this strategy out explicitly for `TimedSerializer.loads`; the base `Serializer.loads` is described as following the same iterate-and-retry pattern but with less detail."
+    },
+    {
+      "id": "g4",
+      "answer": "`sep` may not be a character from the base64 alphabet (`A-Za-z0-9-_=`). `Signer.__init__` validates it and raises `ValueError` if violated. The reason is that the signature is URL-safe base64-encoded and unsigning splits the value with `rsplit(sep, 1)`; a separator drawn from the base64 alphabet would be ambiguous with signature/payload characters. The default separator is `b\".\"`."
+    },
+    {
+      "id": "g5",
+      "answer": "Signing always uses the newest key, i.e. the last element of `secret_keys` (also exposed by the `secret_key` property). Verification tries the keys in reverse order, newest to oldest, accepting the first that validates. To rotate, append new keys to the end of the list and remove expired ones from the beginning."
+    },
+    {
+      "id": "g6",
+      "answer": "`loads_unsafe()` returns a tuple `(signature_valid: bool, payload)`. It first tries a normal `loads()`; on success it returns `(True, data)`. On `BadSignature`, if the exception carries a payload it attempts `load_payload()` and returns `(False, data)`, or `(False, None)` if deserialization also fails or no payload is available. The guarantee is only that it never raises for a bad signature \u2014 the returned data is unverified and possibly attacker-controlled, so it is intended for debugging/inspection, not for trust decisions (especially dangerous with a pickle-based serializer)."
+    },
+    {
+      "id": "g7",
+      "answer": "`NoneAlgorithm.get_signature()` returns an empty signature (`b\"\"`) and verification always succeeds. Configuring a `Signer` with it therefore disables signing entirely: anyone can forge or modify values and they will validate. It exists for testing, debugging, or development environments only."
+    }
+  ],
+  "cost": 0.64
+}

@@ -1,0 +1,178 @@
+{
+  "repo": "itsdangerous",
+  "arms": {
+    "story": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Identifies _CompactJSON via URLSafeSerializerMixin, the exact 30-byte compact JSON, and the is_text_serializer probe causing a str return, matching the key."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "States compression is discarded, gives the exact condition len(compressed) < len(json)-1, no dot prefix, and the correct base64 payload."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly names the django-concat branch, the hashed input b'authsignersecret key' with SHA-1, and the same 20-byte derived key."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Gives the exact token and correctly describes HMAC-SHA1 over the base64 payload, base64_encode of the digest, and value+sep+signature."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Says exactly one signer because fallback_signers defaults to an empty list, matching the key."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly traces want_bytes storage, use in derive_key prefix, and the BadSignature raised/re-raised with a different salt."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "The BadSignature/payload/re-raise part is correct, but the answer declines to state the loads_unsafe result, missing the key's (False, {'id': 5, 'name': 'itsdangerous'})."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly describes want_bytes coercion, padding restoration with -27 % 4 == 1, the recovered 20-byte digest, and the blanket except returning False."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Accurately covers dict/tuple/class handling and the per-secret-key yielding of fallbacks versus the primary signer receiving the whole list."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Matches the key: only BadSignature swallowed, BadPayload propagates, last exception re-raised, and the None/TypeError edge case."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "States the base64 alphabet restriction, ValueError in __init__, and the rsplit rationale, as in the key."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly says signing uses secret_keys[-1] and verification iterates reversed(secret_keys) returning True on first match."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Captures the never-raises guarantee, the (False, None) case, and the deserialization risks, but omits/declines the key detail that load_payload(e.payload) is used to return (False, data) on signature mismatch."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly describes the empty-signature algorithm, trivially passing verification, and the complete loss of authenticity."
+      }
+    ],
+    "deepwiki": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Identifies _CompactJSON from URLSafeSerializerMixin, the exact compact JSON bytes, and the is_text_serializer \u2192 decode path, matching the key."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "States compression is discarded, gives the exact condition len(compressed) < len(json) - 1, and the correct unprefixed base64 payload."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correctly names the django-concat branch and the hashed input b'authsignersecret key' with SHA-1, but declines to give the resulting 20-byte derived key that the key supplies."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Gives the exact token and correctly describes HMAC-SHA1 over the payload with the derived key, base64url-encoded without padding and joined by '.'."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Says exactly one signer because default_fallback_signers is empty, matching the key."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly locates the salt in key derivation (sha1(salt + b'signer' + secret_key)) and states BadSignature with payload is raised for a different salt."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly states BadSignature with the payload attribute and that loads_unsafe returns (False, {'id': 5, 'name': 'itsdangerous'})."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Describes padding re-addition, urlsafe_b64decode producing the 20-byte HMAC-SHA1 digest, and compare_digest, matching the key."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Accurately covers dict/tuple/class handling and the key difference of one signer per secret key for fallbacks versus the full key list for the primary signer."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Captures that BadSignature is caught and the last one re-raised, that SignatureExpired propagates, and that BadPayload is not retried, consistent with the key."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Names the base64-alphabet restriction, the ValueError, and the rsplit ambiguity rationale."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Signing with the last (newest) key and verification in reversed order matches the key."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly describes the (bool, payload) returns for all branches and the security risk of unverified deserialization."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly states get_signature returns b'' and that signing is effectively disabled so anyone can forge values; omits only the nuance that the supplied signature must decode to empty."
+      }
+    ]
+  },
+  "cost": 0.17
+}

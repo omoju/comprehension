@@ -1,0 +1,189 @@
+{
+  "repo": "itsdangerous",
+  "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+  "questions": [
+    {
+      "id": "p1",
+      "kind": "path",
+      "question": "When `URLSafeSerializer(\"secret key\", \"auth\")` is constructed and `dumps` is called, which data-serializer object is used, what exact JSON bytes does the inner `Serializer.dump_payload` produce for `{\"id\": 5, \"name\": \"itsdangerous\"}`, and why is the final token a `str` rather than `bytes`?",
+      "key": "The serializer is `itsdangerous._json._CompactJSON` (the `default_serializer` of `URLSafeSerializerMixin`, overriding `Serializer.default_serializer = json`). Its `dumps` sets `separators=(\",\", \":\")` and `ensure_ascii=False`, so the inner `Serializer.dump_payload` produces `b'{\"id\":5,\"name\":\"itsdangerous\"}'` (no spaces, 30 bytes). At construction `is_text_serializer(_CompactJSON)` is called: `_CompactJSON.dumps({})` returns the `str` `'{}'`, so `self.is_text_serializer` is True, and therefore `Serializer.dumps` decodes the signed bytes with UTF-8 and returns a `str`.",
+      "lines": [
+        "src/itsdangerous/url_safe.py:21",
+        "src/itsdangerous/_json.py:14-18",
+        "src/itsdangerous/serializer.py:33-37",
+        "src/itsdangerous/serializer.py:220",
+        "src/itsdangerous/serializer.py:309-320"
+      ],
+      "check": "import sys, os\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous import URLSafeSerializer\nfrom itsdangerous._json import _CompactJSON\nfrom itsdangerous.serializer import Serializer, is_text_serializer\ns = URLSafeSerializer('secret key', 'auth')\nassert s.serializer is _CompactJSON\nassert s.is_text_serializer is True\nassert is_text_serializer(_CompactJSON) is True\nassert Serializer.dump_payload(s, {'id': 5, 'name': 'itsdangerous'}) == b'{\"id\":5,\"name\":\"itsdangerous\"}'\nassert isinstance(s.dumps({'id': 5, 'name': 'itsdangerous'}), str)\n"
+    },
+    {
+      "id": "p2",
+      "kind": "path",
+      "question": "`URLSafeSerializerMixin.dump_payload` always calls `zlib.compress`. For this run's payload, is the compressed form used, what is the exact condition, and what is the resulting payload string?",
+      "key": "No: compression is only kept if `len(compressed) < len(json) - 1`. Here json is the 30-byte `b'{\"id\":5,\"name\":\"itsdangerous\"}'` and zlib.compress of it is longer (38 bytes), so the condition is False, `is_compressed` stays False, no `b\".\"` prefix is prepended, and the payload is the plain base64url-encoded JSON `b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'` (padding `=` stripped by base64_encode).",
+      "lines": [
+        "src/itsdangerous/url_safe.py:55-69",
+        "src/itsdangerous/encoding.py:20-25"
+      ],
+      "check": "import sys, os, zlib\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous import URLSafeSerializer\ns = URLSafeSerializer('secret key', 'auth')\njson_bytes = b'{\"id\":5,\"name\":\"itsdangerous\"}'\nassert len(zlib.compress(json_bytes)) >= len(json_bytes) - 1\np = s.dump_payload({'id': 5, 'name': 'itsdangerous'})\nassert not p.startswith(b'.')\nassert p == b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'\n"
+    },
+    {
+      "id": "p3",
+      "kind": "path",
+      "question": "In `Signer.derive_key()` during this run, which key-derivation branch runs, what exact bytes are hashed, and what key comes out?",
+      "key": "The default `key_derivation` is `\"django-concat\"`, so the branch `self.digest_method(self.salt + b\"signer\" + secret_key).digest()` runs. The hashed input is `b'auth' + b'signer' + b'secret key'` = `b'authsignersecret key'`, hashed with the default digest `_lazy_sha1` (hashlib.sha1), giving the 20-byte key `b'\\xcea\\x91\\xbb\\x97+C\\x86\\xdc\\x0f\\x82\\xd1uM\\xbf\\x16\\r\\xa8\\xff\\xd8'` (hex ce6191bb972b4386dc0f82d1754dbf160da8ffd8).",
+      "lines": [
+        "src/itsdangerous/signer.py:182-213",
+        "src/itsdangerous/signer.py:120-127",
+        "src/itsdangerous/serializer.py:278-285"
+      ],
+      "check": "import sys, os, hashlib\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous import URLSafeSerializer\ns = URLSafeSerializer('secret key', 'auth')\nsig = s.make_signer()\nassert sig.key_derivation == 'django-concat'\nassert sig.salt == b'auth'\nk = sig.derive_key()\nassert k == hashlib.sha1(b'authsignersecret key').digest()\nassert k.hex() == 'ce6191bb972b4386dc0f82d1754dbf160da8ffd8'\n"
+    },
+    {
+      "id": "p4",
+      "kind": "path",
+      "question": "What is the exact token returned by `auth_s.dumps({\"id\": 5, \"name\": \"itsdangerous\"})` in this scenario, and how is its signature part built?",
+      "key": "The token is the str `'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg'`. `Signer.sign` returns `value + sep + get_signature(value)` with `sep = b'.'`; `get_signature` HMACs the payload bytes with the derived key using SHA-1 (`HMACAlgorithm.get_signature` \u2192 20-byte digest `b'\\xe9\\x83\\xfaO@Z;\\xae\\xd7?\\xef\\xbdS4\\xeb\\x9a\\xea\\xd7Jh'`) and then `base64_encode`s it URL-safely with `=` padding stripped, producing `b'6YP6T0BaO67XP--9UzTrmurXSmg'`.",
+      "lines": [
+        "src/itsdangerous/signer.py:215-225",
+        "src/itsdangerous/signer.py:62-64",
+        "src/itsdangerous/encoding.py:20-25"
+      ],
+      "check": "import sys, os, hmac, hashlib\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous import URLSafeSerializer\nfrom itsdangerous.encoding import base64_encode\ns = URLSafeSerializer('secret key', 'auth')\ntok = s.dumps({'id': 5, 'name': 'itsdangerous'})\nassert tok == 'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg'\nkey = hashlib.sha1(b'authsignersecret key').digest()\nd = hmac.new(key, msg=b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9', digestmod=hashlib.sha1).digest()\nassert base64_encode(d) == b'6YP6T0BaO67XP--9UzTrmurXSmg'\nassert tok.rsplit('.', 1)[1] == '6YP6T0BaO67XP--9UzTrmurXSmg'\n"
+    },
+    {
+      "id": "p5",
+      "kind": "path",
+      "question": "During `auth_s.loads(token)`, how many signers does `iter_unsigners()` produce for this serializer, and why?",
+      "key": "Exactly one. `fallback_signers` defaults to `list(self.default_fallback_signers)`, which is the empty list `[]` (the SHA-512 fallback was removed in 2.0), so `iter_unsigners` yields only `self.make_signer(salt)` \u2014 a `Signer` built with all secret keys (`[b'secret key']`) and salt `b'auth'` \u2014 and the `for fallback in self.fallback_signers` loop body never runs. The single unsign succeeds, so `loads` returns on the first iteration.",
+      "lines": [
+        "src/itsdangerous/serializer.py:101-104",
+        "src/itsdangerous/serializer.py:228-233",
+        "src/itsdangerous/serializer.py:287-307",
+        "src/itsdangerous/serializer.py:337-343"
+      ],
+      "check": "import sys, os\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous import URLSafeSerializer\nfrom itsdangerous.signer import Signer\ns = URLSafeSerializer('secret key', 'auth')\nassert s.fallback_signers == []\nus = list(s.iter_unsigners())\nassert len(us) == 1\nassert isinstance(us[0], Signer)\nassert us[0].secret_keys == [b'secret key'] and us[0].salt == b'auth'\n"
+    },
+    {
+      "id": "p6",
+      "kind": "path",
+      "question": "The second positional argument `\"auth\"` is the salt. Where does it end up, and what happens if the same token is loaded by a serializer built with salt `\"other\"` instead?",
+      "key": "`Serializer.__init__` converts it with `want_bytes` to `self.salt = b'auth'`; `make_signer(None)` passes `salt=b'auth'` into the `Signer`, where it is used in key derivation (`sha1(b'auth' + b'signer' + secret_key)`), replacing the Signer default `b'itsdangerous.Signer'`. With salt `\"other\"` a different key is derived, `Signer.verify_signature` returns False for every secret key, and `Signer.unsign` raises `BadSignature(\"Signature b'6YP6T0BaO67XP--9UzTrmurXSmg' does not match\", payload=b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9')`, which `Serializer.loads` re-raises as the last exception.",
+      "lines": [
+        "src/itsdangerous/serializer.py:210-214",
+        "src/itsdangerous/serializer.py:278-285",
+        "src/itsdangerous/signer.py:129-158",
+        "src/itsdangerous/signer.py:244-256"
+      ],
+      "check": "import sys, os\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous import URLSafeSerializer, BadSignature\ns = URLSafeSerializer('secret key', 'auth')\nassert s.salt == b'auth'\nassert s.make_signer().salt == b'auth'\ntok = s.dumps({'id': 5, 'name': 'itsdangerous'})\nother = URLSafeSerializer('secret key', 'other')\ntry:\n    other.loads(tok)\n    raise AssertionError('should have raised')\nexcept BadSignature as e:\n    assert 'does not match' in str(e)\n    assert e.payload == b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'\n"
+    },
+    {
+      "id": "p7",
+      "kind": "path",
+      "question": "Suppose the untrusted environment returns the token with its last character stripped. What exception does `auth_s.loads` raise, what is on the exception, and what does `auth_s.loads_unsafe` return for the same input?",
+      "key": "`Signer.unsign` splits on the last `.`, `verify_signature` fails (the HMAC digest differs), and `BadSignature` is raised with message \"Signature b'6YP6T0BaO67XP--9UzTrmurXSm' does not match\" and `payload=b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'`; `Serializer.loads` catches it, has no other signer to try, and re-raises it. `loads_unsafe` goes through `_loads_unsafe_impl`: since `e.payload` is not None it base64-decodes and JSON-loads it, returning `(False, {'id': 5, 'name': 'itsdangerous'})` \u2014 the data is recovered but flagged unverified.",
+      "lines": [
+        "src/itsdangerous/signer.py:244-256",
+        "src/itsdangerous/serializer.py:337-343",
+        "src/itsdangerous/serializer.py:367-395"
+      ],
+      "check": "import sys, os\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous import URLSafeSerializer, BadSignature\ns = URLSafeSerializer('secret key', 'auth')\ntok = s.dumps({'id': 5, 'name': 'itsdangerous'})[:-1]\ntry:\n    s.loads(tok)\n    raise AssertionError('should have raised')\nexcept BadSignature as e:\n    assert 'does not match' in str(e)\n    assert e.payload == b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9'\nassert s.loads_unsafe(tok) == (False, {'id': 5, 'name': 'itsdangerous'})\n"
+    },
+    {
+      "id": "p8",
+      "kind": "path",
+      "question": "The signature in the token, `6YP6T0BaO67XP--9UzTrmurXSmg`, is 27 characters and not a multiple of 4. How does `base64_decode` handle this during verification, and what does it produce?",
+      "key": "`base64_decode` first coerces to bytes with `want_bytes(s, encoding='ascii', errors='ignore')`, then re-adds the stripped padding with `string += b\"=\" * (-len(string) % 4)` \u2014 here `-27 % 4 == 1`, so one `=` is appended \u2014 and calls `base64.urlsafe_b64decode`. The result is the raw 20-byte SHA-1 HMAC digest `b'\\xe9\\x83\\xfaO@Z;\\xae\\xd7?\\xef\\xbdS4\\xeb\\x9a\\xea\\xd7Jh'`, which is compared with `hmac.compare_digest` against the freshly computed signature. If decoding raised TypeError/ValueError it would become a `BadData`, but `Signer.verify_signature` catches any exception there and simply returns False.",
+      "lines": [
+        "src/itsdangerous/encoding.py:28-38",
+        "src/itsdangerous/signer.py:227-242"
+      ],
+      "check": "import sys, os, hashlib, hmac\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous.encoding import base64_decode\nsig = b'6YP6T0BaO67XP--9UzTrmurXSmg'\nassert len(sig) == 27 and (-len(sig)) % 4 == 1\nd = base64_decode(sig)\nassert len(d) == 20\nkey = hashlib.sha1(b'authsignersecret key').digest()\nassert d == hmac.new(key, msg=b'eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9', digestmod=hashlib.sha1).digest()\n"
+    },
+    {
+      "id": "g1",
+      "kind": "general",
+      "question": "How does `Serializer.iter_unsigners` construct signers from each kind of entry in `fallback_signers`, and how does its handling of multiple secret keys differ from the primary signer?",
+      "key": "`iter_unsigners` first yields `self.make_signer(salt)`, which is built with the whole `self.secret_keys` list plus `self.signer_kwargs`. Then, for each fallback entry: a dict is used as `kwargs` with `self.signer` as the class; a tuple is unpacked as `(signer_class, kwargs)`; anything else is treated as a Signer class and reuses `self.signer_kwargs`. Crucially, for fallbacks it loops `for secret_key in self.secret_keys` and yields one signer *per key* (each constructed with a single key, in oldest-to-newest order), whereas the primary signer receives the full key list and tries keys newest-first internally in `verify_signature`.",
+      "lines": [
+        "src/itsdangerous/serializer.py:287-307",
+        "src/itsdangerous/serializer.py:278-285",
+        "src/itsdangerous/signer.py:236-242"
+      ],
+      "check": "import sys, os, hashlib\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous.serializer import Serializer\nfrom itsdangerous.signer import Signer\nclass S2(Signer):\n    default_digest_method = staticmethod(hashlib.sha256)\ns = Serializer(['k1', 'k2'], fallback_signers=[{'digest_method': hashlib.sha256}, (Signer, {'digest_method': hashlib.sha256}), S2])\nus = list(s.iter_unsigners())\nassert len(us) == 1 + 3 * 2\nassert us[0].secret_keys == [b'k1', b'k2']\nfor u in us[1:]:\n    assert len(u.secret_keys) == 1\n    assert u.digest_method == hashlib.sha256\n"
+    },
+    {
+      "id": "g2",
+      "kind": "general",
+      "question": "In `Serializer.loads`, which exceptions are swallowed while iterating signers and which propagate immediately, and what is raised when every signer fails?",
+      "key": "Only `BadSignature` (and its subclasses, e.g. `BadTimeSignature`) raised by `signer.unsign` is caught and stored in `last_exception` so the next signer can be tried; a `BadPayload` from `load_payload` is *not* caught (it derives from `BadData`, not `BadSignature`) and propagates immediately even if other fallback signers remain. If all signers fail with BadSignature, the loop ends and the last stored `BadSignature` is re-raised (`raise t.cast(BadSignature, last_exception)`); if `iter_unsigners` ever yielded nothing, `last_exception` would be None and `raise None` would produce a TypeError.",
+      "lines": [
+        "src/itsdangerous/serializer.py:328-343",
+        "src/itsdangerous/serializer.py:259-269",
+        "src/itsdangerous/exc.py:92-99"
+      ],
+      "check": "import sys, os\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous.serializer import Serializer\nfrom itsdangerous.exc import BadPayload, BadSignature\ns = Serializer('secret_key')\nbad = s.make_signer().sign(b'not json')\ntry:\n    s.loads(bad)\n    raise AssertionError('should raise')\nexcept BadPayload as e:\n    assert not isinstance(e, BadSignature)\n    assert e.original_error is not None\n"
+    },
+    {
+      "id": "g4",
+      "kind": "general",
+      "question": "What constraint does `Signer.__init__` place on the `sep` argument, how is it enforced, and what is the reasoning?",
+      "key": "The separator must not be a byte from the base64url alphabet. `Signer.__init__` coerces `sep` with `want_bytes` and checks `if self.sep in _base64_alphabet` (the bytes of ASCII letters, digits, `-`, `_`, `=`), raising `ValueError(\"The given separator cannot be used because it may be contained in the signature itself. ASCII letters, digits, and '-_=' must not be used.\")`. Because `unsign` recovers the value with `signed_value.rsplit(self.sep, 1)`, a separator that can occur inside the base64 signature would split the token in the wrong place. The default `b'.'` is safe.",
+      "lines": [
+        "src/itsdangerous/signer.py:144-151",
+        "src/itsdangerous/encoding.py:42",
+        "src/itsdangerous/signer.py:244-256"
+      ],
+      "check": "import sys, os\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous.signer import Signer\nfor bad in ('-', 'a', '1', '_', '='):\n    try:\n        Signer('k', sep=bad)\n        raise AssertionError('should raise for ' + bad)\n    except ValueError as e:\n        assert 'separator cannot be used' in str(e)\nassert Signer('k', sep='.').sep == b'.'\n"
+    },
+    {
+      "id": "g5",
+      "kind": "general",
+      "question": "When a list of secret keys is passed for key rotation, which key signs and in what order are keys tried on verification?",
+      "key": "`_make_keys_list` normalizes the argument to a list of bytes (a single str/bytes becomes a one-element list). Signing uses the newest key: `derive_key()` with no argument uses `self.secret_keys[-1]`, and the `secret_key` property also returns the last entry. Verification tries every key newest-first: `verify_signature` loops `for secret_key in reversed(self.secret_keys)`, derives a key for each and returns True on the first match, returning False only after all keys fail. The documented contract is to pass keys oldest to newest.",
+      "lines": [
+        "src/itsdangerous/signer.py:67-73",
+        "src/itsdangerous/signer.py:175-196",
+        "src/itsdangerous/signer.py:227-242"
+      ],
+      "check": "import sys, os\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous.signer import Signer\nold = Signer('a')\nsigned = old.sign('my string')\nrot = Signer(['a', 'b'])\nassert rot.secret_keys == [b'a', b'b']\nassert rot.secret_key == b'b'\nassert rot.derive_key() == Signer('b').derive_key()\nassert rot.unsign(signed) == b'my string'\nassert rot.sign('x') == Signer('b').sign('x')\n"
+    },
+    {
+      "id": "g6",
+      "kind": "general",
+      "question": "What does `Serializer.loads_unsafe` guarantee and what are the failure modes and risks of using it?",
+      "key": "`loads_unsafe`/`_loads_unsafe_impl` never raises an ItsDangerous error: it returns `(True, payload)` if `loads` succeeds; on `BadSignature` it returns `(False, None)` when the exception's `payload` attribute is None (e.g. no separator found, or a signer that clears payload), otherwise it calls `load_payload(e.payload)` and returns `(False, data)`, falling back to `(False, None)` if that raises `BadPayload`. The risk is that the payload is deserialized without any signature verification, so with an exploitable serializer (pickle) attacker-controlled data gets executed; the docs restrict it to debugging and non-exploitable serializers. Also note a True flag only means the signature matched, and `BadData` subclasses other than BadSignature/BadPayload are not caught.",
+      "lines": [
+        "src/itsdangerous/serializer.py:349-395",
+        "src/itsdangerous/serializer.py:243-269"
+      ],
+      "check": "import sys, os\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous.serializer import Serializer\ns = Serializer('secret_key')\nsigned = s.dumps({'id': 42})\nassert s.loads_unsafe(signed) == (True, {'id': 42})\nassert s.loads_unsafe(signed[:-1]) == (False, {'id': 42})\nassert s.loads_unsafe('no-separator-here') == (False, None)\nbad_payload = s.make_signer().sign(signed.rsplit('.', 1)[0][:-1])[:-1]\nassert s.loads_unsafe(bad_payload) == (False, None)\n"
+    },
+    {
+      "id": "g7",
+      "kind": "general",
+      "question": "What does `NoneAlgorithm` do, and what is the security consequence of configuring a `Signer` with it?",
+      "key": "`NoneAlgorithm.get_signature` returns `b\"\"` for any key and value, and it inherits `verify_signature`, which compares the supplied signature against that empty bytes with `hmac.compare_digest`. So signing appends only the separator (e.g. `b'value.'`) and verification succeeds for any value whose signature part base64-decodes to empty \u2014 i.e. the secret key, salt and key derivation are irrelevant and anyone can forge a token by appending `.`. It exists for cases where signing is deliberately disabled; using it in production means tokens from untrusted environments are completely unauthenticated.",
+      "lines": [
+        "src/itsdangerous/signer.py:24-37",
+        "src/itsdangerous/signer.py:215-256"
+      ],
+      "check": "import sys, os\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous.signer import Signer, NoneAlgorithm\ns = Signer('secret-key', algorithm=NoneAlgorithm())\nassert s.sign('value') == b'value.'\nassert s.unsign(b'value.') == b'value'\n# forged with a totally different key\nother = Signer('other-key', algorithm=NoneAlgorithm())\nassert other.unsign(b'admin=1.') == b'admin=1'\n"
+    }
+  ],
+  "dropped": [
+    {
+      "id": "g3",
+      "kind": "general",
+      "question": "`TimedSerializer.loads` overrides the base loop. What does it do differently when a signer raises `SignatureExpired`, and why does that matter with fallback signers?",
+      "key": "It calls `signer.unsign(s, max_age=max_age, return_timestamp=True)` and catches `SignatureExpired` separately, re-raising it immediately instead of continuing to the next signer (the comment: the signature verified fine but is expired, so there is no point trying further signers); only other `BadSignature` errors are stored in `last_exception` and allow the loop to continue. So an expired-but-valid token never falls through to a fallback signer and never gets reported as a generic bad signature. It also returns `(payload, timestamp)` when `return_timestamp=True`.",
+      "lines": [
+        "src/itsdangerous/timed.py:185-220",
+        "src/itsdangerous/timed.py:137-158"
+      ],
+      "check": "import sys, os, time\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nfrom itsdangerous.timed import TimedSerializer, TimestampSigner\nfrom itsdangerous.exc import SignatureExpired\nclass OldSigner(TimestampSigner):\n    def get_timestamp(self):\n        return int(time.time()) - 100\ns = TimedSerializer('secret_key', signer=OldSigner)\ntok = s.dumps({'id': 42})\ntry:\n    s.loads(tok, max_age=10)\n    raise AssertionError('should raise')\nexcept SignatureExpired as e:\n    assert 'Signature age' in str(e)\n",
+      "dropped": "check failed: AssertionError: should raise"
+    }
+  ],
+  "cost": 0.65
+}
