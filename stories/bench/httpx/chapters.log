@@ -1,0 +1,8 @@
+   1. 01-the-world-it-enters-a-client-wired-to-a-function-n.md  792 words, 14 citations, 83s, $1.32  → ok
+   2. 02-becomes-an-absolute-url.md  1036 words, 25 citations, 53s, $0.24  → ok
+   3. 03-merging-then-becoming-a-request.md  1095 words, 27 citations, 101s, $0.35  → ok
+   4. 04-send-state-auth-resolution-transport-selection.md  1181 words, 32 citations, 102s, $0.35  → ok
+   5. 05-across-the-boundary-the-request-becomes-a-wsgi-env.md  1036 words, 21 citations, 57s, $0.27  → ok
+   6. 06-dressing-the-response-then-unwinding-the-redirect-.md  1212 words, 31 citations, 62s, $0.27  → ok
+   7. 07-reading-the-body-decoders-chunker-and-the-close-th.md  943 words, 27 citations, 60s, $0.26  → ok
+   8. 08-out-to-the-caller-and-closing-a-client-that-owns-n.md  1146 words, 33 citations, 63s, $0.28  → ok

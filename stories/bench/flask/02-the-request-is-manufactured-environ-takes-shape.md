@@ -1,0 +1,32 @@
+# Chapter 2 · The Request Is Manufactured: `environ` Takes Shape
+
+> **Enters as:** `client.get("/")` — positional args `('/',)` and `kwargs={'method': 'GET'}`.
+
+A path and a method. That is the whole of what the caller supplied. Everything else the application will see — the host it was asked for, the scheme, the client's IP, the user agent — is about to be invented on the caller's behalf, by Flask, from the defaults assembled in Chapter 1.
+
+First the client itself. [`Flask.test_client`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L809-L814) checks `test_client_class`, which is `None` on a stock app, imports `FlaskClient`, and constructs it with the app, the app's `response_class`, and `use_cookies=True`. [`FlaskClient.__init__`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L125-L133) then sets three things that matter to every request this client will ever make: `preserve_context = False`, an empty `ExitStack` for held contexts, and an `environ_base` dict seeded with `REMOTE_ADDR` of `'127.0.0.1'` and a `HTTP_USER_AGENT` built from [`_get_werkzeug_version()`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L100-L106), which reads the installed distribution metadata once and caches it in a module global. In this run that returned `'3.1.9'`, so the base environ is `{'REMOTE_ADDR': '127.0.0.1', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9'}`.
+
+> **For the owner:** The test client fabricates `REMOTE_ADDR` as `127.0.0.1` and supplies its own `User-Agent` on every request. Do not treat a passing test as evidence that code reading `request.remote_addr` behaves correctly behind a real proxy; set `environ_base` explicitly in tests that depend on those values.
+
+## From two arguments to a `Request`
+
+`client.get("/")` lands in Werkzeug's `Client.get`, which forwards to [`FlaskClient.open`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L204-L228) with `args=('/',)` and `kwargs={'method': 'GET'}`. `open` first asks whether the caller handed it a pre-built request: an `EnvironBuilder`, a raw `dict` environ, or a `BaseRequest` would each take their own branch, with the environ merged or copied accordingly. A bare path takes none of them, so control falls to the `else`: [`_request_from_builder_args`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L193-L202).
+
+That function does one thing before building: it folds the client's defaults into whatever `environ_base` the caller passed, via [`_copy_environ`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L185-L191). The caller passed none, so `other` is `{}` and the result is just the two base keys. The same function is where context preservation would be switched on — if `preserve_context` were true, it would add `werkzeug.debug.preserve_context` to the environ, a callback that captures the context so it survives the request. `preserve_context` is only set inside a `with client:` block, and this scenario does not use one, so the key is absent. Chapter 8 will depend on that: nothing will hold the context open after the response.
+
+Then [Flask's `EnvironBuilder`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L49-L86) is constructed with `app`, `path='/'`, and `base_url`, `subdomain`, `url_scheme` all `None`. Its first act is an [assertion](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L59-L63) that you did not pass `base_url` together with `subdomain` or `url_scheme` — a contradiction caught at build time rather than producing a confusing URL. Nothing was passed, so it proceeds to [invent the base URL from the app's config](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L65-L86):
+
+- `http_host = app.config.get("SERVER_NAME") or "localhost"` — `SERVER_NAME` is `None` in this app, so the literal fallback `'localhost'` wins.
+- `app_root = app.config["APPLICATION_ROOT"]`, which is `'/'`.
+- `url_scheme = app.config["PREFERRED_URL_SCHEME"]`, which is `'http'`.
+- The requested path is split; `'/'` has no scheme and no netloc of its own, so `base_url` becomes `'http://localhost/'` and `path` stays `'/'`.
+
+The app is stored on the builder so that [`json_dumps`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L88-L94) can route JSON bodies through the application's own provider, keeping request serialization consistent with response serialization. No JSON here.
+
+`builder.get_request()` produces the object the trace reports as `<Request 'http://localhost/' [GET]>`, and the builder is closed in a `finally` so any file handles it opened are released even if building raised. The environ underneath it is the dict the rest of this story travels in: `HTTP_HOST='localhost'`, `HTTP_USER_AGENT='Werkzeug/3.1.9'`, `PATH_INFO='/'`, `QUERY_STRING=''`, `RAW_URI='/'`, `REMOTE_ADDR='127.0.0.1'`, and the usual WSGI scaffolding.
+
+> **For the owner:** The `Host` header in a test request comes from `SERVER_NAME`, defaulting to the string `'localhost'`, and the scheme from `PREFERRED_URL_SCHEME`, defaulting to `'http'`. Tests therefore never exercise the host your production app actually receives; if your routing uses subdomains or host matching, set `SERVER_NAME` in the test config and pass `subdomain=` explicitly.
+
+One more thing happens before the request leaves the client: `open` [closes `self._context_stack`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L230-L233), popping any contexts preserved by an earlier call. That is what keeps one request's context from leaking into the next, or across a redirect chain. The stack is empty here. With the environ built and the slate clean, `super().open(request, ...)` hands the dict to the WSGI application — which is where the next chapter picks it up.
+
+> **Leaves as:** A `Request` object wrapping a WSGI environ: `{'HTTP_HOST': 'localhost', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9', 'PATH_INFO': '/', 'QUERY_STRING': '', 'RAW_URI': '/', 'REMOTE_ADDR': '127.0.0.1', …}`, reported as `<Request 'http://localhost/' [GET]>`.

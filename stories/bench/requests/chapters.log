@@ -1,0 +1,10 @@
+   1. 01-a-url-and-a-password-walk-into-a-session.md  854 words, 13 citations, 44s, $1.24  → 0 check errors, 1 contradicted
+   2. 02-merging-what-the-caller-said-with-what-the-session.md  897 words, 18 citations, 104s, $0.36  → ok
+   3. 03-turning-a-string-into-a-url-you-can-trust.md  947 words, 26 citations, 89s, $0.31  → ok
+   4. 04-headers-cookies-and-the-crlf-that-never-happens.md  977 words, 18 citations, 100s, $0.34  → ok
+   5. 05-no-body-and-the-password-becomes-a-header.md  1305 words, 22 citations, 67s, $0.27  → ok
+   6. 06-what-the-environment-gets-to-say-and-choosing-a-tr.md  1168 words, 20 citations, 99s, $0.36  → ok
+   7. 07-the-adapter-pools-certificates-and-everything-that.md  1317 words, 29 citations, 122s, $0.41  → 0 check errors, 1 contradicted
+   8. 08-dressing-the-raw-response.md  1039 words, 29 citations, 97s, $0.36  → ok
+   9. 09-hooks-cookie-persistence-and-the-redirect-that-was.md  1208 words, 32 citations, 69s, $0.29  → ok
+  10. 10-reading-the-body-closing-everything-and-decoding-w.md  1126 words, 34 citations, 104s, $0.36  → ok

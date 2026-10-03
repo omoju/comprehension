@@ -1,0 +1,43 @@
+# Chapter 8 · Into the call, and out through echo
+
+> **Enters as:** a context at `_depth == 1` holding `params={'count': 3, 'name': 'Click'}`, with `'Your name: Click\n'` already in the captured stdout
+
+## Two lines to reach user code
+
+[`Command.invoke`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/core.py#L1428-L1442) does only two things. First it [checks `self.deprecated`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/core.py#L1432-L1439); had this command been marked deprecated, a red `DeprecationWarning: The command 'hello' is deprecated.` would have gone to stderr before anything else ran. It is not, so it falls straight to [`ctx.invoke(self.callback, **ctx.params)`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/core.py#L1441-L1442).
+
+That splat is the whole handover. The dictionary assembled over the last two chapters becomes keyword arguments: `hello(count=3, name='Click')`. It is also the reason parameter names must be legal Python identifiers — a parameter named `from` can only ever be reached through `**kwargs`, which is why [`_check_name_is_usable` warns about it back at declaration time](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/core.py#L2502-L2517).
+
+The callback is a plain function, not a `Command`, so [`Context.invoke` skips the sub-context branch and reuses `self`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/core.py#L932-L936). The call happens inside two wrappers: `augment_usage_errors(self)`, which stamps the context onto any `UsageError` your code raises so it still prints a usage block, and `with ctx`, which pushes the context onto the thread-local stack again (`_depth` 1 → 2) so that `get_current_context()` works from anywhere inside the body.
+
+> **For the owner:** Only `UsageError` and its subclasses get the polite treatment. Any other exception your callback raises — a `KeyError`, a `requests` timeout — travels past every handler in `main` except the bare `OSError`/`EPIPE` case and surfaces as an unhandled traceback with exit code 1. If you want a clean message and a chosen exit code, raise `ClickException` or call `ctx.exit(n)`.
+
+Inside, the loop runs three times and calls `click.echo(f"Hello, {name}!")`.
+
+## Finding a stream to write to
+
+`echo` is called with `message='Hello, Click!'`, `file=None`, `nl=True`, `err=False`, `color=None`. With no file given and `err` false, it [asks `_default_text_stdout()`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/utils.py#L287-L291) for one. That function is a closure built by [`_make_cached_stream_func`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/_compat.py#L547-L572): it reads `sys.stdout` *now*, looks it up in a `WeakKeyDictionary`, and only builds a wrapper on a miss. The cache is keyed on the stream object, so the runner swapping `sys.stdout` out from under Click yields a fresh entry rather than a stale wrapper pointing at the real terminal — and the second and third greetings skip the whole resolution and hit the cache.
+
+The first greeting does the work. [`get_text_stdout`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/_compat.py#L347-L351) tries the Windows console shim (`None` off Windows) and then [`_force_correct_text_writer`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/_compat.py#L303-L316). Inside [`_force_correct_text_stream`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/_compat.py#L241-L259) the runner's `_NamedTextIOWrapper` is not a binary writer, its `encoding` and `errors` are compatible with the unset requested values, and `_stream_is_misconfigured` is False because [`is_ascii_encoding('utf-8')`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/_compat.py#L43-L48) answers False. So the stream comes back **unchanged** — `echo` writes to exactly the object the test installed.
+
+The branch not taken matters more than the one taken. If stdout had reported an ASCII encoding — the classic misconfigured-locale case — Click would have dug out the underlying binary buffer and [rewrapped it as UTF-8 with `errors='replace'`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/_compat.py#L261-L284), deliberately choosing mojibake over a `UnicodeEncodeError` mid-run. If no binary buffer could be found, it [silently returns the original stream](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/_compat.py#L264-L267) and accepts whatever comes out. And if there is no stdout at all — `pythonw` on Windows — [`echo` returns without writing anything](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/utils.py#L293-L296).
+
+## Newline, colour, bytes
+
+The message is a `str`, so it passes through [the match statement unchanged](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/utils.py#L298-L304) and `nl=True` appends a `\n`: `'Hello, Click!\n'`.
+
+Then the colour decision. `color=None` means "decide for me", so [`resolve_color_default`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/globals.py#L54-L66) consults the current context — `ctx.color` is `None` — and [`should_strip_ansi` is asked](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/utils.py#L330-L331). Normally that is [the `_compat` version](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/_compat.py#L502-L513), whose rule is "strip unless the stream is a tty": pipe your program's output into a file and the escape codes vanish on their own. Here the runner has [swapped in its own](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/testing.py#L506-L511), which answers from the `color=False` passed to `invoke`, and returns `True`. [`strip_ansi`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/_compat.py#L491-L492) runs its CSI regex over `'Hello, Click!\n'` and finds nothing to remove.
+
+Had the message been `bytes`, control would have gone the [other way](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/utils.py#L320-L326) — find the binary writer underneath, flush the text layer, write the bytes — which is how `echo` manages to write bytes to a text stream without raising. Colour stripping is skipped on that path by construction.
+
+Finally [`file.write(out)` and `file.flush()`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/utils.py#L333-L334). `echo` always flushes; that is what keeps output ordered against a subprocess or a prompt rather than appearing in a lump at exit.
+
+## Two buffers at once
+
+The text wrapper encodes and hands `b'Hello, Click!\n'` to [`BytesIOCopy.write`](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/testing.py#L133-L135), which writes those 14 bytes to the shared mixed buffer *first*, then to its own, and returns `14`. [`flush` flushes both](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/testing.py#L129-L131). That ordering is the entire mechanism behind faithful interleaving: the mixed buffer records writes in real time, across stdout and stderr, so `result.output` shows what a user at a terminal would have seen — the prompt echo from chapter 7 first, then the three greetings.
+
+Three times round, and the callback returns `None`. [`Context.invoke`'s `with ctx` exits](https://github.com/pallets/click/blob/06b2a678741131fd577ce170e23e5ca0aeba0309/src/click/core.py#L580-L592), dropping `_depth` back to 1 — not zero, so nothing is closed yet — and `Command.invoke` hands that `None` back to `main`.
+
+> **For the owner:** `echo` is not cosmetic sugar for `print`: it is where encoding recovery, ANSI stripping, byte handling and flushing live. Use it (or `secho`) for all program output, and leave `color=None` so the tty check decides; passing `color=True` forces escape codes into redirected output and into log files.
+
+> **Leaves as:** `b'Hello, Click!\n'` written and flushed three times into both the captured stdout buffer and the mixed output buffer, and the callback's return value `None` on its way back to `main`

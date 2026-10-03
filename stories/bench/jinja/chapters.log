@@ -1,0 +1,9 @@
+   1. 01-the-world-it-enters.md  794 words, 13 citations, 67s, $1.24  → ok
+   2. 02-asked-for-by-name.md  828 words, 11 citations, 87s, $0.28  → ok
+   3. 03-cut-into-tokens.md  1020 words, 21 citations, 118s, $0.36  → ok
+   4. 04-a-shape-instead-of-a-string.md  1124 words, 25 citations, 114s, $0.38  → ok
+   5. 05-the-question-is-asked-code-for-the-root.md  1349 words, 31 citations, 121s, $0.40  → ok
+   6. 06-two-functions-named-after-holes-then-made-real.md  1415 words, 39 citations, 195s, $0.56  → 0 check errors, 1 contradicted
+   7. 07-handing-over-the-data.md  1051 words, 20 citations, 134s, $0.36  → ok
+      ✗ 1 check errors, repair 1/2: proof 1 failed: AssertionError
+   8. 08-fetching-the-parent-then-escaping-the-ampersand.md  1457 words, 30 citations, 219s, $0.84  → 0 check errors, 1 contradicted after 1 repair

@@ -1,0 +1,10 @@
+      ✗ 1 check errors, repair 1/2: proof 1 failed: NameError: name '__file__' is not defined. Did you mean: '__name__'?
+   1. 01-the-world-before-the-request-what-flask-name-decid.md  894 words, 27 citations, 161s, $1.54  → ok after 1 repair
+   2. 02-the-request-is-manufactured-environ-takes-shape.md  748 words, 11 citations, 71s, $0.27  → ok
+   3. 03-crossing-the-boundary-wsgi-app-and-the-context-tha.md  868 words, 12 citations, 90s, $0.31  → ok
+      ✗ 1 check errors, repair 1/2: proof 1 failed: AssertionError
+   4. 04-push-the-session-opens-before-the-url-is-matched.md  1026 words, 13 citations, 118s, $0.49  → ok after 1 repair
+   5. 05-full-dispatch-request-the-error-boundary-and-the-s.md  909 words, 13 citations, 81s, $0.28  → ok
+   6. 06-dispatch-and-make-response-the-branches-not-taken-.md  1249 words, 22 citations, 77s, $0.28  → 0 check errors, 1 contradicted
+   7. 07-process-response-after-request-hooks-and-the-cooki.md  918 words, 16 citations, 72s, $0.27  → 0 check errors, 1 contradicted
+   8. 08-pop-and-the-way-out-teardown-that-runs-everything-.md  1025 words, 24 citations, 136s, $0.42  → ok

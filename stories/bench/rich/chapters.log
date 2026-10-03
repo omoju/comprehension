@@ -1,0 +1,10 @@
+   1. 01-the-world-the-data-enters.md  785 words, 20 citations, 72s, $1.44  → 0 check errors, 1 contradicted
+   2. 02-two-strings-become-one-text.md  1049 words, 31 citations, 90s, $0.33  → ok
+   3. 03-measuring-the-room-and-naming-the-colour.md  1003 words, 28 citations, 105s, $0.36  → ok
+   4. 04-from-text-to-segments-wrapping-cells-and-the-style.md  1250 words, 36 citations, 147s, $0.45  → ok
+      ✗ 1 check errors, repair 1/2: proof 1 failed: AssertionError
+   5. 05-cropping-the-buffer-and-the-single-write.md  1252 words, 35 citations, 286s, $1.00  → ok after 1 repair
+   6. 06-building-the-table-columns-cells-and-the-renderabi.md  1003 words, 22 citations, 106s, $0.36  → ok
+   7. 07-deciding-the-shape-column-measurement-and-collapse.md  1042 words, 32 citations, 122s, $0.40  → ok
+   8. 08-drawing-the-table-padding-box-characters-and-per-c.md  1161 words, 30 citations, 171s, $0.51  → ok
+   9. 09-one-last-crop-styles-spent-and-reading-back-what-w.md  1015 words, 27 citations, 139s, $0.44  → ok

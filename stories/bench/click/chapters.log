@@ -1,0 +1,10 @@
+   1. 01-before-the-data-declarations-become-objects.md  943 words, 22 citations, 112s, $1.35  → ok
+   2. 02-an-isolated-world-the-runner-swaps-the-process-out.md  947 words, 30 citations, 108s, $0.36  → ok
+      ✗ 1 check errors, repair 1/2: proof 1 failed: TypeError: string argument expected, got 'bytes'
+   3. 03-main-the-policy-at-the-door-and-a-context-to-live-.md  979 words, 27 citations, 211s, $0.76  → ok after 1 repair
+   4. 04-building-the-parser-and-the-help-option-nobody-dec.md  1008 words, 26 citations, 80s, $0.30  → ok
+   5. 05-tokens-become-a-raw-dict.md  843 words, 21 citations, 92s, $0.33  → 0 check errors, 1 contradicted
+   6. 06-deciding-who-goes-first-and-the-help-option-that-w.md  1080 words, 33 citations, 90s, $0.32  → ok
+   7. 07-the-caller-s-3-the-user-s-click-and-the-handover-t.md  1023 words, 23 citations, 138s, $0.42  → ok
+   8. 08-into-the-call-and-out-through-echo.md  909 words, 25 citations, 82s, $0.30  → ok
+   9. 09-exit-is-an-exception-and-what-the-caller-gets-back.md  869 words, 20 citations, 76s, $0.30  → 0 check errors, 1 contradicted

@@ -46,7 +46,10 @@ and explains *why* the code does what it does.
 When the narrator turns to the reader about their own concerns (for an owner: a guarantee, a risk, a default to
 question, something to check before signing off), put it in a callout of its own: a blockquote whose first words
 are the reader's role in bold, like `> **For the owner:** …`. Keep the journey in the narration and the advice in
-the callouts. Use them where they matter, typically one or two per chapter, never more than three.
+the callouts. Use them where they matter, typically one or two per chapter, never more than three. Callouts are
+written plainly, in the manner of a technical instruction: one topic per sentence, active voice, and any action
+for the reader as an imperative ("Check that your templates quote all attribute values"), not a suggestion.
+The narration keeps its own voice; only the callouts change register.
 
 Accountability, which is not optional:
 - Every claim about the code links to the exact lines that show it, as a permalink in this form:

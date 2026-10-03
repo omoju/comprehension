@@ -1,0 +1,10 @@
+   1. 01-the-door-and-the-flags-that-become-policy.md  895 words, 17 citations, 91s, $1.40  → ok
+   2. 02-harvesting-the-fields.md  1146 words, 28 citations, 114s, $0.39  → ok
+   3. 03-the-hook-that-quietly-removed-itself.md  1243 words, 21 citations, 128s, $0.42  → 0 check errors, 1 contradicted
+   4. 04-writing-the-initializer-and-two-protocols-added-on.md  1009 words, 20 citations, 151s, $0.48  → ok
+      ✗ 2 check errors, repair 1/2: proof 1 line 86 can't fail: ) or True is False  # placeholder removed below
+   5. 05-one-compile-and-the-class-you-get-back-is-not-the-.md  1070 words, 26 citations, 242s, $0.85  → ok after 1 repair
+   6. 06-flattening-it-out.md  809 words, 21 citations, 71s, $0.29  → ok
+   7. 07-a-class-from-two-strings.md  902 words, 22 citations, 99s, $0.34  → ok
+   8. 08-the-same-machine-legacy-settings.md  1359 words, 42 citations, 165s, $0.51  → ok
+   9. 09-patching-in-place-and-the-coda.md  991 words, 15 citations, 183s, $0.52  → ok

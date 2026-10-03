@@ -1,0 +1,10 @@
+   1. 01-before-the-list-is-even-looked-at-a-lock-a-registr.md  721 words, 19 citations, 67s, $1.43  → ok
+   2. 02-accepting-the-arguments-a-wrapped-stderr-a-borrowe.md  1121 words, 21 citations, 55s, $0.25  → ok
+   3. 03-claiming-a-line-position-under-lock-and-a-printer-.md  1008 words, 11 citations, 81s, $0.30  → ok
+   4. 04-the-first-frame-then-four-silent-items-and-an-auto.md  1313 words, 28 citations, 166s, $0.49  → ok
+   5. 05-a-second-bar-is-born-the-thread-is-reused-not-repl.md  912 words, 17 citations, 89s, $0.32  → ok
+   6. 06-the-same-setup-again-with-a-prefix.md  1041 words, 25 citations, 62s, $0.27  → ok
+   7. 07-describing-without-counting-forced-refreshes-that-.md  970 words, 16 citations, 112s, $0.39  → 0 check errors, 1 contradicted
+      ✗ 1 check errors, repair 1/2: proof 1 line 40 can't fail: assert 1.9999999999999996 / 0.11034297943115233 == 18.125303578991037
+   8. 08-the-gates-open-update-2-the-ema-rate-self-tuned-mi.md  1100 words, 18 citations, 282s, $0.97  → ok after 1 repair
+   9. 09-closing-down-leaving-the-registry-the-truth-about-.md  1151 words, 22 citations, 101s, $0.36  → ok
