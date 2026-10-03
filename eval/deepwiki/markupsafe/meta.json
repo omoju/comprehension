@@ -1,0 +1,15 @@
+{
+  "repo": "pallets/markupsafe",
+  "fetched": "2026-10-03T01:11:52+00:00",
+  "pages": 30,
+  "words": 45504,
+  "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+  "commit_basis": "default branch HEAD on the fetch date (DeepWiki names no commit)",
+  "checkout": "eval/checkouts/markupsafe",
+  "source_refs": {
+    "total": 874,
+    "ok": 791,
+    "missing_file": 17,
+    "out_of_range": 66
+  }
+}

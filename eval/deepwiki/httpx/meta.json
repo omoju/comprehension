@@ -1,0 +1,15 @@
+{
+  "repo": "encode/httpx",
+  "fetched": "2026-10-03T01:11:45+00:00",
+  "pages": 42,
+  "words": 38220,
+  "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+  "commit_basis": "default branch HEAD on the fetch date (DeepWiki names no commit)",
+  "checkout": "eval/checkouts/httpx",
+  "source_refs": {
+    "total": 1410,
+    "ok": 1321,
+    "missing_file": 0,
+    "out_of_range": 89
+  }
+}

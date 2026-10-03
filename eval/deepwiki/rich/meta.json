@@ -1,0 +1,15 @@
+{
+  "repo": "Textualize/rich",
+  "fetched": "2026-10-03T01:11:47+00:00",
+  "pages": 43,
+  "words": 62473,
+  "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+  "commit_basis": "default branch HEAD on the fetch date (DeepWiki names no commit)",
+  "checkout": "eval/checkouts/rich",
+  "source_refs": {
+    "total": 2352,
+    "ok": 2268,
+    "missing_file": 18,
+    "out_of_range": 66
+  }
+}

@@ -1,0 +1,23 @@
+Available pages for python-attrs/attrs:
+
+- 1 Overview
+- 2 Core Architecture
+  - 2.1 Class Definition
+  - 2.2 Attribute Definition
+  - 2.3 Legacy vs Modern APIs
+- 3 Features and Extensions
+  - 3.1 Validators
+  - 3.2 Converters
+  - 3.3 Setters and Mutation Control
+  - 3.4 Utility Functions
+- 4 Advanced Topics
+  - 4.1 Slots Implementation
+  - 4.2 Type Annotations
+  - 4.3 Customizing Comparison
+  - 4.4 Hooks and Extensibility
+- 5 Development and Contribution
+  - 5.1 Development Environment
+  - 5.2 Testing Infrastructure
+  - 5.3 Continuous Integration
+  - 5.4 Contribution Guidelines
+- 6 Glossary

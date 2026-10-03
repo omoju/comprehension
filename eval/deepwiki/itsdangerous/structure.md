@@ -1,0 +1,23 @@
+Available pages for pallets/itsdangerous:
+
+- 1 Overview
+  - 1.1 Getting Started
+- 2 Core Library
+  - 2.1 Signing System
+  - 2.2 Serialization System
+  - 2.3 Time-Aware Components
+  - 2.4 URL-Safe Components
+  - 2.5 Utilities and Encoding
+  - 2.6 Exception Handling
+- 3 Development Environment
+  - 3.1 Project Configuration
+  - 3.2 Code Quality Tools
+  - 3.3 Testing Framework
+  - 3.4 Developer Tools
+- 4 CI/CD and Automation
+  - 4.1 Testing Workflows
+  - 4.2 Release and Publishing
+  - 4.3 Repository Maintenance
+- 5 Documentation System
+  - 5.1 Documentation Build Configuration
+  - 5.2 Documentation Content Structure

@@ -1,0 +1,28 @@
+Available pages for pallets/jinja:
+
+- 1 Overview
+- 2 Core Architecture
+  - 2.1 Environment Class
+  - 2.2 Template Processing Pipeline
+  - 2.3 Extension System
+- 3 Template System
+  - 3.1 Template Syntax
+  - 3.2 Template Inheritance and Inclusion
+  - 3.3 Control Structures
+- 4 Filters
+  - 4.1 Built-in Filters
+  - 4.2 Custom Filters
+- 5 Template Loaders
+  - 5.1 Built-in Loaders
+  - 5.2 Custom Loaders
+- 6 Security Features
+  - 6.1 Sandboxed Environment
+  - 6.2 Autoescaping
+- 7 Advanced Features
+  - 7.1 Asynchronous Support
+  - 7.2 Native Python Types
+- 8 Development and Testing
+  - 8.1 Setting Up Development Environment
+  - 8.2 Testing Infrastructure
+  - 8.3 Release Process
+- 9 Glossary

@@ -1,0 +1,45 @@
+Available pages for Textualize/rich:
+
+- 1 Overview
+  - 1.1 Getting Started
+  - 1.2 Architecture Overview
+- 2 Core Rendering System
+  - 2.1 Console
+  - 2.2 Rendering Pipeline
+  - 2.3 Segments
+  - 2.4 Styles and Colors
+- 3 Text System
+  - 3.1 Text and Spans
+  - 3.2 Markup and Formatting
+- 4 Renderables
+  - 4.1 Tables
+  - 4.2 Panels and Containers
+  - 4.3 Progress Bars
+  - 4.4 Syntax Highlighting
+  - 4.5 Markdown
+  - 4.6 Trees and Layout
+- 5 Live Updates
+  - 5.1 Live Display
+  - 5.2 Status and Spinners
+- 6 Python Standard Library Integration
+  - 6.1 Logging Integration
+  - 6.2 Traceback Enhancement
+  - 6.3 Pretty Printing and REPL
+  - 6.4 Inspecting Objects
+  - 6.5 Prompts
+- 7 Advanced Topics
+  - 7.1 Measurement and Layout
+  - 7.2 Themes and Customization
+  - 7.3 Platform Support
+  - 7.4 Export and Capture
+- 8 Development
+  - 8.1 Contributing Guide
+  - 8.2 Testing and CI/CD
+- 9 API Reference
+  - 9.1 Console API
+  - 9.2 Text API
+  - 9.3 Table API
+  - 9.4 Progress API
+  - 9.5 Style and Color API
+  - 9.6 Other APIs
+- 10 Glossary

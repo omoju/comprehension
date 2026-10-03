@@ -1,0 +1,44 @@
+Available pages for encode/httpx:
+
+- 1 Overview
+  - 1.1 Installation and Dependencies
+  - 1.2 Architecture Overview
+- 2 Basic Usage
+  - 2.1 Making Requests
+  - 2.2 Working with Responses
+  - 2.3 Authentication
+- 3 Client API
+  - 3.1 Synchronous Client
+  - 3.2 Asynchronous Client
+  - 3.3 Request Parameters
+  - 3.4 Redirects and History
+  - 3.5 Streaming
+- 4 Core Components
+  - 4.1 Request Objects
+  - 4.2 Response Objects
+  - 4.3 URL Handling
+  - 4.4 Headers and Cookies
+  - 4.5 Query Parameters
+  - 4.6 Content Encoding and Decoding
+  - 4.7 Multipart Form Data
+- 5 Transport System
+  - 5.1 Transport Architecture
+  - 5.2 ASGI and WSGI Integration
+  - 5.3 Proxy Support
+  - 5.4 Mock Transports
+- 6 Configuration
+  - 6.1 Timeouts
+  - 6.2 Connection Limits
+  - 6.3 SSL and Security
+  - 6.4 Event Hooks
+  - 6.5 Command Line Interface
+- 7 Error Handling
+  - 7.1 Exception Hierarchy
+  - 7.2 Handling Network Errors
+  - 7.3 HTTP Status Errors
+- 8 Development
+  - 8.1 Repository Structure
+  - 8.2 Testing
+  - 8.3 CI/CD Pipelines
+  - 8.4 Documentation
+- 9 Glossary

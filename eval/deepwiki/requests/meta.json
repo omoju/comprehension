@@ -1,0 +1,15 @@
+{
+  "repo": "psf/requests",
+  "fetched": "2026-10-03T01:11:42+00:00",
+  "pages": 33,
+  "words": 29267,
+  "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+  "commit_basis": "default branch HEAD on the fetch date (DeepWiki names no commit)",
+  "checkout": "eval/checkouts/requests",
+  "source_refs": {
+    "total": 1202,
+    "ok": 1179,
+    "missing_file": 20,
+    "out_of_range": 3
+  }
+}

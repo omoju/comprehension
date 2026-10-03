@@ -1,0 +1,15 @@
+{
+  "repo": "pallets/click",
+  "fetched": "2026-10-03T01:11:44+00:00",
+  "pages": 31,
+  "words": 52198,
+  "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+  "commit_basis": "default branch HEAD on the fetch date (DeepWiki names no commit)",
+  "checkout": "eval/checkouts/click",
+  "source_refs": {
+    "total": 1117,
+    "ok": 1000,
+    "missing_file": 106,
+    "out_of_range": 11
+  }
+}

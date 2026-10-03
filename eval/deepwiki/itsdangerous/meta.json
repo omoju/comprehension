@@ -1,0 +1,15 @@
+{
+  "repo": "pallets/itsdangerous",
+  "fetched": "2026-10-03T01:11:49+00:00",
+  "pages": 21,
+  "words": 17655,
+  "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+  "commit_basis": "default branch HEAD on the fetch date (DeepWiki names no commit)",
+  "checkout": "eval/checkouts/itsdangerous",
+  "source_refs": {
+    "total": 301,
+    "ok": 238,
+    "missing_file": 0,
+    "out_of_range": 63
+  }
+}

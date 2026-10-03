@@ -1,0 +1,33 @@
+Available pages for pallets/click:
+
+- 1 Overview
+- 2 Core Architecture
+  - 2.1 Execution Lifecycle
+  - 2.2 Commands and Groups
+  - 2.3 Context Management
+  - 2.4 Decorators and Public API
+  - 2.5 Argument Parsing
+- 3 Parameters
+  - 3.1 Options
+  - 3.2 Arguments
+  - 3.3 Parameter Types and Conversion
+  - 3.4 Value Resolution and Defaults
+- 4 User Interface Features
+  - 4.1 Terminal Output and Styling
+  - 4.2 User Input and Prompts
+  - 4.3 Progress Bars and Pagers
+  - 4.4 File and Path Handling
+- 5 Shell Completion
+- 6 Help Formatting
+- 7 Exception Handling
+- 8 Testing Click Applications
+  - 8.1 Using CliRunner
+  - 8.2 Testing Strategies and Best Practices
+- 9 Platform Compatibility
+  - 9.1 Unicode and Character Encoding
+  - 9.2 Windows Support
+- 10 Development Guide
+  - 10.1 Development Environment Setup
+  - 10.2 Code Quality and Pre-commit Hooks
+  - 10.3 CI/CD and Release Process
+- 11 Advanced Usage Examples

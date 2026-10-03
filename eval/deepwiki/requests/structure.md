@@ -1,0 +1,35 @@
+Available pages for psf/requests:
+
+- 1 Overview
+  - 1.1 Architecture
+  - 1.2 Main Components
+- 2 Core API
+  - 2.1 Request and Response Models
+  - 2.2 Session Management
+  - 2.3 Transport Adapters
+  - 2.4 Redirect Handling
+- 3 Authentication
+  - 3.1 Basic Authentication
+  - 3.2 Digest Authentication
+  - 3.3 Custom Authentication
+- 4 Advanced Usage
+  - 4.1 SSL Verification
+  - 4.2 Streaming and Chunks
+  - 4.3 Proxies and Tunneling
+  - 4.4 Event Hooks
+  - 4.5 Timeout Configuration
+- 5 Utility Functions
+  - 5.1 Custom Data Structures
+  - 5.2 Proxy Resolution
+  - 5.3 Content Encoding Detection
+- 6 Error Handling
+- 7 Development Guide
+  - 7.1 Build and Test
+  - 7.2 CI/CD Pipeline
+  - 7.3 Project Documentation
+  - 7.4 Security Management
+- 8 Project Information
+  - 8.1 Dependencies
+  - 8.2 Versioning and Release History
+  - 8.3 Package Structure
+- 9 Glossary

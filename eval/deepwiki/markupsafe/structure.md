@@ -1,0 +1,32 @@
+Available pages for pallets/markupsafe:
+
+- 1 Overview
+  - 1.1 Project History and Evolution
+- 2 Core Library
+  - 2.1 Public API: Markup Class
+  - 2.2 Public API: Escape Functions
+  - 2.3 Implementation Architecture
+  - 2.4 String Formatters and Helper Classes
+- 3 Build System and Distribution
+  - 3.1 Project Configuration
+  - 3.2 C Extension Build Process
+  - 3.3 Multi-Platform Wheel Building
+  - 3.4 Package Distribution
+- 4 Development Guide
+  - 4.1 Development Environment Setup
+  - 4.2 Code Quality and Pre-commit Hooks
+  - 4.3 Testing
+  - 4.4 Type Checking and Static Analysis
+  - 4.5 Documentation Building
+- 5 CI/CD Pipeline
+  - 5.1 Test Workflow
+  - 5.2 Pre-commit Workflow
+  - 5.3 Publishing Workflow
+  - 5.4 Repository Maintenance Automation
+- 6 Dependency Management
+  - 6.1 Dependency Groups
+  - 6.2 Lock File Management
+- 7 Advanced Topics
+  - 7.1 C Extension Implementation Details
+  - 7.2 Memory Management and Leak Testing
+  - 7.3 Free-Threading Support

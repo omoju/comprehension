@@ -1,0 +1,15 @@
+{
+  "repo": "pallets/jinja",
+  "fetched": "2026-10-03T01:11:50+00:00",
+  "pages": 26,
+  "words": 19978,
+  "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+  "commit_basis": "default branch HEAD on the fetch date (DeepWiki names no commit)",
+  "checkout": "eval/checkouts/jinja",
+  "source_refs": {
+    "total": 834,
+    "ok": 804,
+    "missing_file": 4,
+    "out_of_range": 26
+  }
+}

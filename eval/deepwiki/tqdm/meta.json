@@ -1,0 +1,15 @@
+{
+  "repo": "tqdm/tqdm",
+  "fetched": "2026-10-03T01:11:53+00:00",
+  "pages": 25,
+  "words": 21545,
+  "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+  "commit_basis": "default branch HEAD on the fetch date (DeepWiki names no commit)",
+  "checkout": "eval/checkouts/tqdm",
+  "source_refs": {
+    "total": 947,
+    "ok": 940,
+    "missing_file": 0,
+    "out_of_range": 7
+  }
+}

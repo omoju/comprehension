@@ -1,0 +1,15 @@
+{
+  "repo": "python-attrs/attrs",
+  "fetched": "2026-10-03T01:11:48+00:00",
+  "pages": 21,
+  "words": 17699,
+  "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+  "commit_basis": "default branch HEAD on the fetch date (DeepWiki names no commit)",
+  "checkout": "eval/checkouts/attrs",
+  "source_refs": {
+    "total": 857,
+    "ok": 805,
+    "missing_file": 14,
+    "out_of_range": 38
+  }
+}

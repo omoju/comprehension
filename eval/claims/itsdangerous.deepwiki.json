@@ -1,0 +1,1216 @@
+{
+  "repo": "itsdangerous",
+  "arm": "deepwiki",
+  "words": 12089,
+  "extracted": 291,
+  "sample": [
+    3,
+    8,
+    10,
+    13,
+    15,
+    18,
+    24,
+    25,
+    38,
+    48,
+    49,
+    57,
+    67,
+    75,
+    77,
+    93,
+    101,
+    102,
+    121,
+    137,
+    147,
+    150,
+    158,
+    162,
+    167,
+    183,
+    191,
+    208,
+    213,
+    221,
+    224,
+    226,
+    227,
+    238,
+    243,
+    251,
+    262,
+    270,
+    274,
+    285
+  ],
+  "claims": [
+    {
+      "claim": "The itsdangerous package exports `Signer`, `TimestampSigner`, `Serializer`, `TimedSerializer`, `URLSafeSerializer`, `URLSafeTimedSerializer`, `HMACAlgorithm`, and `NoneAlgorithm` from `src/itsdangerous/__init__.py`.",
+      "quote": "API --> Signer\n    API --> TimestampSigner\n    API --> Serializer\n    API --> TimedSerializer\n    API --> URLSafeSerializer\n    API --> URLSafeTimedSerializer\n    API --> HMACAlgorithm\n    API --> NoneAlgorithm"
+    },
+    {
+      "claim": "The `encoding.py` module in itsdangerous contains `base64_encode`, `base64_decode`, and `want_bytes`.",
+      "quote": "Encoding[\"encoding.py<br/>base64_encode, base64_decode, want_bytes\"]"
+    },
+    {
+      "claim": "The `exc.py` module in itsdangerous contains `BadSignature` and `SignatureExpired`.",
+      "quote": "Exceptions[\"exc.py<br/>BadSignature, SignatureExpired, etc.\"]"
+    },
+    {
+      "claim": "`Serializer` uses `Signer`.",
+      "quote": "Serializer --> Signer"
+    },
+    {
+      "claim": "`TimedSerializer` uses `TimestampSigner`.",
+      "quote": "TimedSerializer --> TimestampSigner"
+    },
+    {
+      "claim": "`URLSafeSerializer` is built on `Serializer`.",
+      "quote": "URLSafeSerializer --> Serializer"
+    },
+    {
+      "claim": "`URLSafeTimedSerializer` is built on `TimedSerializer`.",
+      "quote": "URLSafeTimedSerializer --> TimedSerializer"
+    },
+    {
+      "claim": "`TimestampSigner` extends `Signer`.",
+      "quote": "TimestampSigner --> Signer"
+    },
+    {
+      "claim": "`HMACAlgorithm` defines a `get_signature()` method.",
+      "quote": "HMACAlgorithm[\"HMACAlgorithm<br/>get_signature()\"]"
+    },
+    {
+      "claim": "`NoneAlgorithm` defines a `get_signature()` method.",
+      "quote": "NoneAlgorithm[\"NoneAlgorithm<br/>get_signature()\"]"
+    },
+    {
+      "claim": "`Signer` provides `sign()`, `unsign()`, and `validate()` methods.",
+      "quote": "Signer[\"Signer<br/>sign(), unsign(), validate()\"]"
+    },
+    {
+      "claim": "`TimestampSigner` provides `sign()`, `unsign()`, and `validate()` methods.",
+      "quote": "TimestampSigner[\"TimestampSigner<br/>sign(), unsign(), validate()\"]"
+    },
+    {
+      "claim": "`Serializer` provides `dumps()`, `loads()`, and `dump_payload()` methods.",
+      "quote": "Serializer[\"Serializer<br/>dumps(), loads(), dump_payload()\"]"
+    },
+    {
+      "claim": "The `secret_key` parameter accepts a list of keys for key rotation.",
+      "quote": "| **Key Rotation** | List of keys in `secret_key` parameter | Zero-downtime key updates |"
+    },
+    {
+      "claim": "`URLSafeSerializer` can be constructed with a secret key and a salt, e.g. `URLSafeSerializer(\"secret key\", \"auth\")`.",
+      "quote": "auth_s = URLSafeSerializer(\"secret key\", \"auth\")"
+    },
+    {
+      "claim": "`URLSafeSerializer.dumps()` converts Python objects to signed strings.",
+      "quote": "token = auth_s.dumps({\"id\": 5, \"name\": \"itsdangerous\"})"
+    },
+    {
+      "claim": "`URLSafeSerializer.loads()` converts signed strings back to Python objects.",
+      "quote": "data = auth_s.loads(token)"
+    },
+    {
+      "claim": "`URLSafeTimedSerializer.loads()` accepts a `max_age` parameter.",
+      "quote": "data = timed_s.loads(token, max_age=3600)"
+    },
+    {
+      "claim": "`URLSafeTimedSerializer.loads()` raises `SignatureExpired` when the token is older than `max_age`.",
+      "quote": "except SignatureExpired:\n    # Token has expired"
+    },
+    {
+      "claim": "`URLSafeTimedSerializer.dumps()` includes a timestamp in the generated token.",
+      "quote": "# Generate token (includes timestamp)"
+    },
+    {
+      "claim": "`itsdangerous` exports the exceptions `BadSignature`, `BadPayload`, `BadTimeSignature`, `SignatureExpired`, `BadData`, and `BadHeader`.",
+      "quote": "| **Exceptions** | `BadSignature`, `BadPayload`, `BadTimeSignature`, `SignatureExpired`, `BadData`, `BadHeader` | Error handling |"
+    },
+    {
+      "claim": "`SigningAlgorithm` is the base interface for signing algorithms in itsdangerous.",
+      "quote": "SIGNING_ALGORITHM[\"SigningAlgorithm<br/>Base interface\"]"
+    },
+    {
+      "claim": "The `_json.py` module provides compact JSON support.",
+      "quote": "JSON_UTIL[\"_json.py<br/>Compact JSON\"]"
+    },
+    {
+      "claim": "`Signer` supports multiple secret keys for key rotation.",
+      "quote": "Supports multiple secret keys for key rotation"
+    },
+    {
+      "claim": "`Signer` supports the key derivation methods `concat`, `django-concat`, `hmac`, and `none`.",
+      "quote": "Configurable key derivation methods: `concat`, `django-concat`, `hmac`, `none`"
+    },
+    {
+      "claim": "`Signer` uses `.` as the default separator between payload and signature.",
+      "quote": "Default separator: `.` between payload and signature"
+    },
+    {
+      "claim": "`Signer` base64-encodes signatures.",
+      "quote": "Base64-encodes signatures for safe transmission"
+    },
+    {
+      "claim": "`HMACAlgorithm` uses SHA1 as its default digest method.",
+      "quote": "**`HMACAlgorithm`**: HMAC-based signing (default uses SHA1)"
+    },
+    {
+      "claim": "`NoneAlgorithm` is a no-op signing algorithm.",
+      "quote": "**`NoneAlgorithm`**: No-op algorithm for testing/debugging"
+    },
+    {
+      "claim": "`Serializer` uses the `json` module as its default serializer.",
+      "quote": "Default serializer: `json` module"
+    },
+    {
+      "claim": "`Serializer` accepts a custom serializer via the `serializer` parameter.",
+      "quote": "Supports custom serializers via `serializer` parameter"
+    },
+    {
+      "claim": "`Serializer` provides a `dumps`/`loads` interface.",
+      "quote": "Provides `dumps`/`loads` interface similar to `json`"
+    },
+    {
+      "claim": "`Serializer` supports fallback signers.",
+      "quote": "Supports fallback signers for algorithm migration"
+    },
+    {
+      "claim": "`Serializer` is generic over a `_TSerialized` type parameter.",
+      "quote": "SERIALIZER_GENERIC[\"Serializer[_TSerialized]<br/>Generic over return type\"]"
+    },
+    {
+      "claim": "`_PDataSerializer` is a protocol generic over `_TSerialized` used for serializers.",
+      "quote": "PROTOCOL[\"_PDataSerializer[_TSerialized]<br/>Protocol for serializers\"]"
+    },
+    {
+      "claim": "`is_text_serializer()` performs runtime type checking on a serializer.",
+      "quote": "TYPE_GUARD[\"is_text_serializer()<br/>Runtime type checking\"]"
+    },
+    {
+      "claim": "Using the `pickle` module as the serializer produces bytes.",
+      "quote": "PICKLE_OPTION[\"Alternative: pickle<br/>Returns bytes\"]"
+    },
+    {
+      "claim": "When a list of secret keys is given, the newest key is used for signing and all keys are used for verification.",
+      "quote": "**Key Rotation**: Accept a list of secret keys, using the newest for signing and all for verification"
+    },
+    {
+      "claim": "`Signer` has a `secret_keys` attribute of type `list[bytes]`.",
+      "quote": "| `secret_keys` | `list[bytes]` | List of secret keys for key rotation support |"
+    },
+    {
+      "claim": "`Signer` has a `salt` attribute of type `bytes`.",
+      "quote": "| `salt` | `bytes` | Additional entropy for key derivation |"
+    },
+    {
+      "claim": "`Signer` has a `sep` attribute of type `bytes` used as the separator between value and signature.",
+      "quote": "| `sep` | `bytes` | Separator between value and signature |"
+    },
+    {
+      "claim": "`Signer` has a `key_derivation` attribute of type `str`.",
+      "quote": "| `key_derivation` | `str` | Key derivation method (`concat`, `django-concat`, `hmac`) |"
+    },
+    {
+      "claim": "`Signer` has a `digest_method` attribute.",
+      "quote": "| `digest_method` | `t.Any` | Hash function for HMAC operations |"
+    },
+    {
+      "claim": "`Signer` has an `algorithm` attribute holding a `SigningAlgorithm` implementation.",
+      "quote": "| `algorithm` | `SigningAlgorithm` | Pluggable signing algorithm implementation |"
+    },
+    {
+      "claim": "`SigningAlgorithm` declares `get_signature(key, value)` and `verify_signature(key, value, sig)`.",
+      "quote": "GET_SIG_ABSTRACT[\"get_signature(key, value)\"]\n        VERIFY_SIG[\"verify_signature(key, value, sig)\"]"
+    },
+    {
+      "claim": "`HMACAlgorithm.get_signature` calls `hmac.new(key, value, digestmod)` and returns `mac.digest()`.",
+      "quote": "HMAC_GET_SIG[\"hmac.new(key, value, digestmod)\"]\n        HMAC_DIGEST[\"mac.digest()\"]"
+    },
+    {
+      "claim": "`NoneAlgorithm.get_signature` returns `b\"\"`.",
+      "quote": "NONE_GET_SIG[\"return b''\"]"
+    },
+    {
+      "claim": "The `concat` key derivation computes `digest_method(salt + secret_key).digest()`.",
+      "quote": "| `concat` | `digest_method(salt + secret_key).digest()` | Simple concatenation |"
+    },
+    {
+      "claim": "The `django-concat` key derivation computes `digest_method(salt + b\"signer\" + secret_key).digest()`.",
+      "quote": "| `django-concat` | `digest_method(salt + b\"signer\" + secret_key).digest()` | Django compatibility (default) |"
+    },
+    {
+      "claim": "The `hmac` key derivation computes `hmac.new(secret_key, salt, digestmod).digest()`.",
+      "quote": "| `hmac` | `hmac.new(secret_key, salt, digestmod).digest()` | HMAC-based derivation |"
+    },
+    {
+      "claim": "The `none` key derivation returns the secret key unchanged.",
+      "quote": "| `none` | `secret_key` | No derivation (direct key usage) |"
+    },
+    {
+      "claim": "`django-concat` is the default key derivation method for `Signer`.",
+      "quote": "Django compatibility (default)"
+    },
+    {
+      "claim": "The default digest method for signing is SHA-1 provided by a `_lazy_sha1()` function.",
+      "quote": "**Default digest**: SHA-1 via `_lazy_sha1()` function"
+    },
+    {
+      "claim": "`Signer.unsign` splits the signed value using `rsplit(sep, 1)`.",
+      "quote": "SPLIT_VALUE[\"rsplit(sep, 1)\"]"
+    },
+    {
+      "claim": "Signature verification uses `hmac.compare_digest()`.",
+      "quote": "COMPARE[\"hmac.compare_digest()\"]"
+    },
+    {
+      "claim": "`Signer` has a `secret_key` property that returns the newest key.",
+      "quote": "SECRET_KEY_PROP --> NEW_KEY"
+    },
+    {
+      "claim": "During verification `Signer` tries keys in reverse order, newest to oldest.",
+      "quote": "**Verification**: Tries keys in reverse order (newest to oldest)"
+    },
+    {
+      "claim": "The `secret_key` parameter of `Signer` is required.",
+      "quote": "| `secret_key` | `str \\| bytes \\| Iterable` | Required | Secret key(s) for signing |"
+    },
+    {
+      "claim": "The default salt for `Signer` is `b\"itsdangerous.Signer\"`.",
+      "quote": "| `salt` | `str \\| bytes \\| None` | `b\"itsdangerous.Signer\"` | Key derivation salt |"
+    },
+    {
+      "claim": "The default `sep` for `Signer` is `b\".\"`.",
+      "quote": "| `sep` | `str \\| bytes` | `b\".\"` | Value/signature separator |"
+    },
+    {
+      "claim": "The default `key_derivation` for `Signer` is `\"django-concat\"`.",
+      "quote": "| `key_derivation` | `str \\| None` | `\"django-concat\"` | Key derivation method |"
+    },
+    {
+      "claim": "The default `digest_method` for `Signer` is `_lazy_sha1`.",
+      "quote": "| `digest_method` | `t.Any \\| None` | `_lazy_sha1` | Hash function |"
+    },
+    {
+      "claim": "The default `algorithm` for `Signer` is `HMACAlgorithm`.",
+      "quote": "| `algorithm` | `SigningAlgorithm \\| None` | `HMACAlgorithm` | Signing algorithm |"
+    },
+    {
+      "claim": "`Signer` rejects a separator that is part of the base64 alphabet `A-Za-z0-9-_=`.",
+      "quote": "**Separator validation**: Cannot be part of base64 alphabet (`A-Za-z0-9-_=`)"
+    },
+    {
+      "claim": "`Signer` converts keys to bytes via `want_bytes()`.",
+      "quote": "**Key format**: Converted to bytes via `want_bytes()`"
+    },
+    {
+      "claim": "`Signer` raises `BadSignature` for an invalid signature or missing separator.",
+      "quote": "| `BadSignature` | Invalid signature, missing separator | Yes |"
+    },
+    {
+      "claim": "`Signer` raises `ValueError` for an invalid separator character.",
+      "quote": "| `ValueError` | Invalid separator character | No |"
+    },
+    {
+      "claim": "`Signer.derive_key` raises `TypeError` for an unknown key derivation method.",
+      "quote": "| `TypeError` | Unknown key derivation method | No |"
+    },
+    {
+      "claim": "`Serializer.default_serializer` is the `json` module.",
+      "quote": "| `default_serializer` | Data serialization backend | `json` module |"
+    },
+    {
+      "claim": "`Serializer.default_signer` is the `Signer` class.",
+      "quote": "| `default_signer` | Signing class | `Signer` |"
+    },
+    {
+      "claim": "`Serializer.default_fallback_signers` defaults to an empty list.",
+      "quote": "| `default_fallback_signers` | Backward compatibility signers | `[]` (empty list) |"
+    },
+    {
+      "claim": "The `_PDataSerializer` protocol defines `dumps(obj: Any) -> _TSerialized` and `loads(payload: _TSerialized) -> Any`.",
+      "quote": "PROTOCOL --> DUMPS_METHOD[\"dumps(obj: Any) -> _TSerialized\"]\n    PROTOCOL --> LOADS_METHOD[\"loads(payload: _TSerialized) -> Any\"]"
+    },
+    {
+      "claim": "`Serializer.dumps()` decodes the signed value to a str with `decode('utf-8')` when the serializer is a text serializer.",
+      "quote": "TEXT_CHECK -->|Yes| DECODE_UTF8[\"decode('utf-8')\"]"
+    },
+    {
+      "claim": "`Serializer.__init__` accepts the parameters `secret_key`, `salt`, `serializer`, `serializer_kwargs`, `signer`, `signer_kwargs`, and `fallback_signers`.",
+      "quote": "| `secret_key` | `str \\| bytes \\| Iterable` | Secret key(s) for signing |"
+    },
+    {
+      "claim": "`Serializer` has a `secret_keys` property of type `list[bytes]`.",
+      "quote": "SECRET_KEYS[\"secret_keys: list[bytes]\"]"
+    },
+    {
+      "claim": "In `Serializer`, the newest secret key is used for signing while all keys are tried during verification.",
+      "quote": "The newest key is used for signing operations, while all keys are tried during verification for backward compatibility."
+    },
+    {
+      "claim": "`Serializer.iter_unsigners()` yields the primary signer and then fallback signers.",
+      "quote": "ITER_UNSIGNERS[\"iter_unsigners()\"] --> PRIMARY_SIGNER[\"Primary Signer\"]\n    ITER_UNSIGNERS --> FALLBACK_LOOP[\"Fallback Signers Loop\"]"
+    },
+    {
+      "claim": "Fallback signer configurations may be a dict of signer kwargs, a tuple of (signer_class, kwargs), or a signer class.",
+      "quote": "DICT_CONFIG[\"dict (signer_kwargs)\"]\n        TUPLE_CONFIG[\"tuple (signer_class, kwargs)\"]\n        CLASS_CONFIG[\"signer_class\"]"
+    },
+    {
+      "claim": "`Serializer` raises `BadSignature` when signature verification fails, and the exception carries the unsigned payload.",
+      "quote": "| `BadSignature` | Signature verification fails | Yes (unsigned data) |"
+    },
+    {
+      "claim": "`Serializer` raises `BadPayload` when deserialization fails.",
+      "quote": "| `BadPayload` | Deserialization fails | No |"
+    },
+    {
+      "claim": "`Serializer.loads_unsafe()` returns a tuple of signature validity and payload.",
+      "quote": "The `loads_unsafe()` method provides debugging capabilities by returning both signature validity and payload"
+    },
+    {
+      "claim": "`Serializer.loads_unsafe()` delegates to `_loads_unsafe_impl()`.",
+      "quote": "LOADS_UNSAFE[\"loads_unsafe()\"] --> LOADS_UNSAFE_IMPL[\"_loads_unsafe_impl()\"]"
+    },
+    {
+      "claim": "`Serializer.loads_unsafe()` returns `(True, data)` when normal loading succeeds.",
+      "quote": "SUCCESS -->|Yes| RETURN_TRUE[\"Return (True, data)\"]"
+    },
+    {
+      "claim": "`Serializer.loads_unsafe()` returns `(False, None)` when the BadSignature exception has no payload.",
+      "quote": "HAS_PAYLOAD -->|No| RETURN_FALSE_NONE[\"Return (False, None)\"]"
+    },
+    {
+      "claim": "`Serializer.dump()` writes signed data to a file and delegates to `dumps()`.",
+      "quote": "| `dump()` | Write signed data to file | `dumps()` |"
+    },
+    {
+      "claim": "`Serializer.load()` reads signed data from a file and delegates to `loads()`.",
+      "quote": "| `load()` | Read signed data from file | `loads()` |"
+    },
+    {
+      "claim": "`Serializer.load_unsafe()` delegates to `loads_unsafe()`.",
+      "quote": "| `load_unsafe()` | Read with signature bypass | `loads_unsafe()` |"
+    },
+    {
+      "claim": "`TimestampSigner.get_timestamp()` returns an int Unix timestamp.",
+      "quote": "get_timestamp[\"get_timestamp()<br/>Returns: int (Unix timestamp)\"]"
+    },
+    {
+      "claim": "`TimestampSigner.timestamp_to_datetime(ts)` returns a UTC datetime.",
+      "quote": "timestamp_to_datetime[\"timestamp_to_datetime(ts)<br/>Returns: datetime (UTC)\"]"
+    },
+    {
+      "claim": "`TimestampSigner.sign(value)` returns bytes consisting of the value, timestamp, and signature.",
+      "quote": "sign[\"sign(value)<br/>Returns: bytes (value + timestamp + signature)\"]"
+    },
+    {
+      "claim": "`TimestampSigner.unsign()` accepts `signed_value`, `max_age`, and `return_timestamp` parameters and returns bytes or a tuple of bytes and datetime.",
+      "quote": "unsign[\"unsign(signed_value, max_age, return_timestamp)<br/>Returns: bytes | tuple[bytes, datetime]\"]"
+    },
+    {
+      "claim": "`TimestampSigner.validate(signed_value, max_age)` returns a bool.",
+      "quote": "validate[\"validate(signed_value, max_age)<br/>Returns: bool\"]"
+    },
+    {
+      "claim": "`TimestampSigner.get_timestamp()` is based on `time.time()`.",
+      "quote": "current_time[\"Current Time<br/>(time.time())\"] --> get_timestamp"
+    },
+    {
+      "claim": "`TimestampSigner` embeds the timestamp base64 encoded.",
+      "quote": "| Timestamp | Unix timestamp | Base64 encoded integer |"
+    },
+    {
+      "claim": "The signature produced by `TimestampSigner` covers the value, separator, and timestamp.",
+      "quote": "| Signature | HMAC signature | Covers value + separator + timestamp |"
+    },
+    {
+      "claim": "The signed format produced by `TimestampSigner` is `value.timestamp.signature`.",
+      "quote": "The final signed format: `value.timestamp.signature`"
+    },
+    {
+      "claim": "`TimestampSigner.unsign()` raises `BadTimeSignature` with the message \"timestamp missing\" when the timestamp is absent.",
+      "quote": "has_timestamp -->|No| missing_error[\"BadTimeSignature<br/>'timestamp missing'\"]"
+    },
+    {
+      "claim": "`TimestampSigner.unsign()` raises `BadTimeSignature` with the message \"Malformed timestamp\" when the timestamp cannot be decoded.",
+      "quote": "valid_timestamp -->|No| malformed_error[\"BadTimeSignature<br/>'Malformed timestamp'\"]"
+    },
+    {
+      "claim": "`TimestampSigner.unsign()` computes age as current time minus the embedded timestamp.",
+      "quote": "max_age_check -->|Yes| calculate_age[\"age = current_time - timestamp\"]"
+    },
+    {
+      "claim": "`TimestampSigner.unsign()` raises `SignatureExpired` when the age exceeds `max_age`.",
+      "quote": "too_old -->|Yes| expired_error[\"SignatureExpired\"]"
+    },
+    {
+      "claim": "`TimestampSigner.unsign()` raises `SignatureExpired` when the computed age is negative (signature from the future).",
+      "quote": "future_check -->|Yes| future_error[\"SignatureExpired<br/>(future signature)\"]"
+    },
+    {
+      "claim": "`TimedSerializer.default_signer` is `TimestampSigner`.",
+      "quote": "default_signer[\"default_signer = TimestampSigner\"]"
+    },
+    {
+      "claim": "`TimedSerializer.iter_unsigners()` returns an iterator of `TimestampSigner`.",
+      "quote": "iter_unsigners[\"iter_unsigners()<br/>Returns: Iterator[TimestampSigner]\"]"
+    },
+    {
+      "claim": "`TimedSerializer.loads()` accepts `s`, `max_age`, `return_timestamp`, and `salt` parameters and returns the data or a tuple of data and datetime.",
+      "quote": "loads[\"loads(s, max_age, return_timestamp, salt)<br/>Returns: Any | tuple[Any, datetime]\"]"
+    },
+    {
+      "claim": "`TimedSerializer.loads_unsafe()` accepts `s`, `max_age`, and `salt` parameters and returns a tuple of bool and data.",
+      "quote": "loads_unsafe[\"loads_unsafe(s, max_age, salt)<br/>Returns: tuple[bool, Any]\"]"
+    },
+    {
+      "claim": "`TimedSerializer.loads()` stops immediately on `SignatureExpired` rather than trying other signers.",
+      "quote": "| 3 | Load payload if signature valid | Stop on `SignatureExpired` |"
+    },
+    {
+      "claim": "`TimedSerializer.loads()` raises the last stored exception if all signers fail.",
+      "quote": "| 4 | Return result or continue iteration | Raise last exception if all fail |"
+    },
+    {
+      "claim": "`BadTimeSignature` inherits from `BadSignature`.",
+      "quote": "BadSignature --> BadTimeSignature"
+    },
+    {
+      "claim": "`SignatureExpired` inherits from `BadTimeSignature`.",
+      "quote": "BadTimeSignature --> SignatureExpired"
+    },
+    {
+      "claim": "`BadTimeSignature` provides `payload` and `date_signed` attributes.",
+      "quote": "| `BadTimeSignature` | `payload`, `date_signed` | Contains original data and timestamp when available |"
+    },
+    {
+      "claim": "`SignatureExpired` provides `payload` and `date_signed` attributes.",
+      "quote": "| `SignatureExpired` | `payload`, `date_signed` | Contains original data and signing timestamp |"
+    },
+    {
+      "claim": "`TimestampSigner.timestamp_to_datetime` returns timezone-aware datetime objects in UTC.",
+      "quote": "The `timestamp_to_datetime` method ensures all returned datetime objects are timezone-aware in UTC"
+    },
+    {
+      "claim": "The `timed` module uses `want_bytes()` from the encoding module.",
+      "quote": "| `want_bytes()` | `encoding` | Normalize input to bytes |"
+    },
+    {
+      "claim": "The `timed` module uses `int_to_bytes()` from the encoding module to convert the timestamp to bytes.",
+      "quote": "| `int_to_bytes()` | `encoding` | Convert timestamp to bytes |"
+    },
+    {
+      "claim": "The `timed` module uses `bytes_to_int()` from the encoding module to convert bytes back to a timestamp.",
+      "quote": "| `bytes_to_int()` | `encoding` | Convert bytes back to timestamp |"
+    },
+    {
+      "claim": "The `timed` module uses `base64_encode()` to encode the timestamp.",
+      "quote": "| `base64_encode()` | `encoding` | Encode timestamp for embedding |"
+    },
+    {
+      "claim": "The `timed` module uses `base64_decode()` to decode the embedded timestamp.",
+      "quote": "| `base64_decode()` | `encoding` | Decode embedded timestamp |"
+    },
+    {
+      "claim": "`URLSafeSerializerMixin` is defined in `src/itsdangerous/url_safe.py`.",
+      "quote": "URLSafeSerializerMixin[\"URLSafeSerializerMixin\"]"
+    },
+    {
+      "claim": "`URLSafeSerializerMixin` defines a `dump_payload` method that serializes, optionally compresses, and base64-encodes data.",
+      "quote": "| `dump_payload` | Serializes, optionally compresses, and base64-encodes data |"
+    },
+    {
+      "claim": "`URLSafeSerializerMixin` defines a `load_payload` method that base64-decodes, optionally decompresses, and deserializes data.",
+      "quote": "| `load_payload` | Base64-decodes, optionally decompresses, and deserializes data |"
+    },
+    {
+      "claim": "`URLSafeSerializerMixin` uses `_CompactJSON` as its default serializer.",
+      "quote": "The mixin uses `_CompactJSON` as its default serializer to minimize payload size before encoding."
+    },
+    {
+      "claim": "`URLSafeSerializer` combines `URLSafeSerializerMixin` with the `Serializer` class.",
+      "quote": "The `URLSafeSerializer` combines `URLSafeSerializerMixin` with the base `Serializer` class"
+    },
+    {
+      "claim": "`URLSafeTimedSerializer` combines `URLSafeSerializerMixin` with `TimedSerializer`.",
+      "quote": "The `URLSafeTimedSerializer` combines `URLSafeSerializerMixin` with `TimedSerializer`"
+    },
+    {
+      "claim": "`URLSafeSerializerMixin.dump_payload` prefixes the payload with `.` when compression is used.",
+      "quote": "CompressCheck -->|Yes| AddPrefix[\"Add '.' Prefix\"]"
+    },
+    {
+      "claim": "`URLSafeSerializerMixin.dump_payload` uses the compressed data only when `len(compressed) < len(json) - 1`.",
+      "quote": "| `len(compressed) < len(json) - 1` | Use compressed data | Prefix with `.` |"
+    },
+    {
+      "claim": "`URLSafeSerializerMixin.load_payload` checks whether the payload starts with `.` to decide whether to decompress.",
+      "quote": "CheckPrefix{\"Starts with '.'?\"}"
+    },
+    {
+      "claim": "`base64_encode` uses `base64.urlsafe_b64encode` and removes `=` padding.",
+      "quote": "URLSafeB64[\"base64.urlsafe_b64encode\"]\n        StripPadding[\"Remove '=' padding\"]"
+    },
+    {
+      "claim": "`base64_decode` adds padding as needed before calling `base64.urlsafe_b64decode`.",
+      "quote": "AddPadding[\"Add padding as needed\"]\n        URLSafeB64Decode[\"base64.urlsafe_b64decode\"]"
+    },
+    {
+      "claim": "`URLSafeSerializerMixin.load_payload` raises `BadPayload` when base64 decoding fails.",
+      "quote": "| Invalid base64 data | `BadPayload` with base64 decode context |"
+    },
+    {
+      "claim": "`URLSafeSerializerMixin.load_payload` raises `BadPayload` when zlib decompression fails.",
+      "quote": "| Zlib decompression failure | `BadPayload` with decompression context |"
+    },
+    {
+      "claim": "`base64_decode` in `encoding.py` raises `BadData` for invalid base64 input.",
+      "quote": "| Invalid base64 encoding | `BadData` from encoding layer |"
+    },
+    {
+      "claim": "`encoding.py` defines the functions `want_bytes`, `base64_encode`, `base64_decode`, `int_to_bytes`, and `bytes_to_int`.",
+      "quote": "WANT_BYTES[\"want_bytes()<br/>String to Bytes\"]\n        BASE64_ENCODE[\"base64_encode()<br/>URL-Safe Base64 Encode\"]\n        BASE64_DECODE[\"base64_decode()<br/>URL-Safe Base64 Decode\"]\n        INT_TO_BYTES[\"int_to_bytes()<br/>Integer to Bytes\"]\n        BYTES_TO_INT[\"bytes_to_int()<br/>Bytes to Integer\"]"
+    },
+    {
+      "claim": "`want_bytes()` accepts `str` or `bytes` and returns `bytes`.",
+      "quote": "| `want_bytes()` | `str \\| bytes` | `bytes` | Converts strings to bytes with specified encoding |"
+    },
+    {
+      "claim": "`want_bytes()` defaults to UTF-8 encoding with strict error handling.",
+      "quote": "defaulting to UTF-8 encoding with strict error handling"
+    },
+    {
+      "claim": "`base64_encode()` accepts `str` or `bytes` and returns `bytes`.",
+      "quote": "| `base64_encode()` | `str \\| bytes` | `bytes` | URL-safe, strips padding |"
+    },
+    {
+      "claim": "`base64_decode()` accepts `str` or `bytes` and returns `bytes`.",
+      "quote": "| `base64_decode()` | `str \\| bytes` | `bytes` | Adds padding, handles errors |"
+    },
+    {
+      "claim": "`int_to_bytes()` packs the integer with `_int64_struct.pack()` and strips leading zero bytes with `lstrip(b'\\x00')`.",
+      "quote": "STRUCT_PACK[\"_int64_struct.pack()<br/>Big-endian Q format\"]\n    LSTRIP[\"lstrip(b'\\\\x00')<br/>Remove leading zeros\"]"
+    },
+    {
+      "claim": "`bytes_to_int()` right-justifies the input to 8 bytes with `rjust(8, b'\\x00')` before unpacking with `_int64_struct.unpack()`.",
+      "quote": "RJUST[\"rjust(8, b'\\\\x00')<br/>Pad to 8 bytes\"]\n    STRUCT_UNPACK[\"_int64_struct.unpack()<br/>Extract integer\"]"
+    },
+    {
+      "claim": "`encoding.py` defines `_int64_struct` as `struct.Struct(\">Q\")`.",
+      "quote": "The conversion uses a pre-compiled `struct.Struct(\">Q\")` for efficient big-endian unsigned 64-bit integer packing and unpacking."
+    },
+    {
+      "claim": "`_json.py` defines a `_CompactJSON` class with `dumps` and `loads` methods.",
+      "quote": "DUMPS[\"dumps()<br/>Compact Serialization\"]\n        LOADS[\"loads()<br/>Deserialization\"]"
+    },
+    {
+      "claim": "`_CompactJSON.dumps` sets `ensure_ascii=False` and `separators=(',', ':')`.",
+      "quote": "DEFAULT_OPTS[\"Default Options:<br/>ensure_ascii=False<br/>separators=(',', ':')\"]"
+    },
+    {
+      "claim": "`BadData` is the base exception class in itsdangerous and inherits from Python's `Exception`.",
+      "quote": "Exception --> BadData"
+    },
+    {
+      "claim": "`BadSignature` inherits from `BadData`.",
+      "quote": "BadData --> BadSignature"
+    },
+    {
+      "claim": "`BadPayload` inherits from `BadData`.",
+      "quote": "BadData --> BadPayload"
+    },
+    {
+      "claim": "`BadHeader` inherits from `BadData`.",
+      "quote": "BadData --> BadHeader"
+    },
+    {
+      "claim": "`BadData` has a `payload` attribute.",
+      "quote": "| `BadData` | Base class for all data-related exceptions | `payload` |"
+    },
+    {
+      "claim": "`TimestampSigner.unsign` raises `BadTimeSignature(\"Malformed timestamp\", payload=value)` from the original exception when `timestamp_to_datetime` raises ValueError, OSError, or OverflowError.",
+      "quote": "    except (ValueError, OSError, OverflowError) as exc:\n        raise BadTimeSignature(\n            \"Malformed timestamp\", payload=value\n        ) from exc"
+    },
+    {
+      "claim": "`TimestampSigner.unsign` raises `SignatureExpired` with the message `f\"Signature age {age} > {max_age} seconds\"` when the age exceeds max_age.",
+      "quote": "    raise SignatureExpired(\n        f\"Signature age {age} > {max_age} seconds\","
+    },
+    {
+      "claim": "`TimestampSigner.unsign` raises `BadTimeSignature(str(sig_error), payload=value, date_signed=ts_dt)` when the signature is invalid but a timestamp is present.",
+      "quote": "raise BadTimeSignature(str(sig_error), payload=value, date_signed=ts_dt)"
+    },
+    {
+      "claim": "`BadHeader` was added in version 0.24 and replaced `BadPayload` for header errors.",
+      "quote": "| 0.24 | Added `BadHeader` exception | Replaced `BadPayload` for header errors |"
+    },
+    {
+      "claim": "The project declares `requires-python = \">=3.10\"` in pyproject.toml.",
+      "quote": "| `requires-python` | \">=3.10\" | Minimum Python version |"
+    },
+    {
+      "claim": "The project name in pyproject.toml is \"itsdangerous\".",
+      "quote": "| `name` | \"itsdangerous\" | Package name for PyPI |"
+    },
+    {
+      "claim": "The project version in pyproject.toml is \"2.3.0.dev\".",
+      "quote": "| `version` | \"2.3.0.dev\" | Current development version |"
+    },
+    {
+      "claim": "The project description in pyproject.toml is \"Safely pass data to untrusted environments and back.\"",
+      "quote": "| `description` | \"Safely pass data to untrusted environments and back.\" | Brief package description |"
+    },
+    {
+      "claim": "The project readme in pyproject.toml is \"README.md\".",
+      "quote": "| `readme` | \"README.md\" | Readme file location |"
+    },
+    {
+      "claim": "The project license in pyproject.toml is \"BSD-3-Clause\".",
+      "quote": "| `license` | \"BSD-3-Clause\" | SPDX license identifier |"
+    },
+    {
+      "claim": "The pyproject.toml Documentation URL is 'https://itsdangerous.palletsprojects.com/'.",
+      "quote": "DOC_URL[\"Documentation = 'https://itsdangerous.palletsprojects.com/'\"]"
+    },
+    {
+      "claim": "The pyproject.toml Source URL is 'https://github.com/pallets/itsdangerous/'.",
+      "quote": "SOURCE_URL[\"Source = 'https://github.com/pallets/itsdangerous/'\"]"
+    },
+    {
+      "claim": "The pyproject.toml Changes URL is 'https://itsdangerous.palletsprojects.com/page/changes/'.",
+      "quote": "CHANGES_URL[\"Changes = 'https://itsdangerous.palletsprojects.com/page/changes/'\"]"
+    },
+    {
+      "claim": "The pyproject.toml Chat URL is 'https://discord.gg/pallets'.",
+      "quote": "CHAT_URL[\"Chat = 'https://discord.gg/pallets'\"]"
+    },
+    {
+      "claim": "The pyproject.toml Donate URL is 'https://palletsprojects.com/donate'.",
+      "quote": "DONATE_URL[\"Donate = 'https://palletsprojects.com/donate'\"]"
+    },
+    {
+      "claim": "The `dev` dependency group contains `ruff`, `tox`, and `tox-uv`.",
+      "quote": "DEV[\"dev<br/>['ruff', 'tox', 'tox-uv']\"]"
+    },
+    {
+      "claim": "The `pre-commit` dependency group contains `pre-commit` and `pre-commit-uv`.",
+      "quote": "PRECOMMIT[\"pre-commit<br/>['pre-commit', 'pre-commit-uv']\"]"
+    },
+    {
+      "claim": "The `tests` dependency group contains `freezegun` and `pytest`.",
+      "quote": "TESTS[\"tests<br/>['freezegun', 'pytest']\"]"
+    },
+    {
+      "claim": "The `typing` dependency group contains `mypy`, `pyright`, and `pytest`.",
+      "quote": "TYPING[\"typing<br/>['mypy', 'pyright', 'pytest']\"]"
+    },
+    {
+      "claim": "The `docs` dependency group contains `pallets-sphinx-themes`, `sphinx`, and `sphinxcontrib-log-cabinet`.",
+      "quote": "DOCS[\"docs<br/>['pallets-sphinx-themes', 'sphinx', 'sphinxcontrib-log-cabinet']\"]"
+    },
+    {
+      "claim": "The `docs-auto` dependency group contains `sphinx-autobuild`.",
+      "quote": "DOCS_AUTO[\"docs-auto<br/>['sphinx-autobuild']\"]"
+    },
+    {
+      "claim": "The `gha-update` dependency group contains `gha-update` conditioned on `python_full_version >= \"3.12\"`.",
+      "quote": "GHA_UPDATE[\"gha-update<br/>['gha-update ; python_full_version >= \\\"3.12\\\"']\"]"
+    },
+    {
+      "claim": "`tool.uv` sets `default-groups = ['dev', 'pre-commit', 'tests', 'typing']`.",
+      "quote": "DEFAULT[\"default-groups = ['dev', 'pre-commit', 'tests', 'typing']\"]"
+    },
+    {
+      "claim": "The build-system requires `flit_core<4`.",
+      "quote": "REQUIRES[\"requires = ['flit_core<4']\"]"
+    },
+    {
+      "claim": "The build-backend is `flit_core.buildapi`.",
+      "quote": "BACKEND[\"build-backend = 'flit_core.buildapi'\"]"
+    },
+    {
+      "claim": "`tool.flit.module` sets name to 'itsdangerous'.",
+      "quote": "MODULE_NAME[\"[tool.flit.module]<br/>name = 'itsdangerous'\"]"
+    },
+    {
+      "claim": "`tool.flit.sdist` includes 'docs/', 'examples/', 'tests/', 'CHANGES.rst', and 'uv.lock'.",
+      "quote": "INCLUDE[\"include = ['docs/', 'examples/', 'tests/', 'CHANGES.rst', 'uv.lock']\"]"
+    },
+    {
+      "claim": "`tool.flit.sdist` excludes 'docs/_build/'.",
+      "quote": "EXCLUDE[\"exclude = ['docs/_build/']\"]"
+    },
+    {
+      "claim": "`tool.pytest.ini_options` sets `testpaths = ['tests']`.",
+      "quote": "TEST_PATHS[\"testpaths = ['tests']\"]"
+    },
+    {
+      "claim": "`tool.pytest.ini_options` sets `filterwarnings = ['error']`.",
+      "quote": "FILTER_WARNINGS[\"filterwarnings = ['error']\"]"
+    },
+    {
+      "claim": "The coverage configuration enables branch coverage with `branch = true`.",
+      "quote": "COVERAGE_BRANCH[\"branch = true\"]"
+    },
+    {
+      "claim": "The mypy configuration targets Python 3.10 and uses strict mode.",
+      "quote": "| `mypy` | `[tool.mypy]` | Python 3.10 target, strict mode |"
+    },
+    {
+      "claim": "The pyright configuration uses standard type checking mode.",
+      "quote": "| `pyright` | `[tool.pyright]` | Standard type checking mode |"
+    },
+    {
+      "claim": "mypy is configured to check sources in `src/`.",
+      "quote": "**mypy**: Set to strict mode targeting Python 3.10+ with source checking in `src/`"
+    },
+    {
+      "claim": "The tox configuration defines environments py3.13, py3.12, py3.11, py3.10, and pypy311.",
+      "quote": "| `py3.13`, `py3.12`, `py3.11`, `py3.10` | Python version testing | tests group |"
+    },
+    {
+      "claim": "The tox `style` environment runs `pre-commit run --all-files`.",
+      "quote": "STYLE --> PRECOMMIT_COMMAND[\"pre-commit run --all-files\"]"
+    },
+    {
+      "claim": "The tox `typing` environment runs `mypy` and `pyright`.",
+      "quote": "TYPING --> MYPY_COMMAND[\"mypy\"]\n    TYPING --> PYRIGHT_COMMAND[\"pyright\"]"
+    },
+    {
+      "claim": "The tox `docs` environment runs `sphinx-build -E -W -b dirhtml`.",
+      "quote": "DOCS --> SPHINX_BUILD[\"sphinx-build -E -W -b dirhtml\"]"
+    },
+    {
+      "claim": "The tox `docs-auto` environment runs `sphinx-autobuild -W -b dirhtml`.",
+      "quote": "DOCS_AUTO --> SPHINX_AUTOBUILD[\"sphinx-autobuild -W -b dirhtml\"]"
+    },
+    {
+      "claim": "The tox python test environments run `pytest -v --tb=short`.",
+      "quote": "PY313 --> PYTEST_COMMAND[\"pytest -v --tb=short\"]"
+    },
+    {
+      "claim": "The tox configuration includes `update-actions`, `update-pre_commit`, and `update-requirements` environments.",
+      "quote": "UPDATE_ACTIONS[\"tox -e update-actions\"]\n        UPDATE_PRECOMMIT[\"tox -e update-pre_commit\"]\n        UPDATE_REQUIREMENTS[\"tox -e update-requirements\"]"
+    },
+    {
+      "claim": "The `.gitignore` excludes `.idea/`, `.vscode/`, `__pycache__/`, `dist/`, `.coverage*`, `htmlcov/`, `.tox/`, and `docs/_build/`.",
+      "quote": "- IDE directories (`.idea/`, `.vscode/`)\n- Python cache files (`__pycache__/`)\n- Build artifacts (`dist/`)\n- Coverage reports (`.coverage*`, `htmlcov/`)\n- Tool outputs (`.tox/`, `docs/_build/`)"
+    },
+    {
+      "claim": "`.pre-commit-config.yaml` references the `astral-sh/ruff-pre-commit` repository at revision `76e47323a83cd9795e4ff9a1de1c0d2eef610f17`.",
+      "quote": "| `astral-sh/ruff-pre-commit` | `76e47323a83cd9795e4ff9a1de1c0d2eef610f17` | Python linting and formatting |"
+    },
+    {
+      "claim": "`.pre-commit-config.yaml` references the `astral-sh/uv-pre-commit` repository at revision `648bdbfd6bb1a82f132ecc2c666e0d1b2e4b0d94`.",
+      "quote": "| `astral-sh/uv-pre-commit` | `648bdbfd6bb1a82f132ecc2c666e0d1b2e4b0d94` | Dependency lock file management |"
+    },
+    {
+      "claim": "`.pre-commit-config.yaml` references the `pre-commit/pre-commit-hooks` repository at revision `cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b`.",
+      "quote": "| `pre-commit/pre-commit-hooks` | `cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b` | General code quality checks |"
+    },
+    {
+      "claim": "`.pre-commit-config.yaml` enables the hooks `ruff` and `ruff-format`.",
+      "quote": "- `ruff`: Performs linting checks for code quality issues\n- `ruff-format`: Applies automatic code formatting"
+    },
+    {
+      "claim": "`.pre-commit-config.yaml` enables the `uv-lock` hook.",
+      "quote": "- `uv-lock`: Ensures dependency lock files are up to date"
+    },
+    {
+      "claim": "`.pre-commit-config.yaml` enables the hooks `check-merge-conflict`, `debug-statements`, `fix-byte-order-marker`, `trailing-whitespace`, and `end-of-file-fixer`.",
+      "quote": "- `check-merge-conflict`: Detects merge conflict markers\n- `debug-statements`: Identifies leftover debug statements\n- `fix-byte-order-marker`: Removes byte order markers\n- `trailing-whitespace`: Removes trailing whitespace\n- `end-of-file-fixer`: Ensures files end with newlines"
+    },
+    {
+      "claim": "`.editorconfig` sets `indent_style = space`.",
+      "quote": "INDENT_STYLE[\"indent_style: space\"]"
+    },
+    {
+      "claim": "`.editorconfig` sets `indent_size = 4` for all files.",
+      "quote": "INDENT_SIZE[\"indent_size: 4\"]"
+    },
+    {
+      "claim": "`.editorconfig` sets `insert_final_newline = true`.",
+      "quote": "FINAL_NEWLINE[\"insert_final_newline: true\"]"
+    },
+    {
+      "claim": "`.editorconfig` sets `trim_trailing_whitespace = true`.",
+      "quote": "TRIM_WS[\"trim_trailing_whitespace: true\"]"
+    },
+    {
+      "claim": "`.editorconfig` sets `end_of_line = lf`.",
+      "quote": "LINE_END[\"end_of_line: lf\"]"
+    },
+    {
+      "claim": "`.editorconfig` sets `charset = utf-8`.",
+      "quote": "CHARSET[\"charset: utf-8\"]"
+    },
+    {
+      "claim": "`.editorconfig` sets `max_line_length = 88`.",
+      "quote": "MAX_LINE[\"max_line_length: 88\"]"
+    },
+    {
+      "claim": "`.editorconfig` sets `indent_size = 2` for `*.{css,html,js,json,jsx,scss,ts,tsx,yaml,yml}` files.",
+      "quote": "WEB_FILES[\"*.{css,html,js,json,jsx,scss,ts,tsx,yaml,yml}\"]\n        WEB_INDENT[\"indent_size: 2\"]"
+    },
+    {
+      "claim": "`.devcontainer/devcontainer.json` uses the base image `mcr.microsoft.com/devcontainers/python:3`.",
+      "quote": "- Base image: `mcr.microsoft.com/devcontainers/python:3`"
+    },
+    {
+      "claim": "`.devcontainer/devcontainer.json` names the dev container environment `pallets/itsdangerous`.",
+      "quote": "- Named environment: `pallets/itsdangerous`"
+    },
+    {
+      "claim": "`.devcontainer/devcontainer.json` sets the default Python interpreter path to `${workspaceFolder}/.venv`.",
+      "quote": "- Default interpreter path: `${workspaceFolder}/.venv`"
+    },
+    {
+      "claim": "`.devcontainer/devcontainer.json` sets Python launch arguments to `[\"-X\", \"dev\"]`.",
+      "quote": "- Development mode launch arguments: `[\"-X\", \"dev\"]`"
+    },
+    {
+      "claim": "`.devcontainer/devcontainer.json` specifies `.devcontainer/on-create-command.sh` as the setup script.",
+      "quote": "- Automated setup script: `.devcontainer/on-create-command.sh`"
+    },
+    {
+      "claim": "`.devcontainer/devcontainer.json` sets `python.terminal.activateEnvInCurrentTerminal` to true.",
+      "quote": "| Terminal Activation | `python.terminal.activateEnvInCurrentTerminal: true` | Automatically activates venv in terminals |"
+    },
+    {
+      "claim": "The test suite lives in `tests/test_itsdangerous/` and includes `test_signer.py`, `test_serializer.py`, `test_timed.py`, and `test_encoding.py`.",
+      "quote": "TEST_ROOT[\"tests/test_itsdangerous/\"]"
+    },
+    {
+      "claim": "`tests/test_itsdangerous/test_signer.py` defines a `TestSigner` class.",
+      "quote": "TEST_SIGNER[\"test_signer.py<br/>TestSigner class\"]"
+    },
+    {
+      "claim": "`tests/test_itsdangerous/test_serializer.py` defines a `TestSerializer` class.",
+      "quote": "TEST_SERIALIZER[\"test_serializer.py<br/>TestSerializer class\"]"
+    },
+    {
+      "claim": "`tests/test_itsdangerous/test_timed.py` defines `TestTimestampSigner` and `TestTimedSerializer` classes.",
+      "quote": "TEST_TIMED[\"test_timed.py<br/>TestTimestampSigner<br/>TestTimedSerializer\"]"
+    },
+    {
+      "claim": "`tests/test_itsdangerous/test_signer.py` defines fixtures named `signer_factory` and `signer`.",
+      "quote": "- `signer_factory` [tests/test_itsdangerous/test_signer.py:20-21]()"
+    },
+    {
+      "claim": "`tests/test_itsdangerous/test_serializer.py` defines fixtures named `serializer_factory`, `serializer`, and `value`.",
+      "quote": "- `serializer_factory` [tests/test_itsdangerous/test_serializer.py:36-38]()"
+    },
+    {
+      "claim": "`tests/test_itsdangerous/test_timed.py` defines a `ts` timestamp fixture.",
+      "quote": "- `ts` (timestamp) [tests/test_itsdangerous/test_timed.py:19-21]()"
+    },
+    {
+      "claim": "`tests/test_itsdangerous/test_signer.py` contains test methods `test_signer`, `test_broken_signature`, `test_key_derivation`, and `test_algorithm`.",
+      "quote": "- `test_signer` - Basic signing and validation [tests/test_itsdangerous/test_signer.py:27-32]()"
+    },
+    {
+      "claim": "`tests/test_itsdangerous/test_timed.py` defines a `FreezeMixin` class with a `ts` fixture returning `datetime(2011, 6, 24, 0, 9, 5, tzinfo=timezone.utc)` and an autouse `freeze` fixture using `freeze_time`.",
+      "quote": "class FreezeMixin:\n    @pytest.fixture()\n    def ts(self):\n        return datetime(2011, 6, 24, 0, 9, 5, tzinfo=timezone.utc)"
+    },
+    {
+      "claim": "The serializer tests parametrize values with `None`, `True`, `\"str\"`, `\"text\"`, `[1, 2, 3]`, and `{\"id\": 42}`.",
+      "quote": "- Tests serialization with `None`, `True`, `\"str\"`, `\"text\"`, `[1, 2, 3]`, `{\"id\": 42}`"
+    },
+    {
+      "claim": "The signer tests parametrize key derivation methods `\"concat\"`, `\"django-concat\"`, `\"hmac\"`, and `\"none\"`.",
+      "quote": "- Tests `\"concat\"`, `\"django-concat\"`, `\"hmac\"`, `\"none\"` derivation methods"
+    },
+    {
+      "claim": "`TestSigner` contains 8 test methods.",
+      "quote": "| **TestSigner** | 8 methods | Basic signing, key derivation, algorithms |"
+    },
+    {
+      "claim": "`TestSerializer` contains 12 test methods.",
+      "quote": "| **TestSerializer** | 12 methods | Serialization, exception handling, parametrization |"
+    },
+    {
+      "claim": "`TestTimestampSigner` contains 8 test methods.",
+      "quote": "| **TestTimestampSigner** | 8 methods | Time-based signing, expiration, malformed timestamps |"
+    },
+    {
+      "claim": "`TestTimedSerializer` contains 3 test methods.",
+      "quote": "| **TestTimedSerializer** | 3 methods | Timed serialization integration |"
+    },
+    {
+      "claim": "`tests/test_itsdangerous/test_encoding.py` contains 4 test functions.",
+      "quote": "| **Encoding Tests** | 4 functions | Base64 encoding, integer conversion |"
+    },
+    {
+      "claim": "The GitHub Actions workflow `tests.yaml` is triggered by pull requests and pushes to main and stable branches.",
+      "quote": "| `tests.yaml` | PR, push to main/stable | Comprehensive testing | `tests`, `typing` |"
+    },
+    {
+      "claim": "The GitHub Actions workflow `pre-commit.yaml` is triggered by pull requests and pushes to main and stable branches.",
+      "quote": "| `pre-commit.yaml` | PR, push to main/stable | Code quality enforcement | `main` |"
+    },
+    {
+      "claim": "The GitHub Actions workflow `publish.yaml` is triggered by git tag pushes and contains `build`, `create-release`, and `publish-pypi` jobs.",
+      "quote": "| `publish.yaml` | Git tag push | Package release | `build`, `create-release`, `publish-pypi` |"
+    },
+    {
+      "claim": "The GitHub Actions workflow `lock.yaml` runs on a daily schedule and contains a `lock` job.",
+      "quote": "| `lock.yaml` | Daily schedule | Repository maintenance | `lock` |"
+    },
+    {
+      "claim": "The tests workflow matrix includes Python 3.13 on Ubuntu, Windows, and macOS, Python 3.12, 3.11, 3.10 on Ubuntu, and PyPy 3.11 on Ubuntu.",
+      "quote": "| Default | 3.13 | ubuntu-latest | py3.13 | Latest Python on Linux |"
+    },
+    {
+      "claim": "The tests workflow uses `fail-fast: false` in its matrix strategy.",
+      "quote": "The matrix uses the `fail-fast: false` strategy"
+    },
+    {
+      "claim": "The tests workflow uses the `astral-sh/setup-uv` action with `enable-cache: true` and `prune-cache: false`.",
+      "quote": "- Cache configuration: `enable-cache: true`, `prune-cache: false`"
+    },
+    {
+      "claim": "The tests workflow runs tests with `uv run --locked tox run -e {env}`.",
+      "quote": "UV_RUN[\"uv run --locked tox run -e {env}\"]"
+    },
+    {
+      "claim": "The tests workflow's typing job runs `uv run --locked tox run -e typing`.",
+      "quote": "TOX_TYPING[\"uv run --locked tox run -e typing\"]"
+    },
+    {
+      "claim": "The tests workflow's typing job caches `./.mypy_cache` with a key based on `hashFiles('pyproject.toml')`.",
+      "quote": "MYPY_CACHE_KEY[\"mypy|hashFiles('pyproject.toml')\"]\n        CACHE_PATH[\"./.mypy_cache\"]"
+    },
+    {
+      "claim": "The tests workflow uses `actions/checkout@v4.2.2`.",
+      "quote": "CHECKOUT[\"actions/checkout@v4.2.2\"]"
+    },
+    {
+      "claim": "The tests workflow uses `astral-sh/setup-uv@v6.1.0`.",
+      "quote": "UV_SETUP[\"astral-sh/setup-uv@v6.1.0\"]"
+    },
+    {
+      "claim": "The tests workflow uses `actions/setup-python@v5.6.0`.",
+      "quote": "PY_SETUP[\"actions/setup-python@v5.6.0\"]"
+    },
+    {
+      "claim": "The tests workflow's typing job uses `actions/cache@v4.2.3`.",
+      "quote": "CACHE_ACTION[\"actions/cache@v4.2.3\"]"
+    },
+    {
+      "claim": "The tests workflow's typing job sets `python-version-file: pyproject.toml`.",
+      "quote": "PYPROJECT_VERSION[\"python-version-file: pyproject.toml\"]"
+    },
+    {
+      "claim": "The tests workflow ignores changes to `docs/**` and `README.md`.",
+      "quote": "paths-ignore: ['docs/**', 'README.md']"
+    },
+    {
+      "claim": "The tests workflow determines the tox environment with `matrix.tox || format('py{0}', matrix.python)`.",
+      "quote": "DEFAULT_ENV[\"matrix.tox || format('py{0}', matrix.python)\"]"
+    },
+    {
+      "claim": "The pre-commit workflow runs `uv run --locked --group pre-commit` to invoke pre-commit.",
+      "quote": "- **UV Integration**: Uses `uv run --locked --group pre-commit` for dependency management"
+    },
+    {
+      "claim": "The pre-commit workflow passes `--show-diff-on-failure --color=always` to pre-commit.",
+      "quote": "- **Failure Handling**: Shows diffs on failure with `--show-diff-on-failure --color=always`"
+    },
+    {
+      "claim": "The pre-commit workflow uses `pre-commit-ci/lite-action@v1.1.0`.",
+      "quote": "LITE_ACTION[\"pre-commit-ci/lite-action@v1.1.0\"]"
+    },
+    {
+      "claim": "The pre-commit workflow caches pre-commit environments with a key composed of `pyproject.toml` and `.pre-commit-config.yaml`.",
+      "quote": "- **Cache Strategy**: Caches pre-commit environments using composite key of `pyproject.toml` and `.pre-commit-config.yaml`"
+    },
+    {
+      "claim": "The publish workflow's build job sets `SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)`.",
+      "quote": "- Source date epoch: `SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)`"
+    },
+    {
+      "claim": "The publish workflow's build job runs `uv build` and uploads the `./dist` directory via `actions/upload-artifact`.",
+      "quote": "- Artifact upload: `actions/upload-artifact` with `./dist` path"
+    },
+    {
+      "claim": "The publish workflow's create-release job uses `gh release create` with the `--draft` flag.",
+      "quote": "GH_RELEASE_CREATE --> DRAFT_FLAG[\"--draft flag\"]"
+    },
+    {
+      "claim": "The publish workflow's create-release job requires the `contents: write` permission.",
+      "quote": "CONTENTS_WRITE[\"contents: write permission\"]"
+    },
+    {
+      "claim": "The publish workflow's publish-pypi job uses the `publish` environment with URL tracking.",
+      "quote": "- Environment: `publish` with URL tracking"
+    },
+    {
+      "claim": "The publish workflow's publish-pypi job requires the `id-token: write` permission.",
+      "quote": "- Permissions: `id-token: write`"
+    },
+    {
+      "claim": "The publish workflow's publish-pypi job uses `pypa/gh-action-pypi-publish` with `packages-dir: artifact/`.",
+      "quote": "- Action: `pypa/gh-action-pypi-publish` with `packages-dir: artifact/`"
+    },
+    {
+      "claim": "The publish workflow's create-release job uses `github.ref_name` as the release tag name.",
+      "quote": "GH_RELEASE_CREATE --> TAG_NAME[\"github.ref_name\"]"
+    },
+    {
+      "claim": "The lock workflow uses the `dessant/lock-threads` action.",
+      "quote": "The workflow uses `dessant/lock-threads` action"
+    },
+    {
+      "claim": "The lock workflow sets `issue-inactive-days` to 14.",
+      "quote": "| `issue-inactive-days` | 14 | Lock closed issues after 2 weeks |"
+    },
+    {
+      "claim": "The lock workflow sets `pr-inactive-days` to 14.",
+      "quote": "| `pr-inactive-days` | 14 | Lock closed PRs after 2 weeks |"
+    },
+    {
+      "claim": "The lock workflow sets `discussion-inactive-days` to 14.",
+      "quote": "| `discussion-inactive-days` | 14 | Lock inactive discussions |"
+    },
+    {
+      "claim": "The lock workflow runs on the cron schedule `0 0 * * *`.",
+      "quote": "SCHEDULE[\"Daily Cron Schedule<br/>0 0 * * *\"]"
+    },
+    {
+      "claim": "The lock workflow uses concurrency `group: lock`.",
+      "quote": "**Concurrency**: Uses `group: lock` to prevent overlapping executions"
+    },
+    {
+      "claim": "The lock workflow pins `dessant/lock-threads` to commit `1bf7ec25051fe7c00bdd17e6a7cf3d7bfb7dc771`.",
+      "quote": "**Action**: `dessant/lock-threads@1bf7ec25051fe7c00bdd17e6a7cf3d7bfb7dc771`"
+    },
+    {
+      "claim": "The lock workflow requires `issues: write`, `pull-requests: write`, and `discussions: write` permissions.",
+      "quote": "ISSUES_PERM[\"issues: write\"]\n        PR_PERM[\"pull-requests: write\"]\n        DISC_PERM[\"discussions: write\"]"
+    },
+    {
+      "claim": "`.readthedocs.yaml` specifies the build OS as ubuntu-24.04 with Python 3.13.",
+      "quote": "- Build environment: Ubuntu 24.04 with Python 3.13"
+    },
+    {
+      "claim": "`.readthedocs.yaml` installs `uv` via `asdf`.",
+      "quote": "- Tool management: `asdf` for `uv` installation"
+    },
+    {
+      "claim": "`.readthedocs.yaml` runs `uv run --group docs sphinx-build -W -b dirhtml docs $READTHEDOCS_OUTPUT/html`.",
+      "quote": "- Build command: `uv run --group docs sphinx-build -W -b dirhtml docs $READTHEDOCS_OUTPUT/html`"
+    },
+    {
+      "claim": "`.devcontainer/on-create-command.sh` installs `uv` and configures PATH, runs `uv sync`, and runs `pre-commit install --install-hooks`.",
+      "quote": "- `uv` installation and PATH configuration\n- Virtual environment creation: `uv sync`\n- Pre-commit hook installation: `pre-commit install --install-hooks`"
+    },
+    {
+      "claim": "`.devcontainer/on-create-command.sh` installs uv via `curl -LsSf https://astral.sh/uv/install.sh`.",
+      "quote": "UV_INSTALL[\"Install uv package manager<br/>curl -LsSf https://astral.sh/uv/install.sh\"]"
+    },
+    {
+      "claim": "`docs/conf.py` sets `project` to \"ItsDangerous\".",
+      "quote": "| `project` | \"ItsDangerous\" | [docs/conf.py:6]() |"
+    },
+    {
+      "claim": "`docs/conf.py` sets `copyright` to \"2011 Pallets\".",
+      "quote": "| `copyright` | \"2011 Pallets\" | [docs/conf.py:7]() |"
+    },
+    {
+      "claim": "`docs/conf.py` sets `author` to \"Pallets\".",
+      "quote": "| `author` | \"Pallets\" | [docs/conf.py:8]() |"
+    },
+    {
+      "claim": "`docs/conf.py` sets `release` and `version` using `get_version(\"itsdangerous\")`.",
+      "quote": "| `release, version` | `get_version(\"itsdangerous\")` | [docs/conf.py:9]() |"
+    },
+    {
+      "claim": "`docs/conf.py` enables the extensions `sphinx.ext.autodoc`, `sphinx.ext.extlinks`, `sphinx.ext.intersphinx`, `sphinxcontrib.log_cabinet`, and `pallets_sphinx_themes`.",
+      "quote": "AUTODOC[\"sphinx.ext.autodoc<br/>API Documentation\"]\n        EXTLINKS[\"sphinx.ext.extlinks<br/>External Links\"]\n        INTERSPHINX[\"sphinx.ext.intersphinx<br/>Cross-project Links\"]"
+    },
+    {
+      "claim": "`docs/conf.py` sets `autoclass_content = \"both\"`.",
+      "quote": "- `autoclass_content = \"both\"` - Includes both class and `__init__` docstrings"
+    },
+    {
+      "claim": "`docs/conf.py` sets `autodoc_member_order = \"bysource\"`.",
+      "quote": "- `autodoc_member_order = \"bysource\"` - Preserves source code order in documentation"
+    },
+    {
+      "claim": "`docs/conf.py` sets `autodoc_typehints = \"description\"`.",
+      "quote": "- `autodoc_typehints = \"description\"` - Shows type hints in parameter descriptions"
+    },
+    {
+      "claim": "`docs/conf.py` sets `autodoc_preserve_defaults = True`.",
+      "quote": "- `autodoc_preserve_defaults = True` - Displays default parameter values"
+    },
+    {
+      "claim": "`docs/conf.py` defines an `issue` extlink role linking to GitHub issues.",
+      "quote": "- `:issue:` role links to GitHub issues"
+    },
+    {
+      "claim": "`docs/conf.py` defines a `pr` extlink role linking to GitHub pull requests.",
+      "quote": "- `:pr:` role links to GitHub pull requests"
+    },
+    {
+      "claim": "`docs/conf.py` defines an intersphinx mapping named `python` to the Python documentation.",
+      "quote": "- `python` - Links to official Python documentation"
+    },
+    {
+      "claim": "`docs/conf.py` sets `html_theme = \"flask\"`.",
+      "quote": "| `html_theme` | \"flask\" | Pallets project styling |"
+    },
+    {
+      "claim": "`docs/conf.py` sets `html_theme_options = {\"index_sidebar_logo\": False}`.",
+      "quote": "| `html_theme_options` | `{\"index_sidebar_logo\": False}` | Disable logo on index |"
+    },
+    {
+      "claim": "`docs/conf.py` sets `html_favicon` to \"_static/itsdangerous-icon.svg\".",
+      "quote": "| `html_favicon` | \"_static/itsdangerous-icon.svg\" | Browser icon |"
+    },
+    {
+      "claim": "`docs/conf.py` sets `html_logo` to \"_static/itsdangerous-logo.svg\".",
+      "quote": "| `html_logo` | \"_static/itsdangerous-logo.svg\" | Site logo |"
+    },
+    {
+      "claim": "`docs/conf.py` sets `html_title` to `f\"{project} Documentation ({version})\"`.",
+      "quote": "| `html_title` | `f\"{project} Documentation ({version})\"` | Page title format |"
+    },
+    {
+      "claim": "`docs/conf.py` configures the index page sidebar to include project.html, localtoc.html, searchbox.html, and ethicalads.html.",
+      "quote": "INDEX_SIDEBAR --> PROJECT_HTML\n    INDEX_SIDEBAR --> LOCALTOC_HTML\n    INDEX_SIDEBAR --> SEARCHBOX_HTML\n    INDEX_SIDEBAR --> ETHICALADS_HTML"
+    },
+    {
+      "claim": "`docs/conf.py` configures the default page sidebar to include localtoc.html, relations.html, searchbox.html, and ethicalads.html.",
+      "quote": "DEFAULT_SIDEBAR --> LOCALTOC_HTML\n    DEFAULT_SIDEBAR --> RELATIONS_HTML\n    DEFAULT_SIDEBAR --> SEARCHBOX_HTML\n    DEFAULT_SIDEBAR --> ETHICALADS_HTML"
+    },
+    {
+      "claim": "`docs/conf.py` defines project links for Donate, PyPI Releases, Source Code, Issue Tracker, and Discord Chat in `html_context[\"project_links\"]`.",
+      "quote": "| Project Links | `html_context[\"project_links\"]` | PyPI, Source, Chat, Donate |"
+    },
+    {
+      "claim": "`docs/index.rst` contains a toctree listing concepts, serializer, signer, exceptions, timed, url_safe, encoding, license, and changes.",
+      "quote": "TOCTREE --> CONCEPTS_ENTRY\n    TOCTREE --> SERIALIZER_ENTRY\n    TOCTREE --> SIGNER_ENTRY\n    TOCTREE --> EXCEPTIONS_ENTRY\n    TOCTREE --> TIMED_ENTRY\n    TOCTREE --> URLSAFE_ENTRY\n    TOCTREE --> ENCODING_ENTRY\n    TOCTREE --> LICENSE_ENTRY\n    TOCTREE --> CHANGES_ENTRY"
+    },
+    {
+      "claim": "itsdangerous can be installed with `pip install -U itsdangerous`.",
+      "quote": "pip install -U itsdangerous"
+    },
+    {
+      "claim": "The itsdangerous `_static` directory contains `itsdangerous-logo.svg`, `itsdangerous-icon.svg`, and `itsdangerous-name.svg`.",
+      "quote": "LOGO[\"_static/itsdangerous-logo.svg\"]\n        FAVICON[\"_static/itsdangerous-icon.svg\"] \n        NAME_IMAGE[\"_static/itsdangerous-name.svg\"]"
+    },
+    {
+      "claim": "`signer.rst` documents `Signer` and `NoneAlgorithm`.",
+      "quote": "| `signer.rst` | `src/itsdangerous/signer.py` | `Signer`, `NoneAlgorithm` |"
+    },
+    {
+      "claim": "`encoding.rst` documents `base64_encode` and `base64_decode`.",
+      "quote": "| `encoding.rst` | `src/itsdangerous/encoding.py` | `base64_encode`, `base64_decode` |"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 1.01
+}

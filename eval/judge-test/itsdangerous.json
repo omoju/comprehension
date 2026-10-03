@@ -1,0 +1,571 @@
+{
+  "repo": "itsdangerous",
+  "items": [
+    {
+      "id": "deepwiki:f5",
+      "claim": "The `gha-update` dependency group contains `gha-update` conditioned on `python_full_version >= \"3.13\"`.",
+      "truth": false,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "pyproject.toml:39-41"
+      ],
+      "reason": "The marker is python_full_version >= '3.12', not 3.13.",
+      "jev_contradicted": 0.95
+    },
+    {
+      "id": "story:f2",
+      "claim": "In `Serializer.dumps` the payload is wrapped as `self.dump_payload(want_bytes(obj))`.",
+      "truth": false,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/serializer.py:314"
+      ],
+      "reason": "The code is `payload = want_bytes(self.dump_payload(obj))`, with want_bytes applied to the dumped payload, not to obj.",
+      "jev_contradicted": 0.93
+    },
+    {
+      "id": "story:t9",
+      "claim": "`URLSafeSerializerMixin.load_payload` delegates to `super().load_payload(json)`, the base `Serializer.load_payload`.",
+      "truth": true,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/url_safe.py:53"
+      ],
+      "reason": "The mixin ends with `return super().load_payload(json, *args, **kwargs)`, delegating to Serializer.load_payload.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:f8",
+      "claim": "`.pre-commit-config.yaml` enables the hooks `ruff` and `black`.",
+      "truth": false,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        ".pre-commit-config.yaml:2-6"
+      ],
+      "reason": "The hooks are ruff and ruff-format; black is not present.",
+      "jev_contradicted": 0.92
+    },
+    {
+      "id": "deepwiki:t6",
+      "claim": "`Signer` has a `secret_keys` attribute of type `list[bytes]`.",
+      "truth": true,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/signer.py:143-143"
+      ],
+      "reason": "secret_keys is annotated as list[bytes].",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:t6",
+      "claim": "`want_bytes` in encoding.py encodes text as UTF-8 with `errors='strict'`.",
+      "truth": true,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/encoding.py:11-17"
+      ],
+      "reason": "want_bytes defaults to encoding='utf-8' and errors='strict' and encodes str with those.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:t7",
+      "claim": "`Signer.verify_signature` loops over `reversed(self.secret_keys)`, derives a key for each, and returns `True` on the first algorithm match, otherwise `False`.",
+      "truth": true,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/signer.py:236-242"
+      ],
+      "reason": "verify_signature iterates `reversed(self.secret_keys)`, derives a key per secret, returns True on the first match else False.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:t1",
+      "claim": "`Serializer.__init__` allows `salt=None`, deferring the decision to the `Signer`'s own default.",
+      "truth": true,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/serializer.py:210-214"
+      ],
+      "reason": "If salt is None it is left as None with the comment that the signer's default is used.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:t3",
+      "claim": "`_CompactJSON.loads('{\"id\":5,\"name\":\"itsdangerous\"}')` returns `{'id': 5, 'name': 'itsdangerous'}`.",
+      "truth": true,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/_json.py:10-12"
+      ],
+      "reason": "_CompactJSON.loads simply calls json.loads, which parses 5 as an int.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:t0",
+      "claim": "When `signer_kwargs=None` is passed, `Serializer.__init__` sets it to `{}`.",
+      "truth": true,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/serializer.py:226"
+      ],
+      "reason": "`self.signer_kwargs: dict[str, t.Any] = signer_kwargs or {}` yields {} when None.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:f3",
+      "claim": "`_CompactJSON.loads('{\"id\":5,\"name\":\"itsdangerous\"}')` returns `{'id': '5', 'name': 'itsdangerous'}`.",
+      "truth": false,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/_json.py:10-12"
+      ],
+      "reason": "json.loads yields the integer 5, not the string '5'.",
+      "jev_contradicted": 0.64
+    },
+    {
+      "id": "story:f1",
+      "claim": "`Serializer.__init__` coerces `salt=None` to the default `b'itsdangerous.Serializer'` before storing it.",
+      "truth": false,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/serializer.py:210-214"
+      ],
+      "reason": "salt=None is stored as None; no default b'itsdangerous.Serializer' coercion happens in Serializer.__init__.",
+      "jev_contradicted": 0.92
+    },
+    {
+      "id": "deepwiki:f7",
+      "claim": "`Signer.derive_key` raises `ValueError` for an unknown key derivation method.",
+      "truth": false,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/signer.py:212-213"
+      ],
+      "reason": "derive_key raises TypeError for an unknown derivation method.",
+      "jev_contradicted": 0.93
+    },
+    {
+      "id": "deepwiki:f1",
+      "claim": "The tests workflow's typing job sets `python-version-file: .python-version`.",
+      "truth": false,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        ".github/workflows/tests.yaml:41-43"
+      ],
+      "reason": "The typing job uses python-version-file: pyproject.toml.",
+      "jev_contradicted": 0.97
+    },
+    {
+      "id": "story:t4",
+      "claim": "When `signer=None` is passed, `Serializer.__init__` uses the class default signer, which for the plain serializer is `Signer`.",
+      "truth": true,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/serializer.py:99",
+        "src/itsdangerous/serializer.py:222-225"
+      ],
+      "reason": "default_signer is Signer and __init__ falls back to it when signer is None.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:f6",
+      "claim": "`Signer` has a `secret_keys` attribute of type `tuple[bytes, ...]`.",
+      "truth": false,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/signer.py:143-143"
+      ],
+      "reason": "secret_keys is a list[bytes], not a tuple.",
+      "jev_contradicted": 0.94
+    },
+    {
+      "id": "deepwiki:t8",
+      "claim": "`.pre-commit-config.yaml` enables the hooks `ruff` and `ruff-format`.",
+      "truth": true,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "supported",
+      "lines": [
+        ".pre-commit-config.yaml:2-6"
+      ],
+      "reason": "The ruff repo hooks listed are ruff and ruff-format.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "story:f6",
+      "claim": "`want_bytes` in encoding.py encodes text as UTF-8 with `errors='ignore'`.",
+      "truth": false,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/encoding.py:11-17"
+      ],
+      "reason": "want_bytes' default errors value is 'strict', not 'ignore'.",
+      "jev_contradicted": 0.96
+    },
+    {
+      "id": "story:f5",
+      "claim": "`Signer.unsign` raises `BadSignature` with the message \"Separator b'.' missing from value\" when the separator is absent.",
+      "truth": false,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/signer.py:248-249"
+      ],
+      "reason": "The message is f\"No {self.sep!r} found in value\", not \"Separator ... missing from value\".",
+      "jev_contradicted": 0.94
+    },
+    {
+      "id": "deepwiki:f9",
+      "claim": "`docs/conf.py` enables the extensions `sphinx.ext.autodoc`, `sphinx.ext.napoleon`, `sphinx.ext.intersphinx`, `sphinxcontrib.log_cabinet`, and `pallets_sphinx_themes`.",
+      "truth": false,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "docs/conf.py:14-20"
+      ],
+      "reason": "The extensions include sphinx.ext.extlinks, not sphinx.ext.napoleon.",
+      "jev_contradicted": 0.96
+    },
+    {
+      "id": "deepwiki:t5",
+      "claim": "The `gha-update` dependency group contains `gha-update` conditioned on `python_full_version >= \"3.12\"`.",
+      "truth": true,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:39-41"
+      ],
+      "reason": "gha-update group has marker python_full_version >= '3.12'.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:f3",
+      "claim": "The `salt` parameter of `Signer` is required.",
+      "truth": false,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/signer.py:129-133"
+      ],
+      "reason": "salt has a default of b\"itsdangerous.Signer\".",
+      "jev_contradicted": 0.96
+    },
+    {
+      "id": "deepwiki:t9",
+      "claim": "`docs/conf.py` enables the extensions `sphinx.ext.autodoc`, `sphinx.ext.extlinks`, `sphinx.ext.intersphinx`, `sphinxcontrib.log_cabinet`, and `pallets_sphinx_themes`.",
+      "truth": true,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "docs/conf.py:14-20"
+      ],
+      "reason": "Those are exactly the five extensions listed.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:f7",
+      "claim": "`Signer.verify_signature` loops over `self.secret_keys` in order, derives a key for each, and returns `True` on the first algorithm match, otherwise `False`.",
+      "truth": false,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/signer.py:236-242"
+      ],
+      "reason": "The loop iterates over `reversed(self.secret_keys)`, i.e. newest first, not in list order.",
+      "jev_contradicted": 0.95
+    },
+    {
+      "id": "story:t2",
+      "claim": "In `Serializer.dumps` the payload is wrapped as `want_bytes(self.dump_payload(obj))`.",
+      "truth": true,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/serializer.py:314"
+      ],
+      "reason": "dumps contains exactly `payload = want_bytes(self.dump_payload(obj))`.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:t4",
+      "claim": "`Signer` supports the key derivation methods `concat`, `django-concat`, `hmac`, and `none`.",
+      "truth": true,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/signer.py:200-213"
+      ],
+      "reason": "derive_key handles concat, django-concat, hmac, and none.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:t3",
+      "claim": "The `secret_key` parameter of `Signer` is required.",
+      "truth": true,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/signer.py:129-132"
+      ],
+      "reason": "secret_key is the first positional parameter without a default.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:t1",
+      "claim": "The tests workflow's typing job sets `python-version-file: pyproject.toml`.",
+      "truth": true,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "supported",
+      "lines": [
+        ".github/workflows/tests.yaml:41-43"
+      ],
+      "reason": "The typing job sets python-version-file: pyproject.toml.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:f0",
+      "claim": "The GitHub Actions workflow `publish.yaml` is triggered by pushes to the `main` branch and contains `build`, `create-release`, and `publish-pypi` jobs.",
+      "truth": false,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        ".github/workflows/publish.yaml:2-4"
+      ],
+      "reason": "publish.yaml triggers on tag pushes, not pushes to main.",
+      "jev_contradicted": 0.9
+    },
+    {
+      "id": "story:t5",
+      "claim": "`Signer.unsign` raises `BadSignature` with the message \"No b'.' found in value\" when the separator is absent.",
+      "truth": true,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/signer.py:248-249"
+      ],
+      "reason": "With sep b'.', the f-string produces \"No b'.' found in value\".",
+      "jev_contradicted": 0.45
+    },
+    {
+      "id": "deepwiki:f4",
+      "claim": "`Signer` supports the key derivation methods `concat`, `django-concat`, `hmac`, and `pbkdf2`.",
+      "truth": false,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/signer.py:200-213"
+      ],
+      "reason": "There is no pbkdf2 derivation; the fourth option is none.",
+      "jev_contradicted": 0.93
+    },
+    {
+      "id": "story:f9",
+      "claim": "`URLSafeSerializerMixin.load_payload` delegates to `self.serializer.loads(json)`, bypassing the base `Serializer.load_payload`.",
+      "truth": false,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/url_safe.py:53"
+      ],
+      "reason": "It calls super().load_payload(json, ...) rather than self.serializer.loads directly.",
+      "jev_contradicted": 0.94
+    },
+    {
+      "id": "deepwiki:f2",
+      "claim": "The project declares `requires-python = \">=3.9\"` in pyproject.toml.",
+      "truth": false,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "pyproject.toml:16-16"
+      ],
+      "reason": "requires-python is \">=3.10\".",
+      "jev_contradicted": 0.96
+    },
+    {
+      "id": "story:f8",
+      "claim": "`HMACAlgorithm.get_signature` calls `hmac.new(key, msg=value, digestmod=self.digest_method)` and returns `mac.hexdigest()`.",
+      "truth": false,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/signer.py:62-64"
+      ],
+      "reason": "get_signature returns mac.digest(), not mac.hexdigest().",
+      "jev_contradicted": 0.96
+    },
+    {
+      "id": "story:f4",
+      "claim": "When `signer=None` is passed, `Serializer.__init__` uses the class default signer, which for the plain serializer is `TimestampSigner`.",
+      "truth": false,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/serializer.py:99",
+        "src/itsdangerous/timed.py:175"
+      ],
+      "reason": "Serializer's default_signer is Signer; TimestampSigner is only the default for TimedSerializer.",
+      "jev_contradicted": 0.59
+    },
+    {
+      "id": "deepwiki:t2",
+      "claim": "The project declares `requires-python = \">=3.10\"` in pyproject.toml.",
+      "truth": true,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:16-16"
+      ],
+      "reason": "requires-python = \">=3.10\" is declared.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "deepwiki:t0",
+      "claim": "The GitHub Actions workflow `publish.yaml` is triggered by git tag pushes and contains `build`, `create-release`, and `publish-pypi` jobs.",
+      "truth": true,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "supported",
+      "lines": [
+        ".github/workflows/publish.yaml:2-4",
+        ".github/workflows/publish.yaml:6-6",
+        ".github/workflows/publish.yaml:22-22",
+        ".github/workflows/publish.yaml:35-35"
+      ],
+      "reason": "Triggered on tags: ['*'] with jobs build, create-release, and publish-pypi.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:t8",
+      "claim": "`HMACAlgorithm.get_signature` calls `hmac.new(key, msg=value, digestmod=self.digest_method)` and returns `mac.digest()`.",
+      "truth": true,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/signer.py:62-64"
+      ],
+      "reason": "The method builds hmac.new(key, msg=value, digestmod=self.digest_method) and returns mac.digest().",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:f0",
+      "claim": "When `signer_kwargs=None` is passed, `Serializer.__init__` sets it to `dict(salt=self.salt)`.",
+      "truth": false,
+      "arm": "story",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "label": "contradicted",
+      "lines": [
+        "src/itsdangerous/serializer.py:226"
+      ],
+      "reason": "signer_kwargs is set to {} when None, not to dict(salt=self.salt).",
+      "jev_contradicted": 0.95
+    },
+    {
+      "id": "deepwiki:t7",
+      "claim": "`Signer.derive_key` raises `TypeError` for an unknown key derivation method.",
+      "truth": true,
+      "arm": "deepwiki",
+      "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "label": "supported",
+      "lines": [
+        "src/itsdangerous/signer.py:212-213"
+      ],
+      "reason": "The else branch raises TypeError(\"Unknown key derivation method\").",
+      "jev_contradicted": 0.05
+    }
+  ],
+  "cost": 0.43
+}
