@@ -59,7 +59,7 @@ def read_proofs(chapter: Path) -> list[tuple[str, str]]:
 RUNNERS = {"python": [sys.executable, "-c"], "sh": ["bash", "-c"]}
 
 # Assertions that cannot fail. A proof full of these passes whatever the story says.
-VACUOUS = re.compile(r"\bor\s+True\b|\bassert\s+(True|1)\b|\bassert\s+([\w.\[\]'\"]+)\s*==\s*\2\s*($|#)", re.M)
+VACUOUS = re.compile(r"\bor\s+True\b|\bassert\s+(True|1)(?![\w.])|\bassert\s+([\w.\[\]'\"]+)\s*==\s*\2\s*($|#)", re.M)
 
 
 @dataclass

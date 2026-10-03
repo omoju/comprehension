@@ -16,14 +16,13 @@ parallel; Omoju's call). Stage 3 (repair loop) is built into `outline.py` and `c
 2. Ask Omoju the open decisions below before spending.
 
 **Open decisions (Omoju)**
-1. When to generate chapters for the 9 repos. The pipeline is ready: `chapter.py stories/bench/<repo>` for each.
+1. Which stories to read (plan: 2–3 on Sunday). Candidates: requests (longest, 10 ch.), rich (most citations), flask.
 2. Self-story on this repo: `pyproject.toml`, `.codestoryignore`, then run.
 3. A second, cross-vendor judge for the comparison (the code-review paper's cross-model point), or Jev + Claude only?
 4. Keep the "note to Sha" reminder in `NOTES.md`, or move it out before the repo is published?
 5. Optional: `PREREGISTRATION.md` §9 sentences on what "it helps" would feel like.
 
-**Next work, in parallel tracks**
-- Generate the 9 stories (decision 1), then read the reports: repairs per chapter is the first number stage 3 gives us.
+**Next work (Friday 2 October), in parallel tracks**
 - Fetch DeepWiki pages for all 10 via its public MCP server (`https://mcp.deepwiki.com/mcp`, tools
   `read_wiki_structure`, `read_wiki_contents`); record the commit each page describes.
 - Eval harness: question writing (path + general), answer keys checked by execution, claim extraction, judge;
@@ -39,7 +38,8 @@ story is the stage-3 pass. The judge is reported, never repaired on.
 Checks: `verify.py <dir>` (citations, drift, proofs), `claims.py <dir> <chapter>` (Jev contradiction judge).
 Each repo gets its own environment at `demo-repos/<repo>/.codestory-venv` (created on first use).
 
-**Spend so far:** ≈ $43 on Anthropic (≈ $20 to 09-30; 10-01: 15 outline repairs ≈ $21, repair-loop test ≈ $1.5), pennies on Jev.
+**Spend so far:** ≈ $83 on Anthropic (≈ $20 to 09-30; 10-01: 15 outline repairs ≈ $21, repair-loop test ≈ $1.5;
+10-02: 9 stories $37.94, STE experiment $1.82), pennies on Jev.
 
 ## The plan to Tuesday 6 October
 Question: is a CodeStory better than generated documentation? Head-to-head against DeepWiki on 10 pure-Python repos
@@ -52,7 +52,7 @@ ship / pivot to stories of *changes* / kill.
 |---|---|---|
 | Wed 30 | voice; full itsdangerous story; per-repo venv; trace-ordered context; preregistration | done, plus the reading page; repo list not yet approved |
 | Thu 1 | repair loop; pilot 2 repos; self-story | repair loop done (outline + chapter), outlines repaired to 10 ch.; chapters await go |
-| Fri 2 | run all 10; build the eval (questions, keys, DeepWiki + docs fetch) | |
+| Fri 2 | run all 10; build the eval (questions, keys, DeepWiki + docs fetch) | all 10 run, 76/76 green ($38); eval not started |
 | Sat 3 | run the head-to-head | |
 | Sun 4 | buffer; Omoju reads 2–3 | |
 | Mon 5 | results page, README (Claude drafts; posts are Omoju's); publish. **Then remind Omoju to send Sha Ma a short note** | |
@@ -101,7 +101,11 @@ left, design for verification, context engineering, the quality loop, cross-mode
 - **Test a judge before trusting it.** One "accurate?" question flagged 5 of 7 true paragraphs. Split into
   "contradicted" vs "supported": four planted lies scored 0.72–0.93, truths ≤0.27. Jev drifts ~0.03 on identical
   input, and two true paragraphs later scored 0.70/0.72, right at the cut-off: the judge needs the trace too.
-- **Models game checkers.** A proof shipped `assert … or True`; the checker now rejects can't-fail asserts.
+- **Models game checkers.** A proof shipped `assert … or True`; the checker now rejects can't-fail asserts. It
+  happened again at scale (attrs ch5: `or True  # placeholder removed below`), and the repair loop handled it.
+- **Checkers have bugs too.** `assert 1\b` matched `assert 1.9999 / 0.11 == 18.12` (a word boundary before the
+  dot). The assert was in fact pure arithmetic, so the verdict was right by accident; the regex is fixed. Treat a
+  check's own false positives as seriously as the model's: the loop amplifies both.
 - **Route errors to whoever owns them; keep the instrument out of reach.** The tracer crashed (our Python 3.10
   bug), the loop blamed the script, and Claude "fixed" it by disabling the tracer: a green run with an empty trace.
   Now: tracer crashes stop the run; scenarios may not touch tracing hooks.
@@ -119,6 +123,10 @@ left, design for verification, context engineering, the quality loop, cross-mode
   Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-02 later** · The 8 remaining stories in parallel, 9–20 min each, $3.34–5.29 per repo. 70 chapters, 7
+  repairs, all first-round except none; 0 failing after. Repairs fixed: a proof using `__file__` under `-c`, a
+  bytes/str mix-up, 4 wrong asserts, one `or True`, one accidental vacuous-assert match. Callouts now written in
+  the imperative (the one thing kept from STE). Pages rendered for all; only markupsafe published so far.
 - **10-02** · markupsafe pilot with the repair loop: 6/6 green, $2.31, one real defect (ch4's proof asserted
   `Markup.escape` returns the same object; it returns an equal new one) fixed in 2 repairs, no hand edit.
   Reading page https://claude.ai/artifact/XvZvFsbrfAkfmqxKV8krcs; code pane now up to 880px on wide screens.
