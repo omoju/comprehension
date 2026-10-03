@@ -2,13 +2,14 @@
 *The project's memory between sessions. "Pick up here" is always current; below it: the plan, settled decisions,
 lessons, a short log (newest first), and Omoju's opening paragraph. Code and git say what changed; this says why.*
 
-## ▶ Pick up here (2026-10-01)
-**State.** CodeStories works end to end. itsdangerous has a complete 8-chapter owner story, all checks passing, on a
-reading page with a control-flow chart of the run: https://claude.ai/artifact/JyeDNbyYZyMt1ivYxWwshL (private; source
-`stories/itsdangerous-close-third/index.html`, rebuild with `render.py`). The other 9 repos (`stories/bench/`) have
-scenarios, compressed traces and **owner outlines that all pass their checks** (6–10 chapters, every chapter ≥ 5
-calls; repaired today, previous plans in `outline.prev.json`). Pipeline diagram and data-flow table: `codestory/README.md`. **Chapters for the 9 are not yet generated** (≈ $40–60, ~15 min in
-parallel; Omoju's call). Stage 3 (repair loop) is built into `outline.py` and `chapter.py`. No jobs running.
+## ▶ Pick up here (2026-10-02)
+**State.** **All 10 stories exist and pass every deterministic check.** itsdangerous (8 ch.,
+https://claude.ai/artifact/JyeDNbyYZyMt1ivYxWwshL) plus the 9 bench repos in `stories/bench/<repo>/` (76 chapters,
+78,853 words, 1,760 citations, 9 repairs, 0 still failing, $37.94; each has `report.md` and a rendered `index.html`;
+markupsafe is published at https://claude.ai/artifact/XvZvFsbrfAkfmqxKV8krcs). Judge flags: 12 of 969 paragraphs
+(1.2%); the two inspected were one misleading sentence (attrs: "`__ne__` is not generated" beside
+`cd["__ne__"] = __ne__`) and one false positive (tqdm: the claim is true, the cited lines don't show it).
+Pipeline diagram: `codestory/README.md`. No jobs running.
 
 **First thing next session**
 1. `git status` should be clean. If `demo-repos/` is missing: `sh codestory/restore_repos.sh` (exact commits in
