@@ -2,35 +2,42 @@
 *The project's memory between sessions. "Pick up here" is always current; below it: the plan, settled decisions,
 lessons, a short log (newest first), and Omoju's opening paragraph. Code and git say what changed; this says why.*
 
-## ▶ Pick up here (2026-10-02 night)
-**State.** All 10 stories exist and pass every check (details in the 10-02 log). **The evaluation harness is built,
-tested end to end, and the judge passed its test**: `codestory/eval/` (README-level docstrings in each file;
-`run.py <repo>` does one repo in the preregistered order; `analyze.py` pools and applies §8). DeepWiki pages for
-all 10 are fetched and pinned (`eval/deepwiki/<repo>/`, checkouts at `eval/checkouts/`, ignored by git). Judge
-test on itsdangerous: Claude 20/20 planted lies caught, 0/20 truths flagged; Jev 18/20, 0 alarms. The full
-pipeline ran on itsdangerous (in-sample): every stage produced well-formed output; **its numbers are in `eval/`
-and have not been shown to Omoju** (see below). No jobs running.
+## ▶ Pick up here (2026-10-05 night · results are in)
+**State.** The preregistered comparison has run on all 9 out-of-sample repos. **The rule (§8) says KILL; Omoju's
+§9 verdict, recorded first, says SHIP.** Both are published with the disagreement, as §9.3 requires.
+`eval/results.md` (numbers), `eval/results.html` (the page), `eval/results-first-run.md` (the first, broken
+judging pass; see §12). Tomorrow, 6 October, is the decision date: the rule has decided; what remains is the
+write-up, publishing, and Omoju's own words.
 
-**First thing next session (Saturday 3 October)**
-1. **Before any out-of-sample result exists, Omoju fills in `PREREGISTRATION.md` §9.1** (what "it helps" would
-   feel like) and reads 2–3 stories. Claude has seen the in-sample numbers and is keeping them out of the
-   conversation until §9.1 is written, so Omoju's judgment stays independent of them.
-2. Then: `for r in requests flask click httpx rich attrs jinja markupsafe tqdm; do run.py $r & done` (parallel;
-   est. $6–10 per repo, $60–90 total, ~15 min), then `analyze.py` → `eval/results.md`.
-3. Omoju records a verdict (§9.2) after reading, before `results.md` is opened. Then the rule decides (Tuesday).
-4. §5.1.5: Omoju hand-checks 20 judged claims (10 per arm) from `eval/judgments/`.
+**The numbers (9 repos, pooled).** H1: story 0.71 vs DeepWiki 0.54 contradicted claims / 1k words (ratio 1.3,
+95% CI 0.55–4.86: crosses both ½ and 1). Raw: 10 vs 7 contradicted of 360 sampled each; the story's density is
+higher because it makes more checkable claims per word (26 vs 20 per 1k). H2: path 97.9% vs 62.7% (+35, CI
++23 to +47); general 76.2% vs 55.7% (+20, CI +5 to +33). Both H2 thresholds cleared with room; H1 failed.
+
+**What the 10 story contradictions are** (all listed in the 10-05 log): small, real inaccuracies in narrative
+detail about code: "the first thing `tqdm.__new__` does is take the lock" (it isn't), "`fold=True`" (only
+sometimes), "cached by a tuple of style ids" (of Style objects), "three `hasattr` checks" (two and an else).
+None was caught by the pipeline's paragraph judge (Jev ≥ 0.7 on only 4 of 10). The citation and proof checks
+passed on every one: they check that lines exist and values hold, not that every sentence about the code is right.
+DeepWiki's 7: two about CI workflow files, one wrong line number, `Response.ok` "200–299" (it's < 400).
+
+**What the result says, plainly.** The story form helps a reader a lot (H2). The accountability machinery as built
+(permalinks + drift + proofs + a paragraph judge) does not make the *prose* more accurate than generated docs
+(H1). The rule was written so that a small accuracy edge would mean the checking isn't earning its cost; no edge
+means the same. The eval's claim-level judge, with the source in view, caught what the pipeline's judge missed.
+
+**Tomorrow (Tuesday 6 October)**
+1. Omoju: hand-check `eval/handcheck.md` (20 claims, §5.1.5); `handcheck.py --score` reports agreement.
+2. Omoju reads `eval/results.md`, the §12 entries, and the list of contradictions; the decision is the rule's.
+3. Claude: results page final (hand-check agreement in), README status line, publish the page; NOTES closed out.
+4. Omoju: own words (post / talk notes). Then the note to Sha Ma.
+5. If Omoju wants a next cycle, it is a **new** preregistration, not a reinterpretation. The obvious candidate:
+   move the eval's claim-level judge (source in view, blind, tested on planted lies) into the pipeline as the
+   stage-3 check on prose, and re-test H1. Or the pivot path from §8: stories of *changes*.
 
 **Open decisions (Omoju)**
-1. Which stories to read Saturday/Sunday. Candidates: requests (longest, 10 ch.), rich (most citations), flask.
-2. Self-story on this repo: `pyproject.toml`, `.codestoryignore`, then run.
-3. Keep the "note to Sha" reminder in `NOTES.md`, or move it out before the repo is published?
-4. Which reading pages to publish beyond markupsafe and itsdangerous.
-
-**How the eval is wired (one line each):** `questions.py` writes 8 path + 7 general questions from repo + scenario +
-trace only, keys checked by running them (dropped if the check fails); `extract.py` pulls atomic claims from each
-arm with one prompt, samples 40 with a fixed seed; `judge.py claims` labels them blind with the whole repo at the
-arm's commit in context, then Jev re-scores from the cited lines; `read.py` answers the questions from one arm's
-text; `judge.py grade` scores correct/partly/wrong blind; `analyze.py` pools, bootstraps over repos, applies §8.
+1. Sha reminder in `NOTES.md`: keep or move before publishing the repo.
+2. Which reading pages to publish beyond the four.
 
 **Pipeline**, run from the root with `.venv/bin/python` (Python 3.13; keys in `.env`):
 `codestory/scenario.py <repo> <dir>` → `outline.py <repo> <dir> --reader owner|maintainer|user [--max-chapters N]`
@@ -41,7 +48,7 @@ story is the stage-3 pass. The judge is reported, never repaired on.
 Checks: `verify.py <dir>` (citations, drift, proofs), `claims.py <dir> <chapter>` (Jev contradiction judge).
 Each repo gets its own environment at `demo-repos/<repo>/.codestory-venv` (created on first use).
 
-**Spend so far:** ≈ $89 on Anthropic (≈ $20 to 09-30; 10-01: 15 outline repairs ≈ $21, repair-loop test ≈ $1.5;
+**Spend so far:** ≈ $192 on Anthropic (10-05: eval run $68, re-judge $35, misc $1; (≈ $20 to 09-30; 10-01: 15 outline repairs ≈ $21, repair-loop test ≈ $1.5;
 10-02: 9 stories $37.94, STE $1.82, eval build + judge test + in-sample dry run ≈ $6), pennies on Jev.
 
 ## The plan to Tuesday 6 October
@@ -58,7 +65,7 @@ ship / pivot to stories of *changes* / kill.
 | Fri 2 | run all 10; build the eval (questions, keys, DeepWiki + docs fetch) | all 10 run, 76/76 green ($38); eval built, judge tested, dry run on itsdangerous |
 | Sat 3 | run the head-to-head | |
 | Sun 4 | buffer; Omoju reads 2–3 | |
-| Mon 5 | results page, README (Claude drafts; posts are Omoju's); publish. **Then remind Omoju to send Sha Ma a short note** | |
+| Mon 5 | results page, README (Claude drafts; posts are Omoju's); publish. **Then remind Omoju to send Sha Ma a short note** | run done (2 §10 reruns, 1 §12 chunking); §9.1 + §9.2 (ship) recorded first; first judging pass blind → re-judged (§12); **rule: KILL** |
 | Tue 6 | decide by the rule | |
 
 Cuts, in order: 10 → 5 repos; drop the docs arm; drop Omoju's reads.
@@ -115,6 +122,15 @@ left, design for verification, context engineering, the quality loop, cross-mode
 - **A check that doesn't stop the run isn't a check.** Outline span errors were printed and ignored; now they exit non-zero.
 - **A green run can be wrong.** Every check compared against the code; none against the trace the story claimed to follow.
 - **Ground truth beats inference.** The flowchart's decisions come from executed lines + the AST, not from a model.
+- **Test the instrument on the hard case, not the easy one.** The judge passed its planted-lie test on the smallest
+  repo, where the whole source fit in context, then judged the large repos nearly blind (rich: 1 of ~80 modules
+  shown) and called the claims it couldn't see "unverifiable". The first results said SHIP on that basis. The
+  unverifiable column was the tell; always read the column that says how much the judge actually saw.
+- **A metric with a free-pass label leaks.** "Unverifiable counts as not contradicted" means any blindness in the
+  judge flatters whichever arm it can't check. Preregister what the label means, and report its rate.
+- **Checks that pass are not the same as prose that is right.** All 76 chapters passed citations, drift and proofs,
+  and 10 of 360 sampled sentences were still wrong about the code. The checks pin lines and values; they don't
+  read the sentence. The paragraph judge, at its 0.7 cut-off, caught 4 of the 10.
 - **Repair in the same conversation, after the check.** The model sees exactly what it wrote and exactly what
   failed; the cached context makes the retry cost a fraction of the first turn. Seven outlines fixed in one repair
   each; a chapter with a planted bad citation and a broken proof came back passing in one.
@@ -126,6 +142,15 @@ left, design for verification, context engineering, the quality loop, cross-mode
   Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-05 night** · First results (judge mostly blind on source): SHIP. Diagnosed: `repo_block` without a trace
+  leads with docs; large repos' source cut. Fixed (`judge_block`: files the claims name first, then package source,
+  then docs; verified without model calls), re-judged the same 720 claims ($35), §12 entry: **KILL** (0.71 vs
+  0.54 /1k; raw 10 vs 7 of 360). Story contradictions: attrs ×2 (`_transform_attrs` auto-attribs; counter lives in
+  `_linecache_and_compile`), click (`resolve_envvar_value` not immediate), httpx (`copy_with`), markupsafe ×2
+  (three `hasattr`; C "single pass"), rich ×3 (style ids; ZWJ one cell; `fold=True`), tqdm (lock first).
+  DeepWiki's: click (`Abort` subclass), jinja (`importlib.resources`), markupsafe ×3 (two CI, one line number),
+  requests ×2 (`Response.ok` 200–299; `_parse_content_type_header` True). Omoju's §9.2 (SHIP, read requests and
+  tqdm) committed `3dbbc26` before any metric was read.
 - **10-05** · Omoju back after two days off; §9.1 written and committed (`6517ebf`) before any out-of-sample
   result. Run launched for the 9 repos. **§10 rerun, logged:** the first launch finished the question stage for
   6 repos and then every extraction call on a DeepWiki text timed out in the SDK's stream reader (nine long
