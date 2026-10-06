@@ -202,3 +202,10 @@ Second judge (Jev) agreement with the primary judge on the 720 sampled claims: r
 `eval/results.md`.
 
 The decision closes this preregistration. Any further work is a new one.
+
+**Post-hoc diagnostic (6 October, after the decision; reported, not decisive).** Every one of the 61 "general"
+questions is keyed to source lines in a file the traced run passes through. The question writer had the trace in
+context (§5.2.1 allows it), and in these libraries the intended-use path runs through the core modules, so
+"general" in practice meant owner questions (guarantees, failure modes, risky defaults) about the core modules
+rather than about parts of the repository the story never visits. The H2 general result should be read with that
+scope. A next preregistration should key general questions to files outside the trace, or write them without it.
