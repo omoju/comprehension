@@ -115,6 +115,26 @@ def main() -> None:
     def check_li(label, ok):
         return f"<li class='{'ok' if ok else 'no'}'><span class='mark'>{'✓' if ok else '✗'}</span> {e(label)}</li>"
 
+    first_run_html = ""
+    first = EVAL / "results-first-run.json"
+    if first.exists():
+        F = json.loads(first.read_text())
+        fp = F["pooled_out_of_sample"]
+        unv = {arm: sum(r[arm]["unverifiable"] for r in F["repos"] if r["repo"] not in IN_SAMPLE) for arm in ARMS}
+        unv_now = {arm: sum(r[arm]["unverifiable"] for r in R["repos"] if r["repo"] not in IN_SAMPLE) for arm in ARMS}
+        n = {arm: sum(r[arm]["sampled"] for r in R["repos"] if r["repo"] not in IN_SAMPLE) for arm in ARMS}
+        first_run_html = f"""<h2>The judge was run twice</h2>
+<p>The first judging pass could not see most of the source in the large repositories (the repository block led
+with docs and ran out of room), and said so: it called {unv['story']} of {n['story']} story claims and
+{unv['deepwiki']} of {n['deepwiki']} DeepWiki claims unverifiable. Since unverifiable counts as not contradicted
+in the preregistered metric, that pass did not measure H1. The judge was given the source the claims name and
+re-run on the same sampled claims; nothing else was re-run. Both passes are published.</p>
+<div class="tbl"><table>
+<tr><th>pass</th><th class="n">story unverifiable</th><th class="n">deepwiki unverifiable</th><th class="n">story / 1k</th><th class="n">deepwiki / 1k</th><th>rule said</th></tr>
+<tr><td>first (source mostly unseen)</td><td class="n">{unv['story']}/{n['story']}</td><td class="n">{unv['deepwiki']}/{n['deepwiki']}</td><td class="n">{f(fp['story']['density'], 2)}</td><td class="n">{f(fp['deepwiki']['density'], 2)}</td><td>{e(F['decision'])}</td></tr>
+<tr><td>second (source in view)</td><td class="n">{unv_now['story']}/{n['story']}</td><td class="n">{unv_now['deepwiki']}/{n['deepwiki']}</td><td class="n">{f(p['story']['density'], 2)}</td><td class="n">{f(p['deepwiki']['density'], 2)}</td><td>{e(decision)}</td></tr>
+</table></div>"""
+
     page = f"""<title>CodeStories vs DeepWiki</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -244,6 +264,8 @@ The passing bar (every lie caught, at most one false alarm per arm) was written 
 <p>{('Omoju hand-checked 20 judged claims with the arm hidden: agreed with the judge on '
      + ' and '.join(f"{hc[a]['agree']}/{hc[a]['n']} ({a})" for a in ARMS) + '.') if hc and any(hc[a]['n'] for a in ARMS)
     else 'Omoju’s hand check of 20 judged claims (§5.1.5) is recorded in <code>eval/handcheck.md</code>.'}</p>
+
+{first_run_html}
 
 <h2>What changed after preregistration</h2>
 {''.join(f'<blockquote>{e(d).replace("**", "")}</blockquote>' for d in deviations()) or '<p>Nothing.</p>'}

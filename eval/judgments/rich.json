@@ -1,0 +1,1063 @@
+{
+  "repo": "rich",
+  "items": [
+    {
+      "id": "deepwiki:1616",
+      "arm": "deepwiki",
+      "claim": "`Column.overflow` defaults to `\"ellipsis\"`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:90-91"
+      ],
+      "reason": "Column dataclass declares `overflow: \"OverflowMethod\" = \"ellipsis\"`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:137",
+      "arm": "story",
+      "claim": "In `Text.render`, the combined active styles are cached by the tuple of style ids.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "contradicted",
+      "lines": [
+        "rich/text.py:754-766"
+      ],
+      "reason": "The cache key is a tuple of resolved `Style` objects (`styles = tuple(style_map[_style_id] ...)`), not a tuple of style ids.",
+      "jev_contradicted": 0.76
+    },
+    {
+      "id": "story:284",
+      "arm": "story",
+      "claim": "When a line is shorter than the crop width and `pad=False`, `adjust_line_length` copies the line unchanged without padding it out to the console width.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:1-10"
+      ],
+      "reason": "`adjust_line_length` lives in rich/segment.py, which is not shown.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:54",
+      "arm": "story",
+      "claim": "`ReprHighlighter` has four highlight patterns: tags, `name=value` pairs, braces, and one combined alternation.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:45-45"
+      ],
+      "reason": "`ReprHighlighter` is defined in rich/highlighter.py, which is not shown.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:1461",
+      "arm": "deepwiki",
+      "claim": "`Console.push_render_hook(hook)` registers a `RenderHook` that receives renderables before output.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:843-850",
+        "rich/console.py:1714-1715"
+      ],
+      "reason": "push_render_hook appends a RenderHook to the stack, and print calls hook.process_renderables on the renderables before rendering.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:115",
+      "arm": "story",
+      "claim": "`Text.split` takes an early return and returns `Lines` built from a copy when there are no newlines.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/text.py:1062-1083"
+      ],
+      "reason": "`split` defaults to separator \"\\n\" and returns `Lines([self.copy()])` immediately if the separator is absent.",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "deepwiki:1572",
+      "arm": "deepwiki",
+      "claim": "The `Table` `show_edge` parameter defaults to `True`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:203-203"
+      ],
+      "reason": "Table.__init__ signature has `show_edge: bool = True`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:267",
+      "arm": "story",
+      "claim": "In `Table._render`, body rows get their style from `get_row_style`, which composes alternating `row_styles` with any per-row style.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:310-318",
+        "rich/table.py:823-828"
+      ],
+      "reason": "Non-header/footer rows use `get_row_style`, which alternates `row_styles[index % len(...)]` and adds the per-row style.",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "deepwiki:1279",
+      "arm": "deepwiki",
+      "claim": "`Console.save_text()` writes exported text directly to a file and is a wrapper around `export_text()`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:2224-2242"
+      ],
+      "reason": "save_text calls export_text and writes the result to the given path.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:287",
+      "arm": "story",
+      "claim": "The Console's buffer depth counter means nested prints only increment it and nothing reaches the file until the outermost context exits.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:813-820",
+        "rich/console.py:2062-2130"
+      ],
+      "reason": "`_enter_buffer`/`_exit_buffer` adjust `_buffer_index`, and `_write_buffer` only writes and clears when `_buffer_index == 0`.",
+      "jev_contradicted": 0.31
+    },
+    {
+      "id": "story:194",
+      "arm": "story",
+      "claim": "`Padding.unpack` raises `ValueError` naming the length it received for any other number of values.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/padding.py:60-74"
+      ],
+      "reason": "The final line raises `ValueError(f\"1, 2 or 4 integers required for padding; {len(pad)} given\")`.",
+      "jev_contradicted": 0.25
+    },
+    {
+      "id": "story:281",
+      "arm": "story",
+      "claim": "`Console.width` returns `self._width` in preference to any OS-reported width.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:1012-1013",
+        "rich/console.py:1040-1063"
+      ],
+      "reason": "`width` returns `size.width`, which uses `self._width` whenever it is not None, ignoring `os.get_terminal_size`.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:72",
+      "arm": "deepwiki",
+      "claim": "`Style` instances can be combined with the `+` operator via `__add__`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/style.py:757-759"
+      ],
+      "reason": "Style defines __add__ which combines styles via _add.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:101",
+      "arm": "story",
+      "claim": "In `Console.get_style`, a `StyleSyntaxError` from `Style.parse` is converted to `errors.MissingStyle` and propagates out of `print`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:1488-1498",
+        "rich/console.py:1729-1733"
+      ],
+      "reason": "`get_style` catches `StyleSyntaxError` and raises `errors.MissingStyle`, and `print` calls `get_style(style)` unguarded so the error propagates.",
+      "jev_contradicted": 0.5
+    },
+    {
+      "id": "story:170",
+      "arm": "story",
+      "claim": "`_write_buffer` resolves `self.file` twice, once for `write` and once for `flush`, and then runs `del self._buffer[:]`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:2121-2130"
+      ],
+      "reason": "The non-Windows branch does `self.file.write(text)` then `self.file.flush()` followed by `del self._buffer[:]`, each access re-resolving the `file` property.",
+      "jev_contradicted": 0.62
+    },
+    {
+      "id": "story:121",
+      "arm": "story",
+      "claim": "`cell_len` routes strings under 512 characters through an LRU cache of 4096 entries.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:2382-2383"
+      ],
+      "reason": "`cell_len` is implemented in rich/cells.py, which is not shown.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:155",
+      "arm": "story",
+      "claim": "`adjust_line_length` returns the line as a shallow copy unchanged when it is shorter than the target length and `pad=False`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:1-10"
+      ],
+      "reason": "`adjust_line_length` is defined in rich/segment.py, which is not shown.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "deepwiki:1118",
+      "arm": "deepwiki",
+      "claim": "If the user presses Enter without typing and a default is set, that default is returned immediately without calling `process_response()`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:1-1"
+      ],
+      "reason": "rich/prompt.py is not shown, so the default/Enter handling cannot be checked.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:296",
+      "arm": "deepwiki",
+      "claim": "`Color` is a NamedTuple with fields `name`, `type`, `number`, and `triplet`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/color.py:303-313"
+      ],
+      "reason": "Color is a NamedTuple with name, type, number and triplet fields.",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "deepwiki:1627",
+      "arm": "deepwiki",
+      "claim": "`_Cell` is a NamedTuple in rich/table.py with fields `style`, `renderable`, and `vertical`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:142-150"
+      ],
+      "reason": "_Cell is a NamedTuple with style, renderable and vertical fields.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:1858",
+      "arm": "deepwiki",
+      "claim": "The pretty printing API detects recursive data structures using a set of object IDs to prevent infinite loops.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/pretty.py:617-627"
+      ],
+      "reason": "traverse keeps a visited_ids set of object ids and returns Node(value_repr=\"...\") on recursion.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:270",
+      "arm": "deepwiki",
+      "claim": "`Style.parse()` supports links using the syntax \"link URL\".",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/style.py:543-547"
+      ],
+      "reason": "Style.parse handles the word 'link' followed by a URL.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:270",
+      "arm": "story",
+      "claim": "`Padding.__rich_console__` renders its inner renderable at `width - left - right`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/padding.py:92-92"
+      ],
+      "reason": "`render_options = options.update_width(width - self.left - self.right)` is used for the inner renderable.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:197",
+      "arm": "story",
+      "claim": "`Table.add_column` builds one `Column` dataclass and appends it to the table's columns.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:403-420"
+      ],
+      "reason": "`add_column` constructs a single `Column` dataclass and does `self.columns.append(column)`.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:295",
+      "arm": "story",
+      "claim": "`Console.export_text` reads from the record buffer.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:2204-2222"
+      ],
+      "reason": "`export_text` iterates `self._record_buffer` under the record buffer lock.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:1867",
+      "arm": "deepwiki",
+      "claim": "`JupyterMixin` enables Rich objects to be rendered in Jupyter notebooks using the `_repr_mimebundle_` protocol.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/jupyter.py:36-56"
+      ],
+      "reason": "JupyterMixin implements _repr_mimebundle_ returning text/plain and text/html.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:82",
+      "arm": "story",
+      "claim": "`ConsoleOptions.copy` builds a new instance with a shallow-copied `__dict__`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:147-155"
+      ],
+      "reason": "`copy` uses `ConsoleOptions.__new__` and assigns `self.__dict__.copy()`.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:129",
+      "arm": "story",
+      "claim": "`Text.rstrip_end` does nothing when the text length is below the given width.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/text.py:666-678"
+      ],
+      "reason": "The body only executes when `text_length > size`, so nothing happens for shorter text.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:232",
+      "arm": "story",
+      "claim": "Measurement forces highlighting off.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/measure.py:98-101"
+      ],
+      "reason": "`Measurement.get` calls `console.render_str(renderable, markup=options.markup, highlight=False)`.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:1374",
+      "arm": "deepwiki",
+      "claim": "The `Console` `safe_box` parameter restricts box characters to those renderable on legacy Windows.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:611-611",
+        "rich/table.py:769-770"
+      ],
+      "reason": "The Console docstring documents safe_box as restricting box options that don't render on legacy Windows, and Table uses console.safe_box when substituting box characters.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:1310",
+      "arm": "deepwiki",
+      "claim": "The GitHub Actions CI is triggered on every pull request.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:1-1"
+      ],
+      "reason": ".github/workflows/pythonpackage.yml content is not shown, so trigger conditions cannot be verified.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:1392",
+      "arm": "deepwiki",
+      "claim": "The `TTY_COMPATIBLE` environment variable set to `\"1\"` forces `is_terminal=True`, and `\"0\"` forces `is_terminal=False`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:955-961"
+      ],
+      "reason": "is_terminal returns False for TTY_COMPATIBLE == \"0\" and True for \"1\".",
+      "jev_contradicted": 0.33
+    },
+    {
+      "id": "deepwiki:1172",
+      "arm": "deepwiki",
+      "claim": "`Constrain.__rich_measure__` calls `Measurement.get` after updating `options` with `self.width`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/constrain.py:31-37"
+      ],
+      "reason": "__rich_measure__ updates options width with self.width then calls Measurement.get.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:219",
+      "arm": "story",
+      "claim": "`Console.render` confirms the object has `__rich_console__` and is not itself a class before calling it.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:1317-1319"
+      ],
+      "reason": "`render` checks `hasattr(renderable, \"__rich_console__\") and not isinstance(renderable, type)` before invoking it.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "deepwiki:1110",
+      "arm": "deepwiki",
+      "claim": "The `PromptBase` parameter `password` defaults to `False` and masks input characters.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:1-1"
+      ],
+      "reason": "rich/prompt.py is not shown so PromptBase's password parameter cannot be checked.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:161",
+      "arm": "story",
+      "claim": "`Console.__exit__` calls `_exit_buffer`, which decrements `_buffer_index` and then calls `_check_buffer`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:817-820",
+        "rich/console.py:862-864"
+      ],
+      "reason": "`__exit__` calls `_exit_buffer`, which decrements `_buffer_index` then calls `_check_buffer`.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:1393",
+      "arm": "deepwiki",
+      "claim": "The `TTY_INTERACTIVE` environment variable set to `\"1\"` forces `is_interactive=True`, and `\"0\"` forces `is_interactive=False`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:730-742"
+      ],
+      "reason": "TTY_INTERACTIVE of \"0\" sets force_interactive False and \"1\" sets it True, which determines is_interactive.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:22",
+      "arm": "story",
+      "claim": "The `ThemeStack` holds named styles such as `repr.number`, `table.header` and `log.time`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:745-747"
+      ],
+      "reason": "The Console only constructs ThemeStack(themes.DEFAULT); rich/theme.py and rich/default_styles.py (where style names like repr.number would be defined) are not shown, so the specific names cannot be checked.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:48",
+      "arm": "story",
+      "claim": "Rich deletes five control characters (`\\r`, `\\b`, `\\a`, `\\v`, `\\f`) from every string it renders, with no flag to disable it.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/control.py:9-18",
+        "rich/control.py:181-192",
+        "rich/text.py:156-157"
+      ],
+      "reason": "STRIP_CONTROL_CODES lists exactly five codepoints (7, 8, 11, 12, 13 = \\a, \\b, \\v, \\f, \\r) and Text.__init__ unconditionally applies strip_control_codes with no opt-out parameter.",
+      "jev_contradicted": 0.55
+    },
+    {
+      "id": "deepwiki:1106",
+      "arm": "deepwiki",
+      "claim": "`Confirm` has `response_type = bool` and `choices = [\"y\", \"n\"]`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:1-1"
+      ],
+      "reason": "rich/prompt.py containing Confirm is not shown.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:536",
+      "arm": "deepwiki",
+      "claim": "`Align.left()`, `Align.center()`, and `Align.right()` are class method shortcuts for the corresponding align values.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/align.py:77-141"
+      ],
+      "reason": "Align defines classmethods left, center and right that construct Align with the corresponding align value.",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "deepwiki:580",
+      "arm": "deepwiki",
+      "claim": "`Task.total` is `Optional[float]`; a value of `None` triggers the pulse animation.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:1-1"
+      ],
+      "reason": "rich/progress.py is not shown, so Task.total typing and pulse behaviour cannot be checked.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "deepwiki:1596",
+      "arm": "deepwiki",
+      "claim": "`Table.add_row` appends a `Row` and distributes cell content to `Column._cells`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:440-467"
+      ],
+      "reason": "add_row appends renderables to each Column._cells via add_cell and ends by appending a Row to self.rows.",
+      "jev_contradicted": 0.69
+    },
+    {
+      "id": "deepwiki:237",
+      "arm": "deepwiki",
+      "claim": "The `SegmentLines` class wraps an `Iterable[List[Segment]]` and implements `__rich_console__`, appending a newline segment after each row when `new_lines=True`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:1-60"
+      ],
+      "reason": "SegmentLines is not defined in any shown file (rich/segment.py was not included), so the claim cannot be checked.",
+      "jev_contradicted": 0.18
+    },
+    {
+      "id": "deepwiki:1753",
+      "arm": "deepwiki",
+      "claim": "`_ReadContext` is a ContextManager that calls `progress.start()` on enter and `progress.stop()` on exit.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/progress.py:285-303"
+      ],
+      "reason": "_ReadContext subclasses ContextManager and calls self.progress.start() in __enter__ and self.progress.stop() in __exit__.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:184",
+      "arm": "story",
+      "claim": "A closing markup tag with nothing to close raises `MarkupError`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/markup.py:170-176"
+      ],
+      "reason": "An implicit closing tag with an empty style stack raises MarkupError(\"closing tag '[/]' ... has nothing to close\").",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:191",
+      "arm": "story",
+      "claim": "`Table.__init__` normalises `header_style` and `footer_style` with `or \"\"` so `None` becomes an empty string.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:235-236"
+      ],
+      "reason": "Table.__init__ sets self.header_style = header_style or \"\" and self.footer_style = footer_style or \"\".",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:798",
+      "arm": "deepwiki",
+      "claim": "If `auto_refresh=True`, `Live.start()` creates and starts a `_RefreshThread`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/live.py:141-143"
+      ],
+      "reason": "Live.start creates a _RefreshThread and starts it when self.auto_refresh is true.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:1714",
+      "arm": "deepwiki",
+      "claim": "`TimeElapsedColumn` renders elapsed time as `H:MM:SS`, shows `\"-:--:--\"` before the task starts, and uses `task.finished_time` when finished.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/progress.py:688-697"
+      ],
+      "reason": "It uses task.finished_time when finished, returns '-:--:--' when elapsed is None (task not started), and formats via timedelta giving H:MM:SS.",
+      "jev_contradicted": 0.48
+    },
+    {
+      "id": "story:81",
+      "arm": "story",
+      "claim": "The first line of `ConsoleOptions.update` is `options = self.copy()`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:170-171"
+      ],
+      "reason": "The body of ConsoleOptions.update begins with `options = self.copy()`.",
+      "jev_contradicted": 0.2
+    },
+    {
+      "id": "deepwiki:491",
+      "arm": "deepwiki",
+      "claim": "`Table.__rich_measure__` computes minimum width as the sum of each column's minimum measurement plus border overhead.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:341-343",
+        "rich/table.py:296-303"
+      ],
+      "reason": "minimum_width is the sum of each column measurement's minimum plus _extra_width, which accounts for box edges/dividers.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "deepwiki:1036",
+      "arm": "deepwiki",
+      "claim": "Pretty printing handles attrs objects using `attr.fields`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/pretty.py:65-67",
+        "rich/pretty.py:714-757"
+      ],
+      "reason": "_get_attr_fields calls _attr_module.fields(type(obj)) and traverse uses it for attrs objects.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:222",
+      "arm": "story",
+      "claim": "`Table.__rich_console__` passes the content budget down with `options.update_width(...)`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:486-490"
+      ],
+      "reason": "__rich_console__ computes column widths via self._calculate_column_widths(console, options.update_width(max_width - extra_width)).",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "story:227",
+      "arm": "story",
+      "claim": "For a column with an explicit width, `Table._measure_column` does not inspect the cells.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:728-733"
+      ],
+      "reason": "When column.width is not None the method returns a fixed Measurement immediately, before iterating the column's cells.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:484",
+      "arm": "deepwiki",
+      "claim": "`ratio_distribute` from `rich/_ratio.py` distributes remaining space among flexible columns proportionally.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:536-553"
+      ],
+      "reason": "ratio_distribute is imported from ._ratio and called with the leftover flexible_width and the ratios of flexible columns to apportion space.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:477",
+      "arm": "deepwiki",
+      "claim": "`Table.add_section()` marks the most recently added row as the end of a section by setting `Row.end_section = True`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:469-473"
+      ],
+      "reason": "add_section sets self.rows[-1].end_section = True when rows exist.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:1056",
+      "arm": "deepwiki",
+      "claim": "In `Inspect.__init__`, if `dunder=True` then `private` is also set to `True`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/_inspect.py:59"
+      ],
+      "reason": "self.private = private or dunder, so dunder=True forces private True.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:291",
+      "arm": "deepwiki",
+      "claim": "`ColorType.DEFAULT` has value 0 and represents the terminal default foreground/background.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/color.py:1-1"
+      ],
+      "reason": "rich/color.py (where ColorType is defined) is not shown, so the enum value cannot be checked.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:258",
+      "arm": "story",
+      "claim": "`pick_bool` returns the first non-`None` of its arguments.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/_pick.py:13-17"
+      ],
+      "reason": "pick_bool loops over values and returns the first value that is not None (falling back to bool(value)).",
+      "jev_contradicted": 0.39
+    },
+    {
+      "id": "story:125",
+      "arm": "story",
+      "claim": "A zero-width joiner sequence counts as one cell under `cell_len`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "contradicted",
+      "lines": [
+        "rich/cells.py:144-158"
+      ],
+      "reason": "In _cell_len a ZWJ merely causes the following character to be skipped, so the joined sequence takes the width of the leading character (2 cells for a wide emoji), not one cell.",
+      "jev_contradicted": 0.45
+    },
+    {
+      "id": "deepwiki:475",
+      "arm": "deepwiki",
+      "claim": "`Table.add_row` creates new unnamed columns automatically when more renderables are provided than columns exist.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:451-456"
+      ],
+      "reason": "When index == len(columns), a new Column is created, backfilled with blank cells, and appended.",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "story:189",
+      "arm": "story",
+      "claim": "`Table.__init__` defaults `show_edge` to `True`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:203"
+      ],
+      "reason": "Table.__init__ declares show_edge: bool = True.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:388",
+      "arm": "deepwiki",
+      "claim": "`Span.extend(cells)` extends the span end by cells and returns a `Span`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/text.py:102-115"
+      ],
+      "reason": "Span.extend returns Span(start, end + cells, style) when cells is non-zero, else self.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "deepwiki:1227",
+      "arm": "deepwiki",
+      "claim": "`JupyterMixin._repr_mimebundle_` returns a dict with both `text/plain` and `text/html` MIME types.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/jupyter.py:41-56"
+      ],
+      "reason": "_repr_mimebundle_ builds data = {'text/plain': text, 'text/html': html}.",
+      "jev_contradicted": 0.46
+    },
+    {
+      "id": "story:93",
+      "arm": "story",
+      "claim": "`'bold'` is present in rich's style attribute table.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/style.py:108-109"
+      ],
+      "reason": "STYLE_ATTRIBUTES contains the key \"bold\" mapped to \"bold\".",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:6",
+      "arm": "story",
+      "claim": "The `legacy_windows` flag chooses between the win32 API renderer and an ordinary `file.write` at the end of output.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:2074-2094",
+        "rich/console.py:2121-2127"
+      ],
+      "reason": "_write_buffer checks self.legacy_windows (plus fileno) to decide between legacy_windows_render via LegacyWindowsTerm and plain self.file.write of the rendered text.",
+      "jev_contradicted": 0.79
+    },
+    {
+      "id": "deepwiki:877",
+      "arm": "deepwiki",
+      "claim": "rich/prompt.py provides `Prompt` and `Confirm` for interactive input.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/prompt.py:304-313",
+        "rich/prompt.py:340-363"
+      ],
+      "reason": "Both Prompt and Confirm classes are defined in rich/prompt.py for interactive input.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:250",
+      "arm": "story",
+      "claim": "In `Table._get_cells`, the header style is `get_style(self.header_style or \"\") + get_style(column.header_style)`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:670-674"
+      ],
+      "reason": "The code is exactly header_style = get_style(self.header_style or \"\") + get_style(column.header_style).",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:246",
+      "arm": "story",
+      "claim": "`Style.parse` short-circuits to a null `Style()` for an empty or `\"none\"` definition.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/style.py:510-511"
+      ],
+      "reason": "Style.parse returns cls.null() when the definition strips to \"none\" or is empty.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "story:207",
+      "arm": "story",
+      "claim": "`Table.add_row` validates cells at insert time rather than render time.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:459-467"
+      ],
+      "reason": "add_row checks is_renderable for each cell and raises errors.NotRenderableError immediately when adding the row.",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "deepwiki:1127",
+      "arm": "deepwiki",
+      "claim": "`PromptBase.check_choice()` performs an exact string membership check when case-sensitive.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/prompt.py:222-225"
+      ],
+      "reason": "When case_sensitive, check_choice returns value.strip() in self.choices, an exact membership test.",
+      "jev_contradicted": 0.28
+    },
+    {
+      "id": "story:162",
+      "arm": "story",
+      "claim": "`_check_buffer` deletes the buffer and drops output when `self.quiet` is set.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:2050-2052"
+      ],
+      "reason": "_check_buffer does `del self._buffer[:]` and returns when self.quiet is True.",
+      "jev_contradicted": 0.28
+    },
+    {
+      "id": "story:292",
+      "arm": "story",
+      "claim": "`Style.__bool__` returns `False` for a null style.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/style.py:340-342"
+      ],
+      "reason": "__bool__ returns `not self._null`, i.e. False for a null style.",
+      "jev_contradicted": 0.7
+    },
+    {
+      "id": "story:117",
+      "arm": "story",
+      "claim": "`Text.wrap` calls `divide_line(str(line), width, fold=True)` for each line.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "contradicted",
+      "lines": [
+        "rich/text.py:1233-1240"
+      ],
+      "reason": "wrap calls divide_line(str(line), width, fold=wrap_overflow == \"fold\") and only in the non-no_wrap branch, so fold is not always True.",
+      "jev_contradicted": 0.73
+    },
+    {
+      "id": "deepwiki:1672",
+      "arm": "deepwiki",
+      "claim": "`Progress.task_ids` returns IDs of all non-removed tasks.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/progress.py:1154-1158",
+        "rich/progress.py:1643-1651"
+      ],
+      "reason": "task_ids returns list(self._tasks.keys()) and remove_task deletes entries from _tasks.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "story:209",
+      "arm": "story",
+      "claim": "`Table.add_row`'s `add_cell` closure appends the value to `column._cells`.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "supported",
+      "lines": [
+        "rich/table.py:440-441"
+      ],
+      "reason": "The add_cell closure does column._cells.append(renderable).",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:159",
+      "arm": "story",
+      "claim": "`Segment.split_and_crop_lines` at `self.width` is the only unconditional enforcement of the console width.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "label": "unverifiable",
+      "lines": [
+        "rich/console.py:1749-1756",
+        "rich/console.py:2024-2028"
+      ],
+      "reason": "In print the split_and_crop_lines call is guarded by `if crop:` while in log it is unguarded; the exclusivity claim (\"the only\") is too broad/vague to settle from the shown code.",
+      "jev_contradicted": 0.68
+    },
+    {
+      "id": "deepwiki:1214",
+      "arm": "deepwiki",
+      "claim": "Jupyter detection checks for the presence of `get_ipython` in the global namespace.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:505-512"
+      ],
+      "reason": "_is_jupyter references get_ipython and returns False on NameError, then inspects the shell class.",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "deepwiki:1268",
+      "arm": "deepwiki",
+      "claim": "When recording is enabled, `Console` maintains a thread-safe buffer `_record_buffer` of rendered `Segment` objects.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/console.py:744-748",
+        "rich/console.py:2062-2065"
+      ],
+      "reason": "Console keeps _record_buffer: List[Segment] guarded by _record_buffer_lock and extends it when record is enabled.",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "deepwiki:1860",
+      "arm": "deepwiki",
+      "claim": "The `Spinner` class uses a registry of predefined animation frames and updates based on the current time during the render cycle.",
+      "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "label": "supported",
+      "lines": [
+        "rich/spinner.py:34-48",
+        "rich/spinner.py:50-78"
+      ],
+      "reason": "Spinner looks up frames in the SPINNERS registry and __rich_console__ renders a frame computed from console.get_time().",
+      "jev_contradicted": 0.12
+    }
+  ],
+  "cost": 4.47
+}

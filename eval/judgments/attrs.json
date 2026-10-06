@@ -1,0 +1,1082 @@
+{
+  "repo": "attrs",
+  "items": [
+    {
+      "id": "deepwiki:333",
+      "arm": "deepwiki",
+      "claim": "attrs follows Calendar Versioning (CalVer).",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/validators.py:546-551",
+        "src/attr/_make.py:1454-1457"
+      ],
+      "reason": "Version markers throughout the source (e.g. 19.2.0, 21.3.0, 25.4.0, 26.2.0) are year-based, which is CalVer.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:191",
+      "arm": "story",
+      "claim": "Setting the annotations before the build would have made `_transform_attrs` read them as auto-attribs declarations.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "contradicted",
+      "lines": [
+        "src/attr/_make.py:399-403",
+        "src/attr/_make.py:441-451",
+        "src/attr/_make.py:2600-2605"
+      ],
+      "reason": "`make_class` passes `these=cls_dict`, and `_transform_attrs` takes the `these is not None` branch so annotations are never interpreted as auto-attribs declarations; the complaint would instead come from `from_counting_attr`'s \"Type annotation and type argument cannot both be present\" check.",
+      "jev_contradicted": 0.3
+    },
+    {
+      "id": "story:15",
+      "arm": "story",
+      "claim": "`_has_own_attribute` is implemented as `attrib_name in cls.__dict__`, checking only the class's own dict rather than its MRO.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:313-317"
+      ],
+      "reason": "The function body is literally `return attrib_name in cls.__dict__`, which ignores the MRO.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:41",
+      "arm": "deepwiki",
+      "claim": "`@attr.s` is aliased as `@attr.attributes`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/__init__.py:34-34"
+      ],
+      "reason": "`s = attributes = attrs` makes `attr.attributes` an alias of `attr.s`.",
+      "jev_contradicted": 0.37
+    },
+    {
+      "id": "story:185",
+      "arm": "story",
+      "claim": "`make_class` applies the decorator as `_attrs(these=cls_dict, **attributes_arguments)(type_)`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:3356"
+      ],
+      "reason": "That exact call is present in `make_class`.",
+      "jev_contradicted": 0.23
+    },
+    {
+      "id": "story:79",
+      "arm": "story",
+      "claim": "`add_repr` calls `_make_repr_script`, which returns a source string and a globals dict.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1004-1010",
+        "src/attr/_make.py:1852-1906"
+      ],
+      "reason": "`add_repr` does `script, globs = _make_repr_script(self._attrs, ns)` and `_make_repr_script` returns the joined source string plus the globs dict.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:47",
+      "arm": "story",
+      "claim": "`Attribute` defines `__setattr__` to raise `FrozenInstanceError`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:2591-2592"
+      ],
+      "reason": "`Attribute.__setattr__` raises `FrozenInstanceError`.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "story:2",
+      "arm": "story",
+      "claim": "`Factory`'s `takes_self` parameter defaults to `False`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:3105-3107"
+      ],
+      "reason": "`def __init__(self, factory, takes_self=False)` confirms the default.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:340",
+      "arm": "deepwiki",
+      "claim": "The attrs `attrs` namespace is built on top of the `attr` logic internally.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attrs/__init__.py:3-26",
+        "src/attrs/validators.py:3-3"
+      ],
+      "reason": "The `attrs` package simply re-exports objects imported from `attr` and `attr._make`/`attr._next_gen`.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:65",
+      "arm": "story",
+      "claim": "`_ClassBuilder.__init__` puts `__attrs_attrs__` and `__attrs_props__` into the class dict.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:723-724"
+      ],
+      "reason": "Both `__attrs_attrs__` and `__attrs_props__` are stored in `self._cls_dict`.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:147",
+      "arm": "story",
+      "claim": "`_create_slots_class` walks the new class's dict, unwrapping classmethods, staticmethods and properties, and overwrites any closure cell whose contents are the old class.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:977-1001"
+      ],
+      "reason": "The loop chains `cls.__dict__.values()` with extra functions, unwraps classmethod/staticmethod via `__func__` and property via `fget`, and assigns `cell.cell_contents = cls` on a match with the old class.",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "deepwiki:162",
+      "arm": "deepwiki",
+      "claim": "`FrozenInstanceError` is raised when a `frozen=True` class is modified.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:561-575",
+        "src/attr/_make.py:726-730"
+      ],
+      "reason": "Frozen classes get `_frozen_setattrs` installed as `__setattr__`, which raises `FrozenInstanceError`.",
+      "jev_contradicted": 0.49
+    },
+    {
+      "id": "deepwiki:171",
+      "arm": "deepwiki",
+      "claim": "`astuple`'s `recurse` parameter defaults to `True`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_funcs.py:230-236"
+      ],
+      "reason": "`astuple(inst, recurse=True, ...)` defaults recurse to True.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:90",
+      "arm": "deepwiki",
+      "claim": "Slotted classes do not have a `__dict__` and prevent adding new attributes at runtime that weren't defined in `__slots__`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:863-867",
+        "src/attr/_make.py:964-964",
+        "docs/glossary.md:29-43"
+      ],
+      "reason": "The slots class builder strips `__dict__` and sets `__slots__`, and the glossary demonstrates the resulting AttributeError on unknown attributes.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:355",
+      "arm": "deepwiki",
+      "claim": "The attrs benchmark suite measures `__eq__`, `__hash__`, `asdict`, and `astuple`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "unverifiable",
+      "lines": [
+        "bench/test_benchmarks.py:1-232"
+      ],
+      "reason": "The contents of the benchmark file were not shown, so its measured operations can't be checked.",
+      "jev_contradicted": 0.2
+    },
+    {
+      "id": "story:132",
+      "arm": "story",
+      "claim": "`_generate_unique_filename` appends a counter when the candidate filename is already taken by different source.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "contradicted",
+      "lines": [
+        "src/attr/_make.py:1634-1641",
+        "src/attr/_make.py:245-259"
+      ],
+      "reason": "`_generate_unique_filename` just formats a string; the collision counter logic lives in `_linecache_and_compile`.",
+      "jev_contradicted": 0.42
+    },
+    {
+      "id": "deepwiki:117",
+      "arm": "deepwiki",
+      "claim": "`optional(validator)` allows the value to be `None` or satisfy the provided validator.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/validators.py:201-233"
+      ],
+      "reason": "`_OptionalValidator.__call__` returns early for None and otherwise delegates to the wrapped validator.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:22",
+      "arm": "story",
+      "claim": "`attrs.inspect` is documented as experimental and outside the project's backwards-compatibility guarantee.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_next_gen.py:655-672"
+      ],
+      "reason": "The `inspect` docstring warns the feature is experimental and not covered by the strict backwards-compatibility guarantees.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:135",
+      "arm": "deepwiki",
+      "claim": "`Converter(takes_self=True)` enables a converter function to be called as `fn(val, self)`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:3182-3185",
+        "src/attr/_make.py:3217-3218"
+      ],
+      "reason": "With takes_self and not takes_field, the converter is called as `self.converter(value, instance)`.",
+      "jev_contradicted": 0.67
+    },
+    {
+      "id": "deepwiki:251",
+      "arm": "deepwiki",
+      "claim": "The `field_transformer` hook receives the class being decorated and a list of `Attribute` objects.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:477-478",
+        "docs/extending.md:197-206"
+      ],
+      "reason": "`field_transformer(cls, attrs)` is called with the class and the collected Attribute objects.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:99",
+      "arm": "deepwiki",
+      "claim": "The `Converter` class can be configured with `takes_self` and `takes_field` parameters.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:3172-3176"
+      ],
+      "reason": "`Converter.__init__` accepts keyword-only `takes_self` and `takes_field`.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:216",
+      "arm": "story",
+      "claim": "For a mandatory field with no factory and no converter, the alias is added to `args` as a bare positional parameter and `_assign('a', 'a', False)` returns `'self.a = a'`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:2360-2377",
+        "src/attr/_make.py:2116-2124",
+        "src/attr/_make.py:2183-2184"
+      ],
+      "reason": "The final else-branch appends the bare `arg_name` to `args` and calls `fmt_setter`, which for non-frozen classes is `_assign`, yielding `self.a = a`.",
+      "jev_contradicted": 0.2
+    },
+    {
+      "id": "deepwiki:77",
+      "arm": "deepwiki",
+      "claim": "Annotations wrapped in `typing.ClassVar` are ignored by the attrs attribute collection process.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:411-413",
+        "src/attr/_make.py:295-310"
+      ],
+      "reason": "In auto_attribs collection, annotations matching ClassVar prefixes are skipped.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:279",
+      "arm": "deepwiki",
+      "claim": "The pre-commit `interrogate` hook ensures the `tests` directory maintains docstring coverage.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "unverifiable",
+      "lines": [
+        ".pre-commit-config.yaml:1-32"
+      ],
+      "reason": "The pre-commit configuration file's contents were not shown.",
+      "jev_contradicted": 0.31
+    },
+    {
+      "id": "deepwiki:139",
+      "arm": "deepwiki",
+      "claim": "`converters.optional` returns `None` directly for `None` values without calling the wrapped converter.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/converters.py:36-46"
+      ],
+      "reason": "Both optional_converter variants return None immediately when val is None, before invoking the wrapped converter.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:286",
+      "arm": "deepwiki",
+      "claim": "The tox `docs-watch` environment uses `watchfiles` to trigger rebuilds when source or documentation files change.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "unverifiable",
+      "lines": [
+        "tox.ini:1-156"
+      ],
+      "reason": "tox.ini contents were not shown, so the docs-watch environment can't be checked.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:215",
+      "arm": "story",
+      "claim": "`_determine_setters(frozen=False, slots=False, base_attr_map={})` returns `((), _assign, _assign_with_converter)` because `slots` is irrelevant when the class is not frozen.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:2140-2184"
+      ],
+      "reason": "`slots` is only consulted inside the `frozen is True` branch; otherwise the function returns `(), _assign, _assign_with_converter`.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "deepwiki:244",
+      "arm": "deepwiki",
+      "claim": "In Python, objects that compare equal must have the same hash.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "docs/hashing.md:26-28"
+      ],
+      "reason": "The hashing docs state that two equal objects must have the same hash.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:114",
+      "arm": "deepwiki",
+      "claim": "Validators are attached to attributes using the `validator` parameter in `attrs.field()` or `attr.ib()`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:104-110",
+        "src/attr/_next_gen.py:434-438"
+      ],
+      "reason": "Both `attrib` and `field` take a `validator` parameter used to attach validators.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:160",
+      "arm": "story",
+      "claim": "In `asdict`, when `filter` is None the per-field skip check does not fire and when `value_serializer` is None the serializer hook does not run.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_funcs.py:80-87"
+      ],
+      "reason": "The skip only happens `if filter is not None and not filter(a, v)` and the serializer only runs `if value_serializer is not None`.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:36",
+      "arm": "deepwiki",
+      "claim": "`_compile_and_eval()` compiles the generated script into bytecode.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:217-228"
+      ],
+      "reason": "`_compile_and_eval` calls `compile(script, filename, \"exec\")` and evals the resulting bytecode.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:92",
+      "arm": "story",
+      "claim": "The generated `__setattr__` looks the field up in a dict and, if the hook is a generator function, drives it around the assignment.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1174-1218"
+      ],
+      "reason": "The generated `__setattr__` does `a, hook, is_gen = sa_attrs[name]` and, when `is_gen()`, calls `next(gen)`, sets the attribute, then resumes the generator.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "deepwiki:75",
+      "arm": "deepwiki",
+      "claim": "When a type annotation is present, it is stored in `Attribute.type`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:441-451",
+        "src/attr/_make.py:2594-2626",
+        "src/attr/_make.py:2581-2581"
+      ],
+      "reason": "The annotation is passed to `Attribute.from_counting_attr` as `type` and stored on the Attribute's `type` slot.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "story:29",
+      "arm": "story",
+      "claim": "`_is_class_var` stringifies the annotation, strips surrounding quotes, and tests `annot.startswith(_CLASSVAR_PREFIXES)`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:303-310"
+      ],
+      "reason": "The function converts to `str`, strips surrounding quotes, and returns `annot.startswith(_CLASSVAR_PREFIXES)`.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:47",
+      "arm": "deepwiki",
+      "claim": "`_transform_attrs` ensures no mandatory attributes follow attributes with default values.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:485-489"
+      ],
+      "reason": "_transform_attrs raises ValueError if a mandatory attribute follows one with a default.",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "story:204",
+      "arm": "story",
+      "claim": "`_collect_base_attrs_broken` walks the MRO forward instead of reversed, keeps attributes already marked `inherited`, and mutates the `taken_attr_names` set it was given.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:368-378"
+      ],
+      "reason": "It iterates `cls.__mro__[1:-1]` (not reversed), filters only on `taken_attr_names`, and mutates that set with `taken_attr_names.add(a.name)`.",
+      "jev_contradicted": 0.26
+    },
+    {
+      "id": "deepwiki:199",
+      "arm": "deepwiki",
+      "claim": "attrs classes automatically generate `__match_args__` based on the attribute order to support structural pattern matching.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1118-1123",
+        "src/attr/_make.py:1606-1607"
+      ],
+      "reason": "`add_match_args` builds `__match_args__` as a tuple of field names (in attribute order) for init, non-kw_only fields, and is applied when match_args is true.",
+      "jev_contradicted": 0.6
+    },
+    {
+      "id": "story:82",
+      "arm": "story",
+      "claim": "The generated `__repr__` renders the class name from `self.__class__.__qualname__`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1883-1886",
+        "src/attr/_make.py:1901"
+      ],
+      "reason": "With the default `ns is None`, the class-name fragment is `{self.__class__.__qualname__.rsplit(\">.\", 1)[-1]}`.",
+      "jev_contradicted": 0.67
+    },
+    {
+      "id": "story:64",
+      "arm": "story",
+      "claim": "When no `__attrs_pre_init__` exists, `_ClassBuilder.__init__` makes no `inspect.signature` call and leaves the hook flags False.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:705-715"
+      ],
+      "reason": "`_pre_init_has_args` is initialized to False and the `import inspect` / `inspect.signature` block is guarded by `if self._has_pre_init:`.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:174",
+      "arm": "story",
+      "claim": "NFKC normalization is the same normalization the Python parser applies to identifiers.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:3308-3309"
+      ],
+      "reason": "The code comment states \"Class identifiers are converted into the normal form NFKC while parsing\", which is why `make_class` applies NFKC.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:3",
+      "arm": "deepwiki",
+      "claim": "`attrs` performs its work at class definition time via code generation, minimizing runtime impact at instantiation.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "docs/how-does-it-work.md:36-45",
+        "src/attr/_make.py:231-263"
+      ],
+      "reason": "The builder compiles generated method scripts once at class-definition time and the docs state everything happens exactly once when the class is defined with no runtime cost afterwards.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "deepwiki:180",
+      "arm": "deepwiki",
+      "claim": "`evolve` works with frozen classes because it calls the constructor rather than mutating the instance.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:634-644",
+        "docs/api.rst:301-306"
+      ],
+      "reason": "`evolve` collects init values and calls `cls(**changes)`, creating a new instance via `__init__` rather than mutating, which works for frozen classes.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:141",
+      "arm": "deepwiki",
+      "claim": "`converters.default_if_none` replaces `None` values with a static default value or the result of a factory function.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/converters.py:64-120"
+      ],
+      "reason": "`default_if_none` returns a converter replacing None with the given default or the result of `Factory(factory)`.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:85",
+      "arm": "deepwiki",
+      "claim": "The modern attrs API was introduced in version 20.1.0.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_next_gen.py:315-315",
+        "docs/api.rst:30-30"
+      ],
+      "reason": "`define`'s docstring carries `.. versionadded:: 20.1.0`, as do mutable/frozen in the API docs.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:60",
+      "arm": "story",
+      "claim": "`_transform_attrs` returns `_Attributes(AttrsClass(attrs), base_attrs, base_attr_map)`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:503-506"
+      ],
+      "reason": "The final statement is exactly `return _Attributes(AttrsClass(attrs), base_attrs, base_attr_map)`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:178",
+      "arm": "deepwiki",
+      "claim": "`has` checks for the presence of the `__attrs_attrs__` attribute on the class.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_funcs.py:365-377"
+      ],
+      "reason": "`has` does `getattr(cls, \"__attrs_attrs__\", None)` and returns True if present (also checking generic bases).",
+      "jev_contradicted": 0.58
+    },
+    {
+      "id": "story:182",
+      "arm": "story",
+      "claim": "`make_class` creates the class with `types.new_class(name, bases, {}, lambda ns: ns.update(body))`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:3333-3333"
+      ],
+      "reason": "make_class builds the class exactly with `types.new_class(name, bases, {}, lambda ns: ns.update(body))`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:247",
+      "arm": "deepwiki",
+      "claim": "If `cache_hash=True` is passed to `@define`, the hash value is computed once and stored on the instance.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1697-1708",
+        "docs/hashing.md:80-85"
+      ],
+      "reason": "With cache_hash the generated `__hash__` computes the hash only if the cache field is None and stores it on the instance.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:33",
+      "arm": "story",
+      "claim": "In auto_attribs mode, a class-body value that is not a `_CountingAttr` is wrapped by `attrib(a)` as a default.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:416-420"
+      ],
+      "reason": "In the auto_attribs branch, a class-body value whose class is not `_CountingAttr` is wrapped via `a = attrib(a)`, where the first positional parameter of `attrib` is `default`.",
+      "jev_contradicted": 0.2
+    },
+    {
+      "id": "deepwiki:277",
+      "arm": "deepwiki",
+      "claim": "The `benchmark` dependency group includes `pytest-codspeed` and `pytest-xdist`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "unverifiable",
+      "lines": [
+        "src/attr/__init__.py:1-5"
+      ],
+      "reason": "pyproject.toml was not shown, so the contents of the benchmark dependency group cannot be checked.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:217",
+      "arm": "story",
+      "claim": "When fields have no types, the generated init `annotations` dict is just `{'return': None}` because the annotation step requires `a.type` to be non-None.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:2230-2230",
+        "src/attr/_make.py:2379-2384"
+      ],
+      "reason": "`annotations` is initialized to `{\"return\": None}` and entries are only added from `a.type` (or a converter's annotated first param), so untyped fields leave it unchanged.",
+      "jev_contradicted": 0.51
+    },
+    {
+      "id": "story:196",
+      "arm": "story",
+      "claim": "The keyword-only decision in `attrs` is gated on `kw_only` being truthy before `force_kw_only` applies.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1523-1527"
+      ],
+      "reason": "`if kw_only:` gates the choice between FORCE/YES (based on force_kw_only), with NO otherwise.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "story:148",
+      "arm": "story",
+      "claim": "`build_class` sets `__attrs_base_of_slotted__ = weakref.ref(cls)` on the original class when building a slotted class.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:806-809"
+      ],
+      "reason": "In the slots branch of build_class, `self._cls.__attrs_base_of_slotted__ = weakref.ref(cls)` is set on the original class.",
+      "jev_contradicted": 0.31
+    },
+    {
+      "id": "deepwiki:89",
+      "arm": "deepwiki",
+      "claim": "The `auto_exc` parameter defaults to `False` in legacy `attr.s` and `True` in modern `attrs.define`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1368-1368",
+        "src/attr/_next_gen.py:41-41"
+      ],
+      "reason": "`attrs()` (attr.s) has `auto_exc=False` while `define()` has `auto_exc=True`.",
+      "jev_contradicted": 0.72
+    },
+    {
+      "id": "story:117",
+      "arm": "story",
+      "claim": "`_make_init_script` merges the defining module's entire `__dict__` into the generated globals if the module is importable.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:2085-2087"
+      ],
+      "reason": "`if cls.__module__ in sys.modules: globs.update(sys.modules[cls.__module__].__dict__)` merges the module dict into the init globals.",
+      "jev_contradicted": 0.24
+    },
+    {
+      "id": "story:38",
+      "arm": "story",
+      "claim": "In the non-annotated path, attrs sorts the class body fields by the `_CountingAttr` counter.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:431-439"
+      ],
+      "reason": "The non-auto_attribs branch sorts class-dict `_CountingAttr`s with `key=lambda e: e[1].counter`.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:32",
+      "arm": "story",
+      "claim": "In `_transform_attrs`, each annotated name is looked up with `a = cd.get(attr_name, NOTHING)`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:416-416"
+      ],
+      "reason": "The annotated-name lookup is literally `a = cd.get(attr_name, NOTHING)`.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:148",
+      "arm": "deepwiki",
+      "claim": "`to_bool` maps the integer `1` to `True` and `0` to `False`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/converters.py:154-157"
+      ],
+      "reason": "`to_bool` returns True for values in a tuple including `1` and False for values including `0`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:169",
+      "arm": "deepwiki",
+      "claim": "`asdict` supports a `dict_factory` parameter allowing custom dictionary types such as `OrderedDict`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_funcs.py:26-54"
+      ],
+      "reason": "`asdict` takes a `dict_factory=dict` parameter documented as accepting e.g. `collections.OrderedDict`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:187",
+      "arm": "deepwiki",
+      "claim": "`resolve_types` uses `typing.get_type_hints` and accepts `globalns` and `localns` arguments.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_funcs.py:425-485"
+      ],
+      "reason": "`resolve_types(cls, globalns=None, localns=None, ...)` passes those to `typing.get_type_hints`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:88",
+      "arm": "story",
+      "claim": "attrs does not generate a `__ne__`; `add_eq` assigns one shared module-level function.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1160-1160",
+        "src/attr/_make.py:1730-1739"
+      ],
+      "reason": "`add_eq` assigns the module-level `__ne__` function to the class dict rather than generating a per-class one.",
+      "jev_contradicted": 0.6
+    },
+    {
+      "id": "deepwiki:158",
+      "arm": "deepwiki",
+      "claim": "A class cannot use both `frozen=True` and `on_setattr` hooks; doing so raises a `ValueError` with the message \"Frozen classes can't use on_setattr.\"",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:2044-2050"
+      ],
+      "reason": "`_make_init_script` raises `ValueError(\"Frozen classes can't use on_setattr.\")` when frozen and an on_setattr hook is present.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:153",
+      "arm": "story",
+      "claim": "`attr.asdict` converts tuples, sets and frozensets to `list` unless `retain_collection_types` is set.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_funcs.py:101-102"
+      ],
+      "reason": "asdict uses `cf = value_type if retain_collection_types is True else list` for tuple/list/set/frozenset values.",
+      "jev_contradicted": 0.2
+    },
+    {
+      "id": "story:200",
+      "arm": "story",
+      "claim": "Even in the `these` path, `_transform_attrs` calls `_get_annotations` and uses `anns.get(attr_name)` as each field's type.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:399-402",
+        "src/attr/_make.py:441-451"
+      ],
+      "reason": "`anns = _get_annotations(cls)` runs unconditionally before the `these` branch, and `anns.get(attr_name)` is passed for every entry of ca_list.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:76",
+      "arm": "story",
+      "claim": "`slots_setstate` accepts either a tuple (for pickles written by attrs before v22.2.0) or a dict, and when given a dict sets only the names actually present.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1042-1055"
+      ],
+      "reason": "slots_setstate handles a tuple state for pre-22.2.0 pickles and otherwise only sets names that are `in state`.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:14",
+      "arm": "story",
+      "claim": "`_determine_whether_to_implement`, given a None flag and `auto_detect=True`, loops over the dunder names calling `_has_own_attribute`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1339-1350"
+      ],
+      "reason": "With flag None and auto_detect True, the function iterates over *dunders* calling `_has_own_attribute(cls, dunder)`.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "deepwiki:46",
+      "arm": "deepwiki",
+      "claim": "When `auto_attribs=True`, `_transform_attrs` converts PEP 526 annotations into attributes.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:404-430"
+      ],
+      "reason": "In `_transform_attrs`, when auto_attribs is True it iterates the class annotations and wraps non-_CountingAttr values with `attrib(a)`.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:336",
+      "arm": "deepwiki",
+      "claim": "attrs security issues should be reported via the Tidelift security contact.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "unverifiable",
+      "lines": [
+        "src/attr/__init__.py:1-5"
+      ],
+      "reason": ".github/SECURITY.md was not shown, so the reporting channel cannot be verified.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:78",
+      "arm": "story",
+      "claim": "When the class has both `__module__` and `__qualname__`, `_ClassBuilder.__init__` sets `self._add_method_dunders = self._add_method_dunders_unsafe`, the variant that assigns without `contextlib.suppress`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:772-777",
+        "src/attr/_make.py:1226-1238"
+      ],
+      "reason": "When both attributes exist, the unsafe variant is chosen, and it assigns __module__/__qualname__/__doc__ without contextlib.suppress.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:170",
+      "arm": "story",
+      "claim": "In `asdict`, a dict value is rebuilt with `dict_factory` over key/value pairs, with keys processed using `is_key=True`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_funcs.py:122-144"
+      ],
+      "reason": "Dict values are rebuilt via `df = dict_factory` with `_asdict_anything(kk, is_key=True, ...)` for keys.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:97",
+      "arm": "story",
+      "claim": "When `init=False`, attrs routes the identical generated script to `__attrs_init__` instead of `__init__`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1595-1598",
+        "src/attr/_make.py:1125-1146",
+        "src/attr/_make.py:2083-2083"
+      ],
+      "reason": "When added_init is false, add_attrs_init calls the same `_make_init_script` with attrs_init=True, which only switches the method name to `__attrs_init__`.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "story:214",
+      "arm": "story",
+      "claim": "`attr.s` resolves `order` to mirror `eq`, so `make_class` enables ordering by default, while `define` does not.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1271-1276",
+        "src/attr/_make.py:3346-3354",
+        "src/attr/_next_gen.py:40-40"
+      ],
+      "reason": "attr.s mirrors order from eq, make_class passes default_eq=True yielding order=True, whereas define defaults order=False.",
+      "jev_contradicted": 0.6
+    },
+    {
+      "id": "story:106",
+      "arm": "story",
+      "claim": "For a frozen slotted class, `_determine_setters` returns a `_setattr` strategy going through a cached `object.__setattr__`.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:2147-2149",
+        "src/attr/_make.py:2099-2103",
+        "src/attr/_make.py:2209-2215"
+      ],
+      "reason": "For frozen+slots the setters are `_setattr`/`_setattr_with_converter`, which emit calls to the cached `object.__setattr__` bound via `_cached_setattr_get(self)`.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:18",
+      "arm": "story",
+      "claim": "`ClassProps.__init__` takes sixteen positional settings and assigns them directly to slots.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:3020-3054"
+      ],
+      "reason": "ClassProps.__init__ takes exactly the sixteen listed parameters and assigns each directly to the corresponding slot.",
+      "jev_contradicted": 0.69
+    },
+    {
+      "id": "story:155",
+      "arm": "story",
+      "claim": "`fields` calls `get_generic_base` to determine whether the argument is a specialized generic.",
+      "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:1948-1950",
+        "src/attr/_make.py:1960-1968"
+      ],
+      "reason": "`fields` begins with `generic_base = get_generic_base(cls)` and uses it for specialized generics.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "deepwiki:311",
+      "arm": "deepwiki",
+      "claim": "The coverage job in CI runs `coverage combine` followed by `coverage report --fail-under=100`.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "unverifiable",
+      "lines": [
+        "src/attr/__init__.py:1-5"
+      ],
+      "reason": ".github/workflows/ci.yml was not shown, so the coverage job commands cannot be checked.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:302",
+      "arm": "deepwiki",
+      "claim": "`tests/test_forward_references.py` is ignored on Python versions below 3.14.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "unverifiable",
+      "lines": [
+        "src/attr/__init__.py:1-5"
+      ],
+      "reason": "Neither tests/conftest.py nor pyproject.toml (where such an ignore would live) was shown.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:194",
+      "arm": "deepwiki",
+      "claim": "Since version 21.1.0, the `eq` and `order` field parameters also accept custom callables.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_make.py:154-155",
+        "src/attr/_next_gen.py:592-593"
+      ],
+      "reason": "Both `attrib` and `field` docstrings note `.. versionchanged:: 21.1.0 *eq*, *order*, and *cmp* also accept a custom callable`.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "deepwiki:322",
+      "arm": "deepwiki",
+      "claim": "The attrs AI policy prohibits listing LLM bots in `Co-authored-by` tags.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "unverifiable",
+      "lines": [
+        "src/attr/__init__.py:1-5"
+      ],
+      "reason": ".github/AI_POLICY.md was not shown, so its rules about Co-authored-by tags cannot be checked.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:25",
+      "arm": "deepwiki",
+      "claim": "`has()` checks whether a class is an `attrs` class.",
+      "commit": "a602f78ff670f22be90fb8aea501a6cc30e10fdd",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/attrs",
+      "label": "supported",
+      "lines": [
+        "src/attr/_funcs.py:352-377"
+      ],
+      "reason": "`has(cls)` is documented and implemented as checking whether a class is an attrs class.",
+      "jev_contradicted": 0.12
+    }
+  ],
+  "cost": 4.37
+}

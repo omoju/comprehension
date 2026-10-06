@@ -1,0 +1,1056 @@
+{
+  "repo": "markupsafe",
+  "items": [
+    {
+      "id": "deepwiki:47",
+      "arm": "deepwiki",
+      "claim": "In MarkupSafe 3.0.0, `strip()`, `lstrip()`, `rstrip()`, `removeprefix()`, `removesuffix()`, `partition()`, and `rpartition()` no longer escape their arguments.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "CHANGES.rst:51-69"
+      ],
+      "reason": "The 3.0.0 changelog entry states these methods no longer escape their argument.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:260",
+      "arm": "deepwiki",
+      "claim": "The Sphinx configuration sets `project` to \"MarkupSafe\".",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "docs/conf.py:6-6"
+      ],
+      "reason": "conf.py sets project = \"MarkupSafe\".",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:18",
+      "arm": "deepwiki",
+      "claim": "The C extension uses PEP 489 multi-phase initialization as of version 3.0.3.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "CHANGES.rst:19-27"
+      ],
+      "reason": "Version 3.0.3 changelog lists adopting multi-phase initialisation (PEP 489) for the C extension.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:90",
+      "arm": "story",
+      "claim": "`Markup.unescape` lazily imports Python's `html.unescape` and applies it to `str(self)`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:188-197"
+      ],
+      "reason": "`unescape` imports `html.unescape` inside the method body and returns `unescape(str(self))`.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:122",
+      "arm": "deepwiki",
+      "claim": "`escape(None)` converts None to the string `'None'`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:45-56"
+      ],
+      "reason": "escape falls through to Markup(_escape_inner(str(None))) and the docstring shows escape(None) == Markup('None').",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "story:29",
+      "arm": "story",
+      "claim": "In `escape`, when an object has `__html__`, the method is called and its return value is wrapped in `Markup` with no escaping.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:42-43"
+      ],
+      "reason": "`escape` returns `Markup(s.__html__())` without escaping when the object defines `__html__`.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:35",
+      "arm": "deepwiki",
+      "claim": "MarkupSafe version 3.0.0 added Python 3.13 and free-threading support while dropping Python 3.7 and 3.8.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "CHANGES.rst:51-57"
+      ],
+      "reason": "The 3.0.0 entry lists Python 3.13 free-threaded support and dropping 3.7/3.8.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:270",
+      "arm": "deepwiki",
+      "claim": "The publish workflow is triggered on push of tags and on workflow_dispatch.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "contradicted",
+      "lines": [
+        ".github/workflows/publish.yaml:2-4"
+      ],
+      "reason": "The publish workflow triggers only on push of tags; there is no workflow_dispatch trigger.",
+      "jev_contradicted": 0.8
+    },
+    {
+      "id": "story:85",
+      "arm": "story",
+      "claim": "The tag pass in `striptags` finds `<`, finds the next `>` after it, splices them out, and repeats.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:220-224"
+      ],
+      "reason": "The loop finds `<`, finds `>` after it, splices the segment out, and repeats until no more matches.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:63",
+      "arm": "story",
+      "claim": "`Markup.__new__` on a plain `str` with `encoding=None` skips the decoding branch and passes the text to `str.__new__`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:122-131"
+      ],
+      "reason": "With `encoding is None` the constructor returns `super().__new__(cls, object)`, skipping the encoding/errors branch.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:238",
+      "arm": "deepwiki",
+      "claim": "The create-release job declares `contents: write` permission.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        ".github/workflows/publish.yaml:88-92"
+      ],
+      "reason": "The create-release job declares permissions: contents: write.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "deepwiki:216",
+      "arm": "deepwiki",
+      "claim": "The tox `style` environment runs `pre-commit run --all-files`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:156-160"
+      ],
+      "reason": "tool.tox.env.style runs [\"pre-commit\", \"run\", \"--all-files\"].",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:30",
+      "arm": "story",
+      "claim": "`docs/html.rst` states that because `__html__` bypasses escaping, the author must escape user-provided data inside it.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "docs/html.rst:31-43"
+      ],
+      "reason": "The docs explicitly warn that bypassing escaping requires escaping user-provided data such as a display name.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:191",
+      "arm": "deepwiki",
+      "claim": "The `pre-commit` dependency group contains pre-commit and pre-commit-uv.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:45-48"
+      ],
+      "reason": "The pre-commit dependency group lists pre-commit and pre-commit-uv.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:2",
+      "arm": "story",
+      "claim": "The module-level `escape` function begins with an identity check `type(s) is str` rather than `isinstance(s, str)`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:35-40"
+      ],
+      "reason": "The function's first check is `if type(s) is str`, deliberately avoiding `isinstance` for proxy objects.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:252",
+      "arm": "deepwiki",
+      "claim": "In uv.lock, sphinx-autobuild resolves to 2024.10.3 for Python < 3.11 and 2025.8.25 for Python >= 3.11.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "unverifiable",
+      "lines": [
+        "pyproject.toml:39-41"
+      ],
+      "reason": "uv.lock is not included in the shown repository files, so the resolved versions cannot be checked.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:67",
+      "arm": "deepwiki",
+      "claim": "The `_TPEscape` protocol is defined at lines 20-21 of `src/markupsafe/__init__.py`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:20-21"
+      ],
+      "reason": "_TPEscape protocol is indeed declared on lines 20-21.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:77",
+      "arm": "deepwiki",
+      "claim": "MarkupSafe 1.1.0 wrapped `__html__` results in `Markup` consistently.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "CHANGES.rst:174-175"
+      ],
+      "reason": "The 1.1.0 entry says escape wraps __html__ result in Markup, consistent with documented behavior.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:108",
+      "arm": "deepwiki",
+      "claim": "`Markup(\"{0}\").format(Markup(\"<bar/>\"))` returns `Markup('<bar/>')`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:335-339",
+        "src/markupsafe/__init__.py:349-364",
+        "tests/test_markupsafe.py:114-115"
+      ],
+      "reason": "A Markup value defines __html_format__ returning itself and escape leaves Markup unchanged, yielding Markup('<bar/>').",
+      "jev_contradicted": 0.31
+    },
+    {
+      "id": "story:50",
+      "arm": "story",
+      "claim": "`string.Formatter.vformat` assembles its output with plain string concatenation.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "unverifiable",
+      "lines": [
+        "src/markupsafe/__init__.py:313-315"
+      ],
+      "reason": "The implementation of `string.Formatter.vformat` is in the Python standard library, not in this repository.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "deepwiki:144",
+      "arm": "deepwiki",
+      "claim": "The `DO_ESCAPE` macro is defined at lines 18-72 of `src/markupsafe/_speedups.c`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/_speedups.c:18-72"
+      ],
+      "reason": "The DO_ESCAPE macro spans exactly lines 18 through 72.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:44",
+      "arm": "story",
+      "claim": "The three branch tests in `EscapeFormatter.format_field` are `hasattr` checks.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "contradicted",
+      "lines": [
+        "src/markupsafe/__init__.py:339-353"
+      ],
+      "reason": "There are only two `hasattr` tests (`__html_format__` and `__html__`); the third branch is an unconditional `else`.",
+      "jev_contradicted": 0.48
+    },
+    {
+      "id": "story:48",
+      "arm": "story",
+      "claim": "`Markup.escape` is a classmethod that forwards to the module-level `escape` function.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:230-240"
+      ],
+      "reason": "`Markup.escape` is decorated `@classmethod` and calls the module-level `escape(s)`, re-wrapping for subclasses.",
+      "jev_contradicted": 0.23
+    },
+    {
+      "id": "story:16",
+      "arm": "story",
+      "claim": "`Markup.__new__` checks whether the object has an `__html__` method and, if so, uses its return value.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:125-126"
+      ],
+      "reason": "`__new__` does `if hasattr(object, \"__html__\"): object = object.__html__()`.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:181",
+      "arm": "deepwiki",
+      "claim": "The project version in `pyproject.toml` is \"3.1.0.dev\".",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:3-3"
+      ],
+      "reason": "version = \"3.1.0.dev\" in pyproject.toml.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "story:35",
+      "arm": "story",
+      "claim": "`Markup.format` delegates the work to `vformat`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:313-315"
+      ],
+      "reason": "`format` builds an `EscapeFormatter` and returns `self.__class__(formatter.vformat(self, args, kwargs))`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:10",
+      "arm": "deepwiki",
+      "claim": "The `escape()` function escapes `\"` to `&#34;`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/_native.py:7-7",
+        "tests/test_markupsafe.py:78-78"
+      ],
+      "reason": "_escape_inner replaces '\"' with '&#34;'.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:61",
+      "arm": "deepwiki",
+      "claim": "MarkupSafe 3.0.1 fixed compatibility with proxy objects.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "CHANGES.rst:42-48"
+      ],
+      "reason": "The 3.0.1 entry lists \"Fix compatibility with proxy objects.\"",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:295",
+      "arm": "deepwiki",
+      "claim": "The escape test suite includes a 2-byte Unicode test case `\"\u3053\u3093\u306b\u3061\u306f&><'\\\"\u3053\u3093\u3070\u3093\u306f\"`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "tests/test_escape.py:20-21"
+      ],
+      "reason": "The parametrized test includes the 2-byte case with \u3053\u3093\u306b\u3061\u306f/\u3053\u3093\u3070\u3093\u306f.",
+      "jev_contradicted": 0.25
+    },
+    {
+      "id": "deepwiki:105",
+      "arm": "deepwiki",
+      "claim": "`Markup.format_map()` is defined at lines 317-323 of `src/markupsafe/__init__.py`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "contradicted",
+      "lines": [
+        "src/markupsafe/__init__.py:327-333"
+      ],
+      "reason": "format_map is defined at lines 327-333, not 317-323.",
+      "jev_contradicted": 0.86
+    },
+    {
+      "id": "story:45",
+      "arm": "story",
+      "claim": "`EscapeFormatter.format_field` with an empty spec calls `super().format_field(value, str(''))`, which returns the string unchanged.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:350-353"
+      ],
+      "reason": "The fallback branch calls `super().format_field(value, str(format_spec))`, which with an empty spec yields the plain string form.",
+      "jev_contradicted": 0.18
+    },
+    {
+      "id": "deepwiki:69",
+      "arm": "deepwiki",
+      "claim": "`Markup.__mod__` escapes its arguments.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:154-165",
+        "src/markupsafe/__init__.py:379-380"
+      ],
+      "reason": "__mod__ wraps each argument in _MarkupEscapeHelper whose __str__ applies escape.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:28",
+      "arm": "deepwiki",
+      "claim": "MarkupSafe version 2.0.0 was released on 2021-05-11, added type annotations and dropped Python 2.7.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "CHANGES.rst:144-152"
+      ],
+      "reason": "CHANGES.rst lists Version 2.0.0 released 2021-05-11 with dropping Python 2.7 and adding type annotations.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:264",
+      "arm": "deepwiki",
+      "claim": "The Sphinx configuration sets `autodoc_member_order = \"bysource\"` and `autodoc_typehints = \"description\"`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "docs/conf.py:21-22"
+      ],
+      "reason": "conf.py sets both autodoc_member_order = \"bysource\" and autodoc_typehints = \"description\".",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "story:43",
+      "arm": "story",
+      "claim": "`Markup.__html_format__` raises `ValueError(\"Unsupported format specification for Markup.\")` for any non-empty format spec.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:325-329"
+      ],
+      "reason": "`__html_format__` raises `ValueError(\"Unsupported format specification for Markup.\")` when `format_spec` is truthy.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:4",
+      "arm": "story",
+      "claim": "In `escape`, an object that is not exactly `str` falls through to the later branches instead of the fast path.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:39-45"
+      ],
+      "reason": "Only `type(s) is str` takes the fast path; anything else falls through to the `__html__` check and `str(s)` escape.",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "deepwiki:13",
+      "arm": "deepwiki",
+      "claim": "The `escape()` function converts other types to string at line 45 of `src/markupsafe/__init__.py`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:45-45"
+      ],
+      "reason": "Line 45 is `return Markup(_escape_inner(str(s)))`, converting other types to string.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:31",
+      "arm": "story",
+      "claim": "An exception raised inside `__html__` propagates out of `escape`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:42-43",
+        "tests/test_exception_custom_html.py:20-23"
+      ],
+      "reason": "`escape` calls `s.__html__()` with no exception handling, and the test asserts the `ValueError` propagates.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:217",
+      "arm": "deepwiki",
+      "claim": "The tox `typing` environment runs `mypy`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:162-167"
+      ],
+      "reason": "The tox typing env commands are [[\"mypy\"]].",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:169",
+      "arm": "deepwiki",
+      "claim": "The `[tool.cibuildwheel]` section sets `build-frontend = \"build[uv]\"`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:201-202"
+      ],
+      "reason": "[tool.cibuildwheel] sets build-frontend = \"build[uv]\".",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "story:37",
+      "arm": "story",
+      "claim": "`Markup.__mod__` wraps each argument in a `_MarkupEscapeHelper`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:154-165"
+      ],
+      "reason": "Each tuple item, the mapping, or the single value is wrapped in `_MarkupEscapeHelper` before `super().__mod__`.",
+      "jev_contradicted": 0.46
+    },
+    {
+      "id": "deepwiki:31",
+      "arm": "deepwiki",
+      "claim": "MarkupSafe version 0.16 removed 2to3 and dropped Python 2.5 and 3.2 support while adding direct Python 3.x support.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "CHANGES.rst:205-211"
+      ],
+      "reason": "Version 0.16 entry states improved Python 3 support, removed 2to3, and removed support for Python 3.2 and 2.5.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "story:19",
+      "arm": "story",
+      "claim": "The `Markup` class defines `__slots__ = ()`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:120"
+      ],
+      "reason": "The class body contains `__slots__ = ()`.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:66",
+      "arm": "story",
+      "claim": "`Markup.__add__` returns `NotImplemented` when the operand is neither a `str` nor has `__html__`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:136-140"
+      ],
+      "reason": "`__add__` returns `NotImplemented` when the value is neither a `str` nor has `__html__`.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:80",
+      "arm": "deepwiki",
+      "claim": "If the object passed to `Markup()` has an `__html__()` method, the constructor calls it and uses the returned string.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:125-131"
+      ],
+      "reason": "__new__ calls object.__html__() when present and uses the result.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:94",
+      "arm": "story",
+      "claim": "`soft_str` converts a value to a string without flattening an existing `Markup` back to plain `str`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:78-81"
+      ],
+      "reason": "`soft_str` returns the value unchanged when it is already a `str` (including `Markup`), converting otherwise.",
+      "jev_contradicted": 0.35
+    },
+    {
+      "id": "deepwiki:226",
+      "arm": "deepwiki",
+      "claim": "The pre-commit configuration includes the check-merge-conflict hook.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        ".pre-commit-config.yaml:11-14"
+      ],
+      "reason": "The pre-commit-hooks repo includes the check-merge-conflict hook.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "story:8",
+      "arm": "story",
+      "claim": "The C implementation in `_speedups.c` performs the same five replacements in one pass with the output sized ahead of time.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/_speedups.c:3-72",
+        "src/markupsafe/_speedups.c:83-96"
+      ],
+      "reason": "GET_DELTA pre-computes the required extra length for allocation and DO_ESCAPE emits all five escapes in a single pass over the input.",
+      "jev_contradicted": 0.21
+    },
+    {
+      "id": "deepwiki:259",
+      "arm": "deepwiki",
+      "claim": "The Sphinx configuration uses `get_version()` from `pallets_sphinx_themes`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "docs/conf.py:1-9"
+      ],
+      "reason": "conf.py imports get_version from pallets_sphinx_themes and calls it.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:190",
+      "arm": "deepwiki",
+      "claim": "The `typing` dependency group contains mypy, pyright, and pytest.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:53-57"
+      ],
+      "reason": "The typing dependency group lists mypy, pyright, and pytest.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:95",
+      "arm": "story",
+      "claim": "`escape_silent(None)` returns `Markup('')`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:58-59"
+      ],
+      "reason": "escape_silent returns `Markup()` for None, which is the empty Markup string.",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "story:0",
+      "arm": "story",
+      "claim": "At import time, markupsafe's `__init__.py` tries to import the compiled `_speedups._escape_inner` and falls back to the pure-Python `_native._escape_inner` if the C extension was never built.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:7-10"
+      ],
+      "reason": "The module tries `from ._speedups import _escape_inner` and falls back to `._native` on ImportError.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:23",
+      "arm": "story",
+      "claim": "`Markup.__html__` returns `self`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:133-134"
+      ],
+      "reason": "`__html__` simply returns `self`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:76",
+      "arm": "story",
+      "claim": "`Markup.partition` and `Markup.rpartition` pass their argument through untouched.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:303-311"
+      ],
+      "reason": "Both partition methods call `super().partition(sep)`/`rpartition(sep)` with the separator unescaped.",
+      "jev_contradicted": 0.56
+    },
+    {
+      "id": "story:79",
+      "arm": "story",
+      "claim": "`Markup.split`, `Markup.rsplit` and `Markup.splitlines` wrap their results in `self.__class__`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:173-186"
+      ],
+      "reason": "Each of split, rsplit, splitlines returns `[self.__class__(v) for v in ...]`.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:24",
+      "arm": "deepwiki",
+      "claim": "Objects implementing `__html__()` are not escaped by `escape()`; the method's return value is used as-is.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:42-43"
+      ],
+      "reason": "escape returns Markup(s.__html__()) without further escaping.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:89",
+      "arm": "story",
+      "claim": "The last line of `Markup.striptags` is `return self.__class__(value).unescape()`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:228"
+      ],
+      "reason": "The final statement of striptags is exactly `return self.__class__(value).unescape()`.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "story:56",
+      "arm": "story",
+      "claim": "`Markup.escape` compares `rv.__class__ is not cls` and, when false, returns `escape`'s result as-is rather than wrapping it in `cls(...)` again.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:235-240"
+      ],
+      "reason": "It checks `if rv.__class__ is not cls: return cls(rv)` and otherwise returns `rv` unchanged.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:78",
+      "arm": "story",
+      "claim": "`Markup.__getitem__` wraps its result in `self.__class__`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:242-243"
+      ],
+      "reason": "`__getitem__` returns `self.__class__(super().__getitem__(key))`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:160",
+      "arm": "deepwiki",
+      "claim": "`setup.py` checks that `platform.python_implementation()` is not in {\"PyPy\", \"Jython\", \"GraalVM\"} to determine `supports_speedups`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "setup.py:54-58"
+      ],
+      "reason": "supports_speedups is computed from platform.python_implementation() not in {\"PyPy\", \"Jython\", \"GraalVM\"}.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:244",
+      "arm": "deepwiki",
+      "claim": "The publish workflow artifacts are named `build-sdist` and `build-wheels-{os}`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "contradicted",
+      "lines": [
+        ".github/workflows/publish.yaml:26-30",
+        ".github/workflows/publish.yaml:77-81"
+      ],
+      "reason": "The sdist artifact is named \"sdist\" and wheel artifacts are named \"{platform}-{arch|all}\", not \"build-sdist\"/\"build-wheels-{os}\".",
+      "jev_contradicted": 0.94
+    },
+    {
+      "id": "deepwiki:268",
+      "arm": "deepwiki",
+      "claim": "The tests workflow is triggered on pull_request and on push to main and stable branches, ignoring `docs/**` and `README.md`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        ".github/workflows/tests.yaml:2-7"
+      ],
+      "reason": "The workflow triggers on pull_request and push to [main, stable] with paths-ignore docs/** and README.md.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:88",
+      "arm": "story",
+      "claim": "When a marker is unterminated, the `striptags` loops `break` and leave the rest of the string unchanged.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:212-224"
+      ],
+      "reason": "Both loops break when the closing `-->` or `>` is not found, leaving the remaining text intact.",
+      "jev_contradicted": 0.2
+    },
+    {
+      "id": "story:77",
+      "arm": "story",
+      "claim": "`in`, `find` and `index` on `Markup` never escape their argument.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:84-330",
+        "CHANGES.rst:55-59"
+      ],
+      "reason": "Markup does not override `__contains__`, `find`, or `index`, so they use the plain str behavior with no escaping.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "story:9",
+      "arm": "story",
+      "claim": "In `_speedups.c`, if the scan finds nothing to escape it increments the refcount and returns the same string object.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/_speedups.c:83-87"
+      ],
+      "reason": "When `delta` is zero the code does `Py_INCREF(in)` and returns the input object itself.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:67",
+      "arm": "story",
+      "claim": "`Markup.__add__` passes the operand through `self.escape(value)`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:136-138"
+      ],
+      "reason": "`__add__` builds `super().__add__(self.escape(value))`.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "story:69",
+      "arm": "story",
+      "claim": "The C implementation in `_speedups.c` writes each replacement directly to an output buffer in a single pass.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "contradicted",
+      "lines": [
+        "src/markupsafe/_speedups.c:3-16",
+        "src/markupsafe/_speedups.c:83-96"
+      ],
+      "reason": "The C code makes two passes: GET_DELTA first scans the input to compute the size, then DO_ESCAPE writes to the new buffer.",
+      "jev_contradicted": 0.33
+    },
+    {
+      "id": "story:87",
+      "arm": "story",
+      "claim": "Both `striptags` passes use `str.find` rather than a regular expression.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:212-224"
+      ],
+      "reason": "Both the comment-stripping and tag-stripping loops use `value.find(...)` with no regex.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:6",
+      "arm": "story",
+      "claim": "`_native._escape_inner` replaces `&` with `&amp;` first, then `>`, `<`, `'`, and `\"`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/_native.py:2-8"
+      ],
+      "reason": "The chained replaces occur in exactly the order &, >, <, ', \".",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:201",
+      "arm": "deepwiki",
+      "claim": "The coverage report `exclude_also` includes \"if t.TYPE_CHECKING\", \"raise NotImplementedError\", and an ellipsis pattern.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:82-87"
+      ],
+      "reason": "exclude_also lists those three patterns including the ellipsis regex.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:57",
+      "arm": "story",
+      "claim": "The module-level `escape` always constructs a plain `Markup`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:39-45"
+      ],
+      "reason": "Every return path of the module-level escape constructs `Markup(...)`, not a subclass.",
+      "jev_contradicted": 0.24
+    },
+    {
+      "id": "deepwiki:102",
+      "arm": "deepwiki",
+      "claim": "`Markup.join()` is defined at lines 170-171 and escapes each element of the iterable before joining.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:170-171"
+      ],
+      "reason": "join is defined on those lines and maps self.escape over the iterable.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:239",
+      "arm": "deepwiki",
+      "claim": "On tag push, the create-release job runs `gh release create --draft` with the dist files.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        ".github/workflows/publish.yaml:99-100"
+      ],
+      "reason": "The create-release job runs `gh release create --draft ... dist/*`.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:74",
+      "arm": "story",
+      "claim": "`Markup.strip`, `lstrip` and `rstrip` pass their argument through without escaping.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:266-276"
+      ],
+      "reason": "strip, lstrip and rstrip pass `chars` straight to the str implementations without escaping.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "story:52",
+      "arm": "story",
+      "claim": "`Markup.__html_format__` returns `self` when the format spec is empty.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:325-329"
+      ],
+      "reason": "`__html_format__` raises only for a non-empty spec and otherwise returns `self`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:118",
+      "arm": "deepwiki",
+      "claim": "`repr(Markup(\"test\"))` returns `\"Markup('test')\"`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:167-168"
+      ],
+      "reason": "__repr__ formats as class name plus str repr, giving Markup('test').",
+      "jev_contradicted": 0.21
+    },
+    {
+      "id": "story:68",
+      "arm": "story",
+      "claim": "`Markup.__add__` calls `super().__add__(...)` and wraps the result in `self.__class__` rather than a hard-coded `Markup`.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:136-138"
+      ],
+      "reason": "The result of `super().__add__` is wrapped with `self.__class__`, preserving subclasses.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "deepwiki:136",
+      "arm": "deepwiki",
+      "claim": "`_native._escape_inner()` is defined at lines 1-8 of `src/markupsafe/_native.py`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/_native.py:1-8"
+      ],
+      "reason": "The file defines _escape_inner spanning lines 1-8.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:58",
+      "arm": "story",
+      "claim": "`str.__new__` on the `Markup` subclass allocates a new object even when no replacement ran.",
+      "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+      "label": "supported",
+      "lines": [
+        "src/markupsafe/__init__.py:39-40",
+        "src/markupsafe/__init__.py:128-129"
+      ],
+      "reason": "Even when `_escape_inner` returns the identical str, `Markup(...)` unconditionally calls `super().__new__(cls, object)`, producing a new Markup instance.",
+      "jev_contradicted": 0.52
+    },
+    {
+      "id": "deepwiki:223",
+      "arm": "deepwiki",
+      "claim": "The `[tool.gha-update]` section sets `tag-only = [\"slsa-framework/slsa-github-generator\"]`.",
+      "commit": "4e111271b1494995708a9e878a10829b5e10c7ba",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/markupsafe",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:119-122"
+      ],
+      "reason": "[tool.gha-update] sets tag-only to the slsa-github-generator entry.",
+      "jev_contradicted": 0.03
+    }
+  ],
+  "cost": 0.83
+}

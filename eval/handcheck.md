@@ -6,11 +6,51 @@ Write `agree`, `disagree` or `unsure` after **Omoju:** on each item. The arm is 
 
 **Claim:** The TestServer class extends uvicorn.Server
 
-**Judge:** unverifiable — `tests/conftest.py`, where a TestServer class would be defined, is not shown.
+**Judge:** unverifiable — tests/conftest.py is not shown, so the TestServer definition cannot be checked.
 
-tests/conftest.py:1-1
+tests/conftest.py:1-287
 ```
 import asyncio
+import json
+import os
+import threading
+import time
+import typing
+
+import pytest
+import trustme
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.serialization import (
+    BestAvailableEncryption,
+    Encoding,
+    PrivateFormat,
+    load_pem_private_key,
+)
+from uvicorn.config import Config
+from uvicorn.server import Server
+
+import httpx
+from tests.concurrency import sleep
+
+ENVIRONMENT_VARIABLES = {
+    "SSL_CERT_FILE",
+    "SSL_CERT_DIR",
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "ALL_PROXY",
+    "NO_PROXY",
+    "SSLKEYLOGFILE",
+}
+
+
+@pytest.fixture(scope="function", autouse=True)
+def clean_environ():
+    """Keeps os.environ clean for every test without having to mock os.environ"""
+    original_environ = os.environ.copy()
+    os.environ.clear()
+    os.environ.update(
+        {
+…
 ```
 
 **Omoju:** 
@@ -19,51 +59,13 @@ import asyncio
 
 **Claim:** `Style.__bool__` returns `False` for a null style.
 
-**Judge:** unverifiable — Style.__bool__ is in rich/style.py, which is not shown.
+**Judge:** supported — __bool__ returns `not self._null`, i.e. False for a null style.
 
-rich/style.py:1-796
+rich/style.py:340-342
 ```
-import sys
-from functools import lru_cache
-from itertools import count
-from operator import attrgetter
-from pickle import dumps, loads
-from random import getrandbits
-from typing import Any, Dict, Iterable, List, Optional, Type, Union, cast
-
-from . import errors
-from .color import Color, ColorParseError, ColorSystem, blend_rgb
-from .repr import Result, rich_repr
-from .terminal_theme import DEFAULT_TERMINAL_THEME, TerminalTheme
-
-_hash_getter = attrgetter(
-    "_color", "_bgcolor", "_attributes", "_set_attributes", "_link", "_meta"
-)
-
-# Style instances and style definitions are often interchangeable
-StyleType = Union[str, "Style"]
-
-
-_id_generator = count(getrandbits(24))
-
-
-class _Bit:
-    """A descriptor to get/set a style attribute bit."""
-
-    __slots__ = ["bit"]
-
-    def __init__(self, bit_no: int) -> None:
-        self.bit = 1 << bit_no
-
-    def __get__(self, obj: "Style", objtype: Type["Style"]) -> Optional[bool]:
-        if obj._set_attributes & self.bit:
-            return obj._attributes & self.bit != 0
-        return None
-
-
-@rich_repr
-class Style:
-…
+    def __bool__(self) -> bool:
+        """A Style is false if it has no attributes, colors, or links."""
+        return not self._null
 ```
 
 **Omoju:** 
@@ -72,51 +74,13 @@ class Style:
 
 **Claim:** `_check_buffer` deletes the buffer and drops output when `self.quiet` is set.
 
-**Judge:** unverifiable — _check_buffer is defined in rich/console.py, which is excluded from the shown context.
+**Judge:** supported — _check_buffer does `del self._buffer[:]` and returns when self.quiet is True.
 
-rich/console.py:1-2698
+rich/console.py:2050-2052
 ```
-import os
-import sys
-import threading
-from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
-from datetime import datetime
-from functools import wraps
-from itertools import islice
-from math import ceil
-from os import PathLike
-from time import monotonic
-from types import FrameType, ModuleType, TracebackType
-from typing import (
-    IO,
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    Dict,
-    Iterable,
-    List,
-    Literal,
-    Mapping,
-    NamedTuple,
-    Optional,
-    Protocol,
-    TextIO,
-    Tuple,
-    Type,
-    Union,
-    cast,
-    runtime_checkable,
-)
-
-from rich._null_file import NULL_FILE
-
-from . import errors, themes
-from ._emoji_replace import _emoji_replace
-from ._export_format import CONSOLE_HTML_FORMAT, CONSOLE_SVG_FORMAT
-from ._fileno import get_fileno
-from ._log_render import FormatTimeCallable, LogRender
-…
+        if self.quiet:
+            del self._buffer[:]
+            return
 ```
 
 **Omoju:** 
@@ -125,51 +89,15 @@ from ._log_render import FormatTimeCallable, LogRender
 
 **Claim:** In `Table._get_cells`, the header style is `get_style(self.header_style or "") + get_style(column.header_style)`.
 
-**Judge:** unverifiable — Table._get_cells source is not present in the shown files.
+**Judge:** supported — The code is exactly header_style = get_style(self.header_style or "") + get_style(column.header_style).
 
-rich/table.py:1-1015
+rich/table.py:670-674
 ```
-from dataclasses import dataclass, field, replace
-from typing import (
-    TYPE_CHECKING,
-    Dict,
-    Iterable,
-    List,
-    NamedTuple,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
-
-from . import box, errors
-from ._loop import loop_first_last, loop_last
-from ._pick import pick_bool
-from ._ratio import ratio_distribute, ratio_reduce
-from .align import VerticalAlignMethod
-from .jupyter import JupyterMixin
-from .measure import Measurement
-from .padding import Padding, PaddingDimensions
-from .protocol import is_renderable
-from .segment import Segment
-from .style import Style, StyleType
-from .text import Text, TextType
-
-if TYPE_CHECKING:
-    from .console import (
-        Console,
-        ConsoleOptions,
-        JustifyMethod,
-        OverflowMethod,
-        RenderableType,
-        RenderResult,
-    )
-
-
-@dataclass
-class Column:
-    """Defines a column within a ~Table.
-…
+        if self.show_header:
+            header_style = get_style(self.header_style or "") + get_style(
+                column.header_style
+            )
+            _append((header_style, column.header))
 ```
 
 **Omoju:** 
@@ -178,18 +106,38 @@ class Column:
 
 **Claim:** The attrs `attrs` namespace is built on top of the `attr` logic internally.
 
-**Judge:** supported — The docs state the `attrs` namespace is built on top of `attr`, and the `attrs` submodules simply re-export from `attr`.
+**Judge:** supported — The `attrs` package simply re-exports objects imported from `attr` and `attr._make`/`attr._next_gen`.
 
-docs/api.rst:17-18
+src/attrs/__init__.py:3-26
 ```
-The ``attrs`` namespace is built *on top of* ``attr`` -- which will *never* go away -- and is just as stable, since it doesn't constitute a rewrite.
-To keep repetition low and this document at a reasonable size, the ``attr`` namespace is `documented on a separate page <api-attr>`.
+from attr import (
+    NOTHING,
+    Attribute,
+    AttrsInstance,
+    Converter,
+    Factory,
+    NothingType,
+    _make_getattr,
+    assoc,
+    cmp_using,
+    define,
+    evolve,
+    field,
+    fields,
+    fields_dict,
+    frozen,
+    has,
+    make_class,
+    mutable,
+    resolve_types,
+    validate,
+)
+from attr._make import ClassProps
+from attr._next_gen import asdict, astuple, inspect
 ```
-src/attrs/converters.py:1-3
+src/attrs/validators.py:3-3
 ```
-# SPDX-License-Identifier: MIT
-
-from attr.converters import *  # noqa: F403
+from attr.validators import *  # noqa: F403
 ```
 
 **Omoju:** 
@@ -198,14 +146,28 @@ from attr.converters import *  # noqa: F403
 
 **Claim:** `Command.format_help()` calls format_usage, format_help_text, format_options, and format_epilog in that order.
 
-**Judge:** unverifiable — `src/click/core.py` is not included, so the call order inside `format_help()` cannot be checked.
+**Judge:** supported — `format_help` calls those four methods in exactly that relative order (with `format_arguments` additionally between help text and options).
 
-docs/api.md:154-157
+src/click/core.py:1284-1301
 ```
-```{eval-rst}
-.. autoclass:: Command
-   :members:
-```
+    def format_help(self, ctx: Context, formatter: HelpFormatter) -> None:
+        """Writes the help into the formatter if it exists.
+
+        This is a low-level method called by :meth:`get_help`.
+
+        This calls the following methods:
+
+        -   :meth:`format_usage`
+        -   :meth:`format_help_text`
+        -   :meth:`format_arguments`
+        -   :meth:`format_options`
+        -   :meth:`format_epilog`
+        """
+        self.format_usage(ctx, formatter)
+        self.format_help_text(ctx, formatter)
+        self.format_arguments(ctx, formatter)
+        self.format_options(ctx, formatter)
+        self.format_epilog(ctx, formatter)
 ```
 
 **Omoju:** 
@@ -214,12 +176,32 @@ docs/api.md:154-157
 
 **Claim:** The Requests version is dynamically pulled from `requests.__version__.__version__`.
 
-**Judge:** supported — pyproject sets dynamic version via `attr = "requests.__version__.__version__"`.
+**Judge:** supported — The version string is defined in requests/__version__.py, re-exported in the package, and read dynamically (e.g. by docs/conf.py).
 
-pyproject.toml:80-81
+src/requests/__version__.py:8
 ```
-[tool.setuptools.dynamic]
-version = {attr = "requests.__version__.__version__"}
+__version__ = "2.34.2"
+```
+src/requests/__init__.py:159-170
+```
+from .__version__ import (
+    __author__,
+    __author_email__,
+    __build__,
+    __cake__,
+    __copyright__,
+    __description__,
+    __license__,
+    __title__,
+    __url__,
+    __version__,
+)
+```
+docs/conf.py:69-71
+```
+version = requests.__version__
+# The full version, including alpha/beta/rc tags.
+release = requests.__version__
 ```
 
 **Omoju:** 
@@ -228,58 +210,41 @@ version = {attr = "requests.__version__.__version__"}
 
 **Claim:** The C implementation in `_speedups.c` writes each replacement directly to an output buffer in a single pass.
 
-**Judge:** supported — DO_ESCAPE walks the input once writing escape sequences and copied chunks directly into the preallocated output buffer.
+**Judge:** contradicted — The C code makes two passes: GET_DELTA first scans the input to compute the size, then DO_ESCAPE writes to the new buffer.
 
-src/markupsafe/_speedups.c:18-72
+src/markupsafe/_speedups.c:3-16
 ```
-#define DO_ESCAPE(inp, inp_end, outp) \
-	{ \
-		Py_ssize_t ncopy = 0; \
-		while (inp < inp_end) { \
-			switch (*inp) { \
-			case '"': \
-				memcpy(outp, inp-ncopy, sizeof(*outp)*ncopy); \
-				outp += ncopy; ncopy = 0; \
-				*outp++ = '&'; \
-				*outp++ = '#'; \
-				*outp++ = '3'; \
-				*outp++ = '4'; \
-				*outp++ = ';'; \
-				break; \
-			case '\'': \
-				memcpy(outp, inp-ncopy, sizeof(*outp)*ncopy); \
-				outp += ncopy; ncopy = 0; \
-				*outp++ = '&'; \
-				*outp++ = '#'; \
-				*outp++ = '3'; \
-				*outp++ = '9'; \
-				*outp++ = ';'; \
-				break; \
-			case '&': \
-				memcpy(outp, inp-ncopy, sizeof(*outp)*ncopy); \
-				outp += ncopy; ncopy = 0; \
-				*outp++ = '&'; \
-				*outp++ = 'a'; \
-				*outp++ = 'm'; \
-				*outp++ = 'p'; \
-				*outp++ = ';'; \
-				break; \
-			case '<': \
-				memcpy(outp, inp-ncopy, sizeof(*outp)*ncopy); \
-				outp += ncopy; ncopy = 0; \
-				*outp++ = '&'; \
-				*outp++ = 'l'; \
-				*outp++ = 't'; \
-				*outp++ = ';'; \
-				break; \
-…
+#define GET_DELTA(inp, inp_end, delta) \
+	while (inp < inp_end) { \
+		switch (*inp++) { \
+		case '"': \
+		case '\'': \
+		case '&': \
+			delta += 4; \
+			break; \
+		case '<': \
+		case '>': \
+			delta += 3; \
+			break; \
+		} \
+	}
 ```
-src/markupsafe/_speedups.c:94-97
+src/markupsafe/_speedups.c:83-96
 ```
+	GET_DELTA(inp, inp_end, delta);
+	if (!delta) {
+		Py_INCREF(in);
+		return (PyObject*)in;
+	}
+
+	out = PyUnicode_New(PyUnicode_GET_LENGTH(in) + delta,
+						PyUnicode_IS_ASCII(in) ? 127 : 255);
+	if (!out)
+		return NULL;
+
 	inp = PyUnicode_1BYTE_DATA(in);
 	outp = PyUnicode_1BYTE_DATA(out);
 	DO_ESCAPE(inp, inp_end, outp);
-	return out;
 ```
 
 **Omoju:** 
@@ -288,12 +253,22 @@ src/markupsafe/_speedups.c:94-97
 
 **Claim:** tqdm's CLI entry point is handled by tqdm.cli.main.
 
-**Judge:** supported — The console script entry point is declared as `tqdm = "tqdm.cli:main"`.
+**Judge:** supported — The console script is declared as `tqdm = "tqdm.cli:main"`.
 
 pyproject.toml:89-90
 ```
 [project.scripts]
 tqdm = "tqdm.cli:main"
+```
+tqdm/cli.py:156-162
+```
+def main(fp=sys.stderr, argv=None):
+    """
+    Parameters (internal use only)
+    ---------
+    fp  : file-like object for tqdm
+    argv  : list (default: sys.argv[1:])
+    """
 ```
 
 **Omoju:** 
@@ -302,12 +277,11 @@ tqdm = "tqdm.cli:main"
 
 **Claim:** The tqdm parameter `total` defaults to None.
 
-**Judge:** supported — The documented signature shows `total=None` as the default.
+**Judge:** supported — The `__init__` signature declares `total=None`.
 
-README.rst:372-373
+tqdm/std.py:960-960
 ```
-      def __init__(self, iterable=None, desc=None, total=None, leave=True,
-                   file=None, ncols=None, mininterval=0.1,
+    def __init__(self, iterable=None, desc=None, total=None, leave=True, file=None,
 ```
 
 **Omoju:** 
@@ -316,12 +290,14 @@ README.rst:372-373
 
 **Claim:** `EvalContext.__init__` calls `environment.autoescape` with the template name when it is callable
 
-**Judge:** unverifiable — EvalContext is defined in src/jinja2/nodes.py, which is not shown.
+**Judge:** supported — EvalContext.__init__ calls environment.autoescape(template_name) when the attribute is callable.
 
-src/jinja2/compiler.py:20-21
+src/jinja2/nodes.py:80-83
 ```
-from .nodes import EvalContext
-from .optimizer import Optimizer
+        if callable(environment.autoescape):
+            self.autoescape = environment.autoescape(template_name)
+        else:
+            self.autoescape = environment.autoescape
 ```
 
 **Omoju:** 
@@ -330,20 +306,14 @@ from .optimizer import Optimizer
 
 **Claim:** `_main_shell_completion` returns immediately when the completion environment variable is unset.
 
-**Judge:** unverifiable — `_main_shell_completion` is in src/click/core.py, which is not shown.
+**Judge:** supported — `_main_shell_completion` reads the env var and returns early when `not instruction`.
 
-src/click/__init__.py:1-10
+src/click/core.py:1669-1672
 ```
-"""
-Click is a simple Python module inspired by the stdlib optparse to make
-writing command line scripts fun. Unlike other modules, it's based
-around a simple API that does not come with too much magic and is
-composable.
-"""
+        instruction = os.environ.get(complete_var)
 
-from __future__ import annotations
-
-from .core import Argument as Argument
+        if not instruction:
+            return
 ```
 
 **Omoju:** 
@@ -352,11 +322,13 @@ from .core import Argument as Argument
 
 **Claim:** tqdm/contrib/telegram.py defines aliases tqdm and trange for tqdm_telegram.
 
-**Judge:** unverifiable — tqdm/contrib/telegram.py is not shown, so the module-level aliases cannot be confirmed.
+**Judge:** supported — Aliases `tqdm = tqdm_telegram` and `trange = ttgrange` are defined.
 
-README.rst:713-713
+tqdm/contrib/telegram.py:150-152
 ```
-- `tqdm.contrib.telegram <https://tqdm.github.io/docs/contrib.telegram/>`_: Posts to `Telegram <https://telegram.org>`__ bots
+# Aliases
+tqdm = tqdm_telegram
+trange = ttgrange
 ```
 
 **Omoju:** 
@@ -365,9 +337,24 @@ README.rst:713-713
 
 **Claim:** `Text.rstrip_end` does nothing when the text length is below the given width.
 
-**Judge:** unverifiable — rich/text.py was not shown, so Text.rstrip_end's behaviour cannot be checked.
+**Judge:** supported — The body only executes when `text_length > size`, so nothing happens for shorter text.
 
-(no lines cited)
+rich/text.py:666-678
+```
+    def rstrip_end(self, size: int) -> None:
+        """Remove whitespace beyond a certain width at the end of the text.
+
+        Args:
+            size (int): The desired size of the text.
+        """
+        text_length = len(self)
+        if text_length > size:
+            excess = text_length - size
+            whitespace_match = _re_whitespace.search(self.plain)
+            if whitespace_match is not None:
+                whitespace_count = len(whitespace_match.group(0))
+                self.right_crop(min(whitespace_count, excess))
+```
 
 **Omoju:** 
 
@@ -375,7 +362,7 @@ README.rst:713-713
 
 **Claim:** `BaseClient._merge_url` branches on `if merge_url.is_relative_url`
 
-**Judge:** supported — The method branches on `if merge_url.is_relative_url:`.
+**Judge:** supported — The merging logic is guarded by `if merge_url.is_relative_url:`.
 
 httpx/_client.py:397-397
 ```
@@ -388,9 +375,9 @@ httpx/_client.py:397-397
 
 **Claim:** `_make_cached_stream_func` builds a closure that reads `sys.stdout` at call time, looks it up in a `WeakKeyDictionary`, and only builds a wrapper on a cache miss.
 
-**Judge:** supported — `_make_cached_stream_func` returns a closure that calls `src_func()` (e.g. `lambda: sys.stdout`) at call time, looks the stream up in a `WeakKeyDictionary` cache, and only calls `wrapper_func()` on a miss.
+**Judge:** supported — The factory's `func` calls `src_func()` (here `lambda: sys.stdout`) each call, consults a `WeakKeyDictionary` cache, and only calls `wrapper_func()` on a miss.
 
-src/click/_compat.py:547-572
+src/click/_compat.py:547-576
 ```
 def _make_cached_stream_func(
     src_func: t.Callable[[], t.TextIO | None],
@@ -418,12 +405,10 @@ def _make_cached_stream_func(
         return rv
 
     return func
-```
-src/click/_compat.py:575-577
-```
+
+
 _default_text_stdin = _make_cached_stream_func(lambda: sys.stdin, get_text_stdin)
 _default_text_stdout = _make_cached_stream_func(lambda: sys.stdout, get_text_stdout)
-_default_text_stderr = _make_cached_stream_func(lambda: sys.stderr, get_text_stderr)
 ```
 
 **Omoju:** 
@@ -432,19 +417,21 @@ _default_text_stderr = _make_cached_stream_func(lambda: sys.stderr, get_text_std
 
 **Claim:** attrs classes automatically generate `__match_args__` based on the attribute order to support structural pattern matching.
 
-**Judge:** supported — The changelog documents that `__match_args__` are generated to support structural pattern matching, controlled by the `match_args` argument.
+**Judge:** supported — `add_match_args` builds `__match_args__` as a tuple of field names (in attribute order) for init, non-kw_only fields, and is applied when match_args is true.
 
-CHANGELOG.md:436-440
+src/attr/_make.py:1118-1123
 ```
-- `__match_args__` are now generated to support Python 3.10's
-  [Structural Pattern Matching](https://docs.python.org/3.10/whatsnew/3.10.html#pep-634-structural-pattern-matching).
-  This can be controlled by the `match_args` argument to the class decorators on Python 3.10 and later.
-  On older versions, it is never added and the argument is ignored.
-  [#815](https://github.com/python-attrs/attrs/issues/815)
+    def add_match_args(self):
+        self._cls_dict["__match_args__"] = tuple(
+            field.name
+            for field in self._attrs
+            if field.init and not field.kw_only
+        )
 ```
-docs/api-attr.rst:17
+src/attr/_make.py:1606-1607
 ```
-.. autofunction:: attr.s(these=None, repr_ns=None, repr=None, cmp=None, hash=None, init=None, slots=False, frozen=False, weakref_slot=True, str=False, auto_attribs=False, kw_only=False, cache_hash=False, auto_exc=False, eq=None, order=None, auto_detect=False, collect_by_mro=False, getstate_setstate=None, on_setattr=None, field_transformer=None, match_args=True, unsafe_hash=None)
+        if match_args and not _has_own_attribute(cls, "__match_args__"):
+            builder.add_match_args()
 ```
 
 **Omoju:** 
@@ -453,19 +440,22 @@ docs/api-attr.rst:17
 
 **Claim:** `escape(None)` converts None to the string `'None'`.
 
-**Judge:** supported — The escape_silent docstring shows escape(None) == Markup('None') and the test asserts escape(None) == Markup(None).
+**Judge:** supported — escape falls through to Markup(_escape_inner(str(None))) and the docstring shows escape(None) == Markup('None').
 
-src/markupsafe/__init__.py:52-56
+src/markupsafe/__init__.py:45-56
 ```
+    return Markup(_escape_inner(str(s)))
+
+
+def escape_silent(s: t.Any | None, /) -> Markup:
+    """Like :func:`escape` but treats ``None`` as the empty string.
+    Useful with optional values, as otherwise you get the string
+    ``'None'`` when the value is ``None``.
 
     >>> escape(None)
     Markup('None')
     >>> escape_silent(None)
     Markup('')
-```
-tests/test_markupsafe.py:179-179
-```
-    assert escape(None) == Markup(None)
 ```
 
 **Omoju:** 
@@ -474,23 +464,42 @@ tests/test_markupsafe.py:179-179
 
 **Claim:** The pre-commit `interrogate` hook ensures the `tests` directory maintains docstring coverage.
 
-**Judge:** supported — The interrogate pre-commit hook is run with the `tests` argument and configured with fail-under = 100.
+**Judge:** unverifiable — The pre-commit configuration file's contents were not shown.
 
-.pre-commit-config.yaml:6-10
+.pre-commit-config.yaml:1-32
 ```
+---
+ci:
+  autoupdate_schedule: monthly
+
+repos:
   - repo: https://github.com/econchick/interrogate
     rev: 1.7.0
     hooks:
       - id: interrogate
         args: [tests]
-```
-pyproject.toml:210-214
-```
-[tool.interrogate]
-omit-covered-files = true
-verbose = 2
-fail-under = 100
-whitelist-regex = ["test_.*"]
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
+    hooks:
+      - id: codespell
+        args: [--exclude-file=tests/test_mypy.yml, --skip=*.svg]
+
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: "0.26"
+    hooks:
+      - id: validate-pyproject
+        # Optional extra validations from SchemaStore:
+        additional_dependencies: ["validate-pyproject-schema-store[all]"]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+        exclude: docs/_static
+      - id: check-toml
+      - id: check-yaml
 ```
 
 **Omoju:** 
@@ -499,25 +508,12 @@ whitelist-regex = ["test_.*"]
 
 **Claim:** In `tqdm.__init__`, an explicit `total=float("inf")` is normalised to `None`.
 
-**Judge:** unverifiable — Only `reset(total=float('inf'))` setting `total` to None is asserted (plus a comment); the `__init__` normalisation is in the unshown tqdm/std.py.
+**Judge:** supported — `if total == float("inf"): total = None  # same as unknown`.
 
-tqdm/__init__.py:6-8
+tqdm/std.py:987-988
 ```
-from .std import (
-    TqdmDeprecationWarning, TqdmExperimentalWarning, TqdmKeyError, TqdmMonitorWarning,
-    TqdmTypeError, TqdmWarning, tqdm, trange)
-```
-tests/tests_tqdm.py:955-963
-```
-def test_reset_inf(caperr):
-    with tqdm(total=10, miniters=1, mininterval=0, maxinterval=0) as t:
-        t.update(5)
-        t.reset(total=float("inf"))
-        t.update()
-        # same as tqdm(total=float("inf")): treated as unknown
-        assert t.total is None
-    err = caperr()
-    assert '1it' in err
+        if total == float("inf"):
+            total = None  # same as unknown
 ```
 
 **Omoju:** 

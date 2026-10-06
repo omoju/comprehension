@@ -6,10 +6,10 @@
         "words": 9375,
         "extracted": 237,
         "sampled": 40,
-        "contradicted": 0,
-        "supported": 8,
-        "unverifiable": 32,
-        "density": 0.0,
+        "contradicted": 2,
+        "supported": 38,
+        "unverifiable": 0,
+        "density": 1.2640000000000002,
         "path": [
           1.0,
           1.0,
@@ -29,7 +29,7 @@
           0.5,
           1.0
         ],
-        "jev_agree": 40,
+        "jev_agree": 38,
         "jev_n": 40
       },
       "deepwiki": {
@@ -37,8 +37,8 @@
         "extracted": 363,
         "sampled": 40,
         "contradicted": 0,
-        "supported": 34,
-        "unverifiable": 6,
+        "supported": 32,
+        "unverifiable": 8,
         "density": 0.0,
         "path": [
           0.5,
@@ -69,10 +69,10 @@
         "words": 8601,
         "extracted": 248,
         "sampled": 40,
-        "contradicted": 0,
-        "supported": 5,
-        "unverifiable": 35,
-        "density": 0.0,
+        "contradicted": 1,
+        "supported": 38,
+        "unverifiable": 1,
+        "density": 0.7208464132077665,
         "path": [
           1.0,
           1.0,
@@ -92,17 +92,17 @@
           0.5,
           1.0
         ],
-        "jev_agree": 40,
+        "jev_agree": 39,
         "jev_n": 40
       },
       "deepwiki": {
         "words": 33482,
         "extracted": 558,
         "sampled": 40,
-        "contradicted": 2,
-        "supported": 18,
-        "unverifiable": 20,
-        "density": 0.8332835553431694,
+        "contradicted": 1,
+        "supported": 31,
+        "unverifiable": 8,
+        "density": 0.4166417776715847,
         "path": [
           1.0,
           1.0,
@@ -122,7 +122,7 @@
           1.0,
           0.5
         ],
-        "jev_agree": 39,
+        "jev_agree": 37,
         "jev_n": 40
       }
     },
@@ -133,8 +133,8 @@
         "extracted": 192,
         "sampled": 40,
         "contradicted": 0,
-        "supported": 5,
-        "unverifiable": 35,
+        "supported": 38,
+        "unverifiable": 2,
         "density": 0.0,
         "path": [
           1.0,
@@ -154,7 +154,7 @@
           0.0,
           0.0
         ],
-        "jev_agree": 39,
+        "jev_agree": 40,
         "jev_n": 40
       },
       "deepwiki": {
@@ -162,8 +162,8 @@
         "extracted": 687,
         "sampled": 40,
         "contradicted": 0,
-        "supported": 21,
-        "unverifiable": 19,
+        "supported": 33,
+        "unverifiable": 7,
         "density": 0.0,
         "path": [
           0.5,
@@ -183,7 +183,7 @@
           1.0,
           0.0
         ],
-        "jev_agree": 40,
+        "jev_agree": 39,
         "jev_n": 40
       }
     },
@@ -193,10 +193,10 @@
         "words": 8108,
         "extracted": 227,
         "sampled": 40,
-        "contradicted": 0,
-        "supported": 22,
-        "unverifiable": 18,
-        "density": 0.0,
+        "contradicted": 1,
+        "supported": 39,
+        "unverifiable": 0,
+        "density": 0.6999259990133202,
         "path": [
           1.0,
           1.0,
@@ -216,17 +216,17 @@
           0.0,
           1.0
         ],
-        "jev_agree": 31,
-        "jev_n": 31
+        "jev_agree": 40,
+        "jev_n": 40
       },
       "deepwiki": {
         "words": 27567,
         "extracted": 725,
         "sampled": 40,
-        "contradicted": 3,
-        "supported": 24,
-        "unverifiable": 13,
-        "density": 1.9724670802045925,
+        "contradicted": 0,
+        "supported": 35,
+        "unverifiable": 5,
+        "density": 0.0,
         "path": [
           0.5,
           0.5,
@@ -246,7 +246,7 @@
           0.0,
           0.5
         ],
-        "jev_agree": 38,
+        "jev_agree": 40,
         "jev_n": 40
       }
     },
@@ -318,8 +318,8 @@
         "extracted": 210,
         "sampled": 40,
         "contradicted": 0,
-        "supported": 15,
-        "unverifiable": 25,
+        "supported": 40,
+        "unverifiable": 0,
         "density": 0.0,
         "path": [
           1.0,
@@ -348,8 +348,8 @@
         "extracted": 473,
         "sampled": 40,
         "contradicted": 1,
-        "supported": 31,
-        "unverifiable": 8,
+        "supported": 34,
+        "unverifiable": 5,
         "density": 0.76260802270089,
         "path": [
           0.5,
@@ -370,7 +370,7 @@
           1.0,
           0.5
         ],
-        "jev_agree": 39,
+        "jev_agree": 40,
         "jev_n": 40
       }
     },
@@ -380,10 +380,10 @@
         "words": 5961,
         "extracted": 97,
         "sampled": 40,
-        "contradicted": 1,
+        "contradicted": 2,
         "supported": 37,
-        "unverifiable": 2,
-        "density": 0.40681093776212046,
+        "unverifiable": 1,
+        "density": 0.8136218755242409,
         "path": [
           1.0,
           1.0,
@@ -402,7 +402,7 @@
           1.0,
           1.0
         ],
-        "jev_agree": 39,
+        "jev_agree": 38,
         "jev_n": 40
       },
       "deepwiki": {
@@ -442,8 +442,8 @@
         "extracted": 277,
         "sampled": 40,
         "contradicted": 0,
-        "supported": 6,
-        "unverifiable": 34,
+        "supported": 40,
+        "unverifiable": 0,
         "density": 0.0,
         "path": [
           1.0,
@@ -463,17 +463,17 @@
           1.0,
           1.0
         ],
-        "jev_agree": 21,
-        "jev_n": 21
+        "jev_agree": 39,
+        "jev_n": 40
       },
       "deepwiki": {
         "words": 22131,
         "extracted": 489,
         "sampled": 40,
-        "contradicted": 0,
-        "supported": 29,
-        "unverifiable": 11,
-        "density": 0.0,
+        "contradicted": 2,
+        "supported": 32,
+        "unverifiable": 6,
+        "density": 1.1047851430120645,
         "path": [
           1.0,
           0.5,
@@ -492,7 +492,7 @@
           0.5,
           0.5
         ],
-        "jev_agree": 40,
+        "jev_agree": 38,
         "jev_n": 40
       }
     },
@@ -502,10 +502,10 @@
         "words": 9560,
         "extracted": 300,
         "sampled": 40,
-        "contradicted": 0,
-        "supported": 1,
-        "unverifiable": 39,
-        "density": 0.0,
+        "contradicted": 3,
+        "supported": 31,
+        "unverifiable": 6,
+        "density": 2.3535564853556483,
         "path": [
           1.0,
           1.0,
@@ -525,16 +525,16 @@
           1.0,
           1.0
         ],
-        "jev_agree": 15,
-        "jev_n": 15
+        "jev_agree": 37,
+        "jev_n": 40
       },
       "deepwiki": {
         "words": 25426,
         "extracted": 1876,
         "sampled": 40,
         "contradicted": 0,
-        "supported": 0,
-        "unverifiable": 40,
+        "supported": 33,
+        "unverifiable": 7,
         "density": 0.0,
         "path": [
           0.5,
@@ -555,8 +555,8 @@
           0.0,
           0.5
         ],
-        "jev_agree": 0,
-        "jev_n": 0
+        "jev_agree": 40,
+        "jev_n": 40
       }
     },
     {
@@ -565,10 +565,10 @@
         "words": 8751,
         "extracted": 177,
         "sampled": 40,
-        "contradicted": 0,
-        "supported": 17,
-        "unverifiable": 23,
-        "density": 0.0,
+        "contradicted": 1,
+        "supported": 39,
+        "unverifiable": 0,
+        "density": 0.5056564964004114,
         "path": [
           1.0,
           1.0,
@@ -588,16 +588,16 @@
           1.0,
           1.0
         ],
-        "jev_agree": 31,
-        "jev_n": 32
+        "jev_agree": 40,
+        "jev_n": 40
       },
       "deepwiki": {
         "words": 17075,
         "extracted": 455,
         "sampled": 40,
         "contradicted": 0,
-        "supported": 21,
-        "unverifiable": 19,
+        "supported": 38,
+        "unverifiable": 2,
         "density": 0.0,
         "path": [
           0.0,
@@ -625,32 +625,32 @@
   ],
   "pooled_out_of_sample": {
     "story": {
-      "density": 0.07106649654106884,
+      "density": 0.7106649654106884,
       "path": 97.88732394366197,
       "general": 76.22950819672131
     },
     "deepwiki": {
-      "density": 0.6881701488524317,
+      "density": 0.5352434491074468,
       "path": 62.67605633802817,
       "general": 55.73770491803279
     }
   },
   "pooled_all": {
     "story": {
-      "density": 0.06176564552199071,
+      "density": 0.6176564552199071,
       "path": 97.46835443037975,
       "general": 77.61194029850746
     },
     "deepwiki": {
-      "density": 0.7519446371035003,
+      "density": 0.6152274303574093,
       "path": 65.82278481012658,
       "general": 59.701492537313435
     }
   },
   "ci95": {
     "density_ratio": [
-      0.0,
-      0.30613736634220484
+      0.5547368151826412,
+      4.85729012555935
     ],
     "path_diff": [
       22.91666666666667,
@@ -661,9 +661,9 @@
       33.06451612903226
     ]
   },
-  "decision": "ship",
+  "decision": "kill",
   "checks": {
-    "H1: story density <= 1/2 DeepWiki": true,
+    "H1: story density <= 1/2 DeepWiki": false,
     "general: story >= DeepWiki - 5": true,
     "path: story >= DeepWiki + 10": true
   },

@@ -1,0 +1,1068 @@
+{
+  "repo": "requests",
+  "items": [
+    {
+      "id": "deepwiki:166",
+      "arm": "deepwiki",
+      "claim": "`HTTPBasicAuth` inherits from `AuthBase`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/auth.py:78-86"
+      ],
+      "reason": "`class HTTPBasicAuth(AuthBase)` is declared directly as a subclass of `AuthBase`.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "deepwiki:141",
+      "arm": "deepwiki",
+      "claim": "When a redirect changes the method from POST/PUT/PATCH to GET, `resolve_redirects` removes the Content-Length, Content-Type, and Transfer-Encoding headers.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:249-258"
+      ],
+      "reason": "For redirect statuses other than 307/308 (i.e. the cases where the method is downgraded to GET), `resolve_redirects` pops Content-Length, Content-Type and Transfer-Encoding and clears the body.",
+      "jev_contradicted": 0.63
+    },
+    {
+      "id": "story:20",
+      "arm": "story",
+      "claim": "If an integer `max_retries` is passed to `HTTPAdapter`, `Retry.from_int` builds the retry policy.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/adapters.py:205-211"
+      ],
+      "reason": "The constructor calls `Retry.from_int(max_retries)` for an int argument (except the default 0, which short-circuits to `Retry(0, read=False)`).",
+      "jev_contradicted": 0.32
+    },
+    {
+      "id": "story:237",
+      "arm": "story",
+      "claim": "For redirect statuses other than 307 and 308, `resolve_redirects` discards the body and the `Content-Length`, `Content-Type` and `Transfer-Encoding` headers.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:249-258"
+      ],
+      "reason": "For responses not 307/308, the purged_headers tuple (Content-Length, Content-Type, Transfer-Encoding) is popped and body is set to None.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:240",
+      "arm": "story",
+      "claim": "`Session.should_strip_auth` strips auth on any hostname change, permits an `http`\u2192`https` upgrade on standard ports, permits a same-scheme hop between default ports, and otherwise strips on a changed port or scheme.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:154-184"
+      ],
+      "reason": "The method returns True on hostname change, False for http\u2192https on standard ports, False for unchanged scheme with default ports, otherwise `changed_port or changed_scheme`.",
+      "jev_contradicted": 0.23
+    },
+    {
+      "id": "story:104",
+      "arm": "story",
+      "claim": "In the stream branch of `prepare_body`, `self._body_position = body.tell()` is recorded, and if `tell()` raises `OSError` a bare `object()` sentinel is stored instead.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:611-620"
+      ],
+      "reason": "The stream branch records `self._body_position = body.tell()` and stores `object()` when `tell()` raises OSError.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:317",
+      "arm": "deepwiki",
+      "claim": "`_parse_content_type_header` strips quotes and whitespace from parameter values.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/utils.py:555-566"
+      ],
+      "reason": "`strip_chars = \"\\\"' \"` is applied to both key and value of each parameter, stripping quotes and whitespace.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "deepwiki:481",
+      "arm": "deepwiki",
+      "claim": "Requests v2.34.2 moved `headers` types back to `Mapping` from `MutableMapping`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "unverifiable",
+      "lines": [
+        "src/requests/__version__.py:8",
+        "src/requests/models.py:315"
+      ],
+      "reason": "The repo shows version 2.34.2 and Mapping-typed headers, but the changelog entry attributing this change to that release is in HISTORY.md, which is not shown.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:471",
+      "arm": "deepwiki",
+      "claim": "A minor release of Requests uses version format vX.Y.0 and includes new features and bug fixes that are backwards compatible.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "docs/community/release-process.rst:26-36"
+      ],
+      "reason": "The release process doc states minor releases are versioned vX.Y.0, contain no breaking changes, and remain backwards compatible within the major version.",
+      "jev_contradicted": 0.35
+    },
+    {
+      "id": "story:146",
+      "arm": "story",
+      "claim": "`Session.get_adapter` raises `InvalidSchema(f\"No connection adapters were found for {url!r}\")` when no mounted prefix matches.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:870-881"
+      ],
+      "reason": "get_adapter raises exactly `InvalidSchema(f\"No connection adapters were found for {url!r}\")` when no prefix matches.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:24",
+      "arm": "story",
+      "claim": "In `Session.request`, a URL passed as `bytes` is decoded as UTF-8.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:619-620"
+      ],
+      "reason": "Session.request decodes a bytes url with `url.decode(\"utf-8\")`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:103",
+      "arm": "deepwiki",
+      "claim": "`Response.ok` is True if `status_code` is between 200 and 299.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "contradicted",
+      "lines": [
+        "src/requests/models.py:861-874",
+        "src/requests/models.py:1160-1171"
+      ],
+      "reason": "`ok` returns True whenever `raise_for_status()` doesn't raise, i.e. for any status code below 400 (including 3xx), not only 200-299.",
+      "jev_contradicted": 0.68
+    },
+    {
+      "id": "deepwiki:94",
+      "arm": "deepwiki",
+      "claim": "`TooManyRedirects` is raised when the request exceeds the configured number of maximum redirects.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:216-219"
+      ],
+      "reason": "`resolve_redirects` raises `TooManyRedirects` once `len(resp.history) >= self.max_redirects`.",
+      "jev_contradicted": 0.26
+    },
+    {
+      "id": "story:119",
+      "arm": "story",
+      "claim": "`prepare_auth` does not check the URL scheme before attaching Basic credentials.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:670-697"
+      ],
+      "reason": "prepare_auth inspects only the auth value/URL credentials; there is no scheme check before applying HTTPBasicAuth.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "story:25",
+      "arm": "story",
+      "claim": "`Session.request` builds a `Request` passing `data=data or {}` and `params=params or {}`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:623-634"
+      ],
+      "reason": "The Request is constructed with `data=data or {}` and `params=params or {}`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:372",
+      "arm": "deepwiki",
+      "claim": "The tox `use_chardet_on_py3` environment tests with the `chardet` extra enabled.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "unverifiable",
+      "lines": [
+        "tox.ini:1-18"
+      ],
+      "reason": "tox.ini is not among the displayed files, so its environments cannot be checked.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "story:271",
+      "arm": "story",
+      "claim": "`Response.apparent_encoding` uses charset_normalizer or chardet to guess the encoding.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:896-904",
+        "src/requests/compat.py:36-51"
+      ],
+      "reason": "apparent_encoding calls `chardet.detect`, where `chardet` is resolved from chardet or charset_normalizer, falling back to 'utf-8'.",
+      "jev_contradicted": 0.25
+    },
+    {
+      "id": "story:224",
+      "arm": "story",
+      "claim": "`Session.get` sets `allow_redirects` to `True` by default.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:670-671"
+      ],
+      "reason": "Session.get does `kwargs.setdefault(\"allow_redirects\", True)`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:398",
+      "arm": "deepwiki",
+      "claim": "The Sphinx `source_suffix` is `\".rst\"`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "docs/conf.py:51"
+      ],
+      "reason": "`source_suffix = \".rst\"` is set in the Sphinx config.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:276",
+      "arm": "story",
+      "claim": "`bool(r)` on a `Response` is equivalent to `status_code < 400`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:837-845",
+        "src/requests/models.py:861-874"
+      ],
+      "reason": "`__bool__` returns `self.ok`, which is False only when raise_for_status raises for 4xx/5xx, i.e. effectively status_code < 400.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:91",
+      "arm": "story",
+      "claim": "`MockRequest` wraps a `PreparedRequest` and exposes `get_type()`, `get_host()` and `get_full_url()` by re-parsing `self._r.url`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/cookies.py:45-78"
+      ],
+      "reason": "MockRequest wraps a PreparedRequest and derives type/host/full URL from `urlparse(self._r.url)` (the scheme being cached at init).",
+      "jev_contradicted": 0.61
+    },
+    {
+      "id": "story:202",
+      "arm": "story",
+      "claim": "`get_encoding_from_headers` returns `ISO-8859-1` for a content type containing `text` when no charset is given.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/utils.py:583-591"
+      ],
+      "reason": "get_encoding_from_headers returns \"ISO-8859-1\" when no charset param and 'text' appears in the content type.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:327",
+      "arm": "deepwiki",
+      "claim": "`guess_json_utf` examines the first 4 bytes of the data.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/utils.py:1015-1022"
+      ],
+      "reason": "The function takes `sample = data[:4]` and bases BOM/null-count detection on those first four bytes.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:249",
+      "arm": "story",
+      "claim": "`Response.iter_content` raises `TypeError` for a non-integer chunk size.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:960-965"
+      ],
+      "reason": "iter_content raises TypeError when chunk_size is not None and not an int.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:109",
+      "arm": "story",
+      "claim": "When `auth` is `None`, `prepare_auth` calls `get_auth_from_url(self.url)` and uses any `user:pass@` embedded in the URL as credentials.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:677-685"
+      ],
+      "reason": "When auth is None, prepare_auth extracts credentials from the URL via get_auth_from_url and uses them if any are present.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:241",
+      "arm": "story",
+      "claim": "Immediately after `rebuild_auth` strips credentials, `.netrc` may supply fresh credentials for the new host if `trust_env` is enabled.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:324-332"
+      ],
+      "reason": "After deleting the Authorization header, rebuild_auth consults get_netrc_auth(url) when trust_env is True and re-applies it.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "deepwiki:118",
+      "arm": "deepwiki",
+      "claim": "When sending a request, the session selects the adapter with the longest matching prefix for the target URL.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:870-897"
+      ],
+      "reason": "`mount` keeps adapters ordered by descending prefix length and `get_adapter` returns the first prefix match, yielding longest-prefix selection.",
+      "jev_contradicted": 0.28
+    },
+    {
+      "id": "story:268",
+      "arm": "story",
+      "claim": "`Response.text` accesses `self.content` twice: once for an emptiness check and once to decode.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:1070-1079"
+      ],
+      "reason": "text checks `if not self.content: return \"\"` and later decodes `self.content`, accessing the property twice.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:23",
+      "arm": "story",
+      "claim": "`Session.__enter__` returns the session itself.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:505-506"
+      ],
+      "reason": "`__enter__` returns self.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "deepwiki:249",
+      "arm": "deepwiki",
+      "claim": "The hook system is defined in `src/requests/hooks.py`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/hooks.py:1-48"
+      ],
+      "reason": "HOOKS, default_hooks and dispatch_hook implementing the hook system live in src/requests/hooks.py.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:195",
+      "arm": "story",
+      "claim": "`Response.__repr__` renders a response as `<Response [200]>` for status 200.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:834-835"
+      ],
+      "reason": "`__repr__` formats as `<Response [{status_code}]>`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:286",
+      "arm": "deepwiki",
+      "claim": "`requests.utils.guess_filename(obj)` guesses the filename of a file-like object by checking the `name` attribute.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/utils.py:283-287"
+      ],
+      "reason": "`guess_filename` reads `getattr(obj, \"name\", None)` and returns its basename.",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "deepwiki:83",
+      "arm": "deepwiki",
+      "claim": "All Requests exceptions inherit from `RequestException`, which inherits from `IOError`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/exceptions.py:20-23",
+        "src/requests/exceptions.py:66-148"
+      ],
+      "reason": "`RequestException(IOError)` is the base and every error class in exceptions.py derives from it.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "story:28",
+      "arm": "story",
+      "claim": "`Request.__init__` converts `hooks=None` into `{}`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:341"
+      ],
+      "reason": "Request.__init__ sets `hooks = {} if hooks is None else hooks`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:131",
+      "arm": "story",
+      "claim": "`should_bypass_proxies` calls `proxy_bypass(hostname)` inside a `with set_environ(\"no_proxy\", no_proxy_arg)` block.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/utils.py:861-866"
+      ],
+      "reason": "should_bypass_proxies wraps the proxy_bypass(hostname) call in `with set_environ(\"no_proxy\", no_proxy_arg)`.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:345",
+      "arm": "deepwiki",
+      "claim": "`InvalidURL` is raised for malformed URLs.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/exceptions.py:118-119",
+        "src/requests/models.py:510-534"
+      ],
+      "reason": "`InvalidURL` is defined and raised by `prepare_url` for unparsable/invalid-label URLs.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:297",
+      "arm": "deepwiki",
+      "claim": "`LookupDict.__getattr__` looks up keys in `__dict__` and raises AttributeError if missing.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/structures.py:108-116"
+      ],
+      "reason": "`__getattr__` returns `self.__dict__[key]` when present and otherwise raises AttributeError.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "deepwiki:2",
+      "arm": "deepwiki",
+      "claim": "The `Session` class maintains state across multiple requests, including cookies and connection pooling.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:395-398",
+        "src/requests/sessions.py:494-503"
+      ],
+      "reason": "The Session docstring and __init__ show cookie persistence and mounted HTTPAdapters providing connection pooling across requests.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:251",
+      "arm": "story",
+      "claim": "`Response.iter_content` returns the `generate()` generator without starting it when the response has not been consumed.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:967-977",
+        "src/requests/models.py:935-956"
+      ],
+      "reason": "When `_content_consumed` is False, `chunks = generate()` creates the generator which is returned un-iterated (unless decode_unicode wraps it).",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "story:87",
+      "arm": "story",
+      "claim": "The `CaseInsensitiveDict` docstring states that if two keys differ only in case, the behavior is undefined.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/structures.py:42-45"
+      ],
+      "reason": "The docstring states that keys with equal `.lower()`s given to the constructor, update, or equality comparison produce undefined behavior.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:36",
+      "arm": "story",
+      "claim": "During preparation, auth is applied after headers, so netrc credentials take precedence over an `Authorization` header set via `headers=`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:440-446",
+        "src/requests/sessions.py:536-538",
+        "src/requests/auth.py:111-113"
+      ],
+      "reason": "prepare_headers runs before prepare_auth, and the netrc-derived HTTPBasicAuth overwrites headers[\"Authorization\"] last.",
+      "jev_contradicted": 0.74
+    },
+    {
+      "id": "deepwiki:189",
+      "arm": "deepwiki",
+      "claim": "The `Response` object contains the original `PreparedRequest` in its `request` attribute.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:749",
+        "src/requests/adapters.py:397-399"
+      ],
+      "reason": "`Response.request` is typed as PreparedRequest and set to the sent request in `build_response`.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:107",
+      "arm": "deepwiki",
+      "claim": "The `Session` automatically extracts cookies from responses and includes them in subsequent requests using a `RequestsCookieJar`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:496-498",
+        "src/requests/sessions.py:793-799",
+        "src/requests/sessions.py:524-533"
+      ],
+      "reason": "Session cookies are a RequestsCookieJar populated via `extract_cookies_to_jar` on send and merged into each prepared request.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "deepwiki:446",
+      "arm": "deepwiki",
+      "claim": "The Requests version is dynamically pulled from `requests.__version__.__version__`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/__version__.py:8",
+        "src/requests/__init__.py:159-170",
+        "docs/conf.py:69-71"
+      ],
+      "reason": "The version string is defined in requests/__version__.py, re-exported in the package, and read dynamically (e.g. by docs/conf.py).",
+      "jev_contradicted": 0.9
+    },
+    {
+      "id": "deepwiki:255",
+      "arm": "deepwiki",
+      "claim": "If a single callable is provided as a hook, `dispatch_hook` wraps it in a list before execution.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/hooks.py:40-44"
+      ],
+      "reason": "dispatch_hook checks `isinstance(hook_list, Callable)` and wraps it in a list before iterating.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:318",
+      "arm": "deepwiki",
+      "claim": "`_parse_content_type_header` converts parameter names to lowercase.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/utils.py:560-566"
+      ],
+      "reason": "The parameter key is stored with `params_dict[key.lower()] = value`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:470",
+      "arm": "deepwiki",
+      "claim": "A major release of Requests uses version format vX.0.0 and includes breaking changes.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "docs/community/release-process.rst:9-18"
+      ],
+      "reason": "The release process doc states major releases include breaking changes and are versioned vX.0.0.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:468",
+      "arm": "deepwiki",
+      "claim": "`setup.py` checks `sys.version_info` and exits with an error if the Python version is below 3.10.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "setup.py:1-5"
+      ],
+      "reason": "setup.py checks `sys.version_info < (3, 10)` and exits with an error message.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:122",
+      "arm": "deepwiki",
+      "claim": "`HTTPAdapter` implements `BaseAdapter`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/adapters.py:158-158"
+      ],
+      "reason": "HTTPAdapter is declared as a subclass of BaseAdapter.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:30",
+      "arm": "story",
+      "claim": "`Session.prepare_request` upper-cases the method at sessions.py line 542.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:540-542"
+      ],
+      "reason": "Line 542 inside prepare_request passes `method=method.upper()` to p.prepare().",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:319",
+      "arm": "deepwiki",
+      "claim": "`_parse_content_type_header` sets the value to `True` for parameters without values.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "contradicted",
+      "lines": [
+        "src/requests/utils.py:560-566"
+      ],
+      "reason": "The loop only records parameters containing '=', and never assigns True for value-less parameters.",
+      "jev_contradicted": 0.79
+    },
+    {
+      "id": "deepwiki:216",
+      "arm": "deepwiki",
+      "claim": "In `_urllib3_request_context`, if `client_cert` is not a 2-tuple, the value is assigned to `cert_file`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/adapters.py:106-113"
+      ],
+      "reason": "When client_cert is not a 2-tuple, the else branch sets `pool_kwargs[\"cert_file\"] = client_cert`.",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "deepwiki:397",
+      "arm": "deepwiki",
+      "claim": "The Sphinx `templates_path` is set to `[\"_templates\"]`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "docs/conf.py:46-46"
+      ],
+      "reason": "conf.py sets `templates_path = [\"_templates\"]`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:266",
+      "arm": "story",
+      "claim": "`HTTPAdapter.close` clears its PoolManager and any ProxyManagers, closing the pooled connections.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/adapters.py:555-563"
+      ],
+      "reason": "close() calls self.poolmanager.clear() and clears each proxy manager, as documented in its docstring.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:270",
+      "arm": "deepwiki",
+      "claim": "`requests.exceptions.ReadTimeout` is raised when the server does not send data within the read timeout period.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/exceptions.py:98-99",
+        "src/requests/adapters.py:741-742"
+      ],
+      "reason": "ReadTimeout is documented as 'The server did not send any data in the allotted amount of time' and is raised from urllib3's ReadTimeoutError.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:12",
+      "arm": "story",
+      "claim": "`Session.__init__` sets `self.cert = None`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:480-482"
+      ],
+      "reason": "Session.__init__ assigns self.cert = None.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:206",
+      "arm": "deepwiki",
+      "claim": "Requests uses `CURL_CA_BUNDLE` as a fallback if `REQUESTS_CA_BUNDLE` is not set.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:855-860"
+      ],
+      "reason": "merge_environment_settings falls back to CURL_CA_BUNDLE when REQUESTS_CA_BUNDLE is unset.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:376",
+      "arm": "deepwiki",
+      "claim": "`make test-readme` uses `setup.py check` to validate RestructuredText for PyPI.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "unverifiable",
+      "lines": [
+        "Makefile:1-27"
+      ],
+      "reason": "The Makefile contents were not shown, so the test-readme target cannot be checked.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:93",
+      "arm": "story",
+      "claim": "`MockRequest.get_full_url()` prefers a caller-set `Host` header over the URL's host when determining the request's domain.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/cookies.py:60-78"
+      ],
+      "reason": "get_full_url returns the plain URL only when no Host header is set; otherwise it rebuilds the URL using the Host header value.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:33",
+      "arm": "story",
+      "claim": "`Session.prepare_request` never mutates `session.cookies`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:530-533",
+        "src/requests/cookies.py:604-623",
+        "src/requests/cookies.py:391-399"
+      ],
+      "reason": "The session jar is only used as the source argument to merge_cookies into a fresh RequestsCookieJar, which copies cookies rather than mutating the session jar.",
+      "jev_contradicted": 0.29
+    },
+    {
+      "id": "deepwiki:171",
+      "arm": "deepwiki",
+      "claim": "`HTTPDigestAuth` supports both `str` and `bytes` for credentials.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/auth.py:127-141"
+      ],
+      "reason": "HTTPDigestAuth declares username/password as `bytes | str` with overloads for both str and bytes.",
+      "jev_contradicted": 0.2
+    },
+    {
+      "id": "story:174",
+      "arm": "story",
+      "claim": "`HTTPAdapter.send` calls `conn.urlopen` with `redirect=False`, `assert_same_host=False`, `preload_content=False`, `decode_content=False`, `retries=self.max_retries`, and the resolved timeout and chunked flag.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/adapters.py:696-708"
+      ],
+      "reason": "conn.urlopen is invoked with exactly those keyword arguments including redirect=False, preload_content=False, decode_content=False, retries=self.max_retries, timeout=resolved_timeout and chunked=chunked.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:229",
+      "arm": "story",
+      "claim": "`Session.get_redirect_target` consults `resp.is_redirect`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:142-152"
+      ],
+      "reason": "get_redirect_target branches on `if resp.is_redirect:` before returning the location.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:465",
+      "arm": "deepwiki",
+      "claim": "If `idna` lacks a `__version__` attribute, Requests returns an empty string rather than crashing.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/help.py:101-103"
+      ],
+      "reason": "idna version is obtained via `getattr(idna, \"__version__\", \"\")`, defaulting to an empty string.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:49",
+      "arm": "story",
+      "claim": "Comments in `PreparedRequest.prepare` state that `prepare_hooks` must come after `prepare_auth` because an auth handler may register a hook.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:444-451"
+      ],
+      "reason": "The comments state prepare_auth must be last and that prepare_hooks must go after it because authenticators could add a hook.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:120",
+      "arm": "story",
+      "claim": "After calling the auth handler, `prepare_auth` runs `self.__dict__.update(r.__dict__)` and then `self.prepare_content_length(self.body)`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:691-697"
+      ],
+      "reason": "After calling auth_handler, the code updates __dict__ from the returned request and then calls prepare_content_length(self.body).",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:440",
+      "arm": "deepwiki",
+      "claim": "Python 3.14 support was added in Requests v2.32.5.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "unverifiable",
+      "lines": [
+        "HISTORY.md:1-2102"
+      ],
+      "reason": "HISTORY.md was not shown, so the release note about Python 3.14 in v2.32.5 cannot be verified.",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "deepwiki:374",
+      "arm": "deepwiki",
+      "claim": "Ruff is configured to use double quotes and space indentation.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "unverifiable",
+      "lines": [
+        "pyproject.toml:1-125"
+      ],
+      "reason": "pyproject.toml contents were not shown, so Ruff formatting configuration cannot be checked.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:121",
+      "arm": "story",
+      "claim": "`HTTPBasicAuth.__call__` mutates the request in place and returns the same object.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/auth.py:111-113"
+      ],
+      "reason": "__call__ sets r.headers[\"Authorization\"] on the passed request and returns r itself.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:227",
+      "arm": "story",
+      "claim": "`resolve_redirects` accepts a `yield_requests` parameter that defaults to `False`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:186-197"
+      ],
+      "reason": "resolve_redirects declares `yield_requests: bool = False`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:64",
+      "arm": "deepwiki",
+      "claim": "`CaseInsensitiveDict` is defined in `structures.py` and preserves the original case of keys while allowing case-insensitive lookups.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/structures.py:20-65"
+      ],
+      "reason": "CaseInsensitiveDict is defined in structures.py, stores the original cased key alongside the value, and looks up by lowercased key.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:76",
+      "arm": "story",
+      "claim": "`CaseInsensitiveDict.items()` is inherited from `MutableMapping` and is driven by `__iter__` and `__getitem__`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/structures.py:20-20",
+        "src/requests/structures.py:64-74"
+      ],
+      "reason": "CaseInsensitiveDict subclasses MutableMapping and defines only __iter__/__getitem__ etc., not items(), so items() comes from the ABC mixin.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "deepwiki:109",
+      "arm": "deepwiki",
+      "claim": "Session configuration merging is handled by `merge_setting` and `merge_hooks`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/sessions.py:76-124",
+        "src/requests/sessions.py:547-553"
+      ],
+      "reason": "merge_setting and merge_hooks are defined in sessions.py and used in prepare_request to merge session and request settings.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:429",
+      "arm": "deepwiki",
+      "claim": "`src/requests/__version__.py` defines `__author__` as \"Kenneth Reitz\".",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/__version__.py:10-10"
+      ],
+      "reason": "__version__.py sets `__author__ = \"Kenneth Reitz\"`.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "story:230",
+      "arm": "story",
+      "claim": "`Response.is_redirect` returns `\"location\" in self.headers and self.status_code in REDIRECT_STATI`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:876-881"
+      ],
+      "reason": "is_redirect returns `\"location\" in self.headers and self.status_code in REDIRECT_STATI`.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:46",
+      "arm": "story",
+      "claim": "`PreparedRequest.__init__` sets `method`, `url`, `headers`, `_cookies`, `body` and `_body_position` to `None`, and `hooks` to `{'response': []}`.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:407-422",
+        "src/requests/hooks.py:22-26"
+      ],
+      "reason": "__init__ sets those attributes to None and hooks to default_hooks(), which is {'response': []}.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:54",
+      "arm": "story",
+      "claim": "`prepare_url` contains an early return: if `\":\" in url and not url.lower().startswith(\"http\")`, it sets `self.url = url` and returns.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/models.py:505-507"
+      ],
+      "reason": "prepare_url returns early setting self.url = url for non-http schemes containing ':'.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:71",
+      "arm": "deepwiki",
+      "claim": "`requests.utils.select_proxy()` selects the appropriate proxy for a URL.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/utils.py:885-908"
+      ],
+      "reason": "select_proxy in utils.py chooses a proxy for the given url from the proxies mapping.",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "story:116",
+      "arm": "story",
+      "claim": "A password containing a character outside latin-1 causes `_basic_auth_str` to raise `UnicodeEncodeError` during preparation.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "label": "supported",
+      "lines": [
+        "src/requests/auth.py:68-69",
+        "src/requests/models.py:682-691"
+      ],
+      "reason": "_basic_auth_str encodes a str password with latin1, which raises UnicodeEncodeError for characters outside latin-1, and it is invoked from prepare_auth.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "deepwiki:384",
+      "arm": "deepwiki",
+      "claim": "The pre-commit config includes `ruff-check` and `ruff-format` hooks.",
+      "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "label": "unverifiable",
+      "lines": [
+        ".pre-commit-config.yaml:1-21"
+      ],
+      "reason": "The pre-commit config file contents were not shown.",
+      "jev_contradicted": 0.03
+    }
+  ],
+  "cost": 4.28
+}

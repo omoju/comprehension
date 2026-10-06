@@ -1,0 +1,1076 @@
+{
+  "repo": "jinja",
+  "items": [
+    {
+      "id": "story:74",
+      "arm": "story",
+      "claim": "`Parser.parse_statement` dispatches keyword statements via `getattr(self, f\"parse_{value}\")`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/parser.py:171-173"
+      ],
+      "reason": "parse_statement does `f = getattr(self, f\"parse_{self.stream.current.value}\")` for keywords in _statement_keywords.",
+      "jev_contradicted": 0.37
+    },
+    {
+      "id": "deepwiki:156",
+      "arm": "deepwiki",
+      "claim": "The Jinja lexer recognizes string literals in single and double quotes.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/lexer.py:29-31"
+      ],
+      "reason": "string_re matches both single-quoted and double-quoted literals and is registered as TOKEN_STRING in the tag rules.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:279",
+      "arm": "deepwiki",
+      "claim": "`PackageLoader` loads templates from a directory within a Python package using `importlib.resources`.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "contradicted",
+      "lines": [
+        "src/jinja2/loaders.py:302-401"
+      ],
+      "reason": "PackageLoader uses importlib.util.find_spec, import_module, zipimport and plain os file access, not importlib.resources.",
+      "jev_contradicted": 0.77
+    },
+    {
+      "id": "deepwiki:394",
+      "arm": "deepwiki",
+      "claim": "In `NativeEnvironment`, a dictionary renders as a Python dict rather than its string representation.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/nativetypes.py:16-47",
+        "src/jinja2/nativetypes.py:75-86"
+      ],
+      "reason": "native_concat returns the raw single value unchanged when it is not a string, and the native code generator omits str() around output, so a dict stays a dict.",
+      "jev_contradicted": 0.21
+    },
+    {
+      "id": "deepwiki:431",
+      "arm": "deepwiki",
+      "claim": "The publishing workflow uses `uv build` and `pypa/gh-action-pypi-publish`.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "unverifiable",
+      "lines": [
+        ".github/workflows/publish.yaml:1-47"
+      ],
+      "reason": "The publish workflow file was not shown, so its build and publish steps cannot be checked.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:132",
+      "arm": "story",
+      "claim": "A second `{% extends %}` makes `visit_Extends` emit `raise TemplateRuntimeError(\"extended multiple times\")` and raise `CompilerExit`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:1002-1017"
+      ],
+      "reason": "When extends_so_far > 0 the generator writes the 'extended multiple times' TemplateRuntimeError and raises CompilerExit when the extends is already known (rootlevel first extends).",
+      "jev_contradicted": 0.44
+    },
+    {
+      "id": "deepwiki:166",
+      "arm": "deepwiki",
+      "claim": "By default, blocks cannot access variables from outside their scope, such as loop variables.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:919-932",
+        "src/jinja2/compiler.py:958-961"
+      ],
+      "reason": "Block functions get a fresh Frame deliberately not parented to the toplevel frame, and only `scoped` blocks get a derived context, so outer/loop variables are not available by default.",
+      "jev_contradicted": 0.38
+    },
+    {
+      "id": "deepwiki:3",
+      "arm": "deepwiki",
+      "claim": "`NativeEnvironment` is defined in nativetypes.py.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/nativetypes.py:88-92"
+      ],
+      "reason": "NativeEnvironment is declared in src/jinja2/nativetypes.py.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:185",
+      "arm": "story",
+      "claim": "`Context.globals_keys` is `set(globals)` and is used by `_get_default_module` to decide whether new globals require a fresh module instance",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/runtime.py:179-179",
+        "src/jinja2/environment.py:1435-1444"
+      ],
+      "reason": "Context sets globals_keys = set(globals) and _get_default_module compares ctx.globals_keys to self.globals.keys() to build a fresh, uncached module.",
+      "jev_contradicted": 0.4
+    },
+    {
+      "id": "story:71",
+      "arm": "story",
+      "claim": "`Parser.subparse`'s main loop recognises only `data`, `variable_begin` and `block_begin` tokens, raising `AssertionError` for anything else",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/parser.py:1005-1029"
+      ],
+      "reason": "The subparse loop handles data, variable_begin and block_begin and raises AssertionError('internal parsing error') otherwise.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:212",
+      "arm": "deepwiki",
+      "claim": "If a filter is not found in `env.filters`, Jinja2 raises a `TemplateRuntimeError` or `UndefinedError`.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:514-525",
+        "src/jinja2/compiler.py:564-578"
+      ],
+      "reason": "Missing filters raise TemplateRuntimeError both in _filter_test_common and in the generated runtime stub emitted by pull_dependencies.",
+      "jev_contradicted": 0.41
+    },
+    {
+      "id": "story:195",
+      "arm": "story",
+      "claim": "`Context.resolve_or_missing` checks `vars` first, then `parent`, and returns the `missing` sentinel if neither has the name",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/runtime.py:239-245"
+      ],
+      "reason": "resolve_or_missing checks self.vars, then self.parent, and returns missing.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:82",
+      "arm": "story",
+      "claim": "`nodes.TemplateData.as_const` returns the template text wrapped in `Markup` when autoescaping is enabled",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/nodes.py:614-620"
+      ],
+      "reason": "TemplateData.as_const returns Markup(self.data) when eval_ctx.autoescape is set.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "deepwiki:456",
+      "arm": "deepwiki",
+      "claim": "The `publish-pypi` job requires `id-token: write` permissions for the OIDC handshake.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "unverifiable",
+      "lines": [
+        ".github/workflows/publish.yaml:1-47"
+      ],
+      "reason": "The publish workflow contents, including job permissions, were not shown.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:413",
+      "arm": "deepwiki",
+      "claim": "`uv.lock` is the deterministic lockfile for all development and test dependencies.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "unverifiable",
+      "lines": [
+        "pyproject.toml:1-211"
+      ],
+      "reason": "No uv.lock appears in the repository listing and pyproject.toml was not shown, so the claim about a lockfile cannot be settled.",
+      "jev_contradicted": 0.46
+    },
+    {
+      "id": "deepwiki:269",
+      "arm": "deepwiki",
+      "claim": "The `is_undefined` utility in jinja2.utils checks if a value is an instance of `Undefined`.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/utils.py:104-118"
+      ],
+      "reason": "is_undefined performs an isinstance check against runtime.Undefined.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:246",
+      "arm": "deepwiki",
+      "claim": "The `select` filter filters items based on a test.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/filters.py:1534-1562",
+        "src/jinja2/filters.py:1780-1794"
+      ],
+      "reason": "sync_do_select applies a test via select_or_reject and yields only items passing it.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:192",
+      "arm": "story",
+      "claim": "`Environment.join_path` default implementation returns its first argument unchanged",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:943-953"
+      ],
+      "reason": "join_path returns the `template` argument unchanged.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:83",
+      "arm": "story",
+      "claim": "`Parser.flush_data` wraps buffered nodes in an `Output` node and clears the buffer",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/parser.py:998-1002"
+      ],
+      "reason": "The flush_data helper in Parser.subparse appends nodes.Output(data_buffer[:]) to the body and deletes the buffer contents (though it is a nested function, not a method).",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:208",
+      "arm": "story",
+      "claim": "`Template.render` joins the generated stream with `self.environment.concat(...)`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:1289-1292"
+      ],
+      "reason": "render returns self.environment.concat(self.root_render_func(ctx)).",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "story:89",
+      "arm": "story",
+      "claim": "`{{ user.url }}` is parsed via `parse_tuple` whose postfix parser produces `Getattr(node=Name('user','load'), attr='url')`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/parser.py:1011-1014",
+        "src/jinja2/parser.py:809-815"
+      ],
+      "reason": "variable_begin calls parse_tuple, and parse_subscript on a dot+name token returns nodes.Getattr(node, attr, 'load').",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "deepwiki:199",
+      "arm": "deepwiki",
+      "claim": "Variables assigned inside an `if` block persist in the outer scope.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:230-241",
+        "src/jinja2/compiler.py:1314-1333"
+      ],
+      "reason": "visit_If compiles the body with a soft frame that shares the enclosing frame's symbols, so assignments inside an if persist outside it.",
+      "jev_contradicted": 0.34
+    },
+    {
+      "id": "deepwiki:170",
+      "arm": "deepwiki",
+      "claim": "If a required block has not been overridden when a template is rendered, Jinja raises a `TemplateRuntimeError`.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:963-970"
+      ],
+      "reason": "visit_Block emits code raising TemplateRuntimeError(\"Required block ... not found\") when a required block has no override.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "story:76",
+      "arm": "story",
+      "claim": "`Parser.parse_statement` falls back to `self.extensions.get(token.value)` for custom tags",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/parser.py:178-180"
+      ],
+      "reason": "parse_statement looks up custom tags via self.extensions.get(token.value) and calls ext(self).",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:357",
+      "arm": "deepwiki",
+      "claim": "The `auto_aiter` function in src/jinja2/async_utils.py supports iterating over both standard and asynchronous iterables.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/async_utils.py:87-93"
+      ],
+      "reason": "auto_aiter returns the object's __aiter__ when present, otherwise wraps a sync iterator in _IteratorToAsyncIterator.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:106",
+      "arm": "story",
+      "claim": "When `is_async` is False the async-only runtime names are excluded from the generated import line",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:832-837"
+      ],
+      "reason": "exported_names includes async_exported only when environment.is_async, otherwise only `exported` names are imported.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:11",
+      "arm": "story",
+      "claim": "`create_cache` returns `None` for a cache size of 0, disabling template caching",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:83-93"
+      ],
+      "reason": "create_cache returns None when size == 0.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:260",
+      "arm": "deepwiki",
+      "claim": "The `xmlattr` filter converts a dict to XML attributes.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/filters.py:259-318"
+      ],
+      "reason": "do_xmlattr builds a key=\"value\" attribute string from a mapping's items.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "deepwiki:428",
+      "arm": "deepwiki",
+      "claim": "EditorConfig enforces 4 spaces for Python, 2 spaces for YAML/HTML, and LF line endings.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "unverifiable",
+      "lines": [
+        ".editorconfig:1-13"
+      ],
+      "reason": "The .editorconfig file contents were not shown.",
+      "jev_contradicted": 0.39
+    },
+    {
+      "id": "deepwiki:46",
+      "arm": "deepwiki",
+      "claim": "The extension hook `preprocess` modifies source text before lexing.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/ext.py:99-106",
+        "src/jinja2/environment.py:644-671"
+      ],
+      "reason": "Extension.preprocess returns modified source and Environment._tokenize calls preprocess before lexer.tokenize.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:99",
+      "arm": "story",
+      "claim": "`CodeGenerator.__init__` attaches an `Optimizer` when `optimized` is True",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:316-319"
+      ],
+      "reason": "CodeGenerator.__init__ sets self.optimizer = Optimizer(environment) when optimized is true.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:322",
+      "arm": "deepwiki",
+      "claim": "The `EvalContext` allows filters to check if autoescaping is currently active.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/filters.py:259-318",
+        "src/jinja2/filters.py:579-612"
+      ],
+      "reason": "Filters decorated with @pass_eval_context inspect eval_ctx.autoescape to detect active autoescaping.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:123",
+      "arm": "story",
+      "claim": "`CodeGenerator.blockvisit` writes `pass` before walking the nodes",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:440-449"
+      ],
+      "reason": "blockvisit writes 'pass' before visiting each node.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:263",
+      "arm": "deepwiki",
+      "claim": "The `@pass_context`, `@pass_eval_context`, and `@pass_environment` decorators are defined in `jinja2.utils`.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/utils.py:38-82"
+      ],
+      "reason": "All three decorators are defined in src/jinja2/utils.py.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:353",
+      "arm": "deepwiki",
+      "claim": "The `xmlattr` filter disallows keys containing spaces or the characters `/`, `>`, or `=`.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/filters.py:256-256",
+        "src/jinja2/filters.py:305-306"
+      ],
+      "reason": "_attr_key_re matches whitespace, '/', '>', and '=' in keys and do_xmlattr raises ValueError when it matches.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:161",
+      "arm": "story",
+      "claim": "`compiler.generate` returns `generator.stream.getvalue()`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:117-122"
+      ],
+      "reason": "generate returns generator.stream.getvalue() when no stream was given.",
+      "jev_contradicted": 0.38
+    },
+    {
+      "id": "story:45",
+      "arm": "story",
+      "claim": "With no extensions, `Environment.preprocess` collapses to `str(source)`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:654-658"
+      ],
+      "reason": "preprocess reduces over iter_extensions starting from str(source), so with no extensions it returns str(source).",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:111",
+      "arm": "story",
+      "claim": "`CodeGenerator.visit_Template` emits the load name as `name = 'members.html'` for a template named members.html",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:864-865"
+      ],
+      "reason": "visit_Template writes f\"name = {self.name!r}\", producing name = 'members.html'.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:183",
+      "arm": "deepwiki",
+      "claim": "The `for` loop iterates over sequences such as lists, dictionaries, or any iterable object.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/runtime.py:394-432",
+        "src/jinja2/runtime.py:561-571"
+      ],
+      "reason": "LoopContext wraps any iterable via `iter(iterable)` and yields its items, so `for` works over lists, dicts, and other iterables.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:139",
+      "arm": "deepwiki",
+      "claim": "`trim_blocks` and `lstrip_blocks` can be enabled globally in the Environment.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:305-306",
+        "src/jinja2/environment.py:340-341"
+      ],
+      "reason": "The Environment constructor accepts `trim_blocks` and `lstrip_blocks` and stores them on the environment.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:12",
+      "arm": "story",
+      "claim": "`create_cache` returns a plain `dict` for a negative cache size, which never evicts",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:90-91"
+      ],
+      "reason": "create_cache returns an empty dict for negative sizes, which performs no eviction.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:138",
+      "arm": "story",
+      "claim": "The generated block function header is `def block_title(context, missing=missing, environment=environment):`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:841-841",
+        "src/jinja2/compiler.py:911-916",
+        "src/jinja2/compiler.py:607-608"
+      ],
+      "reason": "Block functions are emitted as `def block_<name>(context, missing=missing, environment=environment):` since envenv is ', environment=environment' unless defer_init.",
+      "jev_contradicted": 0.49
+    },
+    {
+      "id": "deepwiki:76",
+      "arm": "deepwiki",
+      "claim": "Tests are mappings of test names to boolean callables.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/tests.py:216-256",
+        "src/jinja2/tests.py:15-22"
+      ],
+      "reason": "TESTS is a dict mapping test names to callables returning booleans.",
+      "jev_contradicted": 0.18
+    },
+    {
+      "id": "story:130",
+      "arm": "story",
+      "claim": "`visit_Block` returns without writing anything when `frame.toplevel` and `has_known_extends` are both true",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:945-953"
+      ],
+      "reason": "In visit_Block, when frame.toplevel and self.has_known_extends are true the method returns immediately before any write calls.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:43",
+      "arm": "story",
+      "claim": "`Parser.__init__` stores the name and filename and calls the environment to tokenize the source",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/parser.py:61-64"
+      ],
+      "reason": "Parser.__init__ sets self.name/self.filename and calls environment._tokenize(source, name, filename, state).",
+      "jev_contradicted": 0.34
+    },
+    {
+      "id": "deepwiki:186",
+      "arm": "deepwiki",
+      "claim": "`loop.index` is the current iteration, 1-indexed.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/runtime.py:461-464"
+      ],
+      "reason": "`index` is documented and implemented as `index0 + 1`, i.e. the current iteration starting at 1.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:169",
+      "arm": "story",
+      "claim": "`Template.is_up_to_date` calls the uptodate closure and compares the captured source against the mapping's current value",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:1485-1490",
+        "src/jinja2/loaders.py:444-450"
+      ],
+      "reason": "is_up_to_date invokes the stored _uptodate callable, and DictLoader's closure compares the captured source to self.mapping.get(template).",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "story:8",
+      "arm": "story",
+      "claim": "The `Environment` constructor stores the `autoescape` argument without calling it",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:349"
+      ],
+      "reason": "The constructor simply assigns self.autoescape = autoescape with no invocation.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:57",
+      "arm": "story",
+      "claim": "An empty data group is dropped by the lexer because `TOKEN_DATA` is in `ignore_if_empty`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/lexer.py:160-162",
+        "src/jinja2/lexer.py:780-781"
+      ],
+      "reason": "ignore_if_empty contains TOKEN_DATA and the tokenizer only yields a group when `data or token not in ignore_if_empty`.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:471",
+      "arm": "deepwiki",
+      "claim": "The `@internalcode` decorator is defined in src/jinja2/utils.py.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/utils.py:98-101"
+      ],
+      "reason": "`internalcode` is defined in utils.py.",
+      "jev_contradicted": 0.51
+    },
+    {
+      "id": "story:118",
+      "arm": "story",
+      "claim": "The symbol visitor in idtracking stops at `Block` nodes and does not descend into them",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/idtracking.py:312-313"
+      ],
+      "reason": "FrameSymbolVisitor.visit_Block is an empty method documented as 'Stop visiting at blocks.'",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:240",
+      "arm": "deepwiki",
+      "claim": "The `length` filter returns the sequence length.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/filters.py:1834-1834"
+      ],
+      "reason": "The FILTERS dict maps \"length\" to the builtin `len`.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:344",
+      "arm": "deepwiki",
+      "claim": "The `autoescape` parameter can be a boolean or a callable that takes a template name and returns a boolean.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:313-313",
+        "src/jinja2/environment.py:223-232"
+      ],
+      "reason": "The `autoescape` parameter is typed `bool | t.Callable[[str | None], bool]` and documented as accepting a callable given the template name.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:103",
+      "arm": "story",
+      "claim": "`EvalContext.__init__` calls `environment.autoescape` with the template name when it is callable",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/nodes.py:80-83"
+      ],
+      "reason": "EvalContext.__init__ calls environment.autoescape(template_name) when the attribute is callable.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:464",
+      "arm": "deepwiki",
+      "claim": "The `Undefined` base class is defined in src/jinja2/runtime.py.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/runtime.py:796-809"
+      ],
+      "reason": "The `Undefined` class is defined in runtime.py.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:116",
+      "arm": "story",
+      "claim": "A `Frame` constructed with no parent creates a root `Symbols` at level 0",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:177-178",
+        "src/jinja2/idtracking.py:34-43"
+      ],
+      "reason": "Frame with parent None builds Symbols(level=level); Symbols sets level 0 when both parent and level are None.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "story:33",
+      "arm": "story",
+      "claim": "`DictLoader.get_source` raises `TemplateNotFound(template)` when the name is not in the mapping",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/loaders.py:444-450"
+      ],
+      "reason": "DictLoader.get_source raises TemplateNotFound(template) if the template is not a key of the mapping.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:40",
+      "arm": "story",
+      "claim": "`Environment.compile` catches only `TemplateSyntaxError` and re-raises it through `handle_exception`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:758-770"
+      ],
+      "reason": "compile wraps its body in `except TemplateSyntaxError: self.handle_exception(source=source_hint)` with no other handlers.",
+      "jev_contradicted": 0.38
+    },
+    {
+      "id": "deepwiki:12",
+      "arm": "deepwiki",
+      "claim": "`BytecodeCache` is defined in src/jinja2/bccache.py and is an interface for persisting compiled template bytecode.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/bccache.py:101-142"
+      ],
+      "reason": "bccache.py defines the BytecodeCache base class with load_bytecode/dump_bytecode for persisting compiled bytecode.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:136",
+      "arm": "story",
+      "claim": "`CodeGenerator.visit_Template` emits block functions after the root function, one per entry in `self.blocks` in `find_all` order",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:847-852",
+        "src/jinja2/compiler.py:910-938"
+      ],
+      "reason": "self.blocks is filled from node.find_all(nodes.Block) and block functions are emitted after the root function by iterating that dict in insertion order.",
+      "jev_contradicted": 0.65
+    },
+    {
+      "id": "deepwiki:291",
+      "arm": "deepwiki",
+      "claim": "`FileSystemLoader` has a `followlinks` parameter controlling whether to follow symbolic links.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/loaders.py:179-192",
+        "src/jinja2/loaders.py:228-232"
+      ],
+      "reason": "FileSystemLoader takes `followlinks` and passes it to os.walk.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:41",
+      "arm": "deepwiki",
+      "claim": "The `Context` class tracks template inheritance through its `blocks` attribute.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/runtime.py:181-184",
+        "src/jinja2/runtime.py:186-198"
+      ],
+      "reason": "Context.blocks holds a stack of block functions updated during template inheritance, used by `super`.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:71",
+      "arm": "deepwiki",
+      "claim": "`Environment.filters` defaults to `DEFAULT_FILTERS` defined in src/jinja2/defaults.py.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:352-352",
+        "src/jinja2/defaults.py:3-3"
+      ],
+      "reason": "Environment sets `self.filters = DEFAULT_FILTERS.copy()` and DEFAULT_FILTERS is the name bound in defaults.py.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:204",
+      "arm": "story",
+      "claim": "`Environment.getattr` tries a real Python attribute first, falls back to item access, and returns an `Undefined` if both fail",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:484-495"
+      ],
+      "reason": "getattr tries getattr(obj, attribute), then obj[attribute], then returns self.undefined(...).",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:59",
+      "arm": "story",
+      "claim": "`Lexer.wrap` discards whitespace and comment tokens",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/lexer.py:149-159",
+        "src/jinja2/lexer.py:624-626"
+      ],
+      "reason": "wrap skips any token in ignored_tokens, which includes whitespace and the comment/linecomment tokens.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:0",
+      "arm": "story",
+      "claim": "`DictLoader.__init__` binds the mapping argument to `self.mapping` and returns without copying it",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/loaders.py:441-442"
+      ],
+      "reason": "DictLoader.__init__ only does self.mapping = mapping, with no copy.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:194",
+      "arm": "story",
+      "claim": "A parent template's `visit_Block` generates `yield from context.blocks['title'][0](context)`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:958-975"
+      ],
+      "reason": "For a non-scoped, non-async, unbuffered block the generator writes `yield from context.blocks['title'][0](context)`.",
+      "jev_contradicted": 0.43
+    },
+    {
+      "id": "story:30",
+      "arm": "story",
+      "claim": "`Environment.make_globals(None)` returns `ChainMap({}, self.globals)`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:1127-1130"
+      ],
+      "reason": "make_globals replaces a None argument with {} and returns ChainMap(d, self.globals).",
+      "jev_contradicted": 0.25
+    },
+    {
+      "id": "deepwiki:164",
+      "arm": "deepwiki",
+      "claim": "The `super()` function renders the content of the parent block within an overriding block.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/runtime.py:186-198",
+        "src/jinja2/runtime.py:379-391"
+      ],
+      "reason": "Context.super returns a BlockReference whose call renders the parent block's content.",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "story:112",
+      "arm": "story",
+      "claim": "`CodeGenerator.visit_Template` writes the root function header `def root(context, missing=missing, environment=environment):` with `extra=1`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:841",
+        "src/jinja2/compiler.py:868-870"
+      ],
+      "reason": "envenv is ', environment=environment' when not deferring init, and the root header is written with extra=1.",
+      "jev_contradicted": 0.46
+    },
+    {
+      "id": "deepwiki:328",
+      "arm": "deepwiki",
+      "claim": "The sandbox blocks the generator attributes `gi_frame` and `gi_code`.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/sandbox.py:33-34",
+        "src/jinja2/sandbox.py:138-140"
+      ],
+      "reason": "UNSAFE_GENERATOR_ATTRIBUTES contains gi_frame and gi_code and is_internal_attribute flags them for generators.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:420",
+      "arm": "deepwiki",
+      "claim": "The tox configuration uses `uv-venv-lock-runner`.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "unverifiable",
+      "lines": [
+        "src/jinja2/__init__.py:1-5"
+      ],
+      "reason": "No tox configuration file is present in the shown repository contents, so the runner setting cannot be checked.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:311",
+      "arm": "deepwiki",
+      "claim": "If `auto_reload` is enabled in the Environment, the `uptodate` function is checked whenever a template is requested.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:962-972"
+      ],
+      "reason": "_load_template re-uses a cached template only if auto_reload is off or `template.is_up_to_date` (which calls the uptodate function) is true.",
+      "jev_contradicted": 0.44
+    },
+    {
+      "id": "deepwiki:213",
+      "arm": "deepwiki",
+      "claim": "Built-in filters are defined in filters.py and are usually prefixed with `do_` in the Python source code.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/filters.py:214-221",
+        "src/jinja2/filters.py:1812-1830"
+      ],
+      "reason": "filters.py defines the built-in filters with `do_` prefixed function names registered in FILTERS.",
+      "jev_contradicted": 0.61
+    },
+    {
+      "id": "deepwiki:23",
+      "arm": "deepwiki",
+      "claim": "`Environment.from_string` creates a template from a string.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:1089-1108"
+      ],
+      "reason": "Environment.from_string compiles the source string and returns a Template instance.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:286",
+      "arm": "deepwiki",
+      "claim": "To create a custom loader, you subclass `BaseLoader` and override the `get_source` method.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/loaders.py:42-99"
+      ],
+      "reason": "BaseLoader's docstring and get_source explicitly instruct subclassing and overriding get_source.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:124",
+      "arm": "story",
+      "claim": "`visit_Extends` fails if `frame.toplevel` is not True",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:994-997"
+      ],
+      "reason": "visit_Extends calls self.fail('cannot use extend from a non top-level scope') when frame.toplevel is falsy.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:42",
+      "arm": "story",
+      "claim": "`Environment._parse` constructs a `Parser` and calls its parse method",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:617-621"
+      ],
+      "reason": "_parse returns Parser(self, source, name, filename).parse().",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:175",
+      "arm": "deepwiki",
+      "claim": "`{% include [\"page.html\", \"default.html\"] %}` accepts a list of template names.",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/environment.py:1071-1087",
+        "src/jinja2/meta.py:104-109"
+      ],
+      "reason": "get_or_select_template dispatches lists of names to select_template, and Include nodes with tuple/list templates are handled accordingly.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:152",
+      "arm": "story",
+      "claim": "`visit_For` sets `extended_loop` False and emits an ordinary Python loop when the loop is not recursive, contains no scoped block, and the body does not use `loop`",
+      "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "label": "supported",
+      "lines": [
+        "src/jinja2/compiler.py:1184-1189",
+        "src/jinja2/compiler.py:1249-1272"
+      ],
+      "reason": "extended_loop is only true for recursive loops, use of `loop` in the body, or scoped blocks; otherwise a plain `for ... in ...:` is emitted.",
+      "jev_contradicted": 0.28
+    }
+  ],
+  "cost": 4.09
+}

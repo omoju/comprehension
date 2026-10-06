@@ -1,0 +1,1077 @@
+{
+  "repo": "click",
+  "items": [
+    {
+      "id": "deepwiki:36",
+      "arm": "deepwiki",
+      "claim": "The `Context` stores unparsed/remaining arguments in `ctx.args`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:394-395",
+        "src/click/core.py:1424-1426"
+      ],
+      "reason": "Context declares `self.args` as \"the leftover arguments\" and `Command.parse_args` assigns the remaining unparsed tokens to `ctx.args`.",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "deepwiki:329",
+      "arm": "deepwiki",
+      "claim": "Options with `Choice` type automatically show choices in the prompt.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/termui.py:117-118",
+        "src/click/core.py:3641-3651"
+      ],
+      "reason": "`_build_prompt` appends the choices when the type is a `Choice` and `show_choices` (default `True`) is set, and `Option.prompt_for_value` passes the option's type and `show_choices`.",
+      "jev_contradicted": 0.72
+    },
+    {
+      "id": "deepwiki:433",
+      "arm": "deepwiki",
+      "claim": "CliRunner's `charset` parameter defaults to \"utf-8\".",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:360-376"
+      ],
+      "reason": "`CliRunner.__init__` declares `charset: str = \"utf-8\"`.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "story:158",
+      "arm": "story",
+      "claim": "`Parameter.handle_parse_result` begins by reading `ctx.params.get(name, UNSET)`, `ctx.get_parameter_source(name)`, and the explicit-default flag before any mutation.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:2849-2855"
+      ],
+      "reason": "The method opens by capturing `ctx.params.get(self.name, UNSET)`, `ctx.get_parameter_source(self.name)` and `ctx._param_default_explicit.get(...)` before any mutation.",
+      "jev_contradicted": 0.29
+    },
+    {
+      "id": "story:14",
+      "arm": "story",
+      "claim": "`Parameter.__init__` stores the raw default with `self.default = default`, keeping the `UNSET` sentinel.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:2371-2371",
+        "src/click/core.py:2404-2410"
+      ],
+      "reason": "`default` defaults to `UNSET` and is stored raw via `self.default = default`, with `_default_explicit` derived from it.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:61",
+      "arm": "story",
+      "claim": "`Command.main` falls back to `_detect_program_name()` when `prog_name` is not supplied, which inspects `sys.argv[0]` and the `__main__` module.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1570-1571",
+        "src/click/utils.py:573-590"
+      ],
+      "reason": "`main` calls `_detect_program_name()` when `prog_name is None`, and that helper consults `sys.modules['__main__']` and `sys.argv[0]`.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:390",
+      "arm": "deepwiki",
+      "claim": "`shell_complete` methods return `list[CompletionItem]` or `list[str]`, with strings converted to plain `CompletionItem` objects.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:2950-2960"
+      ],
+      "reason": "`Parameter.shell_complete` accepts a custom completer returning `CompletionItem`s or strings and wraps plain strings in `CompletionItem(c)`.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "story:74",
+      "arm": "story",
+      "claim": "After the handler ladder, `Command.main` writes the recorded message and calls `sys.exit(exit_code)`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1637-1640"
+      ],
+      "reason": "After the except ladder, `if report is not None: report()` then `sys.exit(exit_code)`.",
+      "jev_contradicted": 0.61
+    },
+    {
+      "id": "deepwiki:21",
+      "arm": "deepwiki",
+      "claim": "The `Group` class has a `commands` attribute that is a dict mapping names to `Command` objects.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1752-1779"
+      ],
+      "reason": "`Group` declares `commands: cabc.MutableMapping[str, Command]` and builds a name->Command dict from a sequence if needed.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:242",
+      "arm": "story",
+      "claim": "`CliRunner`'s `catch_exceptions` parameter defaults to `True`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:365-365",
+        "src/click/testing.py:379-379"
+      ],
+      "reason": "The constructor signature has `catch_exceptions: bool = True`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:36",
+      "arm": "story",
+      "claim": "`make_input_stream` encodes a `str` input with the runner's charset and wraps it in a `BytesIO`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:223-228"
+      ],
+      "reason": "A `str` input is encoded with the given charset and returned wrapped in `io.BytesIO`.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:100",
+      "arm": "story",
+      "claim": "`Command.make_parser` iterates over `self.get_params(ctx)` rather than `self.params`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1252-1257"
+      ],
+      "reason": "`make_parser` loops `for param in self.get_params(ctx)`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:212",
+      "arm": "story",
+      "claim": "`_make_cached_stream_func` builds a closure that reads `sys.stdout` at call time, looks it up in a `WeakKeyDictionary`, and only builds a wrapper on a cache miss.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/_compat.py:547-576"
+      ],
+      "reason": "The factory's `func` calls `src_func()` (here `lambda: sys.stdout`) each call, consults a `WeakKeyDictionary` cache, and only calls `wrapper_func()` on a miss.",
+      "jev_contradicted": 0.42
+    },
+    {
+      "id": "story:114",
+      "arm": "story",
+      "claim": "`Command.get_params` runs twice during parsing and the second call to `get_help_option` returns the cached option without rebuilding it.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1396-1399",
+        "src/click/core.py:1240-1250"
+      ],
+      "reason": "`parse_args` calls `get_params` via `make_parser` and again for processing, and `get_help_option` returns the cached `self._help_option` after the first construction.",
+      "jev_contradicted": 0.28
+    },
+    {
+      "id": "story:32",
+      "arm": "story",
+      "claim": "In `CliRunner.invoke`, when `capture == 'fd'` two `_FDCapture` objects are started on file descriptors 1 and 2.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:657-664"
+      ],
+      "reason": "When `self.capture == 'fd'`, `_FDCapture(1)` and `_FDCapture(2)` are created and started.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:131",
+      "arm": "story",
+      "claim": "`_ParsingState` has four fields: `opts` an empty dict, `largs` an empty list, `rargs` set to the caller's list, and `order` an empty list.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/parser.py:216-221"
+      ],
+      "reason": "`_ParsingState.__init__` sets `opts = {}`, `largs = []`, `rargs = rargs`, `order = []`.",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "story:145",
+      "arm": "story",
+      "claim": "`_get_value_from_state` with `nargs == 1` checks whether the next token looks like the start of another option and returns the `FLAG_NEEDS_VALUE` sentinel if the option is allowed to stand alone.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/parser.py:450-463"
+      ],
+      "reason": "In the `nargs == 1` branch it checks `_flag_needs_value` plus an option-like next token and yields `FLAG_NEEDS_VALUE`.",
+      "jev_contradicted": 0.28
+    },
+    {
+      "id": "story:163",
+      "arm": "story",
+      "claim": "`Option.resolve_envvar_value` returns `None` immediately when no `envvar` is declared.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "contradicted",
+      "lines": [
+        "src/click/core.py:3664-3676"
+      ],
+      "reason": "`Option.resolve_envvar_value` falls back to the `auto_envvar_prefix`-derived variable before returning `None`, so it does not return `None` immediately.",
+      "jev_contradicted": 0.43
+    },
+    {
+      "id": "story:232",
+      "arm": "story",
+      "claim": "`Context.__exit__` forwards the exception information into `ExitStack.__exit__`, so a registered resource can inspect and suppress the exception by returning true.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:580-592",
+        "src/click/core.py:722-738"
+      ],
+      "reason": "`__exit__` passes the exception triple to `_close_with_exception_info`, which forwards it to `ExitStack.__exit__` and returns its result.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:43",
+      "arm": "story",
+      "claim": "`BytesIOCopy.flush` flushes both its own buffer and the shared buffer.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:129-131"
+      ],
+      "reason": "`flush` calls `super().flush()` and then `self.copy_to.flush()`.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "story:136",
+      "arm": "story",
+      "claim": "`Group` sets `allow_interspersed_args` to false so remaining tokens go to a subcommand.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1729-1730"
+      ],
+      "reason": "`Group` sets `allow_interspersed_args = False` (with `allow_extra_args = True`).",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "story:2",
+      "arm": "story",
+      "claim": "`Option.__init__` has `flag_value=Sentinel.UNSET` as the default value for the `flag_value` argument when the caller passes none.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:3064-3064",
+        "src/click/_utils.py:31-31"
+      ],
+      "reason": "`flag_value: t.Any = UNSET` and `UNSET` is `Sentinel.UNSET`.",
+      "jev_contradicted": 0.2
+    },
+    {
+      "id": "story:148",
+      "arm": "story",
+      "claim": "`_Option.process` appends `self.obj` \u2014 the Click-level `Option` \u2014 to `state.order` for every action.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/parser.py:169-182"
+      ],
+      "reason": "After handling every action branch, `state.order.append(self.obj)` runs, where `obj` is the core `Option`.",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "story:171",
+      "arm": "story",
+      "claim": "The value precedence in Click is command line, then environment variable, then `default_map`, then the parameter's default.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:2599-2632"
+      ],
+      "reason": "`consume_value` takes the parser value first, then envvar, then default map, then the parameter default.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:26",
+      "arm": "deepwiki",
+      "claim": "`BadArgumentUsage` and `BadOptionUsage` are subclasses of `UsageError`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/exceptions.py:304-329"
+      ],
+      "reason": "Both `BadOptionUsage` and `BadArgumentUsage` are declared as subclasses of `UsageError`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:99",
+      "arm": "deepwiki",
+      "claim": "`make_pass_decorator` searches up the context chain using `ctx.find_object(object_type)` or `ctx.ensure_object(object_type)`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/decorators.py:76-93"
+      ],
+      "reason": "The generated decorator calls `ctx.ensure_object(object_type)` when `ensure` is set, otherwise `ctx.find_object(object_type)`, both of which walk the context chain.",
+      "jev_contradicted": 0.29
+    },
+    {
+      "id": "story:19",
+      "arm": "story",
+      "claim": "`Option._validate` checks for illegal combinations including `nargs=-1` on an option, a secondary spelling on a non-boolean flag, and `count` together with `multiple`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:3251-3271"
+      ],
+      "reason": "`_validate` raises for `nargs == -1`, for secondary opts on a non-boolean flag, and for `count` with `multiple` (and with `is_flag`).",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "deepwiki:447",
+      "arm": "deepwiki",
+      "claim": "The constant `CYGWIN` is defined as `sys.platform.startswith(\"cygwin\")`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/_compat.py:13-13"
+      ],
+      "reason": "`CYGWIN = sys.platform.startswith(\"cygwin\")` is defined exactly as claimed.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:70",
+      "arm": "story",
+      "claim": "In `Command.main`, an `Exit` exception supplies its own exit code.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1599-1611",
+        "src/click/core.py:1637-1640"
+      ],
+      "reason": "The `except Exit as e` branch assigns `exit_code = e.exit_code`, which the teardown then passes to `sys.exit`.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:402",
+      "arm": "deepwiki",
+      "claim": "`Command.format_help()` calls format_usage, format_help_text, format_options, and format_epilog in that order.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1284-1301"
+      ],
+      "reason": "`format_help` calls those four methods in exactly that relative order (with `format_arguments` additionally between help text and options).",
+      "jev_contradicted": 0.96
+    },
+    {
+      "id": "deepwiki:521",
+      "arm": "deepwiki",
+      "claim": "Click's source distribution includes docs/, tests/, CHANGES.rst, and uv.lock, and excludes docs/_build/.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "unverifiable",
+      "lines": [
+        "pyproject.toml:1-231"
+      ],
+      "reason": "The sdist include/exclude configuration lives in pyproject.toml, which is not shown in the provided excerpts.",
+      "jev_contradicted": 0.94
+    },
+    {
+      "id": "story:15",
+      "arm": "story",
+      "claim": "`Parameter.__init__` sets `self._default_explicit = default is not UNSET`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:2405-2410"
+      ],
+      "reason": "`Parameter.__init__` literally contains `self._default_explicit = default is not UNSET`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:512",
+      "arm": "deepwiki",
+      "claim": "The tox `docs` environment runs `sphinx-build -E -W -b dirhtml docs docs/_build/dirhtml`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "unverifiable",
+      "lines": [
+        "pyproject.toml:1-231"
+      ],
+      "reason": "No tox configuration file is shown, so the docs environment command cannot be checked.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:160",
+      "arm": "deepwiki",
+      "claim": "Parameters marked with `required=True` raise a `MissingParameter` exception if no value is provided.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:2732-2733"
+      ],
+      "reason": "`process_value` raises `MissingParameter` when `self.required` and the value is missing.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:303",
+      "arm": "deepwiki",
+      "claim": "Click's `echo()` function is located in `click.utils` while `prompt()` and other less frequently used functions are in `click.termui`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/utils.py:240-246",
+        "src/click/termui.py:168-179"
+      ],
+      "reason": "`echo` is defined in `click/utils.py` and `prompt` (with `confirm`, `pause`, etc.) in `click/termui.py`.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:48",
+      "arm": "story",
+      "claim": "`_NamedTextIOWrapper.fileno()` returns a real descriptor only when `_original_fd` is non-negative, otherwise raising `io.UnsupportedOperation`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:192-200",
+        "src/click/testing.py:156-182"
+      ],
+      "reason": "`fileno` returns `self._original_fd` only when it is `>= 0`, otherwise delegating to `TextIOWrapper`, which raises `io.UnsupportedOperation` for a BytesIO-backed buffer.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "deepwiki:251",
+      "arm": "deepwiki",
+      "claim": "The parameter source is automatically set during value resolution in `Parameter.consume_value()`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:2599-2632",
+        "src/click/core.py:2857-2863"
+      ],
+      "reason": "`consume_value` resolves the value and its `ParameterSource` as part of value resolution, which `handle_parse_result` then records on the context.",
+      "jev_contradicted": 0.21
+    },
+    {
+      "id": "deepwiki:57",
+      "arm": "deepwiki",
+      "claim": "`Context.invoked_subcommand` is set to the subcommand name if a single subcommand is invoked.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:2072-2079"
+      ],
+      "reason": "In non-chain mode `Group.invoke` sets `ctx.invoked_subcommand = cmd_name` for the single resolved subcommand.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "deepwiki:135",
+      "arm": "deepwiki",
+      "claim": "When `nargs=-1`, the argument position is marked and filled with all remaining tokens.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:2259-2263",
+        "src/click/core.py:3904-3905"
+      ],
+      "reason": "The `nargs` documentation states that with `nargs=-1` all remaining parameters are collected, and `Argument.add_to_parser` forwards `nargs` to the parser.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:80",
+      "arm": "story",
+      "claim": "A plain `Command` has `allow_extra_args` set to `False`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1038-1039"
+      ],
+      "reason": "`Command.allow_extra_args = False` is the class default.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "deepwiki:287",
+      "arm": "deepwiki",
+      "claim": "On Cygwin, `launch()` uses `cygstart`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "unverifiable",
+      "lines": [
+        "src/click/termui.py:947-949"
+      ],
+      "reason": "`launch` delegates to `_termui_impl.open_url`, and `_termui_impl.py` is not shown, so the Cygwin `cygstart` behavior cannot be checked.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "deepwiki:23",
+      "arm": "deepwiki",
+      "claim": "`ClickException` has attributes `message` and `exit_code` and methods `show()` and `format_message()`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/exceptions.py:35-65"
+      ],
+      "reason": "`ClickException` defines `exit_code`, `message`, `format_message()`, and `show()`.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:222",
+      "arm": "story",
+      "claim": "`strip_ansi` applies a CSI regular expression to the output string.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/_compat.py:15-19",
+        "src/click/_compat.py:491-492"
+      ],
+      "reason": "`strip_ansi` calls `_ansi_re.sub(\"\", value)` where `_ansi_re` is the CSI escape-sequence regex.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:225",
+      "arm": "story",
+      "claim": "`BytesIOCopy.write` returns the number of bytes written.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:133-136"
+      ],
+      "reason": "`BytesIOCopy.write` returns `super().write(b)`, i.e. the byte count written.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:98",
+      "arm": "deepwiki",
+      "claim": "`click.make_pass_decorator()` accepts an `ensure` parameter that creates the object if not found.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/decorators.py:51-53",
+        "src/click/decorators.py:81-84"
+      ],
+      "reason": "`make_pass_decorator(object_type, ensure=False)` calls `ctx.ensure_object` (creating and storing the object) when `ensure` is true.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:437",
+      "arm": "deepwiki",
+      "claim": "CliRunner's isolation sets `formatting.FORCED_WIDTH` to a fixed value of 80.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:438-439",
+        "src/click/testing.py:593-593"
+      ],
+      "reason": "`isolation` sets `formatting.FORCED_WIDTH = 80` and restores the old value afterwards.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:193",
+      "arm": "story",
+      "claim": "Because of `value_proc`, a prompted answer that fails conversion is rejected and the prompt is repeated rather than crashing.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "unverifiable",
+      "lines": [
+        "src/click/core.py:3641-3652"
+      ],
+      "reason": "The `value_proc` is passed to `termui.prompt`, but termui.py is not shown, so the retry-on-failure behavior cannot be confirmed from the given code.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:153",
+      "arm": "deepwiki",
+      "claim": "The `Parameter.expose_value` attribute defaults to `True`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:2376",
+        "src/click/core.py:2403"
+      ],
+      "reason": "`Parameter.__init__` declares `expose_value: bool = True` and stores it unchanged.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:65",
+      "arm": "story",
+      "claim": "`_main_shell_completion` returns immediately when the completion environment variable is unset.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1669-1672"
+      ],
+      "reason": "`_main_shell_completion` reads the env var and returns early when `not instruction`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:403",
+      "arm": "deepwiki",
+      "claim": "The `options_metavar` default is `\"[OPTIONS]\"`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1070",
+        "src/click/core.py:1097"
+      ],
+      "reason": "`Command.__init__` has `options_metavar: str | None = \"[OPTIONS]\"`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:192",
+      "arm": "deepwiki",
+      "claim": "Click produces an error like \"Error: Invalid value for '--count': 'abc' is not a valid integer\" for an invalid type.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/types.py:604-610",
+        "src/click/exceptions.py:154-156",
+        "src/click/exceptions.py:61-65"
+      ],
+      "reason": "IntParamType's name is \"integer\" and the failure message is formatted as \"Invalid value for <hint>: {value!r} is not a valid integer.\" prefixed with \"Error: \".",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "deepwiki:74",
+      "arm": "deepwiki",
+      "claim": "`click.make_pass_decorator()` creates custom decorators to pass specific object types.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/decorators.py:51-97"
+      ],
+      "reason": "`make_pass_decorator(object_type, ensure)` returns a decorator that finds/creates an object of the given type and passes it as the first argument.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:166",
+      "arm": "story",
+      "claim": "`Context._default_map_has` returns `False` when the context has no default map.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:787-799"
+      ],
+      "reason": "`_default_map_has` requires `self.default_map is not None`, so a missing map yields `False`.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:122",
+      "arm": "deepwiki",
+      "claim": "The `_Option.action` field supports the values store_const, append, append_const, and count.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/parser.py:169-181"
+      ],
+      "reason": "`_Option.process` handles \"store\", \"store_const\", \"append\", \"append_const\" and \"count\" actions.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:176",
+      "arm": "deepwiki",
+      "claim": "When `default=True` is set with a `flag_value`, the parameter receives the `flag_value`, not the boolean `True`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:3244-3249",
+        "src/click/core.py:3318-3319"
+      ],
+      "reason": "`_resolve_lazy_default` substitutes `True` with the flag activation value for flag options, and `get_default` applies it.",
+      "jev_contradicted": 0.52
+    },
+    {
+      "id": "deepwiki:230",
+      "arm": "deepwiki",
+      "claim": "`click.Path` validates file/directory paths.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/types.py:1059-1093",
+        "src/click/types.py:1172-1231"
+      ],
+      "reason": "The `Path` type performs existence, file/dir, readable/writable/executable checks on path values.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "deepwiki:247",
+      "arm": "deepwiki",
+      "claim": "The `Context.default_map` is accessed via `Context.lookup_default(name, call=True)`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:811-831"
+      ],
+      "reason": "`Context.lookup_default(self, name, call=True)` reads the value from `default_map`.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:480",
+      "arm": "deepwiki",
+      "claim": "`_safe_write` calls `ansi_wrapper.reset_all()` and re-raises when an exception occurs.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "unverifiable",
+      "lines": [
+        "src/click/__init__.py:1-10"
+      ],
+      "reason": "No `_safe_write` appears in any shown file (utils.py is not included), so the claim cannot be checked.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:311",
+      "arm": "deepwiki",
+      "claim": "If the two entered values do not match in a confirmation prompt, Click echoes \"Error: The two entered values do not match.\".",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "unverifiable",
+      "lines": [
+        "src/click/core.py:41-43"
+      ],
+      "reason": "The confirmation-prompt message lives in `termui.py`, which is not shown.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:174",
+      "arm": "story",
+      "claim": "`Option.process_value` has a shortcut for unset boolean flags and otherwise falls through to `Parameter.process_value`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:3782-3797"
+      ],
+      "reason": "The override returns early (value `False`, optional callback) for unset boolean flags and otherwise calls `super().process_value`.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:92",
+      "arm": "story",
+      "claim": "The context stack used by `get_current_context()` is thread-local.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/globals.py:4-9",
+        "src/click/globals.py:35-46"
+      ],
+      "reason": "The stack lives on `_local = local()` from `threading`, so it is thread-local.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:150",
+      "arm": "story",
+      "claim": "The second pass of `_OptionParser.parse_args` calls `_unpack_args` to distribute remaining tokens to declared positional arguments.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/parser.py:308-325"
+      ],
+      "reason": "`_process_args_for_args`, the second pass, calls `_unpack_args` with the declared arguments' nargs.",
+      "jev_contradicted": 0.24
+    },
+    {
+      "id": "story:130",
+      "arm": "story",
+      "claim": "`_OptionParser.parse_args` wraps the argument list in a `_ParsingState` and runs two passes: options first, then positional arguments.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/parser.py:307-314"
+      ],
+      "reason": "`parse_args` builds `_ParsingState(args)` then runs `_process_args_for_options` followed by `_process_args_for_args`.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:474",
+      "arm": "deepwiki",
+      "claim": "The Windows error codes used include ERROR_SUCCESS = 0 and ERROR_NOT_ENOUGH_MEMORY = 8.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/_winconsole.py:60-61"
+      ],
+      "reason": "`ERROR_SUCCESS = 0` and `ERROR_NOT_ENOUGH_MEMORY = 8` are defined exactly as claimed.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:182",
+      "arm": "story",
+      "claim": "In `handle_parse_result`, writing the value into `ctx.params` is conditional on `expose_value`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:3909-3912"
+      ],
+      "reason": "The winning branch writes `ctx.params[self.name]` only `if self.expose_value`.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:551",
+      "arm": "deepwiki",
+      "claim": "A `default_map` can be passed at invocation as `cli(default_map={'runserver': {'port': 5000}})`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1679-1681",
+        "src/click/core.py:1382-1386",
+        "src/click/core.py:412-420"
+      ],
+      "reason": "Calling the command forwards extra kwargs through `main`/`make_context` to the `Context` constructor's `default_map`, which is looked up per subcommand `info_name`.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:422",
+      "arm": "deepwiki",
+      "claim": "`MissingParameter` extends `BadParameter` and has a `param_type` attribute of 'option', 'argument', or 'parameter'.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/exceptions.py:159-182",
+        "src/click/exceptions.py:212-220"
+      ],
+      "reason": "`MissingParameter(BadParameter)` stores `param_type` documented as 'parameter', 'option' or 'argument'.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "story:52",
+      "arm": "story",
+      "claim": "The `should_strip_ansi` replacement installed by `CliRunner.isolation` ignores the stream and answers from the `color` argument, returning `True` when `color=False`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:504-523"
+      ],
+      "reason": "The replacement `should_strip_ansi` ignores `stream`, returning `not default_color` when `color is None` and `not color` otherwise, i.e. `True` for `color=False`.",
+      "jev_contradicted": 0.65
+    },
+    {
+      "id": "story:228",
+      "arm": "story",
+      "claim": "Returning a value from a Click command callback has no effect on the process exit code; success exits with code 0.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1588-1598"
+      ],
+      "reason": "In standalone mode the return value `rv` is deliberately not used; `ctx.exit()` is called with the default code 0.",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "story:22",
+      "arm": "story",
+      "claim": "For an option declared with `default=1`, `_guess_type` sees an `int` and `convert_type` returns the `INT` singleton.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/types.py:1321-1343",
+        "src/click/types.py:1363-1376",
+        "src/click/core.py:2389"
+      ],
+      "reason": "`_guess_type(None, 1)` returns `type(1)` i.e. `int`, and `convert_type` returns the `INT` singleton for `int`.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:9",
+      "arm": "deepwiki",
+      "claim": "`CommandCollection` is a subclass in the command hierarchy along with `Group` under `Command`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1699",
+        "src/click/core.py:2169"
+      ],
+      "reason": "`Group` subclasses `Command` and `CommandCollection` subclasses `Group`, so both sit in the command hierarchy under `Command`.",
+      "jev_contradicted": 0.41
+    },
+    {
+      "id": "deepwiki:386",
+      "arm": "deepwiki",
+      "claim": "For Fish completion, `COMP_CWORD` contains the partial word being completed rather than an index.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "unverifiable",
+      "lines": [
+        "src/click/core.py:1674-1676"
+      ],
+      "reason": "The fish completion script and its use of `COMP_CWORD` live in `shell_completion.py`, which is not shown.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:308",
+      "arm": "deepwiki",
+      "claim": "In `prompt()`, if `value_proc` is None, it is set to `convert_type(type, default)`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "unverifiable",
+      "lines": [
+        "src/click/core.py:3641-3652"
+      ],
+      "reason": "The body of `prompt()` is in `termui.py`, which is not shown.",
+      "jev_contradicted": 0.57
+    },
+    {
+      "id": "story:56",
+      "arm": "story",
+      "claim": "The `CliRunner.isolation` generator yields the three buffers.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:575"
+      ],
+      "reason": "The generator yields the tuple `(stream_mixer.stdout, stream_mixer.stderr, stream_mixer.output)`.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:223",
+      "arm": "deepwiki",
+      "claim": "`click.STRING` converts to Python `str` and is the default type.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/types.py:304-326",
+        "src/click/types.py:1413-1415"
+      ],
+      "reason": "`StringParamType.convert` returns `str` and STRING is documented/used as the implicit default type.",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "story:97",
+      "arm": "story",
+      "claim": "`Command.make_parser` constructs an `_OptionParser` and then asks every parameter to register itself with it.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/core.py:1252-1257"
+      ],
+      "reason": "`make_parser` creates `_OptionParser(ctx)` and calls `param.add_to_parser(parser, ctx)` for each param.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:327",
+      "arm": "deepwiki",
+      "claim": "The `Abort` exception is a subclass of `ClickException` and exits with status code 1.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "contradicted",
+      "lines": [
+        "src/click/exceptions.py:362-363"
+      ],
+      "reason": "`Abort` subclasses `RuntimeError`, not `ClickException`, and carries no exit code.",
+      "jev_contradicted": 0.84
+    },
+    {
+      "id": "deepwiki:454",
+      "arm": "deepwiki",
+      "claim": "`_find_binary_reader()` tests `stream.read(0)` to determine if the stream is binary and falls back to `stream.buffer`.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "supported",
+      "lines": [
+        "src/click/_compat.py:154-191"
+      ],
+      "reason": "`_is_binary_reader` uses `stream.read(0)` and `_find_binary_reader` falls back to the stream's `buffer` attribute.",
+      "jev_contradicted": 0.29
+    },
+    {
+      "id": "deepwiki:488",
+      "arm": "deepwiki",
+      "claim": "The Click test matrix includes a free-threaded Python 3.14t configuration on ubuntu-latest.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/click",
+      "label": "unverifiable",
+      "lines": [
+        ".github/workflows/tests.yaml:1-59"
+      ],
+      "reason": "The workflow file's contents are not shown, so the matrix entries cannot be checked.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "story:59",
+      "arm": "story",
+      "claim": "When no `prog_name` is given in `extra`, `CliRunner.invoke` falls back to `get_default_prog_name`, which returns the command's own name.",
+      "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/click",
+      "label": "supported",
+      "lines": [
+        "src/click/testing.py:681-684",
+        "src/click/testing.py:382-387"
+      ],
+      "reason": "On `KeyError` from `extra.pop(\"prog_name\")` it calls `get_default_prog_name`, which returns `cli.name or \"root\"`.",
+      "jev_contradicted": 0.18
+    }
+  ],
+  "cost": 4.11
+}
