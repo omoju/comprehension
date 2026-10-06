@@ -31,9 +31,9 @@ SCHEMA = {"type": "object", "properties": {"twins": {"type": "array", "items": {
 
 
 def main(name: str) -> int:
-    import anthropic
+    from common import client as make_client
 
-    client = anthropic.Anthropic()
+    client = make_client()
     items, cost = [], 0.0
     for arm in ARMS:
         data = json.loads((EVAL / "claims" / f"{name}.{arm}.json").read_text())

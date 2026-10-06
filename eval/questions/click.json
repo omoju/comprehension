@@ -1,0 +1,187 @@
+{
+  "repo": "click",
+  "commit": "06b2a678741131fd577ce170e23e5ca0aeba0309",
+  "questions": [
+    {
+      "id": "p1",
+      "kind": "path",
+      "question": "When Click parses `--count=3` for the README's `hello` command, in what order does `Command.parse_args` run the three parameters through `handle_parse_result`, and what rule produces that order?",
+      "key": "The order is [the automatic help option (name `_click_default_help`), `count`, `name`]. `iter_params_for_processing` sorts the declaration order with key `(not is_eager, invocation_index)`: the help option is `is_eager=True` so it sorts first; `count` is not eager but appears in the parser's invocation order at index 0, while `name` never appeared on the command line so its index is `float('inf')`, putting `count` before `name`.",
+      "lines": [
+        "src/click/core.py:168-192",
+        "src/click/core.py:1392-1400"
+      ],
+      "check": "import click\nfrom click.core import iter_params_for_processing\n\n@click.command()\n@click.option('--count', default=1, help='Number of greetings.')\n@click.option('--name', prompt='Your name', help='The person to greet.')\ndef hello(count, name):\n    pass\n\nctx = click.Context(hello, info_name='hello')\nparams = hello.get_params(ctx)\ncount = [p for p in params if p.name == 'count'][0]\norder = iter_params_for_processing([count], params)\nassert [p.name for p in order] == ['_click_default_help', 'count', 'name'], [p.name for p in order]\nhelp_opt = hello.get_help_option(ctx)\nassert help_opt.is_eager is True\nassert count.is_eager is False\n"
+    },
+    {
+      "id": "p2",
+      "kind": "path",
+      "question": "What exactly does the low-level option parser return for the token `--count=3` (the `opts` mapping, leftover args, and invocation order), before any type conversion happens?",
+      "key": "`_OptionParser.parse_args(['--count=3'])` returns `({'count': '3'}, [], [<Option count>])`: the value is still the string `'3'` (the `=` is split off by `_process_opts` and consumed by `_match_long_opt`/`_get_value_from_state`), there are no leftover args, and the order list contains only the `count` Option object. Conversion to the int 3 happens later in `Parameter.type_cast_value`.",
+      "lines": [
+        "src/click/parser.py:298-314",
+        "src/click/parser.py:470-500",
+        "src/click/core.py:1396-1397"
+      ],
+      "check": "import click\n\n@click.command()\n@click.option('--count', default=1)\n@click.option('--name', prompt='Your name')\ndef hello(count, name):\n    pass\n\nctx = click.Context(hello, info_name='hello')\nparser = hello.make_parser(ctx)\nopts, args, order = parser.parse_args(['--count=3'])\nassert opts == {'count': '3'}, opts\nassert args == []\nassert [p.name for p in order] == ['count']\n"
+    },
+    {
+      "id": "p3",
+      "kind": "path",
+      "question": "For this run, what `ParameterSource` does the context record for `count`, for `name`, and for the automatic help option, and why does `name` get that source?",
+      "key": "`count` -> `ParameterSource.COMMANDLINE` (the parser produced a value), `name` -> `ParameterSource.PROMPT`, and `_click_default_help` -> `ParameterSource.DEFAULT`. `name` is PROMPT because `Option.consume_value` found no command-line value, no envvar and no default-map entry (source was DEFAULT, i.e. >= DEFAULT_MAP), the option has `prompt='Your name'` with `prompt_required=True`, and parsing is not resilient, so it calls `prompt_for_value` and overwrites the source with PROMPT; the value returned is the string 'Click'.",
+      "lines": [
+        "src/click/core.py:3769-3780",
+        "src/click/core.py:2586-2632",
+        "src/click/core.py:2857-2863"
+      ],
+      "check": "import click\nfrom click.core import ParameterSource\nfrom click.testing import CliRunner\n\nseen = {}\n\n@click.command()\n@click.option('--count', default=1)\n@click.option('--name', prompt='Your name')\n@click.pass_context\ndef hello(ctx, count, name):\n    seen['count'] = ctx.get_parameter_source('count')\n    seen['name'] = ctx.get_parameter_source('name')\n    seen['help'] = ctx.get_parameter_source('_click_default_help')\n    seen['value'] = name\n\nres = CliRunner().invoke(hello, ['--count=3'], input='Click\\n')\nassert res.exit_code == 0, res.output\nassert seen['count'] is ParameterSource.COMMANDLINE\nassert seen['name'] is ParameterSource.PROMPT\nassert seen['help'] is ParameterSource.DEFAULT\nassert seen['value'] == 'Click'\n"
+    },
+    {
+      "id": "p4",
+      "kind": "path",
+      "question": "Neither option declares a `type`. What ParamType ends up on `--count` and on `--name`, where does it come from, and what Python value does the callback receive for `count`?",
+      "key": "`--count` gets `click.INT` (an `IntParamType`, `name == 'integer'`), inferred by `types.convert_type(None, default)` from the default value `1` in `Parameter.__init__`. `--name` has no default, so `convert_type(None, UNSET)` falls through to `click.STRING` (`StringParamType`). The callback receives `count` as the int `3` (converted from the parser's string `'3'`) and `name` as the str `'Click'`.",
+      "lines": [
+        "src/click/core.py:2389",
+        "src/click/types.py:1356-1397",
+        "src/click/core.py:2657-2660"
+      ],
+      "check": "import click\nfrom click.testing import CliRunner\n\nseen = {}\n\n@click.command()\n@click.option('--count', default=1)\n@click.option('--name', prompt='Your name')\ndef hello(count, name):\n    seen['count'] = count\n    seen['name'] = name\n\ncount_p = [p for p in hello.params if p.name == 'count'][0]\nname_p = [p for p in hello.params if p.name == 'name'][0]\nassert isinstance(count_p.type, click.types.IntParamType), count_p.type\nassert count_p.type.name == 'integer'\nassert isinstance(name_p.type, click.types.StringParamType), name_p.type\nres = CliRunner().invoke(hello, ['--count=3'], input='Click\\n')\nassert res.exit_code == 0, res.output\nassert seen['count'] == 3 and type(seen['count']) is int\nassert seen['name'] == 'Click'\n"
+    },
+    {
+      "id": "p5",
+      "kind": "path",
+      "question": "If the same invocation used `--count=x` instead of `--count=3` (same stdin 'Click\\n'), what happens: is the user still prompted for a name, what is the exit code, and what is printed?",
+      "key": "No prompt is shown. `count` is processed before `name` (eager help first, then `count` because it appeared on the command line), so `IntParamType.convert` fails first and raises `BadParameter` (a `UsageError`), which `main` shows and exits with code 2. The output contains the usage line plus `Error: Invalid value for '--count': 'x' is not a valid integer.` on stderr, and 'Your name' never appears.",
+      "lines": [
+        "src/click/types.py:598-610",
+        "src/click/exceptions.py:68-111",
+        "src/click/core.py:1625-1629"
+      ],
+      "check": "import click\nfrom click.testing import CliRunner\n\n@click.command()\n@click.option('--count', default=1)\n@click.option('--name', prompt='Your name')\ndef hello(count, name):\n    click.echo(f'Hello, {name}!')\n\nres = CliRunner().invoke(hello, ['--count=x'], input='Click\\n')\nassert res.exit_code == 2, res.exit_code\nassert 'Your name' not in res.output, res.output\nassert \"Invalid value for '--count'\" in res.stderr, res.stderr\nassert 'is not a valid integer' in res.stderr\n"
+    },
+    {
+      "id": "p6",
+      "kind": "path",
+      "question": "The trace shows a third parameter being created during parsing. Under what name is the automatic `--help` option stored, is it in `hello.params`, and which keys end up in `ctx.params`?",
+      "key": "`Command.get_help_option` lazily builds it via the `help_option` decorator with the reserved storage name `_HELP_OPTION_STORAGE_NAME = '_click_default_help'`, then pops it off `self.params` and caches it in `self._help_option`, so it is not part of `hello.params` (it is only appended by `get_params`). It has `opts == ['--help']`, `expose_value=False` and `is_eager=True`, so it never writes to `ctx.params`; `ctx.params` holds exactly `{'count', 'name'}`.",
+      "lines": [
+        "src/click/core.py:59-61",
+        "src/click/core.py:1218-1250",
+        "src/click/core.py:2909-2912"
+      ],
+      "check": "import click\nfrom click.testing import CliRunner\n\nseen = {}\n\n@click.command()\n@click.option('--count', default=1)\n@click.option('--name', prompt='Your name')\n@click.pass_context\ndef hello(ctx, count, name):\n    seen['params'] = sorted(ctx.params)\n\nctx = click.Context(hello, info_name='hello')\nhelp_opt = hello.get_help_option(ctx)\nassert help_opt.name == '_click_default_help'\nassert help_opt.opts == ['--help']\nassert help_opt.expose_value is False\nassert help_opt not in hello.params\nassert [p.name for p in hello.params] == ['count', 'name']\nres = CliRunner().invoke(hello, ['--count=3'], input='Click\\n')\nassert res.exit_code == 0, res.output\nassert seen['params'] == ['count', 'name'], seen['params']\n"
+    },
+    {
+      "id": "p7",
+      "kind": "path",
+      "question": "How does this successful run terminate, and what do `Result.exit_code`, `Result.exception`, `Result.return_value` and `Result.exc_info` hold afterwards?",
+      "key": "After the callback returns, `main` (standalone_mode=True) calls `ctx.exit()`, which closes the context and raises `Exit(0)`; the `except Exit` handler sets `exit_code = 0` and the teardown calls `sys.exit(0)`. `CliRunner.invoke` catches that `SystemExit`: since the code is 0 no exception is recorded. So `exit_code == 0`, `exception is None`, `return_value is None` (standalone mode never returns the callback's value), and `exc_info[0] is SystemExit` with `exc_info[1].code == 0`.",
+      "lines": [
+        "src/click/core.py:1585-1611",
+        "src/click/core.py:845-853",
+        "src/click/testing.py:686-710"
+      ],
+      "check": "import click\nfrom click.testing import CliRunner\n\n@click.command()\n@click.option('--count', default=1)\n@click.option('--name', prompt='Your name')\ndef hello(count, name):\n    for _ in range(count):\n        click.echo(f'Hello, {name}!')\n\nres = CliRunner().invoke(hello, ['--count=3'], input='Click\\n')\nassert res.exit_code == 0\nassert res.exception is None\nassert res.return_value is None\nassert res.exc_info is not None and res.exc_info[0] is SystemExit\nassert res.exc_info[1].code == 0\n"
+    },
+    {
+      "id": "p8",
+      "kind": "path",
+      "question": "The expected output starts with `Your name: Click`. Which stream carries the prompt and the typed value during the test, and how do `Result.stdout`, `Result.stderr` and `Result.output` compare for this run?",
+      "key": "During isolation `CliRunner` replaces `termui.visible_prompt_func` with its `visible_input`, which writes the prompt and then the echoed value plus a newline to `sys.stdout` (the patched `_NamedTextIOWrapper` over `StreamMixer.stdout`). Nothing is written to stderr, so `stderr == ''` and `stdout == output == 'Your name: Click\\nHello, Click!\\nHello, Click!\\nHello, Click!\\n'` (the `output` stream is the interleaved mix of both via `BytesIOCopy`).",
+      "lines": [
+        "src/click/testing.py:474-483",
+        "src/click/testing.py:138-154",
+        "src/click/testing.py:282-310"
+      ],
+      "check": "import click\nfrom click.testing import CliRunner\n\n@click.command()\n@click.option('--count', default=1)\n@click.option('--name', prompt='Your name')\ndef hello(count, name):\n    for _ in range(count):\n        click.echo(f'Hello, {name}!')\n\nres = CliRunner().invoke(hello, ['--count=3'], input='Click\\n')\nexpected = 'Your name: Click\\nHello, Click!\\nHello, Click!\\nHello, Click!\\n'\nassert res.stderr == ''\nassert res.stdout == expected, repr(res.stdout)\nassert res.output == expected\n"
+    },
+    {
+      "id": "g1",
+      "kind": "general",
+      "question": "Several options may deliberately share one storage name (a \"feature switch\"). What rule decides which option's value ends up in `ctx.params[name]`, and what breaks the tie when two of them both fall back to their defaults?",
+      "key": "`Parameter.handle_parse_result` arbitrates each slot. It snapshots the existing value, the existing `ParameterSource` and whether the previous writer had an explicit default, then writes only if: the slot is still `UNSET`, or the new source is strictly more explicit (`source < existing_source` \u2014 `ParameterSource` is an IntEnum ordered PROMPT < COMMANDLINE < ENVIRONMENT < DEFAULT_MAP < DEFAULT), or the sources are equal and it is not the case that both are `DEFAULT` while the existing writer passed `default=` explicitly and the new one did not (`auto_would_downgrade_explicit`). A loser restores the winner's parameter source instead of overwriting it. The explicitness tie-break uses `Parameter._default_explicit`, which is `default is not UNSET` captured at construction time, so the option that was declared with `default=True` wins over sibling flags that got an auto-derived default.",
+      "lines": [
+        "src/click/core.py:2892-2920",
+        "src/click/core.py:195-231",
+        "src/click/core.py:2404-2410"
+      ],
+      "check": "import click\nfrom click.testing import CliRunner\n\n@click.command()\n@click.option('--upper', 'transformation', flag_value='upper', default=True)\n@click.option('--lower', 'transformation', flag_value='lower')\ndef cli(transformation):\n    click.echo(transformation)\n\nr = CliRunner()\nassert r.invoke(cli, []).output == 'upper\\n'\nassert r.invoke(cli, ['--lower']).output == 'lower\\n'\nassert r.invoke(cli, ['--upper']).output == 'upper\\n'\n"
+    },
+    {
+      "id": "g2",
+      "kind": "general",
+      "question": "Click uses an internal `UNSET` sentinel to mean \"no value at all\". What guarantee does the library make about users ever seeing that sentinel, and where is it enforced?",
+      "key": "`UNSET` is an implementation detail that must never reach user code. It is converted to `None` at every boundary: `Command.parse_args` sweeps `ctx.params` after all parameters are handled and replaces every remaining `UNSET` with `None`; `Parameter.process_value` passes `None` (not `UNSET`) to a parameter callback and temporarily rewrites other `UNSET` entries of `ctx.params` to `None` while the callback runs (restoring them afterwards); `Context.invoke` turns an `UNSET` default into `None` before type casting; `Parameter._hide_unset` maps it to `None` for `to_info_dict` and for prompt defaults. The sweep is deliberately deferred until after parsing so that `UNSET` can still act as \"missing\" while several parameters compete for the same name.",
+      "lines": [
+        "src/click/core.py:1402-1413",
+        "src/click/core.py:2708-2772",
+        "src/click/core.py:915-927",
+        "src/click/core.py:2440-2446"
+      ],
+      "check": "import click\nfrom click.testing import CliRunner\n\nseen = {}\n\n@click.command()\n@click.option('--x')\n@click.option('--y', callback=lambda ctx, p, v: seen.setdefault('cb', v))\ndef cli(x, y):\n    seen['x'] = x\n\nres = CliRunner().invoke(cli, [])\nassert res.exit_code == 0, res.output\nassert seen['x'] is None\nassert seen['cb'] is None\n"
+    },
+    {
+      "id": "g3",
+      "kind": "general",
+      "question": "What does `Command.get_params` check about parameter names and option spellings, when do those checks run, and what happens when a check trips?",
+      "key": "Inside an `if __debug__:` block (so the checks vanish under `python -O`), `get_params` builds the full list (declared params plus the help option) and emits `warnings.warn(..., stacklevel=3)` \u2014 a `UserWarning`, not an error \u2014 for: (1) any option spelling appearing in more than one parameter (\"The parameter X is used more than once...\"), (2) a user parameter sharing the storage name of the automatic help option (\"The name ... is reserved for the automatic help option\"), and (3) a name shared between an `Argument` and another parameter (\"... will overwrite each other's value during parsing\"). Options sharing a name with each other are allowed on purpose (feature switches) and are not warned about. The warnings are re-emitted every time `get_params` is called, and parsing continues regardless.",
+      "lines": [
+        "src/click/core.py:1128-1182"
+      ],
+      "check": "import warnings\nimport click\n\n@click.command()\n@click.argument('foo')\n@click.option('--foo', 'foo')\ndef cli(foo):\n    pass\n\nctx = click.Context(cli)\nwith warnings.catch_warnings(record=True) as w:\n    warnings.simplefilter('always')\n    cli.get_params(ctx)\nmsgs = [str(x.message) for x in w]\nassert any('unique name' in m for m in msgs), msgs\n\n@click.command()\n@click.option('--a', 'first')\n@click.option('--a', 'second')\ndef cli2(first, second):\n    pass\n\nwith warnings.catch_warnings(record=True) as w2:\n    warnings.simplefilter('always')\n    cli2.get_params(click.Context(cli2))\nassert any('used more than once' in str(x.message) for x in w2)\n"
+    },
+    {
+      "id": "g4",
+      "kind": "general",
+      "question": "`CliRunner` has two capture strategies. What does each capture, what are the restrictions, and what is the observable difference for code that calls `sys.stdout.fileno()`?",
+      "key": "`capture='sys'` (the default) only redirects the Python-level `sys.stdout`/`sys.stderr` to `_NamedTextIOWrapper`s over `BytesIO` buffers; `_original_fd` stays `-1`, so `fileno()` falls through to `TextIOWrapper` and raises `io.UnsupportedOperation` \u2014 which also means user code cannot `os.dup2` over the host test runner's real stdout. `capture='fd'` additionally starts `_FDCapture` on file descriptors 1 and 2, dup2-ing them to a temporary file so output from stale stream references, C extensions and subprocesses is captured too; in that mode `sys.stdout._original_fd` is set to the saved original fd so `fileno()` keeps working for consumers like faulthandler, and the captured bytes are merged into the stdout/stderr buffers in the `finally` block. `capture='fd'` raises `ValueError` on Windows, and any other value raises `ValueError` in `__init__`. If starting the fd capture raises `OSError`, it silently degrades to no fd capture.",
+      "lines": [
+        "src/click/testing.py:317-381",
+        "src/click/testing.py:653-672",
+        "src/click/testing.py:711-728",
+        "src/click/testing.py:156-200"
+      ],
+      "check": "import io\nimport sys\nimport click\nfrom click.testing import CliRunner\n\ntry:\n    CliRunner(capture='bogus')\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError('expected ValueError')\n\nseen = {}\n\n@click.command()\ndef cli():\n    try:\n        sys.stdout.fileno()\n        seen['r'] = 'ok'\n    except io.UnsupportedOperation:\n        seen['r'] = 'unsupported'\n\nCliRunner().invoke(cli)\nassert seen['r'] == 'unsupported', seen\n"
+    },
+    {
+      "id": "g5",
+      "kind": "general",
+      "question": "Describe `Command.main`'s error policy: which exceptions it handles in standalone mode, the exit code each produces, and how behaviour changes with `standalone_mode=False`.",
+      "key": "In standalone mode `main` catches: `Exit` (uses `e.exit_code`, no message), `Abort` (prints \"Aborted!\" to stderr, exit code 1), `EOFError`/`KeyboardInterrupt` (echoes a blank line to stderr, then reports \"Aborted!\" with exit code 1), `ClickException` (calls `e.show()` and uses `e.exit_code` \u2014 1 for `ClickException`, 2 for `UsageError` and its subclasses), and `OSError` with `errno.EPIPE` (wraps stdout/stderr in `_PacifyFlushWrapper` and exits 1; other OSErrors are re-raised). Each handler only records a `report` callable and an exit code; the teardown writes the message then calls `sys.exit(exit_code)`, and an outer handler catches a late `EOFError`/`KeyboardInterrupt` so the message may be lost but the intended exit code still wins. With `standalone_mode=False`, `Exit` returns its code, `Abort`/`ClickException` propagate to the caller, `EOFError`/`KeyboardInterrupt` are converted to `Abort`, and the return value of `invoke` is returned instead of exiting.",
+      "lines": [
+        "src/click/core.py:1576-1645",
+        "src/click/exceptions.py:35-77"
+      ],
+      "check": "import click\nfrom click.testing import CliRunner\n\n@click.command()\ndef cli():\n    raise click.ClickException('boom')\n\nres = CliRunner().invoke(cli, [])\nassert res.exit_code == 1\nassert 'Error: boom' in res.stderr\n\ntry:\n    cli.main([], 'cli', standalone_mode=False)\nexcept click.ClickException as e:\n    assert e.message == 'boom'\nelse:\n    raise AssertionError('should have propagated')\n\n@click.command()\ndef bad():\n    raise click.UsageError('nope')\n\nassert CliRunner().invoke(bad, []).exit_code == 2\n"
+    },
+    {
+      "id": "g6",
+      "kind": "general",
+      "question": "In what order does `Parameter.consume_value` look for a value, and what exactly counts as \"the environment variable is not set\"?",
+      "key": "Precedence, highest first: the parser's command-line value (`ParameterSource.COMMANDLINE`), then the environment variable (`ENVIRONMENT`), then `ctx.default_map` (`DEFAULT_MAP`, consulted via `lookup_default`/`_default_map_has` so a stored `UNSET` counts as absent, and a string is split for multi-value params), then the parameter's own default (`DEFAULT`); if nothing is found the value stays the `UNSET` sentinel. `resolve_envvar_value` treats both a missing variable and a variable set to the empty string as unset (`if rv:`), and with a sequence of envvars it returns the first non-empty one. For `Option`, `resolve_envvar_value` additionally falls back to `{ctx.auto_envvar_prefix}_{NAME}` when `allow_from_autoenv` is true.",
+      "lines": [
+        "src/click/core.py:2586-2632",
+        "src/click/core.py:2774-2833",
+        "src/click/core.py:3654-3676"
+      ],
+      "check": "import click\nfrom click.testing import CliRunner\n\n@click.command()\n@click.option('--x', envvar='X_VAL', default='d')\ndef cli(x):\n    click.echo(x)\n\nr = CliRunner()\nassert r.invoke(cli, [], env={'X_VAL': 'e'}).output == 'e\\n'\nassert r.invoke(cli, [], env={'X_VAL': ''}).output == 'd\\n'\nassert r.invoke(cli, ['--x', 'c'], env={'X_VAL': 'e'}).output == 'c\\n'\n"
+    },
+    {
+      "id": "g7",
+      "kind": "general",
+      "question": "Why can reading `Option.default` directly mislead you, and what does `Option.get_default` do differently?",
+      "key": "`Option.__init__` deliberately keeps the raw constructor value, so `default` stays the `UNSET` sentinel when the user passed nothing (that is what `_default_explicit`/feature-switch arbitration relies on); the only eager coercion is `default = 0` for `count` options. The auto-derived defaults are applied lazily by `_resolve_lazy_default`, called from `get_default` and from `to_info_dict`: `UNSET` becomes `()` for a non-required, non-prompted multiple flag and `False` for a non-required boolean flag, and a literal `True` becomes `flag_activation_value` (i.e. `flag_value`) for a non-boolean flag, while boolean flags keep `True`. `get_default` first consults `Context.lookup_default` (the default map), then the local default, and only invokes a callable when `_resolve_lazy_default` passed the value through unchanged \u2014 so a `flag_value` that happens to be a class or enum is never called.",
+      "lines": [
+        "src/click/core.py:3112-3124",
+        "src/click/core.py:3227-3249",
+        "src/click/core.py:3295-3327",
+        "src/click/core.py:2550-2581"
+      ],
+      "check": "import click\nfrom click._utils import UNSET\n\nopt = click.Option(['--f'], is_flag=True)\nctx = click.Context(click.Command('x'))\nassert opt.default is UNSET\nassert opt.get_default(ctx) is False\nassert opt.to_info_dict()['default'] is False\n\nmulti = click.Option(['--m'], is_flag=True, multiple=True)\nassert multi.default is UNSET\nassert multi.get_default(ctx) == ()\n\nnonbool = click.Option(['--n'], flag_value='on', default=True)\nassert nonbool.get_default(ctx) == 'on'\n"
+    }
+  ],
+  "dropped": [],
+  "cost": 1.38
+}

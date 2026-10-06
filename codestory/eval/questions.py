@@ -114,12 +114,12 @@ def write_questions(client, name: str) -> dict:
 
 
 if __name__ == "__main__":
-    import anthropic
+    from common import client as make_client
 
     if len(sys.argv) < 2:
         print(__doc__)
         sys.exit(2)
-    client = anthropic.Anthropic()
+    client = make_client()
     for name in sys.argv[1:]:
         r = write_questions(client, name)
         kinds = {k: sum(1 for q in r["questions"] if q["kind"] == k) for k in ("path", "general")}

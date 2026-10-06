@@ -1,0 +1,187 @@
+{
+  "repo": "httpx",
+  "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+  "questions": [
+    {
+      "id": "p1",
+      "kind": "path",
+      "question": "The client is built with `base_url=\"http://testserver\"` and the request is made with the relative url `\"/\"`. What does `_enforce_trailing_slash` do to the base URL here, and what URL does the outgoing request end up with?",
+      "key": "`_enforce_trailing_slash` checks `url.raw_path.endswith(b\"/\")`; for `http://testserver` the `raw_path` property falls back to `\"/\"` when the path component is empty, so the check already passes and the URL is returned unchanged \u2014 `client.base_url` is `URL('http://testserver')` (str == 'http://testserver', raw_path == b'/'). Then `_merge_url(\"/\")` sees a relative URL and concatenates `base_url.raw_path` (b'/') with the merge URL's raw_path stripped of leading slashes ('' here), producing `base_url.copy_with(raw_path=b'/')`, i.e. the request URL is `URL('http://testserver/')` (str 'http://testserver/').",
+      "lines": [
+        "httpx/_client.py:234-237",
+        "httpx/_client.py:391-411",
+        "httpx/_urls.py:282-297"
+      ],
+      "check": "import httpx\n\ndef app(environ, start_response):\n    body = b'Hello World!'\n    start_response('200 OK', [('Content-Type', 'text/plain; charset=utf-8'), ('Content-Length', str(len(body)))])\n    return [body]\n\nc = httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver')\nassert str(c.base_url) == 'http://testserver', str(c.base_url)\nassert c.base_url.raw_path == b'/'\nr = c.get('/')\nassert str(r.request.url) == 'http://testserver/', str(r.request.url)\nc.close()\n"
+    },
+    {
+      "id": "p2",
+      "kind": "path",
+      "question": "List, in order, the raw header keys on the request that is actually sent in this scenario, and say whether a `Content-Length` header is present and why.",
+      "key": "The raw header keys are, in order: b'Host', b'Accept', b'Accept-Encoding', b'Connection', b'User-Agent', b'X-Custom'. The client defaults (Accept, Accept-Encoding, Connection, User-Agent) are merged first and the per-request `X-Custom: value` is appended by `Headers.update`; `Request._prepare` then prepends the auto `Host: testserver` header (taken from `url.netloc`). No `Content-Length` is added, because the auto `Content-Length: 0` header is only added for methods POST/PUT/PATCH, and the empty-body encoding returns no content headers.",
+      "lines": [
+        "httpx/_client.py:305-316",
+        "httpx/_client.py:424-431",
+        "httpx/_models.py:441-460",
+        "httpx/_content.py:110-114"
+      ],
+      "check": "import httpx\n\ndef app(environ, start_response):\n    body = b'Hello World!'\n    start_response('200 OK', [('Content-Type', 'text/plain; charset=utf-8'), ('Content-Length', str(len(body)))])\n    return [body]\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver') as c:\n    r = c.get('/', headers={'X-Custom': 'value'})\nkeys = [k for k, v in r.request.headers.raw]\nassert keys == [b'Host', b'Accept', b'Accept-Encoding', b'Connection', b'User-Agent', b'X-Custom'], keys\nassert 'Content-Length' not in r.request.headers\nassert r.request.headers['Host'] == 'testserver'\n"
+    },
+    {
+      "id": "p3",
+      "kind": "path",
+      "question": "Inside `WSGITransport.handle_request`, what values does the constructed WSGI `environ` contain for SERVER_NAME, SERVER_PORT, PATH_INFO, QUERY_STRING, SCRIPT_NAME, REMOTE_ADDR, wsgi.url_scheme, and how does the request's `X-Custom: value` header appear?",
+      "key": "SERVER_NAME='testserver', SERVER_PORT='80' (url.port is None, so the scheme default from {'http':80,'https':443} is used), PATH_INFO='/', QUERY_STRING='' (url.query decoded as ascii), SCRIPT_NAME='' (default), REMOTE_ADDR='127.0.0.1' (default), wsgi.url_scheme='http', SERVER_PROTOCOL='HTTP/1.1'. Each request header is upper-cased with '-' replaced by '_' and prefixed with 'HTTP_' (except CONTENT_TYPE/CONTENT_LENGTH), so `X-Custom: value` becomes environ['HTTP_X_CUSTOM'] == 'value' (and Host becomes HTTP_HOST='testserver').",
+      "lines": [
+        "httpx/_transports/wsgi.py:91-117"
+      ],
+      "check": "import httpx\n\ncaptured = {}\n\ndef app(environ, start_response):\n    captured.update(environ)\n    body = b'Hello World!'\n    start_response('200 OK', [('Content-Type', 'text/plain; charset=utf-8'), ('Content-Length', str(len(body)))])\n    return [body]\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver') as c:\n    c.get('/', headers={'X-Custom': 'value'})\nassert captured['SERVER_NAME'] == 'testserver'\nassert captured['SERVER_PORT'] == '80'\nassert captured['PATH_INFO'] == '/'\nassert captured['QUERY_STRING'] == ''\nassert captured['SCRIPT_NAME'] == ''\nassert captured['REMOTE_ADDR'] == '127.0.0.1'\nassert captured['wsgi.url_scheme'] == 'http'\nassert captured['SERVER_PROTOCOL'] == 'HTTP/1.1'\nassert captured['HTTP_X_CUSTOM'] == 'value'\nassert captured['HTTP_HOST'] == 'testserver'\n"
+    },
+    {
+      "id": "p4",
+      "kind": "path",
+      "question": "No `timeout` was passed anywhere in this scenario. What ends up in `request.extensions` for the request, and where does that value come from?",
+      "key": "`build_request` sees `timeout=USE_CLIENT_DEFAULT`, so it uses the client's `self.timeout` (the default `Timeout(timeout=5.0)` from DEFAULT_TIMEOUT_CONFIG) and stores `timeout.as_dict()` as a request extension. So `request.extensions == {'timeout': {'connect': 5.0, 'read': 5.0, 'write': 5.0, 'pool': 5.0}}`. (WSGITransport ignores it, but it is still attached.)",
+      "lines": [
+        "httpx/_client.py:370-377",
+        "httpx/_config.py:132-138",
+        "httpx/_config.py:246"
+      ],
+      "check": "import httpx\n\ndef app(environ, start_response):\n    start_response('200 OK', [('Content-Type', 'text/plain'), ('Content-Length', '12')])\n    return [b'Hello World!']\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver') as c:\n    r = c.get('/')\nassert r.request.extensions == {'timeout': {'connect': 5.0, 'read': 5.0, 'write': 5.0, 'pool': 5.0}}, r.request.extensions\n"
+    },
+    {
+      "id": "p5",
+      "kind": "path",
+      "question": "No `auth` is configured on the client and the URL has no userinfo. What object does `_build_request_auth` return for this request, and what effect does it have on the request?",
+      "key": "It returns a plain `httpx.Auth()` instance (not None): `self._auth` is None, and `request.url.username`/`request.url.password` are both empty strings, so neither the client auth nor BasicAuth branch is taken and `Auth()` is returned. The base `Auth.auth_flow` just yields the request unchanged, so no `Authorization` header is added and exactly one request is sent.",
+      "lines": [
+        "httpx/_client.py:457-473",
+        "httpx/_auth.py:38-60"
+      ],
+      "check": "import httpx\n\ndef app(environ, start_response):\n    start_response('200 OK', [('Content-Type', 'text/plain'), ('Content-Length', '12')])\n    return [b'Hello World!']\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver') as c:\n    req = c.build_request('GET', '/')\n    auth = c._build_request_auth(req)\n    assert type(auth) is httpx.Auth, type(auth)\n    r = c.get('/')\nassert 'Authorization' not in r.request.headers\n"
+    },
+    {
+      "id": "p6",
+      "kind": "path",
+      "question": "The app replies with `Content-Type: text/plain; charset=utf-8`. Which encoding does `response.text` use, and would it change if the client had been created with `default_encoding=\"shift-jis\"`?",
+      "key": "`response.encoding` is 'utf-8', taken from the charset parameter of the Content-Type header via `charset_encoding`/`_parse_content_type_charset`; `default_encoding` is only consulted when the charset is absent or is not a known codec. So with `default_encoding=\"shift-jis\"` the encoding would still be 'utf-8' for this response; it would only become 'shift-jis' if the server sent no charset (e.g. `Content-Type: text/plain`).",
+      "lines": [
+        "httpx/_models.py:652-697",
+        "httpx/_models.py:641-650"
+      ],
+      "check": "import httpx\n\ndef app_charset(environ, start_response):\n    start_response('200 OK', [('Content-Type', 'text/plain; charset=utf-8'), ('Content-Length', '12')])\n    return [b'Hello World!']\n\ndef app_nocharset(environ, start_response):\n    start_response('200 OK', [('Content-Type', 'text/plain'), ('Content-Length', '12')])\n    return [b'Hello World!']\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app_charset), base_url='http://testserver', default_encoding='shift-jis') as c:\n    r = c.get('/')\nassert r.encoding == 'utf-8', r.encoding\nassert r.text == 'Hello World!'\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app_nocharset), base_url='http://testserver', default_encoding='shift-jis') as c:\n    r2 = c.get('/')\nassert r2.encoding == 'shift-jis', r2.encoding\n"
+    },
+    {
+      "id": "p7",
+      "kind": "path",
+      "question": "In the run, `_send_handling_redirects` returns the first response immediately. Why? And what would the client return instead if the same WSGI app replied with `302 Found` and `Location: /other`?",
+      "key": "It returns immediately because `response.has_redirect_location` is False \u2014 the status is 200, which is not one of 301/302/303/307/308 (and there is no Location header). With a `302 Found` + `Location: /other` reply and the client's default `follow_redirects=False`, the loop builds the redirect request, sets `response.next_request` to a GET for `http://testserver/other`, and returns the 302 response unfollowed, with `response.history == []`. (With `follow_redirects=True` it would follow, up to `max_redirects=20`, otherwise raising `TooManyRedirects`.)",
+      "lines": [
+        "httpx/_models.py:771-792",
+        "httpx/_client.py:964-999",
+        "httpx/_client.py:517-544"
+      ],
+      "check": "import httpx\n\ndef app(environ, start_response):\n    if environ['PATH_INFO'] == '/':\n        start_response('302 Found', [('Location', '/other'), ('Content-Length', '0')])\n        return [b'']\n    start_response('200 OK', [('Content-Type', 'text/plain'), ('Content-Length', '12')])\n    return [b'Hello World!']\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver') as c:\n    r = c.get('/')\n    assert r.status_code == 302\n    assert r.history == []\n    assert str(r.next_request.url) == 'http://testserver/other', str(r.next_request.url)\n    assert r.next_request.method == 'GET'\n    r2 = c.get('/', follow_redirects=True)\n    assert r2.status_code == 200 and r2.text == 'Hello World!'\n    assert [h.status_code for h in r2.history] == [302]\n"
+    },
+    {
+      "id": "p8",
+      "kind": "path",
+      "question": "The WSGI result in this scenario is `[b\"Hello World!\"]`. What does `WSGIByteStream` do if the application instead yields leading empty chunks (e.g. `[b\"\", b\"\", b\"Hello World!\"]`), and when does `response.elapsed` get set?",
+      "key": "`WSGIByteStream.__init__` passes the result through `_skip_leading_empty_chunks`, which iterates until the first truthy chunk and chains it back on, so leading empty byte strings are dropped and the stream yields only b'Hello World!' \u2014 `response.text` is still 'Hello World!'. `response.elapsed` is set by `BoundSyncStream.close()` (elapsed = perf_counter() - start, as a datetime.timedelta), which runs when the response is closed, i.e. after `response.read()` completes the iteration in `Client.send(stream=False)`; accessing `.elapsed` before that raises RuntimeError.",
+      "lines": [
+        "httpx/_transports/wsgi.py:22-41",
+        "httpx/_client.py:139-159",
+        "httpx/_models.py:578-593"
+      ],
+      "check": "import datetime\nimport httpx\n\ndef app(environ, start_response):\n    start_response('200 OK', [('Content-Type', 'text/plain; charset=utf-8'), ('Content-Length', '12')])\n    return [b'', b'', b'Hello World!']\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver') as c:\n    r = c.get('/')\nassert r.text == 'Hello World!'\nassert r.content == b'Hello World!'\nassert isinstance(r.elapsed, datetime.timedelta) and r.elapsed.total_seconds() >= 0\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver') as c2:\n    with c2.stream('GET', '/') as resp:\n        chunks = list(resp.iter_raw())\n        assert chunks == [b'Hello World!'], chunks\n"
+    },
+    {
+      "id": "g1",
+      "kind": "general",
+      "question": "What are the rules around a Client's lifecycle state: when does sending or entering the context manager raise, and with what messages?",
+      "key": "`BaseClient` tracks `ClientState` UNOPENED/OPENED/CLOSED. `Client.send()` raises `RuntimeError(\"Cannot send a request, as the client has been closed.\")` if the state is CLOSED; otherwise it flips the state to OPENED (so a client can be used without a `with` block). `Client.__enter__` raises RuntimeError if the state is not UNOPENED: \"Cannot open a client instance more than once.\" when OPENED, and \"Cannot reopen a client instance, once it has been closed.\" when CLOSED \u2014 so a client that already sent a request cannot later be entered as a context manager, and a closed client can never be reopened. `close()`/`__exit__` set CLOSED and close the main transport plus every mounted transport. The async variants (`AsyncClient.send`, `__aenter__`, `aclose`) behave identically.",
+      "lines": [
+        "httpx/_client.py:125-136",
+        "httpx/_client.py:900-903",
+        "httpx/_client.py:1263-1304",
+        "httpx/_client.py:1615-1618",
+        "httpx/_client.py:1978-2019"
+      ],
+      "check": "import httpx\n\ndef app(environ, start_response):\n    start_response('200 OK', [('Content-Length', '0')])\n    return [b'']\n\nc = httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver')\nc.get('/')\ntry:\n    with c:\n        pass\n    raise AssertionError('expected RuntimeError')\nexcept RuntimeError as exc:\n    assert 'more than once' in str(exc), str(exc)\nc.close()\ntry:\n    c.get('/')\n    raise AssertionError('expected RuntimeError')\nexcept RuntimeError as exc:\n    assert str(exc) == 'Cannot send a request, as the client has been closed.'\n"
+    },
+    {
+      "id": "g2",
+      "kind": "general",
+      "question": "What happens if a user passes `cookies=...` to a per-request method such as `client.get(url, cookies=...)` rather than setting them on the client, and why was it designed that way?",
+      "key": "`Client.request()` (and `AsyncClient.request()`) emits a `DeprecationWarning` with the message \"Setting per-request cookies=<...> is being deprecated, because the expected behaviour on cookie persistence is ambiguous. Set cookies directly on the client instance instead.\" (stacklevel=2) whenever `cookies is not None`. The cookies are still merged with the client's cookie jar via `_merge_cookies` and applied to the request, but the behaviour is deprecated because redirects/auth flows rebuild requests from the client cookie store (`_build_redirect_request` uses `Cookies(self.cookies)` and `_redirect_headers` pops any existing Cookie header), so per-request cookies would silently not persist.",
+      "lines": [
+        "httpx/_client.py:804-810",
+        "httpx/_client.py:1519-1525",
+        "httpx/_client.py:413-422",
+        "httpx/_client.py:484-492",
+        "httpx/_client.py:567-569"
+      ],
+      "check": "import warnings\nimport httpx\n\ndef app(environ, start_response):\n    start_response('200 OK', [('Content-Length', '0')])\n    return [b'']\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver') as c:\n    with warnings.catch_warnings(record=True) as w:\n        warnings.simplefilter('always')\n        c.get('/', cookies={'a': 'b'})\n    assert any(issubclass(x.category, DeprecationWarning) and 'per-request cookies' in str(x.message) for x in w)\n"
+    },
+    {
+      "id": "g3",
+      "kind": "general",
+      "question": "Which headers does httpx strip or rewrite when it builds a redirect request, and under exactly which conditions is the `Authorization` header preserved across a redirect?",
+      "key": "`_redirect_headers` copies the original request headers and then: if the redirect target is not the same origin (`_same_origin`: same scheme, host and `_port_or_default`), it pops `Authorization` unless the redirect is a plain HTTP\u2192HTTPS upgrade of the same host (`_is_https_redirect`: same host, http on port 80 \u2192 https on port 443), and it rewrites the `Host` header to the new `url.netloc`. If the method was changed to GET (303 always, 302 always unless HEAD, 301 for POST \u2014 see `_redirect_method`), it also pops `Content-Length` and `Transfer-Encoding`, and `_redirect_stream` drops the body. The `Cookie` header is always popped, because the client cookie store is used to recompute cookies for the new request.",
+      "lines": [
+        "httpx/_client.py:62-91",
+        "httpx/_client.py:475-515",
+        "httpx/_client.py:546-582"
+      ],
+      "check": "import httpx\n\nc = httpx.Client()\nreq = httpx.Request('GET', 'http://example.com/', headers={'Authorization': 'Bearer x', 'Cookie': 'a=b'})\nresp = httpx.Response(301, headers={'Location': 'https://example.com/'}, request=req)\nnew = c._build_redirect_request(req, resp)\nassert new.headers['Authorization'] == 'Bearer x'\nassert 'Cookie' not in new.headers\nreq2 = httpx.Request('GET', 'http://example.com/', headers={'Authorization': 'Bearer x'})\nresp2 = httpx.Response(301, headers={'Location': 'https://other.com/'}, request=req2)\nnew2 = c._build_redirect_request(req2, resp2)\nassert 'Authorization' not in new2.headers\nassert new2.headers['Host'] == 'other.com'\nc.close()\n"
+    },
+    {
+      "id": "g4",
+      "kind": "general",
+      "question": "For `WSGITransport`, what does `raise_app_exceptions` control, and what other failure modes does the transport have when the application's response is unusual?",
+      "key": "`raise_app_exceptions` defaults to True: if the application calls `start_response` with a non-None `exc_info` whose first element is set, the transport re-raises `seen_exc_info[1]` instead of returning a response; setting it to False lets you inspect the app's 500 response instead. Other failure modes: the transport asserts that `start_response` was called at all (`assert seen_status is not None` / `seen_response_headers is not None`), so an app that never calls it raises AssertionError; the status line is parsed with `int(seen_status.split()[0])`; request header values and response header keys/values are encoded/decoded strictly as ASCII, so non-ASCII headers raise UnicodeEncodeError/UnicodeDecodeError; and `request.read()` loads the entire request body into a `BytesIO` in memory before the app is called.",
+      "lines": [
+        "httpx/_transports/wsgi.py:77-148"
+      ],
+      "check": "import httpx\n\ndef bad_app(environ, start_response):\n    try:\n        raise ValueError('boom')\n    except ValueError:\n        import sys\n        start_response('500 Internal Server Error', [('Content-Length', '0')], sys.exc_info())\n    return [b'']\n\nwith httpx.Client(transport=httpx.WSGITransport(app=bad_app), base_url='http://testserver') as c:\n    try:\n        c.get('/')\n        raise AssertionError('expected ValueError')\n    except ValueError as exc:\n        assert str(exc) == 'boom'\n\nwith httpx.Client(transport=httpx.WSGITransport(app=bad_app, raise_app_exceptions=False), base_url='http://testserver') as c2:\n    r = c2.get('/')\n    assert r.status_code == 500\n"
+    },
+    {
+      "id": "g5",
+      "kind": "general",
+      "question": "What contract does the `Auth` base class define for custom authentication schemes, and what do `requires_request_body` / `requires_response_body` guarantee?",
+      "key": "A custom scheme subclasses `httpx.Auth` and overrides `auth_flow(request)`, a generator that yields requests and receives the corresponding responses via `yield`; returning (or falling off the end) makes the client return the last response. `auth_flow` must not perform I/O, so it can be shared by sync and async clients \u2014 if the scheme needs disk/network I/O or locks, it must override `sync_auth_flow` and/or `async_auth_flow` instead. The class attributes `requires_request_body` and `requires_response_body` both default to False; when True, the default `sync_auth_flow`/`async_auth_flow` call `request.read()`/`await request.aread()` before starting the flow and `response.read()`/`await response.aread()` on each response fed back in, so `request.content` and `response.content`/`.text`/`.json()` are safe to access inside `auth_flow`. The client drives this through `_send_handling_auth`, which also closes the flow generator in a `finally` block and reads/records intermediate responses in `response.history`.",
+      "lines": [
+        "httpx/_auth.py:22-110",
+        "httpx/_client.py:930-962"
+      ],
+      "check": "import httpx\n\nclass Custom(httpx.Auth):\n    requires_response_body = True\n    def auth_flow(self, request):\n        response = yield request\n        assert response.content == b'Hello World!'\n        request.headers['X-Token'] = 'abc'\n        yield request\n\nseen = []\n\ndef app(environ, start_response):\n    seen.append(environ.get('HTTP_X_TOKEN'))\n    start_response('200 OK', [('Content-Type', 'text/plain'), ('Content-Length', '12')])\n    return [b'Hello World!']\n\nwith httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver', auth=Custom()) as c:\n    r = c.get('/')\nassert seen == [None, 'abc'], seen\nassert len(r.history) == 1\nassert httpx.Auth.requires_request_body is False and httpx.Auth.requires_response_body is False\n"
+    },
+    {
+      "id": "g6",
+      "kind": "general",
+      "question": "How does `DigestAuth` react to malformed or unsupported `WWW-Authenticate: Digest ...` challenges?",
+      "key": "`DigestAuth.auth_flow` only acts on a 401 that carries a `www-authenticate` header whose value starts with 'digest ' (case-insensitive); otherwise it simply returns and the 401 is passed through. `_parse_challenge` parses the comma-separated fields and requires `realm` and `nonce`; a missing one raises `httpx.ProtocolError(\"Malformed Digest WWW-Authenticate header\", request=request)` (from the KeyError). `algorithm` defaults to \"MD5\", and an algorithm not in `_ALGORITHM_TO_HASH_FUNCTION` (MD5/SHA/SHA-256/SHA-512 and their -SESS variants) raises KeyError when building the header. `_resolve_qop` returns b\"auth\" if 'auth' is among the qop values, raises `NotImplementedError(\"Digest auth-int support is not yet implemented\")` if qop is exactly auth-int, and raises `ProtocolError` for any other unexpected qop value; `qop=None` falls back to RFC 2069 style digests.",
+      "lines": [
+        "httpx/_auth.py:193-222",
+        "httpx/_auth.py:224-253",
+        "httpx/_auth.py:255-301",
+        "httpx/_auth.py:329-340"
+      ],
+      "check": "import httpx\n\nauth = httpx.DigestAuth('u', 'p')\nreq = httpx.Request('GET', 'http://example.com/')\nresp = httpx.Response(401, headers={'WWW-Authenticate': 'Digest realm=\"r\"'}, request=req)\ntry:\n    auth._parse_challenge(req, resp, 'Digest realm=\"r\"')\n    raise AssertionError('expected ProtocolError')\nexcept httpx.ProtocolError as exc:\n    assert 'Malformed Digest WWW-Authenticate header' in str(exc)\ntry:\n    auth._resolve_qop(b'auth-int', request=req)\n    raise AssertionError('expected NotImplementedError')\nexcept NotImplementedError:\n    pass\ntry:\n    auth._resolve_qop(b'nonsense', request=req)\n    raise AssertionError('expected ProtocolError')\nexcept httpx.ProtocolError:\n    pass\nassert auth._resolve_qop(b'auth,auth-int', request=req) == b'auth'\nassert auth._resolve_qop(None, request=req) is None\n"
+    },
+    {
+      "id": "g7",
+      "kind": "general",
+      "question": "Under which conditions do environment proxy variables (HTTP_PROXY / HTTPS_PROXY / ALL_PROXY / NO_PROXY) affect a Client, and what is the consequence of passing an explicit `transport=` such as a WSGITransport?",
+      "key": "In `Client.__init__` (and `AsyncClient.__init__`) `allow_env_proxies = trust_env and transport is None`, and `_get_proxy_map(proxy, allow_env_proxies)` only reads `get_environment_proxies()` when `proxy is None` and `allow_env_proxies` is True. So environment proxies are consulted only when no explicit `proxy=` is given, `trust_env` is True (the default), and no custom `transport=` was supplied. Passing an explicit transport (as in this scenario, a WSGITransport) therefore yields an empty proxy map and no mounts, so env vars are ignored entirely. If `proxy=` is given explicitly it wins and is mounted under the single pattern \"all://\", again ignoring the environment.",
+      "lines": [
+        "httpx/_client.py:239-251",
+        "httpx/_client.py:685-716",
+        "httpx/_client.py:1399-1430"
+      ],
+      "check": "import os\nimport httpx\n\ndef app(environ, start_response):\n    start_response('200 OK', [('Content-Length', '0')])\n    return [b'']\n\nos.environ['HTTP_PROXY'] = 'http://127.0.0.1:9999'\ntry:\n    c = httpx.Client(transport=httpx.WSGITransport(app=app), base_url='http://testserver')\n    assert c._mounts == {}, c._mounts\n    c.close()\n    c2 = httpx.Client()\n    assert c2._mounts != {}\n    c2.close()\nfinally:\n    del os.environ['HTTP_PROXY']\n"
+    }
+  ],
+  "dropped": [],
+  "cost": 1.38
+}

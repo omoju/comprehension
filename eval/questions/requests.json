@@ -1,0 +1,182 @@
+{
+  "repo": "requests",
+  "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+  "questions": [
+    {
+      "id": "p1",
+      "kind": "path",
+      "question": "The scenario passes auth=('user','pass') to requests.get, and the server sees `Authorization: Basic dXNlcjpwYXNz`. Which code path turns the tuple into that header, and exactly how is the value built?",
+      "key": "PreparedRequest.prepare_auth (models.py) is called last during prepare(). Because auth is a tuple of length 2, it is special-cased into an HTTPBasicAuth(*auth) handler; calling the handler (HTTPBasicAuth.__call__) sets r.headers['Authorization'] = _basic_auth_str('user','pass'). _basic_auth_str latin1-encodes both parts, joins them with b':' (b'user:pass'), base64-encodes them (b'dXNlcjpwYXNz'), runs to_native_string on the result and prefixes 'Basic ', giving exactly 'Basic dXNlcjpwYXNz'. After the handler runs, prepare_auth copies the handler's __dict__ back onto the request and recomputes Content-Length.",
+      "lines": [
+        "src/requests/models.py:670-697",
+        "src/requests/auth.py:34-75",
+        "src/requests/auth.py:111-113"
+      ],
+      "check": "from requests.models import PreparedRequest\nfrom requests.auth import _basic_auth_str, HTTPBasicAuth\np = PreparedRequest()\np.prepare(method='GET', url='http://127.0.0.1:54897/basic-auth/user/pass', auth=('user', 'pass'))\nassert p.headers['Authorization'] == 'Basic dXNlcjpwYXNz'\nassert _basic_auth_str('user', 'pass') == 'Basic dXNlcjpwYXNz'\nq = PreparedRequest()\nq.prepare(method='GET', url='http://127.0.0.1:54897/x', auth=HTTPBasicAuth('user', 'pass'))\nassert q.headers['Authorization'] == 'Basic dXNlcjpwYXNz'\n"
+    },
+    {
+      "id": "p2",
+      "kind": "path",
+      "question": "In the trace, prepare_body is called with data={}, files=[], json=None and prepare_content_length(body=None) runs twice (once from prepare_body, once from prepare_auth). What body and what Content-Length header does the request end up with, and why?",
+      "key": "The body stays None and no Content-Length header is set at all. data={} is falsy and json is None, so no JSON body is produced; {} is a Mapping so the streaming branch is skipped; files is empty so no multipart body; raw_data is falsy so body stays None. prepare_content_length(None) then takes the elif branch, but since self.method == 'GET' (GET/HEAD are excluded) it does nothing. For a non-GET/HEAD method with no body, the same call would instead set Content-Length: '0'.",
+      "lines": [
+        "src/requests/models.py:576-652",
+        "src/requests/models.py:654-668"
+      ],
+      "check": "from requests.models import PreparedRequest\np = PreparedRequest()\np.prepare(method='GET', url='http://127.0.0.1:54897/basic-auth/user/pass', data={}, json=None, auth=('user', 'pass'))\nassert p.body is None\nassert 'Content-Length' not in p.headers\nq = PreparedRequest()\nq.prepare(method='POST', url='http://127.0.0.1:54897/x', data={}, json=None)\nassert q.body is None and q.headers['Content-Length'] == '0'\n"
+    },
+    {
+      "id": "p3",
+      "kind": "path",
+      "question": "r.encoding is 'utf-8' in this run. Which function computed it, from what input, and what would it have returned had the server sent 'Content-Type: text/html' with no charset?",
+      "key": "HTTPAdapter.build_response sets response.encoding = get_encoding_from_headers(response.headers). get_encoding_from_headers reads the 'content-type' header ('application/json; charset=utf-8'), parses it with _parse_content_type_header into ('application/json', {'charset': 'utf-8'}) and, because 'charset' is in the params, returns 'utf-8' (stripped of quotes). With 'text/html' and no charset it would return 'ISO-8859-1' (the 'text' in content_type rule); with 'application/json' and no charset it would return 'utf-8'; with no Content-Type header at all it returns None.",
+      "lines": [
+        "src/requests/adapters.py:382-385",
+        "src/requests/utils.py:569-591"
+      ],
+      "check": "from requests.utils import get_encoding_from_headers\nfrom requests.structures import CaseInsensitiveDict\nassert get_encoding_from_headers(CaseInsensitiveDict({'Content-Type': 'application/json; charset=utf-8'})) == 'utf-8'\nassert get_encoding_from_headers(CaseInsensitiveDict({'Content-Type': 'text/html'})) == 'ISO-8859-1'\nassert get_encoding_from_headers(CaseInsensitiveDict({'Content-Type': 'application/json'})) == 'utf-8'\nassert get_encoding_from_headers(CaseInsensitiveDict({})) is None\n"
+    },
+    {
+      "id": "p4",
+      "kind": "path",
+      "question": "The trace shows r.json() calling Response.text (and not guess_json_utf). Which branch of Response.json was taken and why? What would happen with a UTF-16 body if encoding were still set to 'utf-8'?",
+      "key": "Response.json first tests `not self.encoding and self.content and len(self.content) > 3`. Here self.encoding is 'utf-8' (set from the Content-Type charset), so the condition is False and the UTF detection branch (guess_json_utf + content.decode(encoding)) is skipped entirely; it falls straight through to complexjson.loads(self.text), which decodes the bytes with the declared utf-8 encoding and returns {'authenticated': True, 'user': 'user'}. If the body were UTF-16 while encoding stayed 'utf-8', text would decode it with errors='replace' into garbage and json.loads would fail, raising requests.exceptions.JSONDecodeError; with encoding None the guess_json_utf branch would detect utf-16 and parse it successfully.",
+      "lines": [
+        "src/requests/models.py:1091-1124",
+        "src/requests/models.py:1053-1089"
+      ],
+      "check": "import requests\nfrom requests.models import Response\nfrom requests.structures import CaseInsensitiveDict\nr = Response(); r.status_code = 200\nr.headers = CaseInsensitiveDict({'Content-Type': 'application/json; charset=utf-8'})\nr._content = b'{\"authenticated\": true, \"user\": \"user\"}'; r._content_consumed = True; r.encoding = 'utf-8'\nassert r.json() == {'authenticated': True, 'user': 'user'}\nr2 = Response(); r2.status_code = 200; r2._content = '{\"a\": 1}'.encode('utf-16'); r2._content_consumed = True; r2.encoding = 'utf-8'\ntry:\n    r2.json()\n    failed = False\nexcept requests.exceptions.JSONDecodeError:\n    failed = True\nassert failed\nr3 = Response(); r3.status_code = 200; r3._content = '{\"a\": 1}'.encode('utf-16'); r3._content_consumed = True; r3.encoding = None\nassert r3.json() == {'a': 1}\n"
+    },
+    {
+      "id": "p5",
+      "kind": "path",
+      "question": "HTTPAdapter.request_url returned '/basic-auth/user/pass' rather than the full URL. What decides that, and what would it have returned if an http proxy had been configured?",
+      "key": "request_url calls select_proxy(request.url, proxies); with the empty proxies mapping it returns None, so is_proxied_http_request is falsy and the function returns request.path_url, i.e. the path (+ query) only: '/basic-auth/user/pass'. If a non-SOCKS proxy applied to this http:// request, is_proxied_http_request would be True and it would return urldefragauth(request.url) \u2014 the absolute URL 'http://127.0.0.1:54897/basic-auth/user/pass' (fragment and userinfo stripped). For https requests, or SOCKS proxies, it stays the path form.",
+      "lines": [
+        "src/requests/adapters.py:565-597",
+        "src/requests/utils.py:885-908",
+        "src/requests/models.py:111-130"
+      ],
+      "check": "from requests.adapters import HTTPAdapter\nfrom requests.models import PreparedRequest\na = HTTPAdapter()\np = PreparedRequest()\np.prepare(method='GET', url='http://127.0.0.1:54897/basic-auth/user/pass')\nassert a.request_url(p, {}) == '/basic-auth/user/pass'\nassert a.request_url(p, {'http': 'http://proxy.example:8080'}) == 'http://127.0.0.1:54897/basic-auth/user/pass'\n"
+    },
+    {
+      "id": "p6",
+      "kind": "path",
+      "question": "build_connection_pool_key_attributes returned ({'host': '127.0.0.1', 'port': 54897, 'scheme': 'http'}, {'cert_reqs': 'CERT_REQUIRED'}) for this plain-HTTP request. Why is cert_reqs CERT_REQUIRED here, and what would the pool_kwargs be with verify=False or verify='/path/to/ca.pem'?",
+      "key": "build_connection_pool_key_attributes just delegates to _urllib3_request_context, which derives host_params (scheme/hostname/port) from urlparse(request.url) and always sets pool_kwargs['cert_reqs']; the default is 'CERT_REQUIRED' and it is only changed to 'CERT_NONE' when verify is False \u2014 the scheme is irrelevant, so a plain http request with verify=True still gets {'cert_reqs': 'CERT_REQUIRED'}. With verify=False pool_kwargs would be {'cert_reqs': 'CERT_NONE'}; with verify='/path/to/ca.pem' (a non-directory) it would be {'ca_certs': '/path/to/ca.pem', 'cert_reqs': 'CERT_REQUIRED'} (a directory would set 'ca_cert_dir' instead), and a cert would additionally add 'cert_file'/'key_file'.",
+      "lines": [
+        "src/requests/adapters.py:85-119",
+        "src/requests/adapters.py:403-453"
+      ],
+      "check": "from requests.adapters import HTTPAdapter, _urllib3_request_context\nfrom requests.models import PreparedRequest\na = HTTPAdapter()\np = PreparedRequest()\np.prepare(method='GET', url='http://127.0.0.1:54897/basic-auth/user/pass')\nhost_params, pool_kwargs = a.build_connection_pool_key_attributes(p, True, None)\nassert host_params == {'scheme': 'http', 'host': '127.0.0.1', 'port': 54897}\nassert pool_kwargs == {'cert_reqs': 'CERT_REQUIRED'}\n_, pk_false = _urllib3_request_context(p, False, None, a.poolmanager)\nassert pk_false == {'cert_reqs': 'CERT_NONE'}\n_, pk_path = _urllib3_request_context(p, '/path/to/ca.pem', None, a.poolmanager)\nassert pk_path == {'ca_certs': '/path/to/ca.pem', 'cert_reqs': 'CERT_REQUIRED'}\n"
+    },
+    {
+      "id": "p8",
+      "kind": "path",
+      "question": "Nearby wrong input: if the scenario had passed auth=('user', 'pass', 'extra') instead of a 2-tuple, what would happen during preparation?",
+      "key": "prepare_auth only special-cases a tuple of length exactly 2; a 3-tuple fails that test, so it falls into the else branch which treats the value as a callable auth handler and does `r = auth_handler(self)`. Calling a tuple raises TypeError: 'tuple' object is not callable \u2014 the error surfaces out of PreparedRequest.prepare_auth/prepare (no requests-specific exception, no request is ever sent).",
+      "lines": [
+        "src/requests/models.py:682-694"
+      ],
+      "check": "from requests.models import PreparedRequest\np = PreparedRequest()\ntry:\n    p.prepare(method='GET', url='http://127.0.0.1:54897/x', auth=('user', 'pass', 'extra'))\n    raised = None\nexcept TypeError as e:\n    raised = e\nassert raised is not None and 'not callable' in str(raised)\n"
+    },
+    {
+      "id": "g1",
+      "kind": "general",
+      "question": "What does prepare_cookies guarantee about being called more than once on the same PreparedRequest, and what is the consequence for code that reuses a PreparedRequest (e.g. redirect handling)?",
+      "key": "prepare_cookies stores the jar on self._cookies and builds the Cookie header via get_cookie_header, which goes through cookielib's add_cookie_header; cookielib refuses to regenerate the header if the request already has one (MockRequest.has_header sees the existing 'Cookie' in self._r.headers). So a second call to prepare_cookies has no effect unless the 'Cookie' header is deleted first \u2014 the documented one-call-per-PreparedRequest contract. That is why Session.resolve_redirects explicitly pops 'Cookie' from the copied request's headers before merging cookies and calling prepare_cookies again.",
+      "lines": [
+        "src/requests/models.py:699-720",
+        "src/requests/cookies.py:153-161",
+        "src/requests/cookies.py:83-99",
+        "src/requests/sessions.py:260-269"
+      ],
+      "check": "from requests.models import PreparedRequest\nfrom requests.cookies import RequestsCookieJar\njar = RequestsCookieJar(); jar.set('a', '1')\np = PreparedRequest()\np.prepare(method='GET', url='http://example.com/', cookies=jar)\nassert p.headers['Cookie'] == 'a=1'\njar2 = RequestsCookieJar(); jar2.set('b', '2')\np.prepare_cookies(jar2)\nassert p.headers['Cookie'] == 'a=1'\ndel p.headers['Cookie']\np.prepare_cookies(jar2)\nassert p.headers['Cookie'] == 'b=2'\n"
+    },
+    {
+      "id": "g2",
+      "kind": "general",
+      "question": "How does a Session pick the transport adapter for a URL, and what misuse does that matching rule invite?",
+      "key": "Session.get_adapter iterates self.adapters (an OrderedDict kept sorted so longer prefixes come first \u2014 mount() moves every shorter key to the end) and returns the first adapter whose prefix matches with url.lower().startswith(prefix.lower()); if nothing matches it raises InvalidSchema(f\"No connection adapters were found for {url!r}\"). Matching is a plain case-insensitive prefix test, not a host/scheme parse, so mounting 'http://localhost' also captures 'http://localhost.other.com/' and 'http://localhost@evil.com/'; the documented mitigation is to terminate host prefixes with a '/'.",
+      "lines": [
+        "src/requests/sessions.py:870-897",
+        "docs/user/advanced.rst:996-998"
+      ],
+      "check": "import requests\nfrom requests.adapters import HTTPAdapter\nfrom requests.exceptions import InvalidSchema\ns = requests.Session()\na = HTTPAdapter()\ns.mount('http://localhost', a)\nassert s.get_adapter('http://localhost.other.com/x') is a\nassert s.get_adapter('HTTP://LOCALHOST/x') is a\nassert s.get_adapter('http://example.com/') is not a\ntry:\n    s.get_adapter('ftp://example.com/')\n    raised = False\nexcept InvalidSchema:\n    raised = True\nassert raised\n"
+    },
+    {
+      "id": "g3",
+      "kind": "general",
+      "question": "Under what exact conditions does requests drop the Authorization header when following a redirect, and which cross-scheme case is deliberately allowed?",
+      "key": "SessionRedirectMixin.rebuild_auth deletes headers['Authorization'] when the header is present and should_strip_auth(old_url, new_url) is True. should_strip_auth returns True if the hostnames differ; it returns False (keep the credentials) for an http->https upgrade on the standard ports (old port 80 or None, new port 443 or None); otherwise, if the scheme is unchanged and both ports are the scheme's default (DEFAULT_PORTS: http 80, https 443) or None, it returns False; in the remaining cases it returns changed_port or changed_scheme. After this, if trust_env is set, get_netrc_auth(url) may re-apply credentials for the new host via prepare_auth.",
+      "lines": [
+        "src/requests/sessions.py:154-184",
+        "src/requests/sessions.py:309-332",
+        "src/requests/utils.py:85"
+      ],
+      "check": "from requests.sessions import Session\ns = Session()\nassert s.should_strip_auth('http://a.com/x', 'http://b.com/x') is True\nassert s.should_strip_auth('http://a.com/x', 'https://a.com/x') is False\nassert s.should_strip_auth('http://a.com:8080/x', 'https://a.com/x') is True\nassert s.should_strip_auth('http://a.com/x', 'http://a.com:80/x') is False\nassert s.should_strip_auth('https://a.com/x', 'http://a.com/x') is True\n"
+    },
+    {
+      "id": "g4",
+      "kind": "general",
+      "question": "How do the REQUESTS_CA_BUNDLE / CURL_CA_BUNDLE environment variables interact with the verify argument, and when are they ignored?",
+      "key": "Session.merge_environment_settings only consults the environment when self.trust_env is True, and only replaces verify when the caller's verify is True or None: verify = os.environ.get('REQUESTS_CA_BUNDLE') or os.environ.get('CURL_CA_BUNDLE') or verify (REQUESTS_CA_BUNDLE wins). An explicit verify=False or an explicit CA path passed to the request is never overridden by the environment, and nothing from the environment is applied when trust_env is False or when a PreparedRequest is sent via Session.send without going through Session.request/merge_environment_settings (the documented prepared-request caveat). Afterwards merge_setting(verify, self.verify) merges with the session default (True).",
+      "lines": [
+        "src/requests/sessions.py:831-868",
+        "src/requests/sessions.py:76-105",
+        "docs/user/advanced.rst:190-207"
+      ],
+      "check": "import os, requests\ns = requests.Session()\nos.environ['REQUESTS_CA_BUNDLE'] = '/tmp/ca.pem'\ntry:\n    assert s.merge_environment_settings('http://x/', {}, None, None, None)['verify'] == '/tmp/ca.pem'\n    assert s.merge_environment_settings('http://x/', {}, None, False, None)['verify'] is False\n    assert s.merge_environment_settings('http://x/', {}, None, '/other.pem', None)['verify'] == '/other.pem'\n    s.trust_env = False\n    assert s.merge_environment_settings('http://x/', {}, None, None, None)['verify'] is True\nfinally:\n    del os.environ['REQUESTS_CA_BUNDLE']\n"
+    },
+    {
+      "id": "g5",
+      "kind": "general",
+      "question": "What retry behaviour does a default HTTPAdapter provide, and what is the difference between passing max_retries=0 and max_retries=3?",
+      "key": "DEFAULT_RETRIES is 0, and when max_retries equals that default the adapter builds Retry(0, read=False) \u2014 i.e. no retries at all, and read retries disabled, so a request that reached the server is never replayed. Any other value goes through Retry.from_int(max_retries), e.g. max_retries=3 yields a Retry with total=3 (read retries enabled), which retries failed DNS lookups, socket connections and connection timeouts; urllib3's Retry object can also be passed directly for finer control. Exhausting retries surfaces as MaxRetryError inside send and is translated into ConnectionError/RetryError/ProxyError/SSLError/ConnectTimeout.",
+      "lines": [
+        "src/requests/adapters.py:79-82",
+        "src/requests/adapters.py:201-221",
+        "src/requests/adapters.py:166-175"
+      ],
+      "check": "from requests.adapters import HTTPAdapter, DEFAULT_RETRIES\nassert DEFAULT_RETRIES == 0\na = HTTPAdapter()\nassert a.max_retries.total == 0 and a.max_retries.read is False\nb = HTTPAdapter(max_retries=3)\nassert b.max_retries.total == 3\n"
+    },
+    {
+      "id": "g6",
+      "kind": "general",
+      "question": "When does requests send a request body with chunked transfer encoding, and what does the adapter use to decide?",
+      "key": "In PreparedRequest.prepare_body, a non-str/bytes/list/tuple/Mapping iterable (generator, file object, ...) is used as the body as-is: if super_len() yields a length, Content-Length is set, otherwise the header 'Transfer-Encoding: chunked' is set. HTTPAdapter.send then computes `chunked = not (request.body is None or 'Content-Length' in request.headers)` and passes it to conn.urlopen \u2014 so any request with a body but no Content-Length header is sent chunked. The documented consequence: passing a generator (or a length-less stream) as data produces a chunked upload; files and a streamed body together raise NotImplementedError ('Streamed bodies and files are mutually exclusive.').",
+      "lines": [
+        "src/requests/models.py:601-630",
+        "src/requests/adapters.py:679"
+      ],
+      "check": "from requests.models import PreparedRequest\ndef gen():\n    yield b'hi'\n    yield b'there'\np = PreparedRequest()\np.prepare(method='POST', url='http://example.com/chunked', data=gen())\nassert 'Content-Length' not in p.headers\nassert p.headers['Transfer-Encoding'] == 'chunked'\nchunked = not (p.body is None or 'Content-Length' in p.headers)\nassert chunked is True\nq = PreparedRequest()\nq.prepare(method='POST', url='http://example.com/x', data={'k': 'v'})\nassert q.headers['Content-Length'] == '3' and not (q.body is None or 'Content-Length' in q.headers) is False\n"
+    },
+    {
+      "id": "g7",
+      "kind": "general",
+      "question": "How does HTTPAdapter.send translate urllib3 failures into the requests exception surface, and which urllib3 error categories map to which requests exceptions?",
+      "key": "send wraps conn.urlopen in a chain of except clauses: (ProtocolError, OSError) -> requests ConnectionError; MaxRetryError is inspected by e.reason \u2014 ConnectTimeoutError that is not a NewConnectionError -> ConnectTimeout, ResponseError -> RetryError, urllib3 ProxyError -> requests ProxyError, urllib3 SSLError -> requests SSLError, anything else -> ConnectionError; ClosedPoolError -> ConnectionError; bare urllib3 ProxyError -> requests ProxyError; and for (urllib3 SSLError, urllib3 HTTPError): SSLError -> requests SSLError, ReadTimeoutError -> ReadTimeout, InvalidHeader -> requests InvalidHeader, otherwise the original is re-raised. Each is raised with request=request attached (except the bare ProxyError case). Separately, LocationValueError from getting the connection becomes InvalidURL. The guarantee is that normal transport failures reach the user as requests.exceptions.RequestException subclasses, not urllib3 types.",
+      "lines": [
+        "src/requests/adapters.py:659-748"
+      ],
+      "check": "import requests\nfrom requests.exceptions import ConnectTimeout, ReadTimeout, ProxyError, SSLError, RetryError, ConnectionError, Timeout, RequestException, InvalidURL\nassert issubclass(ConnectTimeout, ConnectionError) and issubclass(ConnectTimeout, Timeout)\nassert issubclass(ReadTimeout, Timeout)\nassert issubclass(ProxyError, ConnectionError)\nassert issubclass(SSLError, ConnectionError)\nassert issubclass(RetryError, RequestException)\nassert issubclass(InvalidURL, RequestException)\n"
+    }
+  ],
+  "dropped": [
+    {
+      "id": "p7",
+      "kind": "path",
+      "question": "Session.send called resolve_redirects even though allow_redirects defaulted to True and the response was a 200. What did get_redirect_target return and why, and what happened to the redirect generator?",
+      "key": "get_redirect_target returned None: Response.is_redirect is False because 'location' is not in the response headers (and 200 is not in REDIRECT_STATI), so the `if resp.is_redirect` branch is skipped and None is returned. In resolve_redirects the `while url:` loop therefore never runs, the generator yields nothing, history == [] in Session.send, r keeps its own identity and no extra request is made. For a 302 with a Location header, get_redirect_target would return the location re-encoded through latin1/utf-8 (to_native_string(location.encode('latin1'), 'utf8')).",
+      "lines": [
+        "src/requests/sessions.py:134-152",
+        "src/requests/models.py:876-881",
+        "src/requests/sessions.py:186-210",
+        "src/requests/sessions.py:802-815"
+      ],
+      "check": "from requests.sessions import Session\nfrom requests.models import Response\nfrom requests.structures import CaseInsensitiveDict\ns = Session()\nr = Response(); r.status_code = 200\nr.headers = CaseInsensitiveDict({'Content-Type': 'application/json; charset=utf-8'})\nassert r.is_redirect is False\nassert s.get_redirect_target(r) is None\nassert list(s.resolve_redirects(r, r.request)) == []\nr2 = Response(); r2.status_code = 302\nr2.headers = CaseInsensitiveDict({'Location': 'http://example.com/next'})\nassert r2.is_redirect is True\nassert s.get_redirect_target(r2) == 'http://example.com/next'\n",
+      "dropped": "check failed: AttributeError: 'NoneType' object has no attribute 'url'"
+    }
+  ],
+  "cost": 1.4
+}

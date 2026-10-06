@@ -1,0 +1,182 @@
+{
+  "repo": "flask",
+  "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+  "questions": [
+    {
+      "id": "p1",
+      "kind": "path",
+      "question": "In this run the view returns the plain string \"Hello, World!\". Which method turns it into a Response, which branch of that method handles it, and what are the resulting status, Content-Type and body length?",
+      "key": "Flask.make_response (src/flask/app.py:1227) handles it. Since rv is not a tuple and not already an instance of app.response_class, it takes the `isinstance(rv, (str, bytes, bytearray)) or isinstance(rv, cabc.Iterator)` branch and builds `self.response_class(rv, status=None, headers=None)` (status/headers are then reset to None). The result is a flask.Response with status 200 OK, Content-Type 'text/html; charset=utf-8' (from Response.default_mimetype = 'text/html'), and a 13-byte body b'Hello, World!'.",
+      "lines": [
+        "src/flask/app.py:1284-1367",
+        "src/flask/wrappers.py:240-244"
+      ],
+      "check": "from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef hello():\n    return 'Hello, World!'\nwith app.test_request_context('/'):\n    r = app.make_response('Hello, World!')\nassert type(r) is app.response_class\nassert r.status_code == 200\nassert r.status == '200 OK'\nassert r.headers['Content-Type'] == 'text/html; charset=utf-8'\nassert r.get_data() == b'Hello, World!'\nassert len(r.get_data()) == 13\nc = app.test_client()\nresp = c.get('/')\nassert resp.status_code == 200 and resp.get_data(as_text=True) == 'Hello, World!'"
+    },
+    {
+      "id": "p2",
+      "kind": "path",
+      "question": "The app never sets SECRET_KEY. Trace what the session object becomes during AppContext.push, and what process_response does with it at the end of the request.",
+      "key": "During push, AppContext._get_session calls SecureCookieSessionInterface.open_session; get_signing_serializer returns None because app.secret_key is None, so open_session returns None. _get_session then falls back to SessionInterface.make_null_session, giving a NullSession (an empty SecureCookieSession subclass). In Flask.process_response, `self.session_interface.is_null_session(ctx._get_session())` returns True, so save_session is never called and the response carries no Set-Cookie (and no Vary: Cookie) header.",
+      "lines": [
+        "src/flask/ctx.py:381-393",
+        "src/flask/sessions.py:303-335",
+        "src/flask/app.py:1418-1420"
+      ],
+      "check": "from flask import Flask\nfrom flask.sessions import NullSession\napp = Flask(__name__)\n@app.route('/')\ndef hello():\n    return 'Hello, World!'\nassert app.secret_key is None\nwith app.test_request_context('/') as ctx:\n    assert app.session_interface.get_signing_serializer(app) is None\n    assert app.session_interface.open_session(app, ctx.request) is None\n    s = ctx._get_session()\n    assert isinstance(s, NullSession)\n    assert app.session_interface.is_null_session(s) is True\nresp = app.test_client().get('/')\nassert 'Set-Cookie' not in resp.headers\nassert 'Vary' not in resp.headers"
+    },
+    {
+      "id": "p3",
+      "kind": "path",
+      "question": "preprocess_request, process_response and do_teardown_request all consult request.blueprints on this run. What value do they see, and how is it derived from the matched rule?",
+      "key": "They see the empty list []. request.blueprints derives from request.blueprint, which derives from request.endpoint; the matched rule's endpoint is 'hello' and contains no '.', so Request.blueprint returns None and Request.blueprints returns []. Consequently only the None scope (app-level callbacks) is considered, and since no before/after/teardown functions are registered, nothing runs.",
+      "lines": [
+        "src/flask/wrappers.py:146-195",
+        "src/flask/app.py:1379-1395"
+      ],
+      "check": "from flask import Flask, request\napp = Flask(__name__)\n@app.route('/')\ndef hello():\n    return 'Hello, World!'\nwith app.test_request_context('/'):\n    assert request.endpoint == 'hello'\n    assert request.blueprint is None\n    assert request.blueprints == []"
+    },
+    {
+      "id": "p4",
+      "kind": "path",
+      "question": "Flask.dispatch_request wraps the view with ensure_sync before calling it. What does ensure_sync return for this view function, and why?",
+      "key": "It returns the exact same function object (`hello`) unchanged \u2014 ensure_sync checks `iscoroutinefunction(func)`, which is False for a plain `def` view, so it returns func as-is and no asgiref/async_to_sync machinery is used. (Had the view been `async def`, ensure_sync would call async_to_sync, which raises RuntimeError \"Install Flask with the 'async' extra...\" if asgiref is missing.)",
+      "lines": [
+        "src/flask/app.py:1068-1103",
+        "src/flask/app.py:969-993"
+      ],
+      "check": "from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef hello():\n    return 'Hello, World!'\nassert app.ensure_sync(hello) is hello"
+    },
+    {
+      "id": "p5",
+      "kind": "path",
+      "question": "Before the route for '/' is registered, Flask.__init__ already adds one URL rule. Which rule is it, what endpoint and methods does it get, and does it depend on the static directory existing?",
+      "key": "Because static_folder defaults to 'static', has_static_folder is True and __init__ registers the rule '/static/<path:filename>' with endpoint 'static' and a weakref-based lambda view calling send_static_file. add_url_rule gives it methods {'GET', 'HEAD', 'OPTIONS'} (GET default, HEAD from Werkzeug, OPTIONS because PROVIDE_AUTOMATIC_OPTIONS is True). The registration is done without checking that the folder exists on disk \u2014 it is added even if the directory is missing. static_url_path is derived as '/static'.",
+      "lines": [
+        "src/flask/app.py:347-364",
+        "src/flask/sansio/app.py:604-661"
+      ],
+      "check": "import os\nfrom flask import Flask\napp = Flask(__name__)\nrules = {r.endpoint: r for r in app.url_map.iter_rules()}\nassert 'static' in rules\nassert rules['static'].rule == '/static/<path:filename>'\nassert rules['static'].methods == {'GET', 'HEAD', 'OPTIONS'}\nassert app.static_url_path == '/static'\nassert app.has_static_folder is True\n# registered regardless of the folder existing\nassert isinstance(app.static_folder, str)"
+    },
+    {
+      "id": "p6",
+      "kind": "path",
+      "question": "The app's config is built by App.make_config during construction. With no environment variables set, what are the values of DEBUG, SECRET_KEY and PROVIDE_AUTOMATIC_OPTIONS, and where does DEBUG come from?",
+      "key": "make_config copies Flask.default_config and then overrides defaults['DEBUG'] with get_debug_flag(), which reads the FLASK_DEBUG environment variable; unset (or '0'/'false'/'no') means False. So DEBUG is False (and app.debug is False), SECRET_KEY is None (the default_config value), and PROVIDE_AUTOMATIC_OPTIONS is True.",
+      "lines": [
+        "src/flask/sansio/app.py:479-493",
+        "src/flask/helpers.py:28-33",
+        "src/flask/app.py:207-239"
+      ],
+      "check": "import os\nos.environ.pop('FLASK_DEBUG', None)\nfrom flask import Flask\napp = Flask(__name__)\nassert app.config['DEBUG'] is False\nassert app.debug is False\nassert app.config['SECRET_KEY'] is None\nassert app.config['PROVIDE_AUTOMATIC_OPTIONS'] is True\nassert app.config['TESTING'] is False"
+    },
+    {
+      "id": "p7",
+      "kind": "path",
+      "question": "If the client had requested '/missing' instead of '/', what path would the request take through matching and dispatch, and what status would the client see?",
+      "key": "AppContext.match_request would catch the HTTPException from url_adapter.match and store it as request.routing_exception (a werkzeug NotFound), leaving request.url_rule and view_args as None. dispatch_request sees routing_exception is not None and calls raise_routing_exception, which re-raises the NotFound (not a RequestRedirect, not debug). full_dispatch_request catches it and calls handle_user_exception, which routes it to handle_http_exception; no error handler is registered, so the exception itself is returned and finalize_request converts it to a 404 NOT FOUND response. The view function never runs.",
+      "lines": [
+        "src/flask/ctx.py:405-414",
+        "src/flask/app.py:979-982",
+        "src/flask/app.py:563-589",
+        "src/flask/app.py:868-898"
+      ],
+      "check": "from werkzeug.exceptions import NotFound\nfrom flask import Flask, request\napp = Flask(__name__)\ncalled = []\n@app.route('/')\ndef hello():\n    called.append(1)\n    return 'Hello, World!'\nwith app.test_request_context('/missing'):\n    assert isinstance(request.routing_exception, NotFound)\n    assert request.url_rule is None and request.view_args is None\nresp = app.test_client().get('/missing')\nassert resp.status_code == 404\nassert called == []"
+    },
+    {
+      "id": "p8",
+      "kind": "path",
+      "question": "full_dispatch_request flips a flag on the app during this request. What is it, and what happens if you try to register another route after the client call?",
+      "key": "full_dispatch_request sets self._got_first_request = True. Afterwards any @setupmethod-decorated setup call (route/add_url_rule/before_request/errorhandler/register_blueprint, ...) goes through App._check_setup_finished and raises AssertionError: \"The setup method 'add_url_rule' can no longer be called on the application. It has already handled its first request, any changes will not be applied consistently.\"",
+      "lines": [
+        "src/flask/app.py:1013",
+        "src/flask/sansio/app.py:410-420",
+        "src/flask/sansio/scaffold.py:42-49"
+      ],
+      "check": "from flask import Flask\napp = Flask(__name__)\n@app.route('/')\ndef hello():\n    return 'Hello, World!'\nassert app._got_first_request is False\napp.test_client().get('/')\nassert app._got_first_request is True\ntry:\n    app.add_url_rule('/late', 'late', lambda: 'x')\nexcept AssertionError as e:\n    assert 'can no longer be called' in str(e)\nelse:\n    raise AssertionError('expected AssertionError')"
+    },
+    {
+      "id": "g1",
+      "kind": "general",
+      "question": "What return values does Flask.make_response accept from a view, and what exactly happens when a view returns None or a 4-element tuple?",
+      "key": "make_response accepts str/bytes/bytearray (body encoded into response_class), dict and list (converted with app.json.response), generators/iterators (streamed), a Response/response_class instance (returned or coerced with force_type), any WSGI callable, and tuples of (body, status, headers), (body, status) or (body, headers) \u2014 for a 2-tuple the second item is treated as headers if it is a Headers, dict, tuple or list, otherwise as status. If the body is None (view returned nothing) it raises TypeError: \"The view function for {request.endpoint!r} did not return a valid response. The function either returned None or ended without a return statement.\" A tuple of any length other than 2 or 3 raises TypeError: \"The view function did not return a valid response tuple. The tuple must have the form (body, status, headers), (body, status), or (body, headers).\" Any other type raises TypeError naming the bad type.",
+      "lines": [
+        "src/flask/app.py:1284-1367"
+      ],
+      "check": "from flask import Flask\napp = Flask(__name__)\napp.testing = True\n@app.route('/none')\ndef none_view():\n    return None\n@app.route('/four')\ndef four_view():\n    return ('a', 200, {}, 1)\nc = app.test_client()\ntry:\n    c.get('/none')\nexcept TypeError as e:\n    assert 'did not return a valid response' in str(e) and \"'none_view'\" in str(e)\nelse:\n    raise AssertionError('expected TypeError')\ntry:\n    c.get('/four')\nexcept TypeError as e:\n    assert 'valid response tuple' in str(e)\nelse:\n    raise AssertionError('expected TypeError')"
+    },
+    {
+      "id": "g2",
+      "kind": "general",
+      "question": "Flask 3.2 changed several Flask methods to take `ctx: AppContext` as their first parameter. How does the class protect existing subclasses that override those methods with the old signature, and what are the exact conditions for the compatibility shim to kick in?",
+      "key": "Flask.__init_subclass__ inspects the subclass's overrides of handle_http_exception, handle_user_exception, handle_exception, log_exception, dispatch_request, full_dispatch_request, finalize_request, make_default_options_response, preprocess_request, process_response, do_teardown_request and do_teardown_appcontext. For each one that is not the base Flask method, it looks at the second parameter (after self). It is considered new-style if the parameter has no annotation and is named 'ctx', or has a string annotation whose last dotted component is 'AppContext', or a class annotation that is a subclass of AppContext. Otherwise it emits a DeprecationWarning (\"The '<name>' method now takes 'ctx: AppContext' as the first parameter. The old signature is deprecated and will not be supported in Flask 4.0.\"), wraps the subclass method with remove_ctx (which strips a leading AppContext argument) and replaces the base Flask method with add_ctx (which inserts app_ctx._get_current_object() when callers omit it). Note that the Flask base class itself is patched globally as a side effect.",
+      "lines": [
+        "src/flask/app.py:84-309"
+      ],
+      "check": "import warnings\nfrom flask import Flask\nwith warnings.catch_warnings(record=True) as w:\n    warnings.simplefilter('always')\n    class Old(Flask):\n        def dispatch_request(self):\n            return 'x'\nassert any(issubclass(x.category, DeprecationWarning) and 'dispatch_request' in str(x.message) for x in w)\nwith warnings.catch_warnings(record=True) as w2:\n    warnings.simplefilter('always')\n    class New(Flask):\n        def dispatch_request(self, ctx):\n            return super().dispatch_request(ctx)\nassert not [x for x in w2 if issubclass(x.category, DeprecationWarning)]"
+    },
+    {
+      "id": "g3",
+      "kind": "general",
+      "question": "What does Flask guarantee about sessions when SECRET_KEY is unset, and how does the failure surface to application code?",
+      "key": "With no secret key, SecureCookieSessionInterface.get_signing_serializer returns None and open_session returns None; AppContext._get_session then substitutes SessionInterface.make_null_session(), i.e. a NullSession. Reading from the session works (it behaves like an empty dict), but __setitem__, __delitem__, clear, pop, popitem, update and setdefault all raise RuntimeError: \"The session is unavailable because no secret key was set. Set the secret_key on the application to something unique and secret.\" Null sessions are never saved: process_response checks is_null_session and skips save_session, so no session cookie is ever written.",
+      "lines": [
+        "src/flask/sessions.py:83-98",
+        "src/flask/sessions.py:150-170",
+        "src/flask/sessions.py:303-335",
+        "src/flask/app.py:1418-1420"
+      ],
+      "check": "from flask import Flask, session\napp = Flask(__name__)\n@app.route('/w')\ndef w():\n    session['a'] = 1\n    return 'ok'\n@app.route('/r')\ndef r():\n    return str(session.get('a'))\napp.testing = True\nc = app.test_client()\nassert c.get('/r').get_data(as_text=True) == 'None'\ntry:\n    c.get('/w')\nexcept RuntimeError as e:\n    assert 'no secret' in str(e).lower()\nelse:\n    raise AssertionError('expected RuntimeError')"
+    },
+    {
+      "id": "g5",
+      "kind": "general",
+      "question": "When an unhandled exception escapes dispatch, what does Flask.handle_exception do, and which configuration decides whether the client gets a 500 or the exception propagates?",
+      "key": "handle_exception captures sys.exc_info(), always sends the got_request_exception signal with the exception, then reads PROPAGATE_EXCEPTIONS. If that config is None (the default) it falls back to `self.testing or self.debug`. If propagation is on, it re-raises (re-raising the active exception if exc_info[1] is e, otherwise `raise e`) so the debugger/test sees it. Otherwise it logs via log_exception (logger.error with \"Exception on {path} [{method}]\"), builds InternalServerError(original_exception=e), looks up a handler for InternalServerError/500 (the handler always receives the InternalServerError, with the original available as e.original_exception), and returns finalize_request(ctx, server_error, from_error_handler=True) so after_request/session handling still runs and errors during finalization are logged instead of raised.",
+      "lines": [
+        "src/flask/app.py:900-951",
+        "src/flask/app.py:1024-1054"
+      ],
+      "check": "from flask import Flask\napp = Flask(__name__)\n@app.route('/boom')\ndef boom():\n    raise ValueError('kaboom')\nresp = app.test_client().get('/boom')\nassert resp.status_code == 500\napp.testing = True\ntry:\n    app.test_client().get('/boom')\nexcept ValueError as e:\n    assert str(e) == 'kaboom'\nelse:\n    raise AssertionError('expected propagation when testing=True')"
+    },
+    {
+      "id": "g6",
+      "kind": "general",
+      "question": "Describe the behavior and the pitfalls of Config.from_prefixed_env: which keys are taken, how values are converted, and what happens on bad input.",
+      "key": "from_prefixed_env(prefix='FLASK', loads=json.loads) iterates os.environ in sorted() order and takes every variable starting with 'FLASK_', stripping that prefix to form the config key (no uppercase filtering is applied here, unlike from_mapping/from_object \u2014 the key is used as-is). Each value is passed through loads; if loads raises any exception it is swallowed and the raw string is kept. Keys containing '__' are split and treated as a path into nested dicts, creating empty dicts for missing intermediate keys (and overwriting/indexing into existing values). It always returns True. Pitfalls: 'false'/'true' must be lowercase JSON to become booleans, a bare word like 'dev' stays a string because JSON parsing fails silently, Windows uppercases env var names so nested keys become uppercase, and nesting can clobber existing config values.",
+      "lines": [
+        "src/flask/config.py:126-185"
+      ],
+      "check": "import os\nfrom flask import Flask\nfor k in list(os.environ):\n    if k.startswith('FLASK_'):\n        del os.environ[k]\nos.environ['FLASK_A'] = '1'\nos.environ['FLASK_B'] = 'dev'\nos.environ['FLASK_C'] = 'false'\nos.environ['FLASK_N__x'] = '2'\napp = Flask(__name__)\nassert app.config.from_prefixed_env() is True\nassert app.config['A'] == 1\nassert app.config['B'] == 'dev'\nassert app.config['C'] is False\nassert app.config['N'] == {'x': 2}"
+    },
+    {
+      "id": "g7",
+      "kind": "general",
+      "question": "What are the defaults and guard rails around generating redirects and URLs in this version: the default redirect status code, and when url_for refuses to build a URL?",
+      "key": "flask.redirect / Flask.redirect default to code 303 as of 3.2 (changed from 302); flask.redirect uses the active context's app.redirect (so app.response_class is used) and only falls back to werkzeug.utils.redirect when no app context is active. Flask.url_for raises ValueError(\"When specifying '_scheme', '_external' must be True.\") if _scheme is given with _external False; inside a request _external defaults to (_scheme is not None) while outside a request it defaults to True. Outside a request, if there is no url_adapter (SERVER_NAME not configured) it raises RuntimeError(\"Unable to build URLs outside an active request without 'SERVER_NAME' configured. Also configure 'APPLICATION_ROOT' and 'PREFERRED_URL_SCHEME' as needed.\"). On a BuildError it delegates to handle_url_build_error, which tries url_build_error_handlers and re-raises the error if none returns a value.",
+      "lines": [
+        "src/flask/helpers.py:254-278",
+        "src/flask/sansio/app.py:939-958",
+        "src/flask/app.py:1162-1225",
+        "src/flask/sansio/app.py:981-1013"
+      ],
+      "check": "from flask import Flask, redirect, url_for\napp = Flask(__name__)\n@app.route('/')\ndef hello():\n    return 'Hello, World!'\nwith app.test_request_context('/'):\n    r = redirect('/other')\n    assert r.status_code == 303\n    assert url_for('hello') == '/'\n    try:\n        url_for('hello', _scheme='https', _external=False)\n    except ValueError as e:\n        assert \"_external\" in str(e)\n    else:\n        raise AssertionError('expected ValueError')\ntry:\n    app.url_for('hello')\nexcept RuntimeError as e:\n    assert 'SERVER_NAME' in str(e)\nelse:\n    raise AssertionError('expected RuntimeError')"
+    }
+  ],
+  "dropped": [
+    {
+      "id": "g4",
+      "kind": "general",
+      "question": "If several teardown functions raise exceptions while a context is popped, what does Flask do \u2014 which callbacks still run, and what is finally raised?",
+      "key": "Since 3.2 all callbacks run: do_teardown_request, do_teardown_appcontext and AppContext.pop wrap each call in a _CollectErrors context manager that records the exception and suppresses it (__exit__ returns True), then call raise_any at the end. teardown_appcontext functions run in reverse registration order, teardown_request functions run per blueprint then app scope in reverse order, and the corresponding signals (request_tearing_down / appcontext_tearing_down / appcontext_popped) are also sent inside collectors. raise_any raises BaseExceptionGroup(message, errors) on Python 3.11+ (messages: \"Errors during request teardown\", \"Errors during app teardown\", \"Errors during context teardown\") and simply re-raises the first collected error on older versions. The context is still popped (contextvar reset) before the errors are raised.",
+      "lines": [
+        "src/flask/helpers.py:654-682",
+        "src/flask/app.py:1423-1482",
+        "src/flask/ctx.py:486-504"
+      ],
+      "check": "import sys\nfrom flask import Flask\napp = Flask(__name__)\ncalls = []\n@app.teardown_appcontext\ndef t1(exc):\n    calls.append('t1'); raise ValueError('a')\n@app.teardown_appcontext\ndef t2(exc):\n    calls.append('t2'); raise ValueError('b')\nerr = None\ntry:\n    with app.app_context():\n        pass\nexcept BaseException as e:\n    err = e\nassert calls == ['t2', 't1']\nif sys.version_info >= (3, 11):\n    assert isinstance(err, BaseExceptionGroup) and len(err.exceptions) == 2\nelse:\n    assert isinstance(err, ValueError)",
+      "dropped": "check failed: AssertionError"
+    }
+  ],
+  "cost": 1.29
+}

@@ -1,0 +1,175 @@
+{
+  "repo": "markupsafe",
+  "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
+  "questions": [
+    {
+      "id": "p1",
+      "kind": "path",
+      "question": "The scenario starts with `escape(\"<script>alert(document.cookie);</script>\")`. Which branch of `escape` handles this value, what helper does it call, and what exact string does the resulting Markup hold?",
+      "key": "Because `type(s) is str` is true (line 39), the fast path is taken: `escape` skips the `__html__` check and the `str(s)` conversion entirely and returns `Markup(_escape_inner(s))`. `_escape_inner` replaces the five characters `& > < ' \"`, so the result is `Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')` \u2014 the parentheses, semicolons and dots are untouched. The return type is exactly `Markup`.",
+      "lines": [
+        "src/markupsafe/__init__.py:35-45",
+        "src/markupsafe/_native.py:1-8"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nr = markupsafe.escape('<script>alert(document.cookie);</script>')\nassert type(r) is markupsafe.Markup\nassert str(r) == '&lt;script&gt;alert(document.cookie);&lt;/script&gt;'\n"
+    },
+    {
+      "id": "p2",
+      "kind": "path",
+      "question": "The scenario asserts `escape(safe_comment) == safe_comment` where `safe_comment` is a `Markup`. Which branch does `escape` take, and how many times is `__html__()` invoked during that single `escape()` call?",
+      "key": "`type(s) is str` is False (the type is `Markup`, a str subclass), so the `hasattr(s, \"__html__\")` branch is taken and `Markup(s.__html__())` is returned; `_escape_inner` is never called, so the text is unchanged (escaping is idempotent). `__html__()` runs twice: once in `escape` (line 43) and once again inside `Markup.__new__`, which also checks `hasattr(object, \"__html__\")` and replaces the object with its result (lines 125-126). This matches trace lines 11-16.",
+      "lines": [
+        "src/markupsafe/__init__.py:39-45",
+        "src/markupsafe/__init__.py:122-134"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\ncalls = []\nclass M(markupsafe.Markup):\n    def __html__(self):\n        calls.append(1)\n        return self\nm = M('&lt;script&gt;')\nr = markupsafe.escape(m)\nassert len(calls) == 2, calls\nassert str(r) == '&lt;script&gt;'\nassert type(r) is markupsafe.Markup\n"
+    },
+    {
+      "id": "p3",
+      "kind": "path",
+      "question": "When `template.format(user=user, comment=safe_comment)` reaches the `{user:link}` field, what does `EscapeFormatter.format_field` do with the `User` instance, and why is the returned `<a href=...>` markup not escaped again before being spliced into the result?",
+      "key": "`format_field` sees `hasattr(value, \"__html_format__\")` first (line 340), so it calls `user.__html_format__('link')`, which returns `Markup('<a href=\"/user/3\"><span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span></a>')`. The result is then passed through `str(self.escape(rv))` (line 354); since `rv` is a `Markup`, `escape` takes the `__html__` branch and returns it unchanged, so the tags survive while the name stays escaped. `User.__format__`/`str.format` default formatting is never used.",
+      "lines": [
+        "src/markupsafe/__init__.py:339-354",
+        "src/markupsafe/__init__.py:313-315"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import Markup\nclass User:\n    def __init__(self, id, name):\n        self.id = id\n        self.name = name\n    def __html_format__(self, spec):\n        if spec == 'link':\n            return Markup('<a href=\"/user/{}\">{}</a>').format(self.id, self.__html__())\n        elif spec:\n            raise ValueError('Invalid format spec')\n        return self.__html__()\n    def __html__(self):\n        return Markup('<span class=\"user\">{0}</span>').format(self.name)\nu = User(3, 'Alice \"The <b>Great</b>\"')\nout = Markup('{user:link}').format(user=u)\nassert str(out) == '<a href=\"/user/3\"><span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span></a>', out\n"
+    },
+    {
+      "id": "p4",
+      "kind": "path",
+      "question": "The `{comment}` field of the template receives `safe_comment`, a `Markup`. Which branch of `EscapeFormatter.format_field` handles it, and what would happen instead if the template had been written `{comment:>40}`?",
+      "key": "`Markup` itself defines `__html_format__`, so the first branch is taken: `Markup.__html_format__('')` is called; since `format_spec` is empty it simply returns `self`, and `str(self.escape(rv))` leaves the already-escaped text alone, giving `&lt;script&gt;alert(document.cookie);&lt;/script&gt;`. With `{comment:>40}` the spec is non-empty, so `Markup.__html_format__` raises `ValueError(\"Unsupported format specification for Markup.\")` \u2014 Markup does not support format specs at all.",
+      "lines": [
+        "src/markupsafe/__init__.py:325-329",
+        "src/markupsafe/__init__.py:339-354"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import Markup\nc = Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')\nassert str(Markup('{comment}').format(comment=c)) == '&lt;script&gt;alert(document.cookie);&lt;/script&gt;'\ntry:\n    Markup('{comment:>40}').format(comment=c)\nexcept ValueError as e:\n    assert str(e) == 'Unsupported format specification for Markup.', e\nelse:\n    raise AssertionError('expected ValueError')\n"
+    },
+    {
+      "id": "p5",
+      "kind": "path",
+      "question": "Walk through `Markup(\"<footer>\") + \"</p> & <script>oops</script>\" + Markup(\"</footer>\")`. What does each `__add__` do to its right-hand operand and what is the final value?",
+      "key": "Both additions go through `Markup.__add__`, which accepts the operand because it is a `str` (or has `__html__`) and computes `self.__class__(super().__add__(self.escape(value)))`. The first operand is a plain `str`, so `Markup.escape` escapes it to `&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;` (note `&` becomes `&amp;`); the second operand is already a `Markup`, so `escape` returns it unchanged via `__html__`. The final result is `Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')`, of type `Markup`.",
+      "lines": [
+        "src/markupsafe/__init__.py:136-140",
+        "src/markupsafe/__init__.py:230-240"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import Markup\nfooter = Markup('<footer>') + '</p> & <script>oops</script>' + Markup('</footer>')\nassert type(footer) is Markup\nassert str(footer) == '<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>', footer\n"
+    },
+    {
+      "id": "p6",
+      "kind": "path",
+      "question": "`page.striptags()` is called at the end. In what order does `striptags` work, what is the exact returned string for this page, and what is the type of that return value?",
+      "key": "`striptags` first loops removing `<!-- ... -->` comments (stopping if no `-->` follows a `<!--`), then loops removing `<`...`>` tags the same way, then collapses all whitespace runs with `\" \".join(value.split())`, and finally wraps the text in `self.__class__(...)` only to call `unescape()` on it. The result here is the plain text `User: Alice \"The <b>Great</b>\" said: <script>alert(document.cookie);</script>` and its type is plain `str` (not `Markup`), because `unescape` returns `html.unescape(str(self))` \u2014 so it is unsafe to insert back into HTML without escaping.",
+      "lines": [
+        "src/markupsafe/__init__.py:199-228",
+        "src/markupsafe/__init__.py:188-197"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import Markup\npage = Markup('<p>User: <a href=\"/user/3\"><span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span></a> said: &lt;script&gt;alert(document.cookie);&lt;/script&gt;</p>')\ntext = page.striptags()\nassert text == 'User: Alice \"The <b>Great</b>\" said: <script>alert(document.cookie);</script>', text\nassert type(text) is str\n"
+    },
+    {
+      "id": "p7",
+      "kind": "path",
+      "question": "Inside `User.__html__`, `Markup('<span class=\"user\">{0}</span>').format(self.name)` is evaluated with `name = 'Alice \"The <b>Great</b>\"'`. What exactly does the formatted value contain, and why are the quotes in `class=\"user\"` not escaped?",
+      "key": "Only the substituted field goes through `EscapeFormatter.format_field`: `name` is a plain `str` with no `__html_format__`/`__html__`, so it falls to `super().format_field(...)` and is then escaped, becoming `Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;` (double quote \u2192 `&#34;`). The literal parts of the format string are copied verbatim because the template is already a `Markup`, so the result is `Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')`.",
+      "lines": [
+        "src/markupsafe/__init__.py:313-315",
+        "src/markupsafe/__init__.py:339-354"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import Markup\nname = 'Alice \"The <b>Great</b>\"'\nout = Markup('<span class=\"user\">{0}</span>').format(name)\nassert str(out) == '<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>', out\nassert type(out) is Markup\n"
+    },
+    {
+      "id": "p8",
+      "kind": "path",
+      "question": "The scenario also calls `escape(user)` directly on the `User` object (which defines both `__html__` and `__html_format__`). Which of the two methods does `escape` use, and what is the result?",
+      "key": "`escape` never looks at `__html_format__`; after `type(s) is str` fails it checks `hasattr(s, \"__html__\")` and returns `Markup(s.__html__())`, trusting that output as already safe. So the result is `Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')` \u2014 the span tag is preserved unescaped while the name was escaped by `User.__html__` itself. `__html_format__` is only consulted by `EscapeFormatter.format_field`.",
+      "lines": [
+        "src/markupsafe/__init__.py:39-45",
+        "src/markupsafe/__init__.py:339-342"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import Markup, escape\nclass User:\n    def __init__(self, id, name):\n        self.id = id\n        self.name = name\n    def __html_format__(self, spec):\n        return Markup('<FORMAT>')\n    def __html__(self):\n        return Markup('<span class=\"user\">{0}</span>').format(self.name)\nr = escape(User(3, 'Alice \"The <b>Great</b>\"'))\nassert type(r) is Markup\nassert str(r) == '<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>', r\n"
+    },
+    {
+      "id": "g2",
+      "kind": "general",
+      "question": "`escape` tests `type(s) is str` rather than `isinstance(s, str)`. What does this buy, and how are str subclasses and proxy objects handled as a result?",
+      "key": "The identity check is the fast path for the most common case \u2014 a plain `str` is sent straight to `_escape_inner` without the `__html__` lookup or a `str()` conversion. `type(s)` is used instead of `s.__class__` because a proxy object may report the `__class__` of the value it proxies (fix from 3.0.1); such a proxy therefore falls through to the generic path and is escaped via `str(s)`. Any `str` subclass likewise skips the fast path: `Markup` (and anything else with `__html__`) is returned unescaped through `Markup(s.__html__())`, while a subclass without `__html__` is escaped after `str(s)` \u2014 which is why `_escape_inner(str(s))` must tolerate `str(s)` returning a subclass instance (3.0.2 fix).",
+      "lines": [
+        "src/markupsafe/__init__.py:35-45",
+        "CHANGES.rst:24-40"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import escape, Markup\nclass Proxy:\n    def __init__(self, v):\n        self._v = v\n    @property\n    def __class__(self):\n        return self._v.__class__\n    def __str__(self):\n        return str(self._v)\np = Proxy('<x>')\nassert isinstance(p, str) and type(p) is not str\nassert str(escape(p)) == '&lt;x&gt;'\nclass Sub(str):\n    def __str__(self):\n        return self\nassert str(escape(Sub('<x>'))) == '&lt;x&gt;'\nassert str(escape(Markup('<x>'))) == '<x>'\n"
+    },
+    {
+      "id": "g3",
+      "kind": "general",
+      "question": "What does `Markup(object, encoding=None, errors=\"strict\")` do with each argument, and what is the trap when passing bytes without an encoding?",
+      "key": "`Markup.__new__` first checks `hasattr(object, \"__html__\")` and, if present, replaces `object` with `object.__html__()` \u2014 so wrapping an HTML-aware object marks its HTML output safe. If `encoding is None` it calls `str.__new__(cls, object)`, i.e. plain `str()` conversion with no escaping at all; otherwise it calls `str.__new__(cls, object, encoding, errors)` to decode a bytes-like object. The trap: `Markup(b\"<b>hi\")` with no encoding yields the repr-ish text `b'<b>hi'` rather than decoded text; you must pass e.g. `Markup(b\"<b>hi\", \"utf-8\")`. More generally the constructor never escapes \u2014 anything passed in is declared safe, so passing untrusted data here defeats the protection.",
+      "lines": [
+        "src/markupsafe/__init__.py:122-131"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import Markup\nassert str(Markup(b'<b>hi', 'utf-8')) == '<b>hi'\nassert str(Markup(b'<b>hi')) == \"b'<b>hi'\"\nassert str(Markup('<script>')) == '<script>'\nclass H:\n    def __html__(self):\n        return '<img src=\"x\">'\nassert str(Markup(H())) == '<img src=\"x\">'\n"
+    },
+    {
+      "id": "g4",
+      "kind": "general",
+      "question": "How do `escape` and `escape_silent` differ for `None`, and what does `soft_str` guarantee?",
+      "key": "`escape(None)` has no fast path and no `__html__`, so it escapes `str(None)` and returns `Markup('None')` \u2014 the literal word \"None\" appears in output. `escape_silent` returns an empty `Markup()` for `None` (its only special case) and otherwise just delegates to `escape`; it is meant for optional values. `soft_str` returns the object unchanged if it is already a `str` instance \u2014 preserving a `Markup` so it will not be escaped a second time \u2014 and otherwise returns `str(s)`; note the isinstance check means any str subclass is passed through as-is.",
+      "lines": [
+        "src/markupsafe/__init__.py:48-81"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import escape, escape_silent, soft_str, Markup\nassert str(escape(None)) == 'None'\nassert str(escape_silent(None)) == '' and type(escape_silent(None)) is Markup\nassert str(escape_silent('<foo>')) == '&lt;foo&gt;'\nm = Markup('<b>')\nassert soft_str(m) is m and type(soft_str(15)) is str\n"
+    },
+    {
+      "id": "g5",
+      "kind": "general",
+      "question": "How does the package decide between the C speedups and the pure-Python implementation, and what is guaranteed to be identical between them?",
+      "key": "`src/markupsafe/__init__.py` does `try: from ._speedups import _escape_inner / except ImportError: from ._native import _escape_inner` at import time \u2014 a single module-level binding, chosen once; if the C extension was not built (setup.py falls back to a pure-Python build on compile failure or on PyPy/Jython/GraalVM) the native version is used transparently. Both implement the same contract: replace exactly `&`\u2192`&amp;`, `>`\u2192`&gt;`, `<`\u2192`&lt;`, `'`\u2192`&#39;`, `\"`\u2192`&#34;` and nothing else, returning the text unchanged when no such characters occur (the C version then just increfs and returns the input object). Everything else \u2014 `Markup`, `escape`'s `__html__` handling \u2014 is pure Python either way.",
+      "lines": [
+        "src/markupsafe/__init__.py:7-10",
+        "src/markupsafe/_native.py:1-8",
+        "src/markupsafe/_speedups.c:74-98",
+        "setup.py:54-82"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe._native import _escape_inner as native\nassert native(\"&><'\\\"\") == '&amp;&gt;&lt;&#39;&#34;'\nassert str(markupsafe.escape(\"&><'\\\"\")) == native(\"&><'\\\"\")\nassert native('plain text') == 'plain text'\n"
+    },
+    {
+      "id": "g6",
+      "kind": "general",
+      "question": "What exactly does `Markup.striptags` promise, and in which situations does it leave markup-looking text behind?",
+      "key": "It removes HTML comments first (repeatedly deleting from `<!--` through the next `-->`), then removes tags (from each `<` through the next `>`), then collapses all whitespace runs to single spaces via `\" \".join(value.split())`, and finally returns `unescape()`d text. Comments are handled before tags so a comment containing a tag does not end early. If a `<!--` has no matching `-->`, or a `<` has no matching `>`, the loop breaks and that remainder is kept verbatim (e.g. `Markup(\"a<b\").striptags() == \"a<b\"`). The return value is a plain `str` with entities decoded, so it is *not* safe markup: re-inserting it into HTML without escaping can reintroduce tags such as `<script>`.",
+      "lines": [
+        "src/markupsafe/__init__.py:199-228"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import Markup\nassert Markup('<!-- a <b> c -->x<i>y</i>&amp;z').striptags() == 'xy&z'\nassert Markup('a<b').striptags() == 'a<b'\nassert Markup('Main &raquo;\\t<em>About</em>').striptags() == 'Main \\u00bb About'\nassert type(Markup('<i>x</i>').striptags()) is str\n"
+    },
+    {
+      "id": "g7",
+      "kind": "general",
+      "question": "Describe the three-step dispatch in `EscapeFormatter.format_field` and the error it raises for a class that defines `__html__` but not `__html_format__`.",
+      "key": "For each substituted field: (1) if the value has `__html_format__`, it is called with the format spec and its return value used; (2) otherwise, if the value has `__html__`, it is called \u2014 but if a non-empty `format_spec` was given, a `ValueError` is raised with the message \"Format specifier {spec} given, but {type(value)} does not define __html_format__. A class that defines __html__ must define __html_format__ to work with format specifiers.\"; (3) otherwise Python's default `string.Formatter.format_field` is used with `str(format_spec)`. In every case the result is finally passed through `str(self.escape(rv))`, so plain values get escaped while `Markup`/`__html__` output passes through unchanged.",
+      "lines": [
+        "src/markupsafe/__init__.py:332-354",
+        "docs/formatting.rst:13-27"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import Markup\nclass OnlyHtml:\n    def __html__(self):\n        return Markup('<foo>')\nclass Both(OnlyHtml):\n    def __html_format__(self, spec):\n        return Markup('<FORMAT>')\nassert str(Markup('{0}').format(OnlyHtml())) == '<foo>'\nassert str(Markup('{0}').format(Both())) == '<FORMAT>'\nassert str(Markup('{0}').format('<x>')) == '&lt;x&gt;'\ntry:\n    Markup('{0:>10}').format(OnlyHtml())\nexcept ValueError as e:\n    assert 'does not define __html_format__' in str(e), e\nelse:\n    raise AssertionError('expected ValueError')\n"
+    }
+  ],
+  "dropped": [
+    {
+      "id": "g1",
+      "kind": "general",
+      "question": "Markup overrides many `str` methods. Which of them escape their arguments and which deliberately do not, and what is the stated rationale for the ones that don't?",
+      "key": "Escaping overrides: `join` escapes every item of the iterable; `replace` escapes only its `new` argument (not `old`); `ljust`, `rjust`, and `center` escape `fillchar`; `__add__`/`__radd__` escape the other operand; `__mod__` escapes each interpolated value; `format`/`format_map` escape fields via `EscapeFormatter`. Non-escaping overrides merely re-wrap the result in the class: `strip`, `lstrip`, `rstrip`, `removeprefix`, `removesuffix`, `partition`, `rpartition`, plus `split`/`rsplit`/`splitlines`, `__getitem__`, `capitalize`, `title`, `lower`, `upper`, `swapcase`, `casefold`, `translate`, `expandtabs`, `zfill`, `__mul__`/`__rmul__`. Since 3.0.0 those search-like methods do not escape their argument because they are conceptually linked to `in`, `find`, `index`, which never escaped their arguments either.",
+      "lines": [
+        "src/markupsafe/__init__.py:170-186",
+        "src/markupsafe/__init__.py:257-311",
+        "CHANGES.rst:55-60"
+      ],
+      "check": "import sys\ntry:\n    import markupsafe\nexcept ImportError:\n    sys.path.insert(0, 'src')\n    import markupsafe\nfrom markupsafe import Markup\nassert str(Markup('x-y').replace('-', '<')) == 'x&lt;y'\nassert str(Markup('a').rjust(3, '<')) == '&lt;&lt;a'\nassert str(Markup('|').join(['<a>', Markup('<b>')])) == '&lt;a&gt;|<b>'\nassert str(Markup('<a>').lstrip('<')) == 'a>'\nassert str(Markup('<p>').removeprefix('<')) == 'p>'\nassert [str(v) for v in Markup('<a> <b>').split()] == ['<a>', '<b>']\n",
+      "dropped": "check failed: TypeError: The fill character must be exactly one character long"
+    }
+  ],
+  "cost": 0.65
+}

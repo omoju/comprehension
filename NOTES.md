@@ -126,6 +126,11 @@ left, design for verification, context engineering, the quality loop, cross-mode
   Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-05** · Omoju back after two days off; §9.1 written and committed (`6517ebf`) before any out-of-sample
+  result. Run launched for the 9 repos. **§10 rerun, logged:** the first launch finished the question stage for
+  6 repos and then every extraction call on a DeepWiki text timed out in the SDK's stream reader (nine long
+  streams at once); no result was seen. Client timeout raised to 3600 s with 3 retries; relaunched, resuming
+  from the finished stages. Nothing already written was redone.
 - **10-02 night** · Eval harness (`codestory/eval/`). DeepWiki fetched for all 10 via MCP: 17k–62k words each,
   cites `[path:lines]()` with no commit, so pinned to default-branch HEAD on the fetch date (8 of 10 equal our
   story commits); 5–10% of its own references don't resolve at HEAD. Judge: whole repo in (cached) context, batches

@@ -36,11 +36,11 @@ def run(client, name: str) -> None:
 
 
 if __name__ == "__main__":
-    import anthropic
+    from common import client as make_client
 
     if len(sys.argv) < 2:
         print(__doc__)
         sys.exit(2)
-    client = anthropic.Anthropic()
+    client = make_client()
     for name in sys.argv[1:]:
         run(client, name)

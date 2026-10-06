@@ -158,12 +158,12 @@ def grade(client, name: str) -> dict:
 SCORE = {"correct": 1.0, "partly": 0.5, "wrong": 0.0}
 
 if __name__ == "__main__":
-    import anthropic
+    from common import client as make_client
 
     if len(sys.argv) < 3 or sys.argv[1] not in ("claims", "grade"):
         print(__doc__)
         sys.exit(2)
-    client = anthropic.Anthropic()
+    client = make_client()
     for name in sys.argv[2:]:
         if sys.argv[1] == "claims":
             r = judge_claims(client, name)

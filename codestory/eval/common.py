@@ -66,6 +66,13 @@ def words(text: str) -> int:
     return len(text.split())
 
 
+def client():
+    """A client that waits: extraction over a 60k-word page runs for many minutes, and nine run at once."""
+    import anthropic
+
+    return anthropic.Anthropic(timeout=3600, max_retries=3)
+
+
 def ask(client, system: str, content, schema: dict | None = None, max_tokens: int = 32000, tools=None, messages=None):
     """One model turn, with the settings the preregistration names (§6). Returns the response."""
     kwargs = dict(model=MODEL, max_tokens=max_tokens, system=system, thinking={"type": "adaptive"},
