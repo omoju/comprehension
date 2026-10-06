@@ -174,3 +174,14 @@ independent of the numbers:
   25,000 words at DeepWiki page boundaries and concatenates the claims, with the same prompt. Only rich/DeepWiki
   is affected; the eight other repositories' extractions were single calls and are unchanged. Decided before any
   metric was computed or read.
+- **2026-10-05 · The accuracy judge re-run with the source in view (decided after the first results were read).**
+  The judge (§5.1.3) reads the repository as the pipeline's cached block, which without a trace leads with the
+  README and docs; for the large repositories the context budget ran out before the source (rich: 1 of ~80
+  modules shown; attrs without `_make.py`; requests without `models.py` and `sessions.py`). The first run's
+  "unverifiable" verdicts say so in their reasons. Both arms were judged the same way. Because "unverifiable"
+  counts as not contradicted in the §5.1.4 metric, H1 was not properly measured. Fix: the judge's block now puts
+  the source files the batch's claims name first, then the rest of the package source, then docs. **Only the
+  judging stage is re-run, on the same 40 sampled claims per repository per arm**; extraction, sampling,
+  questions, answers and grades are untouched. The first run's judgments are kept in `eval/judgments-first-run/`
+  and its results in `eval/results-first-run.md`; both sets of numbers are published. Omoju's §9 verdict was
+  recorded before either. The change can only move claims from unverifiable to supported or contradicted.
