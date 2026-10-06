@@ -90,7 +90,7 @@ pre { font: 13px/1.5 var(--mono); background: var(--bg); border: 1px solid var(-
 
 <section data-title="3 · Who saw what">
 <h2>The part that makes it fair: who saw what</h2>
-<p>Click a role to see what it was given and what it was kept from. The rule throughout: nobody who writes a question, answers one, or marks one knows which arm is which, or sees anything that would let them favour one.</p>
+<p>Every role here is the same off-the-shelf model, Anthropic's <code>claude-opus-5</code>, called through the API with adaptive thinking: no fine-tuning, no tools, no agents, and no memory between calls. Each role is a fresh conversation that knows nothing of the others. Click a role to see what it was given and what it was kept from. The rule throughout: nobody who writes a question, answers one, or marks one knows which arm is which, or sees anything that would let them favour one.</p>
 <div class="roles" id="roles"></div>
 <div class="fig" id="flowfig"></div>
 <div class="note" id="rolenote">Click a role above.</div>
@@ -133,7 +133,7 @@ pre { font: 13px/1.5 var(--mono); background: var(--bg); border: 1px solid var(-
 <section data-title="8 · The honest sentence">
 <h2>What you can say, and what you can't</h2>
 <div class="caveat">
-  <div><b>The reader was a model</b>Claude Opus, reading the text with no tools. No human read for this measure. The one human signal is Omoju's blind read of two stories, recorded before the numbers, and the 20-claim hand check on the accuracy judge.</div>
+  <div><b>The reader was a model, and the same family as the author</b>Claude Opus 5, reading the text with no tools. It is also the model that wrote the stories, so a reader that happened to prefer its own prose would favour the story; blind grading does not remove that. The accuracy measure has a second judge from another vendor (Jev); this one has only the blinding. No human read for this measure. The one human signal is Omoju's blind read of two stories, recorded before the numbers, and the 20-claim hand check on the accuracy judge.</div>
   <div><b>"General" meant the core modules, not the whole repository</b>Checked after the decision: all 61 general questions are keyed to files the traced run passes through. The question writer had the trace in front of it, and in these libraries the intended use runs through the core. The stories visit those files; they don't visit <code>docs/</code>, the CI, or the far corners. Nothing here measures questions about those.</div>
   <div><b>Nine small, pure-Python libraries</b>Nothing here says anything about large, multi-language systems, and the interval for general questions starts at +5 points: real, not huge.</div>
   <div><b>The other measure went the other way</b>The same study found the stories no more accurate than DeepWiki (0.71 vs 0.54 contradicted claims per 1,000 words; 10 vs 7 of 360), which is why the preregistered rule said kill. Comprehension and accuracy are separate findings; quote them together.</div>
