@@ -75,7 +75,7 @@ pre { font: 13px/1.5 var(--mono); background: var(--bg); border: 1px solid var(-
   <div><span class="big wiki">__PATH_D__%</span><small><span class="tag wiki">deepwiki</span> path questions</small></div></div>
 </div>
 <p>Those are percentage scores on a quiz. A reader that has seen only one document about a repository, and never the code, is asked questions about the code. Each answer is marked correct (1), partly (½) or wrong (0). The percentage is the average over all questions, pooled across nine repositories.</p>
-<p>So the claim behind "76% vs 56%" is: <em>a reader given a CodeStory answered owner questions about the repository better than a reader given DeepWiki's wiki for the same repository.</em> Whether that is a fair sentence depends on three things: who the reader was, where the questions came from, and how the marking was done. The next screens show each.</p>
+<p>So the claim behind "76% vs 56%" is: <em>a reader given a CodeStory answered owner questions about the repository better than a reader given DeepWiki's wiki for the same repository.</em> "Document" here means one of two texts: the whole CodeStory of a repository, or the whole DeepWiki wiki for it. Whether that is a fair sentence depends on three things: who the reader was, where the questions came from, and how the marking was done. The next screens show each.</p>
 </section>
 
 <section data-title="2 · Two documents">
@@ -108,7 +108,7 @@ pre { font: 13px/1.5 var(--mono); background: var(--bg); border: 1px solid var(-
 
 <section data-title="5 · Reading and marking">
 <h2>Reading and marking</h2>
-<p><b>The reader</b> is a model given one arm's full text and the fifteen questions. No repository, no tools, no web. It may answer "the text does not say", which is marked wrong.</p>
+<p><b>The reader</b> is a model given one text in full, the whole story or the whole DeepWiki wiki for that repository, and the fifteen questions. No repository, no tools, no web. It may answer "the text does not say", which is marked wrong.</p>
 <p><b>The grader</b> is a model given the question, the key, and the answer, and nothing else: not the arm, not the document. It marks correct, partly or wrong, with a one-line reason. Here is one it marked wrong:</p>
 <div class="q"><b>requests g1 · <span class="tag wiki">deepwiki</span> · wrong</b><br><i>Question:</i> What does <code>prepare_cookies</code> guarantee about being called more than once on the same PreparedRequest?<br><i>Answer given:</i> "The documentation describes <code>prepare_cookies(cookies)</code> only as converting cookies into the Cookie header via <code>get_cookie_header</code>…; it does not state any guarantee about calling it more than once…"<br><i>Grader:</i> Denies the once-only contract and misses both the cookielib <code>has_header</code> mechanism and the fact that <code>resolve_redirects</code> pops the Cookie header before re-preparing.</div>
 <p>Same questions, same keys, same grader for both arms. The only thing that differs between the two scores is the document the reader was handed.</p>
@@ -156,11 +156,11 @@ let start = 0; try { start = +localStorage.getItem('h2-step') || 0 } catch (e) {
 // ---- who saw what (SVG)
 const ROLES = {
   writer: { name: 'Question writer', saw: ['repo', 'trace'], not: ['story', 'wiki'], note: 'The question writer saw the repository and the traced run, and never either document. Its questions and keys were written before any reader existed; keys were then checked by running them.' },
-  reader: { name: 'Reader', saw: ['story'], not: ['repo', 'trace', 'wiki', 'keys'], note: 'A reader saw one document and the questions. No code, no trace, no keys, no tools. A second, separate reader saw the other document. Neither knew there was a comparison.' },
+  reader: { name: 'Reader', saw: ['story'], not: ['repo', 'trace', 'wiki', 'keys'], note: 'A reader saw one of the two texts in full, either the whole story (all chapters, proofs left out) or the whole DeepWiki wiki (every page), plus the fifteen questions. No code, no trace, no keys, no tools. A second, separate reader saw the other text. Neither knew there was a comparison.' },
   grader: { name: 'Grader', saw: ['keys', 'answers'], not: ['story', 'wiki', 'repo'], note: 'The grader saw the question, the key and the answer, with the arm unnamed. It never saw either document, so it could not favour the one it preferred.' },
   checks: { name: 'Key checks', saw: ['repo', 'keys'], not: ['story', 'wiki'], note: 'Code, not a model: each path key ships a program that must run and assert the answer against the repository; each general key names lines that must exist. 3 of 135 questions failed and were dropped before any reading.' },
 };
-const NODES = { repo: [40, 40, 'Repository + trace'], story: [40, 130, 'Story'], wiki: [40, 200, 'DeepWiki'], writer: [300, 40, 'Question writer'], keys: [560, 40, 'Questions + keys'], checks: [560, 110, 'Key checks (code)'], reader: [300, 165, 'Reader (one arm)'], answers: [560, 190, 'Answers'], grader: [560, 260, 'Grader'], score: [300, 260, 'Score'] };
+const NODES = { repo: [40, 40, 'Repository + trace'], story: [40, 130, 'The story (all chapters)'], wiki: [40, 200, 'The DeepWiki wiki (all pages)'], writer: [300, 40, 'Question writer'], keys: [560, 40, 'Questions + keys'], checks: [560, 110, 'Key checks (code)'], reader: [300, 165, 'Reader (sees one text)'], answers: [560, 190, 'Answers'], grader: [560, 260, 'Grader'], score: [300, 260, 'Score'] };
 const EDGES = [['repo', 'writer', ''], ['writer', 'keys', ''], ['keys', 'checks', ''], ['repo', 'checks', ''], ['story', 'reader', 'story'], ['wiki', 'reader', 'wiki'], ['keys', 'reader', ''], ['reader', 'answers', ''], ['answers', 'grader', ''], ['keys', 'grader', ''], ['grader', 'score', '']];
 function flow(active) {
   const W = 200, H = 40; let s = `<svg viewBox="0 0 800 320" role="img"><title>Information flow</title>`;
