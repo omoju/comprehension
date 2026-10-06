@@ -105,3 +105,9 @@ Traceback (most recent call last):
     raise mapped_exc(message) from exc
 httpx2.ReadTimeout: The read operation timed out
 click         questions         (done)
+click         extract story     $0.82  234s
+click         extract deepwiki  $2.11  618s
+click         judge             $1.59  795s
+click         read story        $0.37  866s
+click         read deepwiki     $1.39  918s
+click         grade             $0.23  985s

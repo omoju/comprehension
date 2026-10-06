@@ -103,3 +103,10 @@ Traceback (most recent call last):
   File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpx2/_transports/default.py", line 115, in map_httpcore_exceptions
     raise mapped_exc(message) from exc
 httpx2.ReadTimeout: The read operation timed out
+jinja         questions         $1.60  261s
+jinja         extract story     $0.61  412s
+jinja         extract deepwiki  $1.30  720s
+jinja         judge             $1.59  906s
+jinja         read story        $0.37  973s
+jinja         read deepwiki     $0.65  1057s
+jinja         grade             $0.23  1126s

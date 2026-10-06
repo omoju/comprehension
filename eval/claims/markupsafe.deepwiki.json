@@ -1,0 +1,1300 @@
+{
+  "repo": "markupsafe",
+  "arm": "deepwiki",
+  "words": 31855,
+  "extracted": 312,
+  "sample": [
+    10,
+    13,
+    18,
+    24,
+    28,
+    31,
+    35,
+    47,
+    61,
+    67,
+    69,
+    77,
+    80,
+    102,
+    105,
+    108,
+    118,
+    122,
+    136,
+    144,
+    160,
+    169,
+    181,
+    190,
+    191,
+    201,
+    216,
+    217,
+    223,
+    226,
+    238,
+    239,
+    244,
+    252,
+    259,
+    260,
+    264,
+    268,
+    270,
+    295
+  ],
+  "claims": [
+    {
+      "claim": "MarkupSafe provides the `Markup` class and `escape()` function that replace the characters `&`, `<`, `>`, `'`, and `\"` with HTML-safe equivalents.",
+      "quote": "It provides the `Markup` class and `escape()` function to prevent injection attacks by replacing special characters (`&`, `<`, `>`, `'`, `\"`) with their HTML-safe equivalents."
+    },
+    {
+      "claim": "`escape()` is defined at lines 24-45 of `src/markupsafe/__init__.py`.",
+      "quote": "| `escape()` | Function | Convert any object to escaped HTML | [__init__.py:24-45]() |"
+    },
+    {
+      "claim": "`escape_silent()` treats `None` as an empty string and is defined at lines 48-61 of `src/markupsafe/__init__.py`.",
+      "quote": "| `escape_silent()` | Function | Like `escape()` but treats `None` as empty string | [__init__.py:48-61]() |"
+    },
+    {
+      "claim": "`soft_str()` converts to string while preserving `Markup` safety and is defined at lines 64-81 of `src/markupsafe/__init__.py`.",
+      "quote": "| `soft_str()` | Function | Convert to string while preserving `Markup` safety | [__init__.py:64-81]() |"
+    },
+    {
+      "claim": "The `Markup` class is a safe string subclass defined at lines 84-330 of `src/markupsafe/__init__.py`.",
+      "quote": "| `Markup` | Class | Safe string subclass with auto-escaping operations | [__init__.py:84-330]() |"
+    },
+    {
+      "claim": "`src/markupsafe/__init__.py` lines 7-10 attempt `from ._speedups import _escape_inner` and fall back to `from ._native import _escape_inner` on ImportError.",
+      "quote": "try:\n    from ._speedups import _escape_inner\nexcept ImportError:\n    from ._native import _escape_inner"
+    },
+    {
+      "claim": "The `escape()` function escapes `&` to `&amp;`.",
+      "quote": "| `&` | `&amp;` | Entity prefix |"
+    },
+    {
+      "claim": "The `escape()` function escapes `<` to `&lt;`.",
+      "quote": "| `<` | `&lt;` | Tag start |"
+    },
+    {
+      "claim": "The `escape()` function escapes `>` to `&gt;`.",
+      "quote": "| `>` | `&gt;` | Tag end |"
+    },
+    {
+      "claim": "The `escape()` function escapes `'` to `&#39;`.",
+      "quote": "| `'` | `&#39;` | Attribute quote |"
+    },
+    {
+      "claim": "The `escape()` function escapes `\"` to `&#34;`.",
+      "quote": "| `\"` | `&#34;` | Attribute quote |"
+    },
+    {
+      "claim": "The `escape()` function has a fast path for plain `str` objects at lines 39-40 of `src/markupsafe/__init__.py`.",
+      "quote": "1. Fast path for plain `str` objects: [__init__.py:39-40]()"
+    },
+    {
+      "claim": "The `escape()` function supports the `__html__()` protocol at lines 42-43 of `src/markupsafe/__init__.py`.",
+      "quote": "2. `__html__()` protocol support: [__init__.py:42-43]()"
+    },
+    {
+      "claim": "The `escape()` function converts other types to string at line 45 of `src/markupsafe/__init__.py`.",
+      "quote": "3. String conversion for other types: [__init__.py:45]()"
+    },
+    {
+      "claim": "`EscapeFormatter` is a subclass of `string.Formatter` defined at lines 332-354 of `src/markupsafe/__init__.py`.",
+      "quote": "EscFormatter[\"EscapeFormatter<br/>(string.Formatter subclass)<br/>lines 332-354\"]"
+    },
+    {
+      "claim": "`_MarkupEscapeHelper` wraps values for `%` formatting and is defined at lines 357-380 of `src/markupsafe/__init__.py`.",
+      "quote": "MarkupHelper[\"_MarkupEscapeHelper<br/>(wraps values for %)<br/>lines 357-380\"]"
+    },
+    {
+      "claim": "The C extension source file is located at `src/markupsafe/_speedups.c`.",
+      "quote": "| **File** | `src/markupsafe/_speedups.c` | `src/markupsafe/_native.py` |"
+    },
+    {
+      "claim": "The pure Python implementation file is located at `src/markupsafe/_native.py`.",
+      "quote": "| **File** | `src/markupsafe/_speedups.c` | `src/markupsafe/_native.py` |"
+    },
+    {
+      "claim": "The C extension uses PEP 489 multi-phase initialization as of version 3.0.3.",
+      "quote": "| **Multi-phase Init** | PEP 489 (v3.0.3+) | Standard module |"
+    },
+    {
+      "claim": "`escape(\"<div>\")` returns `Markup('&lt;div&gt;')`.",
+      "quote": "escape(\"<div>\")  # Returns: Markup('&lt;div&gt;')"
+    },
+    {
+      "claim": "`escape_silent(None)` returns `Markup('')`.",
+      "quote": "escape_silent(None)  # Returns: Markup('') instead of Markup('None')"
+    },
+    {
+      "claim": "`Markup(\"<b>Hello</b> \") + \"<script>\"` returns `Markup('<b>Hello</b> &lt;script&gt;')`.",
+      "quote": "Markup(\"<b>Hello</b> \") + \"<script>\"\n# Returns: Markup('<b>Hello</b> &lt;script&gt;')"
+    },
+    {
+      "claim": "`Markup(\"<div>%s</div>\") % \"<script>\"` returns `Markup('<div>&lt;script&gt;</div>')`.",
+      "quote": "Markup(\"<div>%s</div>\") % \"<script>\"\n# Returns: Markup('<div>&lt;script&gt;</div>')"
+    },
+    {
+      "claim": "`Markup(\"<div>{}</div>\").format(\"<script>\")` returns `Markup('<div>&lt;script&gt;</div>')`.",
+      "quote": "Markup(\"<div>{}</div>\").format(\"<script>\")\n# Returns: Markup('<div>&lt;script&gt;</div>')"
+    },
+    {
+      "claim": "Objects implementing `__html__()` are not escaped by `escape()`; the method's return value is used as-is.",
+      "quote": "escape(SafeComponent())\n# Returns: Markup('<div>Safe content</div>') - not escaped"
+    },
+    {
+      "claim": "The `Markup()` constructor marks content as safe without escaping it.",
+      "quote": "the `Markup()` constructor marks content as safe without escaping"
+    },
+    {
+      "claim": "MarkupSafe version 3.0.0 was released on 2024-10-07.",
+      "quote": "| **3.0.0** | 2024-10-07 | Modern packaging (`pyproject.toml`), 40% faster escaping, deferred annotations |"
+    },
+    {
+      "claim": "MarkupSafe version 2.1.0 was released on 2022-02-17 and removed Python 3.6 support and the deprecated `soft_unicode`.",
+      "quote": "| **2.1.0** | 2022-02-17 | Removed Python 3.6 support, removed deprecated `soft_unicode` |"
+    },
+    {
+      "claim": "MarkupSafe version 2.0.0 was released on 2021-05-11, added type annotations and dropped Python 2.7.",
+      "quote": "| **2.0.0** | 2021-05-11 | Added type annotations, dropped Python 2.7 |"
+    },
+    {
+      "claim": "MarkupSafe version 1.1.0 was released on 2018-11-05 and added multi-platform wheels with a 1.5x speedup on Python 3.",
+      "quote": "| **1.1.0** | 2018-11-05 | Multi-platform wheels, 1.5x speedup on Python 3 |"
+    },
+    {
+      "claim": "MarkupSafe version 1.0 was released on 2017-03-07 and added the `__version__` attribute.",
+      "quote": "| **1.0** | 2017-03-07 | Added `__version__` attribute |"
+    },
+    {
+      "claim": "MarkupSafe version 0.16 removed 2to3 and dropped Python 2.5 and 3.2 support while adding direct Python 3.x support.",
+      "quote": "| 0.16 | Python 3.x | Python 2.5, 3.2 | Removed 2to3, direct Python 3 support |"
+    },
+    {
+      "claim": "MarkupSafe version 1.1.0 dropped Python 2.6 and 3.3 support.",
+      "quote": "| 1.1.0 | - | Python 2.6, 3.3 | Wheel distribution begins |"
+    },
+    {
+      "claim": "MarkupSafe version 2.0.0 dropped Python 2.7, 3.4, and 3.5 support.",
+      "quote": "| 2.0.0 | Type annotations | Python 2.7, 3.4, 3.5 | End of Python 2 era |"
+    },
+    {
+      "claim": "MarkupSafe version 2.1.0 added GraalPython support and dropped Python 3.6.",
+      "quote": "| 2.1.0 | GraalPython | Python 3.6 | - |"
+    },
+    {
+      "claim": "MarkupSafe version 3.0.0 added Python 3.13 and free-threading support while dropping Python 3.7 and 3.8.",
+      "quote": "| 3.0.0 | Python 3.13, free-threading | Python 3.7, 3.8 | Experimental free-threading support |"
+    },
+    {
+      "claim": "MarkupSafe version 3.0.3 added Python 3.14 wheels.",
+      "quote": "| 3.0.3 | Python 3.14 wheels | - | Early Python 3.14 support |"
+    },
+    {
+      "claim": "MarkupSafe version 3.1.0 drops Python 3.9 support.",
+      "quote": "| 3.1.0 | - | Python 3.9 | Cleanup of deprecated code |"
+    },
+    {
+      "claim": "MarkupSafe version 1.1.1 fixed a segfault in the C speedups when `__html__` raises exceptions.",
+      "quote": "**v1.1.1 (2019)**: Fixed critical segfault when `__html__` raises exceptions in C speedups"
+    },
+    {
+      "claim": "MarkupSafe version 3.0.0 migrated from `setup.cfg` to `pyproject.toml` and replaced `distutils` with `setuptools`.",
+      "quote": "**v3.0.0 (2024)**: Migrated from `setup.cfg` to `pyproject.toml`, replaced `distutils` with `setuptools`"
+    },
+    {
+      "claim": "MarkupSafe version 2.0.1 fixed type exports for IDE/type checker recognition.",
+      "quote": "**v2.0.1 (2021)**: Fixed type exports for proper IDE/type checker recognition"
+    },
+    {
+      "claim": "In MarkupSafe 2.0.0, `Markup.unescape()` uses `html.unescape()` for HTML5 character reference support.",
+      "quote": "`Markup.unescape()` now uses `html.unescape()` for HTML5 character reference support"
+    },
+    {
+      "claim": "MarkupSafe 2.0.0 removed `soft_unicode()`, replaced by `soft_str()`.",
+      "quote": "Removed `soft_unicode()`, replaced by `soft_str()`"
+    },
+    {
+      "claim": "MarkupSafe 2.1.0 raises an error on a missing single placeholder during string interpolation.",
+      "quote": "Raised error on missing single placeholder during string interpolation (stricter behavior)"
+    },
+    {
+      "claim": "MarkupSafe 2.1.0 disabled the speedups module for the GraalPython platform.",
+      "quote": "Disabled speedups module for GraalPython platform"
+    },
+    {
+      "claim": "MarkupSafe 2.1.3 implemented `format_map()`, `casefold()`, `removeprefix()`, and `removesuffix()` methods on `Markup`.",
+      "quote": "Implemented `format_map()`, `casefold()`, `removeprefix()`, and `removesuffix()` methods"
+    },
+    {
+      "claim": "MarkupSafe 2.1.3 used the `Self` type for annotating return types.",
+      "quote": "Used `Self` type for annotating return types"
+    },
+    {
+      "claim": "In MarkupSafe 3.0.0, `strip()`, `lstrip()`, `rstrip()`, `removeprefix()`, `removesuffix()`, `partition()`, and `rpartition()` no longer escape their arguments.",
+      "quote": "Changed behavior: `strip()`, `lstrip()`, `rstrip()`, `removeprefix()`, `removesuffix()`, `partition()`, and `rpartition()` no longer escape their arguments"
+    },
+    {
+      "claim": "In MarkupSafe 3.0.0, `replace()` only escapes the `new` argument.",
+      "quote": "`replace()` only escapes the `new` argument"
+    },
+    {
+      "claim": "MarkupSafe 3.0.0 deprecated the `__version__` attribute in favor of `importlib.metadata.version(\"markupsafe\")`.",
+      "quote": "Deprecated `__version__` attribute in favor of `importlib.metadata.version(\"markupsafe\")`"
+    },
+    {
+      "claim": "MarkupSafe 3.1.0 removes all previously deprecated code including `__version__`.",
+      "quote": "Removes all previously deprecated code including `__version__`"
+    },
+    {
+      "claim": "MarkupSafe 2.1.4 removed regex usage from `striptags` to avoid pathological regex performance.",
+      "quote": "| v2.1.4 (2024) | `striptags` performance | Removed regex usage | Avoided pathological regex performance |"
+    },
+    {
+      "claim": "MarkupSafe 3.0.0 achieved a 40% speedup in escaping plain strings.",
+      "quote": "| v3.0.0 (2024) | 40% escape speedup | Optimized plain string escaping | Core operation significantly faster |"
+    },
+    {
+      "claim": "MarkupSafe 3.0.3 added Windows ARM64 wheel builds.",
+      "quote": "Added Windows ARM64 wheel builds"
+    },
+    {
+      "claim": "MarkupSafe 3.0.3 added RISC-V 64-bit wheel builds.",
+      "quote": "Added RISC-V 64-bit wheel builds"
+    },
+    {
+      "claim": "MarkupSafe 3.0.0 updated build requirements to setuptools >= 70.1.",
+      "quote": "Updated build requirements to setuptools >= 70.1"
+    },
+    {
+      "claim": "MarkupSafe 3.0.0 implemented deferred evaluation of type annotations.",
+      "quote": "Implemented deferred evaluation of type annotations"
+    },
+    {
+      "claim": "MarkupSafe 2.1.1 fixed ambiguous regex matches in `striptags`.",
+      "quote": "| v2.1.1 (2022) | `striptags` regex ambiguity | Avoided ambiguous regex matches |"
+    },
+    {
+      "claim": "MarkupSafe 2.1.2 fixed tags with newlines not being stripped by `striptags`.",
+      "quote": "| v2.1.2 (2023) | `striptags` newlines | Fixed tags with newlines not being stripped |"
+    },
+    {
+      "claim": "MarkupSafe 2.1.5 fixed space collapsing behavior in `striptags`.",
+      "quote": "| v2.1.5 (2024) | `striptags` whitespace | Fixed space collapsing behavior |"
+    },
+    {
+      "claim": "MarkupSafe 3.0.1 addressed GCC 14 compiler warnings treated as errors.",
+      "quote": "| v3.0.1 (2024) | GCC 14 compatibility | Addressed compiler warnings as errors |"
+    },
+    {
+      "claim": "MarkupSafe 3.0.1 fixed compatibility with proxy objects.",
+      "quote": "| v3.0.1 (2024) | Proxy object compatibility | Fixed compatibility with proxy objects |"
+    },
+    {
+      "claim": "MarkupSafe 3.0.2 fixed compatibility when `__str__` returns a subclass.",
+      "quote": "| v3.0.2 (2024) | `__str__` subclass | Fixed compatibility when `__str__` returns subclass |"
+    },
+    {
+      "claim": "MarkupSafe 0.15 fixed installation failures on PyPy and Jython.",
+      "quote": "- v0.15: Fixed installation failures on PyPy and Jython"
+    },
+    {
+      "claim": "MarkupSafe 0.17 fixed broken interpolation on tuples.",
+      "quote": "- v0.17: Fixed broken interpolation on tuples"
+    },
+    {
+      "claim": "`_escape_inner` is imported at lines 8-10 of `src/markupsafe/__init__.py`.",
+      "quote": "| `_escape_inner` | Function | 8-10 | Core escaping implementation (imported) |"
+    },
+    {
+      "claim": "The `_HasHTML` protocol is defined at lines 16-17 of `src/markupsafe/__init__.py`.",
+      "quote": "The `_HasHTML` protocol at [src/markupsafe/\\_\\_init\\_\\_.py:16-17]() defines the interface for objects that can provide their own HTML representation."
+    },
+    {
+      "claim": "The `_TPEscape` protocol is defined at lines 20-21 of `src/markupsafe/__init__.py`.",
+      "quote": "The `_TPEscape` protocol at [src/markupsafe/\\_\\_init\\_\\_.py:20-21]() defines the signature for escape functions."
+    },
+    {
+      "claim": "`Markup.__add__` and `Markup.__radd__` escape their arguments.",
+      "quote": "| Addition | `__add__`, `__radd__` | Yes | `Markup(\"a\") + \"b\"` \u2192 `Markup(\"ab\")` |"
+    },
+    {
+      "claim": "`Markup.__mod__` escapes its arguments.",
+      "quote": "| Modulo formatting | `__mod__` | Yes | `Markup(\"%s\") % \"a\"` \u2192 `Markup(\"a\")` |"
+    },
+    {
+      "claim": "`Markup.join()` escapes the items it joins.",
+      "quote": "| Join | `join()` | Yes | `Markup(\",\").join([\"a\", \"b\"])` |"
+    },
+    {
+      "claim": "`Markup.replace()` escapes only the new value.",
+      "quote": "| Replace | `replace()` | Only new value | `Markup(\"a\").replace(\"a\", \"b\")` |"
+    },
+    {
+      "claim": "`Markup.strip()` and `Markup.lstrip()` do not escape their arguments.",
+      "quote": "| Strip/search | `strip()`, `lstrip()`, etc. | No | Conceptually search operations |"
+    },
+    {
+      "claim": "`EscapeFormatter` calls `__html_format__()` on objects that define it.",
+      "quote": "- Call `__html_format__()` on objects that define it"
+    },
+    {
+      "claim": "`EscapeFormatter` calls `__html__()` on objects without `__html_format__()` only if no format spec is given.",
+      "quote": "- Call `__html__()` on objects without `__html_format__()` (but only if no format spec is given)"
+    },
+    {
+      "claim": "`EscapeFormatter` is used by `Markup.format()` and `Markup.format_map()`.",
+      "quote": "Used by: `Markup.format()` and `Markup.format_map()`"
+    },
+    {
+      "claim": "`_MarkupEscapeHelper` is used by `Markup.__mod__()`.",
+      "quote": "Used by: `Markup.__mod__()`"
+    },
+    {
+      "claim": "MarkupSafe 1.1.0 wrapped `__html__` results in `Markup` consistently.",
+      "quote": "| 1.1.0 | Wrapped `__html__` results in `Markup` consistently |"
+    },
+    {
+      "claim": "The `Markup` constructor signature is `Markup(object: Any = \"\", encoding: str | None = None, errors: str = \"strict\")`.",
+      "quote": "Markup(object: Any = \"\", encoding: str | None = None, errors: str = \"strict\")"
+    },
+    {
+      "claim": "The `Markup` constructor is implemented at lines 122-131 of `src/markupsafe/__init__.py`.",
+      "quote": "The constructor implementation is in [src/markupsafe/\\_\\_init\\_\\_.py:122-131]()."
+    },
+    {
+      "claim": "If the object passed to `Markup()` has an `__html__()` method, the constructor calls it and uses the returned string.",
+      "quote": "- If the object has an `__html__()` method, it calls that method and uses the returned string"
+    },
+    {
+      "claim": "The `Markup` constructor does not perform escaping.",
+      "quote": "- Does **not** perform escaping - the content is marked as safe as-is"
+    },
+    {
+      "claim": "`Markup(42)` returns `Markup('42')`.",
+      "quote": "Markup(42)                         # Returns: Markup('42')"
+    },
+    {
+      "claim": "`Markup.escape()` is a classmethod defined at lines 230-240 of `src/markupsafe/__init__.py`.",
+      "quote": "The `Markup.escape()` class method [src/markupsafe/\\_\\_init\\_\\_.py:230-240]() creates a `Markup` instance by escaping the input"
+    },
+    {
+      "claim": "`Markup.escape(\"Hello, <em>World</em>!\")` returns `Markup('Hello &lt;em&gt;World&lt;/em&gt;!')`.",
+      "quote": "Markup.escape(\"Hello, <em>World</em>!\")  # Returns: Markup('Hello &lt;em&gt;World&lt;/em&gt;!')"
+    },
+    {
+      "claim": "`Markup.__html__()` returns `self` and is defined at lines 133-134 of `src/markupsafe/__init__.py`.",
+      "quote": "The `Markup` class implements the `__html__()` protocol [src/markupsafe/\\_\\_init\\_\\_.py:133-134]()"
+    },
+    {
+      "claim": "`Markup.__add__` and `Markup.__radd__` are defined at lines 136-146 of `src/markupsafe/__init__.py`.",
+      "quote": "#### Addition (`__add__` and `__radd__`)\n\n[src/markupsafe/\\_\\_init\\_\\_.py:136-146]()"
+    },
+    {
+      "claim": "`Markup.__add__` returns `NotImplemented` for types that are neither str nor have `__html__()`.",
+      "quote": "- Returns `NotImplemented` for incompatible types"
+    },
+    {
+      "claim": "`Markup(\"<em>Hello</em> \") + \"<foo>\"` returns `Markup('<em>Hello</em> &lt;foo&gt;')`.",
+      "quote": "Markup(\"<em>Hello</em> \") + \"<foo>\"  # Returns: Markup('<em>Hello</em> &lt;foo&gt;')"
+    },
+    {
+      "claim": "`\"<bar> \" + Markup(\"<em>World</em>\")` returns `Markup('&lt;bar&gt; <em>World</em>')`.",
+      "quote": "\"<bar> \" + Markup(\"<em>World</em>\")  # Returns: Markup('&lt;bar&gt; <em>World</em>')"
+    },
+    {
+      "claim": "`Markup.__mul__` and `Markup.__rmul__` are defined at lines 148-152 of `src/markupsafe/__init__.py`.",
+      "quote": "#### Multiplication (`__mul__` and `__rmul__`)\n\n[src/markupsafe/\\_\\_init\\_\\_.py:148-152]()"
+    },
+    {
+      "claim": "`Markup(\"<br>\") * 3` returns `Markup('<br><br><br>')`.",
+      "quote": "Markup(\"<br>\") * 3  # Returns: Markup('<br><br><br>')"
+    },
+    {
+      "claim": "`Markup.__mod__` is defined at lines 154-165 of `src/markupsafe/__init__.py`.",
+      "quote": "The `__mod__` method [src/markupsafe/\\_\\_init\\_\\_.py:154-165]() implements the `%` operator for string formatting"
+    },
+    {
+      "claim": "`Markup.__mod__` wraps tuple elements individually in `_MarkupEscapeHelper`.",
+      "quote": "- Wraps tuple elements individually"
+    },
+    {
+      "claim": "`Markup(\"<em>%s</em>\") % \"<bad user>\"` returns `Markup('<em>&lt;bad user&gt;</em>')`.",
+      "quote": "Markup(\"<em>%s</em>\") % \"<bad user>\"\n# Returns: Markup('<em>&lt;bad user&gt;</em>')"
+    },
+    {
+      "claim": "`Markup.split()`, `rsplit()`, and `splitlines()` are defined at lines 173-186 of `src/markupsafe/__init__.py`.",
+      "quote": "| **Splitting** | `split()`, `rsplit()`, `splitlines()` | [173-186]() |"
+    },
+    {
+      "claim": "`Markup.partition()` and `rpartition()` are defined at lines 303-311 of `src/markupsafe/__init__.py`.",
+      "quote": "| **Partitioning** | `partition()`, `rpartition()` | [303-311]() |"
+    },
+    {
+      "claim": "`Markup.replace()` is defined at lines 257-258 and escapes the `new` argument.",
+      "quote": "| `replace(old, new, count)` | `new` | [257-258]() |"
+    },
+    {
+      "claim": "`Markup.ljust()` escapes the `fillchar` argument and is defined at lines 260-261.",
+      "quote": "| `ljust(width, fillchar)` | `fillchar` | [260-261]() |"
+    },
+    {
+      "claim": "`Markup.rjust()` escapes the `fillchar` argument and is defined at lines 263-264.",
+      "quote": "| `rjust(width, fillchar)` | `fillchar` | [263-264]() |"
+    },
+    {
+      "claim": "`Markup.center()` escapes the `fillchar` argument and is defined at lines 272-273.",
+      "quote": "| `center(width, fillchar)` | `fillchar` | [272-273]() |"
+    },
+    {
+      "claim": "`Markup.__getitem__()` is defined at lines 242-243 of `src/markupsafe/__init__.py`.",
+      "quote": "| **Indexing/Slicing** | `__getitem__()` | [242-243]() |"
+    },
+    {
+      "claim": "`Markup.join()` is defined at lines 170-171 and escapes each element of the iterable before joining.",
+      "quote": "The `join()` method [src/markupsafe/\\_\\_init\\_\\_.py:170-171]() is special - it takes an iterable and escapes each element before joining"
+    },
+    {
+      "claim": "`Markup(\", \").join([\"<foo>\", \"<bar>\", Markup(\"<safe>\")])` returns `Markup('&lt;foo&gt;, &lt;bar&gt;, <safe>')`.",
+      "quote": "Markup(\", \").join([\"<foo>\", \"<bar>\", Markup(\"<safe>\")])\n# Returns: Markup('&lt;foo&gt;, &lt;bar&gt;, <safe>')"
+    },
+    {
+      "claim": "`Markup.format()` is defined at lines 313-315 of `src/markupsafe/__init__.py`.",
+      "quote": "The `format()` method [src/markupsafe/\\_\\_init\\_\\_.py:313-315]()"
+    },
+    {
+      "claim": "`Markup.format_map()` is defined at lines 317-323 of `src/markupsafe/__init__.py`.",
+      "quote": "and `format_map()` method [src/markupsafe/\\_\\_init\\_\\_.py:317-323]()"
+    },
+    {
+      "claim": "`Markup.format()` creates an `EscapeFormatter` with `self.escape` and calls `formatter.vformat(self, args, kwargs)`.",
+      "quote": "def format(self, *args: Any, **kwargs: Any) -> Self:\n    formatter = EscapeFormatter(self.escape)\n    return self.__class__(formatter.vformat(self, args, kwargs))"
+    },
+    {
+      "claim": "`Markup(\"<em>{awesome}</em>\").format(awesome=\"<awesome>\")` returns `Markup('<em>&lt;awesome&gt;</em>')`.",
+      "quote": "Markup(\"<em>{awesome}</em>\").format(awesome=\"<awesome>\")\n# Returns: Markup('<em>&lt;awesome&gt;</em>')"
+    },
+    {
+      "claim": "`Markup(\"{0}\").format(Markup(\"<bar/>\"))` returns `Markup('<bar/>')`.",
+      "quote": "Markup(\"{0}\").format(Markup(\"<bar/>\"))\n# Returns: Markup('<bar/>')"
+    },
+    {
+      "claim": "`Markup.__html_format__()` is defined at lines 325-329 and raises `ValueError` if a format spec is given.",
+      "quote": "def __html_format__(self, format_spec: str) -> Self:\n    if format_spec:\n        raise ValueError(\"Unsupported format specification for Markup.\")\n    return self"
+    },
+    {
+      "claim": "`Markup.unescape()` is defined at lines 188-197 of `src/markupsafe/__init__.py` and uses `html.unescape`.",
+      "quote": "def unescape(self) -> str:\n    \"\"\"Convert escaped markup back into a text string.\"\"\"\n    from html import unescape\n    return unescape(str(self))"
+    },
+    {
+      "claim": "`Markup.unescape()` returns a plain `str`, not `Markup`.",
+      "quote": "- Returns a plain `str`, not `Markup` (unescaped content is no longer safe)"
+    },
+    {
+      "claim": "`Markup(\"&lt;test&gt;\").unescape()` returns `'<test>'`.",
+      "quote": "Markup(\"&lt;test&gt;\").unescape()  # Returns: '<test>'"
+    },
+    {
+      "claim": "`Markup(\"&amp;foo&#x3b;\").unescape()` returns `'&foo;'`.",
+      "quote": "Markup(\"&amp;foo&#x3b;\").unescape()  # Returns: '&foo;'"
+    },
+    {
+      "claim": "`Markup.striptags()` is defined at lines 199-228 of `src/markupsafe/__init__.py`.",
+      "quote": "The `striptags()` method [src/markupsafe/\\_\\_init\\_\\_.py:199-228]() removes HTML tags and normalizes whitespace"
+    },
+    {
+      "claim": "`Markup.striptags()` removes HTML comments, removes all HTML/XML tags, collapses consecutive whitespace to single spaces, and unescapes HTML entities.",
+      "quote": "1. Find and remove HTML comments (`<!-- ... -->`)\n2. Find and remove all HTML/XML tags (`<...>`)\n3. Collapse consecutive whitespace to single spaces\n4. Unescape HTML entities"
+    },
+    {
+      "claim": "`Markup(\"Main &raquo;\\t<em>About</em>\").striptags()` returns `'Main \u00bb About'`.",
+      "quote": "Markup(\"Main &raquo;\\t<em>About</em>\").striptags()\n# Returns: 'Main \u00bb About'"
+    },
+    {
+      "claim": "`Markup.__repr__()` is defined at lines 167-168 and returns `f\"{self.__class__.__name__}({super().__repr__()})\"`.",
+      "quote": "def __repr__(self) -> str:\n    return f\"{self.__class__.__name__}({super().__repr__()})\""
+    },
+    {
+      "claim": "`repr(Markup(\"test\"))` returns `\"Markup('test')\"`.",
+      "quote": "repr(Markup(\"test\"))  # Returns: \"Markup('test')\""
+    },
+    {
+      "claim": "The signature of `escape()` is `escape(s: t.Any, /) -> Markup`.",
+      "quote": "def escape(s: t.Any, /) -> Markup"
+    },
+    {
+      "claim": "The signature of `escape_silent()` is `escape_silent(s: t.Any | None, /) -> Markup`.",
+      "quote": "def escape_silent(s: t.Any | None, /) -> Markup"
+    },
+    {
+      "claim": "The signature of `soft_str()` is `soft_str(s: t.Any, /) -> str`.",
+      "quote": "def soft_str(s: t.Any, /) -> str"
+    },
+    {
+      "claim": "`escape(None)` converts None to the string `'None'`.",
+      "quote": "| `escape()` | `escape(s: t.Any, /) -> Markup` | Standard HTML escaping | Converts to string `'None'` |"
+    },
+    {
+      "claim": "`escape()` uses `type(s) is str` rather than `isinstance()` for its fast path, to avoid proxy objects reporting incorrect `__class__`.",
+      "quote": "Uses `type(s) is str` (not `isinstance()`) to avoid proxy objects that may report incorrect `__class__` attributes."
+    },
+    {
+      "claim": "If an object implements `__html__()`, `escape()` returns `Markup(s.__html__())`.",
+      "quote": "if hasattr(s, \"__html__\"):\n    return Markup(s.__html__())"
+    },
+    {
+      "claim": "For objects that are neither str nor have `__html__`, `escape()` returns `Markup(_escape_inner(str(s)))`.",
+      "quote": "return Markup(_escape_inner(str(s)))"
+    },
+    {
+      "claim": "`escape_silent()` returns `Markup()` when the input is `None`, otherwise it delegates to `escape()`.",
+      "quote": "def escape_silent(s: t.Any | None, /) -> Markup:\n    if s is None:\n        return Markup()\n    \n    return escape(s)"
+    },
+    {
+      "claim": "`soft_str()` returns the input unchanged if `isinstance(s, str)`, otherwise returns `str(s)`.",
+      "quote": "IsStr -->|\"Yes<br/>(includes Markup)\"| ReturnAsIs\n    IsStr -->|\"No\"| ConvertStr"
+    },
+    {
+      "claim": "`soft_str()` preserves the `Markup` type for `Markup` inputs.",
+      "quote": "| `Markup` | `Markup` | Preserves the Markup type |"
+    },
+    {
+      "claim": "`escape(\"<User 1>\")` returns `Markup('&lt;User 1&gt;')`.",
+      "quote": "value = escape(\"<User 1>\")  # Markup('&lt;User 1&gt;')"
+    },
+    {
+      "claim": "`escape(str(escape(\"<User 1>\")))` double-escapes to `Markup('&amp;lt;User 1&amp;gt;')`.",
+      "quote": "escape(str(value))          # Markup('&amp;lt;User 1&amp;gt;')  # Double-escaped!"
+    },
+    {
+      "claim": "`escape(soft_str(escape(\"<User 1>\")))` returns `Markup('&lt;User 1&gt;')`.",
+      "quote": "escape(soft_str(value))     # Markup('&lt;User 1&gt;')  # Correctly preserved"
+    },
+    {
+      "claim": "`type(soft_str(\"\"))` is `str`.",
+      "quote": "assert type(soft_str(\"\")) is str          # Plain string stays str"
+    },
+    {
+      "claim": "`type(soft_str(Markup()))` is `Markup`.",
+      "quote": "assert type(soft_str(Markup())) is Markup # Markup stays Markup"
+    },
+    {
+      "claim": "`type(soft_str(15))` is `str`.",
+      "quote": "assert type(soft_str(15)) is str          # Non-string converts to str"
+    },
+    {
+      "claim": "`escape_silent(\"<foo>\")` equals `Markup(\"&lt;foo&gt;\")`.",
+      "quote": "assert escape_silent(\"<foo>\") == Markup(\"&lt;foo&gt;\")  # Normal escaping"
+    },
+    {
+      "claim": "`_native._escape_inner()` is defined at lines 1-8 of `src/markupsafe/_native.py`.",
+      "quote": "The `_escape_inner()` function [src/markupsafe/_native.py:1-8]() uses chained `str.replace()` calls"
+    },
+    {
+      "claim": "`_native._escape_inner()` performs replacements in the order: `&`, `>`, `<`, `'`, `\"`.",
+      "quote": "return (\n        s.replace(\"&\", \"&amp;\")\n        .replace(\">\", \"&gt;\")\n        .replace(\"<\", \"&lt;\")\n        .replace(\"'\", \"&#39;\")\n        .replace('\"', \"&#34;\")\n    )"
+    },
+    {
+      "claim": "In the native implementation, `&` must be replaced first to avoid double-escaping other entities.",
+      "quote": "The replacement order is critical: `&` must be replaced first to avoid double-escaping other entities."
+    },
+    {
+      "claim": "The C extension's `escape_unicode()` entry point is defined at lines 152-171 of `src/markupsafe/_speedups.c`.",
+      "quote": "SpeedupsEscape[\"_escape_inner(s)<br/>_speedups.c:152-171\"]"
+    },
+    {
+      "claim": "`escape_unicode_kind1` is defined at lines 75-98 of `src/markupsafe/_speedups.c`.",
+      "quote": "Kind1[\"escape_unicode_kind1<br/>_speedups.c:75-98\"]"
+    },
+    {
+      "claim": "`escape_unicode_kind2` is defined at lines 101-123 of `src/markupsafe/_speedups.c`.",
+      "quote": "Kind2[\"escape_unicode_kind2<br/>_speedups.c:101-123\"]"
+    },
+    {
+      "claim": "`escape_unicode_kind4` is defined at lines 127-149 of `src/markupsafe/_speedups.c`.",
+      "quote": "Kind4[\"escape_unicode_kind4<br/>_speedups.c:127-149\"]"
+    },
+    {
+      "claim": "The `GET_DELTA` macro is defined at lines 3-16 of `src/markupsafe/_speedups.c`.",
+      "quote": "GetDelta[\"GET_DELTA<br/>Calculate space needed<br/>_speedups.c:3-16\"]"
+    },
+    {
+      "claim": "The `DO_ESCAPE` macro is defined at lines 18-72 of `src/markupsafe/_speedups.c`.",
+      "quote": "DoEscape[\"DO_ESCAPE<br/>Perform escaping<br/>_speedups.c:18-72\"]"
+    },
+    {
+      "claim": "`escape_unicode()` validates input with `PyUnicode_Check()`.",
+      "quote": "1. **Validates input** with `PyUnicode_Check()`"
+    },
+    {
+      "claim": "`escape_unicode()` calls `PyUnicode_READY()` for Python versions below 3.12.",
+      "quote": "2. **Prepares Unicode object** with `PyUnicode_READY()` (Python <3.12)"
+    },
+    {
+      "claim": "`escape_unicode()` dispatches based on `PyUnicode_KIND()`.",
+      "quote": "3. **Dispatches by kind** using `PyUnicode_KIND()`:"
+    },
+    {
+      "claim": "In `GET_DELTA`, the characters `\"`, `'`, and `&` each add 4 bytes to the delta.",
+      "quote": "| `\"` or `'` or `&` | +4 bytes (5-char entity minus 1 original) |"
+    },
+    {
+      "claim": "In `GET_DELTA`, the characters `<` and `>` each add 3 bytes to the delta.",
+      "quote": "| `<` or `>` | +3 bytes (4-char entity minus 1 original) |"
+    },
+    {
+      "claim": "If `delta == 0` in the C extension, the function returns the input string unchanged with an incremented reference count.",
+      "quote": "**Optimization:** If `delta == 0`, the input contains no characters requiring escaping, so the function returns the input string unchanged with an incremented reference count."
+    },
+    {
+      "claim": "The `DO_ESCAPE` macro tracks an `ncopy` counter for consecutive non-escaped characters and copies them with `memcpy()`.",
+      "quote": "1. **Tracks `ncopy` counter** for consecutive non-escaped characters"
+    },
+    {
+      "claim": "The escape sequence for `\"` is implemented at lines 23-30 of `src/markupsafe/_speedups.c`.",
+      "quote": "| `\"` | `&#34;` | [_speedups.c:23-30]() |"
+    },
+    {
+      "claim": "The escape sequence for `'` is implemented at lines 32-39 of `src/markupsafe/_speedups.c`.",
+      "quote": "| `'` | `&#39;` | [_speedups.c:32-39]() |"
+    },
+    {
+      "claim": "The escape sequence for `&` is implemented at lines 41-48 of `src/markupsafe/_speedups.c`.",
+      "quote": "| `&` | `&amp;` | [_speedups.c:41-48]() |"
+    },
+    {
+      "claim": "The escape sequence for `<` is implemented at lines 50-56 of `src/markupsafe/_speedups.c`.",
+      "quote": "| `<` | `&lt;` | [_speedups.c:50-56]() |"
+    },
+    {
+      "claim": "The escape sequence for `>` is implemented at lines 58-64 of `src/markupsafe/_speedups.c`.",
+      "quote": "| `>` | `&gt;` | [_speedups.c:58-64]() |"
+    },
+    {
+      "claim": "The module slots in `_speedups.c` are defined at lines 178-186 and include `Py_mod_multiple_interpreters` set to `Py_MOD_PER_INTERPRETER_GIL_SUPPORTED` for Python 3.12+.",
+      "quote": "{Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},"
+    },
+    {
+      "claim": "The module slots in `_speedups.c` include `Py_mod_gil` set to `Py_MOD_GIL_NOT_USED` for Python 3.13+.",
+      "quote": "{Py_mod_gil, Py_MOD_GIL_NOT_USED},"
+    },
+    {
+      "claim": "`bench.py` uses `pyperf` to measure both the native and speedups implementations.",
+      "quote": "The repository includes a benchmark script [bench.py]() that measures both implementations using `pyperf`"
+    },
+    {
+      "claim": "`setup.py` checks that `platform.python_implementation()` is not in {\"PyPy\", \"Jython\", \"GraalVM\"} to determine `supports_speedups`.",
+      "quote": "supports_speedups = platform.python_implementation() not in {\n    \"PyPy\",\n    \"Jython\",\n    \"GraalVM\",\n}"
+    },
+    {
+      "claim": "When `CIBUILDWHEEL=1`, a C extension build failure causes the build to fail rather than falling back.",
+      "quote": "| **CI Build** | `CIBUILDWHEEL=1` | Hard failure - stops build |"
+    },
+    {
+      "claim": "The `ve_build_ext` class in `setup.py` is defined at lines 19-37 and extends setuptools' `build_ext`.",
+      "quote": "The `ve_build_ext` class [setup.py:19-37]() extends `setuptools.command.build_ext` to catch compilation errors"
+    },
+    {
+      "claim": "`ve_build_ext.run()` catches `PlatformError` and raises `BuildFailed`.",
+      "quote": "def run(self):\n        try:\n            super().run()\n        except PlatformError as e:\n            raise BuildFailed() from e"
+    },
+    {
+      "claim": "`ve_build_ext.build_extension()` catches `CCompilerError`, `ExecError`, and `PlatformError` and raises `BuildFailed`.",
+      "quote": "except (CCompilerError, ExecError, PlatformError) as e:\n            raise BuildFailed() from e"
+    },
+    {
+      "claim": "`src/markupsafe/_speedups.pyi` declares `def _escape_inner(s: str, /) -> str: ...`.",
+      "quote": "def _escape_inner(s: str, /) -> str: ..."
+    },
+    {
+      "claim": "`pyproject.toml` declares `requires = [\"setuptools>=77\"]` and `build-backend = \"setuptools.build_meta\"`.",
+      "quote": "[build-system]\nrequires = [\"setuptools>=77\"]\nbuild-backend = \"setuptools.build_meta\""
+    },
+    {
+      "claim": "`setup.py` line 12 defines `ext_modules = [Extension(\"markupsafe._speedups\", [\"src/markupsafe/_speedups.c\"])]`.",
+      "quote": "ext_modules = [Extension(\"markupsafe._speedups\", [\"src/markupsafe/_speedups.c\"])]"
+    },
+    {
+      "claim": "The `[tool.cibuildwheel]` section sets `enable = \"cpython-freethreading\"`.",
+      "quote": "[tool.cibuildwheel]\nenable = \"cpython-freethreading\""
+    },
+    {
+      "claim": "The `[tool.cibuildwheel]` section sets `build-frontend = \"build[uv]\"`.",
+      "quote": "build-frontend = \"build[uv]\""
+    },
+    {
+      "claim": "The cibuildwheel Linux architectures are x86_64, aarch64, and riscv64.",
+      "quote": "| Linux | x86_64, aarch64, riscv64 | [tool.cibuildwheel.linux] |"
+    },
+    {
+      "claim": "The cibuildwheel macOS architectures are x86_64 and arm64.",
+      "quote": "| macOS | x86_64, arm64 | [tool.cibuildwheel.macos] |"
+    },
+    {
+      "claim": "The cibuildwheel Windows architectures are auto and ARM64.",
+      "quote": "| Windows | auto, ARM64 | [tool.cibuildwheel.windows] |"
+    },
+    {
+      "claim": "A cibuildwheel override selects `*-musllinux_riscv64` and sets `build-frontend = \"build\"`.",
+      "quote": "[[tool.cibuildwheel.overrides]]\nselect = \"*-musllinux_riscv64\"\n# uv is not available\nbuild-frontend = \"build\""
+    },
+    {
+      "claim": "The publish workflow builds the source distribution with `uv build --sdist`.",
+      "quote": "uv build --sdist"
+    },
+    {
+      "claim": "In `setup.py`, when `CIBUILDWHEEL` is \"1\" and `supports_speedups` is true, `run_setup(True)` is called.",
+      "quote": "if os.environ.get(\"CIBUILDWHEEL\", \"0\") == \"1\" and supports_speedups:\n    run_setup(True)"
+    },
+    {
+      "claim": "The publish workflow has four jobs: `sdist`, `wheels`, `create-release`, and `publish-pypi`.",
+      "quote": "| `sdist` | ubuntu-latest | Build source distribution | `dist/*.tar.gz` |"
+    },
+    {
+      "claim": "The publish workflow sets `SOURCE_DATE_EPOCH` using `git log -1 --pretty=%ct`.",
+      "quote": "echo \"SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)\" >> $GITHUB_ENV"
+    },
+    {
+      "claim": "The publish workflow sets up QEMU for platforms arm64 and riscv64 on Linux runners.",
+      "quote": "platforms: arm64,riscv64"
+    },
+    {
+      "claim": "The wheels job matrix includes ubuntu-latest, windows-latest, and macos-latest with `fail-fast: false`.",
+      "quote": "strategy:\n  fail-fast: false\n  matrix:\n    os: [ubuntu-latest, windows-latest, macos-latest]"
+    },
+    {
+      "claim": "The project name in `pyproject.toml` is \"MarkupSafe\".",
+      "quote": "| `name` | `\"MarkupSafe\"` | Package name on PyPI |"
+    },
+    {
+      "claim": "The project version in `pyproject.toml` is \"3.1.0.dev\".",
+      "quote": "| `version` | `\"3.1.0.dev\"` | Current development version |"
+    },
+    {
+      "claim": "The project description is \"Safely add untrusted strings to HTML/XML markup.\"",
+      "quote": "| `description` | `\"Safely add untrusted strings to HTML/XML markup.\"` | One-line project description |"
+    },
+    {
+      "claim": "`requires-python` in `pyproject.toml` is `\">=3.10\"`.",
+      "quote": "| `requires-python` | `\">=3.10\"` | Minimum Python version requirement |"
+    },
+    {
+      "claim": "The project license is BSD-3-Clause.",
+      "quote": "| `license` | `\"BSD-3-Clause\"` | SPDX license identifier |"
+    },
+    {
+      "claim": "The documentation URL is https://markupsafe.palletsprojects.com/",
+      "quote": "- **Documentation**: https://markupsafe.palletsprojects.com/"
+    },
+    {
+      "claim": "The source URL is https://github.com/pallets/markupsafe/",
+      "quote": "- **Source**: https://github.com/pallets/markupsafe/"
+    },
+    {
+      "claim": "The `[tool.uv]` section sets `default-groups = [\"dev\", \"pre-commit\", \"tests\", \"typing\"]`.",
+      "quote": "[tool.uv]\ndefault-groups = [\"dev\", \"pre-commit\", \"tests\", \"typing\"]"
+    },
+    {
+      "claim": "The `dev` dependency group contains ruff, tox, and tox-uv.",
+      "quote": "| `dev` | `ruff`, `tox`, `tox-uv` | Core development tools for linting and testing across Python versions |"
+    },
+    {
+      "claim": "The `tests` dependency group contains pytest and pytest-run-parallel.",
+      "quote": "| `tests` | `pytest`, `pytest-run-parallel` | Test execution framework with parallel support for Python 3.13+ |"
+    },
+    {
+      "claim": "The `typing` dependency group contains mypy, pyright, and pytest.",
+      "quote": "| `typing` | `mypy`, `pyright`, `pytest` | Static type checking with multiple checkers |"
+    },
+    {
+      "claim": "The `pre-commit` dependency group contains pre-commit and pre-commit-uv.",
+      "quote": "| `pre-commit` | `pre-commit`, `pre-commit-uv` | Git hook management with uv integration |"
+    },
+    {
+      "claim": "The `docs` dependency group contains sphinx, pallets-sphinx-themes, and sphinxcontrib-log-cabinet.",
+      "quote": "| `docs` | `sphinx`, `pallets-sphinx-themes`, `sphinxcontrib-log-cabinet` | Documentation generation |"
+    },
+    {
+      "claim": "The `docs-auto` dependency group contains sphinx-autobuild.",
+      "quote": "| `docs-auto` | `sphinx-autobuild` | Live documentation rebuilding during development |"
+    },
+    {
+      "claim": "The `gha-update` dependency group contains gha-update and is restricted to Python 3.12+.",
+      "quote": "| `gha-update` | `gha-update` | GitHub Actions workflow maintenance (Python 3.12+ only) |"
+    },
+    {
+      "claim": "The pytest configuration sets `testpaths = [\"tests\"]`.",
+      "quote": "testpaths = [\"tests\"]"
+    },
+    {
+      "claim": "The pytest configuration sets `filterwarnings = [\"error\"]`.",
+      "quote": "filterwarnings = [\"error\"]"
+    },
+    {
+      "claim": "The pytest configuration defines a marker `thread_unsafe: mark test as not safe to run in multiple threads`.",
+      "quote": "markers = [\"thread_unsafe: mark test as not safe to run in multiple threads\"]"
+    },
+    {
+      "claim": "The coverage configuration sets `branch = true`.",
+      "quote": "[tool.coverage.run]\nbranch = true"
+    },
+    {
+      "claim": "The coverage configuration sets `source = [\"markupsafe\", \"tests\"]`.",
+      "quote": "source = [\"markupsafe\", \"tests\"]"
+    },
+    {
+      "claim": "The coverage paths configuration sets `source = [\"src\", \"*/site-packages\"]`.",
+      "quote": "[tool.coverage.paths]\nsource = [\"src\", \"*/site-packages\"]"
+    },
+    {
+      "claim": "The coverage report `exclude_also` includes \"if t.TYPE_CHECKING\", \"raise NotImplementedError\", and an ellipsis pattern.",
+      "quote": "exclude_also = [\n    \"if t.TYPE_CHECKING\",\n    \"raise NotImplementedError\",\n    \": \\\\.{3}\",\n]"
+    },
+    {
+      "claim": "The mypy configuration sets `python_version = \"3.10\"`.",
+      "quote": "| `python_version` | `\"3.10\"` | Target the minimum supported Python version |"
+    },
+    {
+      "claim": "The mypy configuration sets `files = [\"src\", \"tests\"]`.",
+      "quote": "| `files` | `[\"src\", \"tests\"]` | Type check source and test code |"
+    },
+    {
+      "claim": "The mypy configuration sets `strict = true`.",
+      "quote": "| `strict` | `true` | Enable all strict type checking flags |"
+    },
+    {
+      "claim": "The pyright configuration sets `pythonVersion = \"3.10\"`, `include = [\"src\", \"tests\"]`, and `typeCheckingMode = \"standard\"`.",
+      "quote": "[tool.pyright]\npythonVersion = \"3.10\"\ninclude = [\"src\", \"tests\"]\ntypeCheckingMode = \"standard\""
+    },
+    {
+      "claim": "The ruff configuration sets `src = [\"src\"]`, `fix = true`, `show-fixes = true`, and `output-format = \"full\"`.",
+      "quote": "- `src = [\"src\"]`: Define source root for import resolution\n- `fix = true`: Automatically fix issues when possible\n- `show-fixes = true`: Show what was fixed\n- `output-format = \"full\"`: Use detailed output format"
+    },
+    {
+      "claim": "The ruff lint configuration selects rules B, E, F, I, UP, and W.",
+      "quote": "select = [\"B\", \"E\", \"F\", \"I\", \"UP\", \"W\"]"
+    },
+    {
+      "claim": "The ruff lint configuration ignores rule UP038.",
+      "quote": "- **UP038**: Keep isinstance tuple format instead of modern syntax"
+    },
+    {
+      "claim": "The ruff isort configuration sets `force-single-line = true` and `order-by-type = false`.",
+      "quote": "- `force-single-line = true`: One import per line\n- `order-by-type = false`: Don't separate by import type"
+    },
+    {
+      "claim": "The tox `env_list` includes py3.14, py3.14t, parallel, py3.13, py3.13t, py3.12, py3.11, py3.10, pypy3.11, style, typing, and docs.",
+      "quote": "env_list = [\n    \"py3.14\", \"py3.14t\", \"parallel\",\n    \"py3.13\", \"py3.13t\", \"py3.12\", \"py3.11\", \"py3.10\",\n    \"pypy3.11\",\n    \"style\",\n    \"typing\",\n    \"docs\",\n]"
+    },
+    {
+      "claim": "The tox base run environment uses `runner = \"uv-venv-lock-runner\"`.",
+      "quote": "- **runner**: `\"uv-venv-lock-runner\"` - Use uv for fast environment creation with lock file"
+    },
+    {
+      "claim": "The tox base run environment sets `package = \"wheel\"`.",
+      "quote": "- **package**: `\"wheel\"` - Build wheel for installation"
+    },
+    {
+      "claim": "The tox base run environment sets `dependency_groups = [\"tests\"]`.",
+      "quote": "- **dependency_groups**: `[\"tests\"]` - Install test dependencies"
+    },
+    {
+      "claim": "The tox base run environment sets `constrain_package_deps = true` and `use_frozen_constraints = true`.",
+      "quote": "- **constrain_package_deps**: `true` - Use lock file constraints\n- **use_frozen_constraints**: `true` - Pin to exact versions from lock file"
+    },
+    {
+      "claim": "The tox `parallel` environment runs `pytest --parallel-threads=8`.",
+      "quote": "| `parallel` | Free-threading stress test | `pytest --parallel-threads=8` |"
+    },
+    {
+      "claim": "The tox `style` environment runs `pre-commit run --all-files`.",
+      "quote": "| `style` | Pre-commit hooks | `pre-commit run --all-files` |"
+    },
+    {
+      "claim": "The tox `typing` environment runs `mypy`.",
+      "quote": "| `typing` | Type checking | `mypy` |"
+    },
+    {
+      "claim": "The tox `docs` environment runs `sphinx-build -E -W -b dirhtml`.",
+      "quote": "| `docs` | Documentation build | `sphinx-build -E -W -b dirhtml` |"
+    },
+    {
+      "claim": "The tox `docs-auto` environment runs `sphinx-autobuild --watch src`.",
+      "quote": "| `docs-auto` | Live documentation | `sphinx-autobuild --watch src` |"
+    },
+    {
+      "claim": "The tox `update-requirements` environment runs `uv lock -U`.",
+      "quote": "| `update-requirements` | Update lock file | `uv lock -U` |"
+    },
+    {
+      "claim": "The tox `update-pre_commit` environment runs `pre-commit autoupdate --freeze -j4`.",
+      "quote": "commands = [[\"pre-commit\", \"autoupdate\", \"--freeze\", \"-j4\"]]"
+    },
+    {
+      "claim": "The tox `update-actions` environment runs `gha-update`.",
+      "quote": "| `update-actions` | Update GitHub Actions | `gha-update` |"
+    },
+    {
+      "claim": "The `[tool.gha-update]` section sets `tag-only = [\"slsa-framework/slsa-github-generator\"]`.",
+      "quote": "[tool.gha-update]\ntag-only = [\n    \"slsa-framework/slsa-github-generator\",\n]"
+    },
+    {
+      "claim": "The pre-commit configuration includes the ruff and ruff-format hooks from astral-sh/ruff-pre-commit.",
+      "quote": "1. **ruff** ([.pre-commit-config.yaml:5]()): Linting with auto-fix\n2. **ruff-format** ([.pre-commit-config.yaml:6]()): Code formatting"
+    },
+    {
+      "claim": "The pre-commit configuration includes the `uv-lock` hook from astral-sh/uv-pre-commit.",
+      "quote": "3. **uv-lock** ([.pre-commit-config.yaml:10]()): Ensures `uv.lock` is up-to-date with `pyproject.toml`"
+    },
+    {
+      "claim": "The pre-commit configuration includes the check-merge-conflict hook.",
+      "quote": "4. **check-merge-conflict** ([.pre-commit-config.yaml:14]()): Detects merge conflict markers"
+    },
+    {
+      "claim": "The pre-commit configuration includes the debug-statements hook.",
+      "quote": "5. **debug-statements** ([.pre-commit-config.yaml:15]()): Prevents committing debug code"
+    },
+    {
+      "claim": "The pre-commit configuration includes the fix-byte-order-marker hook.",
+      "quote": "6. **fix-byte-order-marker** ([.pre-commit-config.yaml:16]()): Removes UTF-8 BOM"
+    },
+    {
+      "claim": "The pre-commit configuration includes the trailing-whitespace hook.",
+      "quote": "7. **trailing-whitespace** ([.pre-commit-config.yaml:17]()): Removes trailing whitespace"
+    },
+    {
+      "claim": "The pre-commit configuration includes the end-of-file-fixer hook.",
+      "quote": "8. **end-of-file-fixer** ([.pre-commit-config.yaml:18]()): Ensures files end with newline"
+    },
+    {
+      "claim": "The ruff-pre-commit repository is pinned to commit `f298305809c552671cc47e0fec0ba43e96c146a2` corresponding to v0.13.2.",
+      "quote": "| `astral-sh/ruff-pre-commit` | `f298305` (v0.13.2) | `ruff`, `ruff-format` | Linting and code formatting |"
+    },
+    {
+      "claim": "The uv-pre-commit repository is pinned to commit `9e8320f8d22dfa502984f75bb72d6bba825e570c` corresponding to version 0.8.22.",
+      "quote": "| `astral-sh/uv-pre-commit` | `9e8320f` (0.8.22) | `uv-lock` | Dependency lock file validation |"
+    },
+    {
+      "claim": "The pre-commit-hooks repository is pinned to commit `3e8a8703264a2f4a69428a0aa4dcb512790b2c8c` corresponding to v6.0.0.",
+      "quote": "| `pre-commit/pre-commit-hooks` | `3e8a870` (v6.0.0) | 5 hooks | Common code quality checks |"
+    },
+    {
+      "claim": "MANIFEST.in includes CHANGES.rst, uv.lock, grafts docs and tests, prunes docs/_build, includes src/markupsafe/py.typed and src/markupsafe/*.pyi, and globally excludes *.pyc.",
+      "quote": "include CHANGES.rst\ninclude uv.lock\ngraft docs\nprune docs/_build\ngraft tests\ninclude src/markupsafe/py.typed\ninclude src/markupsafe/*.pyi\nglobal-exclude *.pyc"
+    },
+    {
+      "claim": "The publish-pypi job uses the `publish` GitHub environment with the URL https://pypi.org/project/MarkupSafe/${{ github.ref_name }}.",
+      "quote": "environment:\n  name: publish\n  url: https://pypi.org/project/MarkupSafe/${{ github.ref_name }}"
+    },
+    {
+      "claim": "The publish-pypi job declares `permissions: id-token: write`.",
+      "quote": "permissions:\n  id-token: write  # Required for OIDC authentication with PyPI"
+    },
+    {
+      "claim": "The PyPI publish action is configured with `skip-existing: true`.",
+      "quote": "with:\n  skip-existing: true  # Don't fail if version already exists"
+    },
+    {
+      "claim": "The create-release job declares `contents: write` permission.",
+      "quote": "**Permissions:** Requires `contents: write` to create/modify releases"
+    },
+    {
+      "claim": "On tag push, the create-release job runs `gh release create --draft` with the dist files.",
+      "quote": "gh release create --draft --repo ${{ github.repository }}\n  ${{ inputs.tag || github.ref_name }} dist/*"
+    },
+    {
+      "claim": "On workflow_dispatch, the create-release job runs `gh release upload` with the dist files.",
+      "quote": "gh release upload --repo ${{ github.repository }}\n  ${{ inputs.tag || github.ref_name }} dist/*"
+    },
+    {
+      "claim": "The sdist upload step in the publish workflow is conditional on `github.event_name == 'push'`.",
+      "quote": "if: github.event_name == 'push'"
+    },
+    {
+      "claim": "The wheels job sets `CIBW_BUILD` to `${{ inputs.python && format('{0}-*', inputs.python) || null }}`.",
+      "quote": "CIBW_BUILD: ${{ inputs.python && format('{0}-*', inputs.python) || null }}"
+    },
+    {
+      "claim": "The publish workflow uses `pypa/cibuildwheel` at version v3.2.0.",
+      "quote": "- uses: pypa/cibuildwheel@v3.2.0"
+    },
+    {
+      "claim": "The publish workflow artifacts are named `build-sdist` and `build-wheels-{os}`.",
+      "quote": "Each job uploads its wheels to a separate artifact named `build-wheels-{os}`"
+    },
+    {
+      "claim": "The dev container setup script installs uv if not found, runs `uv sync`, and runs `pre-commit install --install-hooks`.",
+      "quote": "Script->>UV: uv sync\n    ...\n    Script->>PreCommit: pre-commit install --install-hooks"
+    },
+    {
+      "claim": "The uv.lock file has `version = 1`, `revision = 3`, and `requires-python = '>=3.10'`.",
+      "quote": "Meta[\"Metadata<br/>version: 1<br/>revision: 3<br/>requires-python: >=3.10\"]"
+    },
+    {
+      "claim": "The uv.lock resolution markers are \"python_full_version >= '3.13'\", \"python_full_version == '3.12.*'\", \"python_full_version == '3.11.*'\", and \"python_full_version < '3.11'\".",
+      "quote": "resolution-markers = [\n    \"python_full_version >= '3.13'\",\n    \"python_full_version == '3.12.*'\",\n    \"python_full_version == '3.11.*'\",\n    \"python_full_version < '3.11'\",\n]"
+    },
+    {
+      "claim": "The `tests` dependency group specifies `pytest-run-parallel; python_full_version >= '3.13'`.",
+      "quote": "\"pytest-run-parallel; python_full_version >= '3.13'\""
+    },
+    {
+      "claim": "The `gha-update` dependency group specifies `gha-update ; python_full_version >= '3.12'`.",
+      "quote": "\"gha-update ; python_full_version >= '3.12'\""
+    },
+    {
+      "claim": "In uv.lock, the markupsafe package is listed as an editable source with version 3.1.0.dev0.",
+      "quote": "2. **Version**: `version = \"3.1.0.dev0\"` - development version"
+    },
+    {
+      "claim": "In uv.lock, sphinx resolves to 8.1.3 for Python < 3.11 and 8.2.3 for Python >= 3.11.",
+      "quote": "- Python < 3.11: `sphinx==8.1.3` [uv.lock:315]()\n- Python >= 3.11: `sphinx==8.2.3` [uv.lock:316]()"
+    },
+    {
+      "claim": "In uv.lock, sphinx-autobuild resolves to 2024.10.3 for Python < 3.11 and 2025.8.25 for Python >= 3.11.",
+      "quote": "- Python < 3.11: `sphinx-autobuild==2024.10.3` [uv.lock:320]()\n- Python >= 3.11: `sphinx-autobuild==2025.8.25` [uv.lock:321]()"
+    },
+    {
+      "claim": "In uv.lock, the exceptiongroup package version 1.3.0 depends on typing-extensions with marker `python_full_version < '3.11'`.",
+      "quote": "[[package]]\nname = \"exceptiongroup\"\nversion = \"1.3.0\"\ndependencies = [\n    { name = \"typing-extensions\", marker = \"python_full_version < '3.11'\" },\n]"
+    },
+    {
+      "claim": "In uv.lock, pytest-run-parallel version 0.7.0 depends on pytest with marker `python_full_version >= '3.13'`.",
+      "quote": "[[package]]\nname = \"pytest-run-parallel\"\nversion = \"0.7.0\"\ndependencies = [\n    { name = \"pytest\", marker = \"python_full_version >= '3.13'\" },\n]"
+    },
+    {
+      "claim": "In uv.lock, the charset-normalizer package is version 3.4.3.",
+      "quote": "name = \"charset-normalizer\"\nversion = \"3.4.3\""
+    },
+    {
+      "claim": "The `.readthedocs.yaml` configuration uses os ubuntu-24.04.",
+      "quote": "1. **Build OS**: Uses Ubuntu 24.04 [.readthedocs.yaml:3]()"
+    },
+    {
+      "claim": "The `.readthedocs.yaml` configuration uses Python 3.13.",
+      "quote": "2. **Python Version**: Uses Python 3.13 [.readthedocs.yaml:5]()"
+    },
+    {
+      "claim": "The Read the Docs build command is `uv run --group docs sphinx-build -W -b dirhtml docs $READTHEDOCS_OUTPUT/html`.",
+      "quote": "4. **Build Command**: Runs `uv run --group docs sphinx-build -W -b dirhtml docs $READTHEDOCS_OUTPUT/html` [.readthedocs.yaml:10]()"
+    },
+    {
+      "claim": "The Sphinx configuration uses `get_version()` from `pallets_sphinx_themes`.",
+      "quote": "The configuration uses `get_version()` from `pallets_sphinx_themes` to extract version information from the installed package [docs/conf.py:9]()."
+    },
+    {
+      "claim": "The Sphinx configuration sets `project` to \"MarkupSafe\".",
+      "quote": "| `project` | \"MarkupSafe\" | Project name |"
+    },
+    {
+      "claim": "The Sphinx configuration sets `copyright` to \"2010 Pallets\".",
+      "quote": "| `copyright` | \"2010 Pallets\" | Copyright notice |"
+    },
+    {
+      "claim": "The Sphinx configuration sets `default_role` to \"code\".",
+      "quote": "| `default_role` | \"code\" | Default inline markup role |"
+    },
+    {
+      "claim": "The Sphinx configuration enables the extensions sphinx.ext.autodoc, sphinx.ext.extlinks, sphinx.ext.intersphinx, sphinxcontrib.log_cabinet, and pallets_sphinx_themes.",
+      "quote": "- **sphinx.ext.autodoc**: Automatic API documentation from docstrings\n- **sphinx.ext.extlinks**: External link shortcuts (e.g., `:issue:`, `:pr:`)\n- **sphinx.ext.intersphinx**: Cross-references to Python documentation\n- **sphinxcontrib.log_cabinet**: Changelog formatting\n- **pallets_sphinx_themes**: Theme extension"
+    },
+    {
+      "claim": "The Sphinx configuration sets `autodoc_member_order = \"bysource\"` and `autodoc_typehints = \"description\"`.",
+      "quote": "Autodoc is configured to preserve source order (`autodoc_member_order = \"bysource\"`) and include type hints in descriptions (`autodoc_typehints = \"description\"`)"
+    },
+    {
+      "claim": "The Sphinx configuration uses the \"jinja\" html theme.",
+      "quote": "MarkupSafe uses the \"jinja\" theme from pallets-sphinx-themes [docs/conf.py:34]()."
+    },
+    {
+      "claim": "The Sphinx index page sidebar is configured with project.html, localtoc.html, searchbox.html, and ethicalads.html.",
+      "quote": "- **Index page**: project.html, localtoc.html, searchbox.html, ethicalads.html"
+    },
+    {
+      "claim": "The Sphinx non-index page sidebar is configured with localtoc.html, relations.html, searchbox.html, and ethicalads.html.",
+      "quote": "- **Other pages**: localtoc.html, relations.html, searchbox.html, ethicalads.html"
+    },
+    {
+      "claim": "The tests workflow is triggered on pull_request and on push to main and stable branches, ignoring `docs/**` and `README.md`.",
+      "quote": "| `tests.yaml` | `pull_request`, `push` (main, stable) | Ignores `docs/**`, `README.md` | Validate code changes across Python versions and platforms |"
+    },
+    {
+      "claim": "The pre-commit workflow is triggered on pull_request and push to main and stable branches with no path filters.",
+      "quote": "| `pre-commit.yaml` | `pull_request`, `push` (main, stable) | None | Enforce code style and formatting standards |"
+    },
+    {
+      "claim": "The publish workflow is triggered on push of tags and on workflow_dispatch.",
+      "quote": "| `publish.yaml` | `push` (tags), `workflow_dispatch` | None | Build and distribute releases to PyPI and GitHub |"
+    },
+    {
+      "claim": "The tests workflow matrix includes Python 3.14 on ubuntu-latest, windows-latest, and macos-latest.",
+      "quote": "| 3.14 | No | ubuntu-latest | py3.14 | - |"
+    },
+    {
+      "claim": "The tests workflow matrix includes pypy-3.11 on ubuntu-latest with the tox environment `pypy311`.",
+      "quote": "| pypy-3.11 | N/A | ubuntu-latest | pypy311 | PyPy |"
+    },
+    {
+      "claim": "The tests workflow runs `uv run --locked tox run -e parallel` when the matrix Python version ends with 't'.",
+      "quote": "- if: endsWith(matrix.python, 't')\n  run: uv run --locked tox run -e parallel"
+    },
+    {
+      "claim": "The tests workflow typing job caches `./.mypy_cache` with a key derived from a hash of `pyproject.toml`.",
+      "quote": "| `actions/cache@0057852bfaa89` | Cache `.mypy_cache` | Speed up mypy runs |"
+    },
+    {
+      "claim": "The tests workflow typing job runs `uv run --locked tox run -e typing`.",
+      "quote": "[.github/workflows/tests.yaml:55]() runs the `typing` tox environment"
+    },
+    {
+      "claim": "The tests workflow sets `allow-prereleases: true` for Python setup.",
+      "quote": "The `allow-prereleases: true` option enables testing against Python development versions (3.14, 3.13t, 3.14t)."
+    },
+    {
+      "claim": "The tests workflow uses `fail-fast: false` for the test matrix.",
+      "quote": "The `tests` job uses a `fail-fast: false` strategy"
+    },
+    {
+      "claim": "The pre-commit workflow runs `uv run --locked --group pre-commit pre-commit run --show-diff-on-failure --color=always --all-files`.",
+      "quote": "uv run --locked --group pre-commit pre-commit run --show-diff-on-failure --color=always --all-files"
+    },
+    {
+      "claim": "The pre-commit workflow caches `~/.cache/pre-commit` with the key `pre-commit|${{ hashFiles('pyproject.toml', '.pre-commit-config.yaml') }}`.",
+      "quote": "3. **Cache Key:** `pre-commit|${{ hashFiles('pyproject.toml', '.pre-commit-config.yaml') }}` - cache invalidates when configuration changes"
+    },
+    {
+      "claim": "The pre-commit workflow uses `pre-commit-ci/lite-action` with the condition `if: ${{ !cancelled() }}`.",
+      "quote": "- uses: pre-commit-ci/lite-action@5d6cc0eb514c891a40562a58a8e71576c5c7fb43 # v1.1.0\n  if: ${{ !cancelled() }}"
+    },
+    {
+      "claim": "The lock workflow runs on a cron schedule of `0 0 * * *`.",
+      "quote": "Cron[\"Daily Cron Schedule<br/>0 0 * * *\"]"
+    },
+    {
+      "claim": "The lock workflow requests permissions issues: write, pull-requests: write, and discussions: write.",
+      "quote": "permissions:\n  issues: write\n  pull-requests: write\n  discussions: write"
+    },
+    {
+      "claim": "The lock workflow uses `dessant/lock-threads` pinned to commit 1bf7ec25051fe7c00bdd17e6a7cf3d7bfb7dc771 (v5.0.1).",
+      "quote": "dessant/lock-threads@1bf7ec25051fe7c00bdd17e6a7cf3d7bfb7dc771 # v5.0.1"
+    },
+    {
+      "claim": "The lock workflow sets issue-inactive-days, pr-inactive-days, and discussion-inactive-days all to 14.",
+      "quote": "| Issues | 14 days | `issue-inactive-days` |"
+    },
+    {
+      "claim": "The lock workflow uses a concurrency group named `lock`.",
+      "quote": "The workflow implements concurrency control using the group `lock` to ensure only one instance runs at a time."
+    },
+    {
+      "claim": "The `_mod` fixture in tests/conftest.py is session-scoped and autouse.",
+      "quote": "mod_fixture[\"@pytest.fixture<br/>_mod\"]\n        session_scope[\"scope='session'<br/>autouse=True\"]"
+    },
+    {
+      "claim": "The `_mod` fixture is parameterized with the `_native` and `_speedups` modules and skips the speedups parameter if unavailable.",
+      "quote": "params[\"params=(<br/>_native,<br/>_speedups<br/>)\"]\n        skipif[\"pytest.mark.skipif<br/>speedups unavailable\"]"
+    },
+    {
+      "claim": "The `_mod` fixture replaces `markupsafe._escape_inner` with the selected module's `_escape_inner`.",
+      "quote": "inject[\"markupsafe._escape_inner =<br/>mod._escape_inner\"]"
+    },
+    {
+      "claim": "`tests/conftest.py` defines `pytest_report_header()` that reports free-threaded status on Python 3.13+.",
+      "quote": "def pytest_report_header() -> list[str]:\n    if sys.version_info >= (3, 13):\n        return [f\"Free-threaded: {not sys._is_gil_enabled()}\"]\n    return []"
+    },
+    {
+      "claim": "The `test_markup_leaks` test is marked `thread_unsafe` with reason \"Tests gc.get_objects()\".",
+      "quote": "@pytest.mark.thread_unsafe(reason=\"Tests gc.get_objects()\")\ndef test_markup_leaks() -> None:"
+    },
+    {
+      "claim": "The `test_markup_leaks` test runs 20 outer iterations of 1000 inner iterations with 4 escape calls each.",
+      "quote": "for _ in range(20):\n        for _ in range(1000):\n            escape(\"foo\")      # No escaping needed\n            escape(\"<foo>\")    # Requires escaping\n            escape(\"foo\")      # No escaping needed\n            escape(\"<foo>\")    # Requires escaping"
+    },
+    {
+      "claim": "The `test_markup_leaks` test asserts `len(counts) < 3`.",
+      "quote": "assert len(counts) < 3"
+    },
+    {
+      "claim": "The `test_markup_leaks` test calls `gc.collect()` before the loop to establish a baseline.",
+      "quote": "gc.collect()  # Clean baseline"
+    },
+    {
+      "claim": "`tests/test_exception_custom_html.py` defines a class whose `__html__()` raises `ValueError(123)` and asserts `escape(obj)` raises `ValueError`.",
+      "quote": "class CustomHtmlThatRaises:\n    def __html__(self) -> str:\n        raise ValueError(123)\n\ndef test_exception_custom_html() -> None:\n    obj = CustomHtmlThatRaises()\n    with pytest.raises(ValueError):\n        escape(obj)"
+    },
+    {
+      "claim": "The escape test suite includes a 2-byte Unicode test case `\"\u3053\u3093\u306b\u3061\u306f&><'\\\"\u3053\u3093\u3070\u3093\u306f\"`.",
+      "quote": "- 2-byte characters (Japanese): `\"\u3053\u3093\u306b\u3061\u306f&><'\\\"\u3053\u3093\u3070\u3093\u306f\"`"
+    },
+    {
+      "claim": "The escape test suite includes a 4-byte Unicode emoji test case `\"\\U0001f363\\U0001f362&><'\\\"\\U0001f37a xyz\"`.",
+      "quote": "- 4-byte characters (emoji): `\"\\U0001f363\\U0001f362&><'\\\"\\U0001f37a xyz\"`"
+    },
+    {
+      "claim": "The C extension module definition sets `.m_name = \"markupsafe._speedups\"` and `.m_size = 0`.",
+      "quote": "static struct PyModuleDef module_definition = {\n    .m_base = PyModuleDef_HEAD_INIT,\n    .m_name = \"markupsafe._speedups\",\n    .m_size = 0,\n    .m_methods = module_methods,\n    .m_slots = module_slots,\n};"
+    },
+    {
+      "claim": "The C extension exposes the method `_escape_inner` mapped to `escape_unicode` with `METH_O` in `module_methods`.",
+      "quote": "static PyMethodDef module_methods[] = {\n    {\"_escape_inner\", (PyCFunction)escape_unicode, METH_O, NULL},\n    {NULL, NULL, 0, NULL}  /* Sentinel */\n};"
+    },
+    {
+      "claim": "`PyInit__speedups()` returns `PyModuleDef_Init(&module_definition)`.",
+      "quote": "PyMODINIT_FUNC\nPyInit__speedups(void)\n{\n    return PyModuleDef_Init(&module_definition);\n}"
+    },
+    {
+      "claim": "`PyUnicode_1BYTE_KIND` stores characters up to code point 255.",
+      "quote": "| Kind 1 | 1 byte (Py_UCS1) | 127 (ASCII) or 255 (Latin-1) | `PyUnicode_1BYTE_KIND` |"
+    },
+    {
+      "claim": "`PyUnicode_2BYTE_KIND` stores characters up to code point 65535.",
+      "quote": "| Kind 2 | 2 bytes (Py_UCS2) | 65535 (BMP) | `PyUnicode_2BYTE_KIND` |"
+    },
+    {
+      "claim": "`PyUnicode_4BYTE_KIND` stores characters up to code point 1114111.",
+      "quote": "| Kind 4 | 4 bytes (Py_UCS4) | 1114111 (full Unicode) | `PyUnicode_4BYTE_KIND` |"
+    },
+    {
+      "claim": "`escape_unicode` returns NULL on invalid input.",
+      "quote": "- `NULL` on error (invalid input)"
+    },
+    {
+      "claim": "The tox `parallel` environment sets `base_python = [\"3.14t\"]`.",
+      "quote": "base_python = [\"3.14t\"]"
+    },
+    {
+      "claim": "The tox `parallel` environment description is \"check for free threading issues\".",
+      "quote": "description = \"check for free threading issues\""
+    },
+    {
+      "claim": "`tests/test_ext_init.py` verifies that uncached imports of `_speedups` create distinct module objects.",
+      "quote": "The test suite verifies multi-phase initialization by ensuring that uncached imports create distinct module objects"
+    },
+    {
+      "claim": "MarkupSafe 3.0.0 added support for Python 3.13's experimental free-threaded build.",
+      "quote": "Added support for Python 3.13's experimental free-threaded build"
+    },
+    {
+      "claim": "The `ve_build_ext.build_extension()` method also catches a specific `ValueError` on Windows related to Python issue 7511.",
+      "quote": "- `ValueError`: Special handling for Windows 64-bit path issues (Python issue 7511)"
+    },
+    {
+      "claim": "`setup.py` registers the custom build command via `cmdclass={\"build_ext\": ve_build_ext}`.",
+      "quote": "setup(\n    cmdclass={\"build_ext\": ve_build_ext},\n    ext_modules=ext_modules if with_binary else [],\n)"
+    },
+    {
+      "claim": "MarkupSafe 3.0.2 requires setuptools >= 70.1.",
+      "quote": "| 3.0.2 | Require setuptools >= 70.1 | Ensures compatibility with modern setuptools features |"
+    },
+    {
+      "claim": "MarkupSafe 0.13 added logic to skip C extension compilation on PyPy and Jython.",
+      "quote": "| 0.13 | Skip compilation on PyPy/Jython | Initial platform detection |"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 1.61
+}

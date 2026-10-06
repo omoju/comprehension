@@ -1,0 +1,190 @@
+{
+  "repo": "tqdm",
+  "arms": {
+    "story": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "States total=4 and cites the `len(iterable)` fallback in `__init__` with the TypeError/AttributeError guard, matching the key."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly explains the __iter__ counter/clock gates and the exact calls update(2), update(2); the only divergence is the dynamic-miniters value (~1.81 vs the key's 2.0), which doesn't change the conclusion that item 3 is skipped."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Identifies `self._ema_dt = lambda: None` in close(), the falsy check in format_dict making rate None, and the fallback to (n-initial)/elapsed \u2248 17.39, exactly as the key states."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly states both extra close() calls return immediately at the `if getattr(self, 'disable', True): return` guard because __iter__'s finally already closed the bar."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Matches the key: close() \u2192 _decr_instances removed the first bar from _instances, so _get_free_pos finds an empty set and returns 0 again."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Reproduces the exact string and the Bar construction (default_len=10, UTF charset, divmod(int(0.5*80),8)=(5,0) \u2192 five blocks padded with spaces)."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Gives the right call chain (delay<=0 \u2192 refresh \u2192 display \u2192 __str__ \u2192 format_meter \u2192 print_status with '\\r') and the right reason for '?' (elapsed is 0 so rate stays None); the aside about start_t not being assigned is a minor inaccuracy that doesn't change the substance."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "The answer accurately states the `__new__` condition, the None-then-report() logic, and that a new monitor requires the old one killed (report() False) or monitor being None, matching the key."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Covers the leave resolution `pos == 0 if leave is None else leave`, the EMA disabling + display(pos=0) + '\\n' for leave, the blank display + '\\r' otherwise, and the early no-op escapes."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets the early return, _instances removal, __iter__ passthrough and no-op update/close, but hedges on what remains usable (the format_dict defaultdict of None with n/total/elapsed/unit) and omits the disable=None TTY rule."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Accurately describes the daemon thread, interval, lock, the miniters>1 and maxinterval condition, forcing miniters=1 with refresh(nolock=True), and disabling via monitor_interval=0."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correct on envwrap decoration, import-time snapshot, TQDM_ prefix matching and process-wide silent override, but misstates/omits the typing rules (type hint first, then default type, then the explicit `types` mapping, strings left unconverted) and declares them undocumented."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets the pre-raise removal from _instances and that an error is raised, but fails to name TqdmKeyError (or the 'nested' TqdmDeprecationWarning case), which is the core of the question."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Describes the ObjectWrapper, the EIO/'closed' swallowing, setting miniters=inf via weakref proxy, re-raising other errors, the silent-quiet user effect, and __eq__ delegation."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Names the `n >= total + 0.5` sanity check that discards total yielding counter-only output, plus the inf-total normalisation, matching the key."
+      }
+    ],
+    "deepwiki": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "It fails to state that total becomes 4 via the `len(iterable)` fallback in `__init__`, instead declining to answer and suggesting the default remains None."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "It explicitly denies the key's mechanism (that `__iter__` batches and calls `update(2)` twice), suggesting instead four `update(1)` calls with throttled redraws."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "It does not identify that `close()` sets `_ema_dt = lambda: None` so `format_dict['rate']` becomes None and the plain average is used; it declines to answer."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "It misses the key point that the extra `close()` calls return immediately via the `disable` guard, saying the behaviour is undocumented."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Despite hedging, it gives the correct substance: the first bar was closed and removed from `_instances`, so position 0 was free again."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "It reproduces the overall shape and r_bar correctly but fails to give the exact string/bar rendering, wrongly implying the width isn't determinate (default_len=10 with ncols None)."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "It gives the correct call chain (__init__ \u2192 refresh/display \u2192 format_meter \u2192 write) and the right reason for '?': zero elapsed means no rate, hence no ETA."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "It correctly explains that a single monitor is created if needed, the second bar reuses it since `report()` confirms liveness, and a new one starts only if none is live, though it omits `monitor_interval = 0`."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "It gets leave=True/False coarsely right but misses the close() mechanics (clearing line, early returns) and explicitly leaves leave=None (pos==0 rule) unanswered."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "It declines to describe what a disabled instance retains, missing the early-return in __init__, the pass-through __iter__, no-op methods, and the defaultdict format_dict."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "The guarantee, trigger conditions (miniters>1 and maxinterval) and shutdown path are correct, but it fails to confirm that setting `monitor_interval = 0` disables the thread."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "It captures the general override and type-inference mechanism and some pitfalls, but misses the crucial import-time environment snapshot (changes after import have no effect) and the explicit `types` mapping/silent-ignore details."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "It states the documentation doesn't cover it, missing the TqdmKeyError / TqdmDeprecationWarning behaviour and instance cleanup."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "It correctly describes catching OSError errno 5 and 'closed' ValueError, setting miniters to inf, and the effect of the bar silently stopping instead of crashing."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "It declines to state the conditions (n >= total+0.5 or total == inf setting total=None, yielding the counter-only format)."
+      }
+    ]
+  },
+  "cost": 0.25
+}

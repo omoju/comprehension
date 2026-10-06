@@ -1,0 +1,67 @@
+{
+  "repo": "attrs",
+  "arm": "deepwiki",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "Per the documented `define` logic, when `auto_attribs` is left at `None` attrs inspects the class body: if there are type annotations it uses `auto_attribs=True`; if there are no annotations but explicit `field()` calls it uses `auto_attribs=False`; with neither it falls back to `True`. SomeClass has annotations (`a_number: int`, `list_of_numbers: list[int]`), so they are collected as fields by `_transform_attrs`. If the body also contained a bare, unannotated `x = field()`, the documentation states that with `auto_attribs=True` an unannotated `attrs.field()` raises `UnannotatedAttributeError` (src/attr/_next_gen.py:396-413, tests/test_next_gen.py:93-99). The documentation does not describe any retry/fallback that would silently accept the mix."
+    },
+    {
+      "id": "p2",
+      "answer": "The documentation only establishes the default: `@attrs.define` passes `on_setattr=setters.pipe(setters.convert, setters.validate)`, i.e. converters/validators re-run on assignment, unlike `@attr.s` whose default is `None`. Whether attrs actually installed a generated `__setattr__` on this particular SomeClass (which has no converters and no validators, so the pipe would be a no-op) is not settled by this documentation; the only optimization mentioned is for subclasses (\"If no hook is needed in the subclass, `__setattr__` may be reset to `object.__setattr__`\"). Likewise, `ClassProps` is only described generically as the metadata container returned by `attrs.inspect()` (frozen/slotted/custom `__init__`); no field named `on_setattr_hook` or its possible values is documented here, so I can't name the stored value."
+    },
+    {
+      "id": "p3",
+      "answer": "SomeClass is mutable (`@define` \u2192 `frozen=False`) with `eq=True` and no `unsafe_hash`/`hash` argument. The documentation says attrs generates `__hash__` automatically only when `frozen=True`, or when you explicitly ask with `unsafe_hash=True` (legacy `hash=True`); it also stresses the Python rule that equal objects must hash equally. That branch therefore makes SomeClass follow the standard \"eq without frozen\" outcome: no hash is generated and `SomeClass.__hash__` is `None`, i.e. instances are unhashable. The docs in scope mention a `Hashability` enum only in passing (Advanced Topics) and do not spell out the branch table, so the precise internal branch name is not documented."
+    },
+    {
+      "id": "p4",
+      "answer": "The documentation describes `__init__` as being produced by `_make_init`/`_make_init_script`, which writes Python source handling defaults, factories, converters/validators and the `__attrs_post_init__` hook, then compiles it with `_compile_and_eval`/`_linecache_and_compile` (which also registers fake linecache entries for debuggers). For SomeClass this means `a_number`'s static default `42` is carried as a real parameter default, while `list_of_numbers = Factory(list)` is *not* a parameter default: `Factory` is a callable wrapper whose callable is invoked inside the body on each call, so every instance gets a fresh list. The exact generated source, the sentinel used for the factory parameter, and the precise contents of `__init__.__annotations__` are not shown in this documentation; it only states that `Attribute.type` holds the annotation and that converter signatures can influence the `__init__` argument types."
+    },
+    {
+      "id": "p5",
+      "answer": "`asdict()` iterates `fields(SomeClass)` and, for non-atomic values with `recurse=True`, delegates collection handling to `_asdict_anything()`. `list_of_numbers` is a list, so it is rebuilt element-by-element into a new list (collections are converted to `list` by default unless `retain_collection_types=True`); the ints hit the `_ATOMIC_TYPES` fast path. So the dict's list is a new object, not `sc.list_of_numbers`. For a tuple-valued field the same rule applies: by default the tuple becomes a `list`, and only with `retain_collection_types=True` is the original type preserved. Note that `attr.asdict` and `attrs.asdict` are the same `attr._funcs.asdict`, so there is no behavioural difference between the two namespaces documented here."
+    },
+    {
+      "id": "p6",
+      "answer": "`__ne__` is one of the dunders generated/installed by `_ClassBuilder` in `src/attr/_make.py` when `eq=True` (the glossary's `MakeModule` mapping lists `__ne__()` alongside `_make_eq`/`_add_hash`). It is defined in terms of the generated `__eq__`: equality first checks that `type(a) is type(b)` and then compares the attribute values pairwise, and `__ne__` reports the inverse \u2014 hence `True` for `SomeClass(a_number=1, ...) != SomeClass(a_number=2, ...)`. For a non-SomeClass operand the documented equality flowchart says the type check fails and `__eq__` yields `False`, which would make `__ne__` `True`; the documentation does not show the actual source, so whether `__eq__`/`__ne__` return `NotImplemented` (letting Python fall back to the other operand) for foreign types is not settled here."
+    },
+    {
+      "id": "p7",
+      "answer": "The documentation presents `make_class` as a functional front-end to the same pipeline, with the example `attr.make_class(\"User\", [\"name\"])` being equivalent to `@attr.s class User: name = attr.ib()` \u2014 i.e. legacy (OG) defaults. So C differs from SomeClass (built by `@define`) in at least: (1) `slots=False`, a dict class with `__dict__` rather than a slotted class; (2) `auto_attribs=False` / no annotations \u2014 the fields come from the name list; (3) `on_setattr=None`, so nothing runs on later assignment, versus `setters.pipe(convert, validate)`; (4) `auto_detect=False`, so attrs does not skip generating methods you defined yourself; plus `order` follows `eq` (ordering methods generated) instead of `order=False`, and `auto_exc=False`. The reason is simply which defaults the underlying decorator is called with; the documentation does not state any extra `make_class`-specific overrides."
+    },
+    {
+      "id": "p8",
+      "answer": "With plain string attribute names there is no type information, so `attrs.fields(C).a.type` is `None`. If the attributes are supplied as `field(type=int)` / `attr.ib(type=int)`, that value is stored and `fields(C).a.type` is `int` (the documentation notes `type=` and a PEP 526 annotation are mutually exclusive \u2014 supplying both raises `ValueError`). What `make_class` puts into `C.__annotations__` is not described anywhere in this documentation, so I can't say whether it is empty or synthesized from the `type=` arguments."
+    },
+    {
+      "id": "g1",
+      "answer": "When `auto_attribs=None`, `define` guarantees a deterministic choice by inspection: annotations present \u2192 `auto_attribs=True`; no annotations but explicit `field()` assignments \u2192 `auto_attribs=False`; neither \u2192 `True`. The guarantee is only about *which mode* is selected, not that every intended field is found. The silently-smaller-class case is the one where the guess lands on `auto_attribs=False`: in that mode bare annotations (`y: int`) are not attributes at all, so any annotation-only member is dropped without error while the `field()` assignments become the full field set. The documentation only spells out the loud failure direction (an unannotated `field()` under `auto_attribs=True` raises `UnannotatedAttributeError`); it does not document any retry logic, so the exact path into the silent case is not fully settled here."
+    },
+    {
+      "id": "g2",
+      "answer": "This documentation does not state the exact condition under which attrs drops a class-level `on_setattr`. What it does say is: `define` defaults to `setters.pipe(convert, validate)`; `setters.NO_OP` explicitly disables a class-wide hook for a given attribute; and, for subclassing, \"if a class with an active `on_setattr` hook is subclassed and the subclass does not generate a new setter\u2026 `__setattr__` may be reset to `object.__setattr__`\" (tests/test_setattr.py:234-258). The two surprises implied are (1) a subclass can lose the parent's assignment-time conversion/validation because its `__setattr__` was reset, and (2) because no attrs `__setattr__` is installed, introspection (and anything relying on the hook being present) sees plain object semantics even though you passed `on_setattr`. The precise \"no field has a converter or validator\" condition is not documented here."
+    },
+    {
+      "id": "g3",
+      "answer": "Documented facts: `cache_hash=True` makes the hash be computed once and stored on the instance. For slotted classes attrs adds a dedicated private slot `_attrs_cached_hash`; for non-slotted classes the value is wrapped in `_CacheHashWrapper`, an `int` subclass that deliberately is not pickled/copied so a new instance recomputes rather than inheriting a stale hash. Hashing must be enabled (via `frozen=True` or `unsafe_hash=True`) and the object must not be mutated after the hash is taken. The exact precondition errors (e.g. requiring `init=True` or hashing to be enabled) and any hazard specific to `__attrs_post_init__` are not described in this documentation."
+    },
+    {
+      "id": "g4",
+      "answer": "The documentation gives one rule with one exception: a frozen class may not use `on_setattr`. Passing `on_setattr` at the class level on a `frozen=True` class, or on an individual `attr.ib()/field()` inside a frozen class, raises `ValueError(\"Frozen classes can't use on_setattr.\")` (tests/test_setattr.py:199-222). `None` and `attrs.setters.NO_OP` are explicitly permitted on frozen classes (tests/test_setattr.py:224-233). Frozen-ness is inherited \u2014 \"once a class is frozen, all its subclasses are also frozen\" \u2014 so a subclass of a frozen class is subject to the same restriction; the documentation does not show a separate message or test for that inherited case."
+    },
+    {
+      "id": "g5",
+      "answer": "`_ClassBuilder._create_slots_class()` does not patch the original class: it copies `__dict__` into a clean class dict, strips the entries that will become slots, inspects base classes for slots already present, computes the `__slots__` tuple (adding `__weakref__` when `weakref_slot=True` and no base provides it, and `_attrs_cached_hash` when `cache_hash=True`), migrates `functools.cached_property` members, then builds a brand-new class with `type(cls)(name, bases, cls_dict)` and rewrites closure cells so `super()`/`__class__` in methods point at the new class. Consequences: the class object is replaced (so anything holding the pre-decoration class is stale, and `__init_subclass__` can fire on/for different class objects); instances reject attributes not in `__slots__` (`AttributeError`); inheriting from a non-slotted base still yields a `__dict__`, negating the memory win; and pickling relies on attrs-generated `__getstate__`/`__setstate__` (the latter using `object.__setattr__` so it works for frozen classes)."
+    },
+    {
+      "id": "g6",
+      "answer": "The documentation in scope only describes `fields()`: it returns a tuple of `Attribute` objects for an attrs class, is used internally by `asdict`, `astuple`, `evolve`, `assoc` and `resolve_types`, and the related `has()` resolves generic aliases through `get_generic_base`. `fields_dict()` is not documented here at all, and neither the accepted input types (class vs. instance vs. generic alias), the exceptions raised (`TypeError` / `NotAnAttrsClassError`), nor any caching side effect of `fields()` on generic aliases is described. I can't answer the comparison from this documentation."
+    },
+    {
+      "id": "g7",
+      "answer": "This documentation does not cover the `__repr__` recursion guard. It only says that `__repr__` is generated by `_add_repr` in `src/attr/_make.py`, producing the class name plus the selected attributes, and that `src/attr/_compat.py` is a compatibility layer for Python-version differences (`annotationlib`/PEP 749, PyPy detection, pattern-matching support). Nothing here describes a repr-in-progress id set, thread-local state, or why such state would live in `_compat`."
+    }
+  ],
+  "cost": 0.68
+}

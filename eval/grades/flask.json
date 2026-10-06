@@ -1,0 +1,178 @@
+{
+  "repo": "flask",
+  "arms": {
+    "story": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Identifies make_response, the str/bytes/iterator branch building response_class with status/headers None, and the 200 / text/html; charset=utf-8 / 13-byte body, matching the key."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly traces open_session returning None (no signing serializer), fallback to make_null_session giving a NullSession, and is_null_session skipping save_session so no Set-Cookie/Vary."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "States blueprints is [] derived from endpoint 'hello' having no dot, so only the None (app) scope is consulted and nothing runs, as in the key."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly says iscoroutinefunction is False so the same function object is returned unchanged, with the async_to_sync note matching the key."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Gets the rule, endpoint 'static', static_url_path and the no-existence-check point, but hedges on the method set instead of stating GET/HEAD/OPTIONS as the key does."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "DEBUG False from get_debug_flag/FLASK_DEBUG, SECRET_KEY None, PROVIDE_AUTOMATIC_OPTIONS True \u2014 matches the key."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Describes routing_exception storage of NotFound, raise_routing_exception re-raising, handle_user_exception/HTTP handling, and a 404 to the client, as in the key."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly names _got_first_request = True and the @setupmethod/_check_setup_finished AssertionError with the same message (method name differs only by which setup call is used)."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Nails the tuple forms, the None TypeError message and the 4-tuple error, but omits generators/iterators (streaming) and bytearray from the accepted return types."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "Claims the compatibility shim is not covered, whereas the key describes __init_subclass__ inspection, the DeprecationWarning, and the remove_ctx/add_ctx wrapping."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Matches the key: NullSession fallback, silent reads, RuntimeError on all mutating methods, and no cookie saved due to is_null_session."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Covers got_request_exception signal, PROPAGATE_EXCEPTIONS defaulting to testing or debug, re-raise vs log_exception, and the 500 via finalize_request(from_error_handler=True)."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "Declines to answer, while the key details key selection, json loads with silent fallback, '__' nesting, and the pitfalls."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "Says the default redirect code (303) and url_for guard rails are not covered, answering a different topic (routing redirects/url adapter) instead."
+      }
+    ],
+    "deepwiki": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correctly names make_response and the str/bytes branch and the 13-byte body, but hedges on and fails to commit to the 200 status and the 'text/html; charset=utf-8' Content-Type that the key specifies."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Gets NullSession and the is_null_session skip (no Set-Cookie) right, but contradicts the key by claiming nothing session-related happens during AppContext.push (the key says _get_session/open_session/make_null_session happen there) and leaves the end-of-request detail hedged."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correctly says request.blueprints is empty and explains the derivation from the dotless endpoint name, but misnames the endpoint as 'index' instead of 'hello' and hedges on the app-level-only hook behavior."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Matches the key: ensure_sync returns the plain function unchanged because iscoroutinefunction is False, with async_to_sync only for async def."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Identifies the static rule '/static/<path:filename>' (implied), endpoint 'static', GET/HEAD/OPTIONS methods, and that registration does not check for the folder's existence on disk."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "States DEBUG False from FLASK_DEBUG via get_debug_flag, SECRET_KEY None, and PROVIDE_AUTOMATIC_OPTIONS True, matching the key."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Traces routing_exception storage, re-raise in dispatch_request, handle_user_exception \u2192 handle_http_exception, no registered handler, and a 404 response, as in the key."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Identifies conceptually that first-request state is flipped but cannot name _got_first_request and explicitly fails to give the AssertionError raised by later setup methods, which is half the question."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "The list of accepted return values matches the key, but it declines to state the TypeError behavior for None and for a 4-element tuple, which is the second half of the question."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "Claims no compatibility shim is documented, missing the __init_subclass__ inspection, DeprecationWarning, and add_ctx/remove_ctx wrapping described in the key."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Matches the key: open_session returns None, make_null_session yields NullSession, reads work, writes raise RuntimeError, and save_session is skipped so no cookie is written."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Covers the got_request_exception signal, PROPAGATE_EXCEPTIONS (default None falling back to debug/testing), re-raise, logging, InternalServerError with original_exception, and the 500 handler lookup."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly describes prefix filtering and stripping, json.loads conversion with silent fallback to the raw string on bad input, and __ nesting; only minor pitfalls from the key are omitted."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "States the default redirect status is 302, contradicting the key's 303 in this version, and declines to give any of url_for's documented failure conditions."
+      }
+    ]
+  },
+  "cost": 0.2
+}

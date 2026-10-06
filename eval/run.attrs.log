@@ -103,3 +103,10 @@ Traceback (most recent call last):
   File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpx2/_transports/default.py", line 115, in map_httpcore_exceptions
     raise mapped_exc(message) from exc
 httpx2.ReadTimeout: The read operation timed out
+attrs         questions         $1.56  212s
+attrs         extract story     $0.91  470s
+attrs         extract deepwiki  $1.11  729s
+attrs         judge             $2.66  947s
+attrs         read story        $0.45  1039s
+attrs         read deepwiki     $0.68  1163s
+attrs         grade             $0.28  1241s

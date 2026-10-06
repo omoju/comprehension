@@ -1,0 +1,190 @@
+{
+  "repo": "httpx",
+  "arms": {
+    "story": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Matches the key: raw_path falls back to b'/', URL returned unchanged, merge produces http://testserver/."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Header order and the Content-Length reasoning (only auto-added for POST/PUT/PATCH) match the key."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correct on most keys and HTTP_X_CUSTOM, but hedges on SERVER_PORT and fails to give wsgi.url_scheme='http'."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Gives the correct extensions dict and its origin in the client default Timeout(5.0) via build_request."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly states a bare Auth() instance is returned and the request is unchanged with no Authorization header."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly says utf-8 from the charset and that default_encoding would not change it."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly explains has_redirect_location being False and the 302 case returning the 302 with next_request set."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly describes _skip_leading_empty_chunks and that elapsed is set in BoundSyncStream.close after the stream is exhausted."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "States the states and the send/enter rules and one message, but doesn't give the reopen-after-close message and wrongly claims __exit__ sets CLOSED before cleanup detail (minor), key's message not quoted."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Captures the DeprecationWarning and the ambiguity-of-persistence rationale, with slight vagueness on merging but substance correct."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly lists stripped/rewritten headers and the same-host http\u2192https exception for Authorization (plus same-origin preservation implied)."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Covers raise_app_exceptions semantics and the other failure modes including assertion, status parsing, ASCII header errors, and in-memory body buffering."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Accurately describes the generator contract, close in finally, and the two body-reading guarantees; only omits the no-I/O requirement, which is minor."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "Claims the information isn't available and provides none of the actual DigestAuth error behaviors."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly states the allow_env_proxies condition and that an explicit transport disables env proxies, with explicit proxy also winning implied."
+      }
+    ],
+    "deepwiki": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "The final request URL `http://testserver/` is right, but it wrongly claims the base_url is rewritten to `http://testserver/` whereas the key states `_enforce_trailing_slash` leaves it unchanged because raw_path already falls back to b'/'."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correctly explains the absence of Content-Length and names most headers, but fails to give the required order and is unsure whether `Connection` is a default (it is)."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Gets SERVER_NAME, PATH_INFO, QUERY_STRING, SCRIPT_NAME, REMOTE_ADDR and the HTTP_X_CUSTOM mapping right, but declines to state SERVER_PORT='80' and wsgi.url_scheme='http' (and muddles the port with a normalization remark)."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly identifies the client default Timeout(5.0) resolved via USE_CLIENT_DEFAULT and stored as a `timeout` extension dict with connect/read/write/pool all 5.0."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Describes the effect (no Authorization header, request unchanged) correctly but fails to state that a plain `httpx.Auth()` instance is returned rather than None."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Matches the key: utf-8 from the Content-Type charset, and default_encoding only applies when charset is missing/invalid."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly explains the non-redirect early return and the 302 behaviour with follow_redirects=False including next_request and empty history."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "The `elapsed`/BoundSyncStream.close() explanation is correct, but it fails to identify `_skip_leading_empty_chunks` dropping leading empty chunks, claiming no such behaviour is documented."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets the state enum and the CLOSED-send RuntimeError, but omits the exact messages and the rules for re-entering the context manager (opened/closed)."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correctly notes the DeprecationWarning and guidance to set cookies on the client, but gives no message text and explicitly declines the design rationale asked for."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Captures the same-origin Authorization rule and body dropping, but misses the HTTP\u2192HTTPS upgrade exception, Host rewriting, Content-Length/Transfer-Encoding removal, and the always-popped Cookie header."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correct on raise_app_exceptions re-raising exc_info exceptions, but provides none of the other failure modes (missing start_response assertion, ASCII header encoding, in-memory body)."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Accurately describes the auth_flow generator contract, the sync/async override rule for I/O, and the read guarantees of requires_request_body/requires_response_body."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "It states the behaviour is not covered and declines to answer, whereas the key specifies ProtocolError for missing realm/nonce, KeyError for unknown algorithms, and NotImplementedError/ProtocolError for qop handling."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correct on trust_env and the proxy precedence/NO_PROXY mapping, but misses the key point that supplying an explicit `transport=` disables environment proxy detection entirely (allow_env_proxies = trust_env and transport is None)."
+      }
+    ]
+  },
+  "cost": 0.17
+}

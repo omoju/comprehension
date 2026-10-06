@@ -1,0 +1,67 @@
+{
+  "repo": "click",
+  "arm": "deepwiki",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "The docs state that processing order is determined by `iter_params_for_processing()` ([src/click/core.py:116-141]()), which places eager parameters first, then non-eager parameters in the order they were encountered on the command line (the parser's `order` list), then any remaining parameters in declaration order. For `hello` invoked as `--count=3` with a prompted `--name`, that means the eager `--help` option is handled first, then `count` (the only option actually given on the command line), then `name` (remaining, in declaration order), which is where the prompt happens. The documentation does not show the actual README example or its decorator order, so the exact declaration order of `--count`/`--name` is an assumption on my part; the ordering *rule* is as described."
+    },
+    {
+      "id": "p2",
+      "answer": "The documentation describes `_OptionParser.parse_args()` returning a three-tuple `(opts, largs, order)` built up in `_ParsingState`: `opts` is a dict of parsed values, `largs` the leftover/non-option args, and `order` the list of parameters in the order they were encountered. For `--count=3`, `_process_opts` splits on `=`, normalizes `--count`, looks it up in `_long_opt`, injects `\"3\"` back into `rargs`, and stores the raw string. So `opts` would be roughly `{'count': '3'}` (the parser's `dest` for that option), `largs` empty, and `order` containing the `count` Parameter object. The docs do not show a literal transcript of this call, so the precise key spelling is inferred from the described mechanism rather than quoted."
+    },
+    {
+      "id": "p3",
+      "answer": "Per the `ParameterSource` enum ([src/click/core.py:143-167]()) and the resolution pipeline, `count` is recorded as `ParameterSource.COMMANDLINE` because it was given on the command line. `name` is recorded as `ParameterSource.PROMPT`, because the CLI, environment variable, default_map and default lookups all fail and the value is finally obtained via the interactive prompt \u2014 prompting is an explicit tracked source. The help option has `expose_value=False`, so nothing is stored for it in `ctx.params`; the documentation does not say what, if anything, is recorded in `ctx._parameter_source` for a non-exposed eager flag, so I can't state that definitively."
+    },
+    {
+      "id": "p4",
+      "answer": "Click infers the type from the default value when `type` is not given ([docs/options.rst:103-106](), [tests/test_options.py:571-578]()). So `--count` with an integer default gets `click.INT` (the `IntParamType`), and `--name` with a string default (or no default) gets `click.STRING`. The callback therefore receives `count` as a Python `int` \u2014 `3` \u2014 since `ParamType.convert()` ran on the raw `'3'` string during `type_cast_value()`. (The docs don't include the README source, so this assumes `--count` has an int default such as `1`; if it had no default at all it would fall back to `STRING`.)"
+    },
+    {
+      "id": "p5",
+      "answer": "The documentation doesn't settle the prompt question directly. What it does establish: an invalid value for an int option raises `BadParameter`, a `UsageError` subclass with `exit_code = 2`, and the error is printed to stderr in the form `Usage: ...` + `Try 'hello --help' for help.` + `Error: Invalid value for '--count': 'x' is not a valid integer.` ([src/click/exceptions.py:56-135](), [tests/test_basic.py:444-454]()). Whether the `--name` prompt still fires depends on processing order: since `count` is processed before `name` (it was given on the command line, `name` is a remaining parameter), the failure occurs first and the prompt is never reached \u2014 but the docs do not explicitly confirm this interaction, so treat the \"no prompt\" part as inference. Exit code is 2."
+    },
+    {
+      "id": "p6",
+      "answer": "The help option is added during `make_context()` ([src/click/core.py:1013-1029]()) rather than being a user-declared parameter; it is injected into the parameter list surfaced by `get_params(ctx)` and is not part of the statically declared `hello.params` from the decorators. Its default declaration is `--help` with `is_flag=True`, `is_eager=True`, `expose_value=False` ([src/click/decorators.py:527-551]()). Because `expose_value=False`, nothing is stored for it; `ctx.params` ends up with just `{'count': ..., 'name': ...}`. The documentation does not give the internal attribute name under which the injected option is stored, so I can't name it."
+    },
+    {
+      "id": "p7",
+      "answer": "The callback returns normally, `Context.__exit__` runs `close()` which drains the `_exit_stack` (close callbacks and `with_resource` managers), and `main()` returns exit code 0 ([src/click/core.py:1036-1150](), [src/click/core.py:481-493]()). In the `Result` object: `exit_code == 0`, `exception is None`, `exc_info is None`, and `return_value` holds whatever the command returned \u2014 but note `return_value` is only meaningfully populated when invoked with `standalone_mode=False` ([tests/test_testing.py:404-414]()); in default standalone mode `Command.main()` ignores the return value ([docs/commands.rst:384-429]()), so for a plain `runner.invoke(hello, ...)` the docs don't guarantee a useful `return_value`."
+    },
+    {
+      "id": "p8",
+      "answer": "`click.prompt()` writes the prompt text via `echo()` and defaults to stdout (`err=False`); the typed value itself is consumed from the mocked stdin and is not written by Click to stdout unless the runner was created with `echo_stdin=True` ([src/click/termui.py:139-147](), [tests/test_testing.py:30-86]()). Under `CliRunner`, `result.stdout` holds stdout only, `result.stderr` holds stderr only, and `result.output` is the interleaved mix as a user would see it ([src/click/testing.py:151-227](), [tests/test_testing.py:344-369]()). Since nothing here goes to stderr, `stderr` is empty and `output == stdout`. The documentation does not explain how the literal text `Your name: Click` (including the echoed `Click`) appears without `echo_stdin=True`, so I can't fully account for that line."
+    },
+    {
+      "id": "g1",
+      "answer": "The documentation describes the feature-switch pattern \u2014 several options sharing one name, each with its own `flag_value`, e.g. `@click.option('--upper', 'transformation', flag_value='upper', default=True)` and `@click.option('--lower', 'transformation', flag_value='lower')` ([docs/options.md:322-363]()) \u2014 and notes that when `default=True` is paired with a `flag_value`, the parameter receives the `flag_value` rather than boolean `True`. Beyond that, the docs do not spell out the precise rule for which option's value wins in `ctx.params[name]`, nor the tie-break when two share a name and both fall back to defaults. I can't answer that part from what's here."
+    },
+    {
+      "id": "g2",
+      "answer": "`UNSET` (defined in `src/click/_utils.py`) is purely internal: the guarantee is that user-facing code never sees it. It is converted to `None` when values pass through `Context.invoke()` ([src/click/core.py:800-814]()), and `type_cast_value()` short-circuits on `UNSET` so custom `ParamType`/`Parameter` subclasses never receive it \u2014 the test suite asserts exactly this (`assert value is not UNSET` inside an overridden `type_cast_value`, [tests/test_options.py:1028-1049]()). Enforcement points are therefore `Parameter.type_cast_value` ([src/click/core.py:2715-2739]()) and `Context.invoke`. Required parameters whose value is still `UNSET` after resolution raise `MissingParameter` in `process_value()`."
+    },
+    {
+      "id": "g3",
+      "answer": "The documentation does not describe any validation performed by `Command.get_params`. What it does say about `get_params(ctx)` is that it returns the command's parameters (including the injected help option) and is used by `format_options()` and `get_usage_pieces()` ([src/click/core.py:1074-1113](), [src/click/core.py:1040-1057]()). Validation errors that are documented happen at parameter *construction* time instead \u2014 e.g. `TypeError` for `Argument(..., multiple=True)` or `nargs` with a tuple type, and `ValueError` for a required+deprecated argument ([tests/test_arguments.py:489-501](), [tests/test_arguments.py:331-333]()). So I can't confirm any name/spelling checks in `get_params` from these docs."
+    },
+    {
+      "id": "g4",
+      "answer": "The documentation describes only one capture strategy for `CliRunner`: the `isolation()` context manager replaces `sys.stdin`/`sys.stdout`/`sys.stderr` with `_NamedTextIOWrapper` objects over in-memory `BytesIO`-based streams managed by `StreamMixer`/`BytesIOCopy`, so stdout and stderr are captured separately while also being copied into a combined `output` buffer ([src/click/testing.py:279-432](), [src/click/testing.py:88-112]()). There is no mention of a second, file-descriptor-level capture mode, nor of behaviour for code calling `sys.stdout.fileno()`. I can't answer the comparison you're asking about from this documentation."
+    },
+    {
+      "id": "g5",
+      "answer": "`Command.main()` catches and formats exceptions according to `standalone_mode` ([src/click/core.py:1036-1150]()). Documented mapping: `Exit` \u2192 the code carried by the exception; `Abort` \u2192 1; `UsageError` \u2192 2 (prints usage + help hint + error); `ClickException` \u2192 1 (prints the formatted message); `NoArgsIsHelpError` \u2192 2 (prints help to stderr); any other exception \u2192 1. `EOFError`/`KeyboardInterrupt` exit 1 in standalone mode. With `standalone_mode=True` the handler calls `sys.exit(code)`; with `standalone_mode=False` exceptions are re-raised to the caller instead of being caught and formatted, and the command's return value is propagated rather than discarded ([docs/commands.rst:384-429]())."
+    },
+    {
+      "id": "g6",
+      "answer": "`Parameter.consume_value(ctx, opts)` checks sources in priority order ([src/click/core.py:2468-2527]()): (1) the parsed command-line `opts`; (2) the environment variable via `resolve_envvar_value(ctx)` (explicit `envvar`, or an auto-generated name from `Context.auto_envvar_prefix`); (3) `Context.default_map` via `ctx.lookup_default(name)`; (4) the parameter's own `default` via `get_default(ctx)`; and for options, (5) an interactive prompt. If none supply a value it stays `UNSET`. As of Click 8.0+, an empty-string environment variable (`\"\"`) is treated as if the variable were not set, so resolution falls through to the next source ([CHANGES.rst:590-598](), [tests/test_options.py:383-393]())."
+    },
+    {
+      "id": "g7",
+      "answer": "Reading `Option.default` gives you the raw stored attribute, which may be a callable (a dynamic default), may be an un-normalized iterable for `multiple=True`/`nargs`, and crucially ignores `Context.default_map`. `Parameter.get_default(ctx, call=True)` ([src/click/core.py:2858-2890]()) consults `ctx.lookup_default()` first \u2014 so a default_map entry overrides the attribute \u2014 and calls callable defaults to produce the actual value. It is also the path through which type-consistent values (e.g. the tuple for `multiple=True`) are produced; the docs show `opt.get_default(ctx) == (1, 2)` for `default=(1, 2)` ([tests/test_options.py:571-578]()). For flag options there is additional interaction between `default` and `flag_value` that `get_default` accounts for ([CHANGES.rst:24-33]())."
+    }
+  ],
+  "cost": 1.39
+}

@@ -1,0 +1,67 @@
+{
+  "repo": "click",
+  "arm": "story",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "Order is `[<Option _click_default_help>, <Option count>, <Option name>]`. `parse_args` loops over `iter_params_for_processing(param_order, self.get_params(ctx))`, which sorts the declared parameters by a two-part key: `not item.is_eager` first, then the parameter's index in the user's invocation order (`float(\"inf\")` for anything never mentioned). The help option is `is_eager=True`, so its key starts with `False` and it sorts ahead of everything; `count` was mentioned on the command line (key `(True, 0)`), and `name` was not (key `(True, inf)`)."
+    },
+    {
+      "id": "p2",
+      "answer": "`_OptionParser.parse_args` returns the triple `({'count': '3'}, [], [<Option count>])`: the opts dict maps the dest `count` to the raw string `'3'` (no conversion, `default=1`/`INT` play no part at this layer), there are no leftover args (the command declares no positional arguments, so `_unpack_args` returns `((), [])` and `largs` is `[]`), and `order` holds the Click-level `Option` object for `--count`, recording that the user mentioned it first."
+    },
+    {
+      "id": "p3",
+      "answer": "`count` is recorded as `ParameterSource.COMMANDLINE` (its value came from the parser's opts dict), the automatic help option as `ParameterSource.DEFAULT` (nothing in opts, no envvar, no default map, so its lazily-resolved default `False` was used), and `name` as `ParameterSource.PROMPT`. `name` gets PROMPT because every earlier source missed \u2014 no parser entry, no declared `envvar` and `auto_envvar_prefix is None`, no default map, and its `default` is still the `UNSET` sentinel \u2014 so `Option.consume_value` hit the prompt branch (`prompt='Your name'`, `prompt_required=True`, `resilient_parsing=False`) and the value `'Click'` came from the prompt."
+    },
+    {
+      "id": "p4",
+      "answer": "`--count` gets `INT` (`IntParamType`): with no `type=`, `convert_type(None, default)` guesses from the default, `_guess_type` sees the `int` `1`, and `convert_type` returns the `INT` singleton. `--name` gets `STRING`: its default is the `UNSET` sentinel, so `_guess_type` returns `type(UNSET)` (the `Sentinel` enum), but because the type was guessed rather than declared, `convert_type` falls back to `STRING` instead of wrapping it. The callback therefore receives `count=3` as a real Python `int` (converted by `int('3')` in `type_cast_value`)."
+    },
+    {
+      "id": "p5",
+      "answer": "No prompt happens. The processing order is help, then `count`, then `name`, so conversion of `'x'` fails first: `IntParamType` raises via `fail`, producing a `BadParameter` that `augment_usage_errors` stamps with the context and parameter; `name` is never reached, so stdin is never read. `main` catches it as a `ClickException`, uses `e.exit_code` \u2014 `2` for a `UsageError` \u2014 and `UsageError.show` writes to stderr the usage block, the hint `Try 'hello --help' for help.`, and `Error: Invalid value for '--count': 'x' is not a valid integer.` Exit code is 2."
+    },
+    {
+      "id": "p6",
+      "answer": "It is stored under the reserved storage name `_click_default_help` (`_HELP_OPTION_STORAGE_NAME`), passed as a bare second declaration alongside `--help`, so `_parse_decls` yields `('_click_default_help', ['--help'], [])`. It is *not* in `hello.params`: `help_option(...)(self)` appends it via `_param_memo`, then `get_help_option` immediately pops it back off and caches it in `Command._help_option`, so `params` stays `[count, name]` (the cache also keeps callback ordering stable, since ordering compares objects). Because it is built with `expose_value=False`, nothing is written for it, and `ctx.params` ends up as `{'count': 3, 'name': 'Click'}`."
+    },
+    {
+      "id": "p7",
+      "answer": "The callback returns `None`, which `main` discards; in standalone mode it calls `ctx.exit()`, which first unwinds the context's `ExitStack` and then raises `Exit(0)`. `main`'s `except Exit` sets `exit_code = 0` with no report, and `sys.exit(0)` raises `SystemExit`, which `CliRunner.invoke` catches. Afterwards `Result.exit_code == 0`, `Result.exception is None`, and `Result.exc_info == (SystemExit, SystemExit(0), traceback)`. The documentation does not describe a `Result.return_value` attribute \u2014 it only notes that the callback's return value is deliberately thrown away in standalone mode \u2014 so I can't say what it holds."
+    },
+    {
+      "id": "p8",
+      "answer": "The prompt and the echoed keystrokes go to the captured **stdout**: the runner's `visible_input` hook writes the prompt text, reads one line from the `BytesIO` holding `b'Click\\n'`, strips the newline, echoes `Click` back and flushes, all through the replaced `sys.stdout`. For this run `stdout_bytes == b'Your name: Click\\nHello, Click!\\nHello, Click!\\nHello, Click!\\n'`, `stderr_bytes == b''`, and the mixed `output` buffer holds the same bytes as stdout (since nothing was written to stderr); `result.output` is that decoded string, with `errors='replace'` and `\\r\\n` normalisation applied."
+    },
+    {
+      "id": "g1",
+      "answer": "In `handle_parse_result`, each parameter first photographs the slot it is about to write \u2014 the current `ctx.params.get(name, UNSET)`, `ctx.get_parameter_source(name)`, and the stored explicit-default flag \u2014 before anything is mutated; the arbitration at the end uses that snapshot, and an option only writes at all if `expose_value` is true. In this trace the slot was empty (`slot_empty` true), so the option won. The documentation says the tie-break when options fall back to defaults is the `_default_explicit` flag (`default is not UNSET`, i.e. \"did the author actually supply a default?\"), which is the reason the raw `UNSET` sentinel is preserved instead of being resolved at construction time. The exact full arbitration rules (e.g. precedence between sources such as COMMANDLINE vs DEFAULT within a shared slot) are not spelled out in the documentation, so I can't state them precisely."
+    },
+    {
+      "id": "g2",
+      "answer": "The guarantee is that the sentinel never reaches user code. It is enforced at the end of `Command.parse_args`, which walks `ctx.params` and rewrites any surviving `UNSET` to `None` before the callback is invoked (in this run both values were real, so the sweep changed nothing). A related conversion happens on the prompt path, where `_hide_unset` presents an `UNSET` default to `prompt()` as `None` (meaning \"keep asking\"). Internally `UNSET` remains meaningful for distinguishing \"absent\" from \"`None`\"."
+    },
+    {
+      "id": "g3",
+      "answer": "After assembling `[user params..., help option]`, `get_params` runs two `Counter`s: one over every option spelling, warning if any spelling is used by more than one parameter, and one over storage names, warning when a parameter squats on the reserved help name (`_click_default_help`) and when an `Argument` shares a name with another parameter (which silently overwrites a value during parsing). Options sharing a storage name are deliberately allowed (the feature-switch pattern). The checks run on every `get_params` call during parsing (it runs twice in this trace) and sit inside `if __debug__`, so `python -O` disables them; when they trip they emit `UserWarning`s, not errors."
+    },
+    {
+      "id": "g4",
+      "answer": "`capture='sys'` (the default) replaces `sys.stdout`/`sys.stderr` with text wrappers over `BytesIOCopy` buffers, so only Python-level writes are recorded \u2014 output from C extensions, subprocesses, or a stale reference to the old `sys.stdout` is lost. `capture='fd'` additionally starts two `_FDCapture`s on file descriptors 1 and 2, so native/subprocess output is captured and merged into the same buffers at the end. Restrictions: `CliRunner.__init__` raises `ValueError` for anything other than `'sys'` or `'fd'`, and `'fd'` is rejected outright on Windows. Observable difference: in `'sys'` mode each wrapper keeps `_original_fd = -1`, so `sys.stdout.fileno()` raises `io.UnsupportedOperation` (deliberately preventing `os.dup2` on the test runner's real output); in `'fd'` mode `_original_fd` points at the saved pre-redirection descriptor, so `fileno()` returns a real descriptor."
+    },
+    {
+      "id": "g5",
+      "answer": "`main` first checks the shell-completion env var (`_<PROG>_COMPLETE`), which if set runs completion and `sys.exit`s. Otherwise it initialises `report = None, exit_code = 1` and runs make_context / invoke / `ctx.exit()` inside a try. Handlers: `Exit` \u2192 its own `e.exit_code` with no message (0 on success); `Abort`, and `EOFError`/`KeyboardInterrupt` from an interrupted prompt \u2192 message `Aborted!` with the initial code 1; `ClickException` \u2192 `report = e.show`, `exit_code = e.exit_code` (2 for `UsageError`); `OSError` only when `errno == EPIPE`, swallowed by wrapping the streams so the final flush can't raise \u2014 any other `OSError` propagates. Then the report is written and `sys.exit(exit_code)` runs, with an outer `except (EOFError, KeyboardInterrupt)` that preserves the chosen exit code if an interrupt arrives mid-report. With `standalone_mode=False`, each handler re-raises instead of recording, so `Exit` and `ClickException` reach your code and you handle them (and the command's return value) yourself rather than every path ending in `SystemExit`."
+    },
+    {
+      "id": "g6",
+      "answer": "Fixed precedence, each step guarded by `if value is UNSET`: (1) the parser's opts dict (command line), which sets source `COMMANDLINE`; (2) the environment variable via `resolve_envvar_value`; (3) the context's `default_map` (via `_default_map_has`); (4) the parameter's own default (`get_default`, with `Option._resolve_lazy_default` for flags). For options, a prompt can then follow. \"Environment not set\" here means: `Option.resolve_envvar_value` returns `None` immediately if no `envvar=` was declared, and then it checks `ctx.auto_envvar_prefix` \u2014 which is `None` in this run, so `os.environ` is never read at all. The documentation does not say how an env var set to an empty string is treated, so that detail is unsettled. The chosen source is recorded on the context and readable as `ctx.get_parameter_source(name)`."
+    },
+    {
+      "id": "g7",
+      "answer": "`Option.default` holds the raw value as the author passed it \u2014 including the `UNSET` sentinel when no default was given \u2014 so it answers \"did the author supply a default?\" (paired with `_default_explicit`) rather than \"what value will be used\". For a boolean flag, for instance, `default` stays `UNSET` even though the effective default is `False`. `Option.get_default` calls `Parameter.get_default` for the raw stored value and then passes it through `_resolve_lazy_default`, which for a non-required boolean flag turns `UNSET` into `False`; deriving it lazily is what keeps `default is UNSET` a truthful signal for the shared-slot/feature-switch tie-break."
+    }
+  ],
+  "cost": 0.37
+}

@@ -1,0 +1,67 @@
+{
+  "repo": "jinja",
+  "arm": "story",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "`EvalContext.__init__` is what calls it (nodes.py#L76-L84): it sees `environment.autoescape` is callable and invokes it with the template name. It happens twice in this run \u2014 once at compile time, when `CodeGenerator.visit_Template` builds `EvalContext(self.environment, self.name)` (compiler.py#L825-827), and once at render time, when `Context.__init__` builds a second `EvalContext` (runtime.py#L176). Both calls are `autoescape('members.html')`, and because the name ends in `.html` (an enabled extension) both return `True`; `volatile` is `False`. The compile-time answer is the one frozen into the module as literal `escape(` calls."
+    },
+    {
+      "id": "p2",
+      "answer": "The key is the tuple `(weakref.ref(self.loader), name)` \u2014 here `(<weakref to the DictLoader>, 'members.html')` (environment.py#L961), not the name alone, so two loaders in one environment can't collide and the entry becomes unreachable when its loader is collected. On this first call the `LRUCache(400)` returns `None` (cold start), so the source is loaded and compiled. At the end, `_load_template` stores the finished `<Template 'members.html'>` under that same key (environment.py#L976-978); the next lookup finds it and, since `auto_reload=True`, only reuses it if `template.is_up_to_date` (the DictLoader closure comparing the captured source against the live mapping) agrees."
+    },
+    {
+      "id": "p3",
+      "answer": "`environment.getattr(l_1_user, 'url')` (environment.py#L484-495), which the compiler emitted for `{{ user.url }}` (compiler.py#L1750-1752). It tries a real Python attribute first, falls back to item access, and returns an `Undefined` if both fail. For a plain dict there is no `url` attribute, so it falls through to `obj['url']` and returns `'/user/1'`. There were six such calls in this render (two per user)."
+    },
+    {
+      "id": "p4",
+      "answer": "Those newlines were lexed and parsed into real top-level `Output([TemplateData('\\n')])` nodes, but they are dropped during code generation. `visit_Extends` set `self.has_known_extends = True` (because `frame.rootlevel` was true) and bumped `extends_so_far` to 1; the root frame already had `require_output_check = have_extends and not self.has_known_extends`. So `visit_Output` sees `frame.require_output_check` and `self.has_known_extends` and returns without writing anything (compiler.py#L1497-1502) \u2014 and `visit_Block` likewise returns for the two top-level blocks. Any child content outside a `{% block %}` is discarded silently at compile time."
+    },
+    {
+      "id": "p5",
+      "answer": "No `LoopContext` is created. `visit_For` asks three questions at compile time \u2014 is the loop recursive, does the body mention `loop`, does it contain a scoped block (compiler.py#L1184-1189) \u2014 and all three answered no, so `extended_loop` stayed `False` and a plain Python loop was emitted (compiler.py#L1249-1272). The emitted code is:\n\n```\nfor l_1_user in (undefined(name='users') if l_0_users is missing else l_0_users):\n    _loop_vars = {}\n```\n\nwith `l_0_users = resolve('users')` hoisted to the top of `block_content`."
+    },
+    {
+      "id": "p6",
+      "answer": "At render time, not compile time. The compiler only wrote the instruction `parent_template = environment.get_template('base.html', 'members.html')` into the root function (compiler.py#L1019-1021); it executes when `root_render_func` runs, before any output. Because `parent='members.html'` is not None, `join_path('base.html', 'members.html')` runs first (the default implementation returns its first argument unchanged), then `_load_template` misses the LRU cache under `(weakref.ref(loader), 'base.html')`, and the full tokenize\u2192parse\u2192generate\u2192compile\u2192exec pipeline runs for the parent. That cost is one extra compile per process, not per render."
+    },
+    {
+      "id": "p7",
+      "answer": "It is constant-folded into a literal: the emitted line is `yield 'Members'`. In `visit_Output`, `TemplateData('Members').as_const` returns `Markup('Members')` because the eval context says autoescape; escaping a `Markup` is a no-op, template data is explicitly exempt from `finalize`, and the result is `str(const)`, joined and `repr`'d into the source (compiler.py#L1459-1468, #L1546-1554). So the escaping already happened once at compile time on trusted template text, and no runtime `escape()` call is needed."
+    },
+    {
+      "id": "p8",
+      "answer": "Two entries, child first: `[block_title from members.html, block_title from base.html]`. `Context.__init__` created it as a one-element list `[block_title]` (runtime.py#L181-184), and the generated block-copy loop in the root function did `context.blocks.setdefault(name, []).append(parent_block)`, putting the parent's implementation at index 1. The parent's root calls `context.blocks['title'][0](context)` \u2014 index 0, the most-derived version \u2014 and `Context.super` walks further down the list for `{{ super() }}`."
+    },
+    {
+      "id": "g1",
+      "answer": "The key is `(weakref.ref(self.loader), name)` (environment.py#L961) \u2014 loader identity plus the template name as given, with no normalisation by `get_template` itself (a non-None `parent` first goes through `join_path`). `cache_size=400` produces `LRUCache(400)` via `create_cache`; `0` returns `None`, disabling template caching entirely so every request recompiles; a negative size returns a plain `dict` that never evicts (environment.py#L83-93). `auto_reload=True` (the default) means a cache hit is not trusted blindly: the template is only reused if `template.is_up_to_date` \u2014 the loader's uptodate closure, e.g. `source == self.mapping.get(template)` for `DictLoader` \u2014 agrees; otherwise it is recompiled. Because the key holds a weak reference, an entry stops being reachable once its loader is garbage collected. All of this is per-process and in-memory; with `bytecode_cache=None` nothing is shared between processes."
+    },
+    {
+      "id": "g2",
+      "answer": "It is baked in at compile time: `CodeGenerator.visit_Template` builds `EvalContext(environment, name)`, which calls the autoescape policy with the template *name*, and the boolean result decides what `_output_child_pre` writes \u2014 literally `escape(` (autoescape true), `str(` (false), or, only when the eval context is `volatile`, the deferred `(escape if context.eval_ctx.autoescape else str)(` (compiler.py#L1476-1481). So runtime only governs the volatile case, `Markup` joins and macro default autoescape; the cached module's `escape(` calls never change, even if your callable later changes its answer. As for `from_string`: the trace shows the policy was built with `default_for_string=True, default=False`, but the documentation's own owner-note in Chapter 5 asserts that a template \"loaded from a string gets `default=False`\" \u2014 the docs do not actually walk the `from_string` path or show what template name it passes, so they do not settle this cleanly. What is certain is that the decision is keyed on the name/extension and that anything outside `html/htm/xml` falls back to `default=False`."
+    },
+    {
+      "id": "g3",
+      "answer": "`pull_dependencies` hoists each filter/test name when entering a frame, emitting `try: t_1 = environment.filters['x'] / except KeyError:` with a stub that raises `TemplateRuntimeError(\"No filter named 'x' found.\")` if called (compiler.py#L558-578). Outside an `{% if %}` an unknown filter is a hard compile-time failure (compiler.py#L1805-1807); inside an `{% if %}` the check is deferred so it only fires when that branch actually runs, as a `TemplateRuntimeError`. The documentation names the render-time exception but does not name the compile-time one (elsewhere `self.fail` is shown raising `TemplateAssertionError`, e.g. for duplicate blocks, but the docs don't state that for filters)."
+    },
+    {
+      "id": "g4",
+      "answer": "The documentation says only that the `sandboxed` flag changes what the code generator emits \u2014 for example `environment.call(context, \u2026)` instead of `context.call(\u2026)` (compiler.py#L1881-1884) \u2014 and that consequently it must be chosen before anything is compiled, since it cannot be applied to an already-cached template. Setting the flag alone isn't a sandbox because the actual restrictions live in `SandboxedEnvironment`: a plain `Environment.getattr` happily returns whatever a template asks for, including `obj.__class__` (environment.py#L484-495). The docs do not enumerate the other behaviours `SandboxedEnvironment` overrides, so the full list is not settled here."
+    },
+    {
+      "id": "g5",
+      "answer": "`FileSystemLoader` and `PackageLoader` route the requested name through `split_template_path`, which raises `TemplateNotFound` on any `..` segment (loaders.py#L25-39). `DictLoader`, by contrast, does no such check \u2014 it is a plain dict lookup \u2014 and `Environment.get_template` itself validates nothing, so the loader is the entire access decision. The documentation mentions only the rejection of `..` segments; it does not say how absolute paths, drive letters or other separator forms are handled."
+    },
+    {
+      "id": "g6",
+      "answer": "The documentation does not cover `Template(...)`'s implicit environment or `Environment.overlay()` at all, so I can't answer that part. What sharing it does document: `DictLoader` does not copy the caller's mapping, so the caller's dict and the loader's are the same live object (editing it invalidates cached templates); lexers are cached in a module-global `LRUCache(50)` keyed only on syntax settings, so any environment using the same delimiters gets the *same* `Lexer` instance; and template globals are a `ChainMap({}, env.globals)` so per-template writes can never reach the environment's shared dict, while `new_context` flattens that ChainMap into a fresh dict per render (caller vars overriding globals)."
+    },
+    {
+      "id": "g7",
+      "answer": "Three separate stages. At parse time, `parse_block` reads the name with `expect(\"name\")`, rejects hyphenated names with a dedicated error if the next token is a `sub`, and reads the optional `scoped` and `required` markers (both `False` here); a missing `{% endblock %}` is caught by `fail_eof` (parser.py#L292-322, #L192-219). At code-generation time, `visit_Template` collects blocks with `node.find_all(nodes.Block)` into `self.blocks`, and a name already present triggers `self.fail(f\"block {block.name!r} defined twice\")` \u2192 `TemplateAssertionError` (compiler.py#L847-851) \u2014 a flat per-template namespace, compile-time error, not last-one-wins. At render time the inheritance stacks in `context.blocks` decide which implementation runs (index 0) and back `{{ super() }}`. The documentation shows `required` only being parsed; it never says what enforcement `required=True` triggers or when, so that part is unsettled here."
+    }
+  ],
+  "cost": 0.37
+}

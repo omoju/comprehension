@@ -105,3 +105,9 @@ Traceback (most recent call last):
     raise mapped_exc(message) from exc
 httpx2.ReadTimeout: The read operation timed out
 flask         questions         (done)
+flask         extract story     $0.74  229s
+flask         extract deepwiki  $2.14  696s
+flask         judge             $1.61  906s
+flask         read story        $0.30  958s
+flask         read deepwiki     $1.11  1043s
+flask         grade             $0.20  1103s

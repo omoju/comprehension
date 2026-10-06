@@ -1,0 +1,67 @@
+{
+  "repo": "httpx",
+  "arm": "story",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "`_enforce_trailing_slash` asks the parsed base URL for `raw_path`; an empty path reads back as `b'/'`, so the URL already ends in a slash and is returned untouched (`_client.py#L234-L237`). That guaranteed trailing slash is what makes relative merging append rather than replace: `_merge_url` computes `base.raw_path + '/'.lstrip(b'/')` \u2192 `b'/'`, rebuilds on the base via `copy_with`, and the request goes out as `URL('http://testserver/')` (scheme 'http', host 'testserver', port None, path '/', query None)."
+    },
+    {
+      "id": "p2",
+      "answer": "The raw header list sent is: `Host: testserver`, `Accept: */*`, `Accept-Encoding: gzip, deflate`, `Connection: keep-alive`, `User-Agent: python-httpx/0.28.1`, `X-Custom: value` \u2014 `Host` first because `_prepare` rebuilds the list as `auto_headers + self.headers.raw`. No `Content-Length` is present: `Content-Length: 0` is only auto-added for POST, PUT and PATCH (`_models.py#L457-L458`), so this bodyless GET goes out with no framing header at all (and no Content-Type, since `encode_request` returned an empty header dict)."
+    },
+    {
+      "id": "p3",
+      "answer": "Documented values: `SERVER_NAME='testserver'` (from `URL.host`), `PATH_INFO='/'`, `QUERY_STRING=''` (the raw `b''` query decoded), `SCRIPT_NAME=''` (the transport's default), `REMOTE_ADDR='127.0.0.1'` (transport default), plus `REQUEST_METHOD='GET'` and the hardcoded `SERVER_PROTOCOL='HTTP/1.1'`. The port is computed as `request.url.port or {\"http\": 80, \"https\": 443}[scheme]` \u2192 80, which is what feeds SERVER_PORT, but the documentation does not quote the exact SERVER_PORT value/type (string vs int), and it never names a `wsgi.url_scheme` entry at all, so I can't confirm that key. The caller's header arrives uppercased/underscored with the HTTP_ prefix: `environ[\"HTTP_X_CUSTOM\"] == \"value\"` (CONTENT_TYPE/CONTENT_LENGTH would be the two unprefixed exceptions)."
+    },
+    {
+      "id": "p4",
+      "answer": "`request.extensions == {'timeout': {'connect': 5.0, 'read': 5.0, 'write': 5.0, 'pool': 5.0}}`. It comes from the client's `self.timeout`, which was coerced from the module-level `DEFAULT_TIMEOUT_CONFIG = Timeout(timeout=5.0)` (`_config.py#L246`); because the caller passed the `USE_CLIENT_DEFAULT` sentinel and supplied no `extensions`, `build_request` flattened it with `Timeout.as_dict()` and attached it. (`_set_timeout` in `send()` then finds the key already present and returns immediately.) Note that `WSGITransport` never reads this extension, so nothing actually enforces it on this path."
+    },
+    {
+      "id": "p5",
+      "answer": "`_build_request_auth` sees the `USE_CLIENT_DEFAULT` sentinel, finds `self._auth is None`, then checks `request.url.username`/`password` \u2014 both `''` for `http://testserver/` \u2014 so it falls through and returns a bare `Auth()` base-class instance. Its `auth_flow` is a single unmodified `yield request`, with `requires_request_body` and `requires_response_body` both `False`, so the request is sent exactly as built and no auth header is added. (Had the URL contained `user:pass@`, a `BasicAuth` would have been created silently.)"
+    },
+    {
+      "id": "p6",
+      "answer": "`response.text` uses `'utf-8'`, taken from step 1 of `Response.encoding`: the `charset_encoding` parsed out of `Content-Type` (`charset=utf-8`), which `_is_known_encoding` accepts. With `default_encoding=\"shift-jis\"` nothing would change \u2014 `default_encoding` is only consulted when the charset is absent or unrecognised by `codecs.lookup`. The decoder is built with `errors=\"replace\"`, so decoding never raises."
+    },
+    {
+      "id": "p7",
+      "answer": "Because `response.has_redirect_location` is `False`: it requires both a status in {301, 302, 303, 307, 308} and a `Location` header, and this is a 200, so `_send_handling_redirects` takes `if not response.has_redirect_location: return response`. With a `302 Found` + `Location: /other`, `follow_redirects` resolved to `False` (client default), so the client would neither raise nor fetch the target \u2014 it would build the follow-up request, attach it as `response.next_request`, and hand the 302 itself back to the caller."
+    },
+    {
+      "id": "p8",
+      "answer": "`WSGIByteStream.__init__` passes the app's iterable through `_skip_leading_empty_chunks`, which pulls items until it finds a truthy one and chains it back onto the front (returning an `itertools.chain`), so `[b\"\", b\"\", b\"Hello World!\"]` is not mistaken for an empty body. `response.elapsed` is set only when the response stream is closed: `iter_raw` calls `self.close()` after exhausting the stream, which reaches `BoundSyncStream.close`, computing `time.perf_counter() - start` (start was taken in `_send_single_request` before the transport call) and assigning `response.elapsed`. Reading `elapsed` before that raises `RuntimeError`."
+    },
+    {
+      "id": "g1",
+      "answer": "A `Client` moves UNOPENED \u2192 OPENED \u2192 CLOSED and is single-lifecycle. `__enter__` refuses any state other than UNOPENED, raising `RuntimeError(\"Cannot open a client instance more than once.\")` or a separate reopen-after-close variant (the docs don't quote that second message). `send()` raises `RuntimeError(\"Cannot send a request, as the client has been closed.\")` when the state is CLOSED; otherwise it sets OPENED unconditionally, which is why a client can be used without a `with` block. `__exit__` sets CLOSED unconditionally \u2014 before any cleanup and regardless of whether an exception occurred."
+    },
+    {
+      "id": "g2",
+      "answer": "`request()` checks whether per-request `cookies=` were passed and, if so, emits a `DeprecationWarning` (`_client.py#L804-L810`). The stated rationale is that httpx would rather you set cookies on the client, because per-request cookies have ambiguous persistence across redirects \u2014 the client's jar is meant to be the single source of cookie truth (it's also the jar that receives `Set-Cookie`, and `Cookie` is always dropped on redirect). The documentation doesn't spell out the exact merge semantics beyond `_merge_cookies` building a merged jar when either side is non-empty."
+    },
+    {
+      "id": "g3",
+      "answer": "`_redirect_headers` (`_client.py#L546-L571`) pops `Authorization`, rewrites `Host` to the new netloc, drops `Content-Length` and `Transfer-Encoding` if the method flipped to GET, and always drops `Cookie` (so the client jar remains authoritative). All other headers, including custom ones like `X-Custom` or `X-Api-Key`, are carried to the new origin. `Authorization` is preserved only for a plain http\u2192https upgrade of the same host; otherwise, on any cross-origin redirect, it is removed."
+    },
+    {
+      "id": "g4",
+      "answer": "`raise_app_exceptions` (default `True`) controls what happens when the app reports an exception via `start_response(..., exc_info)`: if `seen_exc_info` is set, the transport does `raise seen_exc_info[1]`, so the app's own bug surfaces as that bug rather than as a response; setting it `False` lets a test inspect the 500 body instead. Note these re-raised exceptions are not httpx types, so `except httpx.HTTPError` won't catch them. Other brittle spots: an app that returns without calling `start_response` trips a bare `AssertionError`; a URL scheme other than http/https raises `KeyError` from the port lookup table; a malformed status string gives `ValueError`; non-ASCII header names/values give `UnicodeEncodeError` \u2014 none of these are caught. The transport also buffers the whole request body in memory and ignores the `timeout` extension, and it does not support the legacy `write()` callable (it returns a throwaway `lambda _: None`)."
+    },
+    {
+      "id": "g5",
+      "answer": "`Auth` exposes `auth_flow`, a generator that yields a `Request` and receives the corresponding `Response` back via `generator.send(response)`; yielding another request causes another round trip, and returning (StopIteration) ends the exchange with the last response. The client drives it through `sync_auth_flow` and always calls `auth_flow.close()` in a `finally`, so a scheme holding a lock or file handle is finalised. `requires_request_body=True` makes `sync_auth_flow` call `request.read()` before yielding, guaranteeing `request.content` is available to sign; `requires_response_body=True` makes it call `response.read()` before pushing the response into the flow, guaranteeing the body is available to inspect (e.g. a challenge). The base class sets both `False` and its `auth_flow` yields the request unmodified. Caveat: every intermediate response in a multi-step flow is buffered and retained in `response.history`."
+    },
+    {
+      "id": "g6",
+      "answer": "The documentation doesn't cover this. `DigestAuth` is mentioned only as the motivating example for the generator protocol \u2014 turning a 401 into a second, signed request without the client core knowing anything about digest. Its handling of malformed or unsupported challenge parameters (algorithms, qop, missing fields) is not described anywhere in these chapters."
+    },
+    {
+      "id": "g7",
+      "answer": "Environment proxies are consulted only when `allow_env_proxies = trust_env and transport is None` is True (`_client.py#L685-L686`); that flag gates the `get_environment_proxies()` branch in `_get_proxy_map`, whose result builds `_mounts`. So passing an explicit `transport=` (such as a `WSGITransport`) silently disables env-var proxying even though `trust_env` is still `True`: the proxy map comes back `{}`, `_mounts` is empty, and `_transport_for_url` falls through to the single supplied transport for every URL. If a deployment relies on `HTTP_PROXY`/`HTTPS_PROXY` while also passing a custom transport, configure the proxy on the transport instead. The documentation does not describe the individual semantics of ALL_PROXY/NO_PROXY inside `get_environment_proxies()`."
+    }
+  ],
+  "cost": 0.36
+}

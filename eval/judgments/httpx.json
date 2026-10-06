@@ -1,0 +1,1044 @@
+{
+  "repo": "httpx",
+  "items": [
+    {
+      "id": "deepwiki:552",
+      "arm": "deepwiki",
+      "claim": "The response event hook is called after the response is fetched but before it is returned, receiving the response instance",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "docs/advanced/event-hooks.md:6-7"
+      ],
+      "reason": "The docs explicitly describe the `response` hook as called after the response is fetched from the network but before it is returned to the caller, passed the response instance.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:94",
+      "arm": "story",
+      "claim": "`Client.send` calls `self._set_timeout(request)`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:910-910"
+      ],
+      "reason": "`Client.send` calls `self._set_timeout(request)` before building auth.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:180",
+      "arm": "story",
+      "claim": "`Response.read` sets `self._content = b\"\".join(self.iter_bytes())` if `_content` is not already set, and returns `self._content`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_client.py:922-922"
+      ],
+      "reason": "`Response.read` is defined in httpx/_models.py, which is not shown.",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "deepwiki:407",
+      "arm": "deepwiki",
+      "claim": "BrotliDecoder supports both the brotli and brotlicffi packages",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_decoders.py:17-26",
+        "httpx/_decoders.py:126-134"
+      ],
+      "reason": "The decoder module imports `brotli` falling back to `brotlicffi`, and BrotliDecoder branches for both the 'brotlicffi' (`decompress`) and 'brotli' (`process`) APIs.",
+      "jev_contradicted": 0.29
+    },
+    {
+      "id": "story:75",
+      "arm": "story",
+      "claim": "`Request.__init__` skips the cookies branch when `cookies` is `None`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_client.py:378-389"
+      ],
+      "reason": "`Request.__init__` lives in httpx/_models.py, which is not shown.",
+      "jev_contradicted": 0.18
+    },
+    {
+      "id": "story:30",
+      "arm": "story",
+      "claim": "`BaseClient._merge_url` parses the given URL with `URL(url)`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:396-396"
+      ],
+      "reason": "`_merge_url` starts with `merge_url = URL(url)`.",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "deepwiki:608",
+      "arm": "deepwiki",
+      "claim": "ConnectTimeout is raised when timing out while connecting to the host",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "docs/advanced/timeouts.md:48-50"
+      ],
+      "reason": "The timeouts documentation states that if HTTPX is unable to connect within the connect timeout frame, a `ConnectTimeout` exception is raised.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:568",
+      "arm": "deepwiki",
+      "claim": "The CLI --data option has short form -d",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_main.py:1-1"
+      ],
+      "reason": "The CLI implementation in `httpx/_main.py` is not shown, so the option's short form cannot be checked.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:2",
+      "arm": "story",
+      "claim": "`Client.__init__` delegates most of its work to `BaseClient.__init__`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:662-674"
+      ],
+      "reason": "`Client.__init__` calls `super().__init__(...)` passing auth, params, headers, cookies, timeout etc. to `BaseClient.__init__`.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:21",
+      "arm": "story",
+      "claim": "When an explicit transport is supplied, the `verify`, `cert`, `http1`/`http2` and `limits` arguments are discarded and no `HTTPTransport`, SSL context or httpcore pool is constructed",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:685-686",
+        "httpx/_client.py:718-738"
+      ],
+      "reason": "`_init_transport` returns the supplied transport immediately, ignoring verify/cert/http1/http2/limits, and env proxies are disabled when a transport is given.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:475",
+      "arm": "deepwiki",
+      "claim": "ASGITransport's raise_app_exceptions defaults to True",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "docs/advanced/transports.md:127"
+      ],
+      "reason": "The transports docs say you must set `raise_app_exceptions=False` to inspect 500 responses rather than raise, implying the default is True.",
+      "jev_contradicted": 0.29
+    },
+    {
+      "id": "deepwiki:643",
+      "arm": "deepwiki",
+      "claim": "httpx.codes.get_reason_phrase(404) returns \"Not Found\"",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_status_codes.py:1-1"
+      ],
+      "reason": "`httpx/_status_codes.py`, which would define `get_reason_phrase`, is not shown.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:288",
+      "arm": "deepwiki",
+      "claim": "An AsyncIterable[bytes] content is wrapped in AsyncIteratorByteStream and sets Transfer-Encoding: chunked",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_content.py:129-131",
+        "httpx/_content.py:67-75"
+      ],
+      "reason": "`encode_content` returns `{'Transfer-Encoding': 'chunked'}` headers with an `AsyncIteratorByteStream` for AsyncIterable content.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:62",
+      "arm": "deepwiki",
+      "claim": "The _transport_for_url() method iterates through mount patterns from most specific to least specific",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:716-716",
+        "httpx/_client.py:760-769",
+        "docs/advanced/transports.md:338"
+      ],
+      "reason": "The mounts dict is sorted and iterated in `_transport_for_url`, with documented matching order from most specific to least specific URL pattern.",
+      "jev_contradicted": 0.36
+    },
+    {
+      "id": "deepwiki:577",
+      "arm": "deepwiki",
+      "claim": "The CLI detects a pygments lexer via get_lexer_for_response() by inspecting the Content-Type header",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_main.py:1-1"
+      ],
+      "reason": "The CLI module is not shown, so the lexer-detection helper cannot be verified.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:27",
+      "arm": "story",
+      "claim": "`Client.request` emits a `DeprecationWarning` when per-request `cookies=` are passed",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:804-810"
+      ],
+      "reason": "`Client.request` warns with `DeprecationWarning` when `cookies is not None`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:97",
+      "arm": "story",
+      "claim": "`BaseClient._build_request_auth` falls back to `BasicAuth(username, password)` when the request URL has a username or password, and otherwise returns `Auth()`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:457-473"
+      ],
+      "reason": "The method returns `BasicAuth(username, password)` if URL credentials exist, otherwise `Auth()`.",
+      "jev_contradicted": 0.21
+    },
+    {
+      "id": "deepwiki:505",
+      "arm": "deepwiki",
+      "claim": "MockTransport raises TypeError if an async handler is provided to a sync client",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_transports/mock.py:1-1"
+      ],
+      "reason": "`httpx/_transports/mock.py` is not shown, so the exception type for an async handler used synchronously cannot be checked.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:112",
+      "arm": "story",
+      "claim": "`Client._send_single_request` begins by selecting a transport via `_transport_for_url`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:1001-1006"
+      ],
+      "reason": "The first statement is `transport = self._transport_for_url(request.url)`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:2",
+      "arm": "deepwiki",
+      "claim": "HTTPX supports HTTP/1.1 and HTTP/2",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "README.md:16",
+        "docs/index.md:24"
+      ],
+      "reason": "The README and index state HTTPX has support for both HTTP/1.1 and HTTP/2.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "deepwiki:478",
+      "arm": "deepwiki",
+      "claim": "ASGITransport maps the request method to scope[\"method\"] while WSGITransport maps it to environ[\"REQUEST_METHOD\"]",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_transports/asgi.py:1-1",
+        "httpx/_transports/wsgi.py:1-1"
+      ],
+      "reason": "Neither the ASGI nor WSGI transport source is shown, so the scope/environ key mapping cannot be verified.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:80",
+      "arm": "story",
+      "claim": "In `encode_request`, passing `data` as bytes routes to `encode_content` and emits a `DeprecationWarning`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_content.py:197-207"
+      ],
+      "reason": "Non-Mapping `data` (e.g. bytes) triggers a DeprecationWarning and `return encode_content(data)`.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:201",
+      "arm": "story",
+      "claim": "`Response.__repr__` returns `f\"<Response [{self.status_code} {self.reason_phrase}]>\"`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_client.py:29-29"
+      ],
+      "reason": "`Response.__repr__` is defined in httpx/_models.py, which is not shown.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:131",
+      "arm": "story",
+      "claim": "`WSGITransport.handle_request` declares three `nonlocal` variables and defines a `start_response` closure capturing them",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_transports/__init__.py:5-5"
+      ],
+      "reason": "httpx/_transports/wsgi.py is not shown.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "deepwiki:205",
+      "arm": "deepwiki",
+      "claim": "Client initialization handles proxy configurations via _get_environment_proxies if trust_env is enabled",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "contradicted",
+      "lines": [
+        "httpx/_client.py:49",
+        "httpx/_client.py:239-248"
+      ],
+      "reason": "The helper is named `get_environment_proxies` (no leading underscore) in `_utils`, not `_get_environment_proxies` as claimed.",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "deepwiki:602",
+      "arm": "deepwiki",
+      "claim": "UnsupportedProtocol inherits from TransportError",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "docs/exceptions.md:11-26"
+      ],
+      "reason": "The documented exception hierarchy nests `UnsupportedProtocol` under `TransportError`.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:49",
+      "arm": "story",
+      "claim": "In `urlparse`, a `raw_path` keyword is split at the first `?` into `kwargs[\"path\"]` and `kwargs[\"query\"]`, with `query` set to `None` when there is no `?`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_client.py:48-48"
+      ],
+      "reason": "httpx/_urlparse.py is not shown.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:668",
+      "arm": "deepwiki",
+      "claim": "The TestServer class extends uvicorn.Server",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "tests/conftest.py:1-1"
+      ],
+      "reason": "`tests/conftest.py`, where a TestServer class would be defined, is not shown.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:93",
+      "arm": "story",
+      "claim": "`Client.send` resolves a `UseClientDefault` `follow_redirects` argument to the client's configured value",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:904-908"
+      ],
+      "reason": "`send` replaces a `UseClientDefault` follow_redirects with `self.follow_redirects`.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:140",
+      "arm": "deepwiki",
+      "claim": "The gzip content encoding maps to GZipDecoder",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_decoders.py:381-387"
+      ],
+      "reason": "SUPPORTED_DECODERS maps the key \"gzip\" to `GZipDecoder`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:4",
+      "arm": "deepwiki",
+      "claim": "httpx.AsyncClient is the class for asynchronous operations",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:1307-1313",
+        "httpx/__init__.py:36"
+      ],
+      "reason": "`AsyncClient` is defined as the asynchronous HTTP client and exported from the package.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:548",
+      "arm": "deepwiki",
+      "claim": "AsyncHTTPTransport creates the SSL context in its __init__",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_transports/default.py:1-1"
+      ],
+      "reason": "The default transport implementation is not shown, so where the SSL context is created cannot be determined.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "deepwiki:624",
+      "arm": "deepwiki",
+      "claim": "Accessing .request on an exception not associated with a request raises RuntimeError",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_exceptions.py:1-1"
+      ],
+      "reason": "`httpx/_exceptions.py` is not shown, so the behaviour of accessing `.request` on an unassociated exception cannot be checked.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:463",
+      "arm": "deepwiki",
+      "claim": "httpx Headers are converted to a raw header list for httpcore",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_transports/default.py:1-1"
+      ],
+      "reason": "The conversion of httpx Headers into httpcore's raw header list happens in the default transport, which is not shown.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:33",
+      "arm": "story",
+      "claim": "`httpx.InvalidURL` is not a subclass of `httpx.HTTPError`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "docs/exceptions.md:9-36"
+      ],
+      "reason": "The documented exception hierarchy lists `InvalidURL` at the top level, outside of the `HTTPError` subtree.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:399",
+      "arm": "deepwiki",
+      "claim": "Using params={\"a\": \"b c\"} results in a=b+c",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "contradicted",
+      "lines": [
+        "CHANGELOG.md:153"
+      ],
+      "reason": "The changelog records that query parameter encoding switched from using '+' for spaces to '%20', so params={'a': 'b c'} encodes as a=b%20c, not a=b+c.",
+      "jev_contradicted": 0.81
+    },
+    {
+      "id": "story:117",
+      "arm": "story",
+      "claim": "`Client._send_single_request` wraps the transport call in `request_context(request=request)`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:1013-1014"
+      ],
+      "reason": "The transport call is wrapped in `with request_context(request=request):`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:576",
+      "arm": "deepwiki",
+      "claim": "The CLI method defaults to GET but switches to POST if content, data, files, or json are provided",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_main.py:1-506"
+      ],
+      "reason": "The CLI implementation in httpx/_main.py is not shown, so the method-defaulting behaviour cannot be checked.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:70",
+      "arm": "story",
+      "claim": "If the caller supplies `extensions` containing a `\"timeout\"` key, the client-level timeout is not applied",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:370-377",
+        "httpx/_client.py:584-591"
+      ],
+      "reason": "Both `build_request` and `_set_timeout` only inject the client timeout when `\"timeout\" not in extensions`.",
+      "jev_contradicted": 0.21
+    },
+    {
+      "id": "story:40",
+      "arm": "story",
+      "claim": "`BaseClient._merge_url` branches on `if merge_url.is_relative_url`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:397-397"
+      ],
+      "reason": "The method branches on `if merge_url.is_relative_url:`.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:167",
+      "arm": "story",
+      "claim": "`Client._send_handling_redirects` returns the response when `not response.has_redirect_location`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:985-986"
+      ],
+      "reason": "`_send_handling_redirects` returns the response if `not response.has_redirect_location`.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "story:206",
+      "arm": "story",
+      "claim": "`Headers.__getitem__` lowercases the key, encodes it with `self.encoding`, joins matching values with `\", \"`, and raises `KeyError` if none are found",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_client.py:29-29"
+      ],
+      "reason": "`Headers.__getitem__` is defined in httpx/_models.py, which is not shown.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:207",
+      "arm": "story",
+      "claim": "`Headers.get_list()` returns duplicate header values separately",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "`Headers.get_list()` is defined in httpx/_models.py, which is not shown in the provided repository excerpt.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:229",
+      "arm": "deepwiki",
+      "claim": "Calling Client.close() iterates through all mounts and the base transport to shut them down",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:1263-1273"
+      ],
+      "reason": "Client.close() closes self._transport and then iterates self._mounts.values() closing each non-None transport.",
+      "jev_contradicted": 0.14
+    },
+    {
+      "id": "deepwiki:252",
+      "arm": "deepwiki",
+      "claim": "Query parameters are merged by combining both client and request parameters",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:433-443"
+      ],
+      "reason": "_merge_queryparams creates QueryParams(self.params) and merges the request-level params into it.",
+      "jev_contradicted": 0.3
+    },
+    {
+      "id": "story:138",
+      "arm": "story",
+      "claim": "`WSGITransport.handle_request` computes `status_code = int(seen_status.split()[0])`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "httpx/_transports/wsgi.py is not among the shown files, so the status-code parsing cannot be checked.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:308",
+      "arm": "deepwiki",
+      "claim": "content provided as an Iterator sets Transfer-Encoding: chunked and uses IteratorByteStream",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_content.py:116-127",
+        "httpx/_content.py:42-64"
+      ],
+      "reason": "encode_content wraps a non-dict Iterable in IteratorByteStream and sets Transfer-Encoding: chunked when no length can be peeked (as for a plain iterator).",
+      "jev_contradicted": 0.52
+    },
+    {
+      "id": "deepwiki:65",
+      "arm": "deepwiki",
+      "claim": "The httpx Proxy class has url, auth, headers, and ssl_context properties",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_config.py:201-224",
+        "docs/api.md:172-176"
+      ],
+      "reason": "Proxy.__init__ assigns self.url, self.auth, self.headers and self.ssl_context, which the API docs also list.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:25",
+      "arm": "deepwiki",
+      "claim": "httpx depends on idna for internationalized domain name support",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:30-35",
+        "README.md:129"
+      ],
+      "reason": "idna is a hard dependency and is documented as providing internationalized domain name support.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:30",
+      "arm": "deepwiki",
+      "claim": "The httpx[cli] extra depends on pygments version 2.x",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:43-47"
+      ],
+      "reason": "The cli extra pins \"pygments==2.*\".",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "story:71",
+      "arm": "story",
+      "claim": "`Request.__init__` uppercases the HTTP method",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "`Request.__init__` lives in httpx/_models.py, which is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "story:120",
+      "arm": "story",
+      "claim": "`WSGITransport.handle_request` begins with `request.read()` and `wsgi_input = io.BytesIO(request.content)`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "The WSGI transport source (httpx/_transports/wsgi.py) is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:722",
+      "arm": "deepwiki",
+      "claim": "map_httpcore_exceptions uses a global HTTPCORE_EXC_MAP dictionary",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_transports/default.py:1-406"
+      ],
+      "reason": "The default transport module containing map_httpcore_exceptions is not shown.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:713",
+      "arm": "deepwiki",
+      "claim": "ClientState.OPENED means the client is active within a with block or after the first request",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:130-132"
+      ],
+      "reason": "The ClientState.OPENED comment states the client has either sent a request or is within a `with` block.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:217",
+      "arm": "story",
+      "claim": "`Response.text` never raises on malformed bytes; invalid sequences become U+FFFD replacement characters",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_decoders.py:306-318"
+      ],
+      "reason": "Only the incremental TextDecoder (errors=\"replace\") is visible; `Response.text` itself is in the unshown httpx/_models.py.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "story:67",
+      "arm": "story",
+      "claim": "In `build_request`, when `extensions` is `None` it starts as an empty dict",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:370-370"
+      ],
+      "reason": "`build_request` contains `extensions = {} if extensions is None else extensions`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:27",
+      "arm": "deepwiki",
+      "claim": "The httpx[http2] extra enables HTTP/2 support through the h2 package, versions 3 to 5",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:48-50"
+      ],
+      "reason": "The http2 extra requires \"h2>=3,<5\".",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "story:64",
+      "arm": "story",
+      "claim": "`BaseClient._merge_cookies` only builds a merged jar `if cookies or self.cookies`, otherwise returning the `cookies` argument unchanged",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:413-422"
+      ],
+      "reason": "`_merge_cookies` builds a merged `Cookies` only when `cookies or self.cookies`, otherwise returns the `cookies` argument.",
+      "jev_contradicted": 0.25
+    },
+    {
+      "id": "story:16",
+      "arm": "story",
+      "claim": "In `Client.__init__`, `allow_env_proxies = trust_env and transport is None`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:685-685"
+      ],
+      "reason": "`Client.__init__` sets `allow_env_proxies = trust_env and transport is None` exactly as claimed.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:709",
+      "arm": "deepwiki",
+      "claim": "docs/api.md documents httpx.AsyncClient with the same members as Client plus aclose",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "contradicted",
+      "lines": [
+        "docs/api.md:40-48"
+      ],
+      "reason": "The AsyncClient member list replaces `close` with `aclose`; it is not the Client list plus aclose.",
+      "jev_contradicted": 0.36
+    },
+    {
+      "id": "deepwiki:400",
+      "arm": "deepwiki",
+      "claim": "QueryParams indexing or get() returns the first value associated with a key",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_urls.py:1-641"
+      ],
+      "reason": "QueryParams' __getitem__/get implementation lives in httpx/_urls.py, which is not shown.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:139",
+      "arm": "story",
+      "claim": "`WSGITransport.handle_request` encodes each response header key and value with ASCII",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "httpx/_transports/wsgi.py is not shown, so header encoding behaviour cannot be verified.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "story:26",
+      "arm": "story",
+      "claim": "`Client.get` forwards its arguments by calling `self.request(\"GET\", url, ...)`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:1053-1063"
+      ],
+      "reason": "`Client.get` returns `self.request(\"GET\", url, ...)` forwarding its parameters.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:100",
+      "arm": "story",
+      "claim": "`Auth.sync_auth_flow` begins with `if self.requires_request_body: request.read()`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_auth.py:71-75"
+      ],
+      "reason": "`sync_auth_flow` starts with `if self.requires_request_body: request.read()`.",
+      "jev_contradicted": 0.26
+    },
+    {
+      "id": "story:25",
+      "arm": "story",
+      "claim": "`Client.__enter__` returns the client itself",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:1275-1291"
+      ],
+      "reason": "`Client.__enter__` ends with `return self`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:487",
+      "arm": "deepwiki",
+      "claim": "Authentication credentials in the proxy URL are extracted during Proxy initialization",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_config.py:216-219"
+      ],
+      "reason": "Proxy.__init__ pulls username/password out of the URL into `auth` and strips them from the URL.",
+      "jev_contradicted": 0.27
+    },
+    {
+      "id": "story:195",
+      "arm": "story",
+      "claim": "`BoundSyncStream.__iter__` forwards chunks from the wrapped stream",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:152-154"
+      ],
+      "reason": "`BoundSyncStream.__iter__` yields each chunk from `self._stream`.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:679",
+      "arm": "deepwiki",
+      "claim": "The /redirect_301 test endpoint returns a 301 Moved Permanently to /",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "tests/conftest.py:1-287"
+      ],
+      "reason": "The test server defining /redirect_301 is in tests/conftest.py, which is not shown.",
+      "jev_contradicted": 0.05
+    },
+    {
+      "id": "deepwiki:246",
+      "arm": "deepwiki",
+      "claim": "The transport initialization determines HTTP/1.1 or HTTP/2 based on the http1 and http2 arguments",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:718-738",
+        "httpx/_client.py:1432-1452"
+      ],
+      "reason": "_init_transport forwards the http1 and http2 flags to the HTTPTransport/AsyncHTTPTransport used for sending requests.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "deepwiki:216",
+      "arm": "deepwiki",
+      "claim": "Client.get() sends a GET request",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:1036-1063"
+      ],
+      "reason": "Client.get() delegates to self.request(\"GET\", url, ...).",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:129",
+      "arm": "story",
+      "claim": "`WSGITransport.handle_request` converts each raw header name to uppercase with hyphens replaced by underscores and prefixes it with `HTTP_` unless it is `CONTENT_TYPE` or `CONTENT_LENGTH`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "The WSGI environ construction is in httpx/_transports/wsgi.py, which is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:278",
+      "arm": "deepwiki",
+      "claim": "max_redirects defaults to 20",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_config.py:248",
+        "httpx/_client.py:198"
+      ],
+      "reason": "DEFAULT_MAX_REDIRECTS is 20 and is used as the default for max_redirects.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:110",
+      "arm": "story",
+      "claim": "`Client._send_handling_redirects` runs the request event hooks before calling the transport",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:976-979"
+      ],
+      "reason": "Request event hooks are invoked in the loop immediately before `self._send_single_request(request)`.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "story:182",
+      "arm": "story",
+      "claim": "`Response.iter_bytes` returns `_content` if present, otherwise enters the decoding path",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "`Response.iter_bytes` is implemented in httpx/_models.py, which is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "story:118",
+      "arm": "story",
+      "claim": "`request_context` catches `httpx.RequestError` raised in its block, sets `.request` on it and re-raises it",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_client.py:1013-1014"
+      ],
+      "reason": "`request_context` is only imported here; its definition in httpx/_exceptions.py is not shown.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "story:72",
+      "arm": "story",
+      "claim": "`Request.__init__` re-wraps the URL with a `copy_with()` call",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "`Request.__init__` is in the unshown httpx/_models.py, so URL handling cannot be checked.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "story:136",
+      "arm": "story",
+      "claim": "`WSGITransport.handle_request` re-raises `seen_exc_info[1]` when `seen_exc_info` and `seen_exc_info[0]` are set and `self.raise_app_exceptions` is true",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "The exception re-raising logic lives in httpx/_transports/wsgi.py, which is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:192",
+      "arm": "deepwiki",
+      "claim": "In _merge_headers, request headers take precedence over client headers",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_client.py:424-431"
+      ],
+      "reason": "_merge_headers starts from client headers and calls update(headers) with the request headers, so request values win.",
+      "jev_contradicted": 0.31
+    },
+    {
+      "id": "story:200",
+      "arm": "story",
+      "claim": "Reading `response.elapsed` before the stream is closed raises `RuntimeError`",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/httpx",
+      "label": "unverifiable",
+      "lines": [
+        "httpx/_client.py:156-159"
+      ],
+      "reason": "Only the setting of `elapsed` on stream close is visible; the `elapsed` property's error behaviour is in the unshown httpx/_models.py.",
+      "jev_contradicted": 0.66
+    },
+    {
+      "id": "deepwiki:107",
+      "arm": "deepwiki",
+      "claim": "The content parameter allows sending raw bytes, strings encoded as UTF-8, or iterables for streaming uploads",
+      "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/httpx",
+      "label": "supported",
+      "lines": [
+        "httpx/_content.py:107-133",
+        "httpx/_content.py:209-210"
+      ],
+      "reason": "encode_content accepts bytes, str (encoded as utf-8), and (async) iterables of bytes for streaming.",
+      "jev_contradicted": 0.12
+    }
+  ],
+  "cost": 1.57
+}

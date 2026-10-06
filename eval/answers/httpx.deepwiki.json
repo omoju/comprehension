@@ -1,0 +1,67 @@
+{
+  "repo": "httpx",
+  "arm": "deepwiki",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "The documentation states only that the `base_url` setter \"Ensures trailing slash\" ([httpx/_client.py:206]), so `\"http://testserver\"` is stored as `URL(\"http://testserver/\")`. `build_request()` then runs `_merge_url()` ([httpx/_client.py:391-411]), which joins the relative request URL `\"/\"` onto that base, giving an outgoing request URL of `http://testserver/`. The exact join algorithm inside `_merge_url` is not reproduced in the documentation, but for a base with a trailing slash and the relative path `/` the result is the root URL of the base."
+    },
+    {
+      "id": "p2",
+      "answer": "The docs confirm which headers exist but not their precise ordering. httpx auto-adds `Host` in `Request._prepare()` when it is absent ([httpx/_models.py:441-461]), and the client contributes default headers \u2014 `User-Agent` (`python-httpx/<version>`) and `Accept-Encoding` (gzip, deflate, br, zstd) are documented explicitly ([httpx/_client.py:119-122]), with an overview table also listing `Accept` among the defaults; the request-level `X-Custom` is merged in on top of the client defaults. So the raw keys are Host plus the client defaults plus `X-Custom`, but the documentation does not settle their exact order (nor whether `Connection` is among the defaults). No `Content-Length` is present: `_prepare()` only adds `Content-Length: 0` for POST/PUT/PATCH when one isn't already set, and a GET with no body produces no length/encoding header."
+    },
+    {
+      "id": "p3",
+      "answer": "Documented mappings ([httpx/_transports/wsgi.py:104-116]): `REQUEST_METHOD` = \"GET\", `PATH_INFO` = \"/\", `QUERY_STRING` = \"\" (no query), `SERVER_NAME` = \"testserver\", `SERVER_PORT` from the URL port, `SCRIPT_NAME` = \"\" (the `script_name` default) and `REMOTE_ADDR` = \"127.0.0.1\" (the default) ([httpx/_transports/wsgi.py:79-83]). Request headers are exposed as `HTTP_*` keys, so `X-Custom: value` appears as `environ[\"HTTP_X_CUSTOM\"] == \"value\"`. The documentation does not state how a missing/default port is rendered into `SERVER_PORT` (httpx normalizes the default port 80 away for `http://`), and it does not document the `wsgi.url_scheme` value at all, so I can't confirm those two from the docs."
+    },
+    {
+      "id": "p4",
+      "answer": "Because no `timeout` was given, the parameter resolves through `USE_CLIENT_DEFAULT` to the client's `timeout` attribute, which defaults to `DEFAULT_TIMEOUT_CONFIG = Timeout(timeout=5.0)` ([httpx/_config.py:246], [httpx/_client.py:212]). The timeout configuration is handed to the transport via request extensions ([httpx/_transports/default.py:230-259]), i.e. a `timeout` entry built from `Timeout.as_dict()` ([httpx/_config.py:132-138]) with connect/read/write/pool all 5.0. The documentation does not enumerate any other keys that may be placed in `request.extensions`, and note that `WSGITransport` does no network I/O, so the timeout has no effect here."
+    },
+    {
+      "id": "p5",
+      "answer": "The documentation says `auth=None` means \"No authentication\" and that the client builds an `Auth` instance from the `auth` argument via `_build_auth` / `_build_request_auth` ([httpx/_client.py:208], [httpx/_auth.py:113-124]); it does not state the concrete object returned when there is no auth. Functionally the effect is documented: no credentials are applied, so the request goes out unchanged with no `Authorization` header (credentials would only appear if the URL contained userinfo, which it does not here)."
+    },
+    {
+      "id": "p6",
+      "answer": "`response.text` uses utf-8, because the encoding-detection order is: explicitly set `_encoding`, then the `charset` from the `Content-Type` header, then `default_encoding`, then a utf-8 fallback ([httpx/_models.py:85-91], [httpx/_models.py:816-841]). Since the server sent `charset=utf-8`, that wins. Passing `default_encoding=\"shift-jis\"` would not change the result \u2014 `default_encoding` is only consulted when the Content-Type charset is missing or invalid."
+    },
+    {
+      "id": "p7",
+      "answer": "It returns immediately because the 200 response is not a redirect (`is_redirect` / `has_redirect_location` is false), and in any case `follow_redirects` defaults to `False` ([httpx/_client.py:197]). With a `302 Found` + `Location: /other` and redirects still disabled, the client would hand you the 302 response itself, with `response.next_request` populated with the `Request` that would be sent next so you can send it manually ([httpx/_models.py:465-475]); `response.history` would be empty. Only with `follow_redirects=True` would `_send_handling_redirects` build and send the redirect request and return the final response with the 302 in `history`."
+    },
+    {
+      "id": "p8",
+      "answer": "The documentation only says `WSGIByteStream` wraps the iterable returned by the WSGI app and calls `.close()` on it if present ([httpx/_transports/wsgi.py:30-42]); it does not describe any special handling (skipping or peeking) of leading empty chunks, so I can't confirm that behaviour from the docs \u2014 empty chunks simply contribute nothing to the concatenated body. `response.elapsed` is set when the response stream is closed: `BoundSyncStream.close()` computes the elapsed time and assigns it to the response before closing the underlying stream ([httpx/_client.py:139-161], [httpx/_models.py:579-593]). For a non-streaming call the body is read and the response auto-closed, so `elapsed` is available by the time the response is returned."
+    },
+    {
+      "id": "g1",
+      "answer": "Clients track a `ClientState` enum with three values: `UNOPENED` (instantiated, unused), `OPENED` (entered the context manager or sent a request), and `CLOSED` (after `close()`/`aclose()` or context exit) ([httpx/_client.py:125-137]). `send()` performs a state check and raises `RuntimeError` if the client is `CLOSED`, i.e. further requests after closing are rejected ([httpx/_client.py:885-886]). The documentation does not quote the exact exception messages, nor does it describe what happens if you re-enter the context manager on an already-opened or closed client."
+    },
+    {
+      "id": "g2",
+      "answer": "Passing `cookies=...` to a per-request method such as `client.get(url, cookies=...)` is deprecated and emits a `DeprecationWarning`; the documented guidance is to set cookies on the client (`httpx.Client(cookies=...)`) or mutate `client.cookies` instead ([tests/client/test_cookies.py:34-47]). The documentation does not give the rationale behind the deprecation, so I can't state the design reasoning."
+    },
+    {
+      "id": "g3",
+      "answer": "Documented: the `Authorization` header is stripped when the redirect target is a different origin, where `_same_origin(url, other)` compares scheme, host and port \u2014 it is preserved only when all three match ([httpx/_client.py:83-91]). Also, for 303 (and for 301/302 when the method is switched to GET) the request body is removed ([httpx/_status_codes.py:44-52], [tests/client/test_redirects.py:310-334]); the docs say the body is dropped but do not name the specific headers (e.g. Content-Length/Content-Type) that are removed or how `Host` is rewritten. Cookies are mentioned generally as sensitive on cross-domain redirects but the docs only spell out the Authorization stripping rule."
+    },
+    {
+      "id": "g4",
+      "answer": "`raise_app_exceptions` (default `True`) controls what happens when the WSGI application signals an error through `start_response`'s `exc_info`: with `True` the exception is re-raised to the caller, with `False` it is suppressed ([httpx/_transports/wsgi.py:80], [httpx/_transports/wsgi.py:140-141]). The documentation does not describe other unusual-response failure modes for the WSGI transport (e.g. `start_response` never being called, or what status is produced when exceptions are suppressed); for contrast it does state that `ASGITransport` returns a 500 when `raise_app_exceptions=False` ([httpx/_transports/asgi.py:171-180])."
+    },
+    {
+      "id": "g5",
+      "answer": "Custom schemes subclass `httpx.Auth` and override `auth_flow(request)`, a generator that may modify the request, `yield request` to have it sent, receive the `Response` back from the yield, and optionally yield further requests; ending the generator returns the last response to the caller ([httpx/_auth.py:22-61]). If the scheme performs I/O or uses locks, override `sync_auth_flow()` and `async_auth_flow()` separately instead ([httpx/_auth.py:62-111]). Setting `requires_request_body = True` guarantees the request body has been read (`request.read()` / `await request.aread()`) before the flow starts, and `requires_response_body = True` guarantees the response body has been read before the response is sent into the generator, so `response.text`/`.content` are safe to access ([httpx/_auth.py:35-36], [httpx/_auth.py:71-80], [httpx/_auth.py:96-105])."
+    },
+    {
+      "id": "g6",
+      "answer": "The documentation does not cover malformed or unsupported digest challenges. It only documents that `DigestAuth` parses the 401 `WWW-Authenticate` challenge, caches it in `_last_challenge` with an incrementing `_nonce_count` (both reset on a subsequent 401), supports MD5/SHA/SHA-256/SHA-512 and their -SESS variants, and supports only `qop=\"auth\"` ([httpx/_auth.py:175-341]). What exception, if any, is raised for an unparsable or unsupported challenge is not stated."
+    },
+    {
+      "id": "g7",
+      "answer": "Environment proxies are read by `_get_environment_proxies()` during client initialization when `trust_env` is enabled (the default) ([httpx/_client.py:722-726], [httpx/_utils.py:30-76]). `HTTP_PROXY`/`HTTPS_PROXY`/`ALL_PROXY` are mapped to `http://`, `https://` and `all://` URL patterns, and `NO_PROXY` entries become bypass patterns (`*` disables all proxying; `example.com` \u2192 `all://*example.com`; `.example.com` \u2192 `all://*.example.com`) ([httpx/_utils.py:51-76]). Selection order is: an explicit `mounts` match, then an explicit `proxy=` argument, then environment proxies if `trust_env` is True, otherwise a direct connection ([tests/client/test_proxies.py:34-100]). The documentation does not state whether passing an explicit `transport=` (e.g. a `WSGITransport`) suppresses environment-proxy detection; in any case a WSGI/ASGI transport calls the application directly rather than over the network, so proxy settings have no effect on those requests."
+    }
+  ],
+  "cost": 1.23
+}

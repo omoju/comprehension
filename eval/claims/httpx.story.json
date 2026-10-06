@@ -1,0 +1,960 @@
+{
+  "repo": "httpx",
+  "arm": "story",
+  "words": 8108,
+  "extracted": 227,
+  "sample": [
+    2,
+    16,
+    21,
+    25,
+    26,
+    27,
+    30,
+    33,
+    40,
+    49,
+    64,
+    67,
+    70,
+    71,
+    72,
+    75,
+    80,
+    93,
+    94,
+    97,
+    100,
+    110,
+    112,
+    117,
+    118,
+    120,
+    129,
+    131,
+    136,
+    138,
+    139,
+    167,
+    180,
+    182,
+    195,
+    200,
+    201,
+    206,
+    207,
+    217
+  ],
+  "claims": [
+    {
+      "claim": "`httpx.WSGITransport.__init__` stores the app callable and sets defaults `raise_app_exceptions=True`, `script_name=\"\"`, `remote_addr=\"127.0.0.1\"`, `wsgi_errors=None`",
+      "quote": "it stores the callable and four defaults on itself and returns \u2014 `raise_app_exceptions=True`, `script_name=\"\"`, `remote_addr=\"127.0.0.1\"`, `wsgi_errors=None`"
+    },
+    {
+      "claim": "`WSGITransport` sends a request by calling `app(environ, start_response)`",
+      "quote": "is, from this object's point of view, calling `app(environ, start_response)`"
+    },
+    {
+      "claim": "`Client.__init__` delegates most of its work to `BaseClient.__init__`",
+      "quote": "The constructor hands almost all of its work to `BaseClient.__init__`"
+    },
+    {
+      "claim": "`normalize_port('', 'http')` returns `None`",
+      "quote": "port normalised (`normalize_port('', 'http')` \u2192 `None`)"
+    },
+    {
+      "claim": "`URL(\"http://testserver\")` parses to `ParseResult(scheme='http', userinfo='', host='testserver', port=None, path='', query=None, fragment=None)`",
+      "quote": "comes back as `ParseResult(scheme='http', userinfo='', host='testserver', port=None, path='', query=None, fragment=None)`"
+    },
+    {
+      "claim": "`BaseClient._enforce_trailing_slash` reads `url.raw_path`, and for an empty path it is `b'/'`, so the URL is returned untouched",
+      "quote": "`_enforce_trailing_slash` asks for `url.raw_path`, gets `b'/'` because an empty path reads as `/`, sees that it already ends in a slash, and returns the URL untouched"
+    },
+    {
+      "claim": "The headers setter in `BaseClient` builds four default headers and then layers the caller's headers on top",
+      "quote": "it first builds four defaults and then layers your headers on top"
+    },
+    {
+      "claim": "The four default client headers are `Accept: */*`, `Accept-Encoding: gzip, deflate`, `Connection: keep-alive`, `User-Agent: python-httpx/0.28.1`",
+      "quote": "Accept: */*\nAccept-Encoding: gzip, deflate\nConnection: keep-alive\nUser-Agent: python-httpx/0.28.1"
+    },
+    {
+      "claim": "The `Accept-Encoding` default header value is computed as `\", \".join(key for key in SUPPORTED_DECODERS if key != \"identity\")`",
+      "quote": "it is computed from the decoders actually installed, `\", \".join(key for key in SUPPORTED_DECODERS if key != \"identity\")`"
+    },
+    {
+      "claim": "With the optional `brotli` or `zstandard` packages installed, httpx also advertises `br` and `zstd` in `Accept-Encoding`",
+      "quote": "with the optional `brotli` or `zstandard` packages present it would also advertise `br` and `zstd`"
+    },
+    {
+      "claim": "In `BaseClient.__init__`, cookies become an empty `CookieJar` and params an empty `QueryParams`",
+      "quote": "Cookies become an empty `CookieJar`, params an empty `QueryParams`"
+    },
+    {
+      "claim": "The module-level `DEFAULT_TIMEOUT_CONFIG` in `httpx/_config.py` is `Timeout(timeout=5.0)`, i.e. five seconds for connect, read, write and pool",
+      "quote": "the module-level `DEFAULT_TIMEOUT_CONFIG` ([_config.py#L246]...), five seconds on each of connect, read, write and pool"
+    },
+    {
+      "claim": "`Client`'s `follow_redirects` parameter defaults to `False`",
+      "quote": "`follow_redirects` stays `False`"
+    },
+    {
+      "claim": "`Client`'s `max_redirects` defaults to 20",
+      "quote": "`max_redirects` is 20"
+    },
+    {
+      "claim": "`BaseClient.__init__` sets both event-hook lists (request and response) to empty lists",
+      "quote": "both event-hook lists are empty"
+    },
+    {
+      "claim": "`BaseClient.__init__` sets the client state to `ClientState.UNOPENED`",
+      "quote": "the state is set to `ClientState.UNOPENED`"
+    },
+    {
+      "claim": "In `Client.__init__`, `allow_env_proxies = trust_env and transport is None`",
+      "quote": "`allow_env_proxies = trust_env and transport is None`"
+    },
+    {
+      "claim": "`trust_env` defaults to `True` on `httpx.Client`",
+      "quote": "that is `False` even though `trust_env` is still `True`"
+    },
+    {
+      "claim": "`_get_proxy_map(proxy=None, allow_env_proxies=False)` skips the `get_environment_proxies()` branch and returns an empty dict",
+      "quote": "`_get_proxy_map(proxy=None, allow_env_proxies=False)` skips the `get_environment_proxies()` branch entirely and returns `{}`"
+    },
+    {
+      "claim": "`Client.__init__` builds `_mounts` from the proxy map and applies `dict(sorted(...))` to it",
+      "quote": "`_mounts` is built from that empty map, no `mounts=` argument arrives to extend it, and `dict(sorted(...))` sorts nothing"
+    },
+    {
+      "claim": "`Client._init_transport` begins with `if transport is not None: return transport`",
+      "quote": "Its first two lines are `if transport is not None: return transport`"
+    },
+    {
+      "claim": "When an explicit transport is supplied, the `verify`, `cert`, `http1`/`http2` and `limits` arguments are discarded and no `HTTPTransport`, SSL context or httpcore pool is constructed",
+      "quote": "so the `verify=True`, `cert`, `http1`/`http2` and `limits` arguments that were threaded all the way down are simply discarded, and no `HTTPTransport`, no SSL context and no `httpcore` pool is ever constructed"
+    },
+    {
+      "claim": "`Client.__enter__` raises `RuntimeError(\"Cannot open a client instance more than once.\")` if the client state is not `UNOPENED`",
+      "quote": "checks the state first and refuses anything other than `UNOPENED`, raising `RuntimeError(\"Cannot open a client instance more than once.\")`"
+    },
+    {
+      "claim": "`Client.__enter__` sets the state to `OPENED` and enters every transport",
+      "quote": "the state flips to `OPENED` and every transport is entered"
+    },
+    {
+      "claim": "`BaseTransport.__enter__` returns `self` and does nothing else",
+      "quote": "whose `BaseTransport.__enter__` returns itself and does nothing else"
+    },
+    {
+      "claim": "`Client.__enter__` returns the client itself",
+      "quote": "The client itself is returned to the caller."
+    },
+    {
+      "claim": "`Client.get` forwards its arguments by calling `self.request(\"GET\", url, ...)`",
+      "quote": "it packs its arguments and calls `self.request(\"GET\", url, ...)`"
+    },
+    {
+      "claim": "`Client.request` emits a `DeprecationWarning` when per-request `cookies=` are passed",
+      "quote": "it skips the `DeprecationWarning` that would otherwise fire"
+    },
+    {
+      "claim": "`Client.request` calls `build_request()`",
+      "quote": "Then it calls `build_request()`"
+    },
+    {
+      "claim": "The first statement of `Client.build_request` is `url = self._merge_url(url)`",
+      "quote": "the first thing `build_request` does is `url = self._merge_url(url)`"
+    },
+    {
+      "claim": "`BaseClient._merge_url` parses the given URL with `URL(url)`",
+      "quote": "It parses it as a URL in its own right: `URL('/')`"
+    },
+    {
+      "claim": "`MAX_URL_LENGTH` in `httpx/_urlparse.py` is 65536, and a longer URL raises `InvalidURL(\"URL too long\")`",
+      "quote": "A URL longer than `MAX_URL_LENGTH` (65536) raises `InvalidURL(\"URL too long\")`"
+    },
+    {
+      "claim": "`urlparse` raises `InvalidURL` naming the character and its position for any non-printable ASCII character such as tab, carriage return or newline in a URL",
+      "quote": "any ASCII character that is not printable \u2014 a tab, a carriage return, a newline \u2014 raises `InvalidURL` naming the character and its position"
+    },
+    {
+      "claim": "`httpx.InvalidURL` is not a subclass of `httpx.HTTPError`",
+      "quote": "this is an `InvalidURL`, which is not a subclass of `httpx.HTTPError`"
+    },
+    {
+      "claim": "`encode_host('')` returns `''` for an empty string",
+      "quote": "`encode_host('')` short-circuits on the empty string and returns `''`"
+    },
+    {
+      "claim": "`normalize_port('', '')` returns `None`",
+      "quote": "`normalize_port('', '')` returns `None`"
+    },
+    {
+      "claim": "`validate_path` with `has_scheme=False` and `has_authority=False` checks that the path does not begin with `//` and does not begin with `:`",
+      "quote": "takes the relative-URL branch and checks two things: that the path does not begin with `//`, which would be read as an authority, and that it does not begin with `:`, which would be read as a scheme"
+    },
+    {
+      "claim": "`normalize_path` is only called when the URL has a scheme or an authority",
+      "quote": "`normalize_path` is only called when there is a scheme or an authority"
+    },
+    {
+      "claim": "`quote('/', safe=PATH_SAFE)` leaves the slash unchanged because `/` is in `PATH_SAFE`",
+      "quote": "`quote('/', safe=PATH_SAFE)` leaves the slash alone, since `/` is in the path-safe set"
+    },
+    {
+      "claim": "`URL('/')` parses to `ParseResult(scheme='', userinfo='', host='', port=None, path='/', query=None, fragment=None)`",
+      "quote": "What comes back is `ParseResult(scheme='', userinfo='', host='', port=None, path='/', query=None, fragment=None)`"
+    },
+    {
+      "claim": "`BaseClient._merge_url` branches on `if merge_url.is_relative_url`",
+      "quote": "`_merge_url` now asks the question that matters: `if merge_url.is_relative_url`"
+    },
+    {
+      "claim": "`URL.is_relative_url` is the negation of `URL.is_absolute_url`, and `is_absolute_url` is `bool(scheme and host)`",
+      "quote": "That property is the negation of `is_absolute_url`, which is `bool(scheme and host)`"
+    },
+    {
+      "claim": "`BaseClient._merge_url` returns `merge_url` unchanged (ignoring `base_url`) when the given URL is absolute",
+      "quote": "the function would return at the last line \u2014 `return merge_url` ... \u2014 and `base_url` would be ignored entirely"
+    },
+    {
+      "claim": "`BaseClient._merge_url` merges via `merge_raw_path = self.base_url.raw_path + merge_url.raw_path.lstrip(b\"/\")` then `return self.base_url.copy_with(raw_path=merge_raw_path)`",
+      "quote": "merge_raw_path = self.base_url.raw_path + merge_url.raw_path.lstrip(b\"/\")\nreturn self.base_url.copy_with(raw_path=merge_raw_path)"
+    },
+    {
+      "claim": "Because the base URL always ends in `/` and leading slashes are stripped from the argument, `\"/path\"` and `\"path\"` produce the same merged URL",
+      "quote": "`\"/path\"` and `\"path\"` produce the same result"
+    },
+    {
+      "claim": "`URL.copy_with` routes through `URL(self, **kwargs)`",
+      "quote": "`copy_with(raw_path=b'/')` routes through `URL(self, raw_path=...)`"
+    },
+    {
+      "claim": "In `URL.__init__`, the `raw_path` keyword is declared as `bytes` and is decoded to a string",
+      "quote": "`raw_path` is declared as `bytes` \u2014 and is decoded to the string `'/'`"
+    },
+    {
+      "claim": "When the source passed to `URL.__init__` is a `URL` instance, it calls `ParseResult.copy_with`",
+      "quote": "Because the source is a `URL` rather than a string, it becomes `ParseResult.copy_with`"
+    },
+    {
+      "claim": "`ParseResult.copy_with` reassembles the components into a defaults dict including `authority`, overlays the new values, and re-runs `urlparse(\"\")` with them as keyword arguments",
+      "quote": "which reassembles the base's components into a defaults dict \u2014 including `authority`, computed as `'testserver'` \u2014 overlays the new `raw_path`, and re-runs `urlparse(\"\")` with all of them as keyword arguments"
+    },
+    {
+      "claim": "In `urlparse`, a `raw_path` keyword is split at the first `?` into `kwargs[\"path\"]` and `kwargs[\"query\"]`, with `query` set to `None` when there is no `?`",
+      "quote": "`raw_path` is split back apart at the first `?`: `kwargs[\"path\"] = '/'`, and since there was no separator, `kwargs[\"query\"] = None`"
+    },
+    {
+      "claim": "httpx represents a URL with no query as `query=None` and a URL ending in a bare `?` as an empty query string",
+      "quote": "it is how httpx distinguishes a URL with no query from one ending in a bare `?`"
+    },
+    {
+      "claim": "`encode_host('testserver')` lowercases and quotes the host, returning `'testserver'`",
+      "quote": "`encode_host('testserver')` lowercases and quotes it back to `'testserver'`"
+    },
+    {
+      "claim": "`validate_path` with `has_scheme=True` and `has_authority=True` requires the path to be empty or begin with `/`",
+      "quote": "now takes the *absolute* branch \u2014 the path must be empty or begin with `/`"
+    },
+    {
+      "claim": "`normalize_path` drops `.` and `..` segments",
+      "quote": "`normalize_path('/')` runs this time, dropping any `.` and `..` segments"
+    },
+    {
+      "claim": "Merging `base_url` with `\"../../etc\"` collapses the dot segments rather than sending them as-is",
+      "quote": "this is where `base_url + \"../../etc\"` would be collapsed rather than sent as-is"
+    },
+    {
+      "claim": "`_merge_url` returns `URL('http://testserver/')` with components scheme `'http'`, host `'testserver'`, port `None`, path `'/'`, query `None`, fragment `None`",
+      "quote": "The result is `ParseResult(scheme='http', userinfo='', host='testserver', port=None, path='/', query=None, fragment=None)`, wrapped as `URL('http://testserver/')`"
+    },
+    {
+      "claim": "httpx URL normalisation lowercases the scheme, drops default ports to `None`, collapses `.`/`..` segments, and encodes IDNA hostnames or rejects them with `InvalidURL`",
+      "quote": "scheme lowercased, default ports dropped to `None`, `.`/`..` segments collapsed, IDNA hostnames encoded or rejected with `InvalidURL`"
+    },
+    {
+      "claim": "`BaseClient._merge_headers` copies the client's headers into a new `Headers` instance and calls `.update()` with the caller's headers",
+      "quote": "`_merge_headers` copies the client's headers into a fresh `Headers` instance and then calls `.update()` with the caller's dict"
+    },
+    {
+      "claim": "`_merge_headers` does not mutate the client's own `Headers` object",
+      "quote": "the client's own `Headers` object is never mutated by a request"
+    },
+    {
+      "claim": "`Headers.update` builds a `Headers` from its argument and pops any existing entry with the same key before appending the new values",
+      "quote": "for every key in it that already exists on the target, it *pops* the existing entry before appending the new list"
+    },
+    {
+      "claim": "`Headers.keys()` yields lower-cased header names",
+      "quote": "`keys()` on the incoming headers yields `dict_keys(['x-custom'])` \u2014 already lower-cased"
+    },
+    {
+      "claim": "`Headers` stores every header as a triple of `(raw_key, lower_key, value)`",
+      "quote": "Every header is stored as a triple of `(raw_key, lower_key, value)`"
+    },
+    {
+      "claim": "`Headers` coerces string keys and values to bytes using ASCII unless an explicit encoding was given",
+      "quote": "Both the key and the value are coerced to bytes on the way in ... using ASCII unless an explicit encoding was given"
+    },
+    {
+      "claim": "A header value that is neither `str` nor `bytes` raises `TypeError` in `Headers`",
+      "quote": "A non-str, non-bytes value raises `TypeError` here"
+    },
+    {
+      "claim": "`BaseClient._merge_cookies` only builds a merged jar `if cookies or self.cookies`, otherwise returning the `cookies` argument unchanged",
+      "quote": "it only builds a merged jar `if cookies or self.cookies`"
+    },
+    {
+      "claim": "`Cookies.__bool__` returns `False` for an empty jar",
+      "quote": "`Cookies.__bool__` on the client's empty jar returns `False`"
+    },
+    {
+      "claim": "`BaseClient._merge_queryparams` returns the argument unchanged when both the client's params and the argument are falsy",
+      "quote": "`_merge_queryparams` is shaped the same way ... so it returns `None`"
+    },
+    {
+      "claim": "In `build_request`, when `extensions` is `None` it starts as an empty dict",
+      "quote": "`extensions` is `None`, so it starts as `{}`"
+    },
+    {
+      "claim": "In `build_request`, the client's timeout is only resolved into extensions if `\"timeout\"` is not already a key in extensions",
+      "quote": "`\"timeout\"` is not in it, so the client's timeout is resolved"
+    },
+    {
+      "claim": "`Timeout.as_dict()` flattens `Timeout(timeout=5.0)` to `{'connect': 5.0, 'read': 5.0, 'write': 5.0, 'pool': 5.0}`",
+      "quote": "`as_dict()` flattens it to `{'connect': 5.0, 'read': 5.0, 'write': 5.0, 'pool': 5.0}`"
+    },
+    {
+      "claim": "If the caller supplies `extensions` containing a `\"timeout\"` key, the client-level timeout is not applied",
+      "quote": "If the caller had supplied their own `extensions` containing a `\"timeout\"` key, the entire block is skipped and the client-level timeout never appears"
+    },
+    {
+      "claim": "`Request.__init__` uppercases the HTTP method",
+      "quote": "The constructor uppercases the method to `'GET'`"
+    },
+    {
+      "claim": "`Request.__init__` re-wraps the URL with a `copy_with()` call",
+      "quote": "re-wraps the URL (a `copy_with()` with no changes, returning the same components)"
+    },
+    {
+      "claim": "`Request.__init__` copies the headers into the request's own `Headers` object",
+      "quote": "copies the headers again into the request's own `Headers`"
+    },
+    {
+      "claim": "`Request.__init__` sets `self.extensions = dict(extensions)`, a copy",
+      "quote": "`self.extensions = dict(extensions)` is likewise a copy"
+    },
+    {
+      "claim": "`Request.__init__` skips the cookies branch when `cookies` is `None`",
+      "quote": "The `cookies` branch is skipped, since cookies is `None`"
+    },
+    {
+      "claim": "When `stream` is `None`, `Request.__init__` encodes the body",
+      "quote": "`stream` is `None`, so the body is encoded"
+    },
+    {
+      "claim": "`get_multipart_boundary_from_content_type(None)` returns `None`",
+      "quote": "`get_multipart_boundary_from_content_type(None)` returns `None`"
+    },
+    {
+      "claim": "The multipart boundary lookup exists so a caller-supplied multipart content-type keeps its own boundary",
+      "quote": "that lookup exists so that a caller who sets their own multipart content-type gets their boundary honoured rather than a fresh random one"
+    },
+    {
+      "claim": "`encode_request` checks `data`, `content`, `files`, `data`, `json` in that order and returns `({}, ByteStream(b\"\"))` when all are `None`",
+      "quote": "`encode_request` then walks its cascade \u2014 `data`, `content`, `files`, `data`, `json` \u2014 and reaches the bottom with all of them `None`, returning `({}, ByteStream(b\"\"))`"
+    },
+    {
+      "claim": "In `encode_request`, passing `data` as bytes routes to `encode_content` and emits a `DeprecationWarning`",
+      "quote": "Had the caller passed `data=b\"...\"`, the first branch would have rerouted it to `encode_content` with a `DeprecationWarning`"
+    },
+    {
+      "claim": "`Request._prepare` runs a `setdefault` loop over the default headers, including a branch that drops a `Transfer-Encoding` default when `Content-Length` was set explicitly",
+      "quote": "its `setdefault` loop does nothing \u2014 including the branch that drops a `Transfer-Encoding` default when `Content-Length` was set explicitly"
+    },
+    {
+      "claim": "`Request._prepare` checks for the presence of `Host`, `Content-Length` and `Transfer-Encoding` headers",
+      "quote": "Then three membership checks ... `Host`, `Content-Length`, `Transfer-Encoding`"
+    },
+    {
+      "claim": "`Request._prepare` auto-adds a `Host` header from `url.netloc` when absent",
+      "quote": "So `Host` is auto-added from `url.netloc` \u2014 `b'testserver'`"
+    },
+    {
+      "claim": "`Request._prepare` only adds `Content-Length: 0` for the methods `POST`, `PUT` and `PATCH`",
+      "quote": "`Content-Length: 0` is *not*, because that is only added for `POST`, `PUT` and `PATCH`"
+    },
+    {
+      "claim": "The final line of `Request._prepare` sets the header list to `auto_headers + self.headers.raw`",
+      "quote": "The final line rebuilds the header list as `auto_headers + self.headers.raw`"
+    },
+    {
+      "claim": "`Request._prepare` does not override a caller-supplied `Host` header",
+      "quote": "`Host` is derived from the URL only when the caller did not supply one"
+    },
+    {
+      "claim": "`Request.__init__` immediately calls `read()` when the stream is a `ByteStream`",
+      "quote": "because the stream is a `ByteStream`, the constructor reads it immediately"
+    },
+    {
+      "claim": "`Request.read()` joins the stream into `self._content`",
+      "quote": "`read()` joins the stream into `self._content = b''`"
+    },
+    {
+      "claim": "A generator or file-iterator request body is left lazy rather than buffered by `Request.__init__`",
+      "quote": "a generator or file-iterator body would have been left lazy, and would be unrepeatable"
+    },
+    {
+      "claim": "`Client.request` passes the built request to `Client.send`",
+      "quote": "`build_request` returns `<Request('GET', 'http://testserver/')>` to `request()`, which passes it straight to `send()`"
+    },
+    {
+      "claim": "`Client.send` raises `RuntimeError(\"Cannot send a request, as the client has been closed.\")` if `self._state == ClientState.CLOSED`",
+      "quote": "if `self._state == ClientState.CLOSED`, it raises `RuntimeError(\"Cannot send a request, as the client has been closed.\")`"
+    },
+    {
+      "claim": "`Client.send` unconditionally sets the client state to `OPENED` after the closed check",
+      "quote": "the next line sets `OPENED` again, unconditionally"
+    },
+    {
+      "claim": "`Client.send` resolves a `UseClientDefault` `follow_redirects` argument to the client's configured value",
+      "quote": "The argument is the `UseClientDefault` sentinel, so the client's value wins: `False`"
+    },
+    {
+      "claim": "`Client.send` calls `self._set_timeout(request)`",
+      "quote": "`_set_timeout(request)` runs next"
+    },
+    {
+      "claim": "`BaseClient._set_timeout` checks `if \"timeout\" not in request.extensions` and returns without change when the key is present",
+      "quote": "It checks `if \"timeout\" not in request.extensions` and, finding the key already there from chapter 3, returns immediately"
+    },
+    {
+      "claim": "`Client.send` calls `_build_request_auth(request, auth)` to resolve authentication",
+      "quote": "`_build_request_auth(request, USE_CLIENT_DEFAULT)` resolves authentication"
+    },
+    {
+      "claim": "`BaseClient._build_request_auth` falls back to `BasicAuth(username, password)` when the request URL has a username or password, and otherwise returns `Auth()`",
+      "quote": "if username or password:\n    return BasicAuth(username=username, password=password)\nreturn Auth()"
+    },
+    {
+      "claim": "`URL.username` and `URL.password` return `''` for a URL with no userinfo",
+      "quote": "The trace shows both property reads returning `''`"
+    },
+    {
+      "claim": "`Client._send_handling_auth` calls `auth.sync_auth_flow(request)` and `next()` on the resulting generator",
+      "quote": "It opens `auth.sync_auth_flow(request)` and calls `next()` on it to obtain the request to actually send."
+    },
+    {
+      "claim": "`Auth.sync_auth_flow` begins with `if self.requires_request_body: request.read()`",
+      "quote": "the first check is `if self.requires_request_body: request.read()`"
+    },
+    {
+      "claim": "The base `Auth` class sets `requires_request_body` to `False`",
+      "quote": "The base `Auth` sets that flag `False`"
+    },
+    {
+      "claim": "The base `Auth.auth_flow` yields the request unchanged",
+      "quote": "The flow then delegates to `auth_flow`, which yields the request untouched"
+    },
+    {
+      "claim": "`Client._send_handling_auth` pushes each response into the auth flow with `flow.send(response)` and returns the response when the generator raises `StopIteration`",
+      "quote": "Each response is pushed back into the flow with `flow.send(response)`; if the scheme wants another round trip it yields a new request, and if it is finished the generator raises `StopIteration` and the response is returned"
+    },
+    {
+      "claim": "In `_send_handling_auth`, before looping again the intermediate response is fully read into memory and appended to `history`",
+      "quote": "the intermediate response is fully read into memory and appended to `history`"
+    },
+    {
+      "claim": "`Client._send_handling_auth` calls `auth_flow.close()` in a `finally` block",
+      "quote": "`auth_flow.close()` runs in a `finally`"
+    },
+    {
+      "claim": "Retries through the auth loop and through redirects reuse `request.stream` directly",
+      "quote": "Retries through the auth loop and through redirects both reuse `request.stream` directly"
+    },
+    {
+      "claim": "`ByteStream` re-yields its buffered bytes on every iteration",
+      "quote": "a `ByteStream` re-yields its buffered bytes on every iteration"
+    },
+    {
+      "claim": "A generator request body raises `StreamConsumed` on a second send",
+      "quote": "A generator body would raise `StreamConsumed` on the second send"
+    },
+    {
+      "claim": "`Client._send_handling_redirects` raises `TooManyRedirects` when `len(history) > self.max_redirects`",
+      "quote": "`if len(history) > self.max_redirects: raise TooManyRedirects(...)`"
+    },
+    {
+      "claim": "`Client._send_handling_redirects` runs the request event hooks before calling the transport",
+      "quote": "Then the request event hooks run, before the transport is touched"
+    },
+    {
+      "claim": "`Client._send_handling_redirects` calls `_send_single_request(request)`",
+      "quote": "the loop body is skipped and `_send_single_request(request)` is called"
+    },
+    {
+      "claim": "`Client._send_single_request` begins by selecting a transport via `_transport_for_url`",
+      "quote": "`_send_single_request` opens with transport selection"
+    },
+    {
+      "claim": "`BaseClient._transport_for_url` iterates `self._mounts` testing each `URLPattern` against the URL and falls back to `self._transport`",
+      "quote": "`_transport_for_url` iterates `self._mounts`, testing each `URLPattern` against the URL, and falls through to `self._transport` if nothing matches"
+    },
+    {
+      "claim": "`Client._send_single_request` records `start = time.perf_counter()` before calling the transport",
+      "quote": "Next, `start = time.perf_counter()`"
+    },
+    {
+      "claim": "`Client._send_single_request` raises `RuntimeError(\"Attempted to send an async request with a sync Client instance.\")` if `request.stream` is not a `SyncByteStream`",
+      "quote": "`if not isinstance(request.stream, SyncByteStream): raise RuntimeError(\"Attempted to send an async request with a sync Client instance.\")`"
+    },
+    {
+      "claim": "`ByteStream` implements both the sync and async stream interfaces",
+      "quote": "`ByteStream` implements both interfaces, so it passes"
+    },
+    {
+      "claim": "`Client._send_single_request` wraps the transport call in `request_context(request=request)`",
+      "quote": "Finally the request enters `request_context(request=request)`"
+    },
+    {
+      "claim": "`request_context` catches `httpx.RequestError` raised in its block, sets `.request` on it and re-raises it",
+      "quote": "That context manager catches `httpx.RequestError` raised inside the block and stamps `.request` onto it before re-raising"
+    },
+    {
+      "claim": "`request_context` does not catch exceptions that are not `RequestError` subclasses",
+      "quote": "What it does *not* catch is anything that is not a `RequestError`"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` begins with `request.read()` and `wsgi_input = io.BytesIO(request.content)`",
+      "quote": "request.read()\nwsgi_input = io.BytesIO(request.content)"
+    },
+    {
+      "claim": "`Request.read()` returns the already-set `_content` without re-reading the stream",
+      "quote": "`request.read()` finds `_content` already set from chapter 3 and returns `b''` immediately"
+    },
+    {
+      "claim": "`WSGITransport` buffers the entire request body in memory before calling the application",
+      "quote": "This transport buffers the entire request body in memory before calling the application"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` computes the port as `request.url.port or {\"http\": 80, \"https\": 443}[request.url.scheme]`",
+      "quote": "port = request.url.port or {\"http\": 80, \"https\": 443}[request.url.scheme]"
+    },
+    {
+      "claim": "A URL scheme other than http or https raises `KeyError` in `WSGITransport.handle_request`'s port lookup",
+      "quote": "a URL with any other scheme \u2014 `ftp://`, or a custom one mounted onto this transport \u2014 would raise `KeyError` here rather than an `httpx` exception"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` sets `PATH_INFO` from `URL.path`",
+      "quote": "`URL.path \u2192 '/'` becomes `PATH_INFO`"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` sets `QUERY_STRING` from the decoded `URL.query`",
+      "quote": "`URL.query \u2192 b''` is decoded to `''` for `QUERY_STRING`"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` sets `SERVER_NAME` from `URL.host`",
+      "quote": "`URL.host \u2192 'testserver'` becomes `SERVER_NAME`"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` sets `REQUEST_METHOD` from the request method, `SCRIPT_NAME` from the transport's `script_name`, `REMOTE_ADDR` from the transport's `remote_addr`, and `SERVER_PROTOCOL` to the hardcoded `'HTTP/1.1'`",
+      "quote": "`REQUEST_METHOD` is `'GET'`, `SCRIPT_NAME` is `''` (the transport's default), `REMOTE_ADDR` is `'127.0.0.1'`, `SERVER_PROTOCOL` is the hardcoded string `'HTTP/1.1'`"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` converts each raw header name to uppercase with hyphens replaced by underscores and prefixes it with `HTTP_` unless it is `CONTENT_TYPE` or `CONTENT_LENGTH`",
+      "quote": "for header_key, header_value in request.headers.raw:\n    key = header_key.decode(\"ascii\").upper().replace(\"-\", \"_\")\n    if key not in (\"CONTENT_TYPE\", \"CONTENT_LENGTH\"):\n        key = \"HTTP_\" + key\n    environ[key] = header_value.decode(\"ascii\")"
+    },
+    {
+      "claim": "`Headers.raw` returns the header pairs with `Host` first for this request",
+      "quote": "`request.headers.raw` returns the six pairs built in chapter 3, `Host` first"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` declares three `nonlocal` variables and defines a `start_response` closure capturing them",
+      "quote": "Three `nonlocal` variables are declared and a `start_response` closure is defined to capture them"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` calls the application as `result = self.app(environ, start_response)`",
+      "quote": "result = self.app(environ, start_response)"
+    },
+    {
+      "claim": "The `start_response` closure in `WSGITransport` stores status, headers and exc_info into `seen_status`, `seen_response_headers` and `seen_exc_info` and returns a `lambda _: None`",
+      "quote": "The closure stores all three into `seen_status`, `seen_response_headers`, `seen_exc_info` and returns a throwaway `lambda _: None`"
+    },
+    {
+      "claim": "`WSGITransport` does not read `request.extensions['timeout']` and does not enforce timeouts",
+      "quote": "`WSGITransport` ignores the request's timeout extension entirely"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` asserts `seen_status is not None` and `seen_response_headers is not None` after calling the app",
+      "quote": "assert seen_status is not None\nassert seen_response_headers is not None"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` re-raises `seen_exc_info[1]` when `seen_exc_info` and `seen_exc_info[0]` are set and `self.raise_app_exceptions` is true",
+      "quote": "if seen_exc_info and seen_exc_info[0] and self.raise_app_exceptions:\n    raise seen_exc_info[1]"
+    },
+    {
+      "claim": "`WSGITransport.raise_app_exceptions` defaults to `True`",
+      "quote": "`raise_app_exceptions` defaults to `True`"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` computes `status_code = int(seen_status.split()[0])`",
+      "quote": "status_code = int(seen_status.split()[0])"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` encodes each response header key and value with ASCII",
+      "quote": "headers = [\n    (key.encode(\"ascii\"), value.encode(\"ascii\"))\n    for key, value in seen_response_headers\n]"
+    },
+    {
+      "claim": "A malformed WSGI status string raises `ValueError` and a non-ASCII header name or value raises `UnicodeEncodeError`, neither caught by `WSGITransport`",
+      "quote": "a malformed status string gives `ValueError`, a non-ASCII header name or value gives `UnicodeEncodeError`, and neither is caught"
+    },
+    {
+      "claim": "`WSGIByteStream.__init__` stores `getattr(result, \"close\", None)` as `_close`",
+      "quote": "`WSGIByteStream.__init__` squirrels away `getattr(result, \"close\", None)`"
+    },
+    {
+      "claim": "`WSGIByteStream.__init__` passes the application iterable through `_skip_leading_empty_chunks`",
+      "quote": "passes the iterable through `_skip_leading_empty_chunks`"
+    },
+    {
+      "claim": "`_skip_leading_empty_chunks` pulls items from the iterable until it finds a truthy one and chains it back onto the front",
+      "quote": "That helper pulls items until it finds a truthy one and chains it back on front"
+    },
+    {
+      "claim": "`WSGITransport.handle_request` ends with `return Response(status_code, headers=headers, stream=stream)`",
+      "quote": "return Response(status_code, headers=headers, stream=stream)"
+    },
+    {
+      "claim": "`Response.__init__` with a `stream=` argument assigns `self.stream = stream` and skips `_prepare`, auto content headers and an eager `read()`",
+      "quote": "`Response.__init__` takes the branch that assigns `self.stream = stream` and stops ... no `_prepare`, no auto-populated content headers, no eager `read()`"
+    },
+    {
+      "claim": "A `Response` built by `WSGITransport` has no `.request` attached, no `http_version` or `reason_phrase` extension, and an unread stream",
+      "quote": "The response that comes back has no `.request` attached, no `http_version` or `reason_phrase` extension, and an unread stream."
+    },
+    {
+      "claim": "`Client._send_single_request` asserts `isinstance(response.stream, SyncByteStream)` after the transport returns",
+      "quote": "assert isinstance(response.stream, SyncByteStream)"
+    },
+    {
+      "claim": "`WSGIByteStream` subclasses `SyncByteStream`",
+      "quote": "`WSGIByteStream` subclasses `SyncByteStream`"
+    },
+    {
+      "claim": "`Client._send_single_request` sets `response.request = request` and wraps the stream in `BoundSyncStream(response.stream, response=response, start=start)`",
+      "quote": "response.request = request\nresponse.stream = BoundSyncStream(\n    response.stream, response=response, start=start\n)"
+    },
+    {
+      "claim": "The `Response.request` setter assigns `self._request`",
+      "quote": "The trace shows the setter at `_models.py:606` assigning `_request`"
+    },
+    {
+      "claim": "`BoundSyncStream.close` computes `elapsed = time.perf_counter() - self._start`, assigns `self._response.elapsed = datetime.timedelta(seconds=elapsed)` and calls `self._stream.close()`",
+      "quote": "def close(self) -> None:\n    elapsed = time.perf_counter() - self._start\n    self._response.elapsed = datetime.timedelta(seconds=elapsed)\n    self._stream.close()"
+    },
+    {
+      "claim": "Accessing `Response.request` when `_request` is `None` raises `RuntimeError(\"The request instance has not been set on this response.\")`",
+      "quote": "would all raise `RuntimeError(\"The request instance has not been set on this response.\")`"
+    },
+    {
+      "claim": "`Client._send_single_request` calls `self.cookies.extract_cookies(response)`",
+      "quote": "self.cookies.extract_cookies(response)"
+    },
+    {
+      "claim": "`Cookies.extract_cookies` builds two compatibility shims and passes them to the stdlib `CookieJar`",
+      "quote": "`extract_cookies` builds two compatibility shims and hands them to the stdlib `CookieJar`"
+    },
+    {
+      "claim": "`_CookieCompatResponse` wraps the response",
+      "quote": "`_CookieCompatResponse` just wraps the response"
+    },
+    {
+      "claim": "`_CookieCompatRequest` subclasses `urllib.request.Request` and is constructed with `str(request.url)` and `dict(request.headers)`",
+      "quote": "it subclasses `urllib.request.Request`, which means `str(request.url)` is computed (`'http://testserver/'`) and `dict(request.headers)` is materialised"
+    },
+    {
+      "claim": "`_CookieCompatResponse.info()` converts the response headers into an `email.message.Message`",
+      "quote": "Then `info()` converts the response headers into an `email.message.Message` so the jar can read `Set-Cookie` from them"
+    },
+    {
+      "claim": "Extracted cookies are stored in the client's cookie jar, not on the response",
+      "quote": "cookies land in the **client's** jar, not the response's"
+    },
+    {
+      "claim": "`Client._send_single_request` sets `response.default_encoding = self._default_encoding`",
+      "quote": "response.default_encoding = self._default_encoding"
+    },
+    {
+      "claim": "The default value of `Client._default_encoding` is `'utf-8'`",
+      "quote": "The client's text-decoding policy \u2014 `'utf-8'` here"
+    },
+    {
+      "claim": "`Client._send_single_request` logs `'HTTP Request: %s %s \"%s %d %s\"'` with method, url, http_version, status_code and reason_phrase at INFO on the `logger`",
+      "quote": "logger.info(\n    'HTTP Request: %s %s \"%s %d %s\"',\n    request.method, request.url,\n    response.http_version, response.status_code, response.reason_phrase,\n)"
+    },
+    {
+      "claim": "`Response.http_version` reads `extensions[\"http_version\"]` and returns the literal `\"HTTP/1.1\"` on `KeyError`",
+      "quote": "`http_version` reads `extensions[\"http_version\"]` and, on `KeyError`, returns the literal `\"HTTP/1.1\"`"
+    },
+    {
+      "claim": "`Response.reason_phrase` reads `extensions[\"reason_phrase\"]` and falls back to `codes.get_reason_phrase(status_code)`",
+      "quote": "`reason_phrase` does the same and falls back to the status-code table, `codes.get_reason_phrase(200) \u2192 'OK'`"
+    },
+    {
+      "claim": "The httpx logger name is `\"httpx\"`",
+      "quote": "The client logs every request at INFO on the `\"httpx\"` logger"
+    },
+    {
+      "claim": "In `Client._send_handling_redirects`, the response is handled in a `try` block whose `except BaseException` closes the response and re-raises",
+      "quote": "the response enters a `try` block whose `except BaseException` closes it and re-raises"
+    },
+    {
+      "claim": "`Client._send_handling_redirects` sets `response.history = list(history)`",
+      "quote": "`response.history = list(history)` sets `[]`"
+    },
+    {
+      "claim": "`Client._send_handling_redirects` returns the response when `not response.has_redirect_location`",
+      "quote": "if not response.has_redirect_location:\n    return response"
+    },
+    {
+      "claim": "`Response.has_redirect_location` requires both a status code in {301, 302, 303, 307, 308} and a `Location` header",
+      "quote": "`has_redirect_location` wants two things at once: a status in `{301, 302, 303, 307, 308}` *and* a `Location` header"
+    },
+    {
+      "claim": "When `follow_redirects` is `False` and the response is a redirect, the client builds the follow-up request, assigns it to `response.next_request`, and returns the redirect response without raising",
+      "quote": "It would build the follow-up request, hang it on `response.next_request`, and return the 302 to the caller"
+    },
+    {
+      "claim": "`BaseClient._redirect_headers` pops `Authorization` on a cross-origin redirect, except for an http\u2192https upgrade of the same host",
+      "quote": "`Authorization` popped (except for a plain http\u2192https upgrade of the same host)"
+    },
+    {
+      "claim": "`BaseClient._redirect_headers` rewrites `Host` to the new netloc",
+      "quote": "`Host` rewritten to the new netloc"
+    },
+    {
+      "claim": "`BaseClient._redirect_headers` drops `Content-Length` and `Transfer-Encoding` when the method changes to GET",
+      "quote": "`Content-Length` and `Transfer-Encoding` dropped if the method flipped to GET"
+    },
+    {
+      "claim": "`BaseClient._redirect_headers` always drops the `Cookie` header",
+      "quote": "`Cookie` always dropped so the client jar is the single source of cookie truth"
+    },
+    {
+      "claim": "Custom headers such as `X-Custom` are not stripped on redirect and follow to the new origin",
+      "quote": "A custom header like `X-Custom` is **not** stripped \u2014 it follows the redirect to the new origin."
+    },
+    {
+      "claim": "`Auth.sync_auth_flow` suspends at `response = yield request`",
+      "quote": "`sync_auth_flow` is sitting at `response = yield request`"
+    },
+    {
+      "claim": "The base `Auth` class sets `requires_response_body` to `False`",
+      "quote": "`requires_response_body` is `False` on the base `Auth`"
+    },
+    {
+      "claim": "`Auth.sync_auth_flow` breaks out of its `while True` loop when the inner `auth_flow` generator is exhausted",
+      "quote": "and `break`s out of its `while True`"
+    },
+    {
+      "claim": "`Client.send` calls `response.read()` when `stream` is false, and closes the response and re-raises if any exception occurs",
+      "quote": "try:\n    if not stream:\n        response.read()\n    return response\nexcept BaseException as exc:\n    response.close()\n    raise exc"
+    },
+    {
+      "claim": "`Client.get` does not pass a `stream` argument, so `stream` is `False`",
+      "quote": "`stream` is `False` \u2014 `client.get()` never passes it"
+    },
+    {
+      "claim": "`Response.read` sets `self._content = b\"\".join(self.iter_bytes())` if `_content` is not already set, and returns `self._content`",
+      "quote": "def read(self) -> bytes:\n    if not hasattr(self, \"_content\"):\n        self._content = b\"\".join(self.iter_bytes())\n    return self._content"
+    },
+    {
+      "claim": "`Response.read()` buffers the entire decoded body in memory with no size limit",
+      "quote": "the whole body is accumulated into one `bytes` object with no size cap anywhere"
+    },
+    {
+      "claim": "`Response.iter_bytes` returns `_content` if present, otherwise enters the decoding path",
+      "quote": "`iter_bytes` checks for `_content` first; it is absent, so the decoding path opens"
+    },
+    {
+      "claim": "`Response._get_content_decoder` reads the `content-encoding` headers with `split_commas=True`",
+      "quote": "`_get_content_decoder` reads the response's `content-encoding` headers with `split_commas=True`"
+    },
+    {
+      "claim": "`Response._get_content_decoder` returns an `IdentityDecoder` when no content-encoding is present",
+      "quote": "no decoders are collected and the `else` branch produces an `IdentityDecoder`"
+    },
+    {
+      "claim": "`IdentityDecoder.decode` returns its argument unchanged",
+      "quote": "whose `decode` returns its argument untouched"
+    },
+    {
+      "claim": "An unrecognised content-encoding name is silently skipped in `_get_content_decoder` via `except KeyError: continue`",
+      "quote": "An encoding name that isn't in `SUPPORTED_DECODERS` is **silently skipped** (`except KeyError: continue`"
+    },
+    {
+      "claim": "Multiple valid content encodings produce a `MultiDecoder` which applies the decoders in reverse order",
+      "quote": "Several valid encodings compose into a `MultiDecoder`, which applies them in reverse order"
+    },
+    {
+      "claim": "A corrupt gzip or deflate body raises `DecodingError`",
+      "quote": "A corrupt gzip or deflate body raises `DecodingError`"
+    },
+    {
+      "claim": "`Response.iter_bytes` runs its decode loop inside `with request_context(request=self._request)`",
+      "quote": "the decode loop runs inside `with request_context(request=self._request)`"
+    },
+    {
+      "claim": "`httpx.DecodingError` is a subclass of `RequestError`",
+      "quote": "`DecodingError` is a `RequestError`"
+    },
+    {
+      "claim": "`Response.iter_bytes` constructs a `ByteChunker(chunk_size=chunk_size)`",
+      "quote": "Next a `ByteChunker(chunk_size=None)` is built"
+    },
+    {
+      "claim": "`ByteChunker.decode` with no chunk size returns `[content] if content else []`",
+      "quote": "With no chunk size it is a pass-through that drops empties: `return [content] if content else []`"
+    },
+    {
+      "claim": "`Response.iter_raw` raises `StreamConsumed()` if `is_stream_consumed`, `StreamClosed()` if `is_closed`, and `RuntimeError(\"Attempted to call a sync iterator on an async stream.\")` if the stream is not a `SyncByteStream`",
+      "quote": "if self.is_stream_consumed:\n    raise StreamConsumed()\nif self.is_closed:\n    raise StreamClosed()\nif not isinstance(self.stream, SyncByteStream):\n    raise RuntimeError(\"Attempted to call a sync iterator on an async stream.\")"
+    },
+    {
+      "claim": "`Response.iter_raw` sets `is_stream_consumed = True` and resets `_num_bytes_downloaded` to `0`",
+      "quote": "setting `is_stream_consumed = True` and resetting `_num_bytes_downloaded` to `0`"
+    },
+    {
+      "claim": "`BoundSyncStream.__iter__` forwards chunks from the wrapped stream",
+      "quote": "the `BoundSyncStream`, which simply forwards from the `WSGIByteStream`"
+    },
+    {
+      "claim": "`Response.iter_raw` increments `_num_bytes_downloaded` by the length of each raw, pre-decode chunk",
+      "quote": "`_num_bytes_downloaded` grows by `12` ... counted on the *raw*, pre-decode bytes"
+    },
+    {
+      "claim": "`Response.iter_raw` ends by yielding `chunker.flush()` chunks and then calling `self.close()`",
+      "quote": "for chunk in chunker.flush():\n    yield chunk\n\nself.close()"
+    },
+    {
+      "claim": "`Response.close` sets `is_closed = True` and calls `self.stream.close()` inside a `request_context`",
+      "quote": "Then `close()` sets `is_closed = True` and calls `self.stream.close()` inside another `request_context`"
+    },
+    {
+      "claim": "`WSGIByteStream.close` calls `self._close()` only if `self._close` is not `None`",
+      "quote": "def close(self):\n    if self._close is not None:\n        self._close()"
+    },
+    {
+      "claim": "Reading `response.elapsed` before the stream is closed raises `RuntimeError`",
+      "quote": "reading it earlier raises `RuntimeError`"
+    },
+    {
+      "claim": "`Response.__repr__` returns `f\"<Response [{self.status_code} {self.reason_phrase}]>\"`",
+      "quote": "return f\"<Response [{self.status_code} {self.reason_phrase}]>\""
+    },
+    {
+      "claim": "`codes.get_reason_phrase` looks the status code up in an enum and returns `'OK'` for 200",
+      "quote": "which looks `200` up in the enum and returns `'OK'`"
+    },
+    {
+      "claim": "`codes.get_reason_phrase` returns an empty string for an unknown status code rather than raising",
+      "quote": "For an unknown status code `get_reason_phrase` returns the empty string rather than raising."
+    },
+    {
+      "claim": "`URL.__str__` delegates to the `ParseResult`",
+      "quote": "`URL.__str__`, which delegates to the `ParseResult`"
+    },
+    {
+      "claim": "`URL.__repr__` masks the password in the userinfo as `[secure]` while `URL.__str__` emits it in full",
+      "quote": "`str(url)` renders userinfo credentials verbatim, while `repr(url)` masks the password as `[secure]`"
+    },
+    {
+      "claim": "`Headers.__getitem__` lowercases the key, encodes it with `self.encoding`, joins matching values with `\", \"`, and raises `KeyError` if none are found",
+      "quote": "if items:\n    return \", \".join(items)\nraise KeyError(key)"
+    },
+    {
+      "claim": "`Headers.get_list()` returns duplicate header values separately",
+      "quote": "if you need them separate, `get_list()` is the API"
+    },
+    {
+      "claim": "`Headers.get()` is the non-raising form of header lookup",
+      "quote": "`.get()` is the non-raising form"
+    },
+    {
+      "claim": "`Headers.encoding` tries `ascii` across all raw keys and values, then `utf-8`, then falls back to `iso-8859-1`",
+      "quote": "try `ascii` across all raw keys and values, then `utf-8`, then fall back to `iso-8859-1`"
+    },
+    {
+      "claim": "ISO-8859-1 is used as the final `Headers.encoding` fallback because it covers all 256 byte values and never raises decode errors",
+      "quote": "ISO-8859-1 covers all 256 byte values, so it \"will never raise decode errors.\""
+    },
+    {
+      "claim": "`Response.text` reads `self.content` and then resolves an encoding",
+      "quote": "It reads `self.content` \u2014 `b'Hello World!'`, available because chapter 7 buffered it \u2014 then asks for an encoding"
+    },
+    {
+      "claim": "`Response.encoding` first uses `charset_encoding`, then `default_encoding`, then `\"utf-8\"`",
+      "quote": "`Response.encoding` implements a three-step priority"
+    },
+    {
+      "claim": "`Response.charset_encoding` parses the charset out of Content-Type using `email.message.Message.get_content_charset`",
+      "quote": "parsed out of Content-Type by stuffing the header into an `email.message.Message` and calling `get_content_charset`"
+    },
+    {
+      "claim": "`_is_known_encoding` uses `codecs.lookup` to determine whether an encoding is recognised",
+      "quote": "`_is_known_encoding` says `codecs.lookup` doesn't recognise it"
+    },
+    {
+      "claim": "`Response.default_encoding` may be a callable, in which case it is a charset-autodetection function run over `_content`",
+      "quote": "or, if it were a callable, a charset-autodetection function run over `_content`"
+    },
+    {
+      "claim": "`TextDecoder.__init__` creates `codecs.getincrementaldecoder(encoding)(errors=\"replace\")`",
+      "quote": "self.decoder = codecs.getincrementaldecoder(encoding)(errors=\"replace\")"
+    },
+    {
+      "claim": "`Response.text` never raises on malformed bytes; invalid sequences become U+FFFD replacement characters",
+      "quote": "`.text` will never raise on malformed bytes; invalid sequences become U+FFFD"
+    },
+    {
+      "claim": "`Response.text` caches the decoded result in `self._text`",
+      "quote": "the joined result is cached in `_text`"
+    },
+    {
+      "claim": "The `Response.encoding` setter raises `ValueError` if `_text` already exists",
+      "quote": "`encoding`'s setter raises `ValueError` if `_text` already exists"
+    },
+    {
+      "claim": "`Client.__exit__` sets `self._state = ClientState.CLOSED`, calls `self._transport.__exit__(...)`, and then calls `__exit__` on each non-None transport in `self._mounts.values()`",
+      "quote": "self._state = ClientState.CLOSED\nself._transport.__exit__(exc_type, exc_value, traceback)\nfor transport in self._mounts.values():\n    if transport is not None:\n        transport.__exit__(exc_type, exc_value, traceback)"
+    },
+    {
+      "claim": "`Client.__exit__` sets the state to `CLOSED` before any cleanup and regardless of whether the block exited by exception",
+      "quote": "The state flips to `CLOSED` unconditionally \u2014 before any cleanup, and regardless of whether the block exited by exception."
+    },
+    {
+      "claim": "`BaseTransport.__exit__` calls `self.close()`",
+      "quote": "The transport's `__exit__` calls `close()`"
+    },
+    {
+      "claim": "`WSGITransport` does not override `close()`, so `BaseTransport.close` (a `pass`) is used",
+      "quote": "`WSGITransport` does not override it, so it lands on `BaseTransport.close`'s `pass`"
+    },
+    {
+      "claim": "With a real `HTTPTransport`, `Client.close()`/`__exit__` closes the connection pool",
+      "quote": "With a real `HTTPTransport`, this same exit is what closes the connection pool"
+    },
+    {
+      "claim": "After the client is closed, `response.text` and `response.content` still work if the body was buffered into `_content`",
+      "quote": "Because the body was buffered into `_content` during the read, `response.text` and `response.content` keep answering after the close"
+    },
+    {
+      "claim": "An unread streaming response held past the client's `with` block has its stream closed, and `iter_raw` then raises `StreamClosed`",
+      "quote": "the stream would be closed and `iter_raw` would raise `StreamClosed`"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 0.65
+}

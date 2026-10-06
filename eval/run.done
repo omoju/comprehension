@@ -1,0 +1,9 @@
+markupsafe exit=0
+rich exit=1
+httpx exit=0
+click exit=0
+requests exit=0
+flask exit=0
+jinja exit=0
+attrs exit=0
+tqdm exit=0

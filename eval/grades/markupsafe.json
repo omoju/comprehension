@@ -1,0 +1,178 @@
+{
+  "repo": "markupsafe",
+  "arms": {
+    "story": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly identifies the `type(s) is str` fast path, the `_escape_inner` call, and the exact resulting Markup string and type."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly names the `__html__` branch, idempotence, and the two `__html__()` invocations (escape plus `Markup.__new__`)."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly identifies the `__html_format__` branch and explains that the final `str(self.escape(rv))` leaves the Markup unescaped via `__html__`."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Matches the key: first branch via `Markup.__html_format__('')` returning self, and ValueError with the right message for a non-empty spec."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly describes both `__add__` steps, the escaping of the plain str operand (including `&`\u2192`&amp;`), and the exact final Markup value."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correct order (comments, tags, whitespace collapse, unescape), exact output string, and plain `str` return type."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly explains that only the substituted field is escaped (via the default branch plus the final escape) and gives the exact resulting Markup, noting the constructor never escapes literals."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly states `escape` uses `__html__` (never `__html_format__`) and gives the exact resulting Markup."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Captures the fast-path purpose, the proxy-`__class__` rationale for `type()` over `isinstance`, and the handling of str subclasses with and without `__html__`."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correctly covers `__html__` substitution, the encoding/errors branches, and the no-escaping trap, but explicitly declines to state the bytes-without-encoding result (`b'<b>hi'` repr text) that the key names as the trap."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correct on `Markup('None')` vs empty Markup for `escape_silent`, and on `soft_str` preserving an existing str/Markup."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly describes the try/except import selection, the fallback, and that the five-character escaping behaviour is identical (plus the refcount shortcut)."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Accurately describes the comment-then-tag-then-whitespace-then-unescape pipeline, plain str return, and the unterminated-marker break leaving text behind."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly lays out the three branches, the shared `str(self.escape(rv))` exit, and the ValueError for `__html__`-only classes with a non-empty spec, only omitting the verbatim message text."
+      }
+    ],
+    "deepwiki": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly identifies the `type(s) is str` fast path, the `_escape_inner` call, the exact escaped Markup string, and the Markup return type."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly identifies the `__html__` branch and that `__html__()` is invoked twice (once in `escape`, once in `Markup.__new__`), with no escaping occurring."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Matches the key: `__html_format__('link')` branch wins, and the Markup result passes unchanged through `str(self.escape(rv))`."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly names the `__html_format__` branch with empty spec returning self, and the ValueError with the exact message for `{comment:>40}`."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Accurately describes `Markup.__add__`, the escaping of the plain str operand (including `&`\u2192`&amp;`), the passthrough of the Markup operand, and the final value/type."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "The order of operations and the plain-`str` return type are correct, but the answer declines to give the exact returned string that the key requires."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Matches the key: only substituted field escaped via super().format_field then escape, giving the same resulting Markup with literal quotes untouched."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly states escape uses __html__ only and returns the same Markup span value, with __html_format__ used only by EscapeFormatter."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets the proxy-object motivation and the str-subclass/`__html__` fallthrough handling, but misses the primary fast-path performance rationale and slightly muddles the consequence (claiming a proxy could 'slip through unescaped' rather than that it is escaped via `str(s)`)."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correctly describes `__html__` handling and that the constructor never escapes, but explicitly fails to state the bytes-without-encoding trap (`Markup(b\"<b>hi\")` yielding `b'<b>hi'`) that the question asks about."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly contrasts `Markup('None')` vs empty `Markup()` for None and states soft_str's isinstance-based passthrough guarantee."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Describes the try/except import-time selection, the fallback conditions, and that the interface/behavior is identical with only performance differing, matching the key."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets the ordering (unescape after tag removal) and the unsafe plain-str return, but omits the key's unmatched `<!--`/`<` break case that leaves literal markup like `a<b` behind and substitutes an unrelated re-escaping point."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Describes the three-step dispatch and final `str(self.escape(rv))` correctly, and names the ValueError raised for `__html__`-only classes with a non-empty spec (only omitting the exact message text)."
+      }
+    ]
+  },
+  "cost": 0.19
+}

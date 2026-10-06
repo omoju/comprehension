@@ -1,0 +1,1059 @@
+{
+  "repo": "tqdm",
+  "items": [
+    {
+      "id": "story:145",
+      "arm": "story",
+      "claim": "In `tqdm.format_meter`, when `inv_rate` (1/rate) is less than 1 the non-inverted rate form is used, producing e.g. `'18.13it/s'`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:181-183"
+      ],
+      "reason": "The shown tests assert `format_meter(231, 1000, 392)` yields `1.70s/it` (inv_rate>1) while `format_meter(10000, 1000, 13)` yields `769.23it/s`, i.e. the non-inverted `it/s` form when 1/rate < 1.",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "story:157",
+      "arm": "story",
+      "claim": "`tqdm._comparable` returns the bar's screen position.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8"
+      ],
+      "reason": "`_comparable` is defined in tqdm/std.py, which is not shown, and the comparison tests in tests_tqdm.py do not reveal what value it returns.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:141",
+      "arm": "story",
+      "claim": "`tqdm.update` feeds the two EMA accumulators when `smoothing` is truthy and both `dt` and `dn` are non-zero.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8"
+      ],
+      "reason": "`tqdm.update`'s EMA feeding logic lives in tqdm/std.py, which is not included in the shown files.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:238",
+      "arm": "deepwiki",
+      "claim": "TqdmCallback supports arbitrary tqdm keyword arguments via functools.partial.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tests/tests_keras.py:33-39"
+      ],
+      "reason": "tqdm/keras.py is not shown, so the use of functools.partial to forward arbitrary tqdm kwargs cannot be confirmed from the given files.",
+      "jev_contradicted": 0.18
+    },
+    {
+      "id": "deepwiki:205",
+      "arm": "deepwiki",
+      "claim": "tqdm.keras provides a TqdmCallback class.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:697-698",
+        "tests/tests_keras.py:9"
+      ],
+      "reason": "The README documents `class tqdm.keras.TqdmCallback` and the test imports `tqdm.keras.TqdmCallback`.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "deepwiki:375",
+      "arm": "deepwiki",
+      "claim": "The PyPI package is built using make build with requirements from .meta/requirements-build.txt and uploaded via casperdcl/deploy-pypi@v3 with GPG signing.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        ".github/workflows/test.yml:79-88"
+      ],
+      "reason": "The deploy job installs `.meta/requirements-build.txt`, runs `make build ...`, and uses `casperdcl/deploy-pypi@v3` with a `gpg_key` input.",
+      "jev_contradicted": 0.18
+    },
+    {
+      "id": "story:176",
+      "arm": "story",
+      "claim": "`tqdm.__exit__` downgrades a late `AttributeError` to a `TqdmWarning` rather than raising.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8"
+      ],
+      "reason": "`tqdm.__exit__` is implemented in the unshown tqdm/std.py and no shown test exercises AttributeError during close.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "deepwiki:106",
+      "arm": "deepwiki",
+      "claim": "TMonitor uses a threading.Event named was_killed to manage shutdown.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_synchronisation.py:36-43",
+        "tests/tests_synchronisation.py:56-58",
+        "tests/tests_synchronisation.py:262-263"
+      ],
+      "reason": "The tests patch `TMonitor._test['Event']` with a `threading.Event` subclass and call `monitor.was_killed.set()`, showing TMonitor holds an Event named `was_killed`.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:36",
+      "arm": "deepwiki",
+      "claim": "tqdm maintains a WeakSet of all active instances in tqdm._instances.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tests/conftest.py:10-13",
+        "tests/tests_tqdm.py:778-780"
+      ],
+      "reason": "tqdm/std.py is not shown; tests only show that `tqdm._instances` is a set-like container, not that it is a WeakSet.",
+      "jev_contradicted": 0.31
+    },
+    {
+      "id": "deepwiki:133",
+      "arm": "deepwiki",
+      "claim": "In tqdm_notebook, pbar is the progress bar visual element implemented with ipywidgets.FloatProgress aliased as IProgress.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "README.rst:675-676"
+      ],
+      "reason": "tqdm/notebook.py is not shown, so the internal `pbar`/`IProgress` alias cannot be checked.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:306",
+      "arm": "deepwiki",
+      "claim": "tqdm.contrib.itertools combinations computes total as math.comb(n, r).",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tests/tests_itertools.py:60-74"
+      ],
+      "reason": "tqdm/contrib/itertools.py is not shown, so the use of math.comb for the total cannot be verified.",
+      "jev_contradicted": 0.26
+    },
+    {
+      "id": "deepwiki:401",
+      "arm": "deepwiki",
+      "claim": "make alltests runs pytest for the current environment.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "Makefile:36-40",
+        "Makefile:66-69"
+      ],
+      "reason": "`alltests` invokes `testcoverage` (and `testperf`), which run `pytest` locally in the current environment.",
+      "jev_contradicted": 0.7
+    },
+    {
+      "id": "story:70",
+      "arm": "story",
+      "claim": "`tqdm.__init__` assigns `last_print_t` and `start_t` only after the initial refresh returns.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8"
+      ],
+      "reason": "The ordering of `last_print_t`/`start_t` assignment relative to the initial refresh is in tqdm/std.py, which is not shown.",
+      "jev_contradicted": 0.07
+    },
+    {
+      "id": "deepwiki:368",
+      "arm": "deepwiki",
+      "claim": "Coveralls is configured with COVERALLS_PARALLEL: true and the finish job calls coveralls --finish.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        ".github/workflows/test.yml:39-40",
+        ".github/workflows/test.yml:55-58"
+      ],
+      "reason": "The test job sets `COVERALLS_PARALLEL: true` and the `finish` job runs `coveralls --finish`.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:151",
+      "arm": "deepwiki",
+      "claim": "For IPython 2.x, tqdm_notebook uses IPython.html.widgets with HTML, FloatProgressWidget and ContainerWidget.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "README.rst:675-676"
+      ],
+      "reason": "tqdm/notebook.py is not among the shown files, so IPython 2.x widget handling cannot be checked.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "story:133",
+      "arm": "story",
+      "claim": "`tqdm.set_description_str` stores the description string verbatim without appending `': '`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:1085-1092"
+      ],
+      "reason": "The test asserts `set_description_str('World')` leaves `t.desc == 'World'` whereas `set_description('Bye')` gives `'Bye: '`, i.e. the str variant stores the text verbatim.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:276",
+      "arm": "deepwiki",
+      "claim": "tqdm/contrib/slack.py defines aliases tqdm and trange for tqdm_slack.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "README.rst:711-712"
+      ],
+      "reason": "tqdm/contrib/slack.py is not shown, so the module-level `tqdm`/`trange` aliases cannot be confirmed.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:47",
+      "arm": "deepwiki",
+      "claim": "The tqdm parameter `total` defaults to None.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:372-373"
+      ],
+      "reason": "The documented signature shows `total=None` as the default.",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:57",
+      "arm": "story",
+      "claim": "In `tqdm.__init__`, `last_print_n` and `n` are both set from the `initial` argument.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8",
+        "tests/tests_tqdm.py:1532-1537"
+      ],
+      "reason": "Only the displayed `10/19` is observable; the assignment of both `n` and `last_print_n` from `initial` is in the unshown tqdm/std.py.",
+      "jev_contradicted": 0.21
+    },
+    {
+      "id": "deepwiki:414",
+      "arm": "deepwiki",
+      "claim": "The CI determines docker_tags and snap_channel based on the branch (master, devel, or a tag).",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        ".github/workflows/test.yml:89-101"
+      ],
+      "reason": "The `collect_assets` step sets docker_tags/snap_channel differently for tags, master and devel refs.",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "deepwiki:137",
+      "arm": "deepwiki",
+      "claim": "The auto-detection logic checks os.environ for QT_API and SPYDER.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "README.rst:678-679"
+      ],
+      "reason": "tqdm/auto.py and tqdm/autonotebook.py are not shown, so QT_API/SPYDER environment checks cannot be verified.",
+      "jev_contradicted": 0.27
+    },
+    {
+      "id": "deepwiki:268",
+      "arm": "deepwiki",
+      "claim": "DiscordIO uses API base https://discord.com/api/v10.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "README.rst:712-712"
+      ],
+      "reason": "tqdm/contrib/discord.py is not shown, so the API base URL cannot be checked.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "deepwiki:287",
+      "arm": "deepwiki",
+      "claim": "Telegram integration reads token from TQDM_TELEGRAM_TOKEN and chat id from TQDM_TELEGRAM_CHAT_ID.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "README.rst:713-713"
+      ],
+      "reason": "tqdm/contrib/telegram.py is not shown, so the environment variable names cannot be verified.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:3",
+      "arm": "story",
+      "claim": "The lock created by `get_lock` becomes class state for the rest of the process.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_rlock.py:28-37",
+        "tests/tests_tqdm.py:1396-1398"
+      ],
+      "reason": "The lock test shows a second bar reuses the already-created RLock (call_count stays 1) and another test deletes the class attribute `tqdm._lock`, confirming the lock is persistent class state.",
+      "jev_contradicted": 0.47
+    },
+    {
+      "id": "story:153",
+      "arm": "story",
+      "claim": "`Bar.__format__` at `frac=1.0` with 10 cells computes `divmod(80, 8) = (10, 0)` and appends no padding because `bar_length` is not less than `N_BARS`, producing ten solid blocks.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8",
+        "tests/tests_tqdm.py:299-305"
+      ],
+      "reason": "`Bar.__format__`'s internal divmod/padding logic is in the unshown tqdm/std.py; the shown spec test only covers fractional/ascii cases.",
+      "jev_contradicted": 0.24
+    },
+    {
+      "id": "deepwiki:274",
+      "arm": "deepwiki",
+      "claim": "tqdm/contrib/telegram.py defines aliases tqdm and trange for tqdm_telegram.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "README.rst:713-713"
+      ],
+      "reason": "tqdm/contrib/telegram.py is not shown, so the module-level aliases cannot be confirmed.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "story:136",
+      "arm": "story",
+      "claim": "A comment in `tqdm.__iter__` states that it does not call `self.update(1)` for speed optimisation.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8"
+      ],
+      "reason": "The comment inside `tqdm.__iter__` would be in tqdm/std.py, which is not shown.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "deepwiki:371",
+      "arm": "deepwiki",
+      "claim": "A CI check ensures the generated wheel size remains under 100kB.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        ".github/workflows/check.yml:23-29"
+      ],
+      "reason": "The check workflow has a 'wheel size < 100kB' step asserting the wheel byte size is under 102400.",
+      "jev_contradicted": 0.41
+    },
+    {
+      "id": "story:138",
+      "arm": "story",
+      "claim": "`tqdm.update` tolerates a negative `n` by decrementing `last_print_n` to match.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8",
+        "tests/tests_tqdm.py:759-770"
+      ],
+      "reason": "The test shows a negative `update(-1)` is accepted, but the internal `last_print_n` adjustment is only in the unshown tqdm/std.py.",
+      "jev_contradicted": 0.22
+    },
+    {
+      "id": "story:38",
+      "arm": "story",
+      "claim": "In `tqdm.__init__`, an explicit `total=float(\"inf\")` is normalised to `None`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8",
+        "tests/tests_tqdm.py:955-963"
+      ],
+      "reason": "Only `reset(total=float('inf'))` setting `total` to None is asserted (plus a comment); the `__init__` normalisation is in the unshown tqdm/std.py.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "story:118",
+      "arm": "story",
+      "claim": "`TMonitor._atexit_signal` only calls `self.was_killed.set()` and does not join.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_synchronisation.py:186-190",
+        "tests/tests_synchronisation.py:245-258"
+      ],
+      "reason": "The shown test asserts the atexit-registered handler returns promptly even while the monitor thread is blocked, explicitly stating the daemon thread must not be joined from atexit.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:321",
+      "arm": "deepwiki",
+      "claim": "tqdm.contrib.bells selects Telegram if TQDM_TELEGRAM_TOKEN and TQDM_TELEGRAM_CHAT_ID are present.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "README.rst:714-716"
+      ],
+      "reason": "tqdm/contrib/bells.py is not shown, so its env-based selection logic cannot be verified.",
+      "jev_contradicted": 0.2
+    },
+    {
+      "id": "story:128",
+      "arm": "story",
+      "claim": "`tqdm._decr_instances` removes the instance from `_instances` under the lock, and is called by `close()`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:774-781",
+        "tests/tests_tqdm.py:790-797"
+      ],
+      "reason": "The tests assert `len(tqdm._instances)` drops from 1 to 0 exactly when `close()` is called (explicitly or via context manager exit).",
+      "jev_contradicted": 0.11
+    },
+    {
+      "id": "story:75",
+      "arm": "story",
+      "claim": "`tqdm.refresh` returns `True` after displaying and releasing the lock.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8",
+        "tests/tests_tqdm.py:1179-1196"
+      ],
+      "reason": "`refresh`'s return value is never asserted in the shown tests and its implementation is in the unshown tqdm/std.py.",
+      "jev_contradicted": 0.23
+    },
+    {
+      "id": "story:139",
+      "arm": "story",
+      "claim": "`tqdm.update` returns immediately on a disabled bar.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:966-976",
+        "tests/tests_tqdm.py:932-940"
+      ],
+      "reason": "With `disable=True`, repeated `update()` calls leave the bar's rendered state at `0/10`/`0/12`, showing `update` returns without doing anything.",
+      "jev_contradicted": 0.12
+    },
+    {
+      "id": "story:142",
+      "arm": "story",
+      "claim": "`EMA.__call__` computes `last = alpha*x + beta*last` and returns it de-biased by dividing by `1 - beta**calls`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:813-819"
+      ],
+      "reason": "The numeric test (EMA(0.01): 10, 5.48, 5.48, 3.97) matches exactly last = alpha*x + beta*last de-biased by 1 - beta**calls.",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "story:16",
+      "arm": "story",
+      "claim": "`TMonitor.__init__` takes `tqdm_cls` and `sleep_interval` arguments.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_synchronisation.py:90-91",
+        "tests/tests_synchronisation.py:237"
+      ],
+      "reason": "The shown tests construct `TMonitor(FakeTqdm, 10)` and `TMonitor(StuckTqdm, 0.001)  # tiny sleep_interval`, i.e. a tqdm class plus a sleep interval.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:119",
+      "arm": "story",
+      "claim": "`TMonitor.exit()` is the joining variant of shutdown and refuses to join itself.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:1",
+        "tests/tests_synchronisation.py:90-97"
+      ],
+      "reason": "tqdm/_monitor.py is not shown; the test only shows `exit()` stops the thread, not that it joins or guards against self-join.",
+      "jev_contradicted": 0.25
+    },
+    {
+      "id": "deepwiki:254",
+      "arm": "deepwiki",
+      "claim": "tqdm_asyncio.__init__ detects whether the iterable has __anext__, __next__, or is a standard iterable.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tests/tests_asyncio.py:160-167"
+      ],
+      "reason": "tqdm/asyncio.py is not shown; the tests exercise async iterables but do not reveal the __init__ detection logic.",
+      "jev_contradicted": 0.29
+    },
+    {
+      "id": "deepwiki:282",
+      "arm": "deepwiki",
+      "claim": "DiscordIO.write(s) uses self.submit to perform a PATCH request asynchronously.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/contrib/discord.py:1-1"
+      ],
+      "reason": "tqdm/contrib/discord.py is not among the shown files, so DiscordIO.write's implementation cannot be checked.",
+      "jev_contradicted": 0.18
+    },
+    {
+      "id": "story:175",
+      "arm": "story",
+      "claim": "Under `dynamic_ncols`, `tqdm.format_dict` re-probes the terminal and writes `self.ncols` and `self.nrows`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/__init__.py:6-8"
+      ],
+      "reason": "`format_dict`'s dynamic_ncols re-probing is implemented in the unshown tqdm/std.py.",
+      "jev_contradicted": 0.09
+    },
+    {
+      "id": "story:8",
+      "arm": "story",
+      "claim": "Inside the lock, `tqdm.__new__` adds the freshly allocated instance to `cls._instances`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tests/tests_tqdm.py:778-781"
+      ],
+      "reason": "`tqdm/std.py` is not shown; tests only reveal that `tqdm._instances` is populated, not that `__new__` adds the instance inside the lock.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:179",
+      "arm": "deepwiki",
+      "claim": "tqdm_gui uses plt.pause(1e-9) to force UI updates.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/gui.py:1-1"
+      ],
+      "reason": "tqdm/gui.py content is not shown, so the plt.pause(1e-9) call cannot be verified.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "story:109",
+      "arm": "story",
+      "claim": "The same `TqdmDefaultWriteLock` object is used by `tqdm.write` and `external_write_mode`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tests/tests_tqdm.py:1394-1399"
+      ],
+      "reason": "The lock implementation and `write`/`external_write_mode` live in `tqdm/std.py`, which is not shown.",
+      "jev_contradicted": 0.29
+    },
+    {
+      "id": "deepwiki:185",
+      "arm": "deepwiki",
+      "claim": "The CLI option --buf-size sets the buffer size in bytes for reading stdin.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:493-495"
+      ],
+      "reason": "The CLI extra-options documentation (generated from tqdm.cli) states `buf_size : int, optional  String buffer size in bytes [default: 256]`, used for reading stdin with a delimiter.",
+      "jev_contradicted": 0.49
+    },
+    {
+      "id": "deepwiki:326",
+      "arm": "deepwiki",
+      "claim": "DummyTqdmFile is an ObjectWrapper that captures write calls and redirects them to tqdm.write().",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "examples/redirect_print.py:17-33",
+        "README.rst:1312-1326"
+      ],
+      "reason": "Only usage of DummyTqdmFile for stdout redirection is shown; tqdm/contrib/__init__.py (its definition as an ObjectWrapper) is not displayed.",
+      "jev_contradicted": 0.21
+    },
+    {
+      "id": "story:20",
+      "arm": "story",
+      "claim": "The `TMonitor` atexit handler only sets a kill event and never joins the thread.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tests/tests_synchronisation.py:246-258"
+      ],
+      "reason": "`tqdm/_monitor.py` is not shown; the regression test only proves the atexit handler returns promptly, not that it merely sets an event and never joins.",
+      "jev_contradicted": 0.25
+    },
+    {
+      "id": "story:1",
+      "arm": "story",
+      "claim": "The first thing `tqdm.__new__` does is `with cls.get_lock():`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "The body of `tqdm.__new__` is in `tqdm/std.py`, which is not included in the shown files.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:342",
+      "arm": "deepwiki",
+      "claim": "make distclean removes build, dist, egg-info, and coverage artifacts.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "Makefile:111-127"
+      ],
+      "reason": "`distclean` invokes coverclean, prebuildclean and clean, which remove build/, dist/, tqdm.egg-info/, .eggs/ and .coverage* artifacts.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:48",
+      "arm": "deepwiki",
+      "claim": "The tqdm parameter `leave` defaults to True.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:372-372",
+        "README.rst:396-398"
+      ],
+      "reason": "The documented signature has `leave=True` and the parameter docs state the default is True.",
+      "jev_contradicted": 0.02
+    },
+    {
+      "id": "deepwiki:444",
+      "arm": "deepwiki",
+      "claim": "The deprecation warning class is TqdmDeprecationWarning.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "tqdm/__init__.py:6-8"
+      ],
+      "reason": "TqdmDeprecationWarning is exported from tqdm.std via tqdm/__init__.py.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:36",
+      "arm": "story",
+      "claim": "In `tqdm.__init__`, the `isatty` check only fires when `disable` is `None`, turning the bar off on a non-TTY stream.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:428-430",
+        "tests/tests_tqdm.py:1283-1293"
+      ],
+      "reason": "The documented parameter says `disable=None` disables on non-TTY, and the tests show `disable=None` silences output for a non-TTY stream but keeps output for a faked `isatty` file.",
+      "jev_contradicted": 0.23
+    },
+    {
+      "id": "story:149",
+      "arm": "story",
+      "claim": "`miniters` may hold a float value because the gate uses a `>=` comparison rather than an index.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:477-485",
+        "tests/tests_tqdm.py:513-514"
+      ],
+      "reason": "Tests assert fractional `miniters` values such as `0.255` and `(total/2)*mininterval/(maxinterval*2)`, showing miniters can hold floats (so it is used in a comparison, not as an index).",
+      "jev_contradicted": 0.18
+    },
+    {
+      "id": "deepwiki:425",
+      "arm": "deepwiki",
+      "claim": "tqdm can be inserted as a pipe in a chain of coroutines using a send() based approach without asyncio.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "examples/coroutine_pipe.py:1-4",
+        "examples/coroutine_pipe.py:37-42"
+      ],
+      "reason": "The example implements a tqdm coroutine pipe using `(yield)`/`send()` and explicitly notes it is not asyncio.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:44",
+      "arm": "story",
+      "claim": "When `ncols` is `None`, nothing trims the rendered line to the console width and the bar is a fixed ten cells.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:255-257",
+        "tests/tests_tqdm.py:1154-1156",
+        "README.rst:404-409"
+      ],
+      "reason": "Tests show no trimming when `ncols=None`, the default repr contains a ten-cell bar, and the docs state the fallback is a meter width of 10 with no limit on the stats.",
+      "jev_contradicted": 0.55
+    },
+    {
+      "id": "deepwiki:11",
+      "arm": "deepwiki",
+      "claim": "tqdm's CLI entry point is handled by tqdm.cli.main.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "pyproject.toml:89-90"
+      ],
+      "reason": "The console script entry point is declared as `tqdm = \"tqdm.cli:main\"`.",
+      "jev_contradicted": 0.08
+    },
+    {
+      "id": "story:165",
+      "arm": "story",
+      "claim": "`tqdm.close` sets `self._ema_dt = lambda: None` before calling `self.display(pos=0)`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "`tqdm.close` is defined in `tqdm/std.py`, which is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:202",
+      "arm": "deepwiki",
+      "claim": "Tab completion for bash is implemented in tqdm/completion.sh and provides suggestions for flags and logging levels.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        ".meta/mkcompletion.py:35-60"
+      ],
+      "reason": "mkcompletion.py generates tqdm/completion.sh with COMPREPLY suggestions for the option list and for --log levels (CRITICAL FATAL ERROR WARN WARNING INFO DEBUG NOTSET).",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "story:81",
+      "arm": "story",
+      "claim": "`tqdm.format_dict` computes `elapsed` as `self._time() - self.start_t if hasattr(self, 'start_t') else 0`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "`tqdm.format_dict` is defined in `tqdm/std.py`, which is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:182",
+      "arm": "deepwiki",
+      "claim": "tqdm_asyncio automatically calls close() on StopIteration or exceptions during asynchronous iteration.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/asyncio.py:1-1"
+      ],
+      "reason": "tqdm/asyncio.py is not shown, so the close()-on-StopIteration/exception behaviour cannot be checked.",
+      "jev_contradicted": 0.17
+    },
+    {
+      "id": "story:150",
+      "arm": "story",
+      "claim": "`tqdm.update` stores `last_print_n` and `last_print_t` and returns `True` when a display happened.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:546-551",
+        "tests/tests_synchronisation.py:69-72"
+      ],
+      "reason": "The documented `update()` returns True if a `display()` was triggered, and `last_print_t`/`start_t` bookkeeping attributes are exercised by the test helpers.",
+      "jev_contradicted": 0.18
+    },
+    {
+      "id": "deepwiki:331",
+      "arm": "deepwiki",
+      "claim": "New options added to tqdm.std.tqdm but unsupported by the CLI must be added to tqdm.cli.UNSUPPORTED_OPTS.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "CONTRIBUTING.md:62-63"
+      ],
+      "reason": "CONTRIBUTING states that a newly added tqdm.std.tqdm option unsupported by the CLI should be appended to tqdm.cli.UNSUPPORTED_OPTS.",
+      "jev_contradicted": 0.04
+    },
+    {
+      "id": "deepwiki:57",
+      "arm": "deepwiki",
+      "claim": "The tqdm parameter `unit_scale` defaults to False.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:373-374",
+        "README.rst:434-439"
+      ],
+      "reason": "The signature shows `unit_scale=False` and the parameter docs state [default: False].",
+      "jev_contradicted": 0.03
+    },
+    {
+      "id": "story:34",
+      "arm": "story",
+      "claim": "In `disable_on_exception`'s `inner`, any `OSError` or `ValueError` other than the matched cases is re-raised.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "`disable_on_exception` lives in `tqdm/std.py`, which is not among the shown files.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "story:59",
+      "arm": "story",
+      "claim": "`tqdm._get_free_pos` builds `positions` as `{abs(inst.pos) for inst in cls._instances if inst is not instance and hasattr(inst, \"pos\")}` and returns `min(set(range(len(positions) + 1)).difference(positions))`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "`tqdm._get_free_pos` is defined in `tqdm/std.py`, which is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "story:31",
+      "arm": "story",
+      "claim": "`DisableOnWriteError` calls `disable_on_exception` twice, once for `write` and once for `flush`, each returning an `inner` closure set as an attribute on the wrapper.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "`DisableOnWriteError` is defined in `tqdm/std.py`, which is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:191",
+      "arm": "deepwiki",
+      "claim": "The CLI option --manpath installs man pages to a specified directory.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:511-512",
+        "tests/tests_main.py:142-149"
+      ],
+      "reason": "The CLI docs describe `manpath : str` as the directory in which to install tqdm man pages, and the test verifies the man file is written there.",
+      "jev_contradicted": 0.16
+    },
+    {
+      "id": "story:111",
+      "arm": "story",
+      "claim": "`tqdm.__new__` only constructs a new `TMonitor` when `cls.monitor_interval` is truthy and `cls.monitor is None or not cls.monitor.report()`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "The monitor-creation logic in `tqdm.__new__` is in `tqdm/std.py`, which is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:88",
+      "arm": "deepwiki",
+      "claim": "tqdm._utils.IS_WIN maps to tqdm.utils.IS_WIN.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/_utils.py:1-1"
+      ],
+      "reason": "tqdm/_utils.py content is not shown, so the re-export of IS_WIN cannot be confirmed.",
+      "jev_contradicted": 0.13
+    },
+    {
+      "id": "deepwiki:76",
+      "arm": "deepwiki",
+      "claim": "DisableOnWriteError catches OSError with errno 5 or ValueError for a closed stream and sets miniters to inf.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/utils.py:1-1"
+      ],
+      "reason": "tqdm/utils.py (where DisableOnWriteError lives) is not shown.",
+      "jev_contradicted": 0.25
+    },
+    {
+      "id": "story:100",
+      "arm": "story",
+      "claim": "In `tqdm.__iter__`, the counter comparison is checked before calling `time()`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:1377-1383"
+      ],
+      "reason": "The docs state tqdm reduces clock calls and 'will check if it's time to print without actually checking time', i.e. the iteration-count gate precedes the time lookup.",
+      "jev_contradicted": 0.19
+    },
+    {
+      "id": "deepwiki:60",
+      "arm": "deepwiki",
+      "claim": "The tqdm parameter `bar_format` defaults to None.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:376-376",
+        "README.rst:447-449"
+      ],
+      "reason": "The documented signature shows `bar_format=None` with the default bar format applied when unset.",
+      "jev_contradicted": 0.62
+    },
+    {
+      "id": "story:152",
+      "arm": "story",
+      "claim": "`tqdm.format_meter` discards `total` and falls back to a counter-only line when `n >= total + 0.5`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:183-184"
+      ],
+      "reason": "`format_meter(10000, 1000, 13) == \"10000it [00:13, 769.23it/s]\"` shows that once n exceeds total the total is dropped and a counter-only line is emitted.",
+      "jev_contradicted": 0.48
+    },
+    {
+      "id": "story:103",
+      "arm": "story",
+      "claim": "`tqdm.close` with `leave=True` draws one last frame at position 0 and writes `'\\n'`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:368-375",
+        "tests/tests_tqdm.py:790-802"
+      ],
+      "reason": "With `leave=True` the final '| 3/3 ' frame is emitted on close and the output ends with '\\n' rather than '\\r'.",
+      "jev_contradicted": 0.42
+    },
+    {
+      "id": "story:25",
+      "arm": "story",
+      "claim": "`tqdm.__init__` has defaults `desc=None, total=None, leave=True, file=None, ncols=None, mininterval=0.1, maxinterval=10.0, miniters=None, ascii=None, disable=False, unit='it', unit_scale=False, smoothing=0.3, unit_divisor=1000, delay=0.0, gui=False`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "README.rst:371-378"
+      ],
+      "reason": "The documented constructor signature lists exactly these defaults (desc=None, total=None, leave=True, file=None, ncols=None, mininterval=0.1, maxinterval=10.0, miniters=None, ascii=None, disable=False, unit='it', unit_scale=False, smoothing=0.3, unit_divisor=1000, delay=0).",
+      "jev_contradicted": 0.71
+    },
+    {
+      "id": "deepwiki:382",
+      "arm": "deepwiki",
+      "claim": "post-release.yml updates the repository wiki by running make inside the wiki directory.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        ".github/workflows/post-release.yml:33-39"
+      ],
+      "reason": "The 'Update Wiki Releases' step does `pushd wiki` then `make` and commits/pushes.",
+      "jev_contradicted": 0.06
+    },
+    {
+      "id": "story:160",
+      "arm": "story",
+      "claim": "`tqdm.close` returns silently if `last_print_t` was never set or if `last_print_t < start_t + delay`.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "unverifiable",
+      "lines": [],
+      "reason": "The early-return logic of `tqdm.close` is in `tqdm/std.py`, which is not shown.",
+      "jev_contradicted": null
+    },
+    {
+      "id": "deepwiki:320",
+      "arm": "deepwiki",
+      "claim": "tqdm.contrib.bells selects Slack if TQDM_SLACK_TOKEN and TQDM_SLACK_CHANNEL are present.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "unverifiable",
+      "lines": [
+        "tqdm/contrib/bells.py:1-1"
+      ],
+      "reason": "tqdm/contrib/bells.py is not shown, so the TQDM_SLACK_TOKEN/TQDM_SLACK_CHANNEL selection logic cannot be verified.",
+      "jev_contradicted": 0.15
+    },
+    {
+      "id": "deepwiki:38",
+      "arm": "deepwiki",
+      "claim": "The Bar class supports HEX color codes (e.g. #00ff00) and standard terminal colors such as RED and GREEN.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:1540-1545"
+      ],
+      "reason": "The colour test confirms hex codes (e.g. '#beefed' -> '\\x1b[38;2;...') and named terminal colours (e.g. 'blue' -> '\\x1b[34m') are supported by the bar rendering.",
+      "jev_contradicted": 0.1
+    },
+    {
+      "id": "story:94",
+      "arm": "story",
+      "claim": "`tqdm.format_meter` returns the line untrimmed when `ncols` is falsy.",
+      "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+      "label": "supported",
+      "lines": [
+        "tests/tests_tqdm.py:255-257"
+      ],
+      "reason": "The test explicitly asserts 'no trimming when ncols=0 or None', returning the full untrimmed description.",
+      "jev_contradicted": 0.11
+    }
+  ],
+  "cost": 2.23
+}

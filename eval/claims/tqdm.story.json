@@ -1,0 +1,760 @@
+{
+  "repo": "tqdm",
+  "arm": "story",
+  "words": 8751,
+  "extracted": 177,
+  "sample": [
+    1,
+    3,
+    8,
+    16,
+    20,
+    25,
+    31,
+    34,
+    36,
+    38,
+    44,
+    57,
+    59,
+    70,
+    75,
+    81,
+    94,
+    100,
+    103,
+    109,
+    111,
+    118,
+    119,
+    128,
+    133,
+    136,
+    138,
+    139,
+    141,
+    142,
+    145,
+    149,
+    150,
+    152,
+    153,
+    157,
+    160,
+    165,
+    175,
+    176
+  ],
+  "claims": [
+    {
+      "claim": "`tqdm.__new__` is defined with the signature `def __new__(cls, *_, **__)`, so its arguments are captured into throwaway names and not read.",
+      "quote": "whose signature is `def __new__(cls, *_, **__)` \u2014 the arguments are captured into throwaway names and never read"
+    },
+    {
+      "claim": "The first thing `tqdm.__new__` does is `with cls.get_lock():`.",
+      "quote": "The first thing `__new__` does is `with cls.get_lock():`"
+    },
+    {
+      "claim": "`tqdm.get_lock` constructs a `TqdmDefaultWriteLock` only if the class has no `_lock` attribute yet.",
+      "quote": "`get_lock` is deliberately lazy: it constructs a `TqdmDefaultWriteLock` only if the class has no `_lock` yet"
+    },
+    {
+      "claim": "The lock created by `get_lock` becomes class state for the rest of the process.",
+      "quote": "becomes class state for the rest of the process"
+    },
+    {
+      "claim": "`TqdmDefaultWriteLock` has a threading `RLock` created at import time as a class attribute.",
+      "quote": "A threading `RLock` is created at import time as a class attribute"
+    },
+    {
+      "claim": "`TqdmDefaultWriteLock` creates a `multiprocessing.RLock` only on first use, via `create_mp_lock`.",
+      "quote": "a `multiprocessing.RLock` is created only now, on first use, by `create_mp_lock`"
+    },
+    {
+      "claim": "A comment in tqdm/std.py explains that creating a multiprocessing lock fixes the multiprocessing start context, which would forbid `spawn()` and `forkserver()` in the host application.",
+      "quote": "creating one fixes the multiprocessing start context, which would forbid `spawn()` and `forkserver()` in the host application"
+    },
+    {
+      "claim": "`TqdmDefaultWriteLock` stores its two locks in a list, acquires them in order and releases them in reverse.",
+      "quote": "The two are stored in a list, acquired in order and released in reverse"
+    },
+    {
+      "claim": "Inside the lock, `tqdm.__new__` adds the freshly allocated instance to `cls._instances`.",
+      "quote": "the freshly allocated instance is added to `cls._instances`"
+    },
+    {
+      "claim": "`tqdm._instances` is a `WeakSet` held on the class.",
+      "quote": "a `WeakSet` held on the class"
+    },
+    {
+      "claim": "`tqdm.__hash__` returns `id(self)`.",
+      "quote": "`tqdm.__hash__` returning `4453575920`, which is simply `id(self)`"
+    },
+    {
+      "claim": "The instance is added to the `_instances` registry before any argument has been validated.",
+      "quote": "the instance joins the global registry before a single argument has been validated"
+    },
+    {
+      "claim": "In `tqdm.__init__`, the `disable=True` path removes the instance from `_instances` and returns.",
+      "quote": "`disable=True` removes itself from `_instances` and returns"
+    },
+    {
+      "claim": "In `tqdm.__init__`, an unknown keyword argument causes the instance to be removed from `_instances` and then an exception is raised.",
+      "quote": "an unknown keyword argument removes itself and *then* raises"
+    },
+    {
+      "claim": "`tqdm.__new__` checks `cls.monitor_interval` and whether a monitor is already alive before constructing `TMonitor(cls, cls.monitor_interval)`.",
+      "quote": "`__new__` checks `cls.monitor_interval` (10 by default) and whether a monitor is already alive, then constructs `TMonitor(cls, 10)`"
+    },
+    {
+      "claim": "`tqdm.monitor_interval` defaults to 10.",
+      "quote": "`cls.monitor_interval` (10 by default)"
+    },
+    {
+      "claim": "`TMonitor.__init__` takes `tqdm_cls` and `sleep_interval` arguments.",
+      "quote": "`TMonitor.__init__(tqdm_cls=<class 'tqdm.std.tqdm'>, sleep_interval=10)`"
+    },
+    {
+      "claim": "The `TMonitor` thread names itself `tqdm_monitor`.",
+      "quote": "The thread names itself `tqdm_monitor`"
+    },
+    {
+      "claim": "The `TMonitor` thread marks itself `daemon`.",
+      "quote": "marks itself `daemon` so a `KeyboardInterrupt` in the main thread kills it"
+    },
+    {
+      "claim": "`TMonitor.__init__` registers an `atexit` handler and starts the thread.",
+      "quote": "registers an `atexit` handler, and starts"
+    },
+    {
+      "claim": "The `TMonitor` atexit handler only sets a kill event and never joins the thread.",
+      "quote": "That handler only *sets* a kill event \u2014 it never joins"
+    },
+    {
+      "claim": "Once per `sleep_interval`, `TMonitor` takes the global write lock and inspects registered bars whose `miniters > 1` and whose last print is older than `maxinterval`, setting `miniters = 1` and refreshing them.",
+      "quote": "take the same global write lock, look at registered bars whose `miniters > 1` and whose last print is older than `maxinterval`, force `miniters = 1` and repaint them"
+    },
+    {
+      "claim": "`TMonitor` skips tqdm instances that have no `start_t` attribute.",
+      "quote": "It deliberately skips instances that have no `start_t` yet"
+    },
+    {
+      "claim": "If `TMonitor(...)` construction raises, `tqdm.__new__` catches the exception, emits a `TqdmMonitorWarning`, and sets `monitor_interval` to `0`.",
+      "quote": "the exception is caught, a `TqdmMonitorWarning` is emitted, and `monitor_interval` is set to `0`"
+    },
+    {
+      "claim": "`tqdm.__new__` returns an object that has no `iterable`, `n`, `total` or `start_t` attributes.",
+      "quote": "an object with no `iterable`, no `n`, no `total`, no `start_t`"
+    },
+    {
+      "claim": "`tqdm.__init__` has defaults `desc=None, total=None, leave=True, file=None, ncols=None, mininterval=0.1, maxinterval=10.0, miniters=None, ascii=None, disable=False, unit='it', unit_scale=False, smoothing=0.3, unit_divisor=1000, delay=0.0, gui=False`.",
+      "quote": "`desc=None, total=None, leave=True, file=None, ncols=None, mininterval=0.1, maxinterval=10.0, miniters=None, ascii=None, disable=False, unit='it', unit_scale=False, smoothing=0.3, unit_divisor=1000, delay=0.0, gui=False`"
+    },
+    {
+      "claim": "`tqdm.__init__` is wrapped by `envwrap(\"tqdm\", is_method=True, ...)`.",
+      "quote": "`__init__` is wrapped by `envwrap(\"tqdm\", is_method=True, ...)`"
+    },
+    {
+      "claim": "`envwrap` scans `os.environ` at import time for keys beginning with `TQDM_`, keeps those matching a parameter name, coerces them to the type of the parameter's default, and binds them as a `partialmethod`.",
+      "quote": "which scans `os.environ` at import time for keys beginning `TQDM_`, keeps those matching a parameter name, coerces them to the type of the parameter's default, and binds them as a `partialmethod`"
+    },
+    {
+      "claim": "In `tqdm.__init__`, when `file` is `None` it becomes `sys.stderr`.",
+      "quote": "`file` is `None`, so it becomes `sys.stderr`"
+    },
+    {
+      "claim": "In `tqdm.__init__`, when `write_bytes` is false the `SimpleTextIOWrapper` branch is skipped and the stream is wrapped by `DisableOnWriteError(file, tqdm_instance=self)`.",
+      "quote": "`write_bytes` is false, so the `SimpleTextIOWrapper` branch is skipped and the stream goes straight into `DisableOnWriteError(file, tqdm_instance=self)`"
+    },
+    {
+      "claim": "`ObjectWrapper.__init__` stores the wrapped object as `_wrapped`.",
+      "quote": "`ObjectWrapper.__init__` stashes the real `TextIOWrapper` as `_wrapped`"
+    },
+    {
+      "claim": "`DisableOnWriteError` calls `disable_on_exception` twice, once for `write` and once for `flush`, each returning an `inner` closure set as an attribute on the wrapper.",
+      "quote": "`disable_on_exception` is called twice \u2014 once for `write`, once for `flush` \u2014 each returning an `inner` closure that is set as an attribute on the wrapper itself"
+    },
+    {
+      "claim": "The `inner` closure in `disable_on_exception` catches `OSError` with `errno == 5` or a `ValueError` whose message contains `'closed'`, and in those cases sets `miniters = float('inf')` on a weak proxy to the tqdm bar instead of propagating.",
+      "quote": "if that raises `OSError` with `errno == 5` (I/O error) or a `ValueError` whose message contains `'closed'`, it swallows the exception and instead sets `miniters = float('inf')` on a weak proxy to the bar"
+    },
+    {
+      "claim": "An infinite `miniters` prevents the counter gate in `tqdm.update` from opening again.",
+      "quote": "An infinite `miniters` means the counter gate in `update` can never open again"
+    },
+    {
+      "claim": "In `disable_on_exception`'s `inner`, any `OSError` or `ValueError` other than the matched cases is re-raised.",
+      "quote": "Any other `OSError` or `ValueError` is re-raised."
+    },
+    {
+      "claim": "`disable_on_exception` holds a weak `proxy` to the tqdm instance rather than a strong reference, and catches and ignores the resulting `ReferenceError` when the bar has been collected.",
+      "quote": "A `proxy` is used rather than a strong reference ... the `ReferenceError` that follows a collected bar is caught and ignored"
+    },
+    {
+      "claim": "In `tqdm.__init__`, the `isatty` check only fires when `disable` is `None`, turning the bar off on a non-TTY stream.",
+      "quote": "Had the caller passed `disable=None`, a non-TTY stderr would have turned the bar off entirely."
+    },
+    {
+      "claim": "In `tqdm.__init__`, when `total` is `None` and `iterable` is not `None`, `total` is set to `len(iterable)` inside a `try` that catches `TypeError` and `AttributeError` and falls back to `total = None`.",
+      "quote": "try:\n    total = len(iterable)\nexcept (TypeError, AttributeError):\n    total = None"
+    },
+    {
+      "claim": "In `tqdm.__init__`, an explicit `total=float(\"inf\")` is normalised to `None`.",
+      "quote": "An explicit `total=float(\"inf\")` is normalised to `None` on the next line"
+    },
+    {
+      "claim": "The terminal-geometry preprocessing block in `tqdm.__init__` runs when `ncols` and `nrows` are both `None` and `file` is in `(sys.stderr, sys.stdout)`.",
+      "quote": "Because `ncols` and `nrows` are both `None` and `file` compares equal to `sys.stderr`, the preprocessing block at"
+    },
+    {
+      "claim": "`DisableOnWriteError.__eq__` forwards equality comparison to its `_wrapped` object.",
+      "quote": "the wrapper forwards equality to its `_wrapped` object so it still *is* stderr for comparison purposes"
+    },
+    {
+      "claim": "When `dynamic_ncols` is false, `tqdm.__init__` calls `_screen_shape_wrapper()` once to probe the terminal.",
+      "quote": "`dynamic_ncols` is false, so the `else` branch builds a one-shot probe: `_screen_shape_wrapper()`"
+    },
+    {
+      "claim": "The `inner` function returned by `_screen_shape_wrapper()` calls `os.get_terminal_size(fp.fileno())` inside a bare `except Exception: return None, None`.",
+      "quote": "returns an `inner` that calls `os.get_terminal_size(fp.fileno())` inside a bare `except Exception: return None, None`"
+    },
+    {
+      "claim": "`ObjectWrapper.__getattr__` fetches attributes such as `fileno` from the wrapped object.",
+      "quote": "`ObjectWrapper.__getattr__` fetching `fileno` through the wrapper"
+    },
+    {
+      "claim": "When `ncols` is `None`, nothing trims the rendered line to the console width and the bar is a fixed ten cells.",
+      "quote": "With no `ncols`, nothing downstream will trim the rendered line to the console width; the bar will be a fixed ten cells"
+    },
+    {
+      "claim": "When `nrows` is `None`, the visibility checks in `tqdm.display` and `tqdm.clear` fall back to a hard-coded 20 rows.",
+      "quote": "With no `nrows`, the visibility checks in `display` and `clear` will fall back to a hard-coded 20 rows."
+    },
+    {
+      "claim": "In `tqdm.__init__`, when `ascii` is `None` it is set to `not _supports_unicode(file)`.",
+      "quote": "`ascii` arrived as `None`, so `ascii = not _supports_unicode(file)`"
+    },
+    {
+      "claim": "`_supports_unicode` reads `fp.encoding` and passes it to `_is_utf`.",
+      "quote": "`_supports_unicode` reads `fp.encoding` ... and hands it to `_is_utf`"
+    },
+    {
+      "claim": "`_is_utf` tries to encode two block characters and returns `True` on success.",
+      "quote": "which tries to encode two block characters and returns `True` on success"
+    },
+    {
+      "claim": "`_supports_unicode` catches the `AttributeError` raised by a stream with no `encoding` attribute and returns `False`.",
+      "quote": "A stream with no `encoding` attribute raises `AttributeError`, which `_supports_unicode` catches and converts to `False`"
+    },
+    {
+      "claim": "When `ascii` is true the bar charset degrades to `\" 123456789#\"`.",
+      "quote": "degrading the bar to `\" 123456789#\"`"
+    },
+    {
+      "claim": "`tqdm.__init__` contains guards that coerce `None` values of `mininterval`, `maxinterval` and `smoothing` to 0.",
+      "quote": "the three \"coerce `None` to 0\" guards at"
+    },
+    {
+      "claim": "In `tqdm.__init__`, `miniters=None` results in `miniters = 0` and `dynamic_miniters = True`.",
+      "quote": "which sets `miniters = 0` and `dynamic_miniters = True`"
+    },
+    {
+      "claim": "`tqdm.__init__` constructs three `EMA(0.3)` objects when `smoothing` is 0.3.",
+      "quote": "three `EMA(0.3)` objects are constructed"
+    },
+    {
+      "claim": "The three EMA objects in `tqdm.__init__` track the increment per print, the interval per print, and the tuned `miniters`.",
+      "quote": "They track, respectively, the increment per print, the interval per print, and the tuned `miniters`"
+    },
+    {
+      "claim": "`EMA.__init__` starts with `last = 0` and `calls = 0`.",
+      "quote": "Each starts with `last = 0` and `calls = 0`"
+    },
+    {
+      "claim": "In `tqdm.__init__`, when `postfix` is `None` the `set_postfix` branch is skipped and `self.postfix` stays `None`.",
+      "quote": "`postfix` is `None`, so the `set_postfix` branch at [std.py#L1083-L1087] ... is skipped, and `self.postfix` stays `None`"
+    },
+    {
+      "claim": "In `tqdm.__init__`, `last_print_n` and `n` are both set from the `initial` argument.",
+      "quote": "`last_print_n` and `n` are both set from `initial`, which is `0`"
+    },
+    {
+      "claim": "`tqdm.__init__` assigns `self.pos = self._get_free_pos(self) if position is None else -position` while holding `self._lock`.",
+      "quote": "with self._lock:\n    # mark fixed positions as negative\n    self.pos = self._get_free_pos(self) if position is None else -position"
+    },
+    {
+      "claim": "`tqdm._get_free_pos` builds `positions` as `{abs(inst.pos) for inst in cls._instances if inst is not instance and hasattr(inst, \"pos\")}` and returns `min(set(range(len(positions) + 1)).difference(positions))`.",
+      "quote": "positions = {abs(inst.pos) for inst in cls._instances\n             if inst is not instance and hasattr(inst, \"pos\")}\nreturn min(set(range(len(positions) + 1)).difference(positions))"
+    },
+    {
+      "claim": "A bar created with `position=3` stores `self.pos` as `-3`.",
+      "quote": "a bar pinned with `position=3` \u2014 stored as `-3` by the branch this run did not take"
+    },
+    {
+      "claim": "A negative `self.pos` marks the position as fixed, and fixed bars are never moved when a neighbour closes.",
+      "quote": "the sign is a flag meaning \"fixed\", and Chapter 9 will show that fixed bars are never moved when a neighbour closes"
+    },
+    {
+      "claim": "In `tqdm.__init__`, when `gui` is false `self.sp = self.status_printer(self.fp)` is executed.",
+      "quote": "if not gui:\n    # Initialize the screen printer\n    self.sp = self.status_printer(self.fp)"
+    },
+    {
+      "claim": "When `gui=True`, `self.sp` is left unset and `tqdm.display` raises a `TqdmDeprecationWarning` directing the caller to `tqdm.gui.tqdm`.",
+      "quote": "`display` checks for the missing attribute and raises a `TqdmDeprecationWarning` telling the caller to use `tqdm.gui.tqdm` instead of `tqdm(..., gui=True)`"
+    },
+    {
+      "claim": "`tqdm.status_printer` flushes both `sys.stderr` and `sys.stdout` when `fp in (sys.stderr, sys.stdout)`.",
+      "quote": "if fp in (sys.stderr, sys.stdout):\n    getattr(sys.stderr, 'flush', lambda: None)()\n    getattr(sys.stdout, 'flush', lambda: None)()"
+    },
+    {
+      "claim": "The `fp_write` closure in `tqdm.status_printer` writes `str(s)` and then flushes.",
+      "quote": "`fp_write` writes `str(s)` and flushes"
+    },
+    {
+      "claim": "`tqdm.status_printer` keeps a one-element list `last_len = [0]` holding the displayed length of the previous frame.",
+      "quote": "last_len = [0]"
+    },
+    {
+      "claim": "`print_status` in `tqdm.status_printer` computes `len_s = disp_len(s)`, writes `'\\r' + s + (' ' * max(last_len[0] - len_s, 0))`, and then sets `last_len[0] = len_s`.",
+      "quote": "def print_status(s):\n    len_s = disp_len(s)\n    fp_write('\\r' + s + (' ' * max(last_len[0] - len_s, 0)))\n    last_len[0] = len_s"
+    },
+    {
+      "claim": "The `print_status` closure returned by `status_printer` is stored as `self.sp` and is per-bar, so each bar has its own `last_len`.",
+      "quote": "It is per-bar: a second bar sharing stderr gets its own `last_len`"
+    },
+    {
+      "claim": "`tqdm.__init__` calls `self.refresh(...)` only when `delay <= 0`.",
+      "quote": "The next statement is `if delay <= 0: self.refresh(...)`"
+    },
+    {
+      "claim": "`tqdm.__init__` assigns `last_print_t` and `start_t` only after the initial refresh returns.",
+      "quote": "`last_print_t` and `start_t` are assigned only after that first refresh returns"
+    },
+    {
+      "claim": "`TMonitor` filters its working set with `hasattr(i, 'start_t')`.",
+      "quote": "The monitor thread from Chapter 1 filters its working set with `hasattr(i, 'start_t')`"
+    },
+    {
+      "claim": "`tqdm.refresh` has signature `refresh(self, nolock=False, lock_args=None)`.",
+      "quote": "entering `tqdm.refresh(self, nolock=False, lock_args=None)`"
+    },
+    {
+      "claim": "The last statement of `tqdm.__init__` before the clocks are set is `self.refresh(lock_args=self.lock_args)`.",
+      "quote": "The last statement of `__init__` before the clocks are set is `self.refresh(lock_args=self.lock_args)`"
+    },
+    {
+      "claim": "`tqdm.refresh` acquires `self._lock` with `*lock_args` when `lock_args` is set and returns `False` if the acquire fails, otherwise acquires the lock blocking, then calls `self.display()`.",
+      "quote": "if not nolock:\n    if lock_args:\n        if not self._lock.acquire(*lock_args):\n            return False\n    else:\n        self._lock.acquire()\nself.display()"
+    },
+    {
+      "claim": "`tqdm.refresh` returns `True` after displaying and releasing the lock.",
+      "quote": "`acquire`, `display`, `release`, return `True`"
+    },
+    {
+      "claim": "`tqdm.display` has parameters `msg=None` and `pos=None` and resolves `pos = abs(self.pos)` when `pos` is None.",
+      "quote": "`display(msg=None, pos=None)` first resolves `pos = abs(self.pos)` \u2192 `0`"
+    },
+    {
+      "claim": "`tqdm.display` computes `nrows = self.nrows or 20`, returns `False` if `pos >= nrows`, and replaces the message with `\" ... (more hidden) ...\"` at `pos == nrows - 1`.",
+      "quote": "nrows = self.nrows or 20\nif pos >= nrows - 1:\n    if pos >= nrows:\n        return False\n    if msg or msg is None:  # override at `nrows - 1`\n        msg = \" ... (more hidden) ...\""
+    },
+    {
+      "claim": "In `tqdm.display`, when `pos` is 0 the two `moveto` calls are skipped.",
+      "quote": "because `pos` is `0` the two `moveto` calls that would walk the cursor down and back up are skipped too"
+    },
+    {
+      "claim": "`tqdm.__str__` is `return self.format_meter(**self.format_dict)`.",
+      "quote": "`__str__` is one line: `return self.format_meter(**self.format_dict)`"
+    },
+    {
+      "claim": "`tqdm.format_meter` is a `@staticmethod`.",
+      "quote": "`format_meter` is a `@staticmethod` that turns that snapshot into a string without touching the instance"
+    },
+    {
+      "claim": "`tqdm.format_dict` computes `elapsed` as `self._time() - self.start_t if hasattr(self, 'start_t') else 0`.",
+      "quote": "because of `self._time() - self.start_t if hasattr(self, 'start_t') else 0`"
+    },
+    {
+      "claim": "`tqdm.format_dict` computes `rate` as `self._ema_dn() / self._ema_dt() if self._ema_dt() else None`.",
+      "quote": "`rate`, from `self._ema_dn() / self._ema_dt() if self._ema_dt() else None`"
+    },
+    {
+      "claim": "`EMA.__call__` with `calls == 0` returns its initial `last` value.",
+      "quote": "with `calls == 0` the estimator returns its initial `last`"
+    },
+    {
+      "claim": "In `tqdm.format_meter`, when `rate` is None and `elapsed` is truthy, `rate` falls back to `(n - initial) / elapsed`.",
+      "quote": "so the `rate = (n - initial) / elapsed` fallback never divides by zero"
+    },
+    {
+      "claim": "When no rate is available, `tqdm.format_meter` emits `'?it/s'` and a `'?'` for the remaining-time field.",
+      "quote": "with no rate, the formatter emits `'?it/s'` and the remaining-time field becomes `'?'`"
+    },
+    {
+      "claim": "`tqdm.format_interval(0)` returns `'00:00'`.",
+      "quote": "`format_interval(0)` gives `'00:00'`"
+    },
+    {
+      "claim": "`tqdm.format_meter` probes with `full_bar = FormatReplace()` and returns `disp_trim(nobar, ncols) if ncols else nobar` when `full_bar.format_called` is false.",
+      "quote": "full_bar = FormatReplace()\nnobar = bar_format.format(bar=full_bar, **format_dict)  # no `{bar}`\nif not full_bar.format_called:\n    return disp_trim(nobar, ncols) if ncols else nobar"
+    },
+    {
+      "claim": "`FormatReplace.__format__` counts calls and returns its replacement string.",
+      "quote": "`FormatReplace.__format__` just counts calls and returns its replacement string"
+    },
+    {
+      "claim": "The default tqdm bar format references `{bar}`.",
+      "quote": "The default format does reference `{bar}`"
+    },
+    {
+      "claim": "`Bar` is constructed with a `default_len` of 10 when `ncols` is unknown, and a charset of `' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'`.",
+      "quote": "`Bar(frac=0.0, default_len=10, charset=' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588', colour=None)`, the width being the fixed 10 precisely because `ncols` is unknown"
+    },
+    {
+      "claim": "`Bar.__format__` renders using `divmod` arithmetic over the charset, producing ten spaces at `frac=0.0`.",
+      "quote": "Rendering it is `divmod` arithmetic over the charset: zero full blocks, so ten spaces"
+    },
+    {
+      "claim": "`tqdm.format_meter` calls `_is_ascii` on the charset and on the format string, and coerces the bar to `str` when the charset is not ASCII but the format string is.",
+      "quote": "the charset is not ASCII, the format string is, so it is coerced to `str`"
+    },
+    {
+      "claim": "At `n=0, total=4` with the default format, `format_meter` produces `'  0%|          | 0/4 [00:00<?, ?it/s]'`.",
+      "quote": "Out comes `'  0%|          | 0/4 [00:00<?, ?it/s]'`"
+    },
+    {
+      "claim": "`tqdm.format_meter` returns the line untrimmed when `ncols` is falsy.",
+      "quote": "returned untrimmed because `ncols` is falsy"
+    },
+    {
+      "claim": "`disp_len` calls `_text_width`, which strips ANSI codes and counts East-Asian wide characters as double width.",
+      "quote": "`disp_len` \u2192 `_text_width` \u2192 `37` ... ANSI codes stripped, East-Asian wide characters counted double"
+    },
+    {
+      "claim": "`tqdm.__iter__` begins with a disabled shortcut that does `yield from iterable; return` with no bookkeeping.",
+      "quote": "Its first act is the disabled shortcut \u2014 `yield from iterable; return`, with no bookkeeping at all"
+    },
+    {
+      "claim": "`tqdm.__iter__` copies `mininterval`, `last_print_t`, `last_print_n`, `n` and `self._time` into locals and computes `min_start_t = self.start_t + self.delay`.",
+      "quote": "it copies `mininterval`, `last_print_t`, `last_print_n`, `n` and `self._time` into locals for speed, and computes `min_start_t = self.start_t + self.delay`"
+    },
+    {
+      "claim": "`tqdm.__iter__` yields each object before incrementing its private `n`, and calls `self.update(n - last_print_n)` only when `n - last_print_n >= self.miniters` and `dt >= mininterval` and `cur_t >= min_start_t`.",
+      "quote": "for obj in iterable:\n    yield obj\n    n += 1\n    if n - last_print_n >= self.miniters:\n        cur_t = time()\n        dt = cur_t - last_print_t\n        if dt >= mininterval and cur_t >= min_start_t:\n            self.update(n - last_print_n)"
+    },
+    {
+      "claim": "`tqdm.__iter__` yields the original objects unchanged.",
+      "quote": "four yields of the original objects \u2014 `'a'`, `'b'`, `'c'`, `'d'`, unchanged"
+    },
+    {
+      "claim": "In `tqdm.__iter__`, the counter comparison is checked before calling `time()`.",
+      "quote": "a cheap counter comparison first, so `time()` is not called on every iteration, and only then the clock"
+    },
+    {
+      "claim": "`tqdm.__iter__` ends with a `finally` block that sets `self.n = n` and calls `self.close()`.",
+      "quote": "finally:\n    self.n = n\n    self.close()"
+    },
+    {
+      "claim": "Because the cleanup is in a `finally`, `tqdm.__iter__` closes the bar on `break` and on an exception propagating out of the loop body.",
+      "quote": "Because it is a `finally`, this also runs on `break` and on an exception propagating out of the loop body"
+    },
+    {
+      "claim": "`tqdm.close` with `leave=True` draws one last frame at position 0 and writes `'\\n'`.",
+      "quote": "With `leave=True` (the default), `close` draws one last frame at position 0 and writes `'\\n'`"
+    },
+    {
+      "claim": "`tqdm.close` begins with `if getattr(self, 'disable', True): return` followed by `self.disable = True`, so a second call does nothing.",
+      "quote": "if getattr(self, 'disable', True):\n    return\nself.disable = True"
+    },
+    {
+      "claim": "`tqdm.__del__` calls `close()`.",
+      "quote": "garbage collection: `tqdm.__del__` \u2192 `close()` \u2192 `None`"
+    },
+    {
+      "claim": "`tqdm.__exit__` calls `close()` and tolerates a late `AttributeError` by issuing a warning.",
+      "quote": "whose `__exit__` calls `close()` and tolerates a late `AttributeError` with a warning"
+    },
+    {
+      "claim": "`tqdm.__new__` adds the instance to `cls._instances` inside `with cls.get_lock():`.",
+      "quote": "with cls.get_lock():  # also constructs lock if non-existent\n    cls._instances.add(instance)"
+    },
+    {
+      "claim": "`tqdm.get_lock` is guarded by `if not hasattr(cls, '_lock'): cls._lock = TqdmDefaultWriteLock()`.",
+      "quote": "`if not hasattr(cls, '_lock'): cls._lock = TqdmDefaultWriteLock()`"
+    },
+    {
+      "claim": "The same `TqdmDefaultWriteLock` object is used by `tqdm.write` and `external_write_mode`.",
+      "quote": "and for `tqdm.write` and `external_write_mode` too"
+    },
+    {
+      "claim": "`TqdmDefaultWriteLock` is reentrant on both halves, being a threading `RLock` and a multiprocessing `RLock`.",
+      "quote": "It is reentrant on both halves \u2014 a threading `RLock` and a multiprocessing `RLock`"
+    },
+    {
+      "claim": "`tqdm.__new__` only constructs a new `TMonitor` when `cls.monitor_interval` is truthy and `cls.monitor is None or not cls.monitor.report()`.",
+      "quote": "if cls.monitor_interval and (cls.monitor is None\n                             or not cls.monitor.report()):"
+    },
+    {
+      "claim": "`TMonitor.report` is defined as `return not self.was_killed.is_set()`.",
+      "quote": "def report(self):\n    return not self.was_killed.is_set()"
+    },
+    {
+      "claim": "`TMonitor.report` consults the kill event rather than `is_alive()`.",
+      "quote": "`report()` consults the kill event, not `is_alive()`"
+    },
+    {
+      "claim": "When monitor construction raises, `tqdm.__new__` warns with the message \"tqdm:disabling monitor support (monitor_interval = 0) due to:\" using `TqdmMonitorWarning` and `stacklevel=2`, then sets `cls.monitor_interval = 0`.",
+      "quote": "warn(\"tqdm:disabling monitor support\"\n     \" (monitor_interval = 0) due to:\\n\" + str(e),\n     TqdmMonitorWarning, stacklevel=2)\ncls.monitor_interval = 0"
+    },
+    {
+      "claim": "`TMonitor.run` sets `instance.miniters = 1` and calls `instance.refresh(nolock=True)` when `instance.miniters > 1` and `(cur_t - instance.last_print_t) >= instance.maxinterval`.",
+      "quote": "if (\n    instance.miniters > 1\n    and (cur_t - instance.last_print_t) >= instance.maxinterval\n):\n    instance.miniters = 1\n    instance.refresh(nolock=True)"
+    },
+    {
+      "claim": "`TMonitor` re-checks the kill event inside its loop.",
+      "quote": "It re-checks the kill event inside the loop to keep shutdown prompt"
+    },
+    {
+      "claim": "`TMonitor` warns with `TqdmSynchronisationWarning` if the set of instances changed during its pass.",
+      "quote": "warns with `TqdmSynchronisationWarning` if the instance set changed under it"
+    },
+    {
+      "claim": "`TMonitor._atexit_signal` only calls `self.was_killed.set()` and does not join.",
+      "quote": "def _atexit_signal(self):\n    \"\"\"\n    Non-joining shutdown signal.\n    ...\n    \"\"\"\n    self.was_killed.set()"
+    },
+    {
+      "claim": "`TMonitor.exit()` is the joining variant of shutdown and refuses to join itself.",
+      "quote": "The joining variant exists as `exit()`, which also refuses to join itself"
+    },
+    {
+      "claim": "The lock and monitor are class attributes on `tqdm.std.tqdm`, shared by every subclass in the process.",
+      "quote": "The lock and the monitor are class attributes on `tqdm.std.tqdm`, so they are shared by every subclass"
+    },
+    {
+      "claim": "`tqdm` provides a `set_lock(...)` classmethod.",
+      "quote": "reassigns `tqdm.set_lock(...)`"
+    },
+    {
+      "claim": "`tqdm.__init__` wraps the stream with `file = DisableOnWriteError(file, tqdm_instance=self)`.",
+      "quote": "then `file = DisableOnWriteError(file, tqdm_instance=self)`"
+    },
+    {
+      "claim": "Each tqdm bar constructs its own `DisableOnWriteError` wrapper bound by weak proxy to that instance; wrappers are not shared between bars.",
+      "quote": "Each bar gets its own guard; they are not shared."
+    },
+    {
+      "claim": "`tqdm.__init__` stores the description with `self.desc = desc or ''`.",
+      "quote": "self.desc = desc or ''"
+    },
+    {
+      "claim": "`tqdm.format_dict` publishes `self.desc` under the key `prefix`.",
+      "quote": "`format_dict` then publishes it under the key `prefix`"
+    },
+    {
+      "claim": "`tqdm.format_meter` sets `l_bar = prefix` when `prefix[-2:] == \": \"` and otherwise `prefix + \": \"`, and `l_bar = ''` when prefix is empty.",
+      "quote": "bool_prefix_colon_already = (prefix[-2:] == \": \")\n    l_bar = prefix if bool_prefix_colon_already else prefix + \": \"\nelse:\n    l_bar = ''"
+    },
+    {
+      "claim": "When `desc` is empty, `tqdm.format_meter` strips a literal `'{desc}: '` out of a custom `bar_format`.",
+      "quote": "An empty `desc` takes the other branch and also strips a literal `'{desc}: '` out of any custom `bar_format`"
+    },
+    {
+      "claim": "`tqdm._decr_instances` removes the instance from `_instances` under the lock, and is called by `close()`.",
+      "quote": "its `close()` ran `_decr_instances`, which removes the instance from `_instances` under the lock"
+    },
+    {
+      "claim": "At `n=0, total=4, desc='Processing'`, `format_meter` produces `'Processing:   0%|          | 0/4 [00:00<?, ?it/s]'`.",
+      "quote": "The result is `'Processing:   0%|          | 0/4 [00:00<?, ?it/s]'`"
+    },
+    {
+      "claim": "`tqdm.__init__` sets `self.last_print_t = self._time()` and then `self.start_t = self.last_print_t` at the very end, with a comment about avoiding race conditions.",
+      "quote": "`self.last_print_t = self._time()` and then `self.start_t = self.last_print_t`, with the comment `NB: Avoid race conditions by setting start_t at the very end of init`"
+    },
+    {
+      "claim": "`tqdm.set_description` executes `self.desc = desc + ': ' if desc else ''` and calls `self.refresh()` when `refresh` is true.",
+      "quote": "self.desc = desc + ': ' if desc else ''\nif refresh:\n    self.refresh()"
+    },
+    {
+      "claim": "`tqdm.set_description` has `refresh=True` as its default.",
+      "quote": "`set_description(..., refresh=True)` is the default"
+    },
+    {
+      "claim": "`tqdm.set_description_str` stores the description string verbatim without appending `': '`.",
+      "quote": "`set_description_str` is the variant that stores the string verbatim"
+    },
+    {
+      "claim": "`tqdm.refresh` does not consult `mininterval` or `miniters`.",
+      "quote": "There is no consultation of `mininterval` or `miniters` anywhere on this path."
+    },
+    {
+      "claim": "tqdm's throttling logic lives inside `tqdm.update`.",
+      "quote": "The throttling machinery that Chapter 4 described lives entirely inside `update`"
+    },
+    {
+      "claim": "A comment in `tqdm.__iter__` states that it does not call `self.update(1)` for speed optimisation.",
+      "quote": "*does not call self.update(1) for speed optimisation*"
+    },
+    {
+      "claim": "`tqdm.update` re-runs the counter and time gates against its own state.",
+      "quote": "It re-runs the same two gates on its own state"
+    },
+    {
+      "claim": "`tqdm.update` tolerates a negative `n` by decrementing `last_print_n` to match.",
+      "quote": "A negative `n` is tolerated: `last_print_n` is decremented to match"
+    },
+    {
+      "claim": "`tqdm.update` returns immediately on a disabled bar.",
+      "quote": "On a disabled bar the whole method is a `return`"
+    },
+    {
+      "claim": "`tqdm.update` performs the cheap counter check before calling `time()`.",
+      "quote": "The cheap counter check comes first *specifically* to avoid calling `time()` on every iteration"
+    },
+    {
+      "claim": "`tqdm.update` feeds the two EMA accumulators when `smoothing` is truthy and both `dt` and `dn` are non-zero.",
+      "quote": "with `smoothing` truthy and both `dt` and `dn` non-zero, the two accumulators are finally fed"
+    },
+    {
+      "claim": "`EMA.__call__` computes `last = alpha*x + beta*last` and returns it de-biased by dividing by `1 - beta**calls`.",
+      "quote": "Its arithmetic is `last = alpha*x + beta*last`, returned de-biased by `1 - beta**calls`"
+    },
+    {
+      "claim": "`tqdm.update` calls `refresh(lock_args=self.lock_args)` after updating the accumulators.",
+      "quote": "Then `refresh(lock_args=self.lock_args)`"
+    },
+    {
+      "claim": "The `rate` reported by tqdm while running is an exponential moving average of increments over intervals rather than `n/elapsed`, controlled by `smoothing`.",
+      "quote": "This is an *exponential moving average* of increments over intervals, not `n/elapsed`"
+    },
+    {
+      "claim": "In `tqdm.format_meter`, when `inv_rate` (1/rate) is less than 1 the non-inverted rate form is used, producing e.g. `'18.13it/s'`.",
+      "quote": "`inv_rate` is 0.055, less than 1, so the non-inverted form wins and `rate_fmt` becomes `'18.13it/s'`"
+    },
+    {
+      "claim": "`tqdm.format_meter` computes remaining time as `(total - n)/rate`.",
+      "quote": "`remaining = (4 - 2)/18.125` formats as `'00:00'`"
+    },
+    {
+      "claim": "`Bar.__format__` at `frac=0.5` with 10 cells computes `divmod(int(0.5 * 10 * 8), 8)`, giving five whole blocks and no partial block, padded to ten cells.",
+      "quote": "`divmod(int(0.5 * 10 * 8), 8)` gives five whole blocks and no partial, padded to ten cells"
+    },
+    {
+      "claim": "In `tqdm.update`, when `dynamic_miniters` is set and `dt` is below `maxinterval`, `miniters` is retuned through an EMA.",
+      "quote": "`dt` (0.110) is well under `maxinterval` (10), so the smoothed branch runs"
+    },
+    {
+      "claim": "`miniters` may hold a float value because the gate uses a `>=` comparison rather than an index.",
+      "quote": "a float, which is fine because the gate is a `>=` comparison, not an index"
+    },
+    {
+      "claim": "`tqdm.update` stores `last_print_n` and `last_print_t` and returns `True` when a display happened.",
+      "quote": "`last_print_n` and `last_print_t` are stored, and `update` returns `True` \u2014 its documented signal that a display actually happened"
+    },
+    {
+      "claim": "`tqdm.update` returns `None` when no frame was drawn.",
+      "quote": "everything else returns `None`"
+    },
+    {
+      "claim": "`tqdm.format_meter` discards `total` and falls back to a counter-only line when `n >= total + 0.5`.",
+      "quote": "`n >= total + 0.5` would discard it and fall back to a counter-only line"
+    },
+    {
+      "claim": "`Bar.__format__` at `frac=1.0` with 10 cells computes `divmod(80, 8) = (10, 0)` and appends no padding because `bar_length` is not less than `N_BARS`, producing ten solid blocks.",
+      "quote": "`Bar` computes `divmod(80, 8) = (10, 0)`; `bar_length` is not less than `N_BARS`, so no padding is appended and the bar is ten solid blocks"
+    },
+    {
+      "claim": "`tqdm.close` reads `pos = abs(self.pos)` before calling `_decr_instances(self)`.",
+      "quote": "`pos = abs(self.pos)` is read *before* deregistration, then `_decr_instances(self)`"
+    },
+    {
+      "claim": "`tqdm._decr_instances` acquires the process-global `TqdmDefaultWriteLock` and removes the instance from the `WeakSet`.",
+      "quote": "takes the process-global lock \u2014 the same `TqdmDefaultWriteLock` from Chapter 1 \u2014 and removes the instance from the `WeakSet`"
+    },
+    {
+      "claim": "`Comparable.__eq__` compares the `_comparable` property of the two objects.",
+      "quote": "`Comparable.__eq__` ([utils.py#L108-L109]) consulting `_comparable` twice"
+    },
+    {
+      "claim": "`tqdm._comparable` returns the bar's screen position.",
+      "quote": "Hashing is by identity; equality is by screen position."
+    },
+    {
+      "claim": "`tqdm._decr_instances` swallows a `KeyError` when removing an instance that is already absent.",
+      "quote": "A `KeyError` on removal is swallowed on purpose"
+    },
+    {
+      "claim": "After removing the instance, `tqdm._decr_instances` looks for an unfixed bar with `pos >= nrows - 1`, clears it and moves it into the freed slot.",
+      "quote": "`_decr_instances` looks for an unfixed bar that had been pushed past the visible rows (`pos >= nrows - 1`), clears it and moves it into the freed slot"
+    },
+    {
+      "claim": "`tqdm.close` returns silently if `last_print_t` was never set or if `last_print_t < start_t + delay`.",
+      "quote": "If `last_print_t` was never set, or `last_print_t < start_t + delay` \u2014 the bar never displayed \u2014 it returns silently"
+    },
+    {
+      "claim": "`tqdm.close` returns early if `self.sp` is `None`.",
+      "quote": "If `self.sp` is `None` \u2014 a GUI subclass \u2014 it returns too"
+    },
+    {
+      "claim": "`tqdm.close` defines a local `fp_write` and calls it with the empty string as a probe.",
+      "quote": "`close` defines a bare `fp_write` and calls it with the empty string"
+    },
+    {
+      "claim": "In `tqdm.close`, a `ValueError` containing `'closed'` is caught and causes the method to return, while any other `ValueError` is re-raised.",
+      "quote": "the `ValueError` containing `'closed'` would be caught and `close` would return ... Any other `ValueError` re-raises."
+    },
+    {
+      "claim": "`tqdm.close` computes `leave = pos == 0 if self.leave is None else self.leave`.",
+      "quote": "`leave = pos == 0 if self.leave is None else self.leave`"
+    },
+    {
+      "claim": "`tqdm.close` sets `self._ema_dt = lambda: None` before calling `self.display(pos=0)`.",
+      "quote": "self._ema_dt = lambda: None\nself.display(pos=0)"
+    },
+    {
+      "claim": "Because `format_dict` evaluates `self._ema_dt()` as the condition first, `_ema_dn()` is not called when `_ema_dt()` is falsy.",
+      "quote": "the condition is evaluated first, is now falsy, and `_ema_dn()` is never even called"
+    },
+    {
+      "claim": "With `rate=None` at close, `format_meter` falls back to the overall average `(n - initial) / elapsed`.",
+      "quote": "falls back to the plain overall average ([std.py#L550-L551]): `(4 - 0) / 0.230072 = 17.386`"
+    },
+    {
+      "claim": "`tqdm.close` calls `display(pos=0)` so the final frame is drawn at the top line rather than the bar's own position.",
+      "quote": "`display(pos=0)` also means the final frame is drawn at the top line rather than wherever the bar had been"
+    },
+    {
+      "claim": "`tqdm.display` guards still apply at close, so a position at or beyond `nrows` prints nothing.",
+      "quote": "a position at or beyond `nrows` prints nothing"
+    },
+    {
+      "claim": "After the final frame, `tqdm.close` writes `'\\n'` and releases the lock.",
+      "quote": "Then `fp_write('\\n')` \u2014 one character \u2014 commits the line and the lock is released."
+    },
+    {
+      "claim": "When `leave` is false, `tqdm.close` calls `display(msg='', pos=pos)` to blank the line and writes `'\\r'`.",
+      "quote": "`display(msg='', pos=pos)` to blank the line, plus a `'\\r'` to park the cursor"
+    },
+    {
+      "claim": "`tqdm.format_dict` works on a closed bar and returns the normal dict when the instance still has a `unit` attribute.",
+      "quote": "the instance still has `unit`, so the normal branch runs"
+    },
+    {
+      "claim": "`tqdm.format_dict` uses a `defaultdict(lambda: None, ...)` branch when the instance lacks `unit`, so absent keys read as `None` rather than raising.",
+      "quote": "would get the `defaultdict(lambda: None, ...)` branch instead, so absent keys read as `None` rather than raising"
+    },
+    {
+      "claim": "`tqdm.format_dict` is documented as \"public API for read-only member access\".",
+      "quote": "`format_dict` is documented as \"public API for read-only member access\""
+    },
+    {
+      "claim": "Under `dynamic_ncols`, `tqdm.format_dict` re-probes the terminal and writes `self.ncols` and `self.nrows`.",
+      "quote": "under `dynamic_ncols` it re-probes the terminal and writes `self.ncols` and `self.nrows`"
+    },
+    {
+      "claim": "`tqdm.__exit__` downgrades a late `AttributeError` to a `TqdmWarning` rather than raising.",
+      "quote": "whose `__exit__` closes deterministically and downgrades a late `AttributeError` to a `TqdmWarning`"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 0.71
+}

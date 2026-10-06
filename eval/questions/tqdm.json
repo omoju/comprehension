@@ -1,0 +1,179 @@
+{
+  "repo": "tqdm",
+  "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
+  "questions": [
+    {
+      "id": "p1",
+      "kind": "path",
+      "question": "The scenario calls `tqdm(chars)` with no `total=`. What value does `self.total` end up with for that bar, and which code decides it?",
+      "key": "total becomes 4. In `tqdm.__init__` (tqdm/std.py:982-986), because `total is None and iterable is not None`, it tries `total = len(iterable)`, which is 4 for the list ['a','b','c','d'] (a TypeError/AttributeError would leave it None). The trace confirms this: `format_meter` is called with `total=4` even though the constructor received `total=None`.",
+      "lines": [
+        "tqdm/std.py:982-988"
+      ],
+      "check": "from io import StringIO\nfrom tqdm import tqdm\nf = StringIO()\nt = tqdm([\"a\", \"b\", \"c\", \"d\"], file=f)\nassert t.total == 4, t.total\nt.close()\n# non-sized iterable -> stays None\nt2 = tqdm((x for x in range(4)), file=f)\nassert t2.total is None\nt2.close()"
+    },
+    {
+      "id": "p2",
+      "kind": "path",
+      "question": "During the second (`desc=\"Processing\"`) loop over 4 items with 0.05 s sleeps, `tqdm.update` is called twice and both times with `n=2`, never with `n=1`. Explain the mechanism and the exact arguments.",
+      "key": "`tqdm.__iter__` (tqdm/std.py:1166-1201) does not call `update(1)` per item: it keeps local counters `n` and `last_print_n` and only calls `self.update(n - last_print_n)` when `n - last_print_n >= self.miniters` AND `dt = cur_t - last_print_t >= mininterval` (0.1 s) and `cur_t >= start_t + delay`. With 0.05 s per item, the threshold is first met after the 2nd item (dt\u22480.1), so `self.update(2)` is called; inside `update`, dynamic_miniters sets `self.miniters = self._ema_miniters(dn*mininterval/dt) = 2.0`, so the 3rd item is skipped and the 4th triggers `self.update(2)` again. Hence the calls are exactly update(n=2), update(n=2).",
+      "lines": [
+        "tqdm/std.py:1178-1201",
+        "tqdm/std.py:1237-1267"
+      ],
+      "check": "from io import StringIO\nfrom tqdm import tqdm\ncalls = []\nclass T(tqdm):\n    def update(self, n=1):\n        calls.append(n)\n        return super().update(n)\nclock = [0.0]\nf = StringIO()\nt = T([\"a\", \"b\", \"c\", \"d\"], file=f, mininterval=0.1)\nt._time = lambda: clock[0]\nt.start_t = 0.0\nt.last_print_t = 0.0\nfor _ in t:\n    clock[0] += 0.05\nassert calls == [2, 2], calls"
+    },
+    {
+      "id": "p3",
+      "kind": "path",
+      "question": "In the final display produced by `close()` the rate shown (17.39it/s) is computed differently from the one shown by the last `update()` (17.50it/s). What does `close()` change, and what does `format_dict['rate']` return afterwards?",
+      "key": "`close()` with leave=True replaces the EMA timer: `self._ema_dt = lambda: None` (tqdm/std.py:1306-1310) before calling `display(pos=0)`. `format_dict` (tqdm/std.py:1466) then evaluates `self._ema_dn() / self._ema_dt() if self._ema_dt() else None`, so `rate` is None; `format_meter` therefore falls back to the plain overall average `rate = (n - initial) / elapsed` (tqdm/std.py:550-551). That is why the closing line shows 4/0.2301 \u2248 17.39it/s instead of the smoothed 17.50it/s, and why `format_dict['rate']` is None after close.",
+      "lines": [
+        "tqdm/std.py:1305-1310",
+        "tqdm/std.py:1466",
+        "tqdm/std.py:550-551"
+      ],
+      "check": "from io import StringIO\nfrom tqdm import tqdm\nf = StringIO()\nt = tqdm([\"a\", \"b\"], file=f)\nlist(t)  # iteration ends -> close() in finally\nassert t._ema_dt() is None\nassert t.format_dict['rate'] is None"
+    },
+    {
+      "id": "p4",
+      "kind": "path",
+      "question": "The scenario calls `pbar.close()` explicitly after the loop, and later `__del__` calls `close()` again. What do these extra calls actually do?",
+      "key": "Nothing: they return immediately. The loop's `__iter__` finally-block already called `close()`, which set `self.disable = True` (tqdm/std.py:1276). Every subsequent `close()` hits the guard `if getattr(self, 'disable', True): return` at tqdm/std.py:1272-1273 and returns None without writing anything, so no duplicate final bar/newline is emitted (the trace shows close at line 605 and the `__del__`-triggered close at 607-608 both returning None straight away).",
+      "lines": [
+        "tqdm/std.py:1270-1280",
+        "tqdm/std.py:1153-1154"
+      ],
+      "check": "from io import StringIO\nfrom tqdm import tqdm\nf = StringIO()\nt = tqdm([\"a\"], file=f)\nlist(t)\nassert t.disable is True\nbefore = f.getvalue()\nassert t.close() is None\nassert f.getvalue() == before"
+    },
+    {
+      "id": "p5",
+      "kind": "path",
+      "question": "Both bars in the scenario get `pos == 0` (see the two `_get_free_pos` calls returning 0). Why doesn't the second bar get position 1?",
+      "key": "`_get_free_pos` (tqdm/std.py:680-685) returns `min(set(range(len(positions)+1)) - positions)` over the `pos` of all *live* instances in `cls._instances` except itself. The first bar was already closed, and `close()` -> `_decr_instances` removed it from `_instances` (tqdm/std.py:1279-1280, 697-699), so the set of taken positions is empty and the minimum free position is 0 again. Had the first bar still been open, the second would have received pos 1 (and would print one line lower via `moveto`).",
+      "lines": [
+        "tqdm/std.py:680-685",
+        "tqdm/std.py:687-716",
+        "tqdm/std.py:1095-1097"
+      ],
+      "check": "from io import StringIO\nfrom tqdm import tqdm\nf = StringIO()\na = tqdm([\"x\"], file=f)\nb = tqdm([\"x\"], file=f)\nassert (a.pos, b.pos) == (0, 1), (a.pos, b.pos)\nb.close(); a.close()\nc = tqdm([\"x\"], file=f)\nassert c.pos == 0\nc.close()"
+    },
+    {
+      "id": "p6",
+      "kind": "path",
+      "question": "Reproduce the exact string `format_meter` returned for the half-finished second bar (n=2, total=4, elapsed\u22480.1105, prefix='Processing b: ', rate\u224818.1253). What is it, and how is the `{bar}` part built?",
+      "key": "It returns 'Processing b:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]'. Since `prefix` already ends with ': ', it is used verbatim as `l_bar` and `' 50%|'` (from f'{percentage:3.0f}%|') is appended; `ncols` is None so `Bar(frac=0.5, default_len=10, charset=Bar.UTF)` renders 10 cells: `int(0.5*10*8)=40`, `divmod(40,8)=(5,0)` -> 5 full '\u2588' plus charset[0]=' ' padding, i.e. '\u2588\u2588\u2588\u2588\u2588     '. `r_bar` is '| 2/4 [00:00<00:00, 18.13it/s]' (inv_rate=0.055 is not > 1, so the non-inverted rate format ' 18.13it/s' is used).",
+      "lines": [
+        "tqdm/std.py:582-643",
+        "tqdm/std.py:183-208"
+      ],
+      "check": "from tqdm import tqdm\nres = tqdm.format_meter(2, 4, 0.1105039119720459, prefix='Processing b: ', rate=18.125303578991037)\nassert res == 'Processing b:  50%|\\u2588\\u2588\\u2588\\u2588\\u2588     | 2/4 [00:00<00:00, 18.13it/s]', repr(res)"
+    },
+    {
+      "id": "p7",
+      "kind": "path",
+      "question": "At construction time the first bar immediately printed '  0%|          | 0/4 [00:00<?, ?it/s]'. Which call chain produced that, and why are the ETA and rate shown as '?'",
+      "key": "`__init__` ends with `self.sp = self.status_printer(self.fp)` and, because `delay <= 0`, `self.refresh(lock_args=self.lock_args)` -> `display()` -> `__str__()` -> `format_meter(**self.format_dict)` with n=0, total=4, elapsed=0 (tqdm/std.py:1099-1103). In `format_meter`, `rate` stays None because `elapsed` is 0 (the `rate = (n-initial)/elapsed` branch at std.py:550-551 is skipped), so `rate_fmt` is '?it/s' and `remaining_str` is '?'; the result is exactly '  0%|          | 0/4 [00:00<?, ?it/s]', which `print_status` writes prefixed by '\\r'.",
+      "lines": [
+        "tqdm/std.py:1099-1108",
+        "tqdm/std.py:546-574",
+        "tqdm/std.py:449-460"
+      ],
+      "check": "from tqdm import tqdm\nres = tqdm.format_meter(0, 4, 0)\nassert res == '  0%|          | 0/4 [00:00<?, ?it/s]', repr(res)"
+    },
+    {
+      "id": "p8",
+      "kind": "path",
+      "question": "The trace shows `TMonitor.__init__` only for the first bar; for the second bar `TMonitor.report()` is called instead. What logic in `__new__` causes this, and what would make a new monitor be started?",
+      "key": "`tqdm.__new__` (tqdm/std.py:664-678) runs under `cls.get_lock()` and creates a monitor only `if cls.monitor_interval and (cls.monitor is None or not cls.monitor.report())`. On the first instantiation `cls.monitor` is None so `TMonitor(cls, cls.monitor_interval=10)` is constructed (and auto-`start()`ed); on the second, the existing monitor's `report()` returns True (`not was_killed.is_set()`), so the same thread object is reused \u2014 `tqdm.monitor` is identical for both bars. A new monitor would only be created if the old one had been killed (report() False), or none at all if `cls.monitor_interval` were set to 0 before instantiation.",
+      "lines": [
+        "tqdm/std.py:664-678",
+        "tqdm/_monitor.py:31-41",
+        "tqdm/_monitor.py:103-104"
+      ],
+      "check": "from io import StringIO\nfrom tqdm import tqdm\nfrom tqdm._monitor import TMonitor\nf = StringIO()\nt1 = tqdm(total=1, file=f)\nm1 = tqdm.monitor\nassert isinstance(m1, TMonitor) and m1.report() is True\nt2 = tqdm(total=1, file=f)\nassert tqdm.monitor is m1\nt1.close(); t2.close()"
+    },
+    {
+      "id": "g1",
+      "kind": "general",
+      "question": "What exactly does `close()` leave on screen, and how is the decision made for `leave=True`, `leave=False` and `leave=None`?",
+      "key": "`close()` (tqdm/std.py:1270-1314) first no-ops if already disabled, sets `disable=True`, removes the instance via `_decr_instances`, and returns early if `last_print_t < start_t + delay` (never displayed) or if `self.sp` is None (GUI mode). Then `leave = pos == 0 if self.leave is None else self.leave`, i.e. with leave=None only the outermost bar (abs(pos)==0) is kept. If leave is truthy it disables EMA smoothing (`self._ema_dt = lambda: None`), redisplays at pos=0 and writes '\\n'; otherwise it clears the line with `display(msg='', pos=pos)` and, if pos==0, writes a '\\r' so the cursor returns to the line start (leaving nothing behind).",
+      "lines": [
+        "tqdm/std.py:1270-1314"
+      ],
+      "check": "from io import StringIO\nfrom tqdm import tqdm\nf1, f2 = StringIO(), StringIO()\na = tqdm(total=1, file=f1, leave=True); a.close()\nb = tqdm(total=1, file=f2, leave=False); b.close()\nassert f1.getvalue().endswith('\\n')\nassert not f2.getvalue().endswith('\\n') and f2.getvalue().endswith('\\r')"
+    },
+    {
+      "id": "g2",
+      "kind": "general",
+      "question": "What does `tqdm(..., disable=True)` guarantee, and what is still usable on such an instance?",
+      "key": "With a truthy `disable`, `__init__` returns early (tqdm/std.py:990-999): it stores only `iterable`, `disable`, `n=initial`, `total` and `leave`, takes a free `pos` and then *removes itself from `_instances`*, so no file wrapping/status printer/timers are set up (no `start_t`, `sp`, `unit`, ...). `__iter__` then just `yield from iterable` (1174-1176), `update`/`refresh`/`clear`/`close`/`unpause` return immediately, and `format_dict` returns a `defaultdict(lambda: None, {'n':..., 'total':..., 'elapsed':0, 'unit':'it'})` (1456-1458) so arbitrary keys read as None. `disable=None` means 'disable if the output file is not a TTY' (979-981).",
+      "lines": [
+        "tqdm/std.py:979-999",
+        "tqdm/std.py:1174-1176",
+        "tqdm/std.py:1453-1458"
+      ],
+      "check": "from tqdm import tqdm\nt = tqdm(range(3), disable=True)\nassert list(t) == [0, 1, 2]\nd = t.format_dict\nassert d['n'] == 0 and d['total'] == 3 and d['elapsed'] == 0 and d['unit'] == 'it'\nassert d['anything_else'] is None\nassert t.update(1) is None and t.refresh() is None"
+    },
+    {
+      "id": "g3",
+      "kind": "general",
+      "question": "What does the monitoring thread guarantee, under which conditions does it act, and how can it be disabled?",
+      "key": "`TMonitor` (tqdm/_monitor.py) is a daemon thread started from `tqdm.__new__` with `sleep_interval = tqdm.monitor_interval` (default 10 s, tqdm/std.py:363). Each cycle it waits on an Event for the interval, then, holding `tqdm_cls.get_lock()`, iterates over started instances (those having `start_t`) and, only for instances with `miniters > 1` whose `cur_t - last_print_t >= maxinterval`, forces `miniters = 1` and `refresh(nolock=True)`. So it guarantees a refresh at most ~maxinterval late for bars whose dynamic miniters grew too large; it does nothing for manually small miniters or for bars that never call update. It is killed by `exit()` or by the atexit-registered `_atexit_signal` (which only sets the event, no join, to avoid shutdown deadlocks). Disable application-wide by setting `tqdm.tqdm.monitor_interval = 0` before creating any bar.",
+      "lines": [
+        "tqdm/_monitor.py:16-104",
+        "tqdm/std.py:363-364",
+        "tqdm/std.py:664-678"
+      ],
+      "check": "from io import StringIO\nfrom tqdm import tqdm\nfrom tqdm._monitor import TMonitor\nassert tqdm.monitor_interval == 10\nt = tqdm(total=1, file=StringIO())\nassert isinstance(tqdm.monitor, TMonitor) and tqdm.monitor.daemon\nassert tqdm.monitor.sleep_interval == 10\nt.close()"
+    },
+    {
+      "id": "g4",
+      "kind": "general",
+      "question": "How do the `TQDM_*` environment variables override `tqdm()` defaults, and what are the typing rules and pitfalls of that mechanism?",
+      "key": "`tqdm.__init__` is decorated with `@envwrap(\"tqdm\", is_method=True, types={'total': float, 'ncols': int, 'miniters': float, 'position': int, 'nrows': int})` (tqdm/std.py:958-959). `envwrap` (tqdm/utils.py:34-76) snapshots `os.environ` **at import time**, collecting keys starting with 'TQDM_' lowercased, drops names that aren't parameters of `__init__`, converts each value using the type hint, else `type(param.default)` when the default isn't None, else the explicit `types` mapping (leaving it a str if absent), and binds them with `functools.partialmethod`. Consequences: e.g. `TQDM_MININTERVAL=5` or `TQDM_POSITION=-1` change defaults globally; changing env vars after import has no effect; unknown TQDM_* vars are silently ignored; conversion failures for annotated params are silently swallowed; and parameters whose default is None and which are missing from `types` stay strings. If the third-party `envwrap` package is installed it replaces this implementation (utils.py:79-82).",
+      "lines": [
+        "tqdm/utils.py:34-82",
+        "tqdm/std.py:957-966"
+      ],
+      "check": "import os\nfrom tqdm.utils import envwrap\nos.environ['FOO_A'] = '42'\n@envwrap('foo')\ndef f(a=1, b=2):\n    return a, b\nassert f() == (42, 2), f()\nassert f(a=7) == (7, 2)"
+    },
+    {
+      "id": "g5",
+      "kind": "general",
+      "question": "What happens if a caller passes an unrecognised keyword argument to `tqdm()` (e.g. `tqdm(x, nested=True)` or a typo)?",
+      "key": "After the `disable` shortcut, `__init__` checks `if kwargs:` (tqdm/std.py:1001-1012): it sets `self.disable = True`, takes/releases a free pos and removes itself from `_instances` (so a half-built bar doesn't leak into the instance set), then raises \u2014 `TqdmDeprecationWarning` (which is a Warning subclass raised as an exception, and whose constructor writes the message to the file instead of the message body) if 'nested' is among the kwargs, otherwise `TqdmKeyError(\"Unknown argument(s): \" + str(kwargs))`. Note the object has already been added to `_instances` by `__new__`, hence the explicit removal before raising.",
+      "lines": [
+        "tqdm/std.py:1001-1012",
+        "tqdm/std.py:36-50"
+      ],
+      "check": "from io import StringIO\nfrom tqdm import tqdm\nfrom tqdm.std import TqdmKeyError\nn_before = len(tqdm._instances)\ntry:\n    tqdm(range(3), file=StringIO(), bad_arg=1)\nexcept TqdmKeyError as e:\n    assert 'bad_arg' in str(e)\nelse:\n    raise AssertionError('no TqdmKeyError')\nassert len(tqdm._instances) == n_before"
+    },
+    {
+      "id": "g6",
+      "kind": "general",
+      "question": "The output file is always wrapped in `DisableOnWriteError`. What does that wrapper do on I/O errors, and what is the user-visible effect?",
+      "key": "`__init__` sets `file = DisableOnWriteError(file, tqdm_instance=self)` (tqdm/std.py:977). The wrapper (tqdm/utils.py:166-206) replaces `write` and `flush` with `disable_on_exception`-wrapped versions holding a `weakref.proxy` to the bar: an `OSError` with `errno == 5` (EIO, e.g. detached terminal) or a `ValueError` whose message contains 'closed' is swallowed and `tqdm_instance.miniters = float('inf')` is set (a `ReferenceError` from a dead proxy is ignored); any other error propagates. Effect: the bar stops producing output almost entirely instead of crashing the user's loop \u2014 note it sets miniters to infinity rather than actually setting `disable=True`, so the progress bar silently goes quiet. `__eq__` is delegated to the wrapped object so comparisons such as `fp in (sys.stderr, sys.stdout)` in `status_printer` still work.",
+      "lines": [
+        "tqdm/utils.py:166-206",
+        "tqdm/std.py:977",
+        "tqdm/std.py:443-447"
+      ],
+      "check": "from io import StringIO\nfrom tqdm import tqdm\nf = StringIO()\nt = tqdm(total=10, file=f)\nassert t.fp == f and t.fp is not f\nf.close()\nt.refresh()\nassert t.miniters == float('inf')\nt.close()"
+    },
+    {
+      "id": "g7",
+      "kind": "general",
+      "question": "Under what conditions does `format_meter` drop the bar/ETA and print only counter statistics, even though a `total` was supplied?",
+      "key": "At the top of `format_meter` (tqdm/std.py:532-535) there is a sanity check: `if total and (n >= (total + 0.5) or total == float('inf')): total = None`. So an over-shooting counter (allowing for float imprecision, issue #849) or an infinite total discards `total`, and with `total` falsy and no `bar_format` the final branch (std.py:658-662) returns just `'{desc}: {n_fmt}{unit} [{elapsed}, {rate_fmt}{postfix}]'` \u2014 no percentage, no `{bar}`, no remaining time. (`total=float('inf')` is likewise converted to None already in `__init__`, std.py:987-988.) A `total` of 0/None behaves the same way; with a user `bar_format` but no total, a blank-charset bar and `percentage=0` are supplied instead (std.py:645-657).",
+      "lines": [
+        "tqdm/std.py:532-535",
+        "tqdm/std.py:645-662",
+        "tqdm/std.py:987-988"
+      ],
+      "check": "from tqdm import tqdm\nover = tqdm.format_meter(6, 5, 1)\nassert '%' not in over and '|' not in over and over.startswith('6it [00:01,')\nexact = tqdm.format_meter(5, 5, 1)\nassert '100%' in exact and '5/5' in exact\nassert tqdm.format_meter(3, float('inf'), 1).startswith('3it [')"
+    }
+  ],
+  "dropped": [],
+  "cost": 1.57
+}

@@ -1,0 +1,186 @@
+{
+  "repo": "attrs",
+  "commit": "8f767776326faaed11e6c2974798787f6e19b343",
+  "questions": [
+    {
+      "id": "p1",
+      "kind": "path",
+      "question": "The scenario decorates SomeClass with plain `@define` (no auto_attribs argument). How does attrs decide to treat the annotated class body as fields, and what would change if the class also contained a bare `field()` assignment without an annotation?",
+      "key": "`define()` is called with auto_attribs=None (the default), so `define.<locals>.wrap` calls `do_it(cls, True)` first (_next_gen.py:414-420) -- the trace shows `do_it(cls=..., auto_attribs=True)`. Inside `_transform_attrs` the auto_attribs branch walks `_get_annotations(cls)` ({'a_number': int, 'list_of_numbers': list[int]}), skips ClassVars, and wraps non-_CountingAttr values with `attrib(...)`; since no `attr.ib`/`field()` in the body lacks an annotation, `unannotated` is empty and no UnannotatedAttributeError is raised, so the class is built with auto_attribs=True and two fields: a_number (type int, default 42) and list_of_numbers (type list[int], default Factory(list)). If the body had an unannotated `x = field()` next to an annotated-but-plain `y: int = 2`, the first attempt would raise UnannotatedAttributeError, `wrap` would catch it and retry with `do_it(cls, False)`, so only `x` would become a field and the annotated `y` would be silently ignored.",
+      "lines": [
+        "src/attr/_next_gen.py:414-420",
+        "src/attr/_make.py:399-451"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\nfrom attrs import define, field, Factory\n\n@define\nclass SomeClass:\n    a_number: int = 42\n    list_of_numbers: list[int] = Factory(list)\n\nf = attrs.fields(SomeClass)\nassert [a.name for a in f] == ['a_number', 'list_of_numbers']\nassert f[0].type is int and f[0].default == 42\nassert f[1].type == list[int] and isinstance(f[1].default, attrs.Factory)\n\n@define\nclass Mixed:\n    x = field(default=1)\n    y: int = 2\n\nassert [a.name for a in attrs.fields(Mixed)] == ['x']\nprint('ok')\n"
+    },
+    {
+      "id": "p2",
+      "kind": "path",
+      "question": "`attrs.define` normally installs convert+validate on_setattr hooks. Did SomeClass in this run get an attrs-written `__setattr__`? Explain the decision and name the value stored in its ClassProps.on_setattr_hook.",
+      "key": "No `__setattr__` was written. `define.wrap` sets on_setattr = _DEFAULT_ON_SETATTR (setters.pipe(setters.convert, setters.validate), the `wrapped_pipe` function seen in the trace) because frozen is False and on_setattr is None, and that object is stored in ClassProps.on_setattr_hook. But in `_ClassBuilder.__init__` (lines 731-756) attrs scans the fields: neither a_number nor list_of_numbers has a validator or a converter, so `self._on_setattr` is reset to None. Consequently `add_setattr` finds `sa_attrs` empty and returns immediately without writing `__setattr__`, and `_create_slots_class` puts `__attrs_own_setattr__ = False` in the class dict. So `inspect(SomeClass).on_setattr_hook` still reports the pipe hook even though no hook is installed; adding a validator or converter to any field makes attrs write `__setattr__` and set `__attrs_own_setattr__ = True`.",
+      "lines": [
+        "src/attr/_next_gen.py:395-412",
+        "src/attr/_make.py:731-756",
+        "src/attr/_make.py:1174-1191"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs, attr\nfrom attr._make import _DEFAULT_ON_SETATTR\n\n@attrs.define\nclass SomeClass:\n    a_number: int = 42\n    list_of_numbers: list = attrs.Factory(list)\n\nassert '__setattr__' not in SomeClass.__dict__\nassert SomeClass.__dict__['__attrs_own_setattr__'] is False\nassert attrs.inspect(SomeClass).on_setattr_hook is _DEFAULT_ON_SETATTR\n\n@attrs.define\nclass WithV:\n    x: int = attrs.field(validator=attrs.validators.instance_of(int))\n\nassert '__setattr__' in WithV.__dict__\nassert WithV.__dict__['__attrs_own_setattr__'] is True\nprint('ok')\n"
+    },
+    {
+      "id": "p3",
+      "kind": "path",
+      "question": "What hashability did attrs derive for SomeClass, which branch produced it, and what is `SomeClass.__hash__` afterwards?",
+      "key": "ClassProps.hashability is Hashability.UNHASHABLE ('unhashable'). In `attrs.wrap`: the class is not an exception, hash/unsafe_hash is None, auto_detect is True but the class defines no own `__hash__`, eq resolved to True and is_frozen is False, so the chain falls through to the final `else: hashability = Hashability.UNHASHABLE` (lines 1506-1518). `props.is_hashable` returns False (trace shows two calls returning False), so `builder.add_hash()` is skipped and `builder.make_unhashable()` sets `cls_dict['__hash__'] = None`. Therefore `SomeClass.__hash__ is None` and `hash(sc)` raises TypeError (unhashable type).",
+      "lines": [
+        "src/attr/_make.py:1496-1521",
+        "src/attr/_make.py:1590-1593",
+        "src/attr/_make.py:1066-1068"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\n\n@attrs.define\nclass SomeClass:\n    a_number: int = 42\n    list_of_numbers: list = attrs.Factory(list)\n\nassert SomeClass.__hash__ is None\nassert attrs.inspect(SomeClass).hashability.value == 'unhashable'\nassert attrs.inspect(SomeClass).is_hashable is False\ntry:\n    hash(SomeClass())\n    raise AssertionError('should be unhashable')\nexcept TypeError:\n    pass\nprint('ok')\n"
+    },
+    {
+      "id": "p4",
+      "kind": "path",
+      "question": "Describe the `__init__` that attrs generated for SomeClass: the parameter defaults it carries, its `__annotations__`, and how the list default is produced at call time.",
+      "key": "`_attrs_to_init_script` produced `def __init__(self, a_number=attr_dict['a_number'].default, list_of_numbers=NOTHING):` with body `self.a_number = a_number` and `if list_of_numbers is not NOTHING: self.list_of_numbers = list_of_numbers / else: self.list_of_numbers = __attr_factory_list_of_numbers()`. So the evaluated default of a_number is 42 while the default of list_of_numbers is the NOTHING sentinel, and the empty list is created fresh on each call by the `__attr_factory_list_of_numbers` global (bound to `list`) -- two `SomeClass()` instances do not share a list. Because the class is not frozen/slotted-with-cache-hash, `_determine_setters` returned plain `_assign`, so assignments are direct `self.x = ...` (no `_setattr`). The init's `__annotations__` is {'a_number': int, 'list_of_numbers': list[int], 'return': None}.",
+      "lines": [
+        "src/attr/_make.py:2296-2359",
+        "src/attr/_make.py:2140-2184",
+        "src/attr/_make.py:2440-2448"
+      ],
+      "check": "import os, sys, inspect\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\nfrom attr import NOTHING\n\n@attrs.define\nclass SomeClass:\n    a_number: int = 42\n    list_of_numbers: list[int] = attrs.Factory(list)\n\nsig = inspect.signature(SomeClass.__init__)\nassert sig.parameters['a_number'].default == 42\nassert sig.parameters['list_of_numbers'].default is NOTHING\nassert SomeClass.__init__.__annotations__ == {\n    'a_number': int, 'list_of_numbers': list[int], 'return': None}\nassert SomeClass().list_of_numbers == []\nassert SomeClass().list_of_numbers is not SomeClass().list_of_numbers\nprint('ok')\n"
+    },
+    {
+      "id": "p5",
+      "kind": "path",
+      "question": "`asdict(sc)` in the scenario goes through two functions. Trace the handling of the `list_of_numbers` value and say whether the resulting list is the same object as `sc.list_of_numbers`. How would `attr.asdict` differ for a tuple-valued field?",
+      "key": "`attrs.asdict` (_next_gen.py:627) delegates to `attr._funcs.asdict` with retain_collection_types=True and dict_factory=dict. For list_of_numbers, type(v) is list which is not in _ATOMIC_TYPES and `has(list)` is False (the trace shows has(cls=list) -> False), so the `issubclass(value_type, (tuple, list, set, frozenset))` branch runs: cf = value_type (list, because retain_collection_types is True) and each element goes through `_asdict_anything`, which returns ints unchanged because int is in _ATOMIC_TYPES. The result `{'a_number': 1, 'list_of_numbers': [1, 2, 3]}` contains a **new** list object built by `cf(items)`, not `sc.list_of_numbers`. With the classic `attr.asdict`, retain_collection_types defaults to False, so a tuple-valued field would be converted to a list; the attrs-namespace `asdict` keeps it a tuple.",
+      "lines": [
+        "src/attr/_next_gen.py:627-640",
+        "src/attr/_funcs.py:88-121",
+        "src/attr/_funcs.py:163-167"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs, attr\n\n@attrs.define\nclass SomeClass:\n    a_number: int = 42\n    list_of_numbers: list = attrs.Factory(list)\n\nsc = SomeClass(1, [1, 2, 3])\nd = attrs.asdict(sc)\nassert d == {'a_number': 1, 'list_of_numbers': [1, 2, 3]}\nassert type(d['list_of_numbers']) is list\nassert d['list_of_numbers'] is not sc.list_of_numbers\n\n@attrs.define\nclass T:\n    t: tuple = ()\n\nassert attrs.asdict(T((1, 2)))['t'] == (1, 2)\nassert attr.asdict(T((1, 2)))['t'] == [1, 2]\nprint('ok')\n"
+    },
+    {
+      "id": "p6",
+      "kind": "path",
+      "question": "The trace shows `__ne__(self=<SomeClass>, other=SomeClass(a_number=2, ...))` at _make.py:1730 returning True. Where does that `__ne__` come from, how does it compute its result, and what does it return when compared against a non-SomeClass object?",
+      "key": "It is the single module-level function `__ne__` defined in attr/_make.py (line 1730); `_ClassBuilder.add_eq` assigns it unchanged as `cd['__ne__'] = __ne__` (no per-class code generation, unlike `__eq__`), so `SomeClass.__ne__ is attr._make.__ne__`. It calls `self.__eq__(other)`: the generated `__eq__` sees `other.__class__ is self.__class__`, compares `self.a_number == other.a_number and self.list_of_numbers == other.list_of_numbers`, gets False, and `__ne__` returns `not False` -> True. If `other` is not a SomeClass, the generated `__eq__` returns NotImplemented, and `__ne__` forwards NotImplemented (it does not negate it), so Python falls back to identity comparison and `sc != object()` is True.",
+      "lines": [
+        "src/attr/_make.py:1730-1739",
+        "src/attr/_make.py:1150-1162",
+        "src/attr/_make.py:1748-1770"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs, attr._make\n\n@attrs.define\nclass SomeClass:\n    a_number: int = 42\n    list_of_numbers: list = attrs.Factory(list)\n\nsc = SomeClass(1, [1, 2, 3])\nassert SomeClass.__ne__ is attr._make.__ne__\nassert sc.__eq__(SomeClass(2, [3, 2, 1])) is False\nassert sc.__ne__(SomeClass(2, [3, 2, 1])) is True\nassert sc.__eq__(object()) is NotImplemented\nassert sc.__ne__(object()) is NotImplemented\nassert (sc != object()) is True\nassert sc == SomeClass(1, [1, 2, 3])\nprint('ok')\n"
+    },
+    {
+      "id": "p7",
+      "kind": "path",
+      "question": "`make_class(\"C\", [\"a\", \"b\"])` builds a class with a very different feature set from `@define`. Name at least four effective build properties of C that differ from SomeClass and why they differ.",
+      "key": "`make_class` is a thin wrapper around classic `attr.s` with `these=cls_dict`, so C gets attr.s defaults, while SomeClass got define's defaults. Concretely: (1) is_slotted is False for C (attr.s slots=False) vs True for SomeClass -- C is finished by `_patch_original_class`, SomeClass by `_create_slots_class`; (2) added_ordering is True for C because make_class calls `_determine_attrs_eq_order(cmp=None, eq=None, order=None, True)` which returns (True, True), so `__lt__/__le__/__gt__/__ge__` are added (trace lines 208-214), whereas define passes order=False; (3) collected_fields_by_mro is False for C (attr.s collect_by_mro default False, using `_collect_base_attrs_broken`) vs True for define; (4) added_pickling is False for C (default follows slots) vs True for SomeClass; (5) on_setattr_hook is None for C (no converters/validators run on assignment) vs the convert+validate pipe for SomeClass. Both end up with `__hash__ = None` (UNHASHABLE) and both get `__match_args__`/`__replace__`.",
+      "lines": [
+        "src/attr/_make.py:3261-3361",
+        "src/attr/_make.py:1353-1379",
+        "src/attr/_make.py:1540-1559"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\n\nC = attrs.make_class('C', ['a', 'b'])\np = attrs.inspect(C)\nassert p.is_slotted is False\nassert p.added_ordering is True\nassert p.collected_fields_by_mro is False\nassert p.added_pickling is False\nassert p.on_setattr_hook is None\nassert C.__hash__ is None\nassert C('a', 'b') < C('b', 'a')\nassert repr(C('foo', 'bar')) == \"C(a='foo', b='bar')\"\nassert C.__match_args__ == ('a', 'b')\nprint('ok')\n"
+    },
+    {
+      "id": "p8",
+      "kind": "path",
+      "question": "After `C = make_class(\"C\", [\"a\", \"b\"])`, what is `attrs.fields(C).a.type` and what is in `C.__annotations__`? How does that change if the attributes are given as `field(type=int)`?",
+      "key": "With a plain list of names, make_class builds `cls_dict = {a: attrib(), b: attrib()}`; each _CountingAttr has type=None, so `Attribute.from_counting_attr` stores type=None and `attrs.fields(C).a.type is None`. At the end make_class sets `cls.__annotations__ = {k: v.type for k, v in cls_dict.items() if v.type is not None}`, which is `{}` here (the assignment is deliberately done *after* attr.s so that the auto_attribs/annotation machinery doesn't trip over it). The generated `__init__.__annotations__` is just `{'return': None}`. If you pass a dict such as `{'x': field(type=int)}`, then `fields(D).x.type is int`, `D.__annotations__ == {'x': int}` and the init annotation for x is int.",
+      "lines": [
+        "src/attr/_make.py:3311-3317",
+        "src/attr/_make.py:3356-3361",
+        "src/attr/_make.py:2379-2384"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\n\nC = attrs.make_class('C', ['a', 'b'])\nassert attrs.fields(C).a.type is None\nassert C.__annotations__ == {}\nassert C.__init__.__annotations__ == {'return': None}\n\nD = attrs.make_class('D', {'x': attrs.field(type=int)})\nassert attrs.fields(D).x.type is int\nassert D.__annotations__ == {'x': int}\nassert D.__init__.__annotations__['x'] is int\nprint('ok')\n"
+    },
+    {
+      "id": "g1",
+      "kind": "general",
+      "question": "`attrs.define` guesses *auto_attribs* when it is left at None. What exactly does it guarantee, and in which situation does the guess silently produce a class with fewer fields than the author intended?",
+      "key": "`define.wrap` first calls `do_it(cls, True)` and only falls back to `do_it(cls, False)` if an `UnannotatedAttributeError` escapes (_next_gen.py:414-420). In auto_attribs=True mode, `_transform_attrs` collects every annotated, non-ClassVar name in the class body, wrapping non-field values via `attrib(a)`, and raises UnannotatedAttributeError listing any `attr.ib`/`field()` in the body that lacks an annotation. So the guarantee is: if everything is annotated, annotations define the fields; if at least one `field()` is unannotated, attrs retries in classic mode where *only* `_CountingAttr` values are collected -- any member that only had a type annotation is then silently dropped (no error, no warning). Mixing styles is therefore the failure mode (documented in docs/types.md and docs/examples.md as a caution).",
+      "lines": [
+        "src/attr/_next_gen.py:414-420",
+        "src/attr/_make.py:402-439"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\nfrom attrs import define, field\n\n@define\nclass Mixed:\n    a = field(default=42)\n    b: int = 23\n\nassert [f.name for f in attrs.fields(Mixed)] == ['a']\nassert repr(Mixed()) == 'Mixed(a=42)'\nprint('ok')\n"
+    },
+    {
+      "id": "g2",
+      "kind": "general",
+      "question": "attrs sometimes throws away the class-level on_setattr hook as an optimization. State the exact condition, and explain the two ways this can surprise a user.",
+      "key": "In `_ClassBuilder.__init__` (lines 731-756), if the class is not frozen and `self._on_setattr` equals one of `_DEFAULT_ON_SETATTR`, `setters.validate` or `setters.convert`, attrs scans all fields for validators/converters; if the matching kind is absent (default pipe and neither validator nor converter; validate and no validator; convert and no converter) it sets `self._on_setattr = None`, so `add_setattr` writes no `__setattr__` at all. Surprise 1: `attrs.inspect(cls).on_setattr_hook` still reports the original hook object (it is stored in ClassProps before this reset), so introspection disagrees with the installed behavior. Surprise 2: the comparison is by equality/identity on the function object -- a user who writes `on_setattr=setters.pipe(setters.convert, setters.validate)` by hand creates a *different* `wrapped_pipe` object, so the optimization does not apply and a real `__setattr__` is installed (with the per-attribute dispatch cost) even for a class with no converters or validators.",
+      "lines": [
+        "src/attr/_make.py:726-756",
+        "src/attr/_make.py:1174-1224"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs, attr\n\n@attrs.define\nclass Plain:\n    x: int = 1\n\nassert '__setattr__' not in Plain.__dict__\nassert attrs.inspect(Plain).on_setattr_hook is not None\n\n@attrs.define(on_setattr=attr.setters.pipe(attr.setters.convert, attr.setters.validate))\nclass Manual:\n    x: int = 1\n\nassert '__setattr__' in Manual.__dict__\nprint('ok')\n"
+    },
+    {
+      "id": "g3",
+      "kind": "general",
+      "question": "What preconditions does `cache_hash=True` enforce, where is the cache stored, and what is the documented hazard around `__attrs_post_init__`?",
+      "key": "`attrs.wrap` raises `TypeError(\"Invalid value for cache_hash.  To use hash caching, hashing must be either explicitly or implicitly enabled.\")` when `not props.is_hashable and cache_hash` (lines 1564-1566), and raises `TypeError(\"Invalid value for cache_hash.  To use hash caching, init must be True.\")` when init is off (lines 1599-1601). When allowed, hashability becomes HASHABLE_CACHED, the cache lives in the attribute `_attrs_cached_hash` (`_HASH_CACHE_FIELD`), which is appended to `__slots__` for slotted classes; the generated `__hash__` wraps the value in `_CacheHashWrapper` (an int that pickles/copies as None) and recomputes only while the field is None. The generated `__init__` initializes the cache to None *after* calling `__attrs_post_init__` (lines 2399-2412), deliberately, so touching `hash(self)` inside `__attrs_post_init__` crashes rather than silently caching a hash computed from not-yet-final field values. Mutating hash-relevant fields after the first `__hash__` call leaves the hash undefined, which is why cache_hash is recommended only with frozen classes.",
+      "lines": [
+        "src/attr/_make.py:1564-1566",
+        "src/attr/_make.py:1595-1601",
+        "src/attr/_make.py:2399-2412",
+        "src/attr/_make.py:88-101"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\n\ntry:\n    @attrs.define(cache_hash=True)\n    class Bad:\n        x: int = 1\n    raise AssertionError('should have raised')\nexcept TypeError as e:\n    assert 'cache_hash' in str(e)\n\n@attrs.frozen(cache_hash=True)\nclass Good:\n    x: int = 1\n\ng = Good(1)\nassert hash(g) == hash(g)\nassert '_attrs_cached_hash' in Good.__slots__\nprint('ok')\n"
+    },
+    {
+      "id": "g4",
+      "kind": "general",
+      "question": "Enumerate the ways attrs refuses to combine frozen-ness with `on_setattr`, including the inherited-frozen case, and say which exception type and message you get.",
+      "key": "Three places guard this. (1) `_make_init_script`: if the class is frozen and the class-level hook is set and is not `setters.NO_OP`, it raises `ValueError(\"Frozen classes can't use on_setattr.\")` (lines 2044-2050). (2) The same function raises the identical ValueError if any *field* has `on_setattr` that is not NO_OP on a frozen class (lines 2062-2065). (3) `define.wrap` walks `cls.__bases__`; if a base's `__setattr__` is `_frozen_setattrs` (i.e. frozenness is inherited) and the user explicitly passed an on_setattr other than None/NO_OP, it raises `ValueError(\"Frozen classes can't use on_setattr (frozen-ness was inherited).\")`; otherwise it quietly forces `on_setattr = setters.NO_OP` so the inherited frozen subclass doesn't try to install hooks (_next_gen.py:395-412). Relatedly, `attrs.frozen` is `partial(define, frozen=True, on_setattr=None)`, and `attrs.wrap` raises `ValueError(\"Can't freeze a class with a custom __setattr__.\")` when auto_detect finds a user `__setattr__` on a frozen class.",
+      "lines": [
+        "src/attr/_make.py:2044-2050",
+        "src/attr/_make.py:2062-2065",
+        "src/attr/_next_gen.py:395-412",
+        "src/attr/_make.py:1486-1488"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\n\ntry:\n    @attrs.define(frozen=True, on_setattr=attrs.setters.validate)\n    class F:\n        x: int = attrs.field(validator=attrs.validators.instance_of(int), default=1)\n    raise AssertionError('should have raised')\nexcept ValueError as e:\n    assert \"Frozen classes can't use on_setattr\" in str(e)\n\n@attrs.frozen\nclass Base:\n    x: int = 1\n\ntry:\n    @attrs.define(on_setattr=attrs.setters.validate)\n    class Sub(Base):\n        y: int = 2\n    raise AssertionError('should have raised')\nexcept ValueError as e:\n    assert 'frozen-ness was inherited' in str(e)\nprint('ok')\n"
+    },
+    {
+      "id": "g5",
+      "kind": "general",
+      "question": "`slots=True` (the default for `define`) cannot be applied in place. Describe what `_create_slots_class` actually does and list the consequences the owner has to live with.",
+      "key": "Because `__slots__` cannot be added to an existing class, `_create_slots_class` builds a brand-new class object with `type(self._cls)(name, self._cls.__bases__, cd)` from a copy of the original class dict minus the attribute names, `__dict__` and `__weakref__`; it computes `__slots__` from the non-inherited field names (plus `__weakref__` if weakref_slot and not inherited, plus `_attrs_cached_hash` if cache_hash, plus names of `cached_property`s), re-attaches reused slot descriptors from base classes, and installs a generated `__getattr__` to make `functools.cached_property` work on slotted classes. It then walks `cls.__dict__.values()` (plus the cached-property/original `__getattr__` functions) and rewrites every closure cell whose contents is the old class to the new class, so `__class__`/bare `super()` keep working. Consequences: the original class object still exists (it keeps a `__attrs_base_of_slotted__` weakref to the replacement and lingers in `type.__subclasses__` until gc), `object.__init_subclass__` runs twice / doesn't work as expected (hence `__attrs_init_subclass__`), the class dict is rebuilt so monkey-patching or metaclass tricks on the original class are lost, and `__getstate__`/`__setstate__` are generated by default for slotted classes so pickling works.",
+      "lines": [
+        "src/attr/_make.py:800-821",
+        "src/attr/_make.py:859-1002",
+        "src/attr/_make.py:1025-1064"
+      ],
+      "check": "import os, sys, pickle\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\n\n@attrs.define\nclass A:\n    x: int = 1\n\nassert A.__dict__['__slots__'] == ('x', '__weakref__')\nassert '__getstate__' in A.__dict__ and '__setstate__' in A.__dict__\nassert attrs.inspect(A).added_pickling is True\n\n@attrs.define(slots=False)\nclass B:\n    x: int = 1\n\nassert attrs.inspect(B).added_pickling is False\nassert '__slots__' not in B.__dict__\nprint('ok')\n"
+    },
+    {
+      "id": "g6",
+      "kind": "general",
+      "question": "Compare `attrs.fields` and `attrs.fields_dict`: which inputs each accepts, which exceptions they raise, and what side effect `fields` has for generic aliases.",
+      "key": "`fields(cls)` accepts a class, an *instance* of an attrs class (since 26.1.0: if it is not a type and not a generic alias, it looks at `type(cls)` and recurses, raising `TypeError(\"Passed object must be a class or attrs instance.\")` if that type has no `__attrs_attrs__`), and a specialized generic alias `A[str]` (via `get_generic_base`). For a generic alias without its own `__attrs_attrs__`, it copies the origin's `__attrs_attrs__` **onto the alias object** as a cache -- deliberate global-state mutation relying on typing's caching of the alias. If nothing is found it raises `NotAnAttrsClassError(f\"{cls!r} is not an attrs-decorated class.\")`. `fields_dict(cls)` is stricter: anything that is not a `type` (including an instance and a generic alias) raises `TypeError(\"Passed object must be a class.\")`, otherwise it returns `{a.name: a}` or raises NotAnAttrsClassError. Both return/expose the same frozen `Attribute` objects; `fields` returns the named tuple subclass so `fields(C).x` works.",
+      "lines": [
+        "src/attr/_make.py:1924-1972",
+        "src/attr/_make.py:1975-2001",
+        "src/attr/_compat.py:98-102"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\nfrom attrs.exceptions import NotAnAttrsClassError\n\n@attrs.define\nclass A:\n    x: int = 1\n\nassert attrs.fields(A(1)) is attrs.fields(A)\nassert attrs.fields(A).x is attrs.fields_dict(A)['x']\ntry:\n    attrs.fields_dict(A(1))\n    raise AssertionError\nexcept TypeError as e:\n    assert 'must be a class' in str(e)\ntry:\n    attrs.fields(42)\n    raise AssertionError\nexcept TypeError as e:\n    assert 'class or attrs instance' in str(e)\ntry:\n    attrs.fields(object)\n    raise AssertionError\nexcept NotAnAttrsClassError:\n    pass\nprint('ok')\n"
+    },
+    {
+      "id": "g7",
+      "kind": "general",
+      "question": "How does the generated `__repr__` avoid infinite recursion for self-referential data, and why does the state for that live in `_compat` rather than `_make`?",
+      "key": "`_make_repr_script` emits a `__repr__` that reads `_compat.repr_context.already_repring` (a `threading.local()` defined in _compat.py:95). On the first entry it creates the set `{id(self)}`; on re-entry, if `id(self)` is already in the set it returns the string `'...'`, otherwise it adds the id, and a `finally` block removes it again. The thread-local is used so the information cannot leak between threads and so nested calls (for example a dict or list that contains the instance) see it through the call stack. It deliberately lives in `_compat` and is reached via the module object (`globs['_compat'] = _compat`) rather than being referenced directly, because a direct reference to a thread-local in the generated function's globals breaks cloudpickle (comment at _compat.py:92-94). Note the guard is keyed on `id(self)`, so it only suppresses *cycles* through the same object, and fields with `init=False` are read with `getattr(self, name, NOTHING)` so a missing attribute reprs as NOTHING instead of raising.",
+      "lines": [
+        "src/attr/_make.py:1852-1906",
+        "src/attr/_compat.py:83-95"
+      ],
+      "check": "import os, sys\nsys.path.insert(0, os.path.join(os.getcwd(), 'src'))\nimport attrs\n\n@attrs.define\nclass Node:\n    children: list = attrs.Factory(list)\n\nn = Node()\nn.children.append(n)\nassert repr(n) == 'Node(children=[...])'\n\n@attrs.define\nclass WithUninit:\n    y: int = attrs.field(init=False)\n\nw = WithUninit.__new__(WithUninit)\nassert repr(w) == 'WithUninit(y=NOTHING)'\nprint('ok')\n"
+    }
+  ],
+  "dropped": [],
+  "cost": 1.56
+}

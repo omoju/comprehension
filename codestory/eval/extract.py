@@ -10,6 +10,7 @@ extraction count and the word count are kept, since the primary metric scales by
 from __future__ import annotations
 
 import json
+import re
 import random
 import sys
 
@@ -38,16 +39,39 @@ SCHEMA = {
 }
 
 
+CHUNK_WORDS = 25_000  # a 62k-word text produced more claims than fit in one output; long texts go page by page
+
+
+def chunks(text: str) -> list[str]:
+    """The text whole, or split at page boundaries into pieces under CHUNK_WORDS (never inside a page)."""
+    if len(text.split()) <= CHUNK_WORDS:
+        return [text]
+    pages = re.split(r"(?=^# Page: )", text, flags=re.M)
+    out, current = [], ""
+    for page in pages:
+        if current and len((current + page).split()) > CHUNK_WORDS:
+            out.append(current)
+            current = ""
+        current += page
+    return out + ([current] if current else [])
+
+
 def extract(client, name: str, arm: str) -> dict:
     text = arm_text(name, arm)
-    response = ask(client, SYSTEM, f"<text>\n{text}\n</text>\n\nList every checkable claim in the text.", SCHEMA, max_tokens=64000)
-    save_trace(EVAL / "claims" / "traces", f"{name}.{arm}", response)
-    claims = json.loads(text_of(response))["claims"]
+    claims, cost, stops = [], 0.0, []
+    for i, chunk in enumerate(chunks(text)):
+        response = ask(client, SYSTEM, f"<text>\n{chunk}\n</text>\n\nList every checkable claim in the text.", SCHEMA, max_tokens=64000)
+        save_trace(EVAL / "claims" / "traces", f"{name}.{arm}" + (f".{i}" if i else ""), response)
+        cost += usage_cost(response.usage)
+        stops.append(response.stop_reason)
+        if response.stop_reason != "end_turn":  # a cut-off list is not a sample of the text
+            raise RuntimeError(f"extraction of {name}/{arm} chunk {i} stopped early: {response.stop_reason}")
+        claims += json.loads(text_of(response))["claims"]
     rng = random.Random(f"{SEED}:{name}:{arm}")  # fixed, per repo and arm, so a rerun samples the same claims
     sample = rng.sample(range(len(claims)), min(SAMPLE, len(claims)))
-    out = {"repo": name, "arm": arm, "words": words(text), "extracted": len(claims),
-           "sample": sorted(sample), "claims": claims, "stop_reason": response.stop_reason,
-           "cost": round(usage_cost(response.usage), 2)}
+    out = {"repo": name, "arm": arm, "words": words(text), "extracted": len(claims), "chunks": len(stops),
+           "sample": sorted(sample), "claims": claims, "stop_reason": stops[0] if len(stops) == 1 else stops,
+           "cost": round(cost, 2)}
     (EVAL / "claims" / f"{name}.{arm}.json").write_text(json.dumps(out, indent=2) + "\n")
     return out
 

@@ -105,3 +105,9 @@ Traceback (most recent call last):
     raise mapped_exc(message) from exc
 httpx2.ReadTimeout: The read operation timed out
 httpx         questions         (done)
+httpx         extract story     $0.65  160s
+httpx         extract deepwiki  $2.00  579s
+httpx         judge             $1.57  735s
+httpx         read story        $0.36  791s
+httpx         read deepwiki     $1.23  903s
+httpx         grade             $0.17  940s

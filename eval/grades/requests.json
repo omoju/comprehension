@@ -1,0 +1,178 @@
+{
+  "repo": "requests",
+  "arms": {
+    "story": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Accurately identifies prepare_auth's 2-tuple special case, HTTPBasicAuth.__call__, and the latin-1/base64/to_native_string construction of 'Basic dXNlcjpwYXNz', plus the __dict__ update and content-length recompute."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly concludes body stays None with no Content-Length, explains each skipped branch and the GET/HEAD exclusion, and notes a non-GET would get '0'."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Names build_response/get_encoding_from_headers, the charset parse yielding 'utf-8', and the ISO-8859-1 fallback for text/html (plus json and None cases)."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly identifies that the guess_json_utf branch is skipped because encoding is truthy, falls to loads(self.text), and that UTF-16 under utf-8 yields replacement chars and a requests JSONDecodeError."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Matches the key: select_proxy returns None so path_url is used, and a proxied non-HTTPS request would use urldefragauth(request.url)."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Explains cert_reqs defaults to CERT_REQUIRED regardless of scheme, only CERT_NONE when verify is False, and the ca_certs/ca_cert_dir outcomes for a path."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly states the len==2 check fails, the else branch calls the tuple as a handler, and a plain TypeError results with no Authorization header."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "States the one-call contract due to cookielib not regenerating an existing Cookie header and the resolve_redirects pop of 'Cookie'."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Describes case-insensitive startswith matching over longest-prefix-first adapters, the InvalidSchema error, and the prefix-misuse hazard with the '/' mitigation."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Gives the rebuild_auth/should_strip_auth rules and correctly identifies the http\u2192https standard-port upgrade as the allowed cross-scheme case, plus the netrc re-application."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Captures trust_env gating, the verify is True/None condition, REQUESTS_CA_BUNDLE precedence, and when ignored; only omits the prepared-request/send caveat."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly contrasts the default Retry(0, read=False) no-retry behaviour with Retry.from_int(3), only hedging on which failure classes are retried."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Gives the adapter's chunked = not (body is None or Content-Length present) rule and the prepare_body stream branch with super_len."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Maps each urllib3 error category to the matching requests exception as in the key, including the re-raise of unrecognised HTTPError."
+      }
+    ],
+    "deepwiki": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly identifies prepare_auth special-casing the 2-tuple into HTTPBasicAuth, the __call__ setting Authorization via _basic_auth_str, and the latin1/colon/base64/'Basic ' construction; only trivial details (to_native_string, __dict__ copy, Content-Length recompute) are omitted."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Gets the body=None part right but explicitly declines to state the key fact that no Content-Length header is set because the method is GET (and that non-GET/HEAD would get '0')."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Names get_encoding_from_headers/_parse_content_type_header, the Content-Type input, utf-8 result, and ISO-8859-1 for text/html without charset."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly explains that the guess_json_utf branch is skipped because encoding is already set, that text is passed to json.loads, and that a UTF-16 body with encoding='utf-8' would decode to garbage and raise requests.exceptions.JSONDecodeError."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "Declines to answer, failing to state that select_proxy returned None so path_url was used, and that a configured http proxy would yield urldefragauth(request.url)."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly states CERT_REQUIRED is the scheme-independent default from _urllib3_request_context, CERT_NONE for verify=False, and ca_certs/ca_cert_dir for a path, matching the key despite a small hedge."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "Says the documentation doesn't cover it rather than stating that the 3-tuple falls to the callable branch and raises TypeError: 'tuple' object is not callable."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "Denies the once-only contract and misses both the cookielib has_header mechanism and the fact that resolve_redirects pops the 'Cookie' header before re-preparing."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Describes the ordered prefix matching (longest/first match), mount, InvalidSchema on no match, and the look-alike-host misuse invited by plain string prefix matching."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly identifies should_strip_auth stripping on host (and port) change and the deliberately allowed http\u2192https default-port upgrade; only omits the changed_scheme nuance."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Matches the key: trust_env gating, explicit verify wins over env, REQUESTS_CA_BUNDLE preferred over CURL_CA_BUNDLE, and the prepared-request/send caveat requiring merge_environment_settings."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "States the default DEFAULT_RETRIES=0 (no retries) versus three connection retries with max_retries=3, plus the Retry object option and RetryError, though it omits the read=False nuance of the default."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correctly explains chunked is used for length-less iterables via super_len in prepare_body, but fails to give the adapter's actual decision rule (chunked = body is not None and no Content-Length header)."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gives the correct general guarantee and several mappings (ConnectTimeout, ReadTimeout, SSLError, ConnectionError) but omits/hedges on the MaxRetryError reason inspection, ProtocolError/OSError, ClosedPoolError, InvalidHeader, and LocationValueError\u2192InvalidURL."
+      }
+    ]
+  },
+  "cost": 0.21
+}

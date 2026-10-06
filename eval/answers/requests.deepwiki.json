@@ -1,0 +1,63 @@
+{
+  "repo": "requests",
+  "arm": "deepwiki",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "The tuple is converted into an `HTTPBasicAuth` object \u2014 the docs state that passing a `(username, password)` tuple is shorthand that is \"automatically converted into an HTTPBasicAuth object\" (docs/user/authentication.rst:26-33). The application happens in `PreparedRequest.prepare_auth(auth, url)` (src/requests/models.py:552-578 / 589-609), which invokes the handler's `__call__(r)`; `HTTPBasicAuth.__call__` sets `r.headers['Authorization'] = _basic_auth_str(self.username, self.password)` (src/requests/auth.py:111-113). `_basic_auth_str` (src/requests/auth.py:34-75) warns (DeprecationWarning) on non-string credentials and casts them, encodes `str` values to **latin1** bytes, joins them with a colon, base64-encodes the result, and prefixes it with `\"Basic \"` \u2014 giving `Basic dXNlcjpwYXNz`. The docs don't pin down the exact line where the tuple\u2192HTTPBasicAuth coercion occurs, only that it happens during auth preparation."
+    },
+    {
+      "id": "p2",
+      "answer": "The documentation only says that `prepare_body(data, files, json)` \"Encodes data/files, sets Content-Type and Content-Length\" (src/requests/models.py:484-521 / 503-587) \u2014 it does not document `prepare_content_length` or what it does when `body is None`, nor does it document that `prepare_auth` re-invokes it. So the documentation does not settle what the final body and Content-Length are. What can be said from the docs: `data={}` and `files=[]` carry no content to encode, so nothing is form- or multipart-encoded and the body shown in the trace is `None`; because the computation is driven solely by the body, calling it a second time from `prepare_auth` (after the Authorization header is added) recomputes the same value and is therefore harmless. Whether a `Content-Length: 0` header is emitted for a GET with a `None` body is not stated anywhere in the documentation provided."
+    },
+    {
+      "id": "p3",
+      "answer": "It was computed by `requests.utils.get_encoding_from_headers(headers)` (src/requests/utils.py:532-555) from the response's `Content-Type` header, which it parses with `_parse_content_type_header` (src/requests/utils.py:507-529). With no `charset` parameter and a media type of `application/json`, the function returns `'utf-8'` (RFC 4627 default). Had the server sent `Content-Type: text/html` with no charset, the `'text' in media type` branch would have fired instead and it would have returned `'ISO-8859-1'` (the RFC 2616 default for text types)."
+    },
+    {
+      "id": "p4",
+      "answer": "Because `r.encoding` was already set (to 'utf-8' from the header rules), `Response.json()` took the branch that simply decodes `Response.text` and hands it to `complexjson` (src/requests/models.py:968-1002); `guess_json_utf` (src/requests/utils.py:950-979) is only used as the fallback for detecting UTF-16/UTF-32 JSON when the encoding cannot otherwise be determined (see Content Encoding Detection). The exact guard condition for that fallback is not spelled out in the documentation. For a UTF-16 body while `encoding` is 'utf-8', the BOM/null-byte sniffing would be bypassed and the bytes would be decoded as UTF-8, producing garbage or a decode failure; the documented outcome of `Response.json()` failing to decode is `requests.exceptions.JSONDecodeError` (docs/api.rst:38), which subclasses `InvalidJSONError`/`RequestException` (src/requests/exceptions.py:42-43)."
+    },
+    {
+      "id": "p5",
+      "answer": "The documentation provided does not document `HTTPAdapter.request_url` or its proxy logic \u2014 it is not in the adapter method tables (init_poolmanager, proxy_manager_for, cert_verify, build_response, get_connection_with_tls_context, send). What it does show is that the relative form comes from the `path_url` property supplied by `RequestEncodingMixin` (src/requests/models.py:108-204), and that proxies are resolved per-request via `select_proxy`/`resolve_proxies` and handled by a `ProxyManager` obtained from `proxy_manager_for` (src/requests/adapters.py:304-357). The standard behaviour of sending an absolute URI to a plain HTTP proxy is not stated in these docs, so I can't confirm from the documentation what it would have returned with a proxy configured."
+    },
+    {
+      "id": "p6",
+      "answer": "The pool key always carries the TLS attributes so that connections with different verification settings are never shared (src/requests/adapters.py:375-423); with the default `verify=True`, `_urllib3_request_context` leaves certificate requirements at their default, i.e. `cert_reqs='CERT_REQUIRED'`, even though this particular request is plain HTTP. With `verify=False` it sets `cert_reqs='CERT_NONE'` (src/requests/adapters.py:98-99). With `verify='/path/to/ca.pem'` (an existing file) it sets `ca_certs='/path/to/ca.pem'` (src/requests/adapters.py:101-102); if the string were a directory it would set `ca_cert_dir` instead (src/requests/adapters.py:103-104). The docs don't explicitly state whether `cert_reqs` remains `CERT_REQUIRED` alongside `ca_certs`, though nothing in them changes it. The default CA material itself comes from `certifi` via `requests.certs.where()` (src/requests/certs.py:15-18)."
+    },
+    {
+      "id": "p8",
+      "answer": "The documentation does not cover this case. It only documents the 2-tuple shorthand `(username, password)` being converted into `HTTPBasicAuth` (docs/user/authentication.rst:26-33) and otherwise describes `auth` as an `AuthBase` subclass / callable applied by `prepare_auth` (src/requests/models.py:552-578, src/requests/auth.py:78-82). A 3-tuple matches neither documented form, so nothing in the docs tells us whether it is rejected, silently ignored, or passed through to be called as a handler; I'd have to read the code to say."
+    },
+    {
+      "id": "g1",
+      "answer": "The documentation describes `prepare_cookies(cookies)` only as converting cookies into the `Cookie` header via `get_cookie_header` (src/requests/models.py:539-550 / 610-628); it does not state any guarantee (or restriction) about calling it more than once, so I can't confirm the once-only contract from these docs. What the docs do say about redirects is that `SessionRedirectMixin.resolve_redirects` builds a **new** `PreparedRequest` for each redirect target rather than mutating the original in place (src/requests/sessions.py:186-290), and that session cookies are re-extracted from each response with `extract_cookies_to_jar` (src/requests/sessions.py:27). The consequence for reusing a single `PreparedRequest` object across sends is not documented here."
+    },
+    {
+      "id": "g2",
+      "answer": "A `Session` keeps `self.adapters` as an `OrderedDict` mapping URL prefix \u2192 adapter, pre-populated with `'http://'` and `'https://'` HTTPAdapters (src/requests/sessions.py:433-440, 465-470). On send it iterates the adapters and selects the one whose prefix is the **longest match** for the target URL (src/requests/sessions.py:748-755); `Session.mount(prefix, adapter)` registers new ones (src/requests/sessions.py:804-812). The misuse this invites: matching is on the URL string prefix, not on a parsed host, so a mount like `'https://example.com'` also matches look-alike URLs that merely start with that string (e.g. `https://example.com.attacker.net/`), and a URL whose scheme matches no prefix raises `InvalidSchema` (src/requests/exceptions.py:114-116). The prefix-vs-host pitfall is an inference from the documented matching rule; the docs don't call it out explicitly."
+    },
+    {
+      "id": "g3",
+      "answer": "`SessionRedirectMixin.should_strip_auth(old_url, new_url)` (src/requests/sessions.py:154-184) returns True \u2014 and the `Authorization` header is dropped \u2014 when the hostname changes, or when the port changes. The deliberately allowed case is the standard HTTP\u2192HTTPS upgrade on default ports (same host, 80 \u2192 443), which does not strip auth. Separately, `Proxy-Authorization` is always stripped on redirect because proxy auth is hop-by-hop/connection-specific (src/requests/sessions.py:253)."
+    },
+    {
+      "id": "g4",
+      "answer": "They act as the environment-level source for the CA bundle path and are folded in by `Session.merge_environment_settings()` / `resolve_proxies`-style merging (src/requests/sessions.py:711-715, 76-105). Precedence is: method-level argument > session attribute > environment variable, so an explicit `verify=` wins. `REQUESTS_CA_BUNDLE` is the primary variable and `CURL_CA_BUNDLE` is the fallback when it is unset (docs/user/advanced.rst:238-239). They are ignored when the session has `trust_env=False`, and \u2014 importantly \u2014 when you build a `PreparedRequest` yourself and call `Session.send()` directly, since environment settings are not merged automatically; you must call `s.merge_environment_settings(prepped.url, {}, None, None, None)` and pass the result into `send()` (docs/user/advanced.rst:190-207)."
+    },
+    {
+      "id": "g5",
+      "answer": "By default an `HTTPAdapter` does not retry: `DEFAULT_RETRIES` is 0 (src/requests/adapters.py:81), and `max_retries` is documented as \"the maximum number of retries each connection should attempt\" (src/requests/adapters.py:168). So `max_retries=0` means a connection-level failure surfaces immediately as an exception, while `max_retries=3` has urllib3 retry the connection up to three times before giving up (exhausting retries is what the `RetryError` exception represents, src/requests/exceptions.py). Note that the `timeout` value applies to *each* attempt, so wall-clock time grows with retries (docs/user/advanced.rst:479-482). For finer control you pass a `urllib3.util.retry.Retry` object, e.g. `HTTPAdapter(max_retries=Retry(total=3, read=False))`. The documentation here doesn't spell out which failure classes the integer form covers beyond \"each connection\"."
+    },
+    {
+      "id": "g6",
+      "answer": "Requests uses `Transfer-Encoding: chunked` when the request body is a generator or iterator whose length cannot be determined \u2014 specifically an object without a `__len__()` method passed as `data` (docs/user/advanced.rst:368-380). The length determination is done by `requests.utils.super_len` (src/requests/utils.py:160-251), which tries `__len__`, a `len` attribute, `fstat(fileno())`, or `tell()/seek()`; if none yields a size, the body is streamed chunked rather than given a `Content-Length`. Plain file objects opened in binary mode do get a `Content-Length` and are streamed un-chunked (docs/user/advanced.rst:348-364). The decision is made during `prepare_body` (src/requests/models.py:484-521); the adapter then performs the chunked send. Malformed chunked *responses* raise `ChunkedEncodingError`."
+    },
+    {
+      "id": "g7",
+      "answer": "`HTTPAdapter.send` catches urllib3/socket-level failures and re-raises them as requests exceptions (src/requests/adapters.py:19-50, 448-614). The mappings the documentation states explicitly are: `urllib3.exceptions.ConnectTimeoutError` \u2192 `requests.exceptions.ConnectTimeout`; `urllib3.exceptions.ReadTimeoutError` \u2192 `requests.exceptions.ReadTimeout`; `urllib3.exceptions.SSLError` \u2192 `requests.exceptions.SSLError`; and generic urllib3/socket/DNS failures \u2192 `requests.exceptions.ConnectionError` (see the error-flow sequence in the Error Handling page). `ProxyError` and `InvalidProxyURL` cover proxy failures and malformed proxy URLs, `RetryError` covers exhausted retry logic, `ContentDecodingError` a failed decompression, and `ChunkedEncodingError` a malformed chunked body (src/requests/exceptions.py:70-148). The precise urllib3 source classes for the latter group (ProtocolError, DecodeError, MaxRetryError, etc.) are not named in the documentation provided."
+    }
+  ],
+  "cost": 0.97
+}

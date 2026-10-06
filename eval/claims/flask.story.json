@@ -1,0 +1,820 @@
+{
+  "repo": "flask",
+  "arm": "story",
+  "words": 7261,
+  "extracted": 192,
+  "sample": [
+    2,
+    4,
+    9,
+    13,
+    17,
+    21,
+    30,
+    34,
+    35,
+    36,
+    39,
+    41,
+    42,
+    55,
+    59,
+    60,
+    62,
+    74,
+    75,
+    82,
+    87,
+    88,
+    92,
+    100,
+    106,
+    111,
+    113,
+    117,
+    119,
+    124,
+    128,
+    131,
+    137,
+    140,
+    141,
+    143,
+    144,
+    157,
+    166,
+    185
+  ],
+  "claims": [
+    {
+      "claim": "`Flask.__init__` has default argument values `static_url_path=None`, `static_folder='static'`, `static_host=None`, `host_matching=False`, `subdomain_matching=False`, `template_folder='templates'`, `instance_path=None`, `instance_relative_config=False`, and `root_path=None`.",
+      "quote": "`static_url_path=None`, `static_folder='static'`, `static_host=None`, `host_matching=False`, `subdomain_matching=False`, `template_folder='templates'`, `instance_path=None`, `instance_relative_config=False`, `root_path=None`"
+    },
+    {
+      "claim": "`Flask.__init__` passes its whole argument list to `App.__init__`.",
+      "quote": "`Flask.__init__` immediately passes the whole argument list up to [`App.__init__`]"
+    },
+    {
+      "claim": "`App.__init__` passes a subset of its arguments to `Scaffold.__init__`.",
+      "quote": "which passes a subset further up to [`Scaffold.__init__`]"
+    },
+    {
+      "claim": "`Scaffold` is the layer shared between `Flask` and `Blueprint`.",
+      "quote": "the layer shared with `Blueprint`"
+    },
+    {
+      "claim": "The static folder setter in `Scaffold` strips trailing slashes from the value and stores it.",
+      "quote": "which strips trailing slashes and stores it"
+    },
+    {
+      "claim": "The `static_url_path` setter in `Scaffold` leaves a `None` value as `None`, to be derived later.",
+      "quote": "goes through [its setter](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/sansio/scaffold.py#L264-L269) and stays `None`, to be derived later"
+    },
+    {
+      "claim": "`get_root_path` looks the import name up in `sys.modules` and, if the module has a `__file__`, returns that file's directory.",
+      "quote": "looks the module up in `sys.modules`, finds it has a `__file__`, and returns that file's directory"
+    },
+    {
+      "claim": "Templates, static files, and `open_resource` are resolved relative to the app's `root_path`.",
+      "quote": "Templates, static files, and `open_resource` will all be resolved relative to that path."
+    },
+    {
+      "claim": "`Scaffold.__init__` creates the empty registries `view_functions`, the nested `error_handler_spec` defaultdict, and the `before_request_funcs`, `after_request_funcs` and `teardown_request_funcs` dicts.",
+      "quote": "Scaffold also lays out the empty registries the request will consult later: `view_functions`, the nested [`error_handler_spec`]"
+    },
+    {
+      "claim": "`auto_find_instance_path` calls `find_package` with the import name.",
+      "quote": "[`auto_find_instance_path`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/sansio/app.py#L507-L518) asks [`find_package('__main__')`]"
+    },
+    {
+      "claim": "`find_package` returns a tuple whose first element is a prefix that is `None` when the package is not installed.",
+      "quote": "prefix `None` meaning \"not installed\""
+    },
+    {
+      "claim": "`auto_find_instance_path` returns the directory found by `find_package` joined with `instance`.",
+      "quote": "so the instance path becomes that directory plus `instance`"
+    },
+    {
+      "claim": "`auto_find_instance_path` does not create the instance directory on disk.",
+      "quote": "Nothing is created on disk; it is just a path the app will offer if asked."
+    },
+    {
+      "claim": "`Flask.default_config` contains twenty-nine keys.",
+      "quote": "copies [`Flask.default_config`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L207-L239) \u2014 twenty-nine keys"
+    },
+    {
+      "claim": "`make_config` overwrites the `DEBUG` key with the result of `get_debug_flag()`.",
+      "quote": "it overwrites `DEBUG` with [`get_debug_flag()`]"
+    },
+    {
+      "claim": "`get_debug_flag()` reads the `FLASK_DEBUG` environment variable.",
+      "quote": "which reads the `FLASK_DEBUG` environment variable"
+    },
+    {
+      "claim": "The declared default for `DEBUG` in the `Flask` class body is `None`.",
+      "quote": "The declared default in the class body is `None`"
+    },
+    {
+      "claim": "`Config` is a subclass of `dict` that also stores `root_path`.",
+      "quote": "is a plain `dict` subclass that also remembers `root_path` for later file loading"
+    },
+    {
+      "claim": "The default config values for `SECRET_KEY`, `TRUSTED_HOSTS` and `PROPAGATE_EXCEPTIONS` are all `None`.",
+      "quote": "`SECRET_KEY: None`, `TRUSTED_HOSTS: None`, `PROPAGATE_EXCEPTIONS: None`"
+    },
+    {
+      "claim": "Constructing a Flask app with `SECRET_KEY` unset succeeds and emits no warning.",
+      "quote": "app construction succeeds anyway, with no warning"
+    },
+    {
+      "claim": "`make_aborter` builds the `Aborter` object that `flask.abort` calls.",
+      "quote": "builds the `Aborter` that `flask.abort` will call"
+    },
+    {
+      "claim": "The JSON provider stores the app as a `weakref.proxy`.",
+      "quote": "the JSON provider is constructed, storing the app as a [`weakref.proxy`]"
+    },
+    {
+      "claim": "In `App.__init__` the `url_map` is created with `host_matching=False` by default.",
+      "quote": "the [`url_map`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/sansio/app.py#L402-L408) is created with `host_matching=False`"
+    },
+    {
+      "claim": "`App.__init__` sets `_got_first_request` to `False`.",
+      "quote": "`_got_first_request` is set to `False`"
+    },
+    {
+      "claim": "`Flask.__init__` creates a Click group named after the app.",
+      "quote": "the app gets a Click group named after itself"
+    },
+    {
+      "claim": "`has_static_folder` returns `True` when `static_folder` resolves to `<root_path>/static`.",
+      "quote": "is `True` because `static_folder` resolves to `<root_path>/static`"
+    },
+    {
+      "claim": "The `static_url_path` property derives `'/static'` from the static folder's basename.",
+      "quote": "derives `'/static'` from that folder's basename"
+    },
+    {
+      "claim": "`Flask.__init__` registers the static route without checking whether the static directory exists.",
+      "quote": "The route is then registered [without checking whether the directory exists]"
+    },
+    {
+      "claim": "The static route's view function is a lambda that closes over `weakref.ref(self)` rather than the app itself.",
+      "quote": "the view function is a lambda closing over a `weakref.ref(self)` rather than the app itself"
+    },
+    {
+      "claim": "A `/static/<path:filename>` route is added to every app that has a static folder configured, and it serves files from the filesystem.",
+      "quote": "A `/static/<path:filename>` route is added to every app that has a static folder configured, existing or not, and it serves files off the filesystem."
+    },
+    {
+      "claim": "Passing `static_folder=None` prevents the static route from being added.",
+      "quote": "pass `static_folder=None` so the application does not also expose that path"
+    },
+    {
+      "claim": "The `setupmethod` wrapper calls `_check_setup_finished` before doing any work.",
+      "quote": "which calls [`_check_setup_finished`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/sansio/app.py#L410-L420) first"
+    },
+    {
+      "claim": "`_check_setup_finished` returns without error while `_got_first_request` is `False`.",
+      "quote": "While `_got_first_request` is `False` the check returns silently"
+    },
+    {
+      "claim": "`_endpoint_from_view_func` returns the view function's `__name__` as the endpoint name.",
+      "quote": "returning `'hello'` \u2014 the function's `__name__`"
+    },
+    {
+      "claim": "In `add_url_rule`, methods default to `(\"GET\",)` when none are declared.",
+      "quote": "[Methods default to `(\"GET\",)`]"
+    },
+    {
+      "claim": "The `PROVIDE_AUTOMATIC_OPTIONS` config key defaults to `True`.",
+      "quote": "because `PROVIDE_AUTOMATIC_OPTIONS` is `True`"
+    },
+    {
+      "claim": "When `PROVIDE_AUTOMATIC_OPTIONS` is `True` and `OPTIONS` was not declared, `add_url_rule` adds `OPTIONS` to the rule's methods and sets `provide_automatic_options=True` on the rule object.",
+      "quote": "[`OPTIONS` is added to the rule and `provide_automatic_options=True` is stamped onto the rule object]"
+    },
+    {
+      "claim": "`add_url_rule` adds the rule to the url map and records the view function in `view_functions`.",
+      "quote": "Finally the rule is added to the map and the view is recorded in `view_functions`"
+    },
+    {
+      "claim": "`add_url_rule` raises an `AssertionError` if an endpoint name is reused for a different function.",
+      "quote": "[an `AssertionError` if an endpoint name is reused for a different function]"
+    },
+    {
+      "claim": "The `route` decorator returns the original function unchanged.",
+      "quote": "The decorator [returns the original function unchanged]"
+    },
+    {
+      "claim": "The `/` rule registered for a plain `@app.route(\"/\")` has methods `{GET, HEAD, OPTIONS}`.",
+      "quote": "`/` \u2192 `hello` with methods `{GET, HEAD, OPTIONS}`"
+    },
+    {
+      "claim": "`Flask.test_client` checks `test_client_class`, which is `None` by default.",
+      "quote": "checks `test_client_class`, which is `None` on a stock app"
+    },
+    {
+      "claim": "`Flask.test_client` imports `FlaskClient` and constructs it with the app, the app's `response_class`, and `use_cookies=True`.",
+      "quote": "imports `FlaskClient`, and constructs it with the app, the app's `response_class`, and `use_cookies=True`"
+    },
+    {
+      "claim": "`FlaskClient.__init__` sets `preserve_context = False`, creates an empty `ExitStack` for held contexts, and builds an `environ_base` dict containing `REMOTE_ADDR` of `'127.0.0.1'` and an `HTTP_USER_AGENT` from `_get_werkzeug_version()`.",
+      "quote": "sets three things that matter to every request this client will ever make: `preserve_context = False`, an empty `ExitStack` for held contexts, and an `environ_base` dict seeded with `REMOTE_ADDR` of `'127.0.0.1'` and a `HTTP_USER_AGENT` built from"
+    },
+    {
+      "claim": "`_get_werkzeug_version()` reads the installed distribution metadata once and caches the result in a module global.",
+      "quote": "which reads the installed distribution metadata once and caches it in a module global"
+    },
+    {
+      "claim": "The test client's `HTTP_USER_AGENT` value has the form `Werkzeug/<version>`.",
+      "quote": "`{'REMOTE_ADDR': '127.0.0.1', 'HTTP_USER_AGENT': 'Werkzeug/3.1.9'}`"
+    },
+    {
+      "claim": "`client.get(\"/\")` goes through Werkzeug's `Client.get`, which forwards to `FlaskClient.open`.",
+      "quote": "lands in Werkzeug's `Client.get`, which forwards to [`FlaskClient.open`]"
+    },
+    {
+      "claim": "`FlaskClient.open` has separate branches for an `EnvironBuilder`, a raw `dict` environ, and a `BaseRequest` argument, merging or copying the environ accordingly.",
+      "quote": "an `EnvironBuilder`, a raw `dict` environ, or a `BaseRequest` would each take their own branch, with the environ merged or copied accordingly"
+    },
+    {
+      "claim": "When no pre-built request is supplied, `FlaskClient.open` falls through to `_request_from_builder_args`.",
+      "quote": "so control falls to the `else`: [`_request_from_builder_args`]"
+    },
+    {
+      "claim": "`_request_from_builder_args` merges the client's default `environ_base` with the caller's `environ_base` via `_copy_environ`.",
+      "quote": "it folds the client's defaults into whatever `environ_base` the caller passed, via [`_copy_environ`]"
+    },
+    {
+      "claim": "When `preserve_context` is true, `_request_from_builder_args` adds a `werkzeug.debug.preserve_context` key to the environ holding a callback that captures the context.",
+      "quote": "if `preserve_context` were true, it would add `werkzeug.debug.preserve_context` to the environ, a callback that captures the context so it survives the request"
+    },
+    {
+      "claim": "`FlaskClient.preserve_context` is only set inside a `with client:` block.",
+      "quote": "`preserve_context` is only set inside a `with client:` block"
+    },
+    {
+      "claim": "Flask's `EnvironBuilder.__init__` asserts that `base_url` is not passed together with `subdomain` or `url_scheme`.",
+      "quote": "that you did not pass `base_url` together with `subdomain` or `url_scheme`"
+    },
+    {
+      "claim": "Flask's `EnvironBuilder` computes `http_host = app.config.get(\"SERVER_NAME\") or \"localhost\"`.",
+      "quote": "`http_host = app.config.get(\"SERVER_NAME\") or \"localhost\"`"
+    },
+    {
+      "claim": "The `APPLICATION_ROOT` config key defaults to `'/'`.",
+      "quote": "`app_root = app.config[\"APPLICATION_ROOT\"]`, which is `'/'`"
+    },
+    {
+      "claim": "The `PREFERRED_URL_SCHEME` config key defaults to `'http'`.",
+      "quote": "`url_scheme = app.config[\"PREFERRED_URL_SCHEME\"]`, which is `'http'`"
+    },
+    {
+      "claim": "Flask's `EnvironBuilder` splits the requested path, and for a path with no scheme and no netloc the base URL is built from the scheme and host while the path is left unchanged.",
+      "quote": "The requested path is split; `'/'` has no scheme and no netloc of its own, so `base_url` becomes `'http://localhost/'` and `path` stays `'/'`"
+    },
+    {
+      "claim": "Flask's `EnvironBuilder` stores the app so that its `json_dumps` can serialize JSON bodies using the application's JSON provider.",
+      "quote": "The app is stored on the builder so that [`json_dumps`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L88-L94) can route JSON bodies through the application's own provider"
+    },
+    {
+      "claim": "`FlaskClient.open` closes the `EnvironBuilder` in a `finally` block.",
+      "quote": "the builder is closed in a `finally` so any file handles it opened are released even if building raised"
+    },
+    {
+      "claim": "`FlaskClient.open` closes `self._context_stack`, popping any contexts preserved by an earlier call.",
+      "quote": "`open` [closes `self._context_stack`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/testing.py#L230-L233), popping any contexts preserved by an earlier call"
+    },
+    {
+      "claim": "`FlaskClient.open` calls `super().open(request, ...)` to hand the environ to the WSGI application.",
+      "quote": "`super().open(request, ...)` hands the dict to the WSGI application"
+    },
+    {
+      "claim": "`Flask.__call__` forwards its `environ` and `start_response` arguments to `self.wsgi_app`.",
+      "quote": "does exactly one thing with the two arguments: forwards them to `self.wsgi_app`"
+    },
+    {
+      "claim": "`Flask.__call__` looks up `wsgi_app` on the instance, so a reassigned `app.wsgi_app` is what runs.",
+      "quote": "The lookup is on the instance, so whatever is bound to `wsgi_app` at call time is what runs."
+    },
+    {
+      "claim": "`wsgi_app` creates the context with `self.request_context(environ)`, pushes it, calls `full_dispatch_request(ctx)` inside a try, converts `Exception` into a response via `self.handle_exception(ctx, e)`, records non-`Exception` escapes via `sys.exc_info()[1]` and re-raises them, and pops the context in a `finally`.",
+      "quote": "ctx = self.request_context(environ)\nerror = None\ntry:\n    try:\n        ctx.push()\n        response = self.full_dispatch_request(ctx)"
+    },
+    {
+      "claim": "`wsgi_app` returns `response(environ, start_response)` from inside the outer `try`.",
+      "quote": "    return response(environ, start_response)"
+    },
+    {
+      "claim": "Teardown callbacks and `request.close()` run from `wsgi_app`'s `finally` block even when a view raises.",
+      "quote": "Teardown is in a `finally`, so teardown callbacks and `request.close()` run even when a view raises or the process is interrupted."
+    },
+    {
+      "claim": "`after_request` hooks are not guaranteed to run, because they execute inside the part of `wsgi_app` that can fail.",
+      "quote": "it is not a guarantee that `after_request` hooks ran, since those live inside the part that can fail"
+    },
+    {
+      "claim": "`Flask.request_context` passes the environ to `AppContext.from_environ`.",
+      "quote": "[`request_context`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1504-L1518) hands the environ to [`AppContext.from_environ`]"
+    },
+    {
+      "claim": "`AppContext.from_environ` wraps the environ in `app.request_class(environ)` and sets `request.json_module = app.json`.",
+      "quote": "which wraps it in `app.request_class(environ)` \u2014 Flask's `Request` \u2014 and attaches `request.json_module = app.json`"
+    },
+    {
+      "claim": "`AppContext.__init__` sets `self.app`, a fresh `g` from `app.app_ctx_globals_class()`, `url_adapter = None`, the request, `_session = None`, `_flashes = None`, and an empty `_after_request_functions` list.",
+      "quote": "sets up the furniture: `self.app`, a fresh `g` from `app.app_ctx_globals_class()`, `url_adapter = None`, the request, `_session = None` (not yet loaded \u2014 that is Chapter 4), `_flashes = None`, and an empty `_after_request_functions` list"
+    },
+    {
+      "claim": "`AppContext.__init__` calls `app.create_url_adapter(self._request)` in a try block and, on `HTTPException`, stores the exception on `self._request.routing_exception`.",
+      "quote": "try:\n    self.url_adapter = app.create_url_adapter(self._request)\nexcept HTTPException as e:\n    if self._request is not None:\n        self._request.routing_exception = e"
+    },
+    {
+      "claim": "When `create_url_adapter` raises an `HTTPException`, the context is still constructed and `url_adapter` is left `None`.",
+      "quote": "the exception is stored on `request.routing_exception` and the context is constructed anyway, with `url_adapter` left `None`"
+    },
+    {
+      "claim": "`AppContext.__init__` sets `_cv_token = None` and `_push_count = 0`.",
+      "quote": "Finally [`_cv_token = None` and `_push_count = 0`]"
+    },
+    {
+      "claim": "`create_url_adapter` sets `request.trusted_hosts = trusted_hosts` only when `self.config[\"TRUSTED_HOSTS\"]` is not `None`, then calls `get_host(request.environ, request.trusted_hosts)` and assigns the result to `request.host`.",
+      "quote": "if (trusted_hosts := self.config[\"TRUSTED_HOSTS\"]) is not None:\n    request.trusted_hosts = trusted_hosts\n\nrequest.host = get_host(request.environ, request.trusted_hosts)"
+    },
+    {
+      "claim": "With no allow-list, `get_host` reads `HTTP_HOST` out of the environ and returns it unchanged.",
+      "quote": "It reads `HTTP_HOST` out of the environ and returns it unchanged"
+    },
+    {
+      "claim": "If `TRUSTED_HOSTS` is set and the host does not match, `get_host` raises a `SecurityError`, which is a 400.",
+      "quote": "a mismatch would raise a `SecurityError` (a 400)"
+    },
+    {
+      "claim": "In `create_url_adapter`, when `url_map.host_matching` is true the branch blanks `server_name` so the real host governs matching.",
+      "quote": "`url_map.host_matching` is `False`, so the first branch \u2014 which would blank `server_name` so the real host governs matching \u2014 is skipped"
+    },
+    {
+      "claim": "In `create_url_adapter`, when `self.subdomain_matching` is `False` the subdomain is pinned to `self.url_map.default_subdomain or \"\"`.",
+      "quote": "`self.subdomain_matching` is also `False`, so the `elif` runs and pins `subdomain` to `self.url_map.default_subdomain or \"\"`"
+    },
+    {
+      "claim": "`create_url_adapter` calls `url_map.bind_to_environ(request.environ, server_name=server_name, subdomain=subdomain)` and returns the resulting `MapAdapter`.",
+      "quote": "[`url_map.bind_to_environ(request.environ, server_name=None, subdomain=\"\")`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L549-L551) returns the `MapAdapter`"
+    },
+    {
+      "claim": "`create_url_adapter`'s no-request branch binds the url map using `SERVER_NAME` and `APPLICATION_ROOT`, and returns `None` when `SERVER_NAME` is unset.",
+      "quote": "binding without a request, from `SERVER_NAME` and `APPLICATION_ROOT` \u2014 is what makes `url_for` work in a CLI command; it returns `None` when `SERVER_NAME` is unset"
+    },
+    {
+      "claim": "`AppContext.__repr__` includes the app name and the request method and URL.",
+      "quote": "`<AppContext 4557234128 of scenario, GET 'http://localhost/'>`"
+    },
+    {
+      "claim": "`AppContext.push` increments `self._push_count` and returns early if `self._cv_token is not None`.",
+      "quote": "self._push_count += 1\n\nif self._cv_token is not None:\n    return"
+    },
+    {
+      "claim": "`AppContext.push` sets `self._cv_token = _cv_app.set(self)`.",
+      "quote": "[`self._cv_token = _cv_app.set(self)`]"
+    },
+    {
+      "claim": "`AppContext.push` sends the `appcontext_pushed` signal after setting the contextvar.",
+      "quote": "`appcontext_pushed.send(...)` fires immediately after"
+    },
+    {
+      "claim": "When the context has a request, `AppContext.push` calls `self._get_session()` and then calls `self.match_request()` if `self.url_adapter is not None`.",
+      "quote": "self._get_session()\n\n# Match the request URL after loading the session, so that the\n# session is available in custom URL converters.\nif self.url_adapter is not None:\n    self.match_request()"
+    },
+    {
+      "claim": "`AppContext._get_session` raises `RuntimeError(\"There is no request in this context.\")` when the context has no request.",
+      "quote": "raises `RuntimeError(\"There is no request in this context.\")` if there is no request"
+    },
+    {
+      "claim": "`AppContext._get_session` asks the app's session interface to open a session when `_session` is `None`.",
+      "quote": "since `_session` is `None`, asks the app's session interface to open one"
+    },
+    {
+      "claim": "The default session interface is a class-level `SecureCookieSessionInterface()` shared by every `Flask` instance.",
+      "quote": "The default interface is the class-level [`SecureCookieSessionInterface()`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L249-L253) shared by every `Flask` instance."
+    },
+    {
+      "claim": "`SecureCookieSessionInterface.open_session` calls `self.get_signing_serializer(app)` and returns `None` if it returns `None`, before reading any cookies.",
+      "quote": "s = self.get_signing_serializer(app)\nif s is None:\n    return None"
+    },
+    {
+      "claim": "`get_signing_serializer` reads `app.secret_key` and returns `None` if it is falsy.",
+      "quote": "`if not app.secret_key: return None`"
+    },
+    {
+      "claim": "`app.secret_key` is a `ConfigAttribute` that forwards to `config[\"SECRET_KEY\"]`.",
+      "quote": "which is a [`ConfigAttribute`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/config.py#L35-L44) forwarding to `config[\"SECRET_KEY\"]`"
+    },
+    {
+      "claim": "When `open_session` returns `None`, `_get_session` falls back to `make_null_session`.",
+      "quote": "`_get_session` sees that `None` and falls back to [`make_null_session`]"
+    },
+    {
+      "claim": "`make_null_session` constructs the session interface's `null_session_class`.",
+      "quote": "which constructs the interface's `null_session_class`"
+    },
+    {
+      "claim": "`SecureCookieSession.__init__` with `initial=None` wires up an `on_update` callback that sets `modified = True`.",
+      "quote": "`SecureCookieSession.__init__` runs with `initial=None`, wiring up the `on_update` callback that would set `modified = True`"
+    },
+    {
+      "claim": "The session object produced by `make_null_session` is stored on `ctx._session` and returned by `_get_session`.",
+      "quote": "That object is stored on `ctx._session` and returned."
+    },
+    {
+      "claim": "In `NullSession`, `__setitem__`, `__delitem__`, `clear`, `pop`, `popitem`, `update`, and `setdefault` are all bound to `_fail`.",
+      "quote": "`__setitem__`, `__delitem__`, `clear`, `pop`, `popitem`, `update`, and `setdefault` are all bound to `_fail`"
+    },
+    {
+      "claim": "`NullSession._fail` raises `RuntimeError(\"The session is unavailable because no secret key was set. Set the secret_key on the application to something unique and secret.\")`.",
+      "quote": "which raises `RuntimeError(\"The session is unavailable because no secret key was set. Set the secret_key on the application to something unique and secret.\")`"
+    },
+    {
+      "claim": "Reads on a `NullSession` do not raise: `session.get(\"user_id\")` returns `None` and `\"user_id\" in session` is `False`.",
+      "quote": "Reads are silent \u2014 `session.get(\"user_id\")` returns `None`, `\"user_id\" in session` is `False`"
+    },
+    {
+      "claim": "Only the `session` property on `AppContext` sets `accessed = True`; `_get_session` does not.",
+      "quote": "Only the property sets `accessed = True`."
+    },
+    {
+      "claim": "The session is opened on every request that has a request context, including requests for static files, regardless of whether the view uses `session`.",
+      "quote": "The session is opened on every request with a request context, including requests for static files, whether or not the view touches `session`."
+    },
+    {
+      "claim": "`AppContext.match_request` calls `self.url_adapter.match(return_rule=True)`, stores an `HTTPException` on `self._request.routing_exception`, and otherwise assigns `self._request.url_rule` and `self._request.view_args` from the result.",
+      "quote": "try:\n    result = self.url_adapter.match(return_rule=True)\nexcept HTTPException as e:\n    self._request.routing_exception = e\nelse:\n    self._request.url_rule, self._request.view_args = result"
+    },
+    {
+      "claim": "A 404 for an unknown path, a 405 for a wrong method, and a 308 `RequestRedirect` for a missing trailing slash are all `HTTPException` subclasses that `match_request` stores on `request.routing_exception` rather than raising.",
+      "quote": "a 404 from an unknown path, a 405 from a wrong method, a 308 `RequestRedirect` from a missing trailing slash \u2014 all of them are `HTTPException` subclasses, all of them get stored on `request.routing_exception`"
+    },
+    {
+      "claim": "`AppContext.push` returns `None`.",
+      "quote": "`push()` returns `None`."
+    },
+    {
+      "claim": "`full_dispatch_request` warns with `warnings.warn` when `not self._got_first_request and self.should_ignore_error is not None`.",
+      "quote": "if not self._got_first_request and self.should_ignore_error is not None:\n    import warnings\n    warnings.warn(...)"
+    },
+    {
+      "claim": "`should_ignore_error` is a class attribute set to `None` and is deprecated, scheduled for removal in Flask 3.3.",
+      "quote": "is a class attribute pinned to `None` and deprecated \u2014 subclasses that still override it get one `DeprecationWarning` on the first request, and the hook is scheduled for removal in Flask 3.3"
+    },
+    {
+      "claim": "`full_dispatch_request` sets `self._got_first_request = True`.",
+      "quote": "self._got_first_request = True"
+    },
+    {
+      "claim": "After `_got_first_request` becomes `True`, `_check_setup_finished` raises `AssertionError` with a message stating the setup method can no longer be called because the application has already handled its first request.",
+      "quote": "AssertionError: The setup method 'route' can no longer be called on the\napplication. It has already handled its first request, any changes will not\nbe applied consistently."
+    },
+    {
+      "claim": "The registration methods `route`, `add_url_rule`, `before_request`, `after_request`, `errorhandler`, `teardown_request`, `register_blueprint` and `template_filter` are all wrapped by `setupmethod`.",
+      "quote": "Every registration method \u2014 `route`, `add_url_rule`, `before_request`, `after_request`, `errorhandler`, `teardown_request`, `register_blueprint`, `template_filter` \u2014 goes through the [`setupmethod`]"
+    },
+    {
+      "claim": "`full_dispatch_request` sends `request_started` with `_async_wrapper=self.ensure_sync`, calls `preprocess_request(ctx)`, calls `dispatch_request(ctx)` only if that returned `None`, catches `Exception` with `handle_user_exception(ctx, e)`, and returns `finalize_request(ctx, rv)`.",
+      "quote": "try:\n    request_started.send(self, _async_wrapper=self.ensure_sync)\n    rv = self.preprocess_request(ctx)\n    if rv is None:\n        rv = self.dispatch_request(ctx)\nexcept Exception as e:\n    rv = self.handle_user_exception(ctx, e)\nreturn self.finalize_request(ctx, rv)"
+    },
+    {
+      "claim": "`handle_user_exception` looks for a registered error handler and re-raises the exception if none is found.",
+      "quote": "which looks for a registered error handler and, failing that, re-raises"
+    },
+    {
+      "claim": "`preprocess_request` takes the request from the context and computes `names = (None, *reversed(req.blueprints))`.",
+      "quote": "req = ctx.request\nnames = (None, *reversed(req.blueprints))"
+    },
+    {
+      "claim": "In `preprocess_request`'s scope names, `None` represents the app scope and the remaining entries are blueprint names.",
+      "quote": "`None` is the app scope; the rest are blueprint names."
+    },
+    {
+      "claim": "`Request.blueprints` is computed from `Request.blueprint`, which is computed from `Request.endpoint`.",
+      "quote": "[`Request.blueprints`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/wrappers.py#L180-L195) asks [`Request.blueprint`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/wrappers.py#L161-L178), which asks [`Request.endpoint`]"
+    },
+    {
+      "claim": "`Request.blueprint` is `None` when the endpoint contains no `.`, and `Request.blueprints` is then an empty list.",
+      "quote": "It contains no `.`, so `blueprint` is `None` and `blueprints` is `[]`"
+    },
+    {
+      "claim": "When routing fails, `request.url_rule` is `None`, `request.endpoint` is `None`, and `request.blueprints` is `[]`.",
+      "quote": "`url_rule` would be `None`, `endpoint` would be `None`, `blueprints` would be `[]`"
+    },
+    {
+      "claim": "`preprocess_request` runs URL value preprocessors that can mutate `req.view_args` in place before the view is called.",
+      "quote": "The first runs [URL value preprocessors](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1382-L1385), which can mutate `req.view_args` in place before the view ever sees them."
+    },
+    {
+      "claim": "In `preprocess_request`, each before-request function is called as `self.ensure_sync(before_func)()` and its return value is returned immediately if it is not `None`.",
+      "quote": "rv = self.ensure_sync(before_func)()\n\nif rv is not None:\n    return rv"
+    },
+    {
+      "claim": "A before-request hook returning a non-`None` value prevents the view and the remaining before-request hooks from being called.",
+      "quote": "The view is never called, and the remaining before-request hooks are never called either."
+    },
+    {
+      "claim": "`self.url_value_preprocessors` and `self.before_request_funcs` are both `defaultdict`s.",
+      "quote": "Both dictionaries are `defaultdict`s"
+    },
+    {
+      "claim": "`preprocess_request` returns `None` when no preprocessors or before-request functions apply.",
+      "quote": "`preprocess_request` falls through to `return None`"
+    },
+    {
+      "claim": "Preprocessing runs app scope first then blueprints from outermost inward, while after-request and teardown run in the reverse order.",
+      "quote": "preprocessing runs app scope first, then blueprints from outermost in; after-request and teardown run the reverse"
+    },
+    {
+      "claim": "`dispatch_request` reads `req = ctx.request` and calls `self.raise_routing_exception(req)` if `req.routing_exception is not None`.",
+      "quote": "req = ctx.request\n\nif req.routing_exception is not None:\n    self.raise_routing_exception(req)"
+    },
+    {
+      "claim": "`raise_routing_exception` substitutes a `FormDataRoutingRedirect` only when debug mode is on, the exception is a `RequestRedirect`, its code is not 307 or 308, and the method is not GET, HEAD or OPTIONS.",
+      "quote": "It substitutes a friendlier `FormDataRoutingRedirect` only when *all* of debug mode is on, the exception is a `RequestRedirect`, its code is not 307 or 308, and the method is not GET/HEAD/OPTIONS."
+    },
+    {
+      "claim": "When the debug condition in `raise_routing_exception` is not met, the original routing exception is re-raised unchanged.",
+      "quote": "the first condition already fails and the original exception is re-raised unchanged"
+    },
+    {
+      "claim": "`dispatch_request` returns `self.make_default_options_response(ctx)` when `getattr(rule, \"provide_automatic_options\", False)` is true and `req.method == \"OPTIONS\"`.",
+      "quote": "if (\n    getattr(rule, \"provide_automatic_options\", False)\n    and req.method == \"OPTIONS\"\n):\n    return self.make_default_options_response(ctx)"
+    },
+    {
+      "claim": "`make_default_options_response` asks the context's URL adapter for `allowed_methods()` and returns an empty response carrying only an `Allow` header.",
+      "quote": "would have asked the context's URL adapter for `allowed_methods()` and returned an empty response carrying only an `Allow` header"
+    },
+    {
+      "claim": "`dispatch_request` calls the view as `self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)` using `req.view_args`.",
+      "quote": "view_args: dict[str, t.Any] = req.view_args\nreturn self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)"
+    },
+    {
+      "claim": "`ensure_sync` calls `iscoroutinefunction(func)` and returns a plain function unchanged.",
+      "quote": "asks `iscoroutinefunction(func)` and, for a plain `def`, returns the function unchanged"
+    },
+    {
+      "claim": "`ensure_sync` routes an `async def` view through `async_to_sync`.",
+      "quote": "An `async def` view would instead be routed through [`async_to_sync`]"
+    },
+    {
+      "claim": "`async_to_sync` imports `asgiref` and raises `RuntimeError(\"Install Flask with the 'async' extra in order to use async views.\")` if it is not installed.",
+      "quote": "which imports `asgiref` and raises `RuntimeError(\"Install Flask with the 'async' extra in order to use async views.\")` if it isn't installed"
+    },
+    {
+      "claim": "`async_to_sync` runs each async view in its own event loop per request.",
+      "quote": "`ensure_sync` wraps each async view in its own event loop per request"
+    },
+    {
+      "claim": "`dispatch_request` returns the view's return value to `full_dispatch_request`, which passes it to `finalize_request`.",
+      "quote": "is what `dispatch_request` returns to `full_dispatch_request`, which passes it straight to `finalize_request`"
+    },
+    {
+      "claim": "`finalize_request` has the signature `finalize_request(ctx, rv, from_error_handler=False)`.",
+      "quote": "[`finalize_request(ctx, rv, from_error_handler=False)`]"
+    },
+    {
+      "claim": "`finalize_request` first calls `response = self.make_response(rv)`, then runs `process_response` and sends `request_finished` inside a `try`.",
+      "quote": "Its first act is `response = self.make_response(rv)`; after that it will run `process_response` and send `request_finished`, both inside a `try`."
+    },
+    {
+      "claim": "The `try` in `finalize_request` only swallows failures when `from_error_handler` is `True`, and `handle_exception` is the only caller that sets that flag.",
+      "quote": "That `try` only swallows failures when `from_error_handler` is `True` \u2014 a flag set by exactly one caller, [`handle_exception`]"
+    },
+    {
+      "claim": "On the normal path, a failing `after_request` function propagates out of `finalize_request`.",
+      "quote": "On the normal path, a failing `after_request` function propagates out of `finalize_request` and is not hidden."
+    },
+    {
+      "claim": "`make_response` starts with `status = None` and `headers = None` and unpacks tuple return values first.",
+      "quote": "It starts with `status = None` and `headers = None` and unpacks tuples first."
+    },
+    {
+      "claim": "In `make_response`, a 3-tuple return value is interpreted as `(body, status, headers)`.",
+      "quote": "A [3-tuple](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1291-L1293) is `(body, status, headers)`."
+    },
+    {
+      "claim": "In `make_response`, a 2-tuple's second element is treated as headers if it is a `Headers`, `dict`, `tuple` or `list`, and as status otherwise.",
+      "quote": "is disambiguated by inspecting the second element: a `Headers`, `dict`, `tuple` or `list` means headers, anything else means status"
+    },
+    {
+      "claim": "`make_response` raises `TypeError` for a tuple of any other length, naming the three allowed forms.",
+      "quote": "Any other length [raises `TypeError`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1300-L1306) naming the three allowed forms."
+    },
+    {
+      "claim": "`make_response` raises `TypeError` with a message naming the endpoint when the return value is `None`.",
+      "quote": "if rv is None:\n    raise TypeError(\n        f\"The view function for {request.endpoint!r} did not\"\n        \" return a valid response. The function either returned\"\n        \" None or ended without a return statement.\"\n    )"
+    },
+    {
+      "claim": "For a `str` return value, `make_response` does `rv = self.response_class(rv, status=status, headers=headers)` and then sets `status = headers = None`.",
+      "quote": "rv = self.response_class(rv, status=status, headers=headers)\nstatus = headers = None"
+    },
+    {
+      "claim": "`Response.default_mimetype` is `\"text/html\"`.",
+      "quote": "`Response.default_mimetype` is `\"text/html\"`"
+    },
+    {
+      "claim": "A `str` response body is encoded as UTF-8 and the response Content-Type is `text/html; charset=utf-8`.",
+      "quote": "which is where the `Content-Type: text/html; charset=utf-8` on the final response comes from; the string is encoded UTF-8"
+    },
+    {
+      "claim": "In `make_response`, a `dict` or `list` return value is passed to `self.json.response(rv)`.",
+      "quote": "A [`dict` or `list`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1328-L1329) goes to `self.json.response(rv)`"
+    },
+    {
+      "claim": "In `make_response`, a `BaseResponse` or any callable return value is coerced via `force_type`, and a callable is evaluated as a WSGI application.",
+      "quote": "A [`BaseResponse` or any callable](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1330-L1345) is coerced via `force_type`, which for a callable means *evaluating it as a WSGI application*."
+    },
+    {
+      "claim": "`make_response` raises `TypeError` listing the permitted return types for any other return value type.",
+      "quote": "Anything else [raises `TypeError`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1346-L1353) listing the permitted return types."
+    },
+    {
+      "claim": "`make_response` applies a deferred status that is either a string or an int, and applies deferred headers with `rv.headers.update(headers)`.",
+      "quote": "[status](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1356-L1361) as a string or an int, and [headers](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1363-L1365) with `rv.headers.update(headers)`"
+    },
+    {
+      "claim": "The callable branch of `make_response` executes the returned callable as a WSGI application against the live `request.environ`.",
+      "quote": "is executed as a WSGI application against the live `request.environ` rather than rejected"
+    },
+    {
+      "claim": "`finalize_request` calls `self.process_response(ctx, response)`.",
+      "quote": "Its next line opens a `try` and calls [`self.process_response(ctx, response)`]"
+    },
+    {
+      "claim": "`process_response` runs per-request callbacks, then registered after-request functions, then the session, in that order.",
+      "quote": "does three things in a fixed order: per-request callbacks, registered after-request functions, then the session"
+    },
+    {
+      "claim": "`process_response` iterates `ctx._after_request_functions` calling each as `self.ensure_sync(func)(response)` and reassigning `response`.",
+      "quote": "for func in ctx._after_request_functions:\n    response = self.ensure_sync(func)(response)"
+    },
+    {
+      "claim": "`ctx._after_request_functions` is created empty in `AppContext.__init__`.",
+      "quote": "lives on the context object itself, created empty in `AppContext.__init__`"
+    },
+    {
+      "claim": "`after_this_request` fetches the active context, raises `RuntimeError` if there is no active context or if it has no request, and appends the function to the context's after-request list.",
+      "quote": "which fetches the active context, raises `RuntimeError` if there isn't one or if it has no request, and appends the function"
+    },
+    {
+      "claim": "`process_response` iterates `chain(ctx.request.blueprints, (None,))` and, for each name present in `self.after_request_funcs`, calls the functions in `reversed` registration order with the response.",
+      "quote": "for name in chain(ctx.request.blueprints, (None,)):\n    if name in self.after_request_funcs:\n        for func in reversed(self.after_request_funcs[name]):\n            response = self.ensure_sync(func)(response)"
+    },
+    {
+      "claim": "The return value of each after-request function replaces `response`, with no validity check.",
+      "quote": "each function is called with the response and its return value *replaces* `response`"
+    },
+    {
+      "claim": "If an after-request function raises, the remaining after-request functions are skipped.",
+      "quote": "if one of these raises, the remaining ones are skipped"
+    },
+    {
+      "claim": "After-request hooks run before the session is saved, so they cannot inspect or modify the session cookie.",
+      "quote": "these hooks run *before* the session is saved, so an `after_request` function cannot inspect or modify the session cookie"
+    },
+    {
+      "claim": "`process_response` calls `self.session_interface.save_session(self, ctx._get_session(), response)` only when `self.session_interface.is_null_session(ctx._get_session())` is false.",
+      "quote": "if not self.session_interface.is_null_session(ctx._get_session()):\n    self.session_interface.save_session(self, ctx._get_session(), response)"
+    },
+    {
+      "claim": "`ctx._get_session()` returns the cached session opened during `push()` rather than re-opening it.",
+      "quote": "returns the already-open `<NullSession {}>` \u2014 no re-opening, the context cached it during `push()`"
+    },
+    {
+      "claim": "`is_null_session` is an `isinstance` check against `null_session_class`.",
+      "quote": "is a plain `isinstance` check against `null_session_class`"
+    },
+    {
+      "claim": "`save_session` adds a `Vary: Cookie` header whenever `session.accessed` is true.",
+      "quote": "[`Vary: Cookie` is added whenever `session.accessed` is true]"
+    },
+    {
+      "claim": "In `save_session`, an empty session that was modified causes the cookie to be deleted, while an empty session that was never modified results in no cookie action.",
+      "quote": "an empty session that was modified gets the cookie deleted](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/sessions.py#L353-L367), and an empty session that was never modified gets nothing"
+    },
+    {
+      "claim": "`should_set_cookie` returns true when `session.modified` is true, or when `session.permanent` is true and `SESSION_REFRESH_EACH_REQUEST` is true.",
+      "quote": "gates the write on `session.modified or (session.permanent and SESSION_REFRESH_EACH_REQUEST)`"
+    },
+    {
+      "claim": "The config defaults are `SESSION_COOKIE_HTTPONLY=True`, `SESSION_COOKIE_SECURE=False`, `SESSION_COOKIE_SAMESITE=None`, and `SESSION_COOKIE_PARTITIONED=False`.",
+      "quote": "[`SESSION_COOKIE_HTTPONLY=True`, but `SESSION_COOKIE_SECURE=False`, `SESSION_COOKIE_SAMESITE=None`, `SESSION_COOKIE_PARTITIONED=False`]"
+    },
+    {
+      "claim": "`finalize_request` sends the `request_finished` signal with the response as a keyword argument.",
+      "quote": "sends [`request_finished`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1045-L1047) with the response as a keyword argument"
+    },
+    {
+      "claim": "With `from_error_handler=False`, an exception raised by a `request_finished` subscriber propagates rather than being logged and swallowed.",
+      "quote": "an exception raised by a subscriber [propagates rather than being logged and swallowed]"
+    },
+    {
+      "claim": "Calling a Werkzeug response as a WSGI application sends the status line and headers to `start_response` and returns a `ClosingIterator` over the body bytes.",
+      "quote": "status line and headers go to `start_response`, and the return value is a `ClosingIterator` over the body bytes"
+    },
+    {
+      "claim": "`wsgi_app`'s `finally` block checks `if \"werkzeug.debug.preserve_context\" in environ`, then checks `self.should_ignore_error`, then calls `ctx.pop(error)`.",
+      "quote": "Three things happen there, in order. First, [`if \"werkzeug.debug.preserve_context\" in environ`]"
+    },
+    {
+      "claim": "`should_ignore_error` is `None` on the base `App` class and is deprecated.",
+      "quote": "which is [`None` on the base class](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/sansio/app.py#L928-L937) and deprecated"
+    },
+    {
+      "claim": "`AppContext.pop` raises `RuntimeError` if `_cv_token is None`, if no context is currently active, or if the active context is not `self`.",
+      "quote": "It raises `RuntimeError` if this context was never pushed (`_cv_token is None`), if no context is currently active, or \u2014 the important one \u2014 [if the active context is not `self`]"
+    },
+    {
+      "claim": "`AppContext.pop` decrements `self._push_count` and returns immediately if the count is still positive.",
+      "quote": "[`self._push_count -= 1`, and if it is still positive, `pop` returns immediately]"
+    },
+    {
+      "claim": "`AppContext.pop` creates a `_CollectErrors()` instance and wraps each remaining teardown step in `with collect_errors:`.",
+      "quote": "The next line is `collect_errors = _CollectErrors()` \u2014 trace line 139 \u2014 and from here every remaining step is wrapped in `with collect_errors:`"
+    },
+    {
+      "claim": "`_CollectErrors.__exit__` appends any exception to a list and returns `True`, suppressing it.",
+      "quote": "[That context manager's `__exit__` appends any exception to a list and returns `True`]"
+    },
+    {
+      "claim": "`raise_any` re-raises collected errors as a `BaseExceptionGroup` on Python 3.11+ and as the first error on older versions.",
+      "quote": "re-raises what was collected: a `BaseExceptionGroup` on Python 3.11+, or the first error on older versions"
+    },
+    {
+      "claim": "`raise_any` returns `None` when the collected error list is empty.",
+      "quote": "Here the list is empty and `raise_any(\"Errors during context teardown\")` returns `None`"
+    },
+    {
+      "claim": "`AppContext.pop` runs request teardown first when `self._request is not None`.",
+      "quote": "[Because `self._request is not None`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/ctx.py#L488-L496), request teardown comes first."
+    },
+    {
+      "claim": "`do_teardown_request` creates its own `_CollectErrors` and iterates `chain(ctx.request.blueprints, (None,))`, calling each scope's functions in reverse registration order.",
+      "quote": "builds its *own* `_CollectErrors` and walks `chain(ctx.request.blueprints, (None,))` \u2014 the same innermost-blueprint-first, app-last ordering as `after_request`, with each scope's functions [in reverse registration order]"
+    },
+    {
+      "claim": "`do_teardown_request` sends `request_tearing_down.send(self, _async_wrapper=self.ensure_sync, exc=exc)`.",
+      "quote": "[`request_tearing_down.send(self, _async_wrapper=self.ensure_sync, exc=exc)`]"
+    },
+    {
+      "claim": "`do_teardown_request` ends by calling `raise_any(\"Errors during request teardown\")`.",
+      "quote": "`raise_any(\"Errors during request teardown\")` finds nothing"
+    },
+    {
+      "claim": "`AppContext.pop` calls `self._request.close()` after request teardown.",
+      "quote": "Next, [`self._request.close()`]"
+    },
+    {
+      "claim": "`do_teardown_appcontext` iterates `reversed(self.teardown_appcontext_funcs)`, then sends `appcontext_tearing_down` with `exc`, then calls `raise_any(\"Errors during app teardown\")`.",
+      "quote": "same pattern, [`reversed(self.teardown_appcontext_funcs)`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L1475-L1477) (empty), then `appcontext_tearing_down` with `exc=None`, then its own `raise_any(\"Errors during app teardown\")`"
+    },
+    {
+      "claim": "`AppContext.pop` calls `_cv_app.reset(self._cv_token)` and sets `_cv_token` back to `None` only after both teardown phases.",
+      "quote": "Only now, after both teardown phases, does [`_cv_app.reset(self._cv_token)` run and `_cv_token` go back to `None`]"
+    },
+    {
+      "claim": "`AppContext.pop` sends `appcontext_popped` after resetting the contextvar.",
+      "quote": "The last step, [`appcontext_popped.send(...)`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/ctx.py#L501-L502), is deliberately on the far side of that reset"
+    },
+    {
+      "claim": "Teardown functions receive `exc=None` when an error handler handled the exception.",
+      "quote": "the `exc` argument is `None` when an error handler handled the exception"
+    },
+    {
+      "claim": "`handle_user_exception` searches for an error handler by status code and exception MRO across blueprint scope then app scope.",
+      "quote": "would search for a handler by status code and MRO across blueprint-then-app scope"
+    },
+    {
+      "claim": "`handle_exception` always sends the `got_request_exception` signal and then reads `PROPAGATE_EXCEPTIONS`.",
+      "quote": "That always sends `got_request_exception`, then reads `PROPAGATE_EXCEPTIONS`"
+    },
+    {
+      "claim": "A `PROPAGATE_EXCEPTIONS` value of `None` resolves to `self.testing or self.debug`.",
+      "quote": "[`None` by default, which resolves to `self.testing or self.debug`]"
+    },
+    {
+      "claim": "`handle_exception` logs the exception via `log_exception` when exceptions are not propagated.",
+      "quote": "the exception would be logged by [`log_exception`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L953-L967) and the client would get a generic 500 with no traceback"
+    },
+    {
+      "claim": "`handle_exception` calls `finalize_request(..., from_error_handler=True)`, so after-request hooks and session saving run for error responses.",
+      "quote": "that 500 would still go through [`finalize_request(..., from_error_handler=True)`](https://github.com/pallets/flask/blob/d73fa1cdcbd8b1465c151db8924ba58b1dd14e35/src/flask/app.py#L943-L951), so after-request hooks and session saving run for error responses too"
+    },
+    {
+      "claim": "`AppContext.pop` returns `None`.",
+      "quote": "`pop` returns `None`."
+    },
+    {
+      "claim": "`FlaskClient.open` returns a response with `response.json_module` set to the app's JSON provider.",
+      "quote": "which `FlaskClient.open` hands back with `response.json_module` set to the app's provider"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 0.74
+}

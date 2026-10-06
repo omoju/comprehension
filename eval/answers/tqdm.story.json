@@ -1,0 +1,67 @@
+{
+  "repo": "tqdm",
+  "arm": "story",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "`self.total` ends up as 4. In `__init__`, because `total is None` and `iterable is not None`, tqdm borrows the length: `try: total = len(iterable) except (TypeError, AttributeError): total = None` ([std.py#L982-L988]). `len(['a','b','c','d'])` is 4. (The same lines are why a generator degrades to counter-only output, and an explicit `total=float(\"inf\")` is normalised to `None` on the next line.)"
+    },
+    {
+      "id": "p2",
+      "answer": "`__iter__` keeps a private counter `n` and only calls `self.update(n - last_print_n)` \u2014 i.e. the whole accumulated backlog, never a fixed 1. Two gates must open: the cheap counter gate `n - last_print_n >= self.miniters`, then the clock gate `dt >= mininterval and cur_t >= min_start_t` ([std.py#L1190-L1196]). After item 'a' (private n=1) dt\u22480.053 s < mininterval 0.1, so nothing happens. After 'b' (n=2) dt\u22480.110 s \u2265 0.1, so `update(2 - 0)` = `update(n=2)`. That update's `dynamic_miniters` logic then raises `miniters` to \u22481.8125 via the third EMA, so after 'c' (n=3) the counter gate `3 - 2 = 1 >= 1.8125` is shut and `time()` is not even called. After 'd' (n=4) `4 - 2 = 2 >= 1.8125` and dt\u22480.117 \u2265 0.1, so `update(4 - 2)` = `update(n=2)` again."
+    },
+    {
+      "id": "p3",
+      "answer": "Before drawing the final frame, `close()` executes `self._ema_dt = lambda: None` and then `self.display(pos=0)` ([std.py#L1305-L1310]). Since `format_dict` computes `rate = self._ema_dn() / self._ema_dt() if self._ema_dt() else None` ([std.py#L1466]), the condition is now falsy, `_ema_dn()` is never called, and `rate` is `None`. `format_meter` then falls back to the plain overall average `(n - initial) / elapsed` = 4 / 0.230072 \u2248 17.386 \u2192 `'17.39it/s'`, instead of the smoothed EMA rate 17.50 shown by the last `update()`. Any later read of `format_dict['rate']` on that bar returns `None`."
+    },
+    {
+      "id": "p4",
+      "answer": "Nothing. `close()` begins with `if getattr(self, 'disable', True): return` and then `self.disable = True` ([std.py#L1270-L1276]). The iterator's `finally` already closed the bar and set `disable = True`, so the explicit `pbar.close()` and the later `__del__` \u2192 `close()` both return at the first line \u2014 no lock taken, no deregistration, no frame written. In the trace `__del__`'s close has no child calls and returns `None`. Three closes, one final frame."
+    },
+    {
+      "id": "p5",
+      "answer": "Because the first bar had already left the registry. Its `close()` called `_decr_instances`, which removes the instance from the `_instances` WeakSet under the global lock ([std.py#L697-L703]). `_get_free_pos` builds `{abs(inst.pos) for inst in cls._instances if inst is not instance and hasattr(inst, 'pos')}` and returns the smallest non-negative integer not in it ([std.py#L680-L685]); with the set empty it returns 0. Note the slot is freed by `close()`, not by garbage collection \u2014 an abandoned, unclosed bar would have kept line 0 and pushed the second bar to line 1."
+    },
+    {
+      "id": "p6",
+      "answer": "The line was `Processing b:  50%|\u2588\u2588\u2588\u2588\u2588     | 2/4 [00:00<00:00, 18.13it/s]` (59 display columns; 60 characters written including the leading `\\r`). The `{bar}` part: because `ncols` is `None`, a `Bar` is built with the fixed `default_len=10` and charset `' \u258f\u258e\u258d\u258c\u258b\u258a\u2589\u2588'` after a `FormatReplace` sentinel confirms `{bar}` is referenced; rendering is `divmod(int(frac * 10 * 8), 8)` = `divmod(40, 8) = (5, 0)` \u2192 five full blocks, no partial block, padded with spaces to ten cells ([std.py#L202-L208])."
+    },
+    {
+      "id": "p7",
+      "answer": "Chain: the last `__init__` step `if delay <= 0: self.refresh(lock_args=self.lock_args)` \u2192 `refresh` acquires the process-global `TqdmDefaultWriteLock` \u2192 `display()` (pos 0, under the 20-row fallback, so nothing hidden) \u2192 `self.sp(self.__str__())` \u2192 `__str__` = `format_meter(**self.format_dict)` \u2192 `print_status` writes `'\\r' + s` (37 columns, 38 chars) through the `DisableOnWriteError` wrapper. The `?` fields appear because `start_t` is deliberately not yet assigned, so `format_dict['elapsed']` is 0, and `self._ema_dt()` returns 0 (an EMA with `calls == 0` returns its initial `last`), so `rate` is `None`; with `elapsed` falsy the `(n - initial)/elapsed` fallback is also skipped, so the formatter emits `'?it/s'` and `'?'` for remaining time rather than inventing an ETA."
+    },
+    {
+      "id": "p8",
+      "answer": "`__new__` tests `if cls.monitor_interval and (cls.monitor is None or not cls.monitor.report())` ([std.py#L669-L670]). For the first bar `cls.monitor` is `None`, so `TMonitor(cls, 10)` is constructed. For the second, the monitor exists, so `report()` is consulted; it is `return not self.was_killed.is_set()` ([_monitor.py#L103-L104]) and returns `True`, making the whole condition false \u2014 one daemon thread serves the process. A new monitor would be started only if `monitor_interval` is truthy AND (`cls.monitor is None` or `report()` is `False`, i.e. the kill event was set). Note `report()` does not check `is_alive()`, so a thread that died without setting the event would not be replaced."
+    },
+    {
+      "id": "g1",
+      "answer": "`close()` resolves `leave = pos == 0 if self.leave is None else self.leave` ([std.py#L1303]). If it resolves true, it sets `_ema_dt = lambda: None`, calls `display(pos=0)` \u2014 a final frame drawn on the top line, with the rate as the overall `n/elapsed` average \u2014 and writes `'\\n'`, so the completed bar stays on screen. If false, it instead calls `display(msg='', pos=pos)` to blank the line and writes `'\\r'` to park the cursor ([std.py#L1311-L1314]). `leave=None` therefore means \"leave only if this bar is at position 0\". Three earlier escapes print nothing at all: the bar never displayed (`last_print_t` unset or `< start_t + delay`), `self.sp is None` (GUI subclass), or the empty-string write probe hits a closed stream. `display`'s own row guard still applies, so a bar at/beyond `nrows` prints nothing."
+    },
+    {
+      "id": "g2",
+      "answer": "The documentation covers this only partly. `disable=True` makes `__init__` remove the instance from `_instances` and return early ([std.py#L990-L999]), so no bar is drawn; `__iter__` takes the shortcut `yield from iterable; return` with no bookkeeping at all ([std.py#L1172-L1176]), so the wrapped iterable is passed through unchanged; `update` returns immediately on a disabled bar ([std.py#L1229-L1230]) and `close()` returns at its first line. Note that the process-global lock and the monitor thread are still created by `__new__` before `disable` is ever examined. Which attributes remain readable on such an instance (e.g. whether `format_dict` is fully populated) is not spelled out, beyond the note that a bar closed before `unit` was assigned gets the `defaultdict(lambda: None, ...)` branch of `format_dict`."
+    },
+    {
+      "id": "g3",
+      "answer": "A single daemon thread named `tqdm_monitor` is created with the first bar and lives until interpreter exit. Once per `sleep_interval` (`monitor_interval`, default 10 s) it takes the same global write lock, skips instances that have no `start_t` yet, and for each remaining bar where `miniters > 1` and `cur_t - instance.last_print_t >= instance.maxinterval`, sets `miniters = 1` and calls `instance.refresh(nolock=True)` ([_monitor.py#L85-L93]). It re-checks its kill event inside the loop and warns with `TqdmSynchronisationWarning` if the instance set changed. Disable it with `tqdm.tqdm.monitor_interval = 0` before the first bar. It is best-effort only: if `TMonitor(...)` construction raises, a `TqdmMonitorWarning` is emitted and `monitor_interval` is set to 0 for the whole process."
+    },
+    {
+      "id": "g4",
+      "answer": "`tqdm.__init__` is wrapped by `envwrap(\"tqdm\", is_method=True, ...)` ([std.py#L958-L959]). At import time it scans `os.environ` for keys beginning `TQDM_`, keeps those whose remainder matches a parameter name, coerces the string to the type of that parameter's default, and binds the results as a `partialmethod` ([utils.py#L44-L75]). Documented examples: `TQDM_MININTERVAL=5`, `TQDM_DISABLE=1`. Pitfalls: the override is silent and process-wide (every bar, every library in the process), and it is read at import time, so a bar's behaviour may not match the code you reviewed. The documentation does not say what happens for parameters whose default is `None` (no type to coerce to) or for unparsable values."
+    },
+    {
+      "id": "g5",
+      "answer": "The bar is removed from the global `_instances` registry by hand and *then* the error is raised ([std.py#L1001-L1012]) \u2014 the removal is needed because `__new__` registered the instance before any argument was validated. The documentation does not name the exception type raised for an unknown keyword (it only says it \"removes itself and then raises\"), so I can't state whether it is a `TypeError` or a tqdm-specific error."
+    },
+    {
+      "id": "g6",
+      "answer": "`DisableOnWriteError` is an `ObjectWrapper` that stores the real stream as `_wrapped` and installs `disable_on_exception` closures over `write` and `flush` ([utils.py#L196-L203]). Each closure calls the wrapped method and, if it raises `OSError` with `errno == 5` (I/O error) or a `ValueError` whose message contains `'closed'`, swallows the exception and sets `miniters = float('inf')` on a weak proxy to the bar ([utils.py#L170-L194]); any other `OSError`/`ValueError` is re-raised, and a `ReferenceError` from an already-collected bar is ignored. Effect: an infinite `miniters` means the counter gate in `update` can never open again, so the bar silently goes quiet while the caller's loop continues with no exception and no log line. The wrapper also forwards `__eq__` to `_wrapped`, so it still compares equal to `sys.stderr`."
+    },
+    {
+      "id": "g7",
+      "answer": "The documented condition is the over-count check at the top of `format_meter`: if `n >= total + 0.5` the `total` is discarded (treated as unreliable) and the output falls back to a counter-only line without bar, percentage or ETA ([std.py#L533-L536]). Related but distinct cases: `total=float(\"inf\")` is normalised to `None` at init so it is treated as unknown from the start, and an unknown `rate` (no EMA samples and `elapsed` falsy) leaves the speed and remaining-time fields as `'?'` while the bar itself is still drawn. A custom `bar_format` that never references `{bar}` also skips bar construction entirely (detected via the `FormatReplace` sentinel)."
+    }
+  ],
+  "cost": 0.39
+}

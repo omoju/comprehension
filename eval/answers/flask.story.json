@@ -1,0 +1,63 @@
+{
+  "repo": "flask",
+  "arm": "story",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "`Flask.make_response(rv)` does it, called from `finalize_request`. Because `rv` is not a tuple and not `None`, it takes the first rung of the type ladder \u2014 the `str` branch \u2014 which does `rv = self.response_class(rv, status=status, headers=headers)` (both `status` and `headers` are `None`, and are then reset to `None`). `Response.default_mimetype` is `\"text/html\"`, so the result is `<Response 13 bytes [200 OK]>`: status 200 OK, `Content-Type: text/html; charset=utf-8`, body `b'Hello, World!'` \u2014 13 bytes after UTF-8 encoding."
+    },
+    {
+      "id": "p2",
+      "answer": "During `push()` (after the contextvar is set), `_get_session()` runs because `_request is not None`. It calls the default class-level `SecureCookieSessionInterface.open_session`, which first asks `get_signing_serializer(app)`; that reads `app.secret_key` (a `ConfigAttribute` onto `config['SECRET_KEY']`), gets `None`, and returns `None`, so `open_session` returns `None` without ever reading cookies. `_get_session` then falls back to `make_null_session()`, producing `<NullSession {}>`, cached on `ctx._session`. At the end, `process_response`'s third step calls `self.session_interface.is_null_session(ctx._get_session())` \u2014 a plain `isinstance` check against `null_session_class` \u2014 which returns `True`, so `save_session` is never called: the response leaves with no `Set-Cookie` and no `Vary` header."
+    },
+    {
+      "id": "p3",
+      "answer": "They all see `[]` (an empty list). `Request.blueprints` delegates to `Request.blueprint`, which delegates to `Request.endpoint`; the endpoint came from the rule matched in `match_request` and is `'hello'`. Since it contains no `.`, `blueprint` is `None` and `blueprints` is `[]`. So `preprocess_request` computes `names = (None, *reversed([]))` = `(None,)`, while `process_response` and `do_teardown_request` compute `chain([], (None,))` = `(None,)` \u2014 app scope only, and every registry is empty, so nothing runs."
+    },
+    {
+      "id": "p4",
+      "answer": "`ensure_sync` checks `iscoroutinefunction(func)`. `hello` is a plain `def`, so it is returned unchanged \u2014 the trace shows the identical `<function hello at 0x10f9b7ec0>` object handed back. Only an `async def` view would be routed through `async_to_sync`, which imports `asgiref` and raises `RuntimeError(\"Install Flask with the 'async' extra in order to use async views.\")` at call time if it is missing."
+    },
+    {
+      "id": "p5",
+      "answer": "It adds the static route `/static/<path:filename>` with endpoint `static` (the endpoint name is supplied explicitly for this one). It is only added because `has_static_folder` is `True` (`static_folder` resolves to `<root_path>/static`) and `static_url_path` derives `'/static'` from that folder's basename. It is registered **without** checking whether the directory exists \u2014 deliberately, since the folder may appear later \u2014 and its view is a lambda closing over `weakref.ref(self)` to avoid an app/view reference cycle. The documentation states the default method set (`(\"GET\",)` plus automatic `OPTIONS`) for the `/` rule; it does not explicitly spell out the static rule's final method set."
+    },
+    {
+      "id": "p6",
+      "answer": "`make_config` copies the 29 keys of `Flask.default_config` and then overwrites one: `DEBUG`. With no env vars set, `DEBUG=False` (from `get_debug_flag()`, which reads `FLASK_DEBUG`; the declared class-body default is `None`), `SECRET_KEY=None`, and `PROVIDE_AUTOMATIC_OPTIONS=True`. So `DEBUG` comes from the environment at construction time, not from code; other notable defaults are `TESTING=False`, `PROPAGATE_EXCEPTIONS=None`, `TRUSTED_HOSTS=None`."
+    },
+    {
+      "id": "p7",
+      "answer": "During `push()`, `match_request` would call `url_adapter.match(...)`, get a `NotFound` (an `HTTPException`), and park it on `request.routing_exception` rather than raise it; `url_rule`/`view_args` stay unset. `full_dispatch_request` then sends `request_started` and runs `preprocess_request`, which still works \u2014 `endpoint` is `None`, so `blueprints == []` and app-level hooks run normally. `dispatch_request`'s first branch sees `routing_exception is not None` and calls `raise_routing_exception`, which (with `DEBUG=False`) re-raises the original exception unchanged. It is caught one frame up by `full_dispatch_request`'s `except Exception` \u2192 `handle_user_exception`, which finds no registered handler and turns the `HTTPException` into an ordinary response. The client sees 404."
+    },
+    {
+      "id": "p8",
+      "answer": "It sets `self._got_first_request = True` (app.py line 1013), right before entering the dispatch `try`. After that, every `@setupmethod`-wrapped registration (`route`, `add_url_rule`, `before_request`, `after_request`, `errorhandler`, `teardown_request`, `register_blueprint`, `template_filter`, \u2026) calls `_check_setup_finished`, which now raises `AssertionError: The setup method 'route' can no longer be called on the application. It has already handled its first request, any changes will not be applied consistently.`"
+    },
+    {
+      "id": "g1",
+      "answer": "`make_response` first unpacks tuples: a 3-tuple is `(body, status, headers)`; a 2-tuple is disambiguated by its second element (a `Headers`, `dict`, `tuple` or `list` means headers, anything else means status). Then the body may be a `str` (\u2192 `response_class`), `dict` or `list` (\u2192 `self.json.response(rv)`), or a `BaseResponse`/any callable (coerced with `force_type`; a callable is *evaluated as a WSGI application*); the owner note also lists `bytes` as an acceptable return. Anything else raises `TypeError` listing the permitted types. If the view returns `None`, you get `TypeError(\"The view function for '<endpoint>' did not return a valid response. The function either returned None or ended without a return statement.\")` \u2014 never a silent empty 200; it becomes a 500 if no handler is registered. A 4-element tuple hits the \"any other length\" branch and raises `TypeError` naming the three allowed forms."
+    },
+    {
+      "id": "g2",
+      "answer": "The documentation does not cover this. It notes only that methods such as `full_dispatch_request`, `dispatch_request`, `preprocess_request`, `process_response`, `finalize_request`, `handle_user_exception`/`handle_exception` and the teardown helpers now take `ctx: AppContext` as their first argument; nothing is said about a backward-compatibility shim for subclasses overriding the old signatures, nor about any conditions that would trigger one."
+    },
+    {
+      "id": "g3",
+      "answer": "The app constructs and serves fine with `SECRET_KEY=None` and no warning. `open_session` returns `None` (no signing serializer), so `_get_session()` falls back to `make_null_session()` and the request's session is a `NullSession` \u2014 permanently empty. Reads are silent: `session.get('user_id')` is `None`, `'user_id' in session` is `False`. Writes fail: `__setitem__`, `__delitem__`, `clear`, `pop`, `popitem`, `update` and `setdefault` are all bound to `_fail`, which raises `RuntimeError(\"The session is unavailable because no secret key was set. Set the secret_key on the application to something unique and secret.\")` \u2014 surfacing as a 500 for that request. At response time `is_null_session` is `True`, so `save_session` is skipped entirely: no `Set-Cookie`, no `Vary: Cookie`. A login flow appears to work until it stores anything."
+    },
+    {
+      "id": "g5",
+      "answer": "`wsgi_app`'s inner `except Exception` records the error and calls `handle_exception(ctx, e)` (reached after `handle_user_exception` found no matching handler and re-raised). `handle_exception` always sends the `got_request_exception` signal, then consults `PROPAGATE_EXCEPTIONS`: it defaults to `None`, which resolves to `self.testing or self.debug`. If that is falsy (both `False` here), the exception is logged via `log_exception` and the client gets a generic 500 with no traceback, produced through `finalize_request(..., from_error_handler=True)` \u2014 so after-request hooks and session saving still run for the error response. If `PROPAGATE_EXCEPTIONS` (or `TESTING`/`DEBUG`) is true, the exception propagates instead."
+    },
+    {
+      "id": "g6",
+      "answer": "Not covered by this documentation. `Config` is described only as a `dict` subclass that remembers `root_path` for later file loading, created by `make_config` from `Flask.default_config`; `from_prefixed_env` \u2014 its key selection, value conversion, and error behaviour \u2014 is never discussed."
+    },
+    {
+      "id": "g7",
+      "answer": "The documentation doesn't give a default redirect status code or the general `url_for` rules. What it does say: routing redirects for a missing trailing slash arrive as `RequestRedirect` HTTPExceptions parked on `request.routing_exception`, and `raise_routing_exception` only substitutes the friendlier `FormDataRoutingRedirect` when debug is on, the exception is a `RequestRedirect`, its code is not 307 or 308, and the method is not GET/HEAD/OPTIONS. For URL building outside a request, `create_url_adapter` binds from `SERVER_NAME` and `APPLICATION_ROOT` and returns `None` when `SERVER_NAME` is unset \u2014 which is why `url_for` fails outside a request context in that case. Also note `TRUSTED_HOSTS` defaults to `None`, so any `Host` header is reflected in `request.host`/`request.url` and anything built from them."
+    }
+  ],
+  "cost": 0.3
+}

@@ -1,0 +1,190 @@
+{
+  "repo": "jinja",
+  "arms": {
+    "story": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly identifies EvalContext.__init__ as the caller, the argument 'members.html', both the compile-time (visit_Template) and render-time (Context.__init__) constructions, and the resulting True/volatile=False."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Gives the exact cache key tuple, the LRUCache(400) miss returning None, the compile path, and storage of the Template under the same key, plus the auto_reload/uptodate detail."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Names environment.getattr emitted by visit_Getattr, the attribute-then-item order with Undefined fallback, and the '/user/1' result."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly cites require_output_check plus has_known_extends set by visit_Extends at rootlevel, and the early return in visit_Output that drops the TemplateData newlines."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly says extended_loop is False (no recursion, no 'loop' usage, no scoped block) and shows the plain emitted for statement without LoopContext."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly states base.html is fetched lazily at render time via environment.get_template('base.html', 'members.html'), including the join_path and cache-miss compile path."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly explains compile-time constant folding of TemplateData through escape/Markup with finalize exemption, yielding the literal `yield 'Members'` with no runtime escape()."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Two entries, child first then parent, with the correct provenance (Context.__init__ seeding and the extends block-copy loop) and the index-0/super() consequence."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly gives the (weakref.ref(loader), name) key, the cache_size=0/negative/LRUCache(400) behaviour, and the auto_reload is_up_to_date guarantee; omitted extras (globals update, no-loader TypeError) are not required by the question."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "The compile-time vs volatile runtime distinction is right, but the 'surprise' about from_string is muddled \u2014 it hedges and even repeats the claim that string templates get default=False, contradicting the key's default_for_string=True autoescaping."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly distinguishes the compile-time hard failure (outside {% if %}, i.e. non-soft frames) from the deferred pull_dependencies stub raising TemplateRuntimeError, and does name TemplateAssertionError albeit with hedging."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets the main point (flag only affects code generation; real restrictions live in SandboxedEnvironment) but omits the operator interception (call_binop/call_unop, intercepted_binops) and constant-folding effects the key names."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correctly names split_template_path and the '..' rejection with TemplateNotFound, but explicitly disclaims knowledge of the separator/os.sep rejection and posixpath joining that the key specifies."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "It declines to answer the actual question (spontaneous environment sharing via get_spontaneous_environment and overlay's __dict__ copy) and instead discusses unrelated sharing."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correct on parse-time name/hyphen handling and the compile-time duplicate-block TemplateAssertionError, but misses both the parse-time whitespace-only check for required blocks and the runtime TemplateRuntimeError enforcement."
+      }
+    ],
+    "deepwiki": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Gets the argument ('members.html') and the resulting True, but fails to identify EvalContext.__init__ as the caller and explicitly leaves that unresolved."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "States the (weakref(loader), name) key, the first-call miss leading to loader/compile, and storage in the LRUCache(400), matching the key."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Names Environment.getattr, the getattr-then-getitem-then-undefined order, and the '/user/1' result."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "Claims the behavior isn't explained and gives no answer, whereas the key points to require_output_check/has_known_extends in visit_Template/visit_Output."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "Declines to answer; the key states clearly that no LoopContext is emitted because extended_loop is False, with a plain for statement."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correctly implies lazy resolution during rendering but hedges and omits the concrete call environment.get_template('base.html','members.html') and the join_path/cache-miss path."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Right that no runtime escape() appears and that literal text is a constant, but muddles the reason (the key says escape() is applied to the constant at compile time) and omits the resulting `yield 'Members'`."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Infers child-before-parent ordering but refuses to commit to the count of two entries and the setdefault/append mechanism from visit_Extends."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Covers the (weakref(loader), name) key, cache_size semantics including 0 and unbounded, LRUCache default 400, and the auto_reload/uptodate guarantee."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets the EvalContext/volatile compile-vs-runtime split in general terms but misses the key surprise, that select_autoescape's default_for_string=True makes from_string templates autoescaped."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Only describes the runtime TemplateRuntimeError and denies any compile-time check, missing the TemplateAssertionError raised by _filter_test_common outside soft frames."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly identifies the flag as controlling code generation routing through environment-level hooks with real policy in SandboxedEnvironment, and the hazard; the mention of attribute access is a minor inaccuracy."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Names split_template_path and the rejection of '..' and native separator pieces with TemplateNotFound, matching the key."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Describes the shared spontaneous environment for implicit Template construction, overlay sharing the same filters/tests/globals dicts with a fresh cache, and identifies mutation as the hazard."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets the required-block rules (empty body parse-time, TemplateRuntimeError at render) but explicitly misses the duplicate-block-name compile-time TemplateAssertionError and identifier-name rule."
+      }
+    ]
+  },
+  "cost": 0.23
+}

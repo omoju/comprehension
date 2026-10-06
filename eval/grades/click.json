@@ -1,0 +1,190 @@
+{
+  "repo": "click",
+  "arms": {
+    "story": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "States the exact order and the `(not is_eager, invocation_index)` sort key with the float('inf') fallback, matching the key."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Gives the exact triple `({'count': '3'}, [], [<Option count>])` with the raw string value and empty leftovers, as the key states."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly assigns COMMANDLINE, DEFAULT and PROMPT and explains the prompt fallback chain and the 'Click' value."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correct types (INT inferred from default 1, STRING for name) and the int 3 passed to the callback; the _guess_type detail is a minor mechanism elaboration that reaches the key's conclusion."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Matches the key: no prompt, BadParameter/UsageError, exit code 2, and the same stderr message."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correct storage name, correct statement that it is popped off and cached (not in hello.params), and correct ctx.params contents."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Exit path, exit_code 0, exception None and exc_info are right, but it declines to state that Result.return_value is None."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "The answer correctly identifies stdout as carrying the prompt and echoed value via the runner's visible_input patch, with empty stderr and output equal to stdout, matching the key."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Mentions the snapshot and the `_default_explicit` tie-break but explicitly declines to state the central arbitration rule (slot UNSET, strictly more explicit source via the ordered ParameterSource IntEnum, loser restoring the source)."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "States the guarantee and the parse_args sweep plus _hide_unset, but omits the callback boundary in process_value and Context.invoke, and the reason the sweep is deferred."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Names all three warning cases, the deliberate allowance for feature-switch options, the __debug__ guard, UserWarning (non-fatal) nature, and that it runs on each get_params call."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Accurately describes both modes, the ValueError restrictions including Windows, and the `_original_fd`/UnsupportedOperation difference for fileno()."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Standalone-mode handlers and exit codes are right, but it mischaracterises standalone_mode=False (Exit's code is returned, not re-raised; EOFError/KeyboardInterrupt become Abort; invoke's return value is returned)."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Precedence order and sources are correct, but it fails to answer the second half \u2014 that an empty-string env var counts as unset (and the first non-empty wins for a sequence) \u2014 claiming it is undocumented."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Captures the core point that `default` keeps the raw UNSET sentinel for the explicitness signal while get_default applies `_resolve_lazy_default`, though it omits some specifics like the count default=0 and flag_value/callable nuances."
+      }
+    ],
+    "deepwiki": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Gives the right order (eager help, then count as the command-line-encountered option, then name) and essentially the right sorting rule, matching the key despite hedging."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "States opts = {'count': '3'} as a raw string, empty leftover args, and order containing the count Option, matching the key."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correct for count (COMMANDLINE) and name (PROMPT) with a valid explanation, but fails to state that the help option is recorded as ParameterSource.DEFAULT."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Identifies INT for --count (inferred from the default), STRING for --name, and the int 3 reaching the callback, as in the key."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly states no prompt occurs because count is processed first, exit code 2, and the usage + 'Invalid value for \\'--count\\'' error on stderr."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correct that it is injected, not in hello.params, and that expose_value=False leaves ctx.params as {count, name}, but it cannot name the reserved storage name `_click_default_help`."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "exit_code 0 and exception None are right, but it wrongly claims exc_info is None (key: SystemExit tuple) and hedges rather than stating return_value is None in standalone mode."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correct that stderr is empty and output == stdout, but it contradicts the key by claiming the echoed typed value is not written to stdout and says it cannot account for 'Your name: Click' (CliRunner's visible_input writes it)."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "Declines to answer the arbitration rule and tie-break, which is the substance of the question."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Captures the guarantee that UNSET never reaches user code and is converted to None, but misses the key enforcement points (parse_args sweep, process_value callback handling, _hide_unset) and substitutes a type_cast_value short-circuit."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "Claims get_params performs no name/spelling validation, contradicting the key's __debug__ warning checks."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "Denies the existence of a second (fd-level) capture strategy and does not answer the fileno() difference."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets most exception-to-exit-code mappings and the standalone_mode=False behavior, but omits the EPIPE/OSError handling and wrongly claims arbitrary exceptions are caught and exit 1."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Gives the correct precedence (command line, envvar, default_map, default, else UNSET) and notes empty-string envvars count as unset."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correctly notes default_map lookup and callable invocation in get_default, but misses the central point that `default` stays the UNSET sentinel and that flag/multiple defaults are resolved lazily by _resolve_lazy_default."
+      }
+    ]
+  },
+  "cost": 0.23
+}

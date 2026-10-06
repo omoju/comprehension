@@ -1,0 +1,440 @@
+{
+  "repo": "markupsafe",
+  "arm": "story",
+  "words": 5961,
+  "extracted": 97,
+  "sample": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    9,
+    16,
+    19,
+    23,
+    29,
+    30,
+    31,
+    35,
+    37,
+    43,
+    44,
+    45,
+    48,
+    50,
+    52,
+    56,
+    57,
+    58,
+    63,
+    66,
+    67,
+    68,
+    69,
+    74,
+    76,
+    77,
+    78,
+    79,
+    85,
+    87,
+    88,
+    89,
+    90,
+    94,
+    95
+  ],
+  "claims": [
+    {
+      "claim": "At import time, markupsafe's `__init__.py` tries to import the compiled `_speedups._escape_inner` and falls back to the pure-Python `_native._escape_inner` if the C extension was never built.",
+      "quote": "it tries the compiled `_speedups._escape_inner` and falls back to the pure-Python `_native._escape_inner` if the C extension was never built"
+    },
+    {
+      "claim": "The `_speedups._escape_inner` and `_native._escape_inner` implementations have identical behaviour and differ only in speed.",
+      "quote": "Whichever one it got, the behaviour is the same; only the speed differs."
+    },
+    {
+      "claim": "The module-level `escape` function begins with an identity check `type(s) is str` rather than `isinstance(s, str)`.",
+      "quote": "`escape` begins with a single identity check"
+    },
+    {
+      "claim": "A comment in `markupsafe/__init__.py` explains that a proxy object can report a borrowed `__class__`, so `isinstance(s, str)` can return `True` for a non-string.",
+      "quote": "a proxy object can report a borrowed `__class__`, so `isinstance(s, str)` can be made to return `True` for something that is not a string at all"
+    },
+    {
+      "claim": "In `escape`, an object that is not exactly `str` falls through to the later branches instead of the fast path.",
+      "quote": "so a proxy falls through to the slower, more careful branches instead of being waved past"
+    },
+    {
+      "claim": "In `_native.py`, `_escape_inner` is implemented as five chained `str.replace` calls.",
+      "quote": "In the Python implementation it is five chained `str.replace` calls"
+    },
+    {
+      "claim": "`_native._escape_inner` replaces `&` with `&amp;` first, then `>`, `<`, `'`, and `\"`.",
+      "quote": "`&` \u2192 `&amp;`, then `>`, `<`, `'`, `\"`"
+    },
+    {
+      "claim": "In `_native._escape_inner`, `&` is replaced first because the other four replacements introduce new `&` characters.",
+      "quote": "`&` is replaced *first*, because the other four replacements all introduce new `&` characters"
+    },
+    {
+      "claim": "The C implementation in `_speedups.c` performs the same five replacements in one pass with the output sized ahead of time.",
+      "quote": "The C version does the same five, in one pass, sized ahead of time"
+    },
+    {
+      "claim": "In `_speedups.c`, if the scan finds nothing to escape it increments the refcount and returns the same string object.",
+      "quote": "if the scan finds nothing to escape it increments the refcount and hands back the *same* string object"
+    },
+    {
+      "claim": "`_speedups.c` dispatches the escape routine by string width.",
+      "quote": "dispatched by width at"
+    },
+    {
+      "claim": "MarkupSafe's escaping covers exactly five characters: `&`, `>`, `<`, `'`, and `\"`.",
+      "quote": "Five characters is the entire scope of the escaping: `& > < ' \"`"
+    },
+    {
+      "claim": "MarkupSafe's escaping does not touch backtick, `=`, or whitespace.",
+      "quote": "Backtick, `=`, and whitespace are not touched."
+    },
+    {
+      "claim": "In `escape`, the escaped text is passed to the `Markup` constructor.",
+      "quote": "The escaped text is handed to `Markup(...)`"
+    },
+    {
+      "claim": "`Markup.__new__` accepts parameters `object`, `encoding` defaulting to `None`, and `errors` defaulting to `'strict'`.",
+      "quote": "`object='&lt;script&gt;alert(document.cookie);&lt;/script&gt;', encoding=None, errors='strict'`"
+    },
+    {
+      "claim": "`Markup.__new__` performs no escaping.",
+      "quote": "`Markup.__new__` performs no escaping whatsoever"
+    },
+    {
+      "claim": "`Markup.__new__` checks whether the object has an `__html__` method and, if so, uses its return value.",
+      "quote": "It checks whether the object has an `__html__` method and, if so, uses its return value"
+    },
+    {
+      "claim": "When `encoding` is `None`, `Markup.__new__` calls `str.__new__` and returns.",
+      "quote": "since `encoding` is `None` here \u2014 it calls `str.__new__` and returns"
+    },
+    {
+      "claim": "`Markup.__new__` has a bytes-decoding branch where `encoding` and `errors` are forwarded.",
+      "quote": "The bytes-decoding road, where `encoding` and `errors` are forwarded"
+    },
+    {
+      "claim": "The `Markup` class defines `__slots__ = ()`.",
+      "quote": "The class carries `__slots__ = ()`"
+    },
+    {
+      "claim": "`Markup.__repr__` wraps `str.__repr__` output in the class name.",
+      "quote": "`__repr__` wraps `str.__repr__` in the class name"
+    },
+    {
+      "claim": "`Markup` is a subclass of `str`, so `type(s) is str` is `False` for a `Markup` instance in `escape`.",
+      "quote": "`Markup` is a subclass of `str`, so `type(s) is str` is `False` and the fast path is refused"
+    },
+    {
+      "claim": "The second branch of `escape` is a `hasattr(s, \"__html__\")` check.",
+      "quote": "The next check, `hasattr(s, \"__html__\")`, succeeds"
+    },
+    {
+      "claim": "`Markup.__html__` returns `self`.",
+      "quote": "`Markup.__html__` simply returns `self`"
+    },
+    {
+      "claim": "Escaping a `Markup` value does not run the five replacements, so `&lt;` does not become `&amp;lt;`.",
+      "quote": "The five replacements never run. `&lt;` does not become `&amp;lt;`."
+    },
+    {
+      "claim": "`Markup.__new__` re-checks for `__html__` on the value it was handed, so escaping a `Markup` calls `__html__` twice.",
+      "quote": "then lines 14-15 from inside `Markup.__new__`, which re-checks for `__html__` on the value it was handed"
+    },
+    {
+      "claim": "The third branch of `escape` is `Markup(_escape_inner(str(s)))`.",
+      "quote": "would fall to the third branch, `Markup(_escape_inner(str(s)))`"
+    },
+    {
+      "claim": "`escape(None)` returns `Markup('None')`.",
+      "quote": "`escape(None)` is `Markup('None')` rather than empty"
+    },
+    {
+      "claim": "`escape_silent` exists in markupsafe as the opt-in for optional values.",
+      "quote": "why `escape_silent` exists as the opt-in for optional values"
+    },
+    {
+      "claim": "In `escape`, when an object has `__html__`, the method is called and its return value is wrapped in `Markup` with no escaping.",
+      "quote": "so `escape` calls the method and wraps whatever comes back in `Markup`, with no escaping at all"
+    },
+    {
+      "claim": "`docs/html.rst` states that because `__html__` bypasses escaping, the author must escape user-provided data inside it.",
+      "quote": "since `__html__` bypasses escaping, the author must escape user-provided data inside it"
+    },
+    {
+      "claim": "An exception raised inside `__html__` propagates out of `escape`.",
+      "quote": "an exception raised inside `__html__` propagates out of `escape` rather than being swallowed or crashing the interpreter"
+    },
+    {
+      "claim": "`Markup.format` constructs a fresh `EscapeFormatter`, passing `self.escape`, the bound classmethod of the actual class.",
+      "quote": "It constructs a fresh `EscapeFormatter`, passing `self.escape` \u2014 the bound classmethod of the *actual* class"
+    },
+    {
+      "claim": "Because `Markup.format` passes the bound `escape` of the actual class, a `Markup` subclass formats into its own type.",
+      "quote": "which is why a `Markup` subclass formats into its own type rather than decaying to `Markup`"
+    },
+    {
+      "claim": "`EscapeFormatter.__init__` stores the escape callable and chains to `string.Formatter.__init__`.",
+      "quote": "The formatter stores that callable and chains to `string.Formatter.__init__`"
+    },
+    {
+      "claim": "`Markup.format` delegates the work to `vformat`.",
+      "quote": "Then it hands the whole job to `vformat`."
+    },
+    {
+      "claim": "MarkupSafe overrides only the `format_field` hook of `string.Formatter`.",
+      "quote": "MarkupSafe overrides exactly one hook: `format_field`"
+    },
+    {
+      "claim": "`Markup.__mod__` wraps each argument in a `_MarkupEscapeHelper`.",
+      "quote": "`Markup.__mod__` wraps each argument in a `_MarkupEscapeHelper`"
+    },
+    {
+      "claim": "`_MarkupEscapeHelper` escapes lazily when `str()` or `repr()` is called on it, and passes `__int__` and `__float__` through unescaped.",
+      "quote": "a tiny proxy that escapes lazily when `str()` or `repr()` is called on it but passes `__int__` and `__float__` straight through unescaped"
+    },
+    {
+      "claim": "`Markup(\"%i\") % 3.14` produces `\"3\"`.",
+      "quote": "which is why `Markup(\"%i\") % 3.14` gives `\"3\"`"
+    },
+    {
+      "claim": "In `EscapeFormatter.format_field`, `__html_format__` is checked first and, if present, is called with the format spec.",
+      "quote": "`__html_format__`, if present, is called with the spec and wins outright"
+    },
+    {
+      "claim": "In `EscapeFormatter.format_field`, the `__html__` branch is used only when there is no format spec, and a non-empty spec on an `__html__`-only object raises a `ValueError` naming the offending type.",
+      "quote": "a non-empty spec on an `__html__`-only object raises a `ValueError` that names the offending type"
+    },
+    {
+      "claim": "In `EscapeFormatter.format_field`, the default branch uses Python's ordinary formatting with the spec coerced by `str(format_spec)`.",
+      "quote": "Otherwise Python's ordinary formatting, with the spec coerced by `str(format_spec)` first"
+    },
+    {
+      "claim": "`Markup.__html_format__` raises `ValueError(\"Unsupported format specification for Markup.\")` for any non-empty format spec.",
+      "quote": "`Markup.__html_format__` raises `ValueError(\"Unsupported format specification for Markup.\")` for anything non-empty"
+    },
+    {
+      "claim": "The three branch tests in `EscapeFormatter.format_field` are `hasattr` checks.",
+      "quote": "All three doors are `hasattr` checks."
+    },
+    {
+      "claim": "`EscapeFormatter.format_field` with an empty spec calls `super().format_field(value, str(''))`, which returns the string unchanged.",
+      "quote": "`super().format_field(value, str(''))`, which with an empty spec returns the string unchanged"
+    },
+    {
+      "claim": "Escaping in `EscapeFormatter.format_field` happens on the last line of the method, after the field is rendered.",
+      "quote": "Only then does the escaping happen, on the last line of the method"
+    },
+    {
+      "claim": "`EscapeFormatter.format_field` applies escaping to the rendered field rather than to the incoming value.",
+      "quote": "Escaping is applied to the *rendered* field, not to the value that arrived."
+    },
+    {
+      "claim": "`Markup.escape` is a classmethod that forwards to the module-level `escape` function.",
+      "quote": "`self.escape` here is `Markup.escape`, the classmethod ([`__init__.py#L230-L240`]"
+    },
+    {
+      "claim": "`EscapeFormatter.format_field` returns a bare `str`, calling `str(...)` around the escaped result.",
+      "quote": "Then `format_field` does something that looks like a step backwards: `str(...)` around the result."
+    },
+    {
+      "claim": "`string.Formatter.vformat` assembles its output with plain string concatenation.",
+      "quote": "`string.Formatter.vformat` assembles its output with plain string concatenation"
+    },
+    {
+      "claim": "`Markup.format` wraps the joined formatted string in `self.__class__(...)`.",
+      "quote": "`Markup.format` wraps the joined string in `self.__class__(...)`"
+    },
+    {
+      "claim": "`Markup.__html_format__` returns `self` when the format spec is empty.",
+      "quote": "`Markup.__html_format__('')` returns `self` unchanged because the spec is empty"
+    },
+    {
+      "claim": "The last line of `EscapeFormatter.format_field` is `return str(self.escape(rv))`.",
+      "quote": "The method has one line left: `return str(self.escape(rv))`"
+    },
+    {
+      "claim": "Every branch of `EscapeFormatter.format_field`'s dispatch passes through the same escape call.",
+      "quote": "Every branch of the dispatch \u2014 the `__html_format__` door, the `__html__` door, the default door \u2014 funnels through this same escape call."
+    },
+    {
+      "claim": "`Markup.escape` calls the module-level `escape` and inspects the returned value.",
+      "quote": "It calls the module-level `escape` and inspects what comes back."
+    },
+    {
+      "claim": "`Markup.escape` compares `rv.__class__ is not cls` and, when false, returns `escape`'s result as-is rather than wrapping it in `cls(...)` again.",
+      "quote": "`rv.__class__ is not cls` is false, so `escape`'s result is returned as-is instead of being pushed through `cls(...)` a second time"
+    },
+    {
+      "claim": "The module-level `escape` always constructs a plain `Markup`.",
+      "quote": "because the module-level `escape` always builds a plain `Markup`"
+    },
+    {
+      "claim": "`str.__new__` on the `Markup` subclass allocates a new object even when no replacement ran.",
+      "quote": "no replacement ran, but `str.__new__` on a subclass still allocates"
+    },
+    {
+      "claim": "`docs/formatting.rst` documents that if `__html_format__` returns a plain `str` containing tags, `format_field` escapes it so the tags appear as visible text.",
+      "quote": "if `__html_format__` returns a *plain* `str` containing tags, this line escapes it and the tags show up as visible text rather than markup"
+    },
+    {
+      "claim": "A misspelled field name in `Markup.format` raises `KeyError` from `string.Formatter`.",
+      "quote": "A misspelled field name raises `KeyError` out of `string.Formatter`"
+    },
+    {
+      "claim": "A format spec applied to an object that defines `__html__` but not `__html_format__` raises `ValueError` naming the type.",
+      "quote": "a format spec on an object that defines `__html__` but not `__html_format__` raises `ValueError` naming the type"
+    },
+    {
+      "claim": "The `%` formatting path in `Markup` raises `TypeError` when an argument is missing.",
+      "quote": "the `%` path raises `TypeError` on a missing argument"
+    },
+    {
+      "claim": "`Markup.__new__` on a plain `str` with `encoding=None` skips the decoding branch and passes the text to `str.__new__`.",
+      "quote": "which checks for `__html__` (a plain `str` has none), skips the decoding branch, and hands the text straight to `str.__new__`"
+    },
+    {
+      "claim": "`Markup.__add__` is implemented in four lines at `__init__.py` L136-L140.",
+      "quote": "`Markup.__add__` is four lines"
+    },
+    {
+      "claim": "`Markup.__add__` first checks `isinstance(value, str) or hasattr(value, \"__html__\")`.",
+      "quote": "`isinstance(value, str) or hasattr(value, \"__html__\")`"
+    },
+    {
+      "claim": "`Markup.__add__` returns `NotImplemented` when the operand is neither a `str` nor has `__html__`.",
+      "quote": "`__add__` would return `NotImplemented`"
+    },
+    {
+      "claim": "`Markup.__add__` passes the operand through `self.escape(value)`.",
+      "quote": "The operand is then passed through `self.escape(value)`"
+    },
+    {
+      "claim": "`Markup.__add__` calls `super().__add__(...)` and wraps the result in `self.__class__` rather than a hard-coded `Markup`.",
+      "quote": "`__add__` calls `super().__add__(...)` \u2014 ordinary string concatenation \u2014 and wraps the joined text in `self.__class__`, not in a hard-coded `Markup`"
+    },
+    {
+      "claim": "The C implementation in `_speedups.c` writes each replacement directly to an output buffer in a single pass.",
+      "quote": "by writing each replacement directly to an output buffer in one pass"
+    },
+    {
+      "claim": "`Markup.__radd__` escapes the left operand before performing the addition.",
+      "quote": "`Markup.__radd__` escapes the left operand before adding"
+    },
+    {
+      "claim": "`Markup.join` escapes every element it joins.",
+      "quote": "`join` escapes every element"
+    },
+    {
+      "claim": "`Markup.replace` escapes its `new` argument but not its `old` argument.",
+      "quote": "`replace` escapes its `new` argument but not `old`"
+    },
+    {
+      "claim": "`Markup.ljust`, `Markup.rjust` and `Markup.center` escape the fill character.",
+      "quote": "`ljust`, `rjust`, `center` escape the fill character"
+    },
+    {
+      "claim": "`Markup.strip`, `lstrip` and `rstrip` pass their argument through without escaping.",
+      "quote": "`strip`/`lstrip`/`rstrip` ([`__init__.py#L266-L276`]"
+    },
+    {
+      "claim": "`Markup.removeprefix` and `Markup.removesuffix` pass their argument through untouched.",
+      "quote": "`removeprefix`/`removesuffix`"
+    },
+    {
+      "claim": "`Markup.partition` and `Markup.rpartition` pass their argument through untouched.",
+      "quote": "`partition`/`rpartition`"
+    },
+    {
+      "claim": "`in`, `find` and `index` on `Markup` never escape their argument.",
+      "quote": "these line up with `in`, `find` and `index`, which never escaped"
+    },
+    {
+      "claim": "`Markup.__getitem__` wraps its result in `self.__class__`.",
+      "quote": "`__getitem__` ([`__init__.py#L242-L243`]"
+    },
+    {
+      "claim": "`Markup.split`, `Markup.rsplit` and `Markup.splitlines` wrap their results in `self.__class__`.",
+      "quote": "`split`, `rsplit` and `splitlines` ([`#L173-L186`]...each wrap their results in `self.__class__`"
+    },
+    {
+      "claim": "`Markup.striptags` begins by taking a plain copy of the text with `value = str(self)`.",
+      "quote": "`striptags` starts by taking a plain copy of the text, `value = str(self)`"
+    },
+    {
+      "claim": "`Markup.striptags` runs two passes, removing comments first and tags second.",
+      "quote": "then runs two passes: comments first, tags second"
+    },
+    {
+      "claim": "The comment pass in `striptags` looks for `<!--`, finds a matching `-->` beyond it, and cuts out everything between.",
+      "quote": "The comment pass looks for `<!--`, and for each one it finds, looks for a matching `-->` beyond it and cuts out everything between"
+    },
+    {
+      "claim": "In `striptags`, `value.find(\"<!--\")` returns `-1` when there are no comments and the comment loop body never executes.",
+      "quote": "`value.find(\"<!--\")` returns `-1` on the first test and the loop body never executes"
+    },
+    {
+      "claim": "A code comment in `markupsafe/__init__.py` explains why the comment pass exists and why it runs first.",
+      "quote": "The code comment just above explains why the pass exists at all and why it comes first"
+    },
+    {
+      "claim": "The tag pass in `striptags` finds `<`, finds the next `>` after it, splices them out, and repeats.",
+      "quote": "The tag pass is the same shape: find `<`, find the next `>` after it, splice them out, repeat"
+    },
+    {
+      "claim": "`striptags` ends its text processing with `\" \".join(value.split())`, which collapses runs of whitespace to a single space and trims the ends.",
+      "quote": "`\" \".join(value.split())` ([`__init__.py#L226-L227`]), which collapses every run of whitespace to a single space and trims the ends"
+    },
+    {
+      "claim": "Both `striptags` passes use `str.find` rather than a regular expression.",
+      "quote": "Both passes use `str.find` rather than a regular expression."
+    },
+    {
+      "claim": "When a marker is unterminated, the `striptags` loops `break` and leave the rest of the string unchanged.",
+      "quote": "the loop does not guess; it `break`s and leaves the rest of the string exactly as it is"
+    },
+    {
+      "claim": "The last line of `Markup.striptags` is `return self.__class__(value).unescape()`.",
+      "quote": "The last line is `return self.__class__(value).unescape()`"
+    },
+    {
+      "claim": "`Markup.unescape` lazily imports Python's `html.unescape` and applies it to `str(self)`.",
+      "quote": "`unescape` imports Python's own `html.unescape` lazily and applies it to `str(self)`"
+    },
+    {
+      "claim": "`Markup.unescape` is annotated as returning `str`.",
+      "quote": "the method itself is annotated `-> str`"
+    },
+    {
+      "claim": "`Markup.striptags` is annotated as returning `str`.",
+      "quote": "and so is `striptags`"
+    },
+    {
+      "claim": "Calling `unescape` on `&amp;lt;` yields `&lt;`.",
+      "quote": "`&amp;lt;` comes back as `&lt;`"
+    },
+    {
+      "claim": "`soft_str` converts a value to a string without flattening an existing `Markup` back to plain `str`.",
+      "quote": "`soft_str` converts without flattening an existing `Markup` back to plain `str`"
+    },
+    {
+      "claim": "`escape_silent(None)` returns `Markup('')`.",
+      "quote": "`escape_silent(None)` is `Markup('')`"
+    },
+    {
+      "claim": "Calling `escape` on an object with a user-defined `__html__` invokes `__html__` twice: once in `escape` and once inside the `Markup` constructor.",
+      "quote": "`escape` on such an object calls `__html__` twice \u2014 once itself, once inside the constructor"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 0.37
+}

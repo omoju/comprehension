@@ -1,0 +1,63 @@
+{
+  "repo": "markupsafe",
+  "arm": "story",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "It takes the very first branch: `escape` does the identity check `type(s) is str` (__init__.py#L39-L40), which is true for a plain `str`, so it calls `_escape_inner` (the C `_speedups._escape_inner` if built, otherwise `_native._escape_inner`) and wraps the result in `Markup`. `_escape_inner` performs the five replacements `&` (first), then `>`, `<`, `'`, `\"`. The result is `Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')` \u2014 only the four angle brackets changed; parentheses, dot, semicolons and the word `alert` are untouched."
+    },
+    {
+      "id": "p2",
+      "answer": "`Markup` is a subclass of `str`, so `type(s) is str` is False and the fast path is refused; `escape` falls to the `hasattr(s, \"__html__\")` branch (__init__.py#L42-L43) and returns `Markup(s.__html__())`. `Markup.__html__` just returns `self`, so no replacements run and `&lt;` does not become `&amp;lt;`. `__html__()` is invoked twice per `escape()` call: once by `escape` itself, and once again inside `Markup.__new__`, which re-checks the value it was handed for `__html__` (__init__.py#L125-L126)."
+    },
+    {
+      "id": "p3",
+      "answer": "`format_field` tries its three doors in order; `User` defines `__html_format__`, so door one wins: it is called with the opaque spec string `'link'` (MarkupSafe imposes no grammar on it) and its return value becomes `rv`. The method's last line is `return str(self.escape(rv))` (__init__.py#L354) \u2014 every branch funnels through that one escape call. Because `rv` is a `Markup`, `escape` fails `type(s) is str`, takes the `__html__` branch, and `Markup.__html__` returns `self`, so the five replacements never run and the `<a href=\"/user/3\">\u2026</a>` tags survive verbatim. The `str(...)` merely drops the type so `string.Formatter.vformat` can concatenate plain strings; the `Markup` type is restored once at the end by `Markup.format`'s `self.__class__(...)` wrap."
+    },
+    {
+      "id": "p4",
+      "answer": "`safe_comment` is a `Markup`, and `Markup` defines `__html_format__`, so it takes the first door; `Markup.__html_format__('')` returns `self` because the spec is empty. The value then goes through the same `str(self.escape(rv))` exit, where `Markup.__html__` returns `self`, so `&lt;script&gt;` is not re-escaped into `&amp;lt;script&amp;gt;`. With `{comment:>40}` the spec is non-empty, so `Markup.__html_format__` raises `ValueError(\"Unsupported format specification for Markup.\")` (__init__.py#L325-L329) \u2014 padding safe markup is an error, not padding, because it would measure the wrong length."
+    },
+    {
+      "id": "p5",
+      "answer": "Python evaluates the two `+` left to right. First `Markup.__add__` (__init__.py#L136-L140) checks `isinstance(value, str) or hasattr(value, \"__html__\")` \u2014 the payload is a `str`, so the guard passes (a non-string like an `int` would get `NotImplemented` and ultimately `TypeError`). It escapes the operand via `self.escape(...)`, which takes the exact-`str` fast path, producing `'&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;'` (note `&` escaped first, so no double-escaping), concatenates with `super().__add__` and wraps in `self.__class__`. The second `+` has a `Markup` on the right: the guard passes, `escape` takes the `__html__` branch, `Markup.__html__` returns `self`, so `'</footer>'` is unchanged (one wasted allocation, nothing more). Final value: `Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')`."
+    },
+    {
+      "id": "p6",
+      "answer": "`striptags` takes `value = str(self)`, then runs the comment pass first (find `<!--`, find the matching `-->`, splice out) and the tag pass second (find `<`, find the next `>`, splice out) \u2014 comments first so a comment containing a tag is removed as a unit. Both use `str.find`, not a regex (the regex version had pathological backtracking, removed in 2.1.4), and an unterminated marker just `break`s. Then `\" \".join(value.split())` collapses whitespace, and finally `self.__class__(value).unescape()` resolves entities via `html.unescape`. For this page six tags are removed and the result is `'User: Alice \"The <b>Great</b>\" said: <script>alert(document.cookie);</script>'`. Its type is plain `str` (both `striptags` and `unescape` are annotated `-> str`) \u2014 the payload is live again and must be escaped before going back into HTML."
+    },
+    {
+      "id": "p7",
+      "answer": "`vformat` locates `{0}` and calls `format_field(value='Alice \"The <b>Great</b>\"', format_spec='')`. A plain `str` has neither `__html_format__` nor `__html__`, so the third door runs `super().format_field(value, str(''))` (unchanged text), and only then the last line escapes it, giving `Markup('Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;')` \u2014 both `\"` became `&#34;`, `<b>`/`</b>` became `&lt;b&gt;`/`&lt;/b&gt;`. Joined with the literal pieces and re-wrapped, the value is `Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')`. The quotes in `class=\"user\"` are untouched because they are part of the template literal passed to `Markup(...)`, and `Markup.__new__` performs no escaping whatsoever \u2014 only the substituted field values are escaped."
+    },
+    {
+      "id": "p8",
+      "answer": "`escape(user)` fails `type(s) is str` (a `User` is not a `str`) and takes the second branch, `hasattr(s, \"__html__\")`: it calls `__html__()` and wraps the return value in `Markup` with no escaping. `__html_format__` plays no part in `escape` \u2014 it is only consulted by `EscapeFormatter.format_field`. The result is `Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')`: the span tags live, the quotes and `<b>` inside the name escaped (because `User.__html__` itself formats the name through `Markup(...).format`). Note `__html__` ends up called twice (once by `escape`, once in `Markup.__new__`)."
+    },
+    {
+      "id": "g2",
+      "answer": "A proxy object can report a borrowed `__class__`, so `isinstance(s, str)` can be made to return `True` for something that is not a string; `type()` cannot be lied to that way (the repo pins this with a deliberately deceitful `Proxy` class in tests/test_escape.py#L50-L55). So only exact `str` gets the fast path. Everything else falls to the slower, more careful branches: objects with `__html__` (including `Markup`, whose `__html__` returns `self`, giving idempotent escaping) take the second branch, and a `str` subclass without `__html__` (the test's `ReferenceStr`) falls to `Markup(_escape_inner(str(s)))` \u2014 i.e. it is coerced with `str()` first and then escaped."
+    },
+    {
+      "id": "g3",
+      "answer": "`Markup.__new__` does no escaping at all. It first checks whether `object` has an `__html__` method and, if so, uses that method's return value on faith (__init__.py#L125-L126). If `encoding is None` it then calls `str.__new__` and returns; only on the other road are `encoding` and `errors` (default `'strict'`) forwarded for decoding bytes. The documentation describes the decoding branch as \"not taken\" when `encoding` is `None`, but it does not spell out the exact result of passing bytes with no encoding, so I can't state that behaviour precisely from these docs \u2014 the general trap it does emphasise is that `Markup()` asserts safety on anything, with no check."
+    },
+    {
+      "id": "g4",
+      "answer": "`escape(None)` falls to the third branch, `Markup(_escape_inner(str(s)))`, so it yields `Markup('None')` \u2014 the literal four letters appear in your page. `escape_silent` is the opt-in for optional values and returns `Markup('')` for `None` (__init__.py#L48-L61); for other values it behaves like `escape`. `soft_str` (__init__.py#L64-L81) converts a value to a string without flattening an existing `Markup` back to plain `str`, i.e. it preserves the safe type; a bare `str(markup)` discards it and the next `escape` would escape the text all over again."
+    },
+    {
+      "id": "g5",
+      "answer": "At import time the package tries to use the compiled `_speedups._escape_inner` and silently falls back to the pure-Python `_native._escape_inner` if the C extension was never built (__init__.py#L7-L10). Behaviour is guaranteed identical \u2014 the same five characters `& > < ' \"` escaped with the same results; only speed differs (the C version does one sized pass and, if nothing needs escaping, returns the same string object with an incremented refcount). The test suite is parametrised to run against both implementations (tests/conftest.py#L26-L39)."
+    },
+    {
+      "id": "g6",
+      "answer": "It promises a best-effort plain-text view: remove HTML comments first (so a comment containing a tag is dropped whole), then remove tags, collapse all whitespace runs to single spaces via `\" \".join(value.split())` (a 2.1.5 fix), and finally `unescape()` the entities \u2014 returning a plain `str`, not `Markup`. It is not a sanitizer. It leaves text behind whenever a marker is unterminated: a `<!--` with no `-->`, or a `<` with no `>`, causes the loop to `break` and the remainder is left exactly as-is. Escaped entities such as `&lt;script&gt;` are invisible to the tag loop and then decoded by `unescape`, so the output can contain live-looking markup and must be escaped again before reaching HTML."
+    },
+    {
+      "id": "g7",
+      "answer": "In order (__init__.py#L339-L354): (1) if the value has `__html_format__`, call it with the format spec and use that result; (2) otherwise, if it has `__html__`, use it \u2014 but only when the spec is empty; (3) otherwise fall back to `super().format_field(value, str(format_spec))`, the spec coerced with `str()` so a `Markup` spec cannot route into the wrong `__format__` callbacks. All three branches then exit through the single line `return str(self.escape(rv))`. For a class defining `__html__` but not `__html_format__` with a non-empty spec, it raises a `ValueError` that names the offending type (specs are never silently discarded); the documentation does not quote the exact message text."
+    }
+  ],
+  "cost": 0.28
+}

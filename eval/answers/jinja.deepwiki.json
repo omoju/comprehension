@@ -1,0 +1,67 @@
+{
+  "repo": "jinja",
+  "arm": "deepwiki",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "Per the Autoescaping page, when `autoescape` is a callable the Environment calls it with the template's name while loading/creating the template (`Is callable? -> Call with template_name`), and the resulting boolean is stored as `EvalContext.autoescape` for that template. For `members.html` the extension `html` is in `enabled_extensions`, so the callable returns `True` and the template is compiled/rendered with autoescaping on. The docs show this flow in a diagram but do not name the exact Environment method that performs the call, so that detail is not settled here."
+    },
+    {
+      "id": "p2",
+      "answer": "The documentation states the cache is keyed by a tuple of `(weakref(loader), name)` so templates from different loaders cannot collide [src/jinja2/environment.py:85]. On the first `get_template('members.html')` call that key is absent, so the environment goes to the loader (`BaseLoader.load`), which calls `get_source`, optionally consults the bytecode cache, compiles the source and builds the `Template`; the resulting Template is then stored in the environment's cache (an `LRUCache`, default `cache_size=400`). On later calls the cached object is returned, subject to the loader's `uptodate()` callback when `auto_reload` is on. The docs do not say whether anything besides loader and name (e.g. globals) participates in the key."
+    },
+    {
+      "id": "p3",
+      "answer": "Dot access goes through the environment's attribute lookup (`Environment.getattr`, which `SandboxedEnvironment` overrides). The documented order for `foo.bar` is: 1) `getattr(foo, 'bar')`, 2) `foo.__getitem__('bar')`, 3) `environment.undefined(...)`. For a plain dict `{'url': '/user/1', 'username': 'ada'}` step 1 fails (dicts have no `url` attribute), step 2 succeeds, so the result is the string `'/user/1'`. (Subscript syntax `user['url']` would try the item lookup first.)"
+    },
+    {
+      "id": "p4",
+      "answer": "The documentation does not explain this. It covers whitespace handling only via `trim_blocks`, `lstrip_blocks`, `keep_trailing_newline` and the manual `{%- ... -%}` modifiers, and it states that `{% extends %}` must be the first tag in a child template \u2014 but it never describes the compiler rule that top-level template data outside of blocks in an extending template is discarded. So I can't tell you from these docs which flag or code path drops that newline; none of the whitespace flags listed would be responsible for removing all of it."
+    },
+    {
+      "id": "p5",
+      "answer": "The docs say the `loop` object available inside `{% for %}` is an instance of `runtime.LoopContext`, and the Control Structures page shows `nodes.For` 'instantiates' a `LoopContext`. Whether the generated code actually wraps the iterable in a `LoopContext` only when the `loop` variable (or `recursive`/`else`) is used, and what the emitted `for` line literally looks like, is not described anywhere in the documentation provided."
+    },
+    {
+      "id": "p6",
+      "answer": "The documentation does not pin this down. It only says `{% extends %}` can take a variable that may be a string name or a `Template` object (dynamic inheritance), which implies the parent is resolved while the child's render function runs, and that `Environment.get_template(name)` is the loading entry point. The exact call site and its arguments (e.g. a `parent`/`globals` argument) are not documented here."
+    },
+    {
+      "id": "p7",
+      "answer": "Only partially documented. Literal template text is a constant inside a `nodes.Output` node, and the compiler has a `_output_const_repr` hook for writing constants into the generated source (the Native Types page documents `NativeCodeGenerator` overriding `_default_finalize` and `_output_const_repr`). Escaping is applied to evaluated expressions/variables \u2014 autoescaping converts unsafe strings coming from the context, not static template data \u2014 so a constant like `Members` needs no `escape()` call. The actual generated Python for `block_title` is not shown in the documentation."
+    },
+    {
+      "id": "p8",
+      "answer": "The documentation doesn't say. It only notes that `Context` tracks template inheritance through a `blocks` mapping [src/jinja2/runtime.py:228-230] and that `super()` renders the parent's version of a block (with `super.super()` to skip levels), which implies multiple block functions are retained per name, child before parent. The exact structure, count and ordering of `context.blocks['title']` after the child's root render function runs is not documented."
+    },
+    {
+      "id": "g1",
+      "answer": "The template cache is keyed on `(weakref(loader), name)`, so the same name from different loaders yields different entries. `cache_size` (default 400) sizes the `LRUCache`: `0` disables caching entirely (every `get_template` reloads/recompiles) and `-1` makes it unbounded. `auto_reload` controls whether the loader's `uptodate()` callback is consulted on each request: when enabled, a cached template whose `uptodate()` returns `False` is re-fetched via `get_source` and recompiled; when disabled, you may keep getting a stale compiled template even if the source changed. The docs don't state the default value of `auto_reload`."
+    },
+    {
+      "id": "g2",
+      "answer": "The autoescape state lives on the `EvalContext`, which has both an `autoescape` flag and a `volatile` flag; filters can inspect it via `@pass_eval_context`. A constant decision is baked in at compile time, while `{% autoescape %}` blocks (and other cases that make the eval context volatile) defer it to runtime \u2014 the docs show the `volatile` attribute but do not spell out the exact conditions that set it. For `Environment.from_string` there is no template filename, so the callable produced by `select_autoescape` falls back to its `default_for_string` parameter (the docs' example passes `default_for_string=True` explicitly); the documentation never states that parameter's default, so I can't confirm what happens if you omit it."
+    },
+    {
+      "id": "g3",
+      "answer": "The documentation only describes the runtime path: `Environment.call_filter` looks the name up in `Environment.filters` and, if it is missing, raises a `TemplateRuntimeError` (the filter diagram also mentions `UndefinedError`); a filter itself may raise `FilterArgumentError` for bad arguments. It also notes that filters are 'looked up and integrated into the generated Python code' during compilation, but it does not document any compile-time exception (e.g. for unknown filters or tests) or the behaviour for unknown tests specifically. So the compile-time-vs-render-time split is not settled by these docs."
+    },
+    {
+      "id": "g4",
+      "answer": "`sandboxed` is the flag that makes the compiler emit sandbox-aware code: the Sandboxed Environment page states that when `sandboxed` is `True` the compiler generates code that routes attribute access and calls through security checks (i.e. through `environment.getattr`/`getitem` and callable checks) instead of native Python access. The actual policy \u2014 `is_safe_attribute`, `is_safe_callable`, `unsafe_undefined`, `safe_range`, binop/unop interception, the format-string guards \u2014 lives in `SandboxedEnvironment` (and `ImmutableSandboxedEnvironment`). A plain `Environment` with the flag flipped still uses the unrestricted `getattr`/`getitem`, so nothing is actually blocked; you must instantiate `SandboxedEnvironment`/`ImmutableSandboxedEnvironment`."
+    },
+    {
+      "id": "g5",
+      "answer": "Filesystem-backed loaders (e.g. `FileSystemLoader`, `PackageLoader`) run the template name through `split_template_path` [src/jinja2/loaders.py:25-39], which splits the name on `/` and raises `TemplateNotFound` if any piece is `..` or contains a platform path separator (`os.path.sep`/`altsep`, e.g. `\\` on Windows). So names containing parent-directory segments or native separators are rejected rather than resolved, preventing escape from the configured search path. Custom loaders are advised to use the same helper."
+    },
+    {
+      "id": "g6",
+      "answer": "If you build a `Template` directly without an environment, Jinja creates a 'shared' spontaneous environment [src/jinja2/environment.py:70-80] \u2014 templates created with the same settings end up backed by the same environment, so its `filters`/`tests`/`globals` registries are shared. `Environment.overlay()` likewise copies the environment but keeps the *same* `filters`, `tests` and `globals` dictionaries unless they are explicitly replaced; only the template cache is fresh (`copy_cache()`). The hazard is exactly that sharing: mutating `env.filters`/`globals` on an overlay (or on a template with an implicit shared environment) mutates the parent's/other templates' registries too, since they are the same dict objects."
+    },
+    {
+      "id": "g7",
+      "answer": "Documented rules: `{% extends %}` must be the first tag in the template (the docs note multiple `extends` tags lead to an error or undefined behaviour); blocks may be nested; a block cannot see enclosing variables such as loop variables unless declared `{% block name scoped %}`; and `{% block name required %}` blocks must be empty (or contain only comments) and must be overridden somewhere in the inheritance chain, otherwise a `TemplateRuntimeError` is raised when the template is rendered. The 'required must be empty' and `extends`-position rules are structural/parse-time constraints, while the 'required was never overridden' failure happens at render time. The documentation says nothing about duplicate block names within one template."
+    }
+  ],
+  "cost": 0.65
+}

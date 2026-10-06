@@ -1,0 +1,1252 @@
+{
+  "repo": "rich",
+  "arm": "story",
+  "words": 9560,
+  "extracted": 300,
+  "sample": [
+    6,
+    22,
+    48,
+    54,
+    81,
+    82,
+    93,
+    101,
+    115,
+    117,
+    121,
+    125,
+    129,
+    137,
+    155,
+    159,
+    161,
+    162,
+    170,
+    184,
+    189,
+    191,
+    194,
+    197,
+    207,
+    209,
+    219,
+    222,
+    227,
+    232,
+    246,
+    250,
+    258,
+    267,
+    270,
+    281,
+    284,
+    287,
+    292,
+    295
+  ],
+  "claims": [
+    {
+      "claim": "In rich's `console.py`, `_is_jupyter()` checks for a `get_ipython` name in the global scope.",
+      "quote": "`_is_jupyter()` looks for a `get_ipython` name in the global scope"
+    },
+    {
+      "claim": "`_is_jupyter()` returns `False` when a `NameError` occurs, rather than raising.",
+      "quote": "so it returns `False` on a `NameError` without raising"
+    },
+    {
+      "claim": "If `_is_jupyter()` returns `True`, the Console width and height are taken from the `JUPYTER_COLUMNS` / `JUPYTER_LINES` environment variables or default to 115\u00d7100.",
+      "quote": "the width and height would have been taken from `JUPYTER_COLUMNS` / `JUPYTER_LINES` or defaulted to 115\u00d7100"
+    },
+    {
+      "claim": "`detect_legacy_windows()` is defined as `WINDOWS and not get_windows_console_features().vt`.",
+      "quote": "`detect_legacy_windows()` \u2014 `WINDOWS and not get_windows_console_features().vt`"
+    },
+    {
+      "claim": "The `legacy_windows` flag is subtracted from the console width.",
+      "quote": "it is subtracted from the console width"
+    },
+    {
+      "claim": "The `legacy_windows` flag is passed to every box-drawing decision.",
+      "quote": "it is passed to every box-drawing decision"
+    },
+    {
+      "claim": "The `legacy_windows` flag chooses between the win32 API renderer and an ordinary `file.write` at the end of output.",
+      "quote": "it chooses between the win32 API renderer and an ordinary `file.write` at the very end"
+    },
+    {
+      "claim": "When `width` is given explicitly to `Console`, the constructor block that reads `COLUMNS` from the environment is skipped.",
+      "quote": "the block that reads `COLUMNS` from the environment is skipped"
+    },
+    {
+      "claim": "`Console.size` short-circuits to the stored value rather than calling `os.get_terminal_size` when the size is already known.",
+      "quote": "`Console.size` will short-circuit to the stored value rather than calling `os.get_terminal_size`"
+    },
+    {
+      "claim": "`color_system='auto'` causes the `Console` constructor to call `_detect_color_system`.",
+      "quote": "`color_system='auto'` sends the constructor into `_detect_color_system`"
+    },
+    {
+      "claim": "`_detect_color_system` immediately consults `is_terminal`.",
+      "quote": "which immediately asks `is_terminal`"
+    },
+    {
+      "claim": "`Console.is_terminal` checks overrides in order: `force_terminal`, an Idle check, Jupyter, `TTY_COMPATIBLE`, `FORCE_COLOR`, then `file.isatty()`.",
+      "quote": "an explicit `force_terminal`, an Idle check, Jupyter, the `TTY_COMPATIBLE` variable"
+    },
+    {
+      "claim": "In `Console.is_terminal`, `TTY_COMPATIBLE` set to `\"0\"` forces the result false and `\"1\"` forces it true.",
+      "quote": "(`\"0\"` forces false, `\"1\"` forces true)"
+    },
+    {
+      "claim": "`Console.file` resolves to `sys.stdout`, possibly unwrapped from a `rich_proxied_file` attribute, and falls back to a null sink if it is `None`.",
+      "quote": "possibly unwrapped from a `rich_proxied_file` and falling back to a null sink if it is `None`"
+    },
+    {
+      "claim": "`_detect_color_system` returns `None` when the console is not a terminal.",
+      "quote": "Not a terminal, therefore `_detect_color_system` returns `None`"
+    },
+    {
+      "claim": "`Style.render` returns its text unchanged whenever `color_system` is `None`.",
+      "quote": "`Style.render` returns its text unchanged whenever `color_system is None`"
+    },
+    {
+      "claim": "The Console's colour system is auto-detected at construction time, not at write time.",
+      "quote": "Colour is auto-detected at construction, not at write time"
+    },
+    {
+      "claim": "`Console.is_terminal` swallows a `ValueError` raised by `isatty()` on a closed file and reports that it is not a terminal rather than raising.",
+      "quote": "`is_terminal` swallows a `ValueError` from `isatty()` on a closed file and reports \"not a terminal\" rather than raising"
+    },
+    {
+      "claim": "The `Console` constructor builds a `LogRender` with `show_time=True`, `show_path=True` and `time_format='[%X]'`.",
+      "quote": "A `LogRender` is built from the logging defaults \u2014 `show_time=True`, `show_path=True`, `time_format='[%X]'`"
+    },
+    {
+      "claim": "`Console.print` does not use `LogRender`; only `Console.log` does.",
+      "quote": "`print` does not use `LogRender`; only `log` does"
+    },
+    {
+      "claim": "The `Console` constructor always builds a `LogRender`, regardless of whether it is used.",
+      "quote": "but it is constructed eagerly either way"
+    },
+    {
+      "claim": "The `Console` constructor wraps a `ThemeStack` around `themes.DEFAULT` inside a `ConsoleThreadLocals`.",
+      "quote": "a `ThemeStack` is wrapped around `themes.DEFAULT` inside a `ConsoleThreadLocals`"
+    },
+    {
+      "claim": "The `ThemeStack` holds named styles such as `repr.number`, `table.header` and `log.time`.",
+      "quote": "That stack holds every named style \u2014 `repr.number`, `table.header`, `log.time`"
+    },
+    {
+      "claim": "The theme stack is thread-local, alongside the Console's output buffer and buffer index.",
+      "quote": "it is *thread-local*, alongside the output buffer and buffer index"
+    },
+    {
+      "claim": "When `record=True`, the `Console` constructor creates an empty `_record_buffer` and a `_record_buffer_lock` to guard it.",
+      "quote": "`self._record_buffer` is created empty and a second lock, `_record_buffer_lock`, is created to guard it"
+    },
+    {
+      "claim": "The `record` flag cannot be enabled retroactively for output already printed.",
+      "quote": "it cannot be enabled retroactively"
+    },
+    {
+      "claim": "With `record=True`, the Console appends a copy of every segment it writes to `_record_buffer` under `_record_buffer_lock`, and the buffer is never trimmed except by an `export_*` call.",
+      "quote": "appended under `_record_buffer_lock` and never trimmed except by an `export_*` call"
+    },
+    {
+      "claim": "`Console.print` is the function the print call lands in.",
+      "quote": "The call lands in `Console.print`"
+    },
+    {
+      "claim": "`Console.print` substitutes a `NewLine()` when `objects` is empty.",
+      "quote": "the \"print nothing\" substitution of a `NewLine()` is skipped"
+    },
+    {
+      "claim": "In `Console.print`, when `soft_wrap` is `None` it falls back to the console's `soft_wrap` value, leaving no-wrap and overflow unset and `crop` `True`.",
+      "quote": "`soft_wrap` is `None` and falls back to the console's `False`, so no-wrap and overflow stay unset and `crop` stays `True`"
+    },
+    {
+      "claim": "`Console.__enter__` calls `_enter_buffer`, which increments the thread-local `_buffer_index`.",
+      "quote": "`__enter__` calls `_enter_buffer`, which bumps the thread-local `_buffer_index` from `0` to `1`"
+    },
+    {
+      "claim": "Nothing is written by the Console until `_buffer_index` returns to zero.",
+      "quote": "Nothing will be written until that index comes back to zero."
+    },
+    {
+      "claim": "In `_collect_renderables`, when `highlight` is `None` and the console's `_highlight` is `True`, the highlighter used is the console's `ReprHighlighter` rather than `NullHighlighter`.",
+      "quote": "`_highlighter` becomes the console's `ReprHighlighter` rather than the no-op `NullHighlighter`"
+    },
+    {
+      "claim": "`rich_cast` repeatedly calls `__rich__` on any object that defines it.",
+      "quote": "which repeatedly calls `__rich__` on anything that has one"
+    },
+    {
+      "claim": "A plain `str` has no `__rich__`, so `rich_cast` returns it unchanged.",
+      "quote": "A plain `str` has none, so it comes straight back as `'Hello'`"
+    },
+    {
+      "claim": "In `_collect_renderables`, a `str` is rendered to `Text`.",
+      "quote": "a `str` is rendered to `Text`"
+    },
+    {
+      "claim": "In `_collect_renderables`, an existing `Text` is taken as-is.",
+      "quote": "an existing `Text` is taken as-is"
+    },
+    {
+      "claim": "In `_collect_renderables`, anything satisfying the `ConsoleRenderable` protocol is appended untouched.",
+      "quote": "anything satisfying the `ConsoleRenderable` protocol is appended untouched"
+    },
+    {
+      "claim": "In `_collect_renderables`, expandable objects such as list, dict and dataclass are wrapped in `Pretty`.",
+      "quote": "anything \"expandable\" (list, dict, dataclass\u2026) is wrapped in `Pretty`"
+    },
+    {
+      "claim": "In `_collect_renderables`, anything else is stringified through the highlighter.",
+      "quote": "everything else is stringified through the highlighter"
+    },
+    {
+      "claim": "In `Console.render_str`, `emoji`, `markup` and `highlight` default to the console's values when they are `None`.",
+      "quote": "`emoji`, `markup` and `highlight` are all `None` on this call, so all three take the console's value"
+    },
+    {
+      "claim": "When markup is enabled, `Console.render_str` passes the string into `markup.render`.",
+      "quote": "Markup being enabled sends `'Hello'` into `markup.render`"
+    },
+    {
+      "claim": "`markup.render` first checks the string for a `[` and takes a fast path of emoji substitution plus a plain `Text` if there is none, never entering the tag parser.",
+      "quote": "check for a `[`; there isn't one, so it takes the fast path \u2014 emoji substitution and a plain `Text`, with the tag parser never entered"
+    },
+    {
+      "claim": "`_emoji_replace` runs the regex `(:(\\S*?)(?:(?:\\-)(emoji|text))?:)` over the text.",
+      "quote": "`_emoji_replace` runs the regex `(:(\\S*?)(?:(?:\\-)(emoji|text))?:)` over the text"
+    },
+    {
+      "claim": "`_emoji_replace` looks each matched emoji name up in the `EMOJI` table.",
+      "quote": "looks each name up in the `EMOJI` table"
+    },
+    {
+      "claim": "`_emoji_replace` catches `KeyError` and returns the emoji code verbatim for unrecognised names.",
+      "quote": "the `except KeyError: return emoji_code`"
+    },
+    {
+      "claim": "`Text.__init__` calls `strip_control_codes` on the string.",
+      "quote": "`strip_control_codes`"
+    },
+    {
+      "claim": "`strip_control_codes` is a `str.translate` with a table mapping bell, backspace, vertical tab, form feed and carriage return to `None`.",
+      "quote": "a `str.translate` with a table mapping bell, backspace, vertical tab, form feed and carriage return to `None`"
+    },
+    {
+      "claim": "Rich deletes five control characters (`\\r`, `\\b`, `\\a`, `\\v`, `\\f`) from every string it renders, with no flag to disable it.",
+      "quote": "Rich deletes five control characters from every string it renders, silently and without a flag to turn it off."
+    },
+    {
+      "claim": "ESC (`0x1b`) is not in the control-code strip table, so raw ANSI sequences pass through.",
+      "quote": "ESC (`0x1b`) is *not* in that list \u2014 raw ANSI sequences pass through"
+    },
+    {
+      "claim": "`Text.from_ansi` decodes ANSI sequences rather than emitting them.",
+      "quote": "use `Text.from_ansi` if you need them decoded rather than emitted"
+    },
+    {
+      "claim": "When highlighting is on, `render_str` stringifies the `Text` and passes it to the `ReprHighlighter`.",
+      "quote": "`render_str` stringifies it and hands it to the `ReprHighlighter`"
+    },
+    {
+      "claim": "`Highlighter.__call__` builds a second `Text` from the string and calls `highlight` on it.",
+      "quote": "`Highlighter.__call__` builds a *second* `Text` from the string \u2014 another `strip_control_codes` pass \u2014 and calls `highlight` on it"
+    },
+    {
+      "claim": "`RegexHighlighter.highlight` runs `highlight_regex` once per pattern in `highlights`.",
+      "quote": "`RegexHighlighter.highlight` then runs `highlight_regex` once per pattern in `highlights`"
+    },
+    {
+      "claim": "`ReprHighlighter` has four highlight patterns: tags, `name=value` pairs, braces, and one combined alternation.",
+      "quote": "`ReprHighlighter` has four of them \u2014 tags, `name=value` pairs, braces, and one big combined alternation"
+    },
+    {
+      "claim": "The combined `ReprHighlighter` alternation covers numbers, paths, URLs, UUIDs, IP addresses, quoted strings and `True`/`False`/`None`.",
+      "quote": "covering numbers, paths, URLs, UUIDs, IP addresses, quoted strings, `True`/`False`/`None` and more"
+    },
+    {
+      "claim": "In `Text.highlight_regex`, each named regex group becomes a `Span` whose style name is prefixed with `repr.`.",
+      "quote": "Each named regex group becomes a `Span` prefixed with `repr.`"
+    },
+    {
+      "claim": "`Text.copy_styles` merges the span list from the markup-rendered original onto the highlighted copy.",
+      "quote": "`copy_styles` merges the (empty) span list from the markup-rendered original back onto it"
+    },
+    {
+      "claim": "`Console.out` passes `markup=False`, `emoji=False` and `highlight=False`.",
+      "quote": "`Console.out` already does exactly that"
+    },
+    {
+      "claim": "`_collect_renderables`'s `check_text` builds a separator `Text(' ', justify=None, end='\\n')` and calls `sep_text.join(...)` on the accumulated texts.",
+      "quote": "it builds a separator `Text(' ', justify=None, end='\\n')` and calls `sep_text.join([...])`"
+    },
+    {
+      "claim": "`Text.join` starts from a `blank_copy` of the separator, so the result inherits the separator's `style`, `justify`, `overflow`, `no_wrap`, `end` and `tab_size`.",
+      "quote": "starts from a `blank_copy` of the separator \u2014 so the result inherits the separator's `style`, `justify`, `overflow`, `no_wrap`, `end` and `tab_size`"
+    },
+    {
+      "claim": "`Text.join`'s inner `iter_text` generator interleaves the pieces with the separator using `loop_last`.",
+      "quote": "Its inner `iter_text` generator interleaves the pieces with the separator using `loop_last`"
+    },
+    {
+      "claim": "For each piece, `Text.join` extends the text fragments, re-emits the piece's own style as a span over `[offset, offset + len)`, and shifts the piece's existing spans by `offset`.",
+      "quote": "`join` extends the text fragments, re-emits the piece's own `style` as a span over `[offset, offset + len)`, and shifts every one of the piece's existing spans by `offset`"
+    },
+    {
+      "claim": "In `_collect_renderables`, the `Styled` wrapping step is skipped when `self.style` is `None` on the console.",
+      "quote": "`self.style` is `None` on this console, so the `Styled` wrapping step is skipped"
+    },
+    {
+      "claim": "`Console.print` obtains render options from the `Console.options` property.",
+      "quote": "`print` asks `self.options`"
+    },
+    {
+      "claim": "The `Console.options` property depends on three other properties.",
+      "quote": "That property is small but it pulls on three others"
+    },
+    {
+      "claim": "The fast path at the top of `Console.size` requires both width and height to be set.",
+      "quote": "which requires *both* to be set \u2014 is skipped"
+    },
+    {
+      "claim": "`Console.size` consults `is_dumb_terminal`.",
+      "quote": "`is_dumb_terminal` is consulted next"
+    },
+    {
+      "claim": "`Console.size` queries `os.get_terminal_size` on each standard stream, swallowing `AttributeError`, `ValueError` and `OSError`.",
+      "quote": "queries `os.get_terminal_size` on each standard stream ... swallowing `AttributeError`, `ValueError` and `OSError`"
+    },
+    {
+      "claim": "`Console.size` lets the `COLUMNS` and `LINES` environment variables override the detected dimensions.",
+      "quote": "lets `COLUMNS` and `LINES` from the environment override whatever it found"
+    },
+    {
+      "claim": "The final return of `Console.size` uses the explicit `self._width` and only falls back to the detected value when `self._width` is `None`.",
+      "quote": "the final return re-asserts the explicit `self._width` and only falls back to the detected value when it is `None`"
+    },
+    {
+      "claim": "`Console.size` falls back to a height of 25 via `height or 25` when no height can be detected.",
+      "quote": "25 because nothing could be detected and `height or 25` took over"
+    },
+    {
+      "claim": "`Console.encoding` reads `.encoding` off the file object and lowercases it.",
+      "quote": "reads `.encoding` off the file object and lowercases it"
+    },
+    {
+      "claim": "`Console.encoding` defaults to `'utf-8'` both when the `.encoding` attribute is missing and when it is present but falsy.",
+      "quote": "defaulting to `'utf-8'` twice over \u2014 once if the attribute is missing, once if it is present but falsy"
+    },
+    {
+      "claim": "`ConsoleOptions.ascii_only` is defined as `not self.encoding.startswith(\"utf\")`.",
+      "quote": "`ConsoleOptions.ascii_only` is defined as `not self.encoding.startswith(\"utf\")`"
+    },
+    {
+      "claim": "`ConsoleOptions` has `min_width` of 1 by default.",
+      "quote": "`min_width=1`"
+    },
+    {
+      "claim": "`ConsoleOptions.no_wrap` has a dataclass default of `False`.",
+      "quote": "with `no_wrap` at its dataclass default of `False`"
+    },
+    {
+      "claim": "In `ConsoleOptions.update`, `width`, `min_width` and `max_width` default to the `NoChange` sentinel.",
+      "quote": "`width`, `min_width` and `max_width` are the sentinel `NoChange` instance"
+    },
+    {
+      "claim": "In `ConsoleOptions.update`, `None` is a value meaning \"no override\" and `NO_CHANGE` is the only way to leave a field unchanged.",
+      "quote": "`None` is a *value* that means \"no override\", and `NO_CHANGE` is the only way to say \"leave it alone\""
+    },
+    {
+      "claim": "`ConsoleOptions.update` called with `no_wrap=None` overwrites `no_wrap` from `False` to `None`.",
+      "quote": "`no_wrap` is actually overwritten, going from `False` to `None`"
+    },
+    {
+      "claim": "`pick_bool(self.no_wrap, options.no_wrap, False)` returns `False` when both candidates are `None`.",
+      "quote": "`pick_bool(self.no_wrap, options.no_wrap, False)`, falls through two `None`s to the literal `False`"
+    },
+    {
+      "claim": "The first line of `ConsoleOptions.update` is `options = self.copy()`.",
+      "quote": "The first line of `update` is `options = self.copy()`"
+    },
+    {
+      "claim": "`ConsoleOptions.copy` builds a new instance with a shallow-copied `__dict__`.",
+      "quote": "`copy` builds a new instance with a shallow-copied `__dict__`"
+    },
+    {
+      "claim": "In `Console.print`, a caller-supplied `width` is clamped by `min(width, self.width)` before being passed to `update`.",
+      "quote": "it would have been clamped by `min(width, self.width)` before reaching `update`"
+    },
+    {
+      "claim": "`ConsoleOptions.max_width` is not enforced against third-party renderables that emit over-wide lines.",
+      "quote": "nothing in `ConsoleOptions` stops a third-party `__rich_console__` from emitting a 400-cell line"
+    },
+    {
+      "claim": "In `Console.print`, when `style` is not `None` it is resolved before rendering.",
+      "quote": "Because `style` is not `None`, `print` resolves it before rendering"
+    },
+    {
+      "claim": "`Console.get_style` first queries the thread-local `ThemeStack`.",
+      "quote": "`Console.get_style('bold red')` ... first asks the thread-local `ThemeStack`"
+    },
+    {
+      "claim": "`ThemeStack.get` is bound directly to the top dict's `.get` method.",
+      "quote": "whose `get` is bound directly to the top dict's `.get`"
+    },
+    {
+      "claim": "When the theme lookup returns `None`, `Console.get_style` falls through to `Style.parse`.",
+      "quote": "the lookup returns `None` and the string falls through to `Style.parse`"
+    },
+    {
+      "claim": "`Style.parse` is a word-by-word state machine where `on` consumes the next word as a background colour.",
+      "quote": "`on` consumes the next word as a background colour"
+    },
+    {
+      "claim": "In `Style.parse`, `not` negates the following attribute.",
+      "quote": "`not` negates the following attribute"
+    },
+    {
+      "claim": "In `Style.parse`, `link` takes a URL.",
+      "quote": "`link` takes a URL"
+    },
+    {
+      "claim": "In `Style.parse`, a word in `STYLE_ATTRIBUTES` sets a flag, and anything else must parse as a colour.",
+      "quote": "a word in `STYLE_ATTRIBUTES` sets a flag, and anything else must parse as a colour"
+    },
+    {
+      "claim": "`'bold'` is present in rich's style attribute table.",
+      "quote": "`'bold'` is in the attribute table"
+    },
+    {
+      "claim": "`Color.parse` accepts `'red'`.",
+      "quote": "`'red'` falls to the final `else` and `Color.parse` accepts it"
+    },
+    {
+      "claim": "Parsing `'red'` produces `Color('red', ColorType.STANDARD, number=1)`.",
+      "quote": "turning it into `Color('red', ColorType.STANDARD, number=1)`"
+    },
+    {
+      "claim": "`Style` stores attribute flags as two integer bitmasks, `_set_attributes` recording which attributes were mentioned and `_attributes` recording their values.",
+      "quote": "`_set_attributes` recording *which* attributes were mentioned and `_attributes` recording their values"
+    },
+    {
+      "claim": "The last line of `Console.get_style` returns `style.copy() if style.link else style`.",
+      "quote": "`style.copy() if style.link else style`"
+    },
+    {
+      "claim": "`Style.parse` is wrapped in `lru_cache(maxsize=4096)`.",
+      "quote": "`parse` is wrapped in `lru_cache(maxsize=4096)`"
+    },
+    {
+      "claim": "`Style` uses `__slots__` and has no setters.",
+      "quote": "`Style` is slotted and has no setters"
+    },
+    {
+      "claim": "Styles carrying a hyperlink are copied because each use needs a fresh `_link_id`.",
+      "quote": "styles that carry a hyperlink are the exception, because each use needs a fresh `_link_id`"
+    },
+    {
+      "claim": "In `Console.get_style`, a `StyleSyntaxError` from `Style.parse` is converted to `errors.MissingStyle` and propagates out of `print`.",
+      "quote": "`StyleSyntaxError` from `parse` becomes `errors.MissingStyle`"
+    },
+    {
+      "claim": "`Console.get_style` accepts a `default=` argument used when the style name cannot be resolved.",
+      "quote": "Pass `default=` to `get_style` when the style name is not a literal you control."
+    },
+    {
+      "claim": "`Segment.line()` returns `Segment('\\n')`.",
+      "quote": "`Segment.line()` ... returns `Segment('\\n')`"
+    },
+    {
+      "claim": "`Console.print` pipes rendered output through `Segment.split_lines_terminator(render(renderable, render_options))`.",
+      "quote": "`Segment.split_lines_terminator(render(renderable, render_options))`"
+    },
+    {
+      "claim": "`Console.render` is a generator, and so is `Segment.split_lines_terminator`.",
+      "quote": "`Console.render` is a generator; so is `split_lines_terminator`"
+    },
+    {
+      "claim": "`Console.render` returns an empty render when `max_width` is less than 1.",
+      "quote": "returns an empty render when `max_width < 1`"
+    },
+    {
+      "claim": "The `max_width < 1` guard in `Console.render` exists to prevent recursion errors when a container subdivides an already-zero-width space.",
+      "quote": "it prevents recursion errors when a container keeps subdividing an already-zero-width space"
+    },
+    {
+      "claim": "`Console.render` calls `rich_cast` on the renderable.",
+      "quote": "Then `rich_cast` runs again"
+    },
+    {
+      "claim": "`Console.render` sorts the object into one of three kinds: something with `__rich_console__`, a bare `str`, or an error.",
+      "quote": "something with `__rich_console__`, a bare `str`, or an error"
+    },
+    {
+      "claim": "`Console.render` raises `errors.NotRenderableError` naming the object when it cannot handle it.",
+      "quote": "it rejects anything it cannot handle with `errors.NotRenderableError` naming the object"
+    },
+    {
+      "claim": "`Console.render` calls `_options.reset_height()`, which produces a copy with `height` cleared.",
+      "quote": "`render` calls `_options.reset_height()` ... another copy, this one clearing `height`"
+    },
+    {
+      "claim": "In `Text.__rich_console__`, `justify` falls through `self.justify` and `options.justify` to `'default'`.",
+      "quote": "`justify` falls through `self.justify` and `options.justify` to `'default'`"
+    },
+    {
+      "claim": "In `Text.__rich_console__`, `overflow` defaults to `'fold'`.",
+      "quote": "`overflow` to `'fold'`"
+    },
+    {
+      "claim": "`Text.wrap` splits the text on newlines first.",
+      "quote": "`Text.wrap` ... splits on newlines first"
+    },
+    {
+      "claim": "`Text.split` takes an early return and returns `Lines` built from a copy when there are no newlines.",
+      "quote": "`split` takes its early return and hands back `Lines([<text 'Hello World!'>])` built from a copy"
+    },
+    {
+      "claim": "`Text.wrap` skips `expand_tabs` when no tab is present.",
+      "quote": "No tab is present, so `expand_tabs` is skipped"
+    },
+    {
+      "claim": "`Text.wrap` calls `divide_line(str(line), width, fold=True)` for each line.",
+      "quote": "the single line goes to `divide_line(str(line), 100, fold=True)`"
+    },
+    {
+      "claim": "The `words` generator in `_wrap.py` yields a word together with its trailing whitespace as `(start, end, word)` tuples.",
+      "quote": "yields `(0, 6, 'Hello ')` \u2014 a word plus its trailing whitespace"
+    },
+    {
+      "claim": "`divide_line` measures `cell_len(word.rstrip())` to decide what must fit and `cell_len(word)` to advance the cursor.",
+      "quote": "`cell_len(word.rstrip())` is 5, which is what must fit, and `cell_len(word)` is 6, which is what the cursor advances by"
+    },
+    {
+      "claim": "`divide_line` allows trailing spaces to run past the end of a line but not visible characters.",
+      "quote": "Trailing spaces are allowed to run off the end of a line; visible characters are not."
+    },
+    {
+      "claim": "`cell_len` routes strings under 512 characters through an LRU cache of 4096 entries.",
+      "quote": "routes strings under 512 characters through an LRU cache of 4096 entries"
+    },
+    {
+      "claim": "`_cell_len` returns `len(text)` when every character is in the frozen set of known single-cell ranges.",
+      "quote": "if every character is in the frozen set of known single-cell ranges, the answer is just `len(text)`"
+    },
+    {
+      "claim": "Characters outside the single-cell fast path are looked up in a per-Unicode-version width table by binary search.",
+      "quote": "Anything else is looked up in a per-Unicode-version width table by binary search"
+    },
+    {
+      "claim": "A CJK glyph counts as two cells under `cell_len`.",
+      "quote": "a CJK glyph counts as two"
+    },
+    {
+      "claim": "A zero-width joiner sequence counts as one cell under `cell_len`.",
+      "quote": "a zero-width joiner sequence counts once"
+    },
+    {
+      "claim": "With `fold=True`, a word wider than the whole line is sent to `chop_cells` and broken mid-word across several lines.",
+      "quote": "`fold=True` would have sent it to `chop_cells` and broken it mid-word across several lines"
+    },
+    {
+      "claim": "With `fold=False`, a word wider than the line is cropped.",
+      "quote": "with `fold=False` it would have been cropped instead"
+    },
+    {
+      "claim": "`Text.divide([])` returns a single-line `Lines` built from a copy.",
+      "quote": "`Text.divide([])` returns a single-line `Lines` from another copy"
+    },
+    {
+      "claim": "`Text.rstrip_end` does nothing when the text length is below the given width.",
+      "quote": "`rstrip_end(100)` sees a length of 12 and does nothing"
+    },
+    {
+      "claim": "`Lines.justify` has four branches: left, center, right and full.",
+      "quote": "which matches none of its four branches \u2014 left, center, right, full"
+    },
+    {
+      "claim": "`Lines.justify` called with `justify='default'` makes no changes.",
+      "quote": "returns having touched nothing"
+    },
+    {
+      "claim": "`Text.truncate(100, overflow='fold')` leaves text of 12 cells unchanged.",
+      "quote": "`truncate(100, overflow='fold')` measures 12 cells against 100 and leaves the text alone"
+    },
+    {
+      "claim": "`Text.__rich_console__` rejoins the wrapped lines with `Text(\"\\n\").join(lines)`.",
+      "quote": "the lines are rejoined with `Text(\"\\n\").join(lines)`"
+    },
+    {
+      "claim": "`Text.__rich_console__` calls `Text.render(console, end=self.end)`.",
+      "quote": "handed to `Text.render(console, end=self.end)` with `end='\\n'`"
+    },
+    {
+      "claim": "`Text.render` checks `self._spans` first and takes a fast path yielding one `Segment` for the text and one for the end character when there are no spans.",
+      "quote": "one `Segment` for the text, one for the end character, return"
+    },
+    {
+      "claim": "`Text.render` builds a list of `(offset, leaving, style_id)` events, one for each span start and one for each span end, sorts them, and walks the text between consecutive offsets pushing and popping ids on a stack.",
+      "quote": "It builds a list of `(offset, leaving, style_id)` events \u2014 one for each span start, one for each span end \u2014 sorts them, and walks the text between consecutive offsets while pushing and popping ids on a stack"
+    },
+    {
+      "claim": "In `Text.render`, the combined active styles are cached by the tuple of style ids.",
+      "quote": "the active styles are combined, with the result cached by the tuple of ids"
+    },
+    {
+      "claim": "Overlapping spans in `Text.render` compose into one segment carrying both styles rather than overwriting each other.",
+      "quote": "Overlapping spans therefore *compose* rather than overwrite"
+    },
+    {
+      "claim": "`Segment.split_lines_terminator` yields a tuple of the line's segments and a boolean flag indicating a newline terminator.",
+      "quote": "yields what the trace records at line 300: `([Segment('Hello World!')], True)`"
+    },
+    {
+      "claim": "`Segment.split_lines_terminator` excludes control segments from newline splitting via `and not segment.control`.",
+      "quote": "Control segments are deliberately excluded from this splitting (`and not segment.control`"
+    },
+    {
+      "claim": "`Segment.apply_style` checks that the style is truthy and returns a generator expression.",
+      "quote": "checks the style is truthy and returns a *generator expression*"
+    },
+    {
+      "claim": "`Segment.apply_style` computes `style + segment.style` for each segment.",
+      "quote": "it computes `style + segment.style`"
+    },
+    {
+      "claim": "`Segment.apply_style` passes `None` as the style for control segments.",
+      "quote": "crucially passes `None` as the style for control segments"
+    },
+    {
+      "claim": "`Style._add` returns `self` immediately when the other style is `None`.",
+      "quote": "so `Style._add` returns `self` immediately"
+    },
+    {
+      "claim": "`Style.__add__` checks for a link and returns the cached style object when there is none.",
+      "quote": "`__add__` then checks for a link, finds none, and hands back the same cached red-bold object"
+    },
+    {
+      "claim": "`Style.__hash__` is used to compute the `lru_cache` key for `Style._add`.",
+      "quote": "The `Style.__hash__` call at trace line 306 is the `lru_cache` key being computed for `_add`"
+    },
+    {
+      "claim": "`Segment.apply_style` composes styles as base + segment, so the `style=` argument to `Console.print` sits underneath the renderable's own styles.",
+      "quote": "`apply_style` composes as *base + segment*, so the `style=` argument to `print` sits **underneath** whatever styles the renderable already carried"
+    },
+    {
+      "claim": "In `Style._add`, the right-hand side's set attributes take precedence.",
+      "quote": "In `Style._add` the right-hand side's set attributes win"
+    },
+    {
+      "claim": "`Console.render` is lazy and can be consumed only once.",
+      "quote": "`Console.render` is lazy and single-use"
+    },
+    {
+      "claim": "`Console.print` skips the `new_line_start` branch when `new_line_start` is `False`.",
+      "quote": "`print` skips the `new_line_start` branch"
+    },
+    {
+      "claim": "`Console._buffer` is a thread-local list.",
+      "quote": "It looks up `self._buffer`, the thread-local list"
+    },
+    {
+      "claim": "The `Console.width` property re-derives the size from scratch on each access.",
+      "quote": "That property re-derives the size from scratch"
+    },
+    {
+      "claim": "`Segment.split_and_crop_lines` accumulates segments, splits on `'\\n'`, and hands each accumulated line to `adjust_line_length`.",
+      "quote": "accumulates the first segment, meets the `'\\n'`, and hands the accumulated line \u2014 the text segment alone \u2014 to `adjust_line_length`"
+    },
+    {
+      "claim": "`adjust_line_length` sums `segment.cell_length`, which is `0` for control segments and `cell_len(text)` otherwise.",
+      "quote": "That function sums `segment.cell_length`, which is `0` for control segments and `cell_len(text)` otherwise"
+    },
+    {
+      "claim": "`adjust_line_length` returns the line as a shallow copy unchanged when it is shorter than the target length and `pad=False`.",
+      "quote": "the line is returned as a shallow copy, unchanged"
+    },
+    {
+      "claim": "`include_new_lines` defaults to `True` in `Segment.split_and_crop_lines`, causing a fresh `Segment('\\n')` to be appended to each line.",
+      "quote": "Because `include_new_lines` defaults to `True`, a fresh `Segment('\\n')` is appended"
+    },
+    {
+      "claim": "When a line is longer than the target, `adjust_line_length` walks the segments accumulating width and cuts the segment crossing the boundary with `set_cell_size`, discarding everything after it.",
+      "quote": "`adjust_line_length` would have walked the segments accumulating width and cut the one that crossed the boundary with `set_cell_size`, discarding everything after it"
+    },
+    {
+      "claim": "`set_cell_size` converts a double-width glyph into spaces when the cut falls inside it, so the visible width stays exact.",
+      "quote": "if the cut fell inside a double-width glyph, that glyph becomes spaces so the visible width still comes out exact"
+    },
+    {
+      "claim": "`Segment.split_and_crop_lines` at `self.width` is the only unconditional enforcement of the console width.",
+      "quote": "This is the only unconditional enforcement of the console width."
+    },
+    {
+      "claim": "Passing `soft_wrap=True` to `Console.print` sets `crop = False`.",
+      "quote": "`soft_wrap=True` which sets `crop = False` for you"
+    },
+    {
+      "claim": "`Console.__exit__` calls `_exit_buffer`, which decrements `_buffer_index` and then calls `_check_buffer`.",
+      "quote": "calls `_exit_buffer`, which decrements `_buffer_index` from 1 to 0 and then calls `_check_buffer`"
+    },
+    {
+      "claim": "`_check_buffer` deletes the buffer and drops output when `self.quiet` is set.",
+      "quote": "if `self.quiet` were set, the buffer would be deleted and the output silently dropped"
+    },
+    {
+      "claim": "`_check_buffer` calls `_write_buffer` inside a `try` that catches `BrokenPipeError`.",
+      "quote": "otherwise calls `_write_buffer` inside a `try` that catches `BrokenPipeError`"
+    },
+    {
+      "claim": "`_write_buffer` acquires the console's re-entrant lock and checks `self.record and not self._buffer_index`.",
+      "quote": "the console takes its re-entrant lock and checks `self.record and not self._buffer_index`"
+    },
+    {
+      "claim": "`_write_buffer` appends a copy of the buffer segments to `_record_buffer` under a separate lock before writing.",
+      "quote": "a copy of exactly these two segments is appended to `_record_buffer` under a *separate* lock"
+    },
+    {
+      "claim": "In `_write_buffer`, the non-Jupyter non-Windows branch renders the buffer to a string, writes it, flushes, and deletes the buffer.",
+      "quote": "render the buffer to a string, write it, flush, delete"
+    },
+    {
+      "claim": "`_render_buffer` caches the colour system, the legacy Windows flag, and `not_terminal` before iterating the segments.",
+      "quote": "caches three decisions up front \u2014 the colour system (`None`), legacy Windows (`False`), and `not_terminal`"
+    },
+    {
+      "claim": "In `_render_buffer`, a segment with a truthy style goes through `Style.render`, and a styleless segment is appended verbatim unless it is a control segment on a non-terminal, in which case it is dropped.",
+      "quote": "a segment with a truthy style goes through `Style.render`; a styleless segment is appended verbatim *unless* it is a control segment on a non-terminal, in which case it is dropped"
+    },
+    {
+      "claim": "`Style.render` short-circuits on its first line when the colour system is `None`.",
+      "quote": "the very first line of the method short-circuits on a `None` colour system"
+    },
+    {
+      "claim": "`_write_buffer` resolves `self.file` twice, once for `write` and once for `flush`, and then runs `del self._buffer[:]`.",
+      "quote": "`self.file` is resolved twice \u2014 once for `write`, once for `flush` \u2014 and `del self._buffer[:]`"
+    },
+    {
+      "claim": "One `Console.print` results in one `write` plus one `flush`, taken under `self._lock`.",
+      "quote": "One `print` is one `write` plus one `flush`, taken under `self._lock`"
+    },
+    {
+      "claim": "A `BrokenPipeError` is routed to `Console.on_broken_pipe`, whose default implementation sets `quiet`, redirects stdout to `/dev/null` and raises `SystemExit(1)`.",
+      "quote": "whose default sets `quiet`, redirects stdout to `/dev/null` and raises `SystemExit(1)`"
+    },
+    {
+      "claim": "A `UnicodeEncodeError` during writing is re-raised with a `PYTHONIOENCODING` hint appended.",
+      "quote": "A `UnicodeEncodeError` is re-raised with a `PYTHONIOENCODING` hint appended"
+    },
+    {
+      "claim": "Setting `Console.quiet` discards output without any notification.",
+      "quote": "setting `Console.quiet` discards output without telling anyone"
+    },
+    {
+      "claim": "When a string contains a `[`, `markup.render` cannot take the fast path and runs the tag parser.",
+      "quote": "contains a `[`, so `markup.render` cannot take the fast path"
+    },
+    {
+      "claim": "`markup._parse` walks `RE_TAGS` and yields `(position, text, tag)` triples.",
+      "quote": "`_parse` ... walks `RE_TAGS` and yields `(position, text, tag)` triples"
+    },
+    {
+      "claim": "In `markup._parse`, an even number of backslashes becomes literal backslashes and an odd number escapes the following tag so it is emitted as text.",
+      "quote": "an even number of backslashes becomes literal backslashes, an odd one escapes the following tag so it is emitted as text"
+    },
+    {
+      "claim": "`markup.render` pushes each opening tag onto a stack paired with the current text length.",
+      "quote": "pushes each opening tag onto a stack paired with the current text length"
+    },
+    {
+      "claim": "On each closing tag, `markup.render` pops the matching stack entry and emits a `Span` over the enclosed range.",
+      "quote": "on each closing tag pops the matching entry and emits a `Span` over the enclosed range"
+    },
+    {
+      "claim": "Both sides of a markup tag pair are passed through `Style.normalize`, which round-trips the definition through `Style.parse`.",
+      "quote": "Both sides of a pair are passed through `Style.normalize` ... which round-trips the definition through `Style.parse`"
+    },
+    {
+      "claim": "The markup tag `[u]` normalizes to the style `'underline'`.",
+      "quote": "both become the span style `'underline'`"
+    },
+    {
+      "claim": "The markup tags `[i]`/`[/i]` normalize to the style `'italic'`.",
+      "quote": "why `[i]`/`[/i]` become `'italic'`"
+    },
+    {
+      "claim": "Markup tags still open when the string ends are closed silently at the full text length.",
+      "quote": "Tags still open when the string ends are closed silently at the full text length"
+    },
+    {
+      "claim": "A closing markup tag with nothing to close raises `MarkupError`.",
+      "quote": "a closing tag with nothing to close is not silent \u2014 it raises `MarkupError`"
+    },
+    {
+      "claim": "`rich.markup.escape` is available to escape markup in untrusted strings.",
+      "quote": "`rich.markup.escape`"
+    },
+    {
+      "claim": "`Table.__init__` defaults `box` to `box.HEAVY_HEAD`.",
+      "quote": "`box=box.HEAVY_HEAD`, the heavy-topped Unicode frame"
+    },
+    {
+      "claim": "`Table.__init__` defaults `padding` to `(0, 1)`.",
+      "quote": "`padding=(0, 1)`"
+    },
+    {
+      "claim": "`Table.__init__` defaults `safe_box` to `None`, deferring to the console.",
+      "quote": "`safe_box=None`, which defers to the console"
+    },
+    {
+      "claim": "`Table.__init__` defaults `show_edge` to `True`.",
+      "quote": "`show_edge=True`"
+    },
+    {
+      "claim": "`Table.__init__` defaults `expand` to `False`.",
+      "quote": "`expand=False`"
+    },
+    {
+      "claim": "`Table.__init__` normalises `header_style` and `footer_style` with `or \"\"` so `None` becomes an empty string.",
+      "quote": "`header_style or \"\"` and `footer_style or \"\"` turn a `None` into an empty string"
+    },
+    {
+      "claim": "`Table.__init__` passes `padding` to `Padding.unpack`.",
+      "quote": "`padding` is handed to `Padding.unpack`"
+    },
+    {
+      "claim": "`Padding.unpack` expands one integer to all four sides, two values to (top, right) repeated, and four values as given.",
+      "quote": "one integer means all four sides, two means (top, right) repeated, four means all four given"
+    },
+    {
+      "claim": "`Padding.unpack` raises `ValueError` naming the length it received for any other number of values.",
+      "quote": "anything else raises `ValueError` naming the length it got"
+    },
+    {
+      "claim": "`Padding.unpack((0, 1))` returns `(0, 1, 0, 1)`.",
+      "quote": "`(0, 1) \u2192 (0, 1, 0, 1)`"
+    },
+    {
+      "claim": "`Table.__init__` ends with a loop over `*headers` that turns bare strings into columns.",
+      "quote": "The constructor ends with a loop over `*headers` ... that would have turned bare strings into columns"
+    },
+    {
+      "claim": "`Table.add_column` builds one `Column` dataclass and appends it to the table's columns.",
+      "quote": "Each call builds one `Column` dataclass and appends it"
+    },
+    {
+      "claim": "`Table.add_column` sets `_index=len(self.columns)` on each new column.",
+      "quote": "`_index=len(self.columns)` stamps each column with its position at creation time"
+    },
+    {
+      "claim": "`Table._get_padding_width` uses a column's index to decide whether it is the first or last column and whether edge padding applies.",
+      "quote": "that index is what `_get_padding_width` later uses to know whether a column is the first or last and so whether edge padding applies"
+    },
+    {
+      "claim": "`Table.add_column` sets `highlight=highlight if highlight is not None else self.highlight`.",
+      "quote": "`highlight=highlight if highlight is not None else self.highlight` inherits the table's setting"
+    },
+    {
+      "claim": "`Table.highlight` defaults to `False`.",
+      "quote": "which is `False` by default"
+    },
+    {
+      "claim": "`Table.add_column`'s `overflow` parameter defaults to `'ellipsis'`.",
+      "quote": "`overflow='ellipsis'` is the signature default"
+    },
+    {
+      "claim": "In `Table.add_row`, a row shorter than the column list is padded out with `None`, and each `None` becomes an empty-string cell.",
+      "quote": "a short row is padded out with `None`, and each `None` becomes an empty-string cell"
+    },
+    {
+      "claim": "In `Table.add_row`, a row longer than the current columns creates a new `Column` and back-fills every existing row with `Text(\"\")`.",
+      "quote": "it grows the table, creating a new `Column` and back-filling every existing row with `Text(\"\")`"
+    },
+    {
+      "claim": "`is_renderable` returns true for a `str`, or an object with `__rich__`, or an object with `__rich_console__`.",
+      "quote": "it is a `str`, or it has `__rich__`, or it has `__rich_console__`"
+    },
+    {
+      "claim": "`Table.add_row` raises `errors.NotRenderableError` naming the type for values that are not renderable.",
+      "quote": "all rejected, with `errors.NotRenderableError` naming the type"
+    },
+    {
+      "claim": "`Table.add_row` validates cells at insert time rather than render time.",
+      "quote": "`add_row` validates at insert time, not at render time"
+    },
+    {
+      "claim": "In `Table.add_row`, cells for earlier columns are already appended when a later cell raises, and the `Row` is never appended.",
+      "quote": "cells for the earlier columns are already appended when a later one raises, and the `Row` is never appended"
+    },
+    {
+      "claim": "`Table.add_row`'s `add_cell` closure appends the value to `column._cells`.",
+      "quote": "a three-line closure that appends to `column._cells`"
+    },
+    {
+      "claim": "The `Column` dataclass declares `_cells` with `field(default_factory=list)`.",
+      "quote": "the per-column list declared with `field(default_factory=list)` on the `Column` dataclass"
+    },
+    {
+      "claim": "In rich's `Table`, cells are stored on columns rather than on rows.",
+      "quote": "cells live on *columns*, not on rows"
+    },
+    {
+      "claim": "The `Row` object appended by `Table.add_row` holds only a style and an `end_section` flag.",
+      "quote": "holds only a style and an `end_section` flag"
+    },
+    {
+      "claim": "`Table.add_row` stores cell strings unchanged, without calling `markup.render` or converting to `Text`.",
+      "quote": "No `markup.render`, no `Text`, no spans."
+    },
+    {
+      "claim": "Markup in table cells is interpreted later, one cell at a time, when the table is rendered through `Console.render_lines`.",
+      "quote": "It is interpreted later, one cell at a time, when the table is rendered through `Console.render_lines`"
+    },
+    {
+      "claim": "Constructing a `Text` from a value never parses markup.",
+      "quote": "`Text(value)` (which never parses markup)"
+    },
+    {
+      "claim": "`rich_cast` returns a `Table` unchanged because `Table` has no `__rich__`.",
+      "quote": "which returns it unchanged because a `Table` has no `__rich__`"
+    },
+    {
+      "claim": "`ConsoleRenderable` is a `runtime_checkable` Protocol whose test is whether the object has a `__rich_console__` attribute.",
+      "quote": "a `runtime_checkable` Protocol whose entire test is \"does this object have a `__rich_console__` attribute\""
+    },
+    {
+      "claim": "In `_collect_renderables`, an object that is a `ConsoleRenderable` is appended as-is with no pretty-printing, highlighting or `Text` conversion.",
+      "quote": "the table is appended as-is ... no pretty-printing, no highlighting, no `Text` conversion"
+    },
+    {
+      "claim": "`Console.render` confirms the object has `__rich_console__` and is not itself a class before calling it.",
+      "quote": "confirms the object has `__rich_console__` and is not itself a class"
+    },
+    {
+      "claim": "In `Table.__rich_console__`, when `self.width` is `None` the `max_width` from options is used unchanged.",
+      "quote": "`self.width` is `None`, so `max_width` stays 100"
+    },
+    {
+      "claim": "`Table._extra_width` counts two cells for the outer edges plus one per divider between columns.",
+      "quote": "two cells for the outer edges, plus one per divider between four columns \u2014 `2 + 3`"
+    },
+    {
+      "claim": "`Table.__rich_console__` passes the content budget down with `options.update_width(...)`.",
+      "quote": "handed down as `options.update_width(95)`"
+    },
+    {
+      "claim": "`ConsoleOptions.update_width` clamps the width with `max(0, width)`.",
+      "quote": "`update_width` clamps with `max(0, width)`"
+    },
+    {
+      "claim": "`Table._calculate_column_widths` measures every column and then decides whether the result fits.",
+      "quote": "`_calculate_column_widths` measures every column, then decides whether the result fits"
+    },
+    {
+      "claim": "`Table._get_padding_width` returns `pad_left + pad_right` for a column.",
+      "quote": "`_get_padding_width(0)` reads the normalised `(0, 1, 0, 1)` and returns `pad_left + pad_right` = 2"
+    },
+    {
+      "claim": "When `column.width` is set, `Table._measure_column` returns a fixed `Measurement(width + padding, width + padding)` and clamps it against the budget with `with_maximum`.",
+      "quote": "`_measure_column` returns a fixed `Measurement(12 + 2, 12 + 2)` and clamps it against the budget"
+    },
+    {
+      "claim": "For a column with an explicit width, `Table._measure_column` does not inspect the cells.",
+      "quote": "The cells are never looked at."
+    },
+    {
+      "claim": "`Table._get_cells` yields the header, the body cells and the footer, each wrapped in a `Padding`.",
+      "quote": "`_get_cells` yields header, body cells and footer, each already wrapped in a `Padding`"
+    },
+    {
+      "claim": "`Padding.__rich_measure__` adds `left + right` to the measurement of its inner renderable.",
+      "quote": "`Padding.__rich_measure__`, which adds `left + right` to whatever is inside"
+    },
+    {
+      "claim": "`Measurement.get` converts a string with `console.render_str(renderable, markup=options.markup, highlight=False)`.",
+      "quote": "which converts it with `console.render_str(renderable, markup=options.markup, highlight=False)`"
+    },
+    {
+      "claim": "Measurement honours markup, so markup tags contribute no width.",
+      "quote": "Markup is honoured, so `'[red]Solo[/red]: A Star Wars Story'` is measured as the 23 visible cells"
+    },
+    {
+      "claim": "Measurement forces highlighting off.",
+      "quote": "highlighting is forced off"
+    },
+    {
+      "claim": "`Table._measure_column` reports `max(min_widths)` and `max(max_widths)` across the column's cells, clamped to the budget and then to the column's own `min_width`/`max_width`.",
+      "quote": "reports `max(min_widths)` and `max(max_widths)` across its cells, clamped to the budget and then to the column's own `min_width`/`max_width`"
+    },
+    {
+      "claim": "`Table._calculate_column_widths` takes the measured maxima as the working widths, applying `or 1` so a zero-measuring column still occupies one cell.",
+      "quote": "The maxima are taken as the working widths, with `or 1` so a column measuring zero still occupies a cell"
+    },
+    {
+      "claim": "When `Table.expand` is `False`, the ratio-distribution branch of `_calculate_column_widths` is skipped.",
+      "quote": "the ratio-distribution branch is skipped"
+    },
+    {
+      "claim": "When `Table.expand` is `False`, the pad-out branch at the end of `_calculate_column_widths` is skipped.",
+      "quote": "so is the pad-out branch at the end"
+    },
+    {
+      "claim": "`Table._collapse_widths` is not called when the sum of column widths is within the budget.",
+      "quote": "`sum(widths)` is 84, under the 95-cell budget, so `_collapse_widths` is never called"
+    },
+    {
+      "claim": "`Table._collapse_widths` repeatedly shaves the widest column down toward the second widest.",
+      "quote": "it would have repeatedly shaved the widest column down toward the second widest"
+    },
+    {
+      "claim": "A column is considered shrinkable by `_collapse_widths` when `column.width is None and not column.no_wrap`.",
+      "quote": "only among columns marked shrinkable, which is `column.width is None and not column.no_wrap`"
+    },
+    {
+      "claim": "If collapsing still does not fit, `Table._calculate_column_widths` reduces every column evenly as a last resort.",
+      "quote": "the last resort reduces *every* column evenly, protection or not"
+    },
+    {
+      "claim": "`Table.__rich_console__` computes `table_width = sum(widths) + extra_width`.",
+      "quote": "`table_width = sum(widths) + extra_width`"
+    },
+    {
+      "claim": "`Table.__rich_console__` builds the render options for cells with `width=table_width`, `height=None` and `highlight=self.highlight`.",
+      "quote": "`width=89`, `height=None`, and `highlight=self.highlight`"
+    },
+    {
+      "claim": "When `Table.title` is `None`, the title annotation branch is skipped and control passes to `Table._render`.",
+      "quote": "`self.title` is `None`, so the annotation branch is skipped"
+    },
+    {
+      "claim": "`Table._render` resolves the table style and border style before computing geometry.",
+      "quote": "The first thing `_render` resolves is style, before geometry"
+    },
+    {
+      "claim": "`Table._render` computes the border style from `self.border_style or \"\"`.",
+      "quote": "once for the table, once for `self.border_style or \"\"`"
+    },
+    {
+      "claim": "`Style.parse` short-circuits to a null `Style()` for an empty or `\"none\"` definition.",
+      "quote": "the null style that `Style.parse` short-circuits to for an empty or `\"none\"` definition"
+    },
+    {
+      "claim": "`Style.__add__` delegates to the cached `_add`, which returns `self` unchanged when the right-hand style is null.",
+      "quote": "`Style.__add__` delegates to the cached `_add`, which returns `self` unchanged when the right-hand style is null"
+    },
+    {
+      "claim": "`Table._render` builds a generator per column and transposes them with `zip(*...)`.",
+      "quote": "`_render` builds a generator per column and then transposes them"
+    },
+    {
+      "claim": "`Table._get_cells` yields the header, then every body cell, then the footer if one is shown.",
+      "quote": "Each `_get_cells` call yields the header, then every body cell, then the footer if one is shown"
+    },
+    {
+      "claim": "In `Table._get_cells`, the header style is `get_style(self.header_style or \"\") + get_style(column.header_style)`.",
+      "quote": "The header style is `get_style(self.header_style or \"\") + get_style(column.header_style)`"
+    },
+    {
+      "claim": "In `Table._get_cells`, body cells use `cell_style = get_style(column.style or \"\")`.",
+      "quote": "The body cells get `cell_style = get_style(column.style or \"\")`"
+    },
+    {
+      "claim": "In `Table._get_cells`, the header's style replaces the column's style rather than stacking on top of it.",
+      "quote": "the header's style replaces the column's, it does not stack on top of it"
+    },
+    {
+      "claim": "In `Table._get_cells`, when `any(padding)` is true each raw cell is wrapped in a `Padding` renderable.",
+      "quote": "`any(padding)` is true for `(0, 1, 0, 1)`, so each raw cell is wrapped in a `Padding` renderable"
+    },
+    {
+      "claim": "`Table._get_cells` uses `loop_first_last` to tell `get_padding` whether the cell is in the first or last row.",
+      "quote": "`loop_first_last` tells `get_padding` whether this is the first or last row"
+    },
+    {
+      "claim": "With `pad_edge=True` and `collapse_padding=False`, `Table.get_padding` trims nothing.",
+      "quote": "with `pad_edge=True` and `collapse_padding=False` nothing is trimmed"
+    },
+    {
+      "claim": "`Table.get_padding` results are cached against the (first_row, last_row) flag pair.",
+      "quote": "cached against that flag pair"
+    },
+    {
+      "claim": "A `_Cell` carries a style, a renderable and a `vertical` value taken from the renderable if it declares one, else from the column.",
+      "quote": "the vertical taken from the renderable if it declares one, else from the column"
+    },
+    {
+      "claim": "`pick_bool` returns the first non-`None` of its arguments.",
+      "quote": "`pick_bool(self.safe_box, console.safe_box)` picks the first non-`None`"
+    },
+    {
+      "claim": "`Console.safe_box` defaults to `True`.",
+      "quote": "the table's `None` and the console's `True`, returning `True`"
+    },
+    {
+      "claim": "`Box.substitute` tests for legacy Windows and swaps `HEAVY_HEAD` for `SQUARE` from the substitution table.",
+      "quote": "legacy Windows, which would swap `HEAVY_HEAD` for `SQUARE` from the substitution table"
+    },
+    {
+      "claim": "`Box.substitute` tests `options.ascii_only` and replaces the box with plain ASCII `+-|` characters when it is true.",
+      "quote": "and `options.ascii_only`, which would replace it with plain `+-|` ASCII"
+    },
+    {
+      "claim": "`get_plain_headed_box` strips the header-specific box characters and is skipped when `show_header` is true.",
+      "quote": "`get_plain_headed_box`, which strips the header-specific characters, is skipped because `show_header` is true"
+    },
+    {
+      "claim": "The table box characters are chosen from `options.encoding`, which is read off the output file object.",
+      "quote": "The box characters are chosen from `options.encoding`, which is read off the output file object, not from a setting."
+    },
+    {
+      "claim": "`Box.get_top` walks the column widths with `loop_last`, emitting a corner, a run of horizontal characters per column, and a divider between each.",
+      "quote": "`Box.get_top` walks the widths with `loop_last`, emitting a corner, a run of `\u2501` per column, and a divider between each"
+    },
+    {
+      "claim": "`Table._render` yields the top border as a `Segment` with the border style followed by `Segment('\\n')`.",
+      "quote": "It is yielded as `Segment('\u250f\u2501\u2501\u2501\u2026\u2513', Style())` followed by `Segment('\\n')`"
+    },
+    {
+      "claim": "In `Table._render`, the header row's `row_style` is `Style.null()`.",
+      "quote": "For the header row `row_style` is `Style.null()`"
+    },
+    {
+      "claim": "In `Table._render`, body rows get their style from `get_row_style`, which composes alternating `row_styles` with any per-row style.",
+      "quote": "body rows get `get_row_style`, which composes alternating `row_styles` with any per-row style"
+    },
+    {
+      "claim": "In `Table._render`, each cell's render options are updated with the cell width and the column's `justify`, `no_wrap`, `overflow` and `highlight`.",
+      "quote": "the options are updated with `width`, the column's `justify`, `no_wrap`, `overflow` and `highlight`"
+    },
+    {
+      "claim": "`Table._render` calls `console.render_lines` with `style=get_style(cell.style) + row_style`.",
+      "quote": "`console.render_lines` is called with `style=get_style(cell.style) + row_style`"
+    },
+    {
+      "claim": "`Padding.__rich_console__` renders its inner renderable at `width - left - right`.",
+      "quote": "`Padding.__rich_console__` renders its inner renderable at `width - left - right`"
+    },
+    {
+      "claim": "`Lines.justify` pads left-aligned cells on the right and right-aligned cells on the left.",
+      "quote": "`Lines.justify`, which pads left-aligned cells on the right and right-aligned ones on the left"
+    },
+    {
+      "claim": "`Console.render_lines` applies the given style to every segment it produces.",
+      "quote": "`render_lines` applies it to every segment it produces"
+    },
+    {
+      "claim": "`Table._render`'s `align_cell` pads a cell vertically to the row height, forcing `bottom` for the header and `top` for the footer and otherwise using the column's `vertical`.",
+      "quote": "`align_cell` pads a cell vertically to the row height \u2014 forced to `bottom` for the header and `top` for the footer, otherwise the column's `vertical`"
+    },
+    {
+      "claim": "`Segment.set_shape` fixes every cell to the same width and height.",
+      "quote": "`Segment.set_shape` fixes every cell to the same width and height"
+    },
+    {
+      "claim": "`Table._render`'s `box_segments` chooses head, mid or foot characters according to row position.",
+      "quote": "The dividers between cells come from `box_segments`, choosing head/mid/foot characters by row position"
+    },
+    {
+      "claim": "In `Table._render`, a divider made of whitespace is re-styled with the row's background.",
+      "quote": "a divider made of whitespace is re-styled with the row's background"
+    },
+    {
+      "claim": "After the header row, `Table._render` calls `get_row(widths, \"head\")` to draw the header rule.",
+      "quote": "`get_row(widths, \"head\")` draws the `\u2521\u2501\u2501\u2501\u2547\u2026\u2529` rule"
+    },
+    {
+      "claim": "The last thing `Table._render` yields is `get_bottom(widths)`.",
+      "quote": "the last thing the generator yields is `get_bottom(widths)`"
+    },
+    {
+      "claim": "`Column.overflow` defaults to `\"ellipsis\"` and is passed into each cell's render options, so over-wide content is truncated with a `\u2026`.",
+      "quote": "`Column.overflow` defaults to `\"ellipsis\"` ... and is passed into each cell's render options"
+    },
+    {
+      "claim": "`Console.print` with `crop=True` passes every segment through `Segment.split_and_crop_lines` at `self.width` with `pad=False`.",
+      "quote": "every segment goes through `Segment.split_and_crop_lines` at `self.width` with `pad=False`"
+    },
+    {
+      "claim": "`Console.width` returns `self._width` in preference to any OS-reported width.",
+      "quote": "`self._width` wins over anything the OS reports"
+    },
+    {
+      "claim": "`Segment.cell_length` for a non-control segment is `cell_len(text)`.",
+      "quote": "which for a non-control segment is `cell_len(text)`"
+    },
+    {
+      "claim": "Each heavy box-drawing glyph counts as one cell in `cell_len`.",
+      "quote": "Each heavy box-drawing glyph is one cell"
+    },
+    {
+      "claim": "When a line is shorter than the crop width and `pad=False`, `adjust_line_length` copies the line unchanged without padding it out to the console width.",
+      "quote": "the branch taken is the one that copies the line unchanged ... and no padding out to the console width either"
+    },
+    {
+      "claim": "`Segment.split_and_crop_lines` re-appends the newline segment to each cropped line before it goes into `self._buffer`.",
+      "quote": "The newline segment is re-appended and the line goes into `self._buffer`"
+    },
+    {
+      "claim": "In `adjust_line_length`, the `line_length > length` branch rebuilds the line segment by segment and cuts the last one with `set_cell_size`.",
+      "quote": "the `line_length > length` branch would have rebuilt it segment by segment and cut the last one with `set_cell_size`"
+    },
+    {
+      "claim": "The Console's buffer depth counter means nested prints only increment it and nothing reaches the file until the outermost context exits.",
+      "quote": "nested prints only increment it, and nothing reaches the file until the outermost context exits"
+    },
+    {
+      "claim": "In `_write_buffer` the recording into `_record_buffer` happens before the write, under the console lock and a separate record lock.",
+      "quote": "the recording happens *first* \u2014 `record` is true and `_buffer_index` is 0, so a copy of the buffer is appended to `self._record_buffer` under its own separate lock"
+    },
+    {
+      "claim": "Nothing trims `_record_buffer`; only an `export_*` call with `clear=True` empties it.",
+      "quote": "nothing trims it, and only an `export_*` call with `clear=True` empties it"
+    },
+    {
+      "claim": "`_render_buffer` computes `not_terminal = not self.is_terminal` up front.",
+      "quote": "It reads `not_terminal = not self.is_terminal` up front"
+    },
+    {
+      "claim": "`_render_buffer` strips colour entirely when `no_color` is set.",
+      "quote": "would strip colour entirely if `no_color` were set"
+    },
+    {
+      "claim": "`Style.__bool__` returns `False` for a null style.",
+      "quote": "`Style.__bool__` returns `False` for the border segments"
+    },
+    {
+      "claim": "The rendered buffer string is written in a single `self.file.write` followed by `flush()`, after which the buffer is deleted.",
+      "quote": "is written in a single `self.file.write`, followed by `flush()`, and the buffer is deleted"
+    },
+    {
+      "claim": "On Windows the output text is split into roughly 8K-character batches to work around a CPython write-size bug.",
+      "quote": "On Windows the same text would be split into ~8K-character batches to dodge a CPython write-size bug"
+    },
+    {
+      "claim": "`Console.export_text` reads from the record buffer.",
+      "quote": "`console.export_text()` opens the record buffer"
+    },
+    {
+      "claim": "`Console.export_text` defaults `styles` to `False` and then joins `segment.text` for every non-control segment.",
+      "quote": "With the default `styles=False` it joins `segment.text` for every non-control segment"
+    },
+    {
+      "claim": "`Console.export_text` defaults `clear` to `True` and empties the record buffer after exporting.",
+      "quote": "because `clear` defaults to `True`, it empties the buffer"
+    },
+    {
+      "claim": "The `record=True` precondition in `Console.export_text` is enforced with an `assert`, which is removed under `python -O`.",
+      "quote": "The `record=True` precondition is an `assert`"
+    },
+    {
+      "claim": "`export_text`, `export_html` and `export_svg` share one record buffer and all clear it by default.",
+      "quote": "`export_text`, `export_html` and `export_svg` share one buffer and all clear it by default"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 0.96
+}

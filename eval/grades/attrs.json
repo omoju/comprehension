@@ -1,0 +1,190 @@
+{
+  "repo": "attrs",
+  "arms": {
+    "story": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Accurately describes the try do_it(cls, True) / except UnannotatedAttributeError fallback, the annotation-driven field collection, and that in the retry only field()/attrib() become fields while annotated assignments are silently dropped, matching the key."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly states no __setattr__ was written, names _DEFAULT_ON_SETATTR/wrapped_pipe stored in ClassProps.on_setattr_hook, and explains the builder's reset to None due to absence of validators/converters, as in the key."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Matches the key: UNHASHABLE via the final else branch of the hash ladder, is_hashable False, make_unhashable sets __hash__ = None so hash() raises TypeError."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Gives the exact generated signature, the attr_dict default and NOTHING sentinel, the per-call __attr_factory_list_of_numbers() producing a fresh list, the correct __annotations__, and the plain _assign setter."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly traces the collection branch with retain_collection_types=True, _asdict_anything atomic path, the new list object built by cf(items), and the attr.asdict tuple\u2192list difference."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Identifies the shared module-level __ne__ assigned by add_eq, its not-__eq__ computation, NotImplemented forwarding, and the identity fallback, matching the key."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Lists slots=False, ordering added, on_setattr None, collect_by_mro False, and no pickling \u2014 all five key differences with correct reasoning (the extra force_kw_only remark is harmless)."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "States fields(C).a.type is None and C.__annotations__ is {} with the post-build annotation assignment, and correctly explains that field(type=int) would populate both, only hedging slightly on the exact dict."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly states the clean-retry guarantee (exception raised in _transform_attrs before the builder mutates the class) and the silent field-loss case when an unannotated field() forces auto_attribs=False."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "The exact condition and the first surprise (introspection disagreeing) are right, but the second surprise substitutes a post-hoc-validator scenario and only hints at, rather than states, the key's point that a user-constructed identical pipe is a different object so the optimization is skipped."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets the two TypeError preconditions and the cached-setattr detail, but explicitly declines to name _attrs_cached_hash/_HASH_CACHE_FIELD and the __attrs_post_init__ ordering hazard."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Only covers the inherited-frozen case (with the right message) and omits the two _make_init_script ValueError checks and the exception type, admitting it cannot say."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Thoroughly matches the key on building a new type, slot computation, descriptor rebinding, cached_property __getattr__, closure-cell rewriting, and the consequences (dead original class, __init_subclass__ issues, weakref)."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Describes fields() and its exceptions reasonably but omits fields_dict entirely and explicitly denies knowing the generic-alias caching side effect that the key highlights."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Identifies the thread-local repr_context.already_repring set of id(self) returning '...' on re-entry and the cloudpickle reason for living in _compat, matching the key's main points."
+      }
+    ],
+    "deepwiki": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "It gets the right outcome for SomeClass (annotated fields collected) but describes a wrong decision mechanism (inspecting for annotations rather than try auto_attribs=True then catch UnannotatedAttributeError and retry with False) and explicitly denies the retry/fallback that the key says silently drops annotated-only members."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "The key answer is that no `__setattr__` was written (because no field has a validator/converter, `_on_setattr` is reset to None) while ClassProps.on_setattr_hook still holds the convert+validate pipe; the answer declines to answer either part."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "It correctly concludes the class is unhashable with `__hash__ is None` and gives the correct reasoning (eq=True, not frozen, no explicit hash), only omitting the internal branch name which it flags."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correct that 42 is a real parameter default and that the factory produces a fresh list per call, but it wrongly implies list_of_numbers has no parameter default (it defaults to the NOTHING sentinel) and fails to give `__init__.__annotations__`."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correct that the resulting list is a new object, but it contradicts the key on the tuple case by claiming attrs.asdict and attr.asdict behave identically, whereas attrs.asdict passes retain_collection_types=True and keeps tuples while attr.asdict converts them to lists."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "It correctly explains the True result via the generated __eq__, but misses that __ne__ is a single shared module-level function assigned unchanged, and leaves unsettled (rather than stating) that __eq__ returns NotImplemented for foreign types and __ne__ forwards it."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "It names four-plus genuine differences (slots=False, on_setattr=None, ordering generated, auto_detect/auto_attribs) with the correct explanation that make_class uses legacy attr.s defaults, though it misses collect_by_mro and pickling."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correct on `fields(C).a.type` being None and becoming int with `field(type=int)`, but it declines to state the `C.__annotations__` contents ({} vs {'x': int}) that the question asks about."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "It identifies the silent-loss situation as landing in auto_attribs=False mode where annotation-only members are dropped, but it misstates/denies the actual guarantee mechanism (try True, catch UnannotatedAttributeError, retry False) that makes mixing styles the failure mode."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "It states the condition is not documented and substitutes an unrelated subclass `__setattr__` reset, missing the actual rule (non-frozen class with the default pipe/validate/convert hook and no field validators/converters) and both named surprises."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Storage details (_attrs_cached_hash slot, _CacheHashWrapper) and the hashing-enabled requirement are right, but it omits the init=True precondition/TypeError messages and entirely misses the documented `__attrs_post_init__` hazard that the question asks for."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "It gives the class-level and field-level ValueError with the right message and the NO_OP/None exemption, but wrongly claims there is no separate inherited-frozen case, which actually raises the distinct \"(frozen-ness was inherited)\" ValueError (or silently forces NO_OP)."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "It accurately describes building a brand-new class from a cleaned class dict with computed __slots__, weakref/cache_hash/cached_property handling and closure-cell rewriting, plus the main consequences (stale original class, __init_subclass__ issues, AttributeError, non-slotted bases, generated __getstate__/__setstate__)."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "It declines to answer, missing the accepted inputs, the TypeError/NotAnAttrsClassError distinctions, and the generic-alias caching side effect of fields()."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "It says the recursion guard is not documented, missing the thread-local `_compat.repr_context.already_repring` id-set mechanism and the cloudpickle reason for placing it in _compat."
+      }
+    ]
+  },
+  "cost": 0.28
+}

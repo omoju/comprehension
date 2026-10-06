@@ -1,0 +1,1044 @@
+{
+  "repo": "click",
+  "arm": "story",
+  "words": 8601,
+  "extracted": 248,
+  "sample": [
+    2,
+    14,
+    15,
+    19,
+    22,
+    32,
+    36,
+    43,
+    48,
+    52,
+    56,
+    59,
+    61,
+    65,
+    70,
+    74,
+    80,
+    92,
+    97,
+    100,
+    114,
+    130,
+    131,
+    136,
+    145,
+    148,
+    150,
+    158,
+    163,
+    166,
+    171,
+    174,
+    182,
+    193,
+    212,
+    222,
+    225,
+    228,
+    232,
+    242
+  ],
+  "claims": [
+    {
+      "claim": "In click/decorators.py, the `option` decorator selects `Option` as the parameter class and returns an inner `decorator` function.",
+      "quote": "`option` picks `Option` as its class and returns an inner `decorator`"
+    },
+    {
+      "claim": "The inner `decorator(f)` returned by `click.option` constructs `cls(param_decls, **attrs)` immediately.",
+      "quote": "`decorator(f)` constructs `cls(param_decls, **attrs)` immediately"
+    },
+    {
+      "claim": "`Option.__init__` has `flag_value=Sentinel.UNSET` as the default value for the `flag_value` argument when the caller passes none.",
+      "quote": "`flag_value=Sentinel.UNSET`, the default for an argument the caller never passed"
+    },
+    {
+      "claim": "`Option.__init__` delegates first to `Parameter.__init__`.",
+      "quote": "It delegates first [to `Parameter.__init__`]"
+    },
+    {
+      "claim": "`Parameter._parse_decls` walks the parameter declarations to decide the parameter's name.",
+      "quote": "`_parse_decls` walks the declarations"
+    },
+    {
+      "claim": "`_split_opt` in click/parser.py splits `'--name'` into the prefix `'--'` and the body `'name'`.",
+      "quote": "splitting `'--name'` with [`_split_opt`]"
+    },
+    {
+      "claim": "In `_parse_decls`, when no explicit identifier is given among declarations, the longest spelling is chosen and lowercased with dashes converted to underscores.",
+      "quote": "the longest spelling wins and is lowercased with dashes turned into underscores"
+    },
+    {
+      "claim": "`_parse_decls` returns a triple of the Python name, the primary spellings, and the secondary (negating) spellings \u2014 for `--name` it is `('name', ['--name'], [])`.",
+      "quote": "The result is the triple `('name', ['--name'], [])`"
+    },
+    {
+      "claim": "`_check_name_is_usable` inspects the derived parameter name during parameter construction.",
+      "quote": "which is why [`_check_name_is_usable`] inspects it on the way past"
+    },
+    {
+      "claim": "Click currently reports an unusable parameter name (such as one produced by `--from` or `--0-file`) as a `DeprecationWarning`.",
+      "quote": "Click reports this as a `DeprecationWarning` today"
+    },
+    {
+      "claim": "Click's `_check_name_is_usable` promises to raise `TypeError` for unusable parameter names in version 9.0.",
+      "quote": "promises a `TypeError` in 9.0"
+    },
+    {
+      "claim": "When no `type=` is given, `Parameter.__init__` calls `convert_type(None, default)` to guess the type from the default.",
+      "quote": "`convert_type(None, default)` is asked to guess"
+    },
+    {
+      "claim": "`_guess_type` in click/types.py returns `type(UNSET)` (the `Sentinel` enum class) when the default is the `UNSET` sentinel.",
+      "quote": "`_guess_type` dutifully returns `type(UNSET)`"
+    },
+    {
+      "claim": "When the type was guessed rather than declared, `convert_type` falls back to `STRING` instead of wrapping the guessed class in a `FuncParamType`.",
+      "quote": "`convert_type` falls back to `STRING`"
+    },
+    {
+      "claim": "`Parameter.__init__` stores the raw default with `self.default = default`, keeping the `UNSET` sentinel.",
+      "quote": "`self.default = default` keeps the raw sentinel"
+    },
+    {
+      "claim": "`Parameter.__init__` sets `self._default_explicit = default is not UNSET`.",
+      "quote": "`self._default_explicit = default is not UNSET` records `False`"
+    },
+    {
+      "claim": "`Option.__init__` stores the prompt string as given and leaves `prompt_required` at `True` by default.",
+      "quote": "The prompt string is stored as given, `'Your name'`, and `prompt_required` stays `True`."
+    },
+    {
+      "claim": "`_infer_flag_kind(is_flag=None, flag_value=UNSET)` returns `(False, False)` when there is no flag_value, no secondary spelling, and prompt_required is on.",
+      "quote": "[`_infer_flag_kind(is_flag=None, flag_value=UNSET)`] returns `(False, False)`"
+    },
+    {
+      "claim": "`_pick_type` leaves `STRING` in place for a non-flag, non-count option.",
+      "quote": "sees a non-flag, non-count option and leaves `STRING` in place"
+    },
+    {
+      "claim": "`Option._validate` checks for illegal combinations including `nargs=-1` on an option, a secondary spelling on a non-boolean flag, and `count` together with `multiple`.",
+      "quote": "checks the combinations that cannot work \u2014 `nargs=-1` on an option, a secondary spelling on a non-boolean flag, `count` together with `multiple`"
+    },
+    {
+      "claim": "`Option._validate` begins with `if not __debug__: return`, so its checks are skipped when Python runs with `-O`.",
+      "quote": "Every one of those illegal-combination checks sits behind [`if not __debug__: return`]"
+    },
+    {
+      "claim": "The constructed `Option` is appended to the decorated function's `__click_params__` list.",
+      "quote": "appended to `f.__click_params__`"
+    },
+    {
+      "claim": "For an option declared with `default=1`, `_guess_type` sees an `int` and `convert_type` returns the `INT` singleton.",
+      "quote": "`_guess_type` sees an `int` and [`convert_type` returns the `INT` singleton]"
+    },
+    {
+      "claim": "For an option declared with `default=1`, `_default_explicit` records `True`.",
+      "quote": "`_default_explicit` records `True`"
+    },
+    {
+      "claim": "The `command` decorator pops `__click_params__` from the function, deletes the attribute, and extends its parameter list with `reversed(decorator_params)`.",
+      "quote": "pops `__click_params__`, deletes the attribute, and extends its parameter list with `reversed(decorator_params)`"
+    },
+    {
+      "claim": "The `command` decorator takes the command's help text from `f.__doc__`.",
+      "quote": "The help text is taken from `f.__doc__`"
+    },
+    {
+      "claim": "The `command` decorator derives the command name from the function name lowercased with underscores turned into dashes.",
+      "quote": "the command name is the function name lowercased with underscores turned into dashes"
+    },
+    {
+      "claim": "The `command` decorator strips a `_command`, `_cmd`, `_group` or `_grp` suffix from the function name when deriving the command name.",
+      "quote": "with no `_command`/`_cmd`/`_group`/`_grp` suffix to strip"
+    },
+    {
+      "claim": "`Command.__init__` stores the name, callback, params and help.",
+      "quote": "`Command.__init__` stores name, callback, params and help"
+    },
+    {
+      "claim": "`CliRunner.__init__` validates the capture mode, raising `ValueError` for anything other than `'sys'` or `'fd'`.",
+      "quote": "anything other than `'sys'` or `'fd'` is a `ValueError`"
+    },
+    {
+      "claim": "`CliRunner.__init__` rejects `capture='fd'` on Windows.",
+      "quote": "`'fd'` is rejected outright on Windows"
+    },
+    {
+      "claim": "`CliRunner.__init__` stores five settings whose defaults are `charset='utf-8'`, `env={}`, `echo_stdin=False`, `catch_exceptions=True`, and `capture='sys'`.",
+      "quote": "stores five settings"
+    },
+    {
+      "claim": "In `CliRunner.invoke`, when `capture == 'fd'` two `_FDCapture` objects are started on file descriptors 1 and 2.",
+      "quote": "`capture == 'fd'` would start two `_FDCapture`s on fds 1 and 2"
+    },
+    {
+      "claim": "With `capture='sys'`, `CliRunner.invoke` leaves `cap_out` and `cap_err` as `None`.",
+      "quote": "so `cap_out` and `cap_err` stay `None`"
+    },
+    {
+      "claim": "`CliRunner.invoke` enters `with self.isolation(input=input, env=env, color=color)`.",
+      "quote": "`with self.isolation(input=input, env=env, color=color)`"
+    },
+    {
+      "claim": "`make_input_stream` checks for a `read` attribute on the input.",
+      "quote": "`make_input_stream`] looks for a `read` attribute"
+    },
+    {
+      "claim": "`make_input_stream` encodes a `str` input with the runner's charset and wraps it in a `BytesIO`.",
+      "quote": "encodes it with the runner's charset and wraps it in a `BytesIO`"
+    },
+    {
+      "claim": "`make_input_stream` unwraps a file object to its binary reader, or raises `TypeError` if it has none.",
+      "quote": "it would have been unwrapped to its binary reader instead, or rejected with a `TypeError` if it had none"
+    },
+    {
+      "claim": "`CliRunner.isolation` saves `old_stdin`, `old_stdout`, `old_stderr` and `old_forced_width` before replacing them.",
+      "quote": "`old_stdin`, `old_stdout`, `old_stderr` and `old_forced_width`"
+    },
+    {
+      "claim": "`CliRunner.isolation` sets `formatting.FORCED_WIDTH` to `80`.",
+      "quote": "with `formatting.FORCED_WIDTH` immediately pinned to `80`"
+    },
+    {
+      "claim": "`CliRunner.make_env` copies the runner's own environment overrides and merges the per-call ones, returning `{}` when both are empty.",
+      "quote": "copies the runner's own environment overrides and merges the per-call ones; with both empty it returns `{}`"
+    },
+    {
+      "claim": "`StreamMixer()` creates a plain `BytesIO` named `output` plus two `BytesIOCopy` buffers that both copy into it.",
+      "quote": "creates a plain `BytesIO` called `output`, then two `BytesIOCopy` buffers that both copy into it"
+    },
+    {
+      "claim": "`BytesIOCopy.write` appends the data to the shared buffer before appending to itself.",
+      "quote": "`write` appends to the shared buffer before appending to itself"
+    },
+    {
+      "claim": "`BytesIOCopy.flush` flushes both its own buffer and the shared buffer.",
+      "quote": "`flush` flushes both"
+    },
+    {
+      "claim": "In `CliRunner.isolation`, `sys.stdin` is replaced by a `_NamedTextIOWrapper` over the input bytes.",
+      "quote": "`sys.stdin` becomes a `_NamedTextIOWrapper` over the input bytes"
+    },
+    {
+      "claim": "In `CliRunner.isolation`, `sys.stdout` is replaced by a text wrapper over the stdout `BytesIOCopy`.",
+      "quote": "`sys.stdout` over the stdout copy"
+    },
+    {
+      "claim": "In `CliRunner.isolation`, `sys.stderr` is replaced by a text wrapper over the stderr copy with `errors=\"backslashreplace\"`.",
+      "quote": "`sys.stderr` over the stderr copy with `errors=\"backslashreplace\"`"
+    },
+    {
+      "claim": "`_NamedTextIOWrapper` sets `_original_fd = -1` by default.",
+      "quote": "Each wrapper carries [`_original_fd = -1`]"
+    },
+    {
+      "claim": "`_NamedTextIOWrapper.fileno()` returns a real descriptor only when `_original_fd` is non-negative, otherwise raising `io.UnsupportedOperation`.",
+      "quote": "`fileno()` only returns a real descriptor when that field is non-negative"
+    },
+    {
+      "claim": "In `'fd'` capture mode, `CliRunner.invoke` sets `_original_fd` to the saved pre-redirection descriptor.",
+      "quote": "point `_original_fd` at the saved pre-redirection descriptor"
+    },
+    {
+      "claim": "`CliRunner.isolation` defines a `visible_input` function that writes the prompt, reads one line from the text-wrapped input, strips the newline, echoes it back and flushes.",
+      "quote": "which writes the prompt, pulls one line from the text-wrapped input, strips the newline, echoes it back and flushes"
+    },
+    {
+      "claim": "`CliRunner.isolation` defines `hidden_input` and `_getchar` replacements.",
+      "quote": "Alongside it are [`hidden_input`]"
+    },
+    {
+      "claim": "The `should_strip_ansi` replacement installed by `CliRunner.isolation` ignores the stream and answers from the `color` argument, returning `True` when `color=False`.",
+      "quote": "a [`should_strip_ansi` that ignores the stream entirely and answers from the `color` argument]"
+    },
+    {
+      "claim": "`CliRunner.isolation` saves and overwrites six module attributes, including `should_strip_ansi` in both the `utils` and `_compat` namespaces.",
+      "quote": "six module attributes are saved and overwritten"
+    },
+    {
+      "claim": "`CliRunner.isolation` patches `pdb.Pdb.__init__` so the debugger defaults to `sys.__stdin__` and `sys.__stdout__`.",
+      "quote": "`pdb.Pdb.__init__` is patched too"
+    },
+    {
+      "claim": "`CliRunner.isolation` records each environment key in `old_env` before setting or deleting it.",
+      "quote": "each environment key is recorded in `old_env` before being set or deleted"
+    },
+    {
+      "claim": "The `CliRunner.isolation` generator yields the three buffers.",
+      "quote": "the generator yields the three buffers"
+    },
+    {
+      "claim": "The `CliRunner` class docstring states that it works only in single-threaded use.",
+      "quote": "The class documents that it works only in single-threaded use"
+    },
+    {
+      "claim": "`CliRunner.invoke` applies `shlex.split` to the arguments when they are given as a string.",
+      "quote": "the `shlex.split` branch for string arguments"
+    },
+    {
+      "claim": "When no `prog_name` is given in `extra`, `CliRunner.invoke` falls back to `get_default_prog_name`, which returns the command's own name.",
+      "quote": "`get_default_prog_name` returns the command's own name"
+    },
+    {
+      "claim": "`Command.main` expands glob patterns, `~`, and `%VAR%` in arguments only when `args is None` and `os.name == \"nt\"`.",
+      "quote": "glob patterns, `~`, and `%VAR%` are only expanded when `args is None` and `os.name == \"nt\"`"
+    },
+    {
+      "claim": "`Command.main` falls back to `_detect_program_name()` when `prog_name` is not supplied, which inspects `sys.argv[0]` and the `__main__` module.",
+      "quote": "the `_detect_program_name()` fallback"
+    },
+    {
+      "claim": "`Command.main` calls `_main_shell_completion` before parsing any tokens.",
+      "quote": "`main` calls `_main_shell_completion`"
+    },
+    {
+      "claim": "`_main_shell_completion` derives the completion variable name by replacing dashes and dots in the program name with underscores and wrapping it as `_{NAME}_COMPLETE`.",
+      "quote": "dashes and dots become underscores, wrapped as `_{NAME}_COMPLETE`"
+    },
+    {
+      "claim": "If the completion environment variable holds a value, Click runs the completion machinery and calls `sys.exit` with its result.",
+      "quote": "If it holds anything, Click runs the completion machinery and calls `sys.exit` with its result"
+    },
+    {
+      "claim": "`_main_shell_completion` returns immediately when the completion environment variable is unset.",
+      "quote": "the function [returns immediately]"
+    },
+    {
+      "claim": "`Command.main` accepts an explicit `complete_var` argument to override the completion variable name.",
+      "quote": "pass an explicit `complete_var` if you want a name that is harder to guess"
+    },
+    {
+      "claim": "`Command.main` initialises `report = None` and `exit_code = 1` before its try block.",
+      "quote": "`report = None` and `exit_code = 1`"
+    },
+    {
+      "claim": "The happy path of `Command.main` builds the context, invokes the command, and calls `ctx.exit()`.",
+      "quote": "build the context, invoke the command, and call `ctx.exit()`"
+    },
+    {
+      "claim": "Each exception handler in `Command.main` re-raises when `standalone_mode` is off.",
+      "quote": "re-raise when `standalone_mode` is off"
+    },
+    {
+      "claim": "In `Command.main`, an `Exit` exception supplies its own exit code.",
+      "quote": "`Exit` yields its own code"
+    },
+    {
+      "claim": "In `Command.main`, `Abort` and an interrupted prompt both result in the message `Aborted!`.",
+      "quote": "`Abort` and an interrupted prompt both end in `Aborted!`"
+    },
+    {
+      "claim": "In `Command.main`, a `ClickException` supplies `e.show` as the report callable and `e.exit_code` as the exit code.",
+      "quote": "a `ClickException` contributes `e.show` and `e.exit_code`"
+    },
+    {
+      "claim": "In `Command.main`, an `OSError` is swallowed only when its errno is `EPIPE`, by wrapping the streams so the interpreter's final flush cannot raise; any other `OSError` propagates.",
+      "quote": "an `OSError` is swallowed only when it is `EPIPE`"
+    },
+    {
+      "claim": "After the handler ladder, `Command.main` writes the recorded message and calls `sys.exit(exit_code)`.",
+      "quote": "the message get written and `sys.exit(exit_code)` run"
+    },
+    {
+      "claim": "`Command.main` has an outer handler that preserves the chosen exit code if an interrupt arrives while the report is being written.",
+      "quote": "an outer handler that keeps the chosen exit code even if an interrupt arrives mid-report"
+    },
+    {
+      "claim": "With `standalone_mode=True`, `Command.main` never returns and the command's return value is discarded rather than used as the exit status.",
+      "quote": "`main` never returns \u2014 every path raises `SystemExit`, and the command's return value is discarded"
+    },
+    {
+      "claim": "`Command.make_context` folds `self.context_settings` into the keyword arguments only for keys the caller did not already pass.",
+      "quote": "folds `self.context_settings` into the keyword arguments, but only for keys the caller did not already pass"
+    },
+    {
+      "claim": "`Context.__init__` starts `params` and `args` as empty.",
+      "quote": "`params` and `args` start empty"
+    },
+    {
+      "claim": "`Context.allow_extra_args` falls back to `Command.allow_extra_args` when there is no parent.",
+      "quote": "`allow_extra_args` takes `Command.allow_extra_args`"
+    },
+    {
+      "claim": "A plain `Command` has `allow_extra_args` set to `False`.",
+      "quote": "for a plain command is `False`"
+    },
+    {
+      "claim": "For a plain `Command` context, `allow_interspersed_args` is `True` and `ignore_unknown_options` is `False`.",
+      "quote": "while `allow_interspersed_args` is `True` and `ignore_unknown_options` is `False`"
+    },
+    {
+      "claim": "`Context.help_option_names` defaults to the hard-coded `['--help']`.",
+      "quote": "`help_option_names` becomes the hard-coded `['--help']`"
+    },
+    {
+      "claim": "`Context.auto_envvar_prefix` stays `None` when there is no parent and the caller passed none.",
+      "quote": "`auto_envvar_prefix` stays `None`"
+    },
+    {
+      "claim": "Options with an explicit `envvar=` always read the environment regardless of `auto_envvar_prefix`.",
+      "quote": "Options with an explicit `envvar=` always read the environment"
+    },
+    {
+      "claim": "`Context.__init__` sets up an empty close-callback list, `_depth = 0`, empty `_parameter_source` and `_param_default_explicit` maps, and a fresh `ExitStack`.",
+      "quote": "empty close-callback list, `_depth = 0`, empty `_parameter_source` and `_param_default_explicit` maps, and a fresh `ExitStack`"
+    },
+    {
+      "claim": "Files opened by a `click.File` parameter and anything registered with `call_on_close` accumulate on the context's `ExitStack`.",
+      "quote": "That stack is where files opened by a `click.File` parameter, or anything registered with `call_on_close`, will accumulate."
+    },
+    {
+      "claim": "`Command.make_context` parses arguments inside `with ctx.scope(cleanup=False)`.",
+      "quote": "`with ctx.scope(cleanup=False)`"
+    },
+    {
+      "claim": "`Context.scope` increments `_depth` by one before delegating to the context manager and decrements it afterwards.",
+      "quote": "bumps `_depth` by one before delegating to the context manager and drops it afterwards"
+    },
+    {
+      "claim": "`Context.__enter__` increments `_depth` and pushes the context onto the thread-local stack.",
+      "quote": "`__enter__` bumps it again and pushes the context onto the thread-local stack"
+    },
+    {
+      "claim": "`Context.__exit__` unwinds the exit stack only when `_depth` reaches zero.",
+      "quote": "never to zero, which is the only value at which `__exit__` unwinds the exit stack"
+    },
+    {
+      "claim": "`push_context` in click/globals.py stores the context where `get_current_context()` can find it.",
+      "quote": "[`push_context`] puts the context where [`get_current_context()`] can find it"
+    },
+    {
+      "claim": "The context stack used by `get_current_context()` is thread-local.",
+      "quote": "It is thread-local"
+    },
+    {
+      "claim": "`Context` provides `with_resource` and `call_on_close` for registering resources released on the same schedule as the ExitStack.",
+      "quote": "Register your own resources with `ctx.with_resource` or `ctx.call_on_close`"
+    },
+    {
+      "claim": "`Command.parse_args` raises `NoArgsIsHelpError` when `args` is falsy, `no_args_is_help` is set, and parsing is not resilient.",
+      "quote": "if `args` is falsy and `no_args_is_help` is set and parsing is not resilient, raise `NoArgsIsHelpError`"
+    },
+    {
+      "claim": "A plain `Command` has `no_args_is_help` defaulting to `False`.",
+      "quote": "`no_args_is_help` at `False`"
+    },
+    {
+      "claim": "`Command.parse_args` calls `self.make_parser(ctx)`.",
+      "quote": "`self.make_parser(ctx)`"
+    },
+    {
+      "claim": "`Command.make_parser` constructs an `_OptionParser` and then asks every parameter to register itself with it.",
+      "quote": "`make_parser` constructs an `_OptionParser` and then asks every parameter to register itself"
+    },
+    {
+      "claim": "`_OptionParser.__init__` copies `allow_interspersed_args` and `ignore_unknown_options` off the context.",
+      "quote": "`allow_interspersed_args` and `ignore_unknown_options` are copied off `ctx`"
+    },
+    {
+      "claim": "`_OptionParser.__init__` starts with empty short- and long-option tables, `_opt_prefixes = {\"-\", \"--\"}`, and no positional arguments.",
+      "quote": "empty short- and long-option tables, `_opt_prefixes = {\"-\", \"--\"}`, and no positional arguments"
+    },
+    {
+      "claim": "`Command.make_parser` iterates over `self.get_params(ctx)` rather than `self.params`.",
+      "quote": "`make_parser` iterates over `self.get_params(ctx)`, not `self.params`"
+    },
+    {
+      "claim": "`Command.get_params` asks for the help option and, if there is one, appends it to a new list.",
+      "quote": "`get_params` asks for the help option and, if there is one, appends it to a new list"
+    },
+    {
+      "claim": "`Command.get_help_option_names` starts from `ctx.help_option_names` as an ordered `dict` and pops any name already claimed by a user parameter.",
+      "quote": "starts from `ctx.help_option_names` as an ordered `dict`, then walks every user parameter and pops any name it has already claimed"
+    },
+    {
+      "claim": "`Command.get_help_option` returns `None` when no help option name remains available.",
+      "quote": "the next check would return `None`"
+    },
+    {
+      "claim": "`Command.add_help_option` defaults to `True`.",
+      "quote": "`add_help_option` left at its default `True`"
+    },
+    {
+      "claim": "`Command.get_help_option` imports the `help_option` decorator and applies it to the command.",
+      "quote": "Click imports the `help_option` decorator and applies it to the command"
+    },
+    {
+      "claim": "The `help_option` decorator builds an option with `is_flag=True`, `expose_value=False`, `is_eager=True`, help text \"Show this message and exit.\", and a `show_help` callback.",
+      "quote": "`is_flag=True`, `expose_value=False`, `is_eager=True`, help text \"Show this message and exit.\", and a `show_help` callback"
+    },
+    {
+      "claim": "Click passes `_HELP_OPTION_STORAGE_NAME` as a second positional declaration alongside `--help`.",
+      "quote": "the second positional declaration Click passes alongside `--help`: `_HELP_OPTION_STORAGE_NAME`"
+    },
+    {
+      "claim": "`_parse_decls` treats a bare identifier declaration as the explicit storage name, returning `('_click_default_help', ['--help'], [])` for the help option.",
+      "quote": "`_parse_decls` takes it as the explicit storage name"
+    },
+    {
+      "claim": "`_infer_flag_kind(is_flag=True, flag_value=UNSET)` returns `(True, False)`.",
+      "quote": "`_infer_flag_kind(is_flag=True, flag_value=UNSET)`] returns `(True, False)`"
+    },
+    {
+      "claim": "`_pick_type` chooses `BoolParamType` for a flag with no `flag_value`.",
+      "quote": "`_pick_type` sees a flag with no `flag_value` and chooses `BoolParamType`"
+    },
+    {
+      "claim": "`help_option(...)(self)` appends the new `Option` to `self.params` through `_param_memo`, and `get_help_option` pops it back off and stores it in `self._help_option`.",
+      "quote": "`get_help_option` immediately pops it back off and stores it in `self._help_option`"
+    },
+    {
+      "claim": "After the help option is created, `Command.params` still contains only the user-declared parameters.",
+      "quote": "So `Command.params` is still `[count, name]` afterwards"
+    },
+    {
+      "claim": "Click's callback ordering is computed by object comparison, which is why the help option is cached.",
+      "quote": "callback ordering is computed by object comparison"
+    },
+    {
+      "claim": "`Command.get_params` runs twice during parsing and the second call to `get_help_option` returns the cached option without rebuilding it.",
+      "quote": "`get_params` runs twice during parsing, and the second time `get_help_option` returns without rebuilding anything"
+    },
+    {
+      "claim": "`Command.get_params` uses a `Counter` over every option spelling to warn about any spelling used more than once.",
+      "quote": "A `Counter` over every spelling warns about any option used more than once"
+    },
+    {
+      "claim": "`Command.get_params` uses a second `Counter` over storage names to warn when a parameter squats on the reserved help name and when an `Argument` shares a name with another parameter.",
+      "quote": "A second `Counter` over storage names warns in two further cases"
+    },
+    {
+      "claim": "In `Command.get_params`, options sharing a storage name are deliberately not warned about.",
+      "quote": "Options sharing a name are left alone on purpose"
+    },
+    {
+      "claim": "The duplicate- and reserved-name checks in `Command.get_params` sit inside `if __debug__` and emit `UserWarning`s rather than errors.",
+      "quote": "All of these duplicate- and reserved-name checks sit inside `if __debug__`"
+    },
+    {
+      "claim": "`Option.add_to_parser` picks the action `append` for `multiple`, `count` for counters, and otherwise `store`.",
+      "quote": "`append` for `multiple`, `count` for counters, otherwise `store`"
+    },
+    {
+      "claim": "For a non-flag option, `Option.add_to_parser` registers with `nargs=self.nargs`.",
+      "quote": "the non-flag branch, registering with `nargs=self.nargs`"
+    },
+    {
+      "claim": "For a flag option, `Option.add_to_parser` converts the `store` action into `store_const` and, with no secondary opts, registers once with `const=self.flag_activation_value`.",
+      "quote": "`store` becomes `store_const`, and since there are no secondary opts, it registers once with `const=self.flag_activation_value`"
+    },
+    {
+      "claim": "`Option.flag_activation_value` turns an `UNSET` `flag_value` into `True` for an actual flag.",
+      "quote": "an `UNSET` `flag_value` becomes `True` for an actual flag"
+    },
+    {
+      "claim": "`Option.flag_value` itself retains the `UNSET` sentinel even when `flag_activation_value` resolves to `True`.",
+      "quote": "while `Option.flag_value` itself keeps the sentinel"
+    },
+    {
+      "claim": "`_OptionParser.add_option` normalises each spelling through `_normalize_opt`.",
+      "quote": "`add_option` normalises each spelling through `_normalize_opt`"
+    },
+    {
+      "claim": "`_normalize_opt` is a no-op when no `token_normalize_func` is set on the context.",
+      "quote": "no `token_normalize_func` is set on the context"
+    },
+    {
+      "claim": "`_Option.__init__` splits each spelling into prefix and value using `_split_opt`.",
+      "quote": "`_Option.__init__` then splits each spelling into prefix and value"
+    },
+    {
+      "claim": "`_split_opt('--count')` returns `('--', 'count')`.",
+      "quote": "`_split_opt('--count')` returns `('--', 'count')`"
+    },
+    {
+      "claim": "In `_Option.__init__`, a spelling with a two-character prefix and a multi-character value is stored in `_long_opts`, and both `-` and `--` are added to the prefix set.",
+      "quote": "so it goes in `_long_opts` and both `-` and `--` join the prefix set"
+    },
+    {
+      "claim": "`_Option.__init__` raises `ValueError` for a declaration whose first character is alphanumeric.",
+      "quote": "A declaration whose first character is alphanumeric would have raised `ValueError` right there"
+    },
+    {
+      "claim": "`_OptionParser.parse_args` wraps the argument list in a `_ParsingState` and runs two passes: options first, then positional arguments.",
+      "quote": "`parse_args` wraps it in a `_ParsingState` and then runs two passes over that state: options first, positional arguments second"
+    },
+    {
+      "claim": "`_ParsingState` has four fields: `opts` an empty dict, `largs` an empty list, `rargs` set to the caller's list, and `order` an empty list.",
+      "quote": "`opts` an empty dict, `largs` an empty list, `rargs` the caller's list itself, and `order` an empty list"
+    },
+    {
+      "claim": "The first pass of `_OptionParser` pops tokens off the front of `rargs` until it is empty.",
+      "quote": "The first pass pops tokens off the front of `rargs` until it is empty"
+    },
+    {
+      "claim": "On encountering the bare token `'--'`, the parser returns immediately and leaves everything after it unparsed.",
+      "quote": "return immediately and leave everything after it unparsed"
+    },
+    {
+      "claim": "A token whose first character is in `_opt_prefixes` and which is longer than one character takes the option branch in the parser.",
+      "quote": "it takes the option branch"
+    },
+    {
+      "claim": "When `allow_interspersed_args` is true, non-option tokens are appended to `largs` and parsing continues; when false, the token is pushed back and the pass stops.",
+      "quote": "with `allow_interspersed_args` true they go to `largs` and parsing continues"
+    },
+    {
+      "claim": "`Group` sets `allow_interspersed_args` to false so remaining tokens go to a subcommand.",
+      "quote": "what a `Group` sets, to hand the rest to a subcommand"
+    },
+    {
+      "claim": "`_process_opts` looks for an `=` in the token and splits on the first one only.",
+      "quote": "`_process_opts` looks for an `=` and splits on the first one"
+    },
+    {
+      "claim": "`_match_long_opt` raises `NoSuchOption` with the parser's long-option table supplied as the pool of suggestions.",
+      "quote": "`_match_long_opt` raises `NoSuchOption` with the parser's long-option table as the pool of suggestions"
+    },
+    {
+      "claim": "`NoSuchOption` narrows the suggestion pool using `difflib.get_close_matches` to produce a \"Did you mean\" message.",
+      "quote": "with `difflib.get_close_matches`"
+    },
+    {
+      "claim": "On an unknown long option, `_process_opts` can retry the token as a bundle of short options when its prefix is one character, swallow it into `largs` when `ignore_unknown_options` is set, or re-raise.",
+      "quote": "retry the token as a bundle of short options if its prefix is only one character, swallow it into `largs` if `ignore_unknown_options` is set, or re-raise"
+    },
+    {
+      "claim": "`_Option.takes_value` is true for the `store` and `append` actions.",
+      "quote": "`takes_value` is true for `store` and `append`"
+    },
+    {
+      "claim": "When a long option has an attached explicit value, the parser pushes that value back onto the front of `rargs` and then calls `_get_value_from_state` to consume it.",
+      "quote": "it pushes `'3'` back onto the front of `rargs` and then asks `_get_value_from_state` to consume it"
+    },
+    {
+      "claim": "An attached value on an option that takes no value raises `BadOptionUsage`.",
+      "quote": "an attached value on an option that takes none [raises `BadOptionUsage`]"
+    },
+    {
+      "claim": "A flag matched with no value gets the `UNSET` value.",
+      "quote": "a flag with no value [gets `UNSET`]"
+    },
+    {
+      "claim": "`_get_value_from_state` with `nargs == 1` checks whether the next token looks like the start of another option and returns the `FLAG_NEEDS_VALUE` sentinel if the option is allowed to stand alone.",
+      "quote": "it would return the `FLAG_NEEDS_VALUE` sentinel instead of stealing it"
+    },
+    {
+      "claim": "When `rargs` is empty, `_get_value_from_state` either returns the `FLAG_NEEDS_VALUE` sentinel or raises `BadOptionUsage` saying the option requires an argument.",
+      "quote": "`BadOptionUsage` saying the option requires an argument"
+    },
+    {
+      "claim": "`_Option.process` under the `store` action writes the value into `state.opts` under the option's dest.",
+      "quote": "`_Option.process` writes it"
+    },
+    {
+      "claim": "`_Option.process` appends `self.obj` \u2014 the Click-level `Option` \u2014 to `state.order` for every action.",
+      "quote": "`state.order.append(self.obj)`"
+    },
+    {
+      "claim": "The `_OptionParser` performs no type conversion and no validation, leaving values as raw strings.",
+      "quote": "The parser performs no type conversion and no validation"
+    },
+    {
+      "claim": "The second pass of `_OptionParser.parse_args` calls `_unpack_args` to distribute remaining tokens to declared positional arguments.",
+      "quote": "The second pass asks `_unpack_args` to deal out whatever remains to the declared positional arguments"
+    },
+    {
+      "claim": "`_unpack_args` returns `((), [])` when both of its inputs are empty.",
+      "quote": "the function returns `((), [])`"
+    },
+    {
+      "claim": "After the second pass, `state.largs` is set to `[]` and `rargs` is cleared.",
+      "quote": "`state.largs` is set to `[]` and `rargs` cleared"
+    },
+    {
+      "claim": "Both parser passes run inside a `try` that catches `UsageError` and re-raises it only when the context is not in resilient-parsing mode.",
+      "quote": "a `try` that catches `UsageError` and only re-raises it when the context is not in resilient-parsing mode"
+    },
+    {
+      "claim": "`resilient_parsing` discards every `UsageError` raised during parsing and returns whatever was collected so far.",
+      "quote": "`resilient_parsing` discards every `UsageError` raised during parsing and returns whatever was collected so far"
+    },
+    {
+      "claim": "`Command.parse_args` unpacks the parser result into `opts`, `args` and `param_order` and loops over a computed processing order rather than over the opts dict.",
+      "quote": "it decides the order in which parameters will be processed, and loops over that order rather than over the dict"
+    },
+    {
+      "claim": "`iter_params_for_processing` sorts parameters with a two-part key: `not item.is_eager` first, then the parameter's index in the invocation order.",
+      "quote": "`iter_params_for_processing` sorts the declaration list with a two-part key"
+    },
+    {
+      "claim": "`iter_params_for_processing` uses `float(\"inf\")` as the invocation index for parameters the user never mentioned.",
+      "quote": "`float(\"inf\")` for anything the user never mentioned"
+    },
+    {
+      "claim": "`Parameter.handle_parse_result` begins by reading `ctx.params.get(name, UNSET)`, `ctx.get_parameter_source(name)`, and the explicit-default flag before any mutation.",
+      "quote": "opens by photographing the slot this parameter is about to write"
+    },
+    {
+      "claim": "The body of `Parameter.handle_parse_result` runs inside `augment_usage_errors(ctx, param=self)`.",
+      "quote": "the whole body runs inside `augment_usage_errors(ctx, param=self)`"
+    },
+    {
+      "claim": "`augment_usage_errors` catches `BadParameter` and `UsageError` on the way out and fills in the missing `ctx` and `param`.",
+      "quote": "catches `BadParameter` and `UsageError` on the way out and fills in the missing `ctx` and `param`"
+    },
+    {
+      "claim": "`Option.consume_value` delegates first to `Parameter.consume_value`.",
+      "quote": "`Option.consume_value` delegates first to `Parameter.consume_value`"
+    },
+    {
+      "claim": "`Parameter.consume_value` consults the parser's opts dict first, and the source is `COMMANDLINE` only when the lookup does not return the `UNSET` sentinel.",
+      "quote": "The parser's dict is consulted first"
+    },
+    {
+      "claim": "`Option.resolve_envvar_value` returns `None` immediately when no `envvar` is declared.",
+      "quote": "finds no declared `envvar` and [returns `None` immediately]"
+    },
+    {
+      "claim": "`Option.resolve_envvar_value` then checks `ctx.auto_envvar_prefix`, and reads `os.environ` only if it is set.",
+      "quote": "`ctx.auto_envvar_prefix`, which is `None` here"
+    },
+    {
+      "claim": "`Parameter.consume_value` consults the default map after the environment variable.",
+      "quote": "Next [the default map]"
+    },
+    {
+      "claim": "`Context._default_map_has` returns `False` when the context has no default map.",
+      "quote": "`_default_map_has` answers `False`"
+    },
+    {
+      "claim": "`Parameter.get_default` returns the raw stored default value, which can be the `UNSET` sentinel.",
+      "quote": "`Parameter.get_default` returns the raw stored value, still `UNSET`"
+    },
+    {
+      "claim": "`Option.get_default` passes the default to `_resolve_lazy_default`.",
+      "quote": "`Option.get_default` hands it to `_resolve_lazy_default`"
+    },
+    {
+      "claim": "`_resolve_lazy_default` turns `UNSET` into `False` for a non-required boolean flag.",
+      "quote": "sees a non-required boolean flag and [turns `UNSET` into `False`]"
+    },
+    {
+      "claim": "`Parameter.handle_parse_result` records the parameter source on the context before conversion and before the callback runs.",
+      "quote": "the source is recorded on the context straight away"
+    },
+    {
+      "claim": "The value precedence in Click is command line, then environment variable, then `default_map`, then the parameter's default.",
+      "quote": "The precedence is command line, then environment variable, then `default_map`, then the parameter's default"
+    },
+    {
+      "claim": "The chosen parameter source is readable through `ctx.get_parameter_source(name)`.",
+      "quote": "readable by your code as `ctx.get_parameter_source(name)`"
+    },
+    {
+      "claim": "The deprecation branch in `handle_parse_result` only warns when the parameter source is more explicit than `DEFAULT_MAP`.",
+      "quote": "it requires a source more explicit than `DEFAULT_MAP`"
+    },
+    {
+      "claim": "`Option.process_value` has a shortcut for unset boolean flags and otherwise falls through to `Parameter.process_value`.",
+      "quote": "`Option.process_value` has a shortcut for unset boolean flags"
+    },
+    {
+      "claim": "`Parameter.type_cast_value` builds a single-value converter when `nargs == 1`.",
+      "quote": "a single-value converter is built"
+    },
+    {
+      "claim": "`BoolParamType`'s `str_to_bool` returns a `bool` input unchanged.",
+      "quote": "`str_to_bool` returns a `bool` unchanged"
+    },
+    {
+      "claim": "`Parameter.process_value` performs a missing-value check that passes when the parameter is not required.",
+      "quote": "the missing-value check passes"
+    },
+    {
+      "claim": "`Parameter.process_value` runs the parameter's callback even for parameters the user never supplied.",
+      "quote": "for a parameter the user never passed"
+    },
+    {
+      "claim": "The `show_help` callback returns `None` without acting when its `if value and not ctx.resilient_parsing` guard fails.",
+      "quote": "fails its `if value and not ctx.resilient_parsing` guard, and returns `None`"
+    },
+    {
+      "claim": "In `Parameter.process_value`, the callback's return value replaces the parameter value.",
+      "quote": "The callback's return value replaces the value"
+    },
+    {
+      "claim": "If conversion raises, the surrounding `except` in `handle_parse_result` re-raises in normal mode and resets the value to `UNSET` under resilient parsing.",
+      "quote": "the surrounding `except` would re-raise in normal mode and reset the value to `UNSET` under resilient parsing"
+    },
+    {
+      "claim": "In `handle_parse_result`, writing the value into `ctx.params` is conditional on `expose_value`.",
+      "quote": "writing the value is conditional on `expose_value`"
+    },
+    {
+      "claim": "The help option is built with `expose_value=False`, so its value is never written into `ctx.params`.",
+      "quote": "the help option was built with `expose_value=False`: nothing is written"
+    },
+    {
+      "claim": "`handle_parse_result` returns a tuple of the value and the unchanged leftover args.",
+      "quote": "`handle_parse_result` returns `(None, [])`"
+    },
+    {
+      "claim": "In `Parameter.consume_value`, the environment, default map and default lookups are each guarded by `if value is UNSET`.",
+      "quote": "each of those lookups is guarded by `if value is UNSET`"
+    },
+    {
+      "claim": "`IntParamType` converts the string `'3'` to the integer `3`.",
+      "quote": "`int('3')` succeeds and the value becomes `3`"
+    },
+    {
+      "claim": "`IntParamType` catches `ValueError` and calls `fail`, raising `BadParameter`.",
+      "quote": "that same `except ValueError` would have called `fail`, raising `BadParameter`"
+    },
+    {
+      "claim": "`UsageError.exit_code` is `2`.",
+      "quote": "`UsageError.exit_code` is `2`"
+    },
+    {
+      "claim": "`Option.consume_value` prompts when the value is unset, `prompt` is set, `prompt_required` is True, and `resilient_parsing` is False.",
+      "quote": "`Option.consume_value` checks the condition that only an option can satisfy"
+    },
+    {
+      "claim": "`Option.prompt_for_value` computes the default before prompting the user.",
+      "quote": "`prompt_for_value` computes the default before touching the user"
+    },
+    {
+      "claim": "`_hide_unset` presents an `UNSET` default to `prompt()` as `None`, making it re-ask until something is typed.",
+      "quote": "`_hide_unset` presents to `prompt()` as `None`"
+    },
+    {
+      "claim": "`Option.prompt_for_value` passes `value_proc=lambda x: self.process_value(ctx, x)` to `prompt()`.",
+      "quote": "`value_proc=lambda x: self.process_value(ctx, x)`"
+    },
+    {
+      "claim": "Because of `value_proc`, a prompted answer that fails conversion is rejected and the prompt is repeated rather than crashing.",
+      "quote": "an answer that fails conversion is rejected and the question is asked again rather than crashing the program"
+    },
+    {
+      "claim": "Under `CliRunner` isolation, `termui.visible_prompt_func` is the `visible_input` closure.",
+      "quote": "`termui.visible_prompt_func` is the [`visible_input` closure"
+    },
+    {
+      "claim": "A value obtained by prompting is recorded with parameter source `PROMPT`.",
+      "quote": "with the source recorded as `PROMPT`"
+    },
+    {
+      "claim": "A prompted value is processed twice: once through `value_proc` inside `prompt()` and again by `handle_parse_result` calling `process_value` on the returned value.",
+      "quote": "`handle_parse_result` runs `process_value` on the returned value again"
+    },
+    {
+      "claim": "After the parameter loop, `Command.parse_args` walks `ctx.params` and rewrites any surviving `UNSET` to `None`.",
+      "quote": "walks `ctx.params` and rewrites any surviving `UNSET` to `None`"
+    },
+    {
+      "claim": "`Command.parse_args` performs a leftover-args check that fails with `Got unexpected extra argument (...)` when `allow_extra_args` is False and tokens remain.",
+      "quote": "would have failed with `Got unexpected extra argument (...)`"
+    },
+    {
+      "claim": "At the end of `Command.parse_args`, `ctx.args` is set to the remaining args and the parser's option prefixes are folded into the context.",
+      "quote": "`ctx.args` is set to the empty list and the parser's option prefixes are folded into the context"
+    },
+    {
+      "claim": "`Group` sets `allow_extra_args = True`.",
+      "quote": "`Group` flips it (`allow_extra_args = True`)"
+    },
+    {
+      "claim": "`ignore_unknown_options` turns unknown flags into positional leftovers.",
+      "quote": "`ignore_unknown_options` turns unknown flags into positional leftovers"
+    },
+    {
+      "claim": "`Command.make_context` returns the context after parsing.",
+      "quote": "`make_context` returns the context"
+    },
+    {
+      "claim": "`Context.__exit__` decrements `_depth`, and does not call `_close_with_exception_info` unless `_depth` reaches zero.",
+      "quote": "`Context.__exit__` drops `_depth` from 2 to 1"
+    },
+    {
+      "claim": "`Context.scope`'s `finally` block removes the extra depth it added.",
+      "quote": "`scope`'s `finally` removes the extra depth it added"
+    },
+    {
+      "claim": "`Command.main` re-enters the context with a real `with` statement after `make_context` returns.",
+      "quote": "`main` enters the same context with a real `with`"
+    },
+    {
+      "claim": "`Command.invoke` checks `self.deprecated` and then calls `ctx.invoke(self.callback, **ctx.params)`.",
+      "quote": "First it [checks `self.deprecated`]"
+    },
+    {
+      "claim": "When a command is marked deprecated, Click writes `DeprecationWarning: The command 'hello' is deprecated.` in red to stderr before running it.",
+      "quote": "a red `DeprecationWarning: The command 'hello' is deprecated.` would have gone to stderr"
+    },
+    {
+      "claim": "`Context.invoke` skips the sub-context branch and reuses `self` when the callback is a plain function rather than a `Command`.",
+      "quote": "`Context.invoke` skips the sub-context branch and reuses `self`"
+    },
+    {
+      "claim": "`Context.invoke` calls the callback inside `augment_usage_errors(self)` and inside `with ctx`, which pushes the context onto the thread-local stack.",
+      "quote": "The call happens inside two wrappers"
+    },
+    {
+      "claim": "Exceptions other than `UsageError` raised by a command callback pass through `main`'s handlers except the `OSError`/`EPIPE` case and surface as an unhandled traceback with exit code 1.",
+      "quote": "travels past every handler in `main` except the bare `OSError`/`EPIPE` case and surfaces as an unhandled traceback with exit code 1"
+    },
+    {
+      "claim": "`click.echo` with no `file` given and `err` false calls `_default_text_stdout()` to get a stream.",
+      "quote": "asks `_default_text_stdout()`"
+    },
+    {
+      "claim": "`_make_cached_stream_func` builds a closure that reads `sys.stdout` at call time, looks it up in a `WeakKeyDictionary`, and only builds a wrapper on a cache miss.",
+      "quote": "it reads `sys.stdout` *now*, looks it up in a `WeakKeyDictionary`, and only builds a wrapper on a miss"
+    },
+    {
+      "claim": "`get_text_stdout` tries the Windows console shim first, which returns `None` off Windows, and then calls `_force_correct_text_writer`.",
+      "quote": "tries the Windows console shim (`None` off Windows) and then [`_force_correct_text_writer`]"
+    },
+    {
+      "claim": "`is_ascii_encoding('utf-8')` returns False.",
+      "quote": "`is_ascii_encoding('utf-8')`] answers False"
+    },
+    {
+      "claim": "`_force_correct_text_stream` returns the stream unchanged when it is not a binary writer, its encoding and errors are compatible, and it is not misconfigured.",
+      "quote": "So the stream comes back **unchanged**"
+    },
+    {
+      "claim": "When stdout reports an ASCII encoding, `_force_correct_text_stream` rewraps the underlying binary buffer as UTF-8 with `errors='replace'`.",
+      "quote": "rewrapped it as UTF-8 with `errors='replace'`"
+    },
+    {
+      "claim": "If no binary buffer can be found, `_force_correct_text_stream` silently returns the original stream.",
+      "quote": "silently returns the original stream"
+    },
+    {
+      "claim": "`click.echo` returns without writing anything when there is no stdout stream available.",
+      "quote": "`echo` returns without writing anything"
+    },
+    {
+      "claim": "`click.echo` appends a `\\n` to the message when `nl=True`.",
+      "quote": "`nl=True` appends a `\\n`"
+    },
+    {
+      "claim": "When `color=None`, `click.echo` calls `resolve_color_default`, which consults the current context's `color`.",
+      "quote": "[`resolve_color_default`] consults the current context"
+    },
+    {
+      "claim": "The `_compat` version of `should_strip_ansi` strips ANSI codes unless the stream is a tty.",
+      "quote": "whose rule is \"strip unless the stream is a tty\""
+    },
+    {
+      "claim": "`strip_ansi` applies a CSI regular expression to the output string.",
+      "quote": "[`strip_ansi`] runs its CSI regex"
+    },
+    {
+      "claim": "When the message is `bytes`, `click.echo` finds the binary writer underneath, flushes the text layer, and writes the bytes, skipping colour stripping.",
+      "quote": "find the binary writer underneath, flush the text layer, write the bytes"
+    },
+    {
+      "claim": "`click.echo` ends by calling `file.write(out)` and `file.flush()`, always flushing.",
+      "quote": "`file.write(out)` and `file.flush()`"
+    },
+    {
+      "claim": "`BytesIOCopy.write` returns the number of bytes written.",
+      "quote": "then to its own, and returns `14`"
+    },
+    {
+      "claim": "In standalone mode `Command.main` ignores the callback's return value and calls `ctx.exit()`.",
+      "quote": "In standalone mode it falls straight to [`ctx.exit()`]"
+    },
+    {
+      "claim": "A comment above `ctx.exit()` in `Command.main` explains it is not safe to call `ctx.exit(rv)` because `rv` may be `1` and a chained group may return a list.",
+      "quote": "it is not safe to call `ctx.exit(rv)`"
+    },
+    {
+      "claim": "Returning a value from a Click command callback has no effect on the process exit code; success exits with code 0.",
+      "quote": "Returning a value from a command callback has no effect on the process exit code"
+    },
+    {
+      "claim": "`Context.exit` calls `close()` before raising, and `close()` forwards to `_close_with_exception_info(None, None, None)`.",
+      "quote": "It calls [`close()`], which forwards to [`_close_with_exception_info(None, None, None)`]"
+    },
+    {
+      "claim": "`Context._close_with_exception_info` unwinds the `ExitStack`, returns `False` when nothing is registered, and installs a fresh `ExitStack` in its place.",
+      "quote": "Nothing is registered here, so it returns `False`. A fresh `ExitStack` is installed in its place"
+    },
+    {
+      "claim": "`Context.exit` raises `Exit`, which is a subclass of `RuntimeError` carrying one integer exit code.",
+      "quote": "a bare `RuntimeError` subclass carrying one integer"
+    },
+    {
+      "claim": "`Context.__exit__` forwards the exception information into `ExitStack.__exit__`, so a registered resource can inspect and suppress the exception by returning true.",
+      "quote": "the exception information is forwarded into `ExitStack.__exit__`"
+    },
+    {
+      "claim": "`Context.__exit__` calls `pop_context()` to remove the context from the thread-local stack and returns `False`.",
+      "quote": "[`pop_context()`] removes the context from the thread-local stack, and `__exit__` returns `False`"
+    },
+    {
+      "claim": "`Command.main`'s `except Exit` handler copies `e.exit_code` into the local `exit_code` and leaves `report` as `None`.",
+      "quote": "copies `e.exit_code` into the local `exit_code`, leaves `report` as `None`"
+    },
+    {
+      "claim": "`Command.main`'s `except ClickException` handler sets `report, exit_code = e.show, e.exit_code`.",
+      "quote": "which sets `report, exit_code = e.show, e.exit_code`"
+    },
+    {
+      "claim": "`UsageError.show` prints the usage line, a hint built from the longest help option name, and the error message, all to stderr.",
+      "quote": "prints the usage line, a hint built from the *longest* help name"
+    },
+    {
+      "claim": "The `EOFError`/`KeyboardInterrupt` handler in `Command.main` produces the message `Aborted!` and leaves the exit code at the initial `1`.",
+      "quote": "the `EOFError`/`KeyboardInterrupt` arm] to `Aborted!` and the initial `exit_code = 1`"
+    },
+    {
+      "claim": "`Command.main`'s entire handler ladder, including the reporting step, sits inside an outer `except (EOFError, KeyboardInterrupt)` that calls `sys.exit(exit_code)`.",
+      "quote": "an outer `except (EOFError, KeyboardInterrupt)`] that simply calls `sys.exit(exit_code)`"
+    },
+    {
+      "claim": "`CliRunner.invoke` catches `SystemExit`; when `e.code` is 0 it leaves `exception` as `None`, sets `exit_code` to 0, and keeps the `exc_info` triple.",
+      "quote": "`e.code` is `0`, so it is not `None` and not non-zero: `exception` stays `None`, `exit_code` becomes `0`"
+    },
+    {
+      "claim": "`CliRunner.invoke` writes a non-integer `SystemExit` code to stdout and coerces the exit code to `1`.",
+      "quote": "A non-integer code would have been written to stdout and coerced to `1`"
+    },
+    {
+      "claim": "`CliRunner.invoke`'s `except Exception` handler sets `exit_code = 1` and stores the exception on the result when `catch_exceptions` is True.",
+      "quote": "swallows a genuine crash into `exit_code = 1` plus `result.exception`"
+    },
+    {
+      "claim": "`CliRunner`'s `catch_exceptions` parameter defaults to `True`.",
+      "quote": "because `catch_exceptions` defaults to `True`"
+    },
+    {
+      "claim": "`CliRunner.invoke`'s `finally` block flushes both streams, and in `fd` mode stops the `_FDCapture`s and merges their bytes into the same buffers.",
+      "quote": "flushes both streams \u2014 two more `BytesIOCopy.flush` calls \u2014 and, in `fd` mode, stops the `_FDCapture`s and merges their bytes into the same buffers"
+    },
+    {
+      "claim": "In `sys` capture mode, `CliRunner.invoke` calls `getvalue()` on all three buffers.",
+      "quote": "it goes straight to `getvalue()` on all three buffers"
+    },
+    {
+      "claim": "`CliRunner.isolation`'s `finally` restores `os.environ` keys (deleting those that were absent), `sys.stdout`/`sys.stderr`/`sys.stdin`, the two `termui` prompt hooks and `_getchar`, both references to `should_strip_ansi`, `FORCED_WIDTH`, and `pdb.Pdb.__init__`.",
+      "quote": "`os.environ` keys restored (including deleting ones that were absent), `sys.stdout/stderr/stdin` put back"
+    },
+    {
+      "claim": "`_NamedTextIOWrapper.close` is an empty no-op.",
+      "quote": "that method is an empty no-op by design"
+    },
+    {
+      "claim": "`Result.output` decodes the captured bytes with `errors='replace'` and normalises `\\r\\n`.",
+      "quote": "decodes with `errors='replace'` and normalises `\\r\\n`"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 0.82
+}

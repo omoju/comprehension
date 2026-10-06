@@ -1,0 +1,46 @@
+{
+  "id": "msg_011CfkCbd5vUrZuSiH8GS1js",
+  "container": null,
+  "content": [
+    {
+      "text": "{\"grades\":[{\"id\":\"p1\",\"grade\":\"correct\",\"reason\":\"Matches the key: raw_path falls back to b'/', URL returned unchanged, merge produces http://testserver/.\"},{\"id\":\"p2\",\"grade\":\"correct\",\"reason\":\"Header order and the Content-Length reasoning (only auto-added for POST/PUT/PATCH) match the key.\"},{\"id\":\"p3\",\"grade\":\"partly\",\"reason\":\"Correct on most keys and HTTP_X_CUSTOM, but hedges on SERVER_PORT and fails to give wsgi.url_scheme='http'.\"},{\"id\":\"p4\",\"grade\":\"correct\",\"reason\":\"Gives the correct extensions dict and its origin in the client default Timeout(5.0) via build_request.\"},{\"id\":\"p5\",\"grade\":\"correct\",\"reason\":\"Correctly states a bare Auth() instance is returned and the request is unchanged with no Authorization header.\"},{\"id\":\"p6\",\"grade\":\"correct\",\"reason\":\"Correctly says utf-8 from the charset and that default_encoding would not change it.\"},{\"id\":\"p7\",\"grade\":\"correct\",\"reason\":\"Correctly explains has_redirect_location being False and the 302 case returning the 302 with next_request set.\"},{\"id\":\"p8\",\"grade\":\"correct\",\"reason\":\"Correctly describes _skip_leading_empty_chunks and that elapsed is set in BoundSyncStream.close after the stream is exhausted.\"},{\"id\":\"g1\",\"grade\":\"partly\",\"reason\":\"States the states and the send/enter rules and one message, but doesn't give the reopen-after-close message and wrongly claims __exit__ sets CLOSED before cleanup detail (minor), key's message not quoted.\"},{\"id\":\"g2\",\"grade\":\"correct\",\"reason\":\"Captures the DeprecationWarning and the ambiguity-of-persistence rationale, with slight vagueness on merging but substance correct.\"},{\"id\":\"g3\",\"grade\":\"correct\",\"reason\":\"Correctly lists stripped/rewritten headers and the same-host http→https exception for Authorization (plus same-origin preservation implied).\"},{\"id\":\"g4\",\"grade\":\"correct\",\"reason\":\"Covers raise_app_exceptions semantics and the other failure modes including assertion, status parsing, ASCII header errors, and in-memory body buffering.\"},{\"id\":\"g5\",\"grade\":\"correct\",\"reason\":\"Accurately describes the generator contract, close in finally, and the two body-reading guarantees; only omits the no-I/O requirement, which is minor.\"},{\"id\":\"g6\",\"grade\":\"wrong\",\"reason\":\"Claims the information isn't available and provides none of the actual DigestAuth error behaviors.\"},{\"id\":\"g7\",\"grade\":\"correct\",\"reason\":\"Correctly states the allow_env_proxies condition and that an explicit transport disables env proxies, with explicit proxy also winning implied.\"}]}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "model": "claude-opus-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 9197,
+    "iterations": [
+      {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "input_tokens": 9197,
+        "model": null,
+        "output_tokens": 941,
+        "type": "message"
+      }
+    ],
+    "output_tokens": 941,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

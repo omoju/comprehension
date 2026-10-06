@@ -1,0 +1,63 @@
+{
+  "repo": "requests",
+  "arm": "story",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "`PreparedRequest.prepare_auth(auth=('user','pass'), url=...)` runs last in `prepare` (models.py#L670-697). Because `auth` is a tuple of length 2 it takes the special case `auth_handler = HTTPBasicAuth(*auth)` (which just stores username/password, auth.py#L96-98), then calls it: `HTTPBasicAuth.__call__` does `r.headers[\"Authorization\"] = _basic_auth_str(self.username, self.password)` (auth.py#L111-113). `_basic_auth_str` encodes each string with **latin-1** (not UTF-8), joins them as `b'user:pass'`, base64-encodes (`b'dXNlcjpwYXNz'`), strips, passes it through `to_native_string(..., encoding='ascii')` and prefixes `'Basic '` \u2192 `'Basic dXNlcjpwYXNz'` (auth.py#L65-75). Afterwards `self.__dict__.update(r.__dict__)` and `prepare_content_length(self.body)` run. Note this `__setitem__` bypasses `check_header_validity`, and no scheme check is done, so Basic creds go out in clear text over `http://`. A non-latin-1 character in the credentials raises `UnicodeEncodeError` during preparation."
+    },
+    {
+      "id": "p2",
+      "answer": "The body ends up `None` and **no `Content-Length` header is sent**. In `prepare_body`, the json branch needs `json is not None` (it is None); the stream branch excludes `Mapping`/`str`/`bytes`/`list`/`tuple`, and `{}` is a Mapping; then in the else branch `if files` ( `[]` falsy) and `if raw_data` (`{}` falsy) both fail, so `body`/`content_type` stay `None`. `prepare_content_length(None)` then skips the `body is not None` branch and its `elif` requires `self.method not in (\"GET\", \"HEAD\")` \u2014 the method is `'GET'`, so nothing is written (a POST with no body would get `Content-Length: 0`). The second call from `prepare_auth` is a no-op for the same reasons, since `HTTPBasicAuth` mutates in place and did not replace the body. Consequently in the adapter `chunked = not (body is None or 'Content-Length' in headers)` is `False`, so the GET goes out with neither `Content-Length` nor `Transfer-Encoding`."
+    },
+    {
+      "id": "p3",
+      "answer": "`HTTPAdapter.build_response` sets `response.encoding = get_encoding_from_headers(response.headers)` (adapters.py#L384-385). That function reads only the `content-type` header and passes it to `_parse_content_type_header`, which here returned `('application/json', {'charset': 'utf-8'})`; a present `charset` wins outright, so it returned `'utf-8'`. The body is never consulted (no `<meta charset>` sniffing). With `Content-Type: text/html` and no charset, the content type contains `text`, so it would have returned `'ISO-8859-1'` (the RFC 2616 default). A bare `application/json` would give `'utf-8'`; anything else, or a missing content-type, returns `None`."
+    },
+    {
+      "id": "p4",
+      "answer": "`Response.json()` first tests `if not self.encoding and self.content and len(self.content) > 3` \u2014 the BOM-sniffing/`guess_json_utf` branch. Here `self.encoding` is `'utf-8'` (truthy), so that branch is skipped and it goes straight to `complexjson.loads(self.text)` (models.py#L1119-1120), which is why the trace nests `text` \u2192 `content` \u00d72 under each `json()` call (there is no caching; it redoes the work each call). With a UTF-16 body while `encoding` is still `'utf-8'`, the BOM-detection branch would again be skipped, and `Response.text` decodes with `str(content, 'utf-8', errors='replace')` \u2014 it never raises, it substitutes replacement characters \u2014 so the mangled text would almost certainly fail to parse and surface as `requests.exceptions.JSONDecodeError`. The documentation describes the branch and the lenient decoding but does not spell out that exact UTF-16 outcome."
+    },
+    {
+      "id": "p5",
+      "answer": "`HTTPAdapter.request_url(request, proxies)` (adapters.py#L565-597) calls `select_proxy(request.url, proxies)`, which returned `None` for the empty proxies dict, so it takes the default path `url = request.path_url` \u2014 the prepared URL's path joined with its query (`/` substituted for an empty path), i.e. `'/basic-auth/user/pass'`. Only a **proxied, non-HTTPS** request uses the absolute form: the full URL passed through `urldefragauth`, which strips the fragment and any `user:pass@` from the netloc so embedded credentials are not handed to the proxy. (HTTPS through a proxy uses a CONNECT tunnel, so it keeps the origin-form path.)"
+    },
+    {
+      "id": "p6",
+      "answer": "In `_urllib3_request_context` (adapters.py#L85-119) `cert_reqs` is initialised to `\"CERT_REQUIRED\"` and is only downgraded to `\"CERT_NONE\"` when `verify is False`; there is no scheme check, so a plain-HTTP request still carries `CERT_REQUIRED` \u2014 it simply means nothing because there is no handshake (and `cert_verify` later sets `conn.cert_reqs = 'CERT_NONE'`, `ca_certs = None`, `ca_cert_dir = None` for non-https URLs). With `verify=False` the pool_kwargs would be `{'cert_reqs': 'CERT_NONE'}`. With `verify='/path/to/ca.pem'` it stays `CERT_REQUIRED` and the string becomes `ca_certs='/path/to/ca.pem'` (or `ca_cert_dir` if the path names a directory). These pool_kwargs are part of the pool key, so differing `verify`/`cert` settings get separate connection pools."
+    },
+    {
+      "id": "p8",
+      "answer": "`prepare_auth`'s dispatch is `if isinstance(auth, tuple) and len(auth) == 2`. A 3-tuple fails the length test, so it falls to the `else`, where the value is simply assumed callable (`auth_handler = cast(\"Callable[..., PreparedRequest]\", auth)`) and then invoked with the prepared request. A tuple is not callable, so preparation fails with a `TypeError` from that call \u2014 not a validation error or a `requests.exceptions` type. No `Authorization` header is produced."
+    },
+    {
+      "id": "g1",
+      "answer": "`prepare_cookies` is effectively single-use: cookielib will not regenerate a `Cookie` header that already exists on the request, so calling it a second time on the same `PreparedRequest` does nothing unless `headers['Cookie']` is deleted first \u2014 the method's own docstring says so (models.py#L699-711). Redirect handling relies on this: `Session.resolve_redirects` pops the `Cookie` header before re-preparing the copied request (sessions.py#L260-269). If you hand-modify cookies on a prepared request and re-prepare it, delete `headers['Cookie']` yourself or the stale header will be re-sent."
+    },
+    {
+      "id": "g2",
+      "answer": "`Session.get_adapter(url)` does a linear scan over the mounted prefixes, lowercased, using `startswith`, returning the first match (sessions.py#L870-881); `Session.mount` keeps longer prefixes first by pushing shorter keys to the end as each is registered, so a more specific mount beats a general one. A default Session mounts only `'https://'` and `'http://'`; if nothing matches it raises `InvalidSchema(\"No connection adapters were found for {url!r}\")` \u2014 which is where `mailto:`/`data:` URLs that `prepare_url` waved through finally die. The misuse it invites: the test is a plain string prefix, not URL-aware, so an adapter mounted at `http://internal-api` also serves `http://internal-api.attacker.example/` and `http://localhost@other.com`. Terminate mount prefixes with `/`."
+    },
+    {
+      "id": "g3",
+      "answer": "On each redirect hop `Session.rebuild_auth` deletes the `Authorization` header whenever `should_strip_auth(old_url, new_url)` says so (sessions.py#L309-332, L154-184). The rules: strip on any hostname change; **allow** the `http`\u2192`https` upgrade when it is on the standard ports (that is the deliberately permitted cross-scheme case); allow a same-scheme hop between default ports; otherwise strip when the port or scheme changed (including an https\u2192http downgrade). Immediately afterwards, if `trust_env` is on, `.netrc` may supply fresh credentials for the new host. Separately, `rebuild_proxies` always deletes and re-derives `Proxy-Authorization`, and refuses to re-add it when the target scheme starts with `https`."
+    },
+    {
+      "id": "g4",
+      "answer": "Inside `Session.merge_environment_settings`, and only when `self.trust_env` is True, the code does: `if verify is True or verify is None: verify = os.environ.get('REQUESTS_CA_BUNDLE') or os.environ.get('CURL_CA_BUNDLE') or verify` (sessions.py#L853-860). So they apply only when the effective verify is `True` or unset, with `REQUESTS_CA_BUNDLE` taking precedence over `CURL_CA_BUNDLE`. They are ignored when `trust_env=False`, or when verify is anything else \u2014 e.g. `verify=False` or an explicit CA path \u2014 and they have no effect on `http://` URLs, since `cert_verify` only consults `verify` for URLs starting with `https`."
+    },
+    {
+      "id": "g5",
+      "answer": "A default `HTTPAdapter` is built with `max_retries=0`, which in `__init__` takes the `max_retries == DEFAULT_RETRIES` branch and stores `Retry(0, read=False)` (adapters.py#L201-221). Nothing is retried \u2014 not a refused connection, not a DNS failure, not a timeout \u2014 and there is no backoff anywhere in the path; the class docstring states this as policy and tells callers wanting granularity to construct urllib3's `Retry` themselves. Passing an integer such as `max_retries=3` instead goes through `Retry.from_int`, which builds an actual retry policy for that many attempts. The documentation does not spell out exactly which failure classes `Retry.from_int(3)` retries, so I can't be more specific than that from these docs."
+    },
+    {
+      "id": "g6",
+      "answer": "The adapter decides with one line: `chunked = not (request.body is None or \"Content-Length\" in request.headers)` (adapters.py#L679) \u2014 i.e. chunked transfer is used whenever there is a body but no `Content-Length` header. That situation arises in `prepare_body`'s stream branch: when `data` is iterable but not a `str`, `bytes`, `list`, `tuple` or `Mapping` (a file object or generator), `super_len(data)` is tried; if a length is found, `Content-Length` is set, and if not, `Transfer-Encoding: chunked` is set instead. In this run `body` is `None`, so `chunked` is `False`."
+    },
+    {
+      "id": "g7",
+      "answer": "`HTTPAdapter.send` wraps `conn.urlopen` in `except` blocks that re-raise recognised urllib3/OS errors as `requests.exceptions` types carrying `request=request` (adapters.py#L710-746): `ProtocolError` or any `OSError` \u2192 `ConnectionError`; `MaxRetryError` dispatched on `e.reason` \u2014 `ConnectTimeoutError` (but not `NewConnectionError`) \u2192 `ConnectTimeout`, `ResponseError` \u2192 `RetryError`, urllib3 `ProxyError` \u2192 `ProxyError`, urllib3 `SSLError` \u2192 `SSLError`, anything else \u2192 `ConnectionError`; `ClosedPoolError` \u2192 `ConnectionError`; bare `_ProxyError` \u2192 `ProxyError`; `_SSLError` \u2192 `SSLError`; `ReadTimeoutError` \u2192 `ReadTimeout`; `_InvalidHeader` \u2192 `InvalidHeader`; and any other `urllib3` `HTTPError` is **re-raised unchanged**, so catching `RequestException` does not cover everything. Also note errors that occur while reading the body later are translated in `Response.iter_content`'s `generate`: `ProtocolError` \u2192 `ChunkedEncodingError`, `DecodeError` \u2192 `ContentDecodingError`, `ReadTimeoutError` \u2192 `ConnectionError`, urllib3 `SSLError` \u2192 `requests.exceptions.SSLError`. A 4xx/5xx status raises nothing here."
+    }
+  ],
+  "cost": 0.45
+}

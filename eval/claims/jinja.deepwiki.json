@@ -1,0 +1,1944 @@
+{
+  "repo": "jinja",
+  "arm": "deepwiki",
+  "words": 15506,
+  "extracted": 473,
+  "sample": [
+    3,
+    12,
+    23,
+    41,
+    46,
+    71,
+    76,
+    139,
+    156,
+    164,
+    166,
+    170,
+    175,
+    183,
+    186,
+    199,
+    212,
+    213,
+    240,
+    246,
+    260,
+    263,
+    269,
+    279,
+    286,
+    291,
+    311,
+    322,
+    328,
+    344,
+    353,
+    357,
+    394,
+    413,
+    420,
+    428,
+    431,
+    456,
+    464,
+    471
+  ],
+  "claims": [
+    {
+      "claim": "Jinja is a templating engine written in pure Python.",
+      "quote": "Jinja is a fast, expressive, and extensible templating engine written in pure Python."
+    },
+    {
+      "claim": "The `Environment` class manages configuration, template loading, and shared registries for filters and globals.",
+      "quote": "The architecture of Jinja is centered around the `Environment` class, which manages configuration, template loading, and shared registries for filters and globals"
+    },
+    {
+      "claim": "`SandboxedEnvironment` is defined in sandbox.py.",
+      "quote": "Sandbox[\"SandboxedEnvironment [sandbox.py]\"]"
+    },
+    {
+      "claim": "`NativeEnvironment` is defined in nativetypes.py.",
+      "quote": "Native[\"NativeEnvironment [nativetypes.py]\"]"
+    },
+    {
+      "claim": "`SandboxedEnvironment` subclasses `Environment`.",
+      "quote": "Sandbox -- \"Subclasses\" --> Env"
+    },
+    {
+      "claim": "`NativeEnvironment` subclasses `Environment`.",
+      "quote": "Native -- \"Subclasses\" --> Env"
+    },
+    {
+      "claim": "`FileSystemLoader` implements `BaseLoader`.",
+      "quote": "FSLoader -- \"Implements\" --> Loader"
+    },
+    {
+      "claim": "`PackageLoader` implements `BaseLoader`.",
+      "quote": "PkgLoader -- \"Implements\" --> Loader"
+    },
+    {
+      "claim": "The `Environment` class stores `filters`, `tests`, and `globals`.",
+      "quote": "Central configuration; stores `filters`, `tests`, and `globals`."
+    },
+    {
+      "claim": "The `Template` class is defined in src/jinja2/environment.py and provides `render()` and `generate()`.",
+      "quote": "The compiled representation of a template; provides `render()` and `generate()`."
+    },
+    {
+      "claim": "`BaseLoader` is defined in src/jinja2/loaders.py and is the abstract base for template loading logic.",
+      "quote": "Abstract base for template loading logic."
+    },
+    {
+      "claim": "`Context` is defined in src/jinja2/runtime.py and holds the runtime variables and manages lookups during rendering.",
+      "quote": "Holds the runtime variables and manages lookups during rendering."
+    },
+    {
+      "claim": "`BytecodeCache` is defined in src/jinja2/bccache.py and is an interface for persisting compiled template bytecode.",
+      "quote": "Interface for persisting compiled template bytecode to avoid re-parsing."
+    },
+    {
+      "claim": "Jinja compiles templates into optimized Python code just-in-time.",
+      "quote": "Jinja compiles templates into optimized Python code just-in-time"
+    },
+    {
+      "claim": "During lexing, the source is broken into tokens such as strings, variables, and blocks.",
+      "quote": "**Lexing**: The source is broken into tokens (strings, variables, blocks)"
+    },
+    {
+      "claim": "During parsing, tokens are converted into an Abstract Syntax Tree composed of `Node` objects.",
+      "quote": "**Parsing**: Tokens are converted into an Abstract Syntax Tree (AST) composed of `Node` objects"
+    },
+    {
+      "claim": "The optimization stage simplifies the AST, for example via constant folding.",
+      "quote": "**Optimization**: The AST is simplified where possible (e.g., constant folding)."
+    },
+    {
+      "claim": "The `CodeGenerator` transforms the AST into Python source code, which is then compiled into a Python code object.",
+      "quote": "**Compilation**: The `CodeGenerator` transforms the AST into Python source code, which is then `compile()`'d into a Python code object"
+    },
+    {
+      "claim": "The compiled code object is executed within a `Context`, producing the final string or stream.",
+      "quote": "**Execution**: The code object is executed within a `Context`, producing the final string or stream"
+    },
+    {
+      "claim": "`Environment` and `FileSystemLoader` can be imported from the `jinja2` package.",
+      "quote": "from jinja2 import Environment, FileSystemLoader"
+    },
+    {
+      "claim": "`Environment` accepts `loader` and `autoescape` keyword arguments.",
+      "quote": "env = Environment(\n    loader=FileSystemLoader(\"templates\"),\n    autoescape=True\n)"
+    },
+    {
+      "claim": "`Environment.get_template(name)` returns a template that can be rendered with `render()`.",
+      "quote": "template = env.get_template(\"index.html\")\nprint(template.render(user=\"Pallets\"))"
+    },
+    {
+      "claim": "Jinja supports asyncio for environments where functions or filters return coroutines, enabled via the `enable_async` flag.",
+      "quote": "Jinja supports `asyncio` for environments where functions or filters return coroutines. This is enabled via the `enable_async` flag"
+    },
+    {
+      "claim": "`Environment.from_string` creates a template from a string.",
+      "quote": "template = env.from_string(\"Hello {{ user }}\")"
+    },
+    {
+      "claim": "`Template.render_async` is awaited to render asynchronously.",
+      "quote": "result = await template.render_async(user=fetch_user())"
+    },
+    {
+      "claim": "`SandboxedEnvironment` restricts access to unsafe attributes and methods, allowing safe execution of untrusted templates.",
+      "quote": "A `SandboxedEnvironment` restricts access to unsafe attributes and methods, allowing safe execution of untrusted templates"
+    },
+    {
+      "claim": "Template inheritance uses `{% extends \"base.html\" %}` and `{% block %}`.",
+      "quote": "Uses `{% extends \"base.html\" %}` and `{% block %}` to promote reuse"
+    },
+    {
+      "claim": "Jinja integrates with `MarkupSafe` to automatically escape HTML special characters.",
+      "quote": "Integration with `MarkupSafe` to prevent XSS by automatically escaping HTML special characters"
+    },
+    {
+      "claim": "Custom filters can be added via `Environment.filters` and complex syntax via the `Extension` class.",
+      "quote": "Developers can add custom filters via `Environment.filters` or complex syntax via the `Extension` class"
+    },
+    {
+      "claim": "`NativeEnvironment` can render templates to Python types such as lists, dicts, and ints instead of strings.",
+      "quote": "The `NativeEnvironment` can render templates to Python types (lists, dicts, ints) instead of just strings"
+    },
+    {
+      "claim": "Instances of the `Environment` class store configuration, filters, tests, and global objects.",
+      "quote": "Instances of this class store configuration, filters, tests, and global objects"
+    },
+    {
+      "claim": "The `Environment` manages template location via its `loader` attribute.",
+      "quote": "**Template Loading**: Managing how templates are located via `loader`"
+    },
+    {
+      "claim": "`Environment.compile()` converts template source to executable Python code.",
+      "quote": "**Compilation**: Converting template source to executable Python code via `compile()`"
+    },
+    {
+      "claim": "`Environment` maintains `filters`, `tests`, and `globals` dictionaries.",
+      "quote": "**Registry**: Maintaining `filters`, `tests`, and `globals` dictionaries"
+    },
+    {
+      "claim": "`Environment.add_extension()` loads and manages extensions.",
+      "quote": "**Extension Integration**: Loading and managing extensions via `add_extension()`"
+    },
+    {
+      "claim": "The `Lexer` breaks source text into tokens based on delimiters like `block_start_string`.",
+      "quote": "**Lexing**: The `Lexer` breaks source text into tokens based on delimiters like `block_start_string`"
+    },
+    {
+      "claim": "The `Parser` transforms the `TokenStream` into an AST using nodes defined in nodes.py.",
+      "quote": "**Parsing**: The `Parser` transforms the `TokenStream` into an Abstract Syntax Tree (AST) using nodes defined in `nodes.py`"
+    },
+    {
+      "claim": "The `CodeGenerator` visits the AST and produces Python source code.",
+      "quote": "**Compilation**: The `CodeGenerator` visits the AST and produces Python source code"
+    },
+    {
+      "claim": "A `Template` object is created by the environment and holds the `root_render_func`.",
+      "quote": "It is created by the environment and holds the `root_render_func`"
+    },
+    {
+      "claim": "The `Template` class provides `render()` and `generate()` methods.",
+      "quote": "It provides high-level methods like `render()` and `generate()`"
+    },
+    {
+      "claim": "The `Context` class manages variable resolution across parent and local scopes.",
+      "quote": "It manages variable resolution across parent and local scopes"
+    },
+    {
+      "claim": "The `Context` class tracks template inheritance through its `blocks` attribute.",
+      "quote": "It also tracks template inheritance through `blocks`"
+    },
+    {
+      "claim": "The `Context` class has a `resolve(key)` method.",
+      "quote": "+resolve(key)"
+    },
+    {
+      "claim": "`EvalContext` has `autoescape` and `volatile` boolean attributes.",
+      "quote": "+bool autoescape\n        +bool volatile"
+    },
+    {
+      "claim": "The `Template` class has a `new_context(vars)` method.",
+      "quote": "+new_context(vars)"
+    },
+    {
+      "claim": "Extensions are added during `Environment` initialization.",
+      "quote": "Extensions are added during `Environment` initialization"
+    },
+    {
+      "claim": "The extension hook `preprocess` modifies source text before lexing.",
+      "quote": "`preprocess`: Modifies source text before lexing."
+    },
+    {
+      "claim": "The extension hook `filter_stream` modifies the token stream before parsing.",
+      "quote": "`filter_stream`: Modifies the token stream before parsing."
+    },
+    {
+      "claim": "The extension hook `parse` extends the parser to handle custom tags.",
+      "quote": "`parse`: Extends the parser to handle custom tags."
+    },
+    {
+      "claim": "`SandboxedEnvironment` restricts attribute access and function calls.",
+      "quote": "**SandboxedEnvironment**: Restricts attribute access and function calls to prevent execution of unsafe code"
+    },
+    {
+      "claim": "Jinja2 uses `markupsafe` to automatically escape variables in HTML/XML contexts.",
+      "quote": "**Autoescaping**: Uses `markupsafe` to automatically escape variables in HTML/XML contexts"
+    },
+    {
+      "claim": "The `policies` dictionary on the environment controls behaviors such as `ext.i18n.trimmed`.",
+      "quote": "The `policies` dictionary on the environment allows fine-grained control over security-related behaviors like `ext.i18n.trimmed`"
+    },
+    {
+      "claim": "The `Environment` caches loaded `Template` objects in memory using an `LRUCache`.",
+      "quote": "**LRUCache**: The `Environment` caches loaded `Template` objects in memory"
+    },
+    {
+      "claim": "Compiled Python bytecode can be persisted using `FileSystemBytecodeCache` to avoid parsing and code generation on subsequent loads.",
+      "quote": "**BytecodeCache**: Compiled Python bytecode can be persisted (e.g., `FileSystemBytecodeCache`) to avoid the overhead of parsing and code generation on subsequent loads"
+    },
+    {
+      "claim": "If a `Template` is created directly without an environment, a shared spontaneous environment is created automatically.",
+      "quote": "If a `Template` is created directly without an environment, a \"shared\" spontaneous environment is created automatically"
+    },
+    {
+      "claim": "The `loader` parameter of `Environment` defaults to `None`.",
+      "quote": "| `loader` | `None` | The `BaseLoader` used to find template source"
+    },
+    {
+      "claim": "The default `block_start_string` is `'{%'`.",
+      "quote": "| `block_start_string` | `'{%'` | Marker for block start"
+    },
+    {
+      "claim": "The default `variable_start_string` is `'{{'`.",
+      "quote": "| `variable_start_string` | `'{{'` | Marker for expression start"
+    },
+    {
+      "claim": "The default `trim_blocks` is `False` and it removes the first newline after a block.",
+      "quote": "| `trim_blocks` | `False` | Removes first newline after a block"
+    },
+    {
+      "claim": "The default `lstrip_blocks` is `False` and it strips leading whitespace before blocks.",
+      "quote": "| `lstrip_blocks` | `False` | Strips leading whitespace before blocks"
+    },
+    {
+      "claim": "The default `autoescape` is `False` and it can be a boolean or callable.",
+      "quote": "| `autoescape` | `False` | Boolean or callable to determine autoescaping"
+    },
+    {
+      "claim": "The default `cache_size` is `400`; 0 disables the cache and -1 makes it infinite.",
+      "quote": "| `cache_size` | `400` | Size of the `LRUCache`. 0 disables, -1 makes it infinite"
+    },
+    {
+      "claim": "The default `undefined` class is `Undefined`.",
+      "quote": "| `undefined` | `Undefined` | `Undefined` subclass for missing variables"
+    },
+    {
+      "claim": "The `finalize` parameter defaults to `None` and is a callable to process expression results before output.",
+      "quote": "| `finalize` | `None` | Callable to process expression results before output"
+    },
+    {
+      "claim": "The `enable_async` parameter defaults to `False` and enables `render_async` and `generate_async`.",
+      "quote": "| `enable_async` | `False` | Enables `render_async` and `generate_async`"
+    },
+    {
+      "claim": "`Environment.get_template(name)` loads a template, utilizing the cache if available.",
+      "quote": "| `get_template(name)` | Loads a template, utilizing the cache if available"
+    },
+    {
+      "claim": "`Environment.select_template(names)` iterates through a list of names and returns the first existing template.",
+      "quote": "| `select_template(names)` | Iterates through a list of names, returning the first existing template"
+    },
+    {
+      "claim": "`Environment.from_string(source)` creates a `Template` from a string, bypassing the loader.",
+      "quote": "| `from_string(source)` | Creates a `Template` from a string, bypassing the loader"
+    },
+    {
+      "claim": "`Environment.list_templates()` proxies to `loader.list_templates()`.",
+      "quote": "| `list_templates()` | Proxies to `loader.list_templates()` to see all available templates"
+    },
+    {
+      "claim": "The environment template cache uses an `LRUCache` by default.",
+      "quote": "The cache uses a `LRUCache` by default"
+    },
+    {
+      "claim": "The environment cache keys templates by a tuple of `(weakref(loader), name)`.",
+      "quote": "It keys templates by a tuple of `(weakref(loader), name)` to ensure that templates from different loaders do not collide"
+    },
+    {
+      "claim": "`Environment.filters` defaults to `DEFAULT_FILTERS` defined in src/jinja2/defaults.py.",
+      "quote": "F -->|Default| DF[\"DEFAULT_FILTERS [src/jinja2/defaults.py]\"]"
+    },
+    {
+      "claim": "`Environment.tests` defaults to `DEFAULT_TESTS` defined in src/jinja2/defaults.py.",
+      "quote": "T -->|Default| DT[\"DEFAULT_TESTS [src/jinja2/defaults.py]\"]"
+    },
+    {
+      "claim": "`Environment.globals` defaults to `DEFAULT_NAMESPACE` defined in src/jinja2/defaults.py.",
+      "quote": "G -->|Default| DG[\"DEFAULT_NAMESPACE [src/jinja2/defaults.py]\"]"
+    },
+    {
+      "claim": "`Environment.policies` defaults to `DEFAULT_POLICIES` defined in src/jinja2/defaults.py.",
+      "quote": "P -->|Default| DP[\"DEFAULT_POLICIES [src/jinja2/defaults.py]\"]"
+    },
+    {
+      "claim": "Filters are mappings of filter names to Python callables.",
+      "quote": "**Filters**: Mappings of filter names to Python callables"
+    },
+    {
+      "claim": "Tests are mappings of test names to boolean callables.",
+      "quote": "**Tests**: Mappings of test names to boolean callables"
+    },
+    {
+      "claim": "Globals are variables available in every template context.",
+      "quote": "**Globals**: Variables available in every template context"
+    },
+    {
+      "claim": "Policies include configuration keys such as `urlize.rel` and `json.dumps_function`.",
+      "quote": "**Policies**: Configuration for runtime behavior, such as `urlize.rel` or `json.dumps_function`"
+    },
+    {
+      "claim": "The `overlay()` method creates a child environment that copies the current environment but allows specific parameters to be overridden.",
+      "quote": "The `overlay()` method creates a \"child\" environment. It copies the current environment but allows specific parameters to be overridden"
+    },
+    {
+      "claim": "An overlay environment shares the same `filters`, `tests`, and `globals` dictionaries unless explicitly replaced.",
+      "quote": "The overlay shares the same `filters`, `tests`, and `globals` dictionaries unless explicitly replaced"
+    },
+    {
+      "claim": "The `overlay()` method creates a fresh template cache via `copy_cache()`.",
+      "quote": "It creates a fresh template cache via `copy_cache()` to avoid interfering with the parent's loading state"
+    },
+    {
+      "claim": "Extensions are instantiated and bound to the environment during the `load_extensions` helper call.",
+      "quote": "**Loading**: Extensions are instantiated and bound to the environment during the `load_extensions` helper call"
+    },
+    {
+      "claim": "The i18n extension adds methods like `install_gettext_translations` directly to the `Environment` instance when loaded.",
+      "quote": "**i18n**: The `i18n` extension adds methods like `install_gettext_translations` directly to the `Environment` instance when loaded"
+    },
+    {
+      "claim": "`Environment.get_lexer()` creates a `Lexer` based on environment delimiters.",
+      "quote": "**Lexing**: Uses `get_lexer()` to create a `Lexer` based on environment delimiters"
+    },
+    {
+      "claim": "The `Parser` class generates an AST of type `nodes.Template`.",
+      "quote": "**Parsing**: Uses the `Parser` class to generate an AST (`nodes.Template`)"
+    },
+    {
+      "claim": "The `code_generator_class` defaults to `CodeGenerator`.",
+      "quote": "Uses `generate()` and the `code_generator_class` (default `CodeGenerator`) to produce Python source"
+    },
+    {
+      "claim": "The Environment invokes the Python `compile()` builtin to create a `CodeType` object.",
+      "quote": "**Compilation**: Invokes the Python `compile()` builtin to create a `CodeType` object"
+    },
+    {
+      "claim": "The `Lexer` class uses regular expressions compiled via `compile_rules` to identify delimiters and content.",
+      "quote": "The `Lexer` class uses regular expressions compiled via `compile_rules` to identify delimiters and content."
+    },
+    {
+      "claim": "The lexer maintains a state stack that typically starts in `data` mode.",
+      "quote": "The lexer maintains a state stack (typically starting in `data` mode)."
+    },
+    {
+      "claim": "When the lexer encounters `{{` it pushes the `variable` state to the stack and tokenizes expressions until the closing delimiter.",
+      "quote": "When it encounters a delimiter like `{{`, it pushes the `variable` state to the stack and begins tokenizing expressions until the closing delimiter is found."
+    },
+    {
+      "claim": "The `Parser` uses a recursive descent approach with methods like `parse_statement` and `parse_expression`.",
+      "quote": "It uses a recursive descent approach, where specific methods like `parse_statement` or `parse_expression` handle different parts of the grammar."
+    },
+    {
+      "claim": "The parser ensures every `{% for %}` is followed by `{% endfor %}` by tracking tags on a `_tag_stack`.",
+      "quote": "it ensures that every `{% for %}` is eventually followed by an `{% endfor %}` by tracking tags on a `_tag_stack`"
+    },
+    {
+      "claim": "The compilation entry point is `jinja2.compiler.generate`, which instantiates a `CodeGenerator`.",
+      "quote": "The entry point is `jinja2.compiler.generate`, which instantiates a `CodeGenerator`."
+    },
+    {
+      "claim": "The `CodeGenerator` uses the `NodeVisitor` pattern to traverse the AST.",
+      "quote": "The `CodeGenerator` uses the `NodeVisitor` pattern to traverse the tree."
+    },
+    {
+      "claim": "The `CodeGenerator` uses `Frame` objects to track variable scoping and `Symbols` to manage identifier resolution.",
+      "quote": "It uses `Frame` objects to track variable scoping and `Symbols` to manage identifier resolution"
+    },
+    {
+      "claim": "`Symbols` is defined in idtracking.",
+      "quote": "Symbols[\"idtracking.Symbols\"]"
+    },
+    {
+      "claim": "The `Context` resolve logic checks template locals, then globals, and finally returns an `Undefined` object if the variable is missing.",
+      "quote": "it checks template locals, then globals, and finally returns an `Undefined` object if the variable is missing"
+    },
+    {
+      "claim": "The Optimizer performs constant folding, such as turning `{{ 1 + 1 }}` into `{{ 2 }}`.",
+      "quote": "**Constant Folding**: The `Optimizer` performs constant folding (e.g., turning `{{ 1 + 1 }}` into `{{ 2 }}`) during the compilation phase"
+    },
+    {
+      "claim": "The compiler distinguishes between `rootlevel` and `function` scopes in frames.",
+      "quote": "**Frame Optimization**: The compiler distinguishes between `rootlevel` and `function` scopes to optimize how variables are accessed."
+    },
+    {
+      "claim": "Templates generate code that yields strings, enabling streaming via `Template.generate()`.",
+      "quote": "**Streaming**: Templates generate code that `yields` strings, allowing for memory-efficient streaming of large templates via `Template.generate()`."
+    },
+    {
+      "claim": "All extensions must inherit from the `jinja2.ext.Extension` base class.",
+      "quote": "All extensions must inherit from the `jinja2.ext.Extension` base class"
+    },
+    {
+      "claim": "The `Extension` class has `identifier`, `tags`, `priority`, and `environment` attributes.",
+      "quote": "+identifier: ClassVar[str]\n        +tags: Set[str]\n        +priority: int\n        +environment: Environment"
+    },
+    {
+      "claim": "The `Extension.preprocess` hook is called before lexing, takes the source string, and returns a modified source string.",
+      "quote": "**`preprocess`**: Called before lexing. It takes the source string and returns a modified source string"
+    },
+    {
+      "claim": "The `Extension.filter_stream` hook is passed a `TokenStream` and must return an iterable of `Token` objects.",
+      "quote": "**`filter_stream`**: Passed a `TokenStream` and must return an iterable of `Token` objects"
+    },
+    {
+      "claim": "The `Extension.parse` hook is called if any of the extension's `tags` match the current token in the parser stream and must return one or more `nodes.Node` objects.",
+      "quote": "**`parse`**: Called if any of the `tags` defined in the extension match the current token in the parser stream. It must return one or more `nodes.Node` objects"
+    },
+    {
+      "claim": "Extensions can be loaded by passing them to the `Environment` constructor's `extensions` parameter.",
+      "quote": "| `Environment(extensions=[...])` | Load extensions during environment creation"
+    },
+    {
+      "claim": "`Environment.add_extension(ext)` dynamically adds an extension to an existing environment.",
+      "quote": "| `Environment.add_extension(ext)` | Dynamically add an extension to an existing environment"
+    },
+    {
+      "claim": "Extensions are identified by their import name (e.g., `'jinja2.ext.i18n'`) or their class object.",
+      "quote": "Extensions are identified by their import name (e.g., `'jinja2.ext.i18n'`) or their class object"
+    },
+    {
+      "claim": "The i18n extension's import name is `jinja2.ext.i18n`.",
+      "quote": "**Import name:** `jinja2.ext.i18n`"
+    },
+    {
+      "claim": "The i18n extension adds support for `gettext` and `Babel`.",
+      "quote": "The i18n extension adds support for `gettext` and `Babel`"
+    },
+    {
+      "claim": "The i18n extension provides the `trans` statement for translatable blocks.",
+      "quote": "The `trans` statement for translatable blocks"
+    },
+    {
+      "claim": "The i18n extension provides new-style gettext support which handles autoescaping and formatting automatically.",
+      "quote": "New-style gettext support which handles autoescaping and formatting automatically"
+    },
+    {
+      "claim": "The i18n extension adds environment methods `install_gettext_translations` and `extract_translations`.",
+      "quote": "Environment methods like `install_gettext_translations` and `extract_translations`"
+    },
+    {
+      "claim": "Jinja2 provides a Babel extractor entry point named `jinja2.ext.babel_extract`.",
+      "quote": "Jinja2 provides a Babel extractor entry point: `jinja2.ext.babel_extract`"
+    },
+    {
+      "claim": "The Babel extractor extracts messages from both `trans` tags and standard code expressions.",
+      "quote": "It extracts messages from both `trans` tags and standard code expressions"
+    },
+    {
+      "claim": "The `jinja2.ext.do` extension adds the `do` tag to execute expressions without printing.",
+      "quote": "**`jinja2.ext.do`**: Adds the `do` tag to execute expressions without printing"
+    },
+    {
+      "claim": "The `jinja2.ext.loopcontrols` extension adds `break` and `continue` support to loops.",
+      "quote": "**`jinja2.ext.loopcontrols`**: Adds `break` and `continue` support to loops"
+    },
+    {
+      "claim": "The `jinja2.ext.debug` extension adds a `debug` tag to dump the current context.",
+      "quote": "**`jinja2.ext.debug`**: Adds a `debug` tag to dump the current context"
+    },
+    {
+      "claim": "`Extension.attr(name)` returns a `nodes.ExtensionAttribute` pointing to a property on the extension instance.",
+      "quote": "**`self.attr(name)`**: Returns a `nodes.ExtensionAttribute` pointing to a property on the extension instance"
+    },
+    {
+      "claim": "`Extension.call_method(name, ...)` combines `attr()` with `nodes.Call` to invoke an extension method during template execution.",
+      "quote": "**`self.call_method(name, ...)`**: A shortcut that combines `attr()` with `nodes.Call` to invoke an extension method during template execution"
+    },
+    {
+      "claim": "The `Extension.priority` attribute defaults to `100` and determines the execution order of `preprocess` and `filter_stream`, with lower values indicating higher priority.",
+      "quote": "The `priority` attribute (default `100`) determines the execution order of `preprocess` and `filter_stream`. Lower values indicate higher priority"
+    },
+    {
+      "claim": "Jinja template variables and expressions use the `{{ variable }}` syntax.",
+      "quote": "**Variables and expressions**: Values that get replaced when rendered (`{{ variable }}`)"
+    },
+    {
+      "claim": "Jinja statements use the `{% if condition %}` style syntax.",
+      "quote": "**Statements**: Control structures that affect template logic (`{% if condition %}`)"
+    },
+    {
+      "claim": "Jinja comments use the `{# comment #}` syntax and are not included in the output.",
+      "quote": "**Comments**: Notes that aren't included in the output (`{# comment #}`)"
+    },
+    {
+      "claim": "The `Environment` can be configured with `line_statement_prefix` for line-based logic.",
+      "quote": "The `Environment` can be configured to use different delimiters, such as `line_statement_prefix` for line-based logic"
+    },
+    {
+      "claim": "Dot lookup `{{ foo.bar }}` first checks for an attribute, then an item.",
+      "quote": "**Dot Lookup**: `{{ foo.bar }}` first checks for an attribute, then an item"
+    },
+    {
+      "claim": "Subscript lookup `{{ foo['bar'] }}` first checks for an item, then an attribute.",
+      "quote": "**Subscript Lookup**: `{{ foo['bar'] }}` first checks for an item, then an attribute"
+    },
+    {
+      "claim": "Filters transform variables using the pipe (`|`) symbol and can be chained.",
+      "quote": "**Filters**: Transform variables using the pipe (`|`) symbol. Multiple filters can be chained"
+    },
+    {
+      "claim": "Tests evaluate a variable against a condition using the `is` keyword.",
+      "quote": "**Tests**: Evaluate a variable against a condition using the `is` keyword"
+    },
+    {
+      "claim": "Inside a for loop, a special `loop` object provides metadata such as `loop.index` and `loop.first`.",
+      "quote": "Inside a loop, a special `loop` object provides access to metadata like `loop.index` or `loop.first`"
+    },
+    {
+      "claim": "Macros are reusable template functions defined with `{% macro %}`.",
+      "quote": "**Macros**: Reusable template functions defined with `{% macro %}`"
+    },
+    {
+      "claim": "`{% set %}` binds values to names and `{% with %}` creates local scopes.",
+      "quote": "**Assignments**: Use `{% set %}` to bind values to names or `{% with %}` to create local scopes"
+    },
+    {
+      "claim": "Child templates use `{% extends \"base.html\" %}` to inherit from a parent.",
+      "quote": "**Extends**: Child templates use `{% extends \"base.html\" %}` to inherit from a parent"
+    },
+    {
+      "claim": "Blocks are defined in parent templates and overridden in children.",
+      "quote": "**Blocks**: Defined in parents and overridden in children"
+    },
+    {
+      "claim": "`{% include %}` inserts the rendered contents of another template into the current one.",
+      "quote": "**Include**: Inserts the rendered contents of another template into the current one"
+    },
+    {
+      "claim": "Import allows sharing macros between templates.",
+      "quote": "**Import**: Allows sharing macros between templates"
+    },
+    {
+      "claim": "By default, Jinja returns whitespace unchanged except for a single trailing newline.",
+      "quote": "By default, Jinja returns whitespace unchanged except for a single trailing newline"
+    },
+    {
+      "claim": "A minus sign in delimiters (e.g., `{%-`) strips leading or trailing whitespace.",
+      "quote": "**Manual Trimming**: Use a minus sign (`-`) in delimiters (e.g., `{%-`) to strip leading or trailing whitespace"
+    },
+    {
+      "claim": "`trim_blocks` and `lstrip_blocks` can be enabled globally in the Environment.",
+      "quote": "**Environment Settings**: `trim_blocks` and `lstrip_blocks` can be enabled globally to clean up the generated output"
+    },
+    {
+      "claim": "The i18n extension adds the `{% trans %}` block for translation.",
+      "quote": "**i18n**: Adds the `{% trans %}` block for translation"
+    },
+    {
+      "claim": "The `{{ ... }}` delimiter corresponds to the internal `TOKEN_VARIABLE_BEGIN` and `TOKEN_VARIABLE_END` token types.",
+      "quote": "| `{{ ... }}` | `TOKEN_VARIABLE_BEGIN` / `END` | Expressions to print to output |"
+    },
+    {
+      "claim": "The `{% ... %}` delimiter corresponds to the internal `TOKEN_BLOCK_BEGIN` and `TOKEN_BLOCK_END` token types.",
+      "quote": "| `{% ... %}` | `TOKEN_BLOCK_BEGIN` / `END` | Statements (control structures) |"
+    },
+    {
+      "claim": "The `{# ... #}` delimiter corresponds to the internal `TOKEN_COMMENT_BEGIN` and `TOKEN_COMMENT_END` token types.",
+      "quote": "| `{# ... #}` | `TOKEN_COMMENT_BEGIN` / `END` | Comments (not rendered) |"
+    },
+    {
+      "claim": "The `{% raw %}` tag corresponds to the internal `TOKEN_RAW_BEGIN` and `TOKEN_RAW_END` token types and disables processing for a block.",
+      "quote": "| `{% raw %}` | `TOKEN_RAW_BEGIN` / `END` | Disables processing for a block |"
+    },
+    {
+      "claim": "Dot notation `foo.bar` resolves first to `getattr(foo, 'bar')`, then `foo.__getitem__('bar')`, then `environment.undefined()`.",
+      "quote": "Dot -->|\"1st\"| GetAttr\n    Dot -->|\"2nd\"| GetItem\n    Dot -->|\"3rd\"| Undefined"
+    },
+    {
+      "claim": "Subscript notation `foo['bar']` resolves first to `foo.__getitem__('bar')`, then `getattr(foo, 'bar')`, then `environment.undefined()`.",
+      "quote": "Sub -->|\"1st\"| GetItem\n    Sub -->|\"2nd\"| GetAttr\n    Sub -->|\"3rd\"| Undefined"
+    },
+    {
+      "claim": "Filters are Python functions registered in `Environment.filters`.",
+      "quote": "They are essentially Python functions registered in `Environment.filters`"
+    },
+    {
+      "claim": "The filter expression `{{ listx|join(', ') }}` maps to `str.join(', ', listx)`.",
+      "quote": "**Arguments:** `{{ listx|join(', ') }}` (mapped to `str.join(', ', listx)`)"
+    },
+    {
+      "claim": "Tests are registered in `Environment.tests`.",
+      "quote": "They are registered in `Environment.tests`"
+    },
+    {
+      "claim": "Tests can be called with arguments using either `divisibleby(3)` or `divisibleby 3` syntax.",
+      "quote": "**With Arguments:** `{% if loop.index is divisibleby(3) %}` or `{% if loop.index is divisibleby 3 %}`"
+    },
+    {
+      "claim": "If `trim_blocks` is `True`, the first newline after a block is removed.",
+      "quote": "`trim_blocks`: If `True`, the first newline after a block is removed"
+    },
+    {
+      "claim": "If `lstrip_blocks` is `True`, leading whitespace (tabs/spaces) before a block is stripped.",
+      "quote": "`lstrip_blocks`: If `True`, leading whitespace (tabs/spaces) before a block is stripped"
+    },
+    {
+      "claim": "`keep_trailing_newline` preserves a single trailing newline at the end of the file.",
+      "quote": "`keep_trailing_newline`: Preserves a single trailing newline at the end of the file"
+    },
+    {
+      "claim": "Adding a minus sign to any delimiter strips whitespace in that direction.",
+      "quote": "Adding a minus sign (`-`) to any delimiter strips whitespace in that direction."
+    },
+    {
+      "claim": "Line-based logic requires setting `line_statement_prefix` and `line_comment_prefix` in the `Environment`.",
+      "quote": "This requires setting `line_statement_prefix` and `line_comment_prefix` in the `Environment`"
+    },
+    {
+      "claim": "The Jinja lexer recognizes string literals in single and double quotes.",
+      "quote": "**Strings:** `'Hello'`, `\"World\"`"
+    },
+    {
+      "claim": "The Jinja lexer recognizes integers, floats, binary numbers like `0b10`, and hex numbers like `0xff`.",
+      "quote": "**Numbers:** Integers (`42`), Floats (`3.14`), Binary (`0b10`), Hex (`0xff`)"
+    },
+    {
+      "claim": "The Jinja lexer recognizes the math operators `+`, `-`, `/`, `//`, `%`, `**`, and `*`.",
+      "quote": "**Math:** `+`, `-`, `/`, `//`, `%`, `**`, `*`"
+    },
+    {
+      "claim": "The Jinja lexer recognizes the comparison operators `==`, `!=`, `>`, `>=`, `<`, and `<=`.",
+      "quote": "**Comparison:** `==`, `!=`, `>`, `>=`, `<`, `<=`"
+    },
+    {
+      "claim": "The logic operators `and`, `or`, and `not` are handled during parsing rather than by the lexer.",
+      "quote": "**Logic:** `and`, `or`, `not` (handled during parsing)."
+    },
+    {
+      "claim": "Blocks in Jinja templates are defined using the `{% block %}` tag.",
+      "quote": "Blocks are defined using the `{% block %}` tag."
+    },
+    {
+      "claim": "Blocks can be nested.",
+      "quote": "Blocks can be nested, allowing for granular overrides"
+    },
+    {
+      "claim": "The `{% extends %}` tag must be the first tag in the template.",
+      "quote": "The `{% extends %}` tag must be the first tag in the template"
+    },
+    {
+      "claim": "The `super()` function renders the content of the parent block within an overriding block.",
+      "quote": "The `super()` function allows you to render the content of the parent block within an overriding block."
+    },
+    {
+      "claim": "In multi-level inheritance, `super()` refers to the immediate parent and `super.super()` skips a level.",
+      "quote": "When using multiple levels, `super()` refers to the immediate parent. To skip levels, you can use `super.super()`"
+    },
+    {
+      "claim": "By default, blocks cannot access variables from outside their scope, such as loop variables.",
+      "quote": "By default, blocks cannot access variables from outside their scope (like loop variables)."
+    },
+    {
+      "claim": "The `scoped` modifier makes external variables available inside a block.",
+      "quote": "To make external variables available, use the `scoped` modifier."
+    },
+    {
+      "claim": "Blocks can be marked `required`, meaning they must be overridden somewhere in the inheritance chain.",
+      "quote": "Blocks can be marked as `required`, meaning they must be overridden at some point in the inheritance chain."
+    },
+    {
+      "claim": "Required blocks must be empty or contain only comments.",
+      "quote": "Required blocks must be empty (or contain only comments)."
+    },
+    {
+      "claim": "If a required block has not been overridden when a template is rendered, Jinja raises a `TemplateRuntimeError`.",
+      "quote": "If a template is rendered and a required block has not been overridden, Jinja raises a `TemplateRuntimeError`."
+    },
+    {
+      "claim": "The `extends` tag accepts a variable which can be a string template name or a `Template` object.",
+      "quote": "The variable `layout_template` can be a string (template name) or a `Template` object itself"
+    },
+    {
+      "claim": "By default, included templates have access to the current context.",
+      "quote": "By default, included templates have access to the current context."
+    },
+    {
+      "claim": "`{% include ... without context %}` causes the included template to only see global variables.",
+      "quote": "`without context`: Included template only sees global variables"
+    },
+    {
+      "claim": "`{% include \"maybe.html\" ignore missing %}` handles missing templates.",
+      "quote": "| **Ignore Missing** | `{% include \"maybe.html\" ignore missing %}` |"
+    },
+    {
+      "claim": "`{% include [\"page.html\", \"default.html\"] %}` accepts a list of template names.",
+      "quote": "| **Choice List** | `{% include [\"page.html\", \"default.html\"] %}` |"
+    },
+    {
+      "claim": "When a list of templates is given to include, Jinja uses the first template found by the loader.",
+      "quote": "If a list is provided, Jinja uses the first template found by the `Loader`"
+    },
+    {
+      "claim": "Imports are not rendered into the output; they execute the template and collect top-level definitions into a namespace object.",
+      "quote": "Imports are **not** rendered into the output. Instead, they execute the template and collect top-level definitions into a namespace object"
+    },
+    {
+      "claim": "By default, imports do not see the current context; `with context` allows imported macros to access local variables.",
+      "quote": "By default, imports do **not** see the current context. Use `with context` to allow imported macros to access local variables"
+    },
+    {
+      "claim": "Definitions starting with an underscore are not exported to the import namespace.",
+      "quote": "**Privacy**: Definitions starting with an underscore are not exported to the namespace"
+    },
+    {
+      "claim": "`{% import 'mod.html' as m %}` creates a namespace `m`.",
+      "quote": "ImportTag[\"{% import 'mod.html' as m %}\"] -->|creates| Namespace[\"m (Namespace)\"]"
+    },
+    {
+      "claim": "`{% from 'mod.html' import func %}` binds `func` as a local name.",
+      "quote": "FromTag[\"{% from 'mod.html' import func %}\"] -->|binds| FuncName[\"func (Local)\"]"
+    },
+    {
+      "claim": "Jinja2 control structures appear inside `{% ... %}` blocks by default.",
+      "quote": "Jinja2 control structures appear inside `{% ... %}` blocks by default"
+    },
+    {
+      "claim": "The `for` loop iterates over sequences such as lists, dictionaries, or any iterable object.",
+      "quote": "The `for` loop allows you to iterate over sequences (like lists, dictionaries, or any iterable object) in your templates."
+    },
+    {
+      "claim": "In Jinja2, the for-loop variable does not leak into the outer scope after the loop finishes.",
+      "quote": "the loop variable (e.g., `item`) does not leak into the outer scope after the loop finishes"
+    },
+    {
+      "claim": "The `loop` object inside a for loop is an instance of `LoopContext` in the runtime.",
+      "quote": "you have access to a special `loop` object (an instance of `LoopContext` in the runtime)"
+    },
+    {
+      "claim": "`loop.index` is the current iteration, 1-indexed.",
+      "quote": "| `loop.index` | Current iteration (1-indexed) |"
+    },
+    {
+      "claim": "`loop.index0` is the current iteration, 0-indexed.",
+      "quote": "| `loop.index0` | Current iteration (0-indexed) |"
+    },
+    {
+      "claim": "`loop.revindex` is the number of iterations from the end, 1-indexed.",
+      "quote": "| `loop.revindex` | Number of iterations from the end (1-indexed) |"
+    },
+    {
+      "claim": "`loop.revindex0` is the number of iterations from the end, 0-indexed.",
+      "quote": "| `loop.revindex0` | Number of iterations from the end (0-indexed) |"
+    },
+    {
+      "claim": "`loop.first` is True if it is the first iteration.",
+      "quote": "| `loop.first` | True if first iteration |"
+    },
+    {
+      "claim": "`loop.last` is True if it is the last iteration.",
+      "quote": "| `loop.last` | True if last iteration |"
+    },
+    {
+      "claim": "`loop.length` is the total number of items.",
+      "quote": "| `loop.length` | Total number of items |"
+    },
+    {
+      "claim": "`loop.cycle` is a helper function to cycle between values.",
+      "quote": "| `loop.cycle` | Helper function to cycle between values |"
+    },
+    {
+      "claim": "`loop.previtem` is the item from the previous iteration.",
+      "quote": "| `loop.previtem` | The item from the previous iteration |"
+    },
+    {
+      "claim": "`loop.nextitem` is the item from the following iteration.",
+      "quote": "| `loop.nextitem` | The item from the following iteration |"
+    },
+    {
+      "claim": "`loop.changed(*val)` returns True if the value has changed since the last iteration.",
+      "quote": "| `loop.changed(*val)` | True if the value has changed since the last iteration |"
+    },
+    {
+      "claim": "Jinja2 for loops support inline filtering and an `else` block that executes if the sequence is empty or all items were filtered out.",
+      "quote": "Jinja2 supports inline filtering and an `else` block that executes if the sequence is empty or all items were filtered out."
+    },
+    {
+      "claim": "The `recursive` modifier on a for loop makes the `loop` variable callable to trigger the next level of recursion.",
+      "quote": "use the `recursive` modifier. This makes the `loop` variable callable to trigger the next level of recursion"
+    },
+    {
+      "claim": "Variables assigned inside an `if` block persist in the outer scope.",
+      "quote": "Variables assigned inside an `if` block persist in the outer scope, unlike `for` loops."
+    },
+    {
+      "claim": "Macros have access to a `varargs` variable containing positional arguments beyond the defined ones.",
+      "quote": "`varargs`: Positional arguments beyond the defined ones."
+    },
+    {
+      "claim": "Macros have access to a `kwargs` variable containing keyword arguments beyond the defined ones.",
+      "quote": "`kwargs`: Keyword arguments beyond the defined ones."
+    },
+    {
+      "claim": "Macros have access to a `caller` variable referencing the block content if the macro was called via `{% call %}`.",
+      "quote": "`caller`: A reference to the block content if the macro was called via `{% call %}`."
+    },
+    {
+      "claim": "Call blocks pass a template fragment to a macro, which the macro renders using the `caller()` variable.",
+      "quote": "Call blocks allow you to pass a template fragment to a macro, which the macro can then render using the `caller()` variable."
+    },
+    {
+      "claim": "The `set` tag assigns values to variables.",
+      "quote": "The `set` tag assigns values to variables."
+    },
+    {
+      "claim": "`namespace` is used to update variables across nested scopes such as inside a loop.",
+      "quote": "To update variables across nested scopes (like inside a loop), use `namespace`."
+    },
+    {
+      "claim": "The `with` statement creates a temporary scope; variables defined within are discarded at `{% endwith %}`.",
+      "quote": "The `with` statement explicitly creates a temporary scope. Variables defined within are discarded at `{% endwith %}`."
+    },
+    {
+      "claim": "The `raw` block disables processing for everything inside it.",
+      "quote": "The `raw` block disables processing for everything inside it"
+    },
+    {
+      "claim": "The `filter` block applies a filter to a whole section of template text.",
+      "quote": "The `filter` block allows applying a filter to a whole section of template text."
+    },
+    {
+      "claim": "Filters are applied to variables using the pipe (`|`) symbol followed by the filter name, and can accept arguments.",
+      "quote": "Filters in Jinja2 are applied to variables using the pipe (`|`) symbol followed by the filter name. Filters can also accept arguments to customize their behavior."
+    },
+    {
+      "claim": "`capitalize`, `join`, and `truncate` are Jinja2 filters.",
+      "quote": "In the above examples, `capitalize`, `join`, and `truncate` are filters that transform the respective variables"
+    },
+    {
+      "claim": "The `Environment.call_filter` method handles the execution of filters during runtime.",
+      "quote": "The `Environment.call_filter` method handles the execution of filters during runtime."
+    },
+    {
+      "claim": "If a filter is not found in `env.filters`, Jinja2 raises a `TemplateRuntimeError` or `UndefinedError`.",
+      "quote": "E->>T: Raise TemplateRuntimeError/UndefinedError"
+    },
+    {
+      "claim": "Built-in filters are defined in filters.py and are usually prefixed with `do_` in the Python source code.",
+      "quote": "These filters are defined in `filters.py` and are usually prefixed with `do_` in the Python source code."
+    },
+    {
+      "claim": "String manipulation built-in filters include `upper`, `lower`, `capitalize`, `title`, `trim`, `striptags`, and `wordcount`.",
+      "quote": "| String Manipulation | `upper`, `lower`, `capitalize`, `title`, `trim`, `striptags`, `wordcount` |"
+    },
+    {
+      "claim": "HTML/URL related built-in filters include `escape`, `safe`, `urlize`, `urlencode`, and `forceescape`.",
+      "quote": "| HTML/URL Related | `escape`, `safe`, `urlize`, `urlencode`, `forceescape` |"
+    },
+    {
+      "claim": "Collection built-in filters include `join`, `sort`, `unique`, `min`, `max`, `map`, `select`, `reject`, and `groupby`.",
+      "quote": "| Collection | `join`, `sort`, `unique`, `min`, `max`, `map`, `select`, `reject`, `groupby` |"
+    },
+    {
+      "claim": "Numeric built-in filters include `int`, `float`, `round`, `abs`, and `sum`.",
+      "quote": "| Numeric | `int`, `float`, `round`, `abs`, `sum` |"
+    },
+    {
+      "claim": "The `default` filter provides default values for undefined variables.",
+      "quote": "| Default Values | `default` | Provide default values for undefined variables |"
+    },
+    {
+      "claim": "Other built-in filters include `pprint`, `truncate`, `filesizeformat`, and `tojson`.",
+      "quote": "| Other | `pprint`, `truncate`, `filesizeformat`, `tojson` |"
+    },
+    {
+      "claim": "The `@pass_context` decorator passes the current `Context` as the first argument to a filter.",
+      "quote": "`@pass_context`: Passes the current `Context` as the first argument."
+    },
+    {
+      "claim": "The `@pass_eval_context` decorator passes the `EvalContext` as the first argument to a filter.",
+      "quote": "`@pass_eval_context`: Passes the `EvalContext` as the first argument."
+    },
+    {
+      "claim": "The `@pass_environment` decorator passes the `Environment` as the first argument to a filter.",
+      "quote": "`@pass_environment`: Passes the `Environment` as the first argument."
+    },
+    {
+      "claim": "The `do_replace` filter is decorated with `@pass_eval_context` and returns `str(s).replace(str(old), str(new), count)` when autoescape is off.",
+      "quote": "@pass_eval_context\ndef do_replace(eval_ctx, s, old, new, count=None):\n    if not eval_ctx.autoescape:\n        return str(s).replace(str(old), str(new), count)"
+    },
+    {
+      "claim": "Custom filters are registered by assigning to the `filters` dictionary of an Environment, e.g. `env.filters['my_custom'] = my_filter`.",
+      "quote": "env = Environment()\nenv.filters['my_custom'] = my_filter"
+    },
+    {
+      "claim": "Jinja2 supports asynchronous filters via the `@async_variant` decorator, allowing filters to handle `AsyncIterable` objects.",
+      "quote": "Jinja2 supports asynchronous filters via the `@async_variant` decorator, allowing filters to handle `AsyncIterable` objects when using an `AsyncEnvironment`."
+    },
+    {
+      "claim": "Filters are stored in the `Environment.filters` dictionary.",
+      "quote": "filters are stored in the `Environment.filters` dictionary"
+    },
+    {
+      "claim": "Many string filters use `markupsafe.soft_str`.",
+      "quote": "Many of these utilize `markupsafe.soft_str` to ensure compatibility with HTML-safe strings"
+    },
+    {
+      "claim": "The `capitalize` filter is implemented by `do_capitalize` and capitalizes the first character of a string.",
+      "quote": "| `capitalize` | `do_capitalize` | Capitalizes the first character of a string"
+    },
+    {
+      "claim": "The `center` filter is implemented by `do_center` and centers a string within a field of specified width.",
+      "quote": "| `center` | `do_center` | Centers a string within a field of specified width"
+    },
+    {
+      "claim": "The `trim` filter is implemented by `do_trim` and removes leading/trailing whitespace or specified characters.",
+      "quote": "| `trim` | `do_trim` | Removes leading/trailing whitespace or specified characters"
+    },
+    {
+      "claim": "The `lower` filter is implemented by `do_lower` and converts a string to lowercase.",
+      "quote": "| `lower` | `do_lower` | Converts string to lowercase"
+    },
+    {
+      "claim": "The `upper` filter is implemented by `do_upper` and converts a string to uppercase.",
+      "quote": "| `upper` | `do_upper` | Converts string to uppercase"
+    },
+    {
+      "claim": "The `replace` filter is implemented by `do_replace` and is context-aware for autoescaping.",
+      "quote": "| `replace` | `do_replace` | Replaces occurrences of a substring; context-aware for autoescaping"
+    },
+    {
+      "claim": "The `striptags` filter is implemented by `do_striptags` and strips HTML tags using a regular expression.",
+      "quote": "| `striptags` | `do_striptags` | Strips HTML tags using a regular expression"
+    },
+    {
+      "claim": "The `indent` filter is implemented by `do_indent` and indents lines in a block of text.",
+      "quote": "| `indent` | `do_indent` | Indents lines in a block of text"
+    },
+    {
+      "claim": "The `urlize` filter is implemented by `do_urlize` and converts URLs in text to clickable links.",
+      "quote": "| `urlize` | `do_urlize` | Converts URLs in text to clickable links"
+    },
+    {
+      "claim": "Jinja2 provides the `make_attrgetter` utility to help filters like `sort` or `map` access nested attributes.",
+      "quote": "Jinja2 provides utility functions like `make_attrgetter` to help filters like `sort` or `map` access nested attributes"
+    },
+    {
+      "claim": "The `first` filter returns the first item of a sequence.",
+      "quote": "| `first` | Returns the first item"
+    },
+    {
+      "claim": "The `last` filter returns the last item of a sequence.",
+      "quote": "| `last` | Returns the last item"
+    },
+    {
+      "claim": "The `length` filter returns the sequence length.",
+      "quote": "| `length` | Returns sequence length"
+    },
+    {
+      "claim": "The `sort` filter sorts a sequence.",
+      "quote": "| `sort` | Sorts a sequence"
+    },
+    {
+      "claim": "The `join` filter joins items with a string.",
+      "quote": "| `join` | Joins items with a string"
+    },
+    {
+      "claim": "The `batch` filter batches items into sub-lists.",
+      "quote": "| `batch` | Batches items into sub-lists"
+    },
+    {
+      "claim": "The `slice` filter slices a sequence into N lists.",
+      "quote": "| `slice` | Slices sequence into N lists"
+    },
+    {
+      "claim": "The `map` filter applies a filter or attribute lookup to items.",
+      "quote": "| `map` | Applies filter/attribute lookup to items"
+    },
+    {
+      "claim": "The `select` filter filters items based on a test.",
+      "quote": "| `select` | Filters items based on a test"
+    },
+    {
+      "claim": "The `sum` filter sums a sequence of numbers.",
+      "quote": "| `sum` | Sums a sequence of numbers"
+    },
+    {
+      "claim": "The `abs` filter returns the absolute value.",
+      "quote": "| `abs` | Absolute value"
+    },
+    {
+      "claim": "The `float` filter converts a value to float.",
+      "quote": "| `float` | Convert to float"
+    },
+    {
+      "claim": "The `int` filter converts a value to integer.",
+      "quote": "| `int` | Convert to integer"
+    },
+    {
+      "claim": "The `filesizeformat` filter produces a human-readable file size.",
+      "quote": "| `filesizeformat` | Human-readable file size"
+    },
+    {
+      "claim": "The `default` filter supplies a default value for Undefined.",
+      "quote": "| `default` | Default value for Undefined"
+    },
+    {
+      "claim": "`do_urlencode` uses `utils.url_quote`.",
+      "quote": "do_urlencode --> url_quote[\"utils.url_quote\"]"
+    },
+    {
+      "claim": "`do_tojson` uses `utils.htmlsafe_json_dumps`.",
+      "quote": "do_tojson --> htmlsafe_json_dumps[\"utils.htmlsafe_json_dumps\"]"
+    },
+    {
+      "claim": "`do_forceescape` uses `markupsafe.escape`.",
+      "quote": "do_forceescape --> markupsafe_escape[\"markupsafe.escape\"]"
+    },
+    {
+      "claim": "The `escape` filter has the alias `e` and escapes HTML.",
+      "quote": "| `escape` / `e` | Escapes HTML"
+    },
+    {
+      "claim": "The `forceescape` filter enforces double escaping if necessary.",
+      "quote": "| `forceescape` | Enforces double escaping if necessary"
+    },
+    {
+      "claim": "The `urlencode` filter URL-encodes strings or dicts.",
+      "quote": "| `urlencode` | URL-encodes strings or dicts"
+    },
+    {
+      "claim": "The `tojson` filter performs safe JSON serialization.",
+      "quote": "| `tojson` | Safe JSON serialization"
+    },
+    {
+      "claim": "The `xmlattr` filter converts a dict to XML attributes.",
+      "quote": "| `xmlattr` | Converts dict to XML attributes"
+    },
+    {
+      "claim": "When filters are chained, the output of one filter is passed as the first argument to the next.",
+      "quote": "Filters can be chained. The output of one filter is passed as the first argument to the next."
+    },
+    {
+      "claim": "`do_replace` checks `eval_ctx.autoescape` to decide whether to return a `Markup` object or a plain string.",
+      "quote": "`do_replace` checks `eval_ctx.autoescape` to decide whether to return a `Markup` object or a plain string"
+    },
+    {
+      "claim": "The `@pass_context`, `@pass_eval_context`, and `@pass_environment` decorators are defined in `jinja2.utils`.",
+      "quote": "Jinja2 provides special decorators in `jinja2.utils` to pass contextual information to your filters."
+    },
+    {
+      "claim": "The pass decorators mark a function by setting a `jinja_pass_arg` attribute.",
+      "quote": "These decorators mark the function by setting a `jinja_pass_arg` attribute"
+    },
+    {
+      "claim": "The `EvalContext` passed by `@pass_eval_context` contains information about the current autoescape state.",
+      "quote": "The `@pass_eval_context` decorator passes the `EvalContext` [src/jinja2/nodes.py:35-35](), which contains information about the current autoescape state"
+    },
+    {
+      "claim": "The `@pass_context` decorator passes the complete `Context`, allowing access to template variables or the `parent` context.",
+      "quote": "The `@pass_context` decorator passes the complete `Context` [src/jinja2/runtime.py:36-36](), allowing the filter to access template variables or the `parent` context"
+    },
+    {
+      "claim": "Filters can be registered by passing a dictionary to the `Environment` constructor's `filters` parameter.",
+      "quote": "You can register filters by passing a dictionary to the `Environment` constructor"
+    },
+    {
+      "claim": "`_PassArg.from_obj` is used by the Environment to determine whether a filter uses a pass decorator.",
+      "quote": "Env->>Utils: from_obj(filter_func)"
+    },
+    {
+      "claim": "The `is_undefined` utility in jinja2.utils checks if a value is an instance of `Undefined`.",
+      "quote": "The `is_undefined` utility helps check if a value is an instance of `Undefined`"
+    },
+    {
+      "claim": "The `@async_variant` decorator is defined in `jinja2.async_utils` and allows a filter to have both a synchronous and an asynchronous implementation.",
+      "quote": "These are marked using the `@async_variant` decorator, which allows a filter to have both a synchronous and an asynchronous implementation"
+    },
+    {
+      "claim": "Filters can raise `FilterArgumentError` if the arguments provided in the template are invalid.",
+      "quote": "Filters themselves can raise `FilterArgumentError` if the arguments provided in the template are invalid"
+    },
+    {
+      "claim": "All Jinja2 loaders inherit from the `BaseLoader` class.",
+      "quote": "All loaders inherit from the `BaseLoader` class, which defines the core interface that specific loader implementations must provide."
+    },
+    {
+      "claim": "`BaseLoader.get_source(environment, template)` returns a tuple of `(source, filename, uptodate_func)`.",
+      "quote": "Returns a tuple: `(source, filename, uptodate_func)`."
+    },
+    {
+      "claim": "The `uptodate_func` returned by `get_source` is called to check if the template has changed when auto-reloading is enabled.",
+      "quote": "The `uptodate_func` is called to check if the template has changed when auto-reloading is enabled."
+    },
+    {
+      "claim": "`BaseLoader.list_templates()` raises a `TypeError` by default.",
+      "quote": "Not all loaders can enumerate their templates; default behavior is to raise a `TypeError`."
+    },
+    {
+      "claim": "`BaseLoader.load(environment, name, globals)` is the primary entry point for loading a template.",
+      "quote": "**`load(environment, name, globals)`**: The primary entry point for loading a template"
+    },
+    {
+      "claim": "`BaseLoader.load` integrates with the `BytecodeCache` if `environment.bytecode_cache` is configured.",
+      "quote": "Integrates with the `BytecodeCache` if `environment.bytecode_cache` is configured"
+    },
+    {
+      "claim": "`FileSystemLoader` loads templates from one or more directories on the file system.",
+      "quote": "**`FileSystemLoader`**: Loads templates from one or more directories on the file system"
+    },
+    {
+      "claim": "`PackageLoader` loads templates from a directory within a Python package using `importlib.resources`.",
+      "quote": "**`PackageLoader`**: Loads templates from a specified directory within a Python package using `importlib.resources`"
+    },
+    {
+      "claim": "`DictLoader` loads templates from a Python dictionary.",
+      "quote": "**`DictLoader`**: Loads templates from a Python dictionary; useful for testing"
+    },
+    {
+      "claim": "`FunctionLoader` allows dynamic template loading through a user-provided function.",
+      "quote": "**`FunctionLoader`**: Allows for dynamic template loading through a user-provided function"
+    },
+    {
+      "claim": "`PrefixLoader` organizes templates into namespaces and delegates to different loaders based on the prefix.",
+      "quote": "**`PrefixLoader`**: Organizes templates into namespaces (e.g., `app1/index.html`), delegating to different loaders based on the prefix"
+    },
+    {
+      "claim": "`ChoiceLoader` tries multiple loaders in sequence until one succeeds.",
+      "quote": "**`ChoiceLoader`**: Tries multiple loaders in sequence until one succeeds"
+    },
+    {
+      "claim": "`ModuleLoader` loads precompiled templates from Python modules.",
+      "quote": "**`ModuleLoader`**: Loads precompiled templates from Python modules for maximum performance"
+    },
+    {
+      "claim": "The `split_template_path()` function raises `TemplateNotFound` if it detects `..` or platform-specific separators.",
+      "quote": "It splits template paths into segments and raises `TemplateNotFound` if it detects `..` or platform-specific separators"
+    },
+    {
+      "claim": "To create a custom loader, you subclass `BaseLoader` and override the `get_source` method.",
+      "quote": "To create a custom loader, you must subclass `BaseLoader` and override the `get_source` method."
+    },
+    {
+      "claim": "`BaseLoader` has a `has_source_access` boolean attribute.",
+      "quote": "+has_source_access: bool"
+    },
+    {
+      "claim": "The `Environment.get_template()` method calls the loader to retrieve templates.",
+      "quote": "Jinja2's `Environment` class uses loaders to retrieve templates when the `get_template()` method is called."
+    },
+    {
+      "claim": "`FileSystemLoader` supports multiple search paths searched in order.",
+      "quote": "It supports multiple search paths and performs security checks via `split_template_path` to prevent directory traversal attacks"
+    },
+    {
+      "claim": "`FileSystemLoader`'s `encoding` parameter defaults to 'utf-8'.",
+      "quote": "`encoding`: The encoding used to read template files (default: 'utf-8')"
+    },
+    {
+      "claim": "`FileSystemLoader` has a `followlinks` parameter controlling whether to follow symbolic links.",
+      "quote": "`followlinks`: Whether to follow symbolic links."
+    },
+    {
+      "claim": "`PackageLoader` can load templates from regular directories, zip files, or eggs.",
+      "quote": "The loader automatically identifies the package location and can load from regular directories, zip files, or eggs."
+    },
+    {
+      "claim": "The `uptodate` function for `DictLoader` returns `False` if the dictionary content changes, forcing a reload.",
+      "quote": "The `uptodate` function for `DictLoader` returns `False` if the dictionary content changes, forcing a reload."
+    },
+    {
+      "claim": "`PrefixLoader` routes template requests to different loaders based on a prefix.",
+      "quote": "`PrefixLoader` routes template requests to different loaders based on a prefix."
+    },
+    {
+      "claim": "`ChoiceLoader` wraps a list of loaders; the first loader that does not raise `TemplateNotFound` wins.",
+      "quote": "`ChoiceLoader` wraps a list of loaders and tries them in order. The first loader that doesn't raise `TemplateNotFound` wins."
+    },
+    {
+      "claim": "`ModuleLoader` loads templates precompiled into Python modules via `Environment.compile_templates`.",
+      "quote": "`ModuleLoader` loads templates that have been precompiled into Python modules via `Environment.compile_templates`."
+    },
+    {
+      "claim": "`ModuleLoader` is the only loader where `has_source_access` is `False`.",
+      "quote": "It is the only loader where `has_source_access` is `False`."
+    },
+    {
+      "claim": "The `BytecodeCache` uses a checksum of the template source to ensure cached bytecode is valid.",
+      "quote": "**Checksumming**: The `BytecodeCache` uses a checksum of the template source to ensure the cached bytecode is still valid for the current source string."
+    },
+    {
+      "claim": "Bytecode cache data is transferred via `Bucket` objects which encapsulate the bytecode and metadata.",
+      "quote": "**Buckets**: Data is transferred via `Bucket` objects which encapsulate the bytecode and metadata."
+    },
+    {
+      "claim": "`FileSystemBytecodeCache` and `MemcachedBytecodeCache` are bytecode cache implementations.",
+      "quote": "If an `Environment` has a `bytecode_cache` (e.g., `FileSystemBytecodeCache` or `MemcachedBytecodeCache`)"
+    },
+    {
+      "claim": "`BaseLoader.get_source` must be implemented by custom loaders and receives the `Environment` and the template name.",
+      "quote": "This method must be implemented. It receives the `Environment` and the template name."
+    },
+    {
+      "claim": "`has_source_access` defaults to `True`, and if `False`, `get_source` raises a `RuntimeError`.",
+      "quote": "A flag (default `True`) indicating if the loader can provide source access. If `False`, `get_source` will raise a `RuntimeError`"
+    },
+    {
+      "claim": "`BaseLoader.load` fetches source via `get_source`, checks the bytecode cache, compiles source if not cached, and updates the bytecode cache.",
+      "quote": "Fetching source via `get_source` [src/jinja2/loaders.py:126-126]().\n2.  Checking the `bytecode_cache`"
+    },
+    {
+      "claim": "Subclasses of `BaseLoader` should generally not override the `load` method.",
+      "quote": "Subclasses should generally **not** override this method"
+    },
+    {
+      "claim": "`TemplateNotFound` and `BaseLoader` can be imported from the `jinja2` package.",
+      "quote": "from jinja2 import BaseLoader, TemplateNotFound"
+    },
+    {
+      "claim": "The `source` return value of `get_source` is the template source as a string.",
+      "quote": "**`source`**: The template source as a string"
+    },
+    {
+      "claim": "The `filename` return value of `get_source` is the path on the filesystem or `None`, and is used for tracebacks.",
+      "quote": "**`filename`**: The path on the filesystem, or `None` if not applicable. Used for tracebacks"
+    },
+    {
+      "claim": "The `uptodate` return value of `get_source` is a callback taking no arguments that returns `True` if the template is fresh and `False` if it requires reloading.",
+      "quote": "**`uptodate`**: A callback (no arguments) returning `True` if the template is fresh, or `False` if it requires reloading"
+    },
+    {
+      "claim": "`split_template_path` can be imported from `jinja2.loaders`.",
+      "quote": "from jinja2.loaders import split_template_path"
+    },
+    {
+      "claim": "`split_template_path` splits the path by `/`.",
+      "quote": "It splits the path by `/` and raises `TemplateNotFound` if it detects `..` or platform-specific separators like `\\` on Windows"
+    },
+    {
+      "claim": "If `auto_reload` is enabled in the Environment, the `uptodate` function is checked whenever a template is requested.",
+      "quote": "If `auto_reload` is enabled in the `Environment`, this function is checked whenever a template is requested"
+    },
+    {
+      "claim": "`BaseLoader.load` interacts with `environment.bytecode_cache` using the source, name, and filename as keys.",
+      "quote": "The `load` method interacts with `environment.bytecode_cache` using the `source`, `name`, and `filename` as keys"
+    },
+    {
+      "claim": "The `SandboxedEnvironment` restricts access to private attributes and dangerous methods, unlike the standard `Environment`.",
+      "quote": "Unlike the standard `Environment`, the `SandboxedEnvironment` [src/jinja2/sandbox.py:177-188]() restricts access to private attributes and dangerous methods."
+    },
+    {
+      "claim": "The sandbox prevents access to internal Python attributes such as `__class__` and `__globals__`.",
+      "quote": "**Attribute Access**: Prevents access to internal Python attributes (e.g., `__class__`, `__globals__`)"
+    },
+    {
+      "claim": "`ImmutableSandboxedEnvironment` prevents templates from calling mutating methods such as `.append()` on lists or `.update()` on dicts.",
+      "quote": "**Mutable Operations**: The `ImmutableSandboxedEnvironment` prevents templates from calling mutating methods like `.append()` on lists or `.update()` on dicts"
+    },
+    {
+      "claim": "The sandbox includes a `MAX_RANGE` protection to prevent CPU exhaustion via `range()`.",
+      "quote": "**Resource Limits**: Includes protections like `MAX_RANGE` to prevent CPU exhaustion via `range()`"
+    },
+    {
+      "claim": "The sandbox can override or disable Python operators like `**`.",
+      "quote": "**Operator Interception**: Allows the environment to override or disable Python operators like `**` (power) to prevent heavy computations"
+    },
+    {
+      "claim": "Autoescaping converts characters like `<` and `&` into HTML-safe entities.",
+      "quote": "When enabled, Jinja2 automatically converts characters like `<` and `&` into HTML-safe entities"
+    },
+    {
+      "claim": "Autoescaping is set via the `autoescape` parameter in the `Environment` constructor.",
+      "quote": "**Environment Configuration**: Set via the `autoescape` parameter in the `Environment` constructor"
+    },
+    {
+      "claim": "Jinja2 uses the `markupsafe.Markup` class to distinguish between safe HTML and unsafe plain text.",
+      "quote": "Jinja2 uses the `markupsafe.Markup` class to distinguish between \"safe\" HTML and \"unsafe\" plain text"
+    },
+    {
+      "claim": "The `|safe` filter marks a string as trusted.",
+      "quote": "**Manual Overrides**: The `|safe` filter allows developers to explicitly mark a string as trusted"
+    },
+    {
+      "claim": "The `EvalContext` allows filters to check if autoescaping is currently active.",
+      "quote": "**Context Awareness**: The `EvalContext` allows filters to check if autoescaping is currently active"
+    },
+    {
+      "claim": "The `@unsafe` decorator marks Python methods that should never be accessible to any template.",
+      "quote": "**Mark Unsafe**: Use the `@unsafe` decorator on Python methods that should never be accessible to any template"
+    },
+    {
+      "claim": "`SandboxedEnvironment` extends `Environment` and sets `sandboxed` to `True`, causing the compiler to generate code that wraps attribute access and function calls in security checks.",
+      "quote": "The `SandboxedEnvironment` class extends the standard `Environment` to enable sandboxing at the compiler and runtime levels. When `sandboxed` is set to `True`, the compiler generates code that wraps attribute access and function calls in security checks."
+    },
+    {
+      "claim": "`ImmutableSandboxedEnvironment` subclasses `SandboxedEnvironment`.",
+      "quote": "SE --> ISE[\"ImmutableSandboxedEnvironment (src/jinja2/sandbox.py)\"]"
+    },
+    {
+      "claim": "By default the sandbox blocks any attribute name starting with an underscore.",
+      "quote": "By default, any attribute starting with an underscore (`_`) is considered private and blocked."
+    },
+    {
+      "claim": "The sandbox blocks function attributes including `func_code`, `func_globals`, and `func_defaults`.",
+      "quote": "| **Functions** | `func_code`, `func_globals`, `func_defaults`, etc. |"
+    },
+    {
+      "claim": "The sandbox blocks the generator attributes `gi_frame` and `gi_code`.",
+      "quote": "| **Generators** | `gi_frame`, `gi_code` |"
+    },
+    {
+      "claim": "The sandbox blocks the coroutine attributes `cr_frame` and `cr_code`.",
+      "quote": "| **Coroutines** | `cr_frame`, `cr_code` |"
+    },
+    {
+      "claim": "The sandbox blocks the `mro` attribute on types.",
+      "quote": "| **Types** | `mro` |"
+    },
+    {
+      "claim": "`is_safe_attribute` is called at runtime to validate every attribute access, and a `SecurityError` is raised if it returns `False`.",
+      "quote": "The method `is_safe_attribute` [src/jinja2/sandbox.py:307-321]() is called at runtime to validate every attribute access. If it returns `False`, a `SecurityError` is raised."
+    },
+    {
+      "claim": "The sandbox replaces the default `range` with `safe_range`, which enforces a `MAX_RANGE` limit with a default of 100,000.",
+      "quote": "the sandbox replaces the default `range` with `safe_range`. This function enforces a `MAX_RANGE` limit (default 100,000)."
+    },
+    {
+      "claim": "`ImmutableSandboxedEnvironment` uses `modifies_known_mutable` to check if a method call on a `list`, `dict`, `set`, or `deque` would alter its contents.",
+      "quote": "It uses `modifies_known_mutable` to check if a method call on a `list`, `dict`, `set`, or `deque` would alter its contents."
+    },
+    {
+      "claim": "`{{ [].append(1) }}`, `{{ {}.clear() }}`, and `{{ [1].pop() }}` raise SecurityError in `ImmutableSandboxedEnvironment`.",
+      "quote": "# These raise SecurityError in ImmutableSandboxedEnvironment\n{{ [].append(1) }}\n{{ {}.clear() }}\n{{ [1].pop() }}"
+    },
+    {
+      "claim": "The `unsafe` decorator can be imported from `jinja2.sandbox`.",
+      "quote": "from jinja2.sandbox import unsafe"
+    },
+    {
+      "claim": "The `is_safe_callable` check inspects the `unsafe_callable` attribute set by the `@unsafe` decorator.",
+      "quote": "The `is_safe_callable` check [src/jinja2/sandbox.py:323-339]() inspects the `unsafe_callable` attribute set by this decorator."
+    },
+    {
+      "claim": "The `SandboxedEnvironment` intercepts `str.format` and `str.format_map` calls and applies the sandbox's attribute security policies to format string attribute access.",
+      "quote": "The `SandboxedEnvironment` intercepts these calls and ensures that any attribute access within the format string adheres to the sandbox's security policies."
+    },
+    {
+      "claim": "By default, operators like `+` or `**` are executed as native Python operations rather than intercepted.",
+      "quote": "By default, operators like `+` or `**` are executed as native Python operations for performance."
+    },
+    {
+      "claim": "The sandbox can be configured to intercept operators via `intercepted_binops` and `intercepted_unops`.",
+      "quote": "the sandbox can be configured to intercept these via `intercepted_binops` and `intercepted_unops`"
+    },
+    {
+      "claim": "When an operator is intercepted, the compiler generates a call to `call_binop` or `call_unop`.",
+      "quote": "When an operator is intercepted, the compiler generates a call to `call_binop` [src/jinja2/sandbox.py:251-275]() or `call_unop`"
+    },
+    {
+      "claim": "`SandboxedEnvironment.getattr` returns `getattr(obj, attribute)` if `is_safe_attribute` returns True, otherwise returns `self.unsafe_undefined(obj, attribute)`.",
+      "quote": "def getattr(self, obj: t.Any, attribute: str) -> t.Any:\n    if self.is_safe_attribute(obj, attribute):\n        return getattr(obj, attribute)\n    return self.unsafe_undefined(obj, attribute)"
+    },
+    {
+      "claim": "The sandbox overrides `getattr` and `getitem` logic during template execution with `SandboxedEnvironment.getattr` and `SandboxedEnvironment.getitem`.",
+      "quote": "The sandbox works by overriding the `getattr` and `getitem` logic during template execution. Instead of standard Python access, it uses `SandboxedEnvironment.getattr` and `SandboxedEnvironment.getitem`."
+    },
+    {
+      "claim": "By default, Jinja2 does not enable autoescaping.",
+      "quote": "By default, Jinja2 does not enable autoescaping because it is a general-purpose engine used for various text formats"
+    },
+    {
+      "claim": "The `autoescape` parameter can be a boolean or a callable that takes a template name and returns a boolean.",
+      "quote": "The `autoescape` parameter can be a boolean or a callable that takes a template name and returns a boolean."
+    },
+    {
+      "claim": "`select_autoescape` is importable from `jinja2` and enables autoescaping based on file extensions.",
+      "quote": "The recommended way to configure autoescaping is using the `select_autoescape` utility [src/jinja2/utils.py:40](). It enables autoescaping based on file extensions."
+    },
+    {
+      "claim": "`select_autoescape` accepts `enabled_extensions` and `default_for_string` parameters.",
+      "quote": "autoescape=select_autoescape(\n        enabled_extensions=('html', 'htm', 'xml'),\n        default_for_string=True,\n    )"
+    },
+    {
+      "claim": "If the `autoescape` configuration value is a callable, it is called with the template name; otherwise the boolean value is used, and the result is stored in `EvalContext.autoescape`.",
+      "quote": "B -- \"Yes\" --> C[\"Call with template_name\"]\n    B -- \"No\" --> D[\"Use boolean value\"]\n    C --> E[\"Result: True/False\"]\n    D --> E\n    E --> F[\"Store in EvalContext.autoescape\"]"
+    },
+    {
+      "claim": "Templates can override the environment's autoescape behavior for specific sections using the `{% autoescape %}` block.",
+      "quote": "Templates can override the environment's default behavior for specific sections using the `autoescape` block"
+    },
+    {
+      "claim": "`markupsafe.Markup` is a string subclass that carries a safe flag, and concatenating a `Markup` object with a normal string escapes the string.",
+      "quote": "`MarkupSafe` provides the `Markup` class, which is a string subclass that carries a \"safe\" flag. When a `Markup` object is concatenated with a normal string, the string is automatically escaped."
+    },
+    {
+      "claim": "The `@pass_eval_context` decorator replaced the legacy `evalcontextfilter`.",
+      "quote": "use the `@pass_eval_context` decorator (which replaced the legacy `evalcontextfilter`)"
+    },
+    {
+      "claim": "`pass_eval_context` can be imported from `jinja2`.",
+      "quote": "from jinja2 import pass_eval_context"
+    },
+    {
+      "claim": "The `Environment.finalize` hook processes the result of an expression before it is rendered, and Jinja2 ensures finalize does not strip the safe status from `Markup` objects when autoescaping is enabled.",
+      "quote": "The `Environment.finalize` hook can be used to process the result of an expression before it is rendered. If autoescaping is enabled, Jinja2 ensures that the `finalize` function does not accidentally strip the \"safe\" status from `Markup` objects."
+    },
+    {
+      "claim": "The `xmlattr` filter disallows keys containing spaces or the characters `/`, `>`, or `=`.",
+      "quote": "`xmlattr` disallows keys containing spaces or characters like `/`, `>`, or `=`"
+    },
+    {
+      "claim": "To use Jinja2's asynchronous features, the `Environment` must be created with `enable_async=True`.",
+      "quote": "To use Jinja2's asynchronous features, you must create an `Environment` with the `enable_async` flag set to `True`."
+    },
+    {
+      "claim": "When async support is enabled, Jinja2 compiles templates to handle `await` for function calls and attribute access.",
+      "quote": "When async support is enabled, Jinja2 compiles templates to handle `await` for function calls and attribute access where necessary."
+    },
+    {
+      "claim": "The `auto_await` function in src/jinja2/async_utils.py handles both synchronous values and awaitables.",
+      "quote": "The engine uses `auto_await` [src/jinja2/async_utils.py:62-70]() to handle both synchronous values and awaitables."
+    },
+    {
+      "claim": "The `auto_aiter` function in src/jinja2/async_utils.py supports iterating over both standard and asynchronous iterables.",
+      "quote": "It uses `auto_aiter` [src/jinja2/async_utils.py:87-93]() to support iterating over both standard and asynchronous iterables."
+    },
+    {
+      "claim": "`render_async()` and `generate_async()` are the primary interfaces for non-blocking execution.",
+      "quote": "Methods like `render_async()` [tests/test_async.py:19-20]() and `generate_async()` [tests/test_async.py:85-88]() become the primary interfaces for non-blocking execution."
+    },
+    {
+      "claim": "The native types feature is implemented through the `NativeEnvironment` class in src/jinja2/nativetypes.py.",
+      "quote": "The native types feature is implemented through the `NativeEnvironment` class [src/jinja2/nativetypes.py:88-92]()."
+    },
+    {
+      "claim": "`NativeEnvironment` can be imported from `jinja2.nativetypes`.",
+      "quote": "from jinja2.nativetypes import NativeEnvironment"
+    },
+    {
+      "claim": "Rendering `{{ [1, 2, 3] }}` with a `NativeEnvironment` returns an actual Python list `[1, 2, 3]`.",
+      "quote": "template = env.from_string(\"{{ [1, 2, 3] }}\")\nresult = template.render()  # Returns actual list: [1, 2, 3]"
+    },
+    {
+      "claim": "`NativeCodeGenerator` subclasses the standard `CodeGenerator` but avoids wrapping output nodes in `str()`.",
+      "quote": "**`NativeCodeGenerator`**: Subclasses the standard `CodeGenerator` but avoids wrapping output nodes in `str()`"
+    },
+    {
+      "claim": "`native_concat` returns a single result directly if there is only one, otherwise joins the chunks and attempts type recovery using `ast.literal_eval`.",
+      "quote": "If there is a single result, it returns it directly. If there are multiple chunks, it joins them and attempts to recover the type using `ast.literal_eval`"
+    },
+    {
+      "claim": "Native types support primitives like `int`, `float`, `bool`, and containers like `list`, `dict`, and `tuple`.",
+      "quote": "It supports primitives like `int`, `float`, `bool`, and containers like `list`, `dict`, and `tuple`"
+    },
+    {
+      "claim": "A `NativeEnvironment` can be created with `enable_async=True`.",
+      "quote": "you can use a `NativeEnvironment` with `enable_async=True`"
+    },
+    {
+      "claim": "`NativeTemplate.render_async` handles the async iteration of chunks before passing them to `native_concat`.",
+      "quote": "The `NativeTemplate.render_async` method handles the async iteration of chunks before passing them to `native_concat`"
+    },
+    {
+      "claim": "`Template.render_async(*args, **kwargs)` returns an awaitable that resolves to the full rendered string.",
+      "quote": "| `render_async(*args, **kwargs)` | `Coroutine` | Returns an awaitable that resolves to the full rendered string. |"
+    },
+    {
+      "claim": "`Template.generate_async(*args, **kwargs)` returns an async generator yielding template fragments.",
+      "quote": "| `generate_async(*args, **kwargs)` | `AsyncIterator` | Returns an async generator yielding template fragments (streaming). |"
+    },
+    {
+      "claim": "If a variable in the template context is a coroutine or awaitable, Jinja2 automatically awaits it before using it in an expression or filter.",
+      "quote": "If a variable in the template context is a coroutine or an awaitable, Jinja2 will automatically await it before using it in an expression or filter."
+    },
+    {
+      "claim": "Templates can iterate over async iterators using the standard `{% for %}` syntax when async is enabled.",
+      "quote": "Templates can iterate over async iterators using the standard `{% for %}` syntax."
+    },
+    {
+      "claim": "The `async_variant` decorator can be imported from `jinja2.async_utils`.",
+      "quote": "from jinja2.async_utils import async_variant"
+    },
+    {
+      "claim": "`async_variant` dispatches to either a synchronous or asynchronous implementation based on the environment's `is_async` state.",
+      "quote": "choosing the appropriate one based on the environment's `is_async` state"
+    },
+    {
+      "claim": "The `groupby`, `join`, `map`, `select`, and `sum` filters support async iterables in an async environment.",
+      "quote": "Standard filters like `groupby`, `join`, `map`, `select`, and `sum` have been updated to support async iterables when running in an async environment."
+    },
+    {
+      "claim": "`NativeTemplate.render_async` raises a `RuntimeError` if the environment was not created with async mode enabled.",
+      "quote": "if not self.environment.is_async:\n        raise RuntimeError(\"The environment was not created with async mode enabled.\")"
+    },
+    {
+      "claim": "`NativeTemplate.render_async` calls `self.environment_class.concat` on the list collected from `self.root_render_func(ctx)`.",
+      "quote": "return self.environment_class.concat(\n            [n async for n in self.root_render_func(ctx)]\n        )"
+    },
+    {
+      "claim": "`NativeTemplate.render_async` calls `self.environment.handle_exception()` when an exception occurs.",
+      "quote": "except Exception:\n        return self.environment.handle_exception()"
+    },
+    {
+      "claim": "`auto_aiter` converts synchronous iterators into asynchronous ones using the `_IteratorToAsyncIterator` wrapper.",
+      "quote": "The `auto_aiter` function ensures compatibility by converting synchronous iterators into asynchronous ones if necessary, using the `_IteratorToAsyncIterator` wrapper."
+    },
+    {
+      "claim": "`auto_await` checks if a value is awaitable using `inspect.isawaitable` and includes an optimization for common primitive types.",
+      "quote": "The `auto_await` function checks if a value is awaitable using `inspect.isawaitable`. It includes an optimization for common primitive types (`int`, `str`, etc.) to avoid unnecessary checks."
+    },
+    {
+      "claim": "Templates compiled with `enable_async=True` can still be rendered using the synchronous `.render()` method.",
+      "quote": "**Sync Compatibility**: Templates compiled with `enable_async=True` can still be rendered using the synchronous `.render()` method."
+    },
+    {
+      "claim": "In standard Jinja2, all template rendering results in string output.",
+      "quote": "In standard Jinja2, all template rendering results in string output."
+    },
+    {
+      "claim": "`NativeEnvironment` sets `code_generator_class` to `NativeCodeGenerator`.",
+      "quote": "code_generator_class = NativeCodeGenerator"
+    },
+    {
+      "claim": "`NativeEnvironment` sets `concat` to `native_concat`.",
+      "quote": "concat = native_concat"
+    },
+    {
+      "claim": "`NativeTemplate` sets `environment_class` to `NativeEnvironment`.",
+      "quote": "environment_class = NativeEnvironment"
+    },
+    {
+      "claim": "`NativeTemplate` overrides the `render` and `render_async` methods to use the environment's `concat` method.",
+      "quote": "which overrides the `render` and `render_async` methods to use the environment's `concat` method"
+    },
+    {
+      "claim": "`NativeCodeGenerator` overrides `_default_finalize` and `_output_const_repr`.",
+      "quote": "class NativeCodeGenerator {\n        _default_finalize()\n        _output_const_repr()\n    }"
+    },
+    {
+      "claim": "In `native_concat`, if there's a single value and it's not a string, it's returned directly.",
+      "quote": "If there's a single value and it's not a string, it's returned directly"
+    },
+    {
+      "claim": "In `native_concat`, multiple values are joined into a single string.",
+      "quote": "If there are multiple values, they are joined into a single string"
+    },
+    {
+      "claim": "`native_concat` passes the resulting string to `ast.parse(raw, mode=\"eval\")` and then `ast.literal_eval()`.",
+      "quote": "The resulting string is passed to `ast.parse(raw, mode=\"eval\")` and then `ast.literal_eval()` to try converting it to a Python object"
+    },
+    {
+      "claim": "If parsing fails in `native_concat`, the raw string is returned.",
+      "quote": "If parsing succeeds, the Python object is returned; otherwise, the raw string is returned"
+    },
+    {
+      "claim": "In `NativeEnvironment`, a boolean renders as a Python `True`/`False` rather than a string.",
+      "quote": "| Boolean | String \"True\"/\"False\" | Python `True`/`False` |"
+    },
+    {
+      "claim": "In `NativeEnvironment`, an integer renders as a Python int rather than a string.",
+      "quote": "| Integer | String \"42\" | Python `42` |"
+    },
+    {
+      "claim": "In `NativeEnvironment`, a float renders as a Python float rather than a string.",
+      "quote": "| Float | String \"3.14\" | Python `3.14` |"
+    },
+    {
+      "claim": "In `NativeEnvironment`, a list renders as a Python list rather than its string representation.",
+      "quote": "| List | String representation | Python list |"
+    },
+    {
+      "claim": "In `NativeEnvironment`, a dictionary renders as a Python dict rather than its string representation.",
+      "quote": "| Dictionary | String representation | Python dict |"
+    },
+    {
+      "claim": "In `NativeEnvironment`, None renders as Python `None` rather than the string \"None\".",
+      "quote": "| None | String \"None\" | Python `None` |"
+    },
+    {
+      "claim": "In a NativeEnvironment, the template `{%- macro x() -%}{{- [1,2] -}}{%- endmacro -%}{{- x()[1] -}}` renders to the integer 2.",
+      "quote": "template = env.from_string(\"{%- macro x() -%}{{- [1,2] -}}{%- endmacro -%}{{- x()[1] -}}\")\nresult = template.render()  # Returns integer 2"
+    },
+    {
+      "claim": "In a NativeEnvironment, rendering `0.000{{ a }}` with a=7 returns the float 0.0007.",
+      "quote": "template = env.from_string(\"0.000{{ a }}\")\nresult = template.render(a=7)  # Returns float 0.0007"
+    },
+    {
+      "claim": "In a NativeEnvironment, rendering a loop over [1, 2, 3, 4] that outputs each item returns the integer 1234.",
+      "quote": "template = env.from_string(\"{% for x in value %}{{ x }}{% endfor %}\")\nresult = template.render(value=[1, 2, 3, 4])  # Returns integer 1234"
+    },
+    {
+      "claim": "`NativeCodeGenerator` overrides `_output_child_pre` and `_output_child_post` to avoid writing `str()` calls into the generated Python source.",
+      "quote": "It overrides `_output_child_pre` and `_output_child_post` to avoid writing `str()` calls into the generated Python source"
+    },
+    {
+      "claim": "The native code generator uses `has_safe_repr` to ensure that constants can be safely represented in generated code.",
+      "quote": "The generator uses `has_safe_repr` [src/jinja2/compiler.py:125-139]() to ensure that constants can be safely represented in the generated code"
+    },
+    {
+      "claim": "In native types, only strings representing valid Python literals (strings, numbers, tuples, lists, dicts, booleans, None) can be converted back to types.",
+      "quote": "Only strings that represent valid Python literals (strings, numbers, tuples, lists, dicts, booleans, and None) can be converted back to types."
+    },
+    {
+      "claim": "In native types, a template containing `{{ 1 }}{{ 2 }}` results in the integer 12.",
+      "quote": "If a template contains `{{ 1 }}{{ 2 }}`, the result is the integer `12`, not a list or a mathematical sum."
+    },
+    {
+      "claim": "Jinja2 development uses `uv` for package management and `tox` for environment orchestration.",
+      "quote": "Jinja2 uses a modern Python development stack centered around `uv` for package management and `tox` for environment orchestration."
+    },
+    {
+      "claim": "`tox-uv` integrates `uv` with `tox`.",
+      "quote": "**tox-uv**: Integrates `uv` with `tox` to provide fast, reproducible test environments"
+    },
+    {
+      "claim": "`pre-commit` manages git hooks for automated code quality checks.",
+      "quote": "**pre-commit**: Manages git hooks for automated code quality checks before commits are finalized"
+    },
+    {
+      "claim": "The Jinja2 test matrix supports Python 3.10 through 3.13, including PyPy 3.11, across Linux, Windows, and macOS.",
+      "quote": "**Test Matrix**: Supports Python 3.10 through 3.13, including PyPy 3.11, across Linux, Windows, and macOS"
+    },
+    {
+      "claim": "Strict `mypy` and `pyright` configurations are applied to the `src` directory.",
+      "quote": "**Type Checking**: Strict `mypy` and `pyright` configurations ensure type safety across the `src` directory"
+    },
+    {
+      "claim": "Tox has pre-defined environments for `style`, `typing`, `docs`, and version-specific testing.",
+      "quote": "**Tox Environments**: Pre-defined environments for `style`, `typing`, `docs`, and version-specific testing"
+    },
+    {
+      "claim": "The release workflow uses `SOURCE_DATE_EPOCH` derived from the last git commit timestamp.",
+      "quote": "**Reproducible Builds**: Uses `SOURCE_DATE_EPOCH` derived from the last git commit timestamp to ensure deterministic build outputs"
+    },
+    {
+      "claim": "Jinja2 uses `flit_core` as its build backend.",
+      "quote": "**Build Backend**: Utilizes `flit_core` for building standards-compliant source distributions and wheels"
+    },
+    {
+      "claim": "Jinja2 publishing uses OIDC Trusted Publishers for PyPI.",
+      "quote": "**Secure Publishing**: Uses OIDC Trusted Publishers for PyPI, eliminating the need for long-lived secrets"
+    },
+    {
+      "claim": "`pyproject.toml` is the central configuration for `uv`, `tox`, `pytest`, `mypy`, `ruff`, and project metadata.",
+      "quote": "| `pyproject.toml` | Central configuration for `uv`, `tox`, `pytest`, `mypy`, `ruff`, and project metadata"
+    },
+    {
+      "claim": "`uv.lock` is the deterministic lockfile for all development and test dependencies.",
+      "quote": "| `uv.lock` | Deterministic lockfile for all development and test dependencies"
+    },
+    {
+      "claim": "`.pre-commit-config.yaml` configures git hooks including `ruff` and a `uv-lock` check.",
+      "quote": "| `.pre-commit-config.yaml` | Configuration for git hooks including `ruff` and `uv-lock` check"
+    },
+    {
+      "claim": "`.github/workflows/tests.yaml` defines the CI workflow for automated testing and type checking.",
+      "quote": "| `.github/workflows/tests.yaml` | CI workflow definition for automated testing and type checking"
+    },
+    {
+      "claim": "`.github/workflows/publish.yaml` defines the CD workflow for building and publishing releases to PyPI.",
+      "quote": "| `.github/workflows/publish.yaml` | CD workflow for building and publishing releases to PyPI"
+    },
+    {
+      "claim": "Jinja2 development requires Python 3.10 or newer.",
+      "quote": "**Python**: Version 3.10 or newer is required for development"
+    },
+    {
+      "claim": "`uv sync` creates a virtual environment in `.venv` and installs all default dependency groups (`dev`, `pre-commit`, `tests`, `typing`).",
+      "quote": "The `uv sync` command creates a virtual environment in `.venv` and installs all default dependency groups (`dev`, `pre-commit`, `tests`, `typing`)"
+    },
+    {
+      "claim": "Pre-commit hooks are installed with `uv run pre-commit install --install-hooks`.",
+      "quote": "uv run pre-commit install --install-hooks"
+    },
+    {
+      "claim": "The tox configuration uses `uv-venv-lock-runner`.",
+      "quote": "The `tox` configuration uses `uv-venv-lock-runner` for faster environment creation"
+    },
+    {
+      "claim": "The `style` tox environment runs all pre-commit hooks on all files and uses the `pre-commit` dependency group.",
+      "quote": "| `style` | Runs all `pre-commit` hooks on all files [pyproject.toml:168-172]() | `pre-commit` |"
+    },
+    {
+      "claim": "The `typing` tox environment runs `mypy` static type checking and uses the `typing` dependency group.",
+      "quote": "| `typing` | Runs `mypy` static type checking [pyproject.toml:174-179]() | `typing` |"
+    },
+    {
+      "claim": "The `docs` tox environment builds documentation using `sphinx-build` and uses the `docs` dependency group.",
+      "quote": "| `docs` | Builds documentation using `sphinx-build` [pyproject.toml:181-184]() | `docs` |"
+    },
+    {
+      "claim": "The `docs-auto` tox environment runs a live-rebuilding docs server using the `docs` and `docs-auto` dependency groups.",
+      "quote": "| `docs-auto` | Live-rebuilding docs server [pyproject.toml:186-189]() | `docs`, `docs-auto` |"
+    },
+    {
+      "claim": "The `py310` through `py313` tox environments run `pytest` on specific Python versions using the `tests` dependency group.",
+      "quote": "| `py310` to `py313` | Run `pytest` on specific Python versions [pyproject.toml:148-148]() | `tests` |"
+    },
+    {
+      "claim": "Jinja2 uses `ruff` for both linting and formatting, configured with isort rules and `force-single-line = true`.",
+      "quote": "It is configured to follow `isort` rules with `force-single-line = true`"
+    },
+    {
+      "claim": "The ruff linter selects rules for flake8-bugbear (B), pycodestyle (E, W), pyflakes (F), and pyupgrade (UP).",
+      "quote": "The linter selects rules for `flake8-bugbear` (B), `pycodestyle` (E, W), `pyflakes` (F), and `pyupgrade` (UP)"
+    },
+    {
+      "claim": "EditorConfig enforces 4 spaces for Python, 2 spaces for YAML/HTML, and LF line endings.",
+      "quote": "**EditorConfig**: Ensures consistent indentation (4 spaces for Python, 2 spaces for YAML/HTML) and line endings (LF) across different editors"
+    },
+    {
+      "claim": "The devcontainer uses the image `mcr.microsoft.com/devcontainers/python:3` and runs `.devcontainer/on-create-command.sh` to install `uv`, sync dependencies, and install pre-commit hooks.",
+      "quote": "It uses `mcr.microsoft.com/devcontainers/python:3` and automatically runs `.devcontainer/on-create-command.sh` to install `uv`, sync dependencies, and install pre-commit hooks"
+    },
+    {
+      "claim": "The tests workflow is triggered on pull requests and pushes to `main` and `stable`.",
+      "quote": "**Tests**: Triggered on pull requests and pushes to `main`/`stable`."
+    },
+    {
+      "claim": "The publishing workflow uses `uv build` and `pypa/gh-action-pypi-publish`.",
+      "quote": "**Publishing**: Uses `uv build` and `pypa/gh-action-pypi-publish`."
+    },
+    {
+      "claim": "`uv run tox run -e update-requirements` updates the uv.lock pins.",
+      "quote": "uv run tox run -e update-requirements"
+    },
+    {
+      "claim": "`uv run tox run -e update-pre_commit` updates pre-commit hook versions.",
+      "quote": "uv run tox run -e update-pre_commit"
+    },
+    {
+      "claim": "The `docs-auto` tox environment starts a local server and watches the `src` and `docs` directories for changes.",
+      "quote": "This starts a local server and watches the `src` and `docs` directories for changes"
+    },
+    {
+      "claim": "Jinja2 uses `pytest` as its primary test runner.",
+      "quote": "Jinja2 utilizes `pytest` as its primary test runner, managed through `tox` and `uv` for environment isolation and dependency management."
+    },
+    {
+      "claim": "The `env` fixture in tests/conftest.py returns a default `Environment`.",
+      "quote": "| `env` | Returns a default `Environment` | [tests/conftest.py:20-23]() |"
+    },
+    {
+      "claim": "The `dict_loader` fixture provides a `DictLoader` with sample data.",
+      "quote": "| `dict_loader` | `DictLoader` with sample data | [tests/conftest.py:26-29]() |"
+    },
+    {
+      "claim": "The `package_loader` fixture provides a `PackageLoader` from `tests/res`.",
+      "quote": "| `package_loader` | `PackageLoader` from `tests/res` | [tests/conftest.py:32-35]() |"
+    },
+    {
+      "claim": "The `filesystem_loader` fixture provides a `FileSystemLoader` from `tests/res/templates`.",
+      "quote": "| `filesystem_loader`| `FileSystemLoader` from `tests/res/templates` | [tests/conftest.py:38-43]() |"
+    },
+    {
+      "claim": "The `run_async_fn` fixture is a parametrized runner for `asyncio` and `trio`.",
+      "quote": "| `run_async_fn` | Parametrized runner for `asyncio` and `trio` | [tests/conftest.py:15-17]() |"
+    },
+    {
+      "claim": "Templates used for integration testing are stored in `tests/res/templates`.",
+      "quote": "Templates used for integration testing (e.g., testing syntax errors or loader behavior) are stored in `tests/res/templates`."
+    },
+    {
+      "claim": "The CI workflow tests Python versions 3.10, 3.11, 3.12, 3.13, and PyPy 3.11.",
+      "quote": "**Python Versions**: Python 3.10, 3.11, 3.12, 3.13, and PyPy 3.11."
+    },
+    {
+      "claim": "The CI workflow runs on ubuntu-latest, windows-latest, and macos-latest.",
+      "quote": "**Operating Systems**: Linux (`ubuntu-latest`), Windows (`windows-latest`), and macOS (`macos-latest`)."
+    },
+    {
+      "claim": "The CI pipeline includes a dedicated `typing` job that runs `tox -e typing` with a persisted MyPy cache.",
+      "quote": "The CI pipeline includes a dedicated `typing` job that runs `tox -e typing`. To optimize performance, the MyPy cache is persisted across CI runs."
+    },
+    {
+      "claim": "The `ruff` pre-commit hook identifies logical errors and code smells.",
+      "quote": "| `ruff` | `ruff` | Identifies logical errors and code smells |"
+    },
+    {
+      "claim": "The `ruff-format` pre-commit hook enforces a consistent code style.",
+      "quote": "| `ruff` | `ruff-format` | Enforces a consistent code style |"
+    },
+    {
+      "claim": "The `uv-lock` pre-commit hook ensures the `uv.lock` file is up to date.",
+      "quote": "| `uv` | `uv-lock` | Ensures the `uv.lock` file is up to date |"
+    },
+    {
+      "claim": "The release workflow is triggered exclusively by pushing a tag.",
+      "quote": "It is triggered exclusively by pushing a tag."
+    },
+    {
+      "claim": "The publish workflow uses `astral-sh/setup-uv` to install the `uv` tool.",
+      "quote": "| **Environment Setup** | `astral-sh/setup-uv` | Installs the `uv` tool for building"
+    },
+    {
+      "claim": "The publish workflow uses `actions/upload-artifact` to save the `./dist` directory for downstream jobs.",
+      "quote": "| **Artifact Storage** | `actions/upload-artifact` | Saves `./dist` for downstream jobs"
+    },
+    {
+      "claim": "The build backend is configured as `flit_core.buildapi` in pyproject.toml.",
+      "quote": "The build backend is configured as `flit_core.buildapi` in the project metadata"
+    },
+    {
+      "claim": "The `create-release` job requires `contents: write` permissions.",
+      "quote": "**Permissions**: Requires `contents: write` to create release objects"
+    },
+    {
+      "claim": "The `create-release` job uses `gh release create` to create a draft release including all files from the `artifact/` directory.",
+      "quote": "**Command**: Uses the GitHub CLI (`gh release create`) to create a draft release including all files from the `artifact/` directory"
+    },
+    {
+      "claim": "GitHub releases are created with the `--draft` flag.",
+      "quote": "**Draft Status**: Releases are created as `--draft` to allow for final manual verification"
+    },
+    {
+      "claim": "The `publish-pypi` job runs in the `publish` environment.",
+      "quote": "**Environment**: The job runs in the `publish` environment"
+    },
+    {
+      "claim": "The `publish-pypi` job requires `id-token: write` permissions for the OIDC handshake.",
+      "quote": "**Permissions**: Specifically requires `id-token: write` for the OIDC handshake"
+    },
+    {
+      "claim": "The `publish-pypi` job uses `pypa/gh-action-pypi-publish` to upload from the `artifact/` directory.",
+      "quote": "**Action**: Uses `pypa/gh-action-pypi-publish` to handle the upload from the `artifact/` directory"
+    },
+    {
+      "claim": "`CHANGES.rst` is included in the sdist via `tool.flit.sdist.include`.",
+      "quote": "Update `CHANGES.rst` (included in the sdist via `tool.flit.sdist.include`)"
+    },
+    {
+      "claim": "The version string is defined in pyproject.toml.",
+      "quote": "The version string in `pyproject.toml` [pyproject.toml:3-3]() must be updated to the target release version."
+    },
+    {
+      "claim": "The `Environment` class is defined at src/jinja2/environment.py.",
+      "quote": "**Implementation:** `Environment` in [src/jinja2/environment.py:145-145]()"
+    },
+    {
+      "claim": "The `Context` class is defined in src/jinja2/runtime.py and is read-only for users.",
+      "quote": "A read-only (for users) object that holds the variables for a specific template execution."
+    },
+    {
+      "claim": "`Context.resolve(key)` returns the value or an `Undefined` object.",
+      "quote": "**Key Method:** `resolve(key)` which returns the value or an `Undefined` object"
+    },
+    {
+      "claim": "`EvalContext` is implemented in src/jinja2/nodes.py.",
+      "quote": "**Implementation:** `EvalContext` in [src/jinja2/nodes.py:24-24]()"
+    },
+    {
+      "claim": "The `Undefined` base class is defined in src/jinja2/runtime.py.",
+      "quote": "**Base Class:** `Undefined` [src/jinja2/runtime.py:445-445]()"
+    },
+    {
+      "claim": "`StrictUndefined` raises an error for any operation.",
+      "quote": "`StrictUndefined`: Raises an error for any operation"
+    },
+    {
+      "claim": "`DebugUndefined` returns the name of the missing variable when printed.",
+      "quote": "`DebugUndefined`: Returns the name of the missing variable when printed"
+    },
+    {
+      "claim": "The `BytecodeCache` base class is defined in src/jinja2/bccache.py.",
+      "quote": "**Base Class:** `BytecodeCache` [src/jinja2/bccache.py:151-151]()"
+    },
+    {
+      "claim": "`FileSystemBytecodeCache` is implemented in src/jinja2/bccache.py.",
+      "quote": "**Implementation Example:** `FileSystemBytecodeCache` [src/jinja2/bccache.py:277-277]()"
+    },
+    {
+      "claim": "The `Environment.overlay()` method is defined in src/jinja2/environment.py.",
+      "quote": "**Function:** `Environment.overlay()` [src/jinja2/environment.py:821-821]()"
+    },
+    {
+      "claim": "`internal_code` is defined in src/jinja2/utils.py and marks code objects internal to Jinja for traceback cleanup.",
+      "quote": "**Pointer:** `internal_code` in [src/jinja2/utils.py:33-33]()"
+    },
+    {
+      "claim": "The `@internalcode` decorator is defined in src/jinja2/utils.py.",
+      "quote": "**Decorator:** `@internalcode` in [src/jinja2/utils.py:98-98]()"
+    },
+    {
+      "claim": "`Environment.finalize` is a callable applied to the result of an expression before output.",
+      "quote": "A callable that is applied to the result of an expression before it is output to the template."
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 1.3
+}

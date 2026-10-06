@@ -157,4 +157,15 @@ independent of the numbers:
 
 ## 12. Deviations
 
-*Changes after this file is committed, with date and reason. None yet.*
+*Changes after this file is committed, with date and reason.*
+
+- **2026-10-05 · Reruns after infrastructure failures (§10).** The first launch of the nine-repository run
+  finished the question stage for six repositories, then every claim-extraction call on a DeepWiki text timed
+  out in the API client's stream reader (nine long streams at once). No result had been produced or seen. The
+  client timeout was raised (3600 s, 3 retries) and the run resumed from the finished stages; nothing already
+  written was redone.
+- **2026-10-05 · Claim extraction in chunks for long texts.** For rich, the DeepWiki text (62,473 words) yielded
+  more claims than fit in one model output (64k tokens); the JSON was cut off. Extraction now splits a text over
+  25,000 words at DeepWiki page boundaries and concatenates the claims, with the same prompt. Only rich/DeepWiki
+  is affected; the eight other repositories' extractions were single calls and are unchanged. Decided before any
+  metric was computed or read.

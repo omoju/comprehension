@@ -1,0 +1,187 @@
+{
+  "repo": "jinja",
+  "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
+  "questions": [
+    {
+      "id": "p1",
+      "kind": "path",
+      "question": "Autoescaping in this run is configured with `select_autoescape(['html','htm','xml'])`, i.e. `Environment.autoescape` is a callable, not a bool. Which object calls that callable, with which argument, and what is the resulting `autoescape` value used while compiling/rendering `members.html`?",
+      "key": "`EvalContext.__init__` (jinja2/nodes.py) calls it: because `environment.autoescape` is callable it evaluates `environment.autoescape(template_name)`. The template name passed is 'members.html' (the EvalContext is built in `Context.__init__` for rendering and in `CodeGenerator.visit_Template` for compiling, both with the template's name), and `select_autoescape` returns True because the name ends in '.html', so `eval_ctx.autoescape` is True and `eval_ctx.volatile` is False. A name such as 'members.txt' would give False (the `default` argument).",
+      "lines": [
+        "src/jinja2/nodes.py:76-84",
+        "src/jinja2/utils.py:581-630",
+        "src/jinja2/runtime.py:165-184",
+        "src/jinja2/compiler.py:825-827"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, DictLoader, select_autoescape\nfrom jinja2.nodes import EvalContext\nae = select_autoescape(['html', 'htm', 'xml'])\nassert ae('members.html') is True\nassert ae('members.txt') is False\nenv = Environment(loader=DictLoader({'members.html': 'x'}), autoescape=ae)\nec = EvalContext(env, 'members.html')\nassert ec.autoescape is True and ec.volatile is False\nassert EvalContext(env, 'members.txt').autoescape is False\n"
+    },
+    {
+      "id": "p2",
+      "kind": "path",
+      "question": "`env.get_template('members.html')` first consults the environment cache. What exactly is the cache key, what does the lookup return on this first call, and what happens to the cache afterwards?",
+      "key": "`Environment._load_template` builds `cache_key = (weakref.ref(self.loader), name)`, i.e. `(weakref.ref(<DictLoader>), 'members.html')`. `self.cache` is an `LRUCache(400)` (cache_size defaults to 400), and `self.cache.get(cache_key)` returns None (miss), so the loader is invoked (`BaseLoader.load` -> `DictLoader.get_source` -> `Environment.compile` -> `Template.from_code`) and the resulting Template is stored with `self.cache[cache_key] = template` and returned. A second `get_template('members.html')` returns the identical cached Template object (uptodate check passes).",
+      "lines": [
+        "src/jinja2/environment.py:955-978",
+        "src/jinja2/environment.py:83-93",
+        "src/jinja2/loaders.py:107-149"
+      ],
+      "check": "import os, sys, weakref\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, DictLoader\nfrom jinja2.utils import LRUCache\nenv = Environment(loader=DictLoader({'members.html': 'hi'}))\nassert isinstance(env.cache, LRUCache) and env.cache.capacity == 400\nkey = (weakref.ref(env.loader), 'members.html')\nassert env.cache.get(key) is None\nt = env.get_template('members.html')\nassert env.cache.get(key) is t\nassert env.get_template('members.html') is t\n"
+    },
+    {
+      "id": "p3",
+      "kind": "path",
+      "question": "The users are plain dicts, yet the template writes `{{ user.url }}`. Which repository function performs that lookup at runtime, in which order does it try things, and what does it return for `{'url': '/user/1', 'username': 'ada'}`?",
+      "key": "The compiler emits `environment.getattr(<user>, 'url')` (CodeGenerator.visit_Getattr), so `Environment.getattr` handles it. It first tries `getattr(obj, 'url')`, which raises AttributeError for a dict, then falls back to `obj['url']`, returning '/user/1'. If both fail it returns `self.undefined(obj=obj, name=attribute)` (an Undefined). Because the attribute is preferred, `{{ user.items }}` on a dict would return the dict's bound `items` method rather than a key named 'items'.",
+      "lines": [
+        "src/jinja2/environment.py:484-495",
+        "src/jinja2/compiler.py:1745-1755"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, Undefined\nenv = Environment()\nu = {'url': '/user/1', 'username': 'ada'}\nassert env.getattr(u, 'url') == '/user/1'\nassert isinstance(env.getattr(u, 'nope'), Undefined)\nassert callable(env.getattr({'items': 1}, 'items'))\nsrc = env.compile('{{ user.url }}', raw=True)\nassert \"environment.getattr(\" in src and \"'url'\" in src\n"
+    },
+    {
+      "id": "p4",
+      "kind": "path",
+      "question": "`members.html` contains a newline between `{% extends \"base.html\" %}` and `{% block title %}` (and another before `{% block content %}`). Why does none of that text appear in the generated root function, and which flags decide it?",
+      "key": "`visit_Template` sets `frame.require_output_check = have_extends and not self.has_known_extends` (True). Visiting the `Extends` node first emits `parent_template = environment.get_template('base.html', 'members.html')` and, since the extends is at root level, sets `self.has_known_extends = True`. Afterwards `visit_Output` takes the branch `if frame.require_output_check: if self.has_known_extends: return` and emits nothing for the `'\\n'` Output nodes, so the generated root contains no `yield '\\n'` and the rendered page contains no stray newlines from the child template; only the blocks and the parent's output are produced.",
+      "lines": [
+        "src/jinja2/compiler.py:1497-1506",
+        "src/jinja2/compiler.py:994-1034",
+        "src/jinja2/compiler.py:875-908"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, DictLoader, select_autoescape\nBASE = '<!DOCTYPE html>\\n<html lang=\"en\">\\n<head>\\n    <title>{% block title %}{% endblock %} - My Webpage</title>\\n</head>\\n<body>\\n    <div id=\"content\">{% block content %}{% endblock %}</div>\\n</body>\\n</html>\\n'\nMEM = '{% extends \"base.html\" %}\\n{% block title %}Members{% endblock %}\\n{% block content %}\\n  <ul>\\n  {% for user in users %}\\n    <li><a href=\"{{ user.url }}\">{{ user.username }}</a></li>\\n  {% endfor %}\\n  </ul>\\n{% endblock %}\\n'\nenv = Environment(loader=DictLoader({'base.html': BASE, 'members.html': MEM}), autoescape=select_autoescape(['html', 'htm', 'xml']))\nsrc = env.compile(MEM, 'members.html', raw=True)\nassert \"parent_template = environment.get_template('base.html', 'members.html')\" in src\nassert ('yield ' + repr(chr(10))) not in src\nusers = [{'url': '/user/1', 'username': 'ada'}, {'url': '/user/3', 'username': 'Tom & Jerry'}]\nout = env.get_template('members.html').render(users=users)\nassert out.startswith('<!DOCTYPE html>')\nassert '<title>Members - My Webpage</title>' in out\nassert '<li><a href=\"/user/3\">Tom &amp; Jerry</a></li>' in out\n"
+    },
+    {
+      "id": "p5",
+      "kind": "path",
+      "question": "The content block loops with `{% for user in users %}`. Does the generated code wrap the iterable in a LoopContext? What decides that, and what does the emitted `for` statement look like?",
+      "key": "No. `visit_For` computes `extended_loop = node.recursive or 'loop' in find_undeclared(body, ('loop',)) or any(block.scoped ...)`; the body never mentions `loop`, the loop is not recursive and contains no scoped block, so extended_loop is False. Therefore no `loop` parameter is declared and the compiler emits a plain `for l_1_user in (undefined(name='users') if l_0_users is missing else l_0_users):` \u2014 no `LoopContext(` call and no `, undefined)` argument. Adding `{{ loop.index }}` to the body would flip the branch and emit `for l_1_user, l_1_loop in LoopContext(..., undefined):`.",
+      "lines": [
+        "src/jinja2/compiler.py:1175-1196",
+        "src/jinja2/compiler.py:1235-1276"
+      ],
+      "check": "import os, sys, re\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment\nenv = Environment()\nbody = '{% for user in users %}<li>{{ user.url }}</li>{% endfor %}'\nsrc = env.compile(body, 'members.html', raw=True)\nassert 'LoopContext(' not in src\nassert re.search(r'for l_\\d+_user in ', src)\nsrc2 = env.compile('{% for user in users %}{{ loop.index }}{% endfor %}', 'm.html', raw=True)\nassert 'LoopContext(' in src2\n"
+    },
+    {
+      "id": "p6",
+      "kind": "path",
+      "question": "At which point is `base.html` actually fetched from the loader and compiled, and with what arguments is `get_template` called for it?",
+      "key": "Not during `env.get_template('members.html')` \u2014 the parent is loaded lazily while rendering, when the generated root function executes `parent_template = environment.get_template('base.html', 'members.html')` (template name plus the child's name as `parent`). `Environment.get_template` then calls `join_path('base.html', 'members.html')`, which by default returns 'base.html' unchanged, and `_load_template` misses the cache, so `DictLoader.get_source('base.html')` runs and base.html is parsed/compiled and cached at that moment.",
+      "lines": [
+        "src/jinja2/compiler.py:1019-1024",
+        "src/jinja2/environment.py:943-953",
+        "src/jinja2/environment.py:980-1015"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, DictLoader\nBASE = '<t>{% block title %}{% endblock %}</t>'\nMEM = '{% extends \"base.html\" %}{% block title %}Members{% endblock %}'\nclass CountingLoader(DictLoader):\n    def __init__(self, mapping):\n        super().__init__(mapping); self.calls = []\n    def get_source(self, environment, template):\n        self.calls.append(template); return super().get_source(environment, template)\nloader = CountingLoader({'base.html': BASE, 'members.html': MEM})\nenv = Environment(loader=loader)\nt = env.get_template('members.html')\nassert loader.calls == ['members.html']\nassert t.render() == '<t>Members</t>'\nassert loader.calls == ['members.html', 'base.html']\nassert env.join_path('base.html', 'members.html') == 'base.html'\n"
+    },
+    {
+      "id": "p7",
+      "kind": "path",
+      "question": "`{% block title %}Members{% endblock %}` contains only static text. How is that text represented in the generated Python for `block_title`, and why isn't `escape()` emitted around it even though autoescaping is on?",
+      "key": "It is folded to a constant at compile time: in `visit_Output` the child is a `nodes.TemplateData`, so `_output_child_to_const` is used; with `eval_ctx.autoescape` True the data is passed through `escape()` at compile time and, because it is TemplateData, returned as `str(const)` without going through finalize. The group is then written by `_output_const_repr` as `repr(concat(group))`, so `block_title` contains the single statement `yield 'Members'` \u2014 no runtime `escape(` or `str(` wrapper for it.",
+      "lines": [
+        "src/jinja2/compiler.py:1507-1554",
+        "src/jinja2/compiler.py:1442-1468"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, DictLoader, select_autoescape\nMEM = '{% extends \"base.html\" %}{% block title %}Members{% endblock %}'\nenv = Environment(loader=DictLoader({'base.html': '{% block title %}{% endblock %}', 'members.html': MEM}), autoescape=select_autoescape(['html']))\nsrc = env.compile(MEM, 'members.html', raw=True)\nassert 'def block_title(' in src\nassert \"yield 'Members'\" in src\ni = src.index('def block_title(')\nassert 'escape(' not in src[i:src.index(\"yield 'Members'\")]\n"
+    },
+    {
+      "id": "p8",
+      "kind": "path",
+      "question": "After the root render function of `members.html` has run, how many entries does `context.blocks['title']` hold and in which order?",
+      "key": "Two, child first then parent: `Context.__init__` seeds `self.blocks = {'title': [block_title_of_members], 'content': [...]}` from the template's own blocks, and the code emitted by `visit_Extends` then runs `for name, parent_block in parent_template.blocks.items(): context.blocks.setdefault(name, []).append(parent_block)`, appending base.html's block functions. So `ctx.blocks['title'][0]` is the child's (it yields 'Members') and `ctx.blocks['title'][1]` is base.html's empty block; that ordering is what makes `super()` (index+1) reach the parent.",
+      "lines": [
+        "src/jinja2/compiler.py:1022-1024",
+        "src/jinja2/runtime.py:180-198"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, DictLoader, select_autoescape\nBASE = '<!DOCTYPE html>\\n<title>{% block title %}{% endblock %}</title>\\n<div>{% block content %}{% endblock %}</div>'\nMEM = '{% extends \"base.html\" %}\\n{% block title %}Members{% endblock %}\\n{% block content %}{% for user in users %}{{ user.url }}{% endfor %}{% endblock %}'\nenv = Environment(loader=DictLoader({'base.html': BASE, 'members.html': MEM}), autoescape=select_autoescape(['html']))\nt = env.get_template('members.html')\nctx = t.new_context({'users': []})\nassert len(ctx.blocks['title']) == 1\nlist(t.root_render_func(ctx))\nassert len(ctx.blocks['title']) == 2\nassert ''.join(ctx.blocks['title'][0](ctx)) == 'Members'\nassert ''.join(ctx.blocks['title'][1](ctx)) == ''\n"
+    },
+    {
+      "id": "g1",
+      "kind": "general",
+      "question": "What does the environment's template cache key on, and how do the `cache_size` and `auto_reload` settings change the guarantees of `Environment.get_template`?",
+      "key": "`_load_template` keys the cache on `(weakref.ref(self.loader), name)`, so caching is per loader instance and per joined template name; replacing `env.loader` invalidates lookups, and a template loaded without a loader raises `TypeError(\"no loader for this environment specified\")`. A cache hit is only reused if `not self.auto_reload or template.is_up_to_date` (the loader's `uptodate` callable); with `auto_reload=False` stale templates are served forever. `create_cache` maps cache_size==0 to None (no caching, recompile on every request), cache_size<0 to a plain unbounded dict, otherwise an `LRUCache(size)` (default 400). On a cache hit, a passed `globals` mapping updates the cached template's ChainMap globals rather than being ignored.",
+      "lines": [
+        "src/jinja2/environment.py:955-978",
+        "src/jinja2/environment.py:83-93",
+        "src/jinja2/environment.py:1110-1130"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, DictLoader\ne0 = Environment(loader=DictLoader({'a': 'x'}), cache_size=0)\nassert e0.cache is None\nassert e0.get_template('a') is not e0.get_template('a')\nen = Environment(loader=DictLoader({'a': 'x'}), cache_size=-1)\nassert type(en.cache) is dict\ntry:\n    Environment().get_template('a'); raise AssertionError('expected TypeError')\nexcept TypeError:\n    pass\n"
+    },
+    {
+      "id": "g2",
+      "kind": "general",
+      "question": "When is the escaping decision baked into the compiled template and when is it deferred to runtime, and what surprise does `autoescape=select_autoescape()` hold for `Environment.from_string`?",
+      "key": "`_output_child_pre` decides per Output child: if `frame.eval_ctx.volatile` it emits `(escape if context.eval_ctx.autoescape else str)(...)` (runtime decision); otherwise it hard-codes `escape(` when `eval_ctx.autoescape` is true and `str(` when false. Volatility only arises from `{% autoescape %}`/EvalContextModifier with a non-constant value (`visit_EvalContextModifier` sets `frame.eval_ctx.volatile = True` on Impossible). Since the EvalContext is built from `environment.autoescape` plus the template *name* at compile time, a callable autoescape is evaluated once per template name; `select_autoescape` has `default_for_string=True`, so templates compiled with no name (e.g. `from_string`) are autoescaped, while unknown extensions fall back to `default` (False).",
+      "lines": [
+        "src/jinja2/compiler.py:1470-1496",
+        "src/jinja2/compiler.py:1969-1992",
+        "src/jinja2/nodes.py:76-84",
+        "src/jinja2/utils.py:581-630"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, select_autoescape\nenv = Environment(autoescape=select_autoescape())\nassert env.from_string('{{ x }}').render(x='<b>') == '&lt;b&gt;'\nplain = Environment()\nassert 'str(' in plain.compile('{{ x }}', raw=True)\nesc = Environment(autoescape=True)\nassert 'escape(' in esc.compile('{{ x }}', raw=True)\n"
+    },
+    {
+      "id": "g3",
+      "kind": "general",
+      "question": "When does using an unknown filter or test fail at compile time and when only at render time, and what exception is raised in each case?",
+      "key": "`_filter_test_common` in the compiler calls `self.fail(f\"No {type_name} named {name!r}.\", node.lineno)` -> `TemplateAssertionError` at compile time, but only `if func is None and not frame.soft_frame`. Frames inside `{% if %}`/`{% elif %}` bodies and conditional expressions are soft frames (`Frame.soft()`), so there the check is skipped. For those, `pull_dependencies` emits `try: t_N = environment.filters['name'] except KeyError:` defining a stub function that raises `TemplateRuntimeError(\"No filter named 'name' found.\")`, so the error only surfaces if that branch is actually executed at render time.",
+      "lines": [
+        "src/jinja2/compiler.py:534-578",
+        "src/jinja2/compiler.py:1788-1828",
+        "src/jinja2/compiler.py:230-241"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment\nfrom jinja2.exceptions import TemplateAssertionError, TemplateRuntimeError\nenv = Environment()\ntry:\n    env.from_string('{{ x|nope }}'); raise AssertionError('expected TemplateAssertionError')\nexcept TemplateAssertionError:\n    pass\nt = env.from_string('{% if flag %}{{ x|nope }}{% endif %}')\nassert t.render(flag=False) == ''\ntry:\n    t.render(flag=True); raise AssertionError('expected TemplateRuntimeError')\nexcept TemplateRuntimeError:\n    pass\n"
+    },
+    {
+      "id": "g4",
+      "kind": "general",
+      "question": "What exactly does the `Environment.sandboxed` class attribute control, and why is setting it on a plain `Environment` not enough to get a sandbox?",
+      "key": "It only controls code generation (as the comment on the attribute says). When `environment.sandboxed` is true the compiler emits `environment.call(context, ...)` instead of `context.call(...)` for calls, and `environment.call_binop/call_unop(context, op, ...)` for operators listed in `environment.intercepted_binops`/`intercepted_unops`; `nodes.BinExpr/UnaryExpr.as_const` also refuse to constant-fold intercepted operators. The actual safety (`getattr`/`getitem` checks, `is_safe_attribute`, `call`) lives in `jinja2.sandbox.SandboxedEnvironment`; flipping the flag on a plain Environment generates calls to methods that don't implement any restrictions (and `intercepted_binops` doesn't even exist), so it provides no security. Note also that `SandboxedEnvironment` intercepts no operators by default \u2014 you must subclass and set `intercepted_binops`.",
+      "lines": [
+        "src/jinja2/environment.py:267-271",
+        "src/jinja2/compiler.py:61-98",
+        "src/jinja2/compiler.py:1875-1896",
+        "src/jinja2/nodes.py:499-536"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment\nfrom jinja2.sandbox import SandboxedEnvironment\nassert Environment.sandboxed is False\nassert 'context.call(' in Environment().compile('{{ f() }}', raw=True)\nassert 'environment.call(context, ' in SandboxedEnvironment().compile('{{ f() }}', raw=True)\nassert 'environment.call_binop' not in SandboxedEnvironment().compile('{{ a + b }}', raw=True)\nclass S(SandboxedEnvironment):\n    intercepted_binops = frozenset(['+'])\nassert 'environment.call_binop' in S().compile('{{ a + b }}', raw=True)\n"
+    },
+    {
+      "id": "g5",
+      "kind": "general",
+      "question": "How do the filesystem-backed loaders stop a template name from escaping the configured search directory, and what name forms are rejected?",
+      "key": "Every path-based loader runs the name through `split_template_path`, which splits on '/' and raises `TemplateNotFound` if any piece equals `os.path.pardir` ('..') or contains `os.sep` (or `os.path.altsep`, e.g. '\\\\' on Windows); empty pieces and '.' are dropped. The surviving pieces are joined with `posixpath.join` onto the search path (even on Windows, to avoid 'drive:' or UNC segments breaking out), and `os.path.normpath` is applied to the result. So 'a/../b' or 'a\\\\b' (on Windows) raise TemplateNotFound rather than reaching outside the root; note the check is purely lexical \u2014 symlinks inside the search path are still followed.",
+      "lines": [
+        "src/jinja2/loaders.py:25-39",
+        "src/jinja2/loaders.py:194-226",
+        "src/jinja2/loaders.py:365-401"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2.loaders import split_template_path\nfrom jinja2 import TemplateNotFound\nassert split_template_path('a/./b.html') == ['a', 'b.html']\nassert split_template_path('/a//b') == ['a', 'b']\nfor bad in ('../x', 'a/../b', 'a/..'):\n    try:\n        split_template_path(bad); raise AssertionError('expected TemplateNotFound for ' + bad)\n    except TemplateNotFound:\n        pass\n"
+    },
+    {
+      "id": "g6",
+      "kind": "general",
+      "question": "What sharing happens between environments created implicitly by `Template(...)` and between an environment and its `overlay()`, and which of that sharing is a hazard?",
+      "key": "`Template.__new__` routes through `get_spontaneous_environment`, an `lru_cache(maxsize=10)` keyed by the environment class and all the constructor arguments, and marks the result `shared = True`. So all templates built directly with the same options share one Environment object; mutating it (adding filters/globals) affects every such template, and only ten distinct configurations are kept alive by the cache. `overlay()` does `rv.__dict__.update(self.__dict__)`, so mutable state such as `globals`, `filters`, `tests` and `policies` are the *same objects* as the parent's \u2014 only the overridden attributes, the cache (`create_cache`/`copy_cache`, always emptied) and the extensions (re-bound via `Extension.bind`, cannot be removed) are fresh. The docstring also warns that modifying an environment after templates are loaded leads to undefined behavior.",
+      "lines": [
+        "src/jinja2/environment.py:68-80",
+        "src/jinja2/environment.py:387-456",
+        "src/jinja2/environment.py:1164-1211"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, Template\nt1 = Template('{{ x }}'); t2 = Template('{{ y }}')\nassert t1.environment is t2.environment and t1.environment.shared is True\ne = Environment(cache_size=10)\no = e.overlay(autoescape=True)\nassert o.overlayed is True and o.linked_to is e\nassert o.globals is e.globals and o.filters is e.filters\nassert o.cache is not e.cache and len(o.cache) == 0\nassert o.autoescape is True and e.autoescape is False\n"
+    },
+    {
+      "id": "g7",
+      "kind": "general",
+      "question": "What rules does the engine enforce around `{% block %}` names, duplicate blocks and the `required` modifier, and at which stage is each enforced?",
+      "key": "Duplicate block names are a compile-time error: `visit_Template` collects `node.find_all(nodes.Block)` and calls `self.fail(f\"block {name!r} defined twice\", lineno)` -> `TemplateAssertionError`. Block names must be valid Python identifiers; the parser raises a dedicated TemplateSyntaxError for hyphens. A `required` block's body is checked at parse time to contain only whitespace/comment output ('Required blocks can only contain comments or whitespace'). The 'required' semantics itself is runtime: `visit_Block` emits `if len(context.blocks['name']) <= 1: raise TemplateRuntimeError(\"Required block 'name' not found\")`, so it only fails when the template defining it is rendered without a child overriding the block.",
+      "lines": [
+        "src/jinja2/compiler.py:845-851",
+        "src/jinja2/compiler.py:945-992",
+        "src/jinja2/parser.py:292-322"
+      ],
+      "check": "import os, sys\ntry:\n    import jinja2\nexcept ImportError:\n    sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import jinja2\nfrom jinja2 import Environment, DictLoader\nfrom jinja2.exceptions import TemplateAssertionError, TemplateRuntimeError, TemplateSyntaxError\nenv = Environment()\ntry:\n    env.from_string('{% block a %}{% endblock %}{% block a %}{% endblock %}'); raise AssertionError('dup')\nexcept TemplateAssertionError:\n    pass\ntry:\n    env.from_string('{% block a required %}x{% endblock %}'); raise AssertionError('required body')\nexcept TemplateSyntaxError:\n    pass\ne2 = Environment(loader=DictLoader({'p': '{% block b required %}{% endblock %}', 'c': '{% extends \"p\" %}{% block b %}hi{% endblock %}'}))\nassert e2.get_template('c').render() == 'hi'\ntry:\n    e2.get_template('p').render(); raise AssertionError('expected TemplateRuntimeError')\nexcept TemplateRuntimeError:\n    pass\n"
+    }
+  ],
+  "dropped": [],
+  "cost": 1.6
+}

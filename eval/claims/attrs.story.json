@@ -1,0 +1,1000 @@
+{
+  "repo": "attrs",
+  "arm": "story",
+  "words": 9375,
+  "extracted": 237,
+  "sample": [
+    2,
+    14,
+    15,
+    18,
+    22,
+    29,
+    32,
+    33,
+    38,
+    47,
+    60,
+    64,
+    65,
+    76,
+    78,
+    79,
+    82,
+    88,
+    92,
+    97,
+    106,
+    117,
+    132,
+    147,
+    148,
+    153,
+    155,
+    160,
+    170,
+    174,
+    182,
+    185,
+    191,
+    196,
+    200,
+    204,
+    214,
+    215,
+    216,
+    217
+  ],
+  "claims": [
+    {
+      "claim": "The `Factory.__init__` in attrs assigns `self.factory = factory` and `self.takes_self = takes_self`.",
+      "quote": "all it does is remember: [`self.factory = factory; self.takes_self = takes_self`]"
+    },
+    {
+      "claim": "Constructing `Factory(list)` does not create a list; it stores `list` as a callable.",
+      "quote": "No list is created. `list` is stored as a callable"
+    },
+    {
+      "claim": "`Factory`'s `takes_self` parameter defaults to `False`.",
+      "quote": "`takes_self` as `False`"
+    },
+    {
+      "claim": "`define` passes the decorated class to its inner `wrap` function via `return wrap(maybe_cls)`.",
+      "quote": "immediately passes it to its inner `wrap` ([`return wrap(maybe_cls)`]"
+    },
+    {
+      "claim": "The signature defaults of `define` include `slots=True`, `auto_exc=True`, `auto_detect=True`, `order=False`, and `force_kw_only=False`.",
+      "quote": "`define` called with `slots=True, auto_exc=True, auto_detect=True, order=False, force_kw_only=False` \u2014 not because the caller asked, but because those are the [signature defaults of `define`]"
+    },
+    {
+      "claim": "In `define`'s `wrap`, when `on_setattr` is None and the class is not frozen, `on_setattr` is set to `_DEFAULT_ON_SETATTR`.",
+      "quote": "The caller passed `on_setattr=None`, and the class is not frozen, so [`on_setattr = _DEFAULT_ON_SETATTR`]"
+    },
+    {
+      "claim": "`_DEFAULT_ON_SETATTR` in attr/_make.py is `setters.pipe(setters.convert, setters.validate)`.",
+      "quote": "which is [`setters.pipe(setters.convert, setters.validate)`]"
+    },
+    {
+      "claim": "`define`'s `wrap` walks `cls.__bases__` checking whether any base has `__setattr__ is _frozen_setattrs`, and if so forces `on_setattr` to `NO_OP`.",
+      "quote": "It walks `cls.__bases__` and checks whether any of them has `__setattr__ is _frozen_setattrs`; if so, the subclass inherits immutability and `on_setattr` is forced to `NO_OP`."
+    },
+    {
+      "claim": "If frozen-ness is inherited and the caller also passed an `on_setattr` hook, `define` raises an error with the message \"Frozen classes can't use on_setattr (frozen-ness was inherited).\"",
+      "quote": "that combination raises instead of silently winning: [`\"Frozen classes can't use on_setattr (frozen-ness was inherited).\"`]"
+    },
+    {
+      "claim": "When `auto_attribs` is None, `define` executes `try: return do_it(cls, True) except UnannotatedAttributeError: return do_it(cls, False)`.",
+      "quote": "[`try: return do_it(cls, True) except UnannotatedAttributeError: return do_it(cls, False)`]"
+    },
+    {
+      "claim": "`define`'s `do_it` forwards to the classic `attrs()` decorator and hard-codes `collect_by_mro=True`.",
+      "quote": "It forwards everything to the classic [`attrs()`] and hard-codes one thing the old API leaves off by default: `collect_by_mro=True`."
+    },
+    {
+      "claim": "`_determine_attrs_eq_order(None, None, False, None)` returns `(None, False)`.",
+      "quote": "`_determine_attrs_eq_order(None, None, False, None)` returns `(None, False)`"
+    },
+    {
+      "claim": "`_has_frozen_base_class(cls)` is implemented as the check `cls.__setattr__ is _frozen_setattrs`.",
+      "quote": "[the check is literally `cls.__setattr__ is _frozen_setattrs`]"
+    },
+    {
+      "claim": "`_determine_whether_to_implement(cls, None, True, (\"__eq__\", \"__ne__\"))` returns True for a class defining neither dunder.",
+      "quote": "`_determine_whether_to_implement(cls, None, True, (\"__eq__\", \"__ne__\"))` \u2192 `True`"
+    },
+    {
+      "claim": "`_determine_whether_to_implement`, given a None flag and `auto_detect=True`, loops over the dunder names calling `_has_own_attribute`.",
+      "quote": "this [loops over the dunders and asks `_has_own_attribute`]"
+    },
+    {
+      "claim": "`_has_own_attribute` is implemented as `attrib_name in cls.__dict__`, checking only the class's own dict rather than its MRO.",
+      "quote": "which is nothing more than [`attrib_name in cls.__dict__`]"
+    },
+    {
+      "claim": "When `hash` is None, the class defines no `__hash__`, `eq` is True and `is_frozen` is False, the hashability resolves to `Hashability.UNHASHABLE`.",
+      "quote": "`hash` is `None`, the class defines no `__hash__`, `eq` is True but `is_frozen` is False, so the result is `Hashability.UNHASHABLE`"
+    },
+    {
+      "claim": "The `added_pickling` setting is resolved with `default=slots`, so a slotted class gets `__getstate__`/`__setstate__` unless it defines its own.",
+      "quote": "whose default is `slots` \u2014 [`default=slots`] \u2014 so a slotted class gets `__getstate__`/`__setstate__` unless it defines its own"
+    },
+    {
+      "claim": "`ClassProps.__init__` takes sixteen positional settings and assigns them directly to slots.",
+      "quote": "`ClassProps.__init__` takes sixteen positional settings and [assigns them straight to slots]"
+    },
+    {
+      "claim": "A guard in attrs consults `ClassProps.is_hashable` and rejects `cache_hash=True` on a non-hashable class by raising `TypeError`.",
+      "quote": "consulted by the guard that [rejects `cache_hash=True` on a non-hashable class with a `TypeError`]"
+    },
+    {
+      "claim": "The builder stamps the `ClassProps` record onto the class as `__attrs_props__`.",
+      "quote": "the builder will stamp it onto the class as `__attrs_props__`"
+    },
+    {
+      "claim": "`attrs.inspect()` returns the class's `__attrs_props__` record.",
+      "quote": "which is exactly what [`attrs.inspect()`] hands back to anyone who wants to audit what a decorated class actually agreed to"
+    },
+    {
+      "claim": "`attrs.inspect` is documented as experimental and outside the project's backwards-compatibility guarantee.",
+      "quote": "`inspect` is documented as experimental and outside the project's backwards-compatibility guarantee"
+    },
+    {
+      "claim": "`_ClassBuilder.__init__` calls `_transform_attrs` before assigning its own slots.",
+      "quote": "Before the builder assigns a single one of its own slots, it [calls `_transform_attrs`]"
+    },
+    {
+      "claim": "`_ClassBuilder.__init__` passes five settings from the `ClassProps` record to `_transform_attrs`.",
+      "quote": "with five of those settings unpacked"
+    },
+    {
+      "claim": "The first two lines of `_transform_attrs` are `cd = cls.__dict__` and `anns = _get_annotations(cls)`.",
+      "quote": "[`cd = cls.__dict__` and `anns = _get_annotations(cls)`]"
+    },
+    {
+      "claim": "`_get_annotations` in attr/_compat.py has a simple branch implemented as `cls.__dict__.get(\"__annotations__\", {})`.",
+      "quote": "[`cls.__dict__.get(\"__annotations__\", {})`]"
+    },
+    {
+      "claim": "On Python 3.14 and later, `_get_annotations` routes through `annotationlib` in FORWARDREF format.",
+      "quote": "on Python 3.14 and later the same call routes through [`annotationlib` in `FORWARDREF` format]"
+    },
+    {
+      "claim": "In `auto_attribs` mode, `_transform_attrs` iterates with `for attr_name, type in anns.items()`, so unannotated class attributes are ignored.",
+      "quote": "the loop [`for attr_name, type in anns.items()`]"
+    },
+    {
+      "claim": "`_is_class_var` stringifies the annotation, strips surrounding quotes, and tests `annot.startswith(_CLASSVAR_PREFIXES)`.",
+      "quote": "it stringifies the annotation, strips surrounding quotes, and [tests `annot.startswith(_CLASSVAR_PREFIXES)`]"
+    },
+    {
+      "claim": "`_CLASSVAR_PREFIXES` contains the four spellings \"typing.ClassVar\", \"t.ClassVar\", \"ClassVar\", and \"typing_extensions.ClassVar\".",
+      "quote": "against the four spellings `\"typing.ClassVar\"`, `\"t.ClassVar\"`, `\"ClassVar\"`, `\"typing_extensions.ClassVar\"`"
+    },
+    {
+      "claim": "The `_is_class_var` docstring states that evaluating every string annotation would put attrs classes at a performance disadvantage against plain classes.",
+      "quote": "evaluating every string annotation would put *attrs* classes at a performance disadvantage against plain classes"
+    },
+    {
+      "claim": "In `_transform_attrs`, each annotated name is looked up with `a = cd.get(attr_name, NOTHING)`.",
+      "quote": "[`a = cd.get(attr_name, NOTHING)`]"
+    },
+    {
+      "claim": "In auto_attribs mode, a class-body value that is not a `_CountingAttr` is wrapped by `attrib(a)` as a default.",
+      "quote": "Neither `42` nor the `Factory` is a `_CountingAttr`, so both are auto-wrapped by `attrib(a)`"
+    },
+    {
+      "claim": "`_determine_attrib_eq_order(None, None, None, True)` returns `(True, None, True, None)`.",
+      "quote": "`_determine_attrib_eq_order(None, None, None, True)` resolves `(True, None, True, None)`"
+    },
+    {
+      "claim": "In `attrib`, a `metadata` argument of None becomes an empty dict.",
+      "quote": "because `factory` was `None` and `metadata` was `None`, the latter [becomes an empty dict]"
+    },
+    {
+      "claim": "In `attrib`, a list or tuple passed as `validator`, `converter`, or `on_setattr` is wrapped in `and_`, `pipe`, or `setters.pipe` respectively.",
+      "quote": "A list or tuple passed as `validator`, `converter`, or `on_setattr` would have been wrapped here in [`and_` / `pipe` / `setters.pipe`]"
+    },
+    {
+      "claim": "`attrib` returns a `_CountingAttr` that records a definition order drawn from a process-wide class counter.",
+      "quote": "whose only job is to remember a definition order: the trace shows `counter=6` and `counter=7`, drawn from a [process-wide class counter]"
+    },
+    {
+      "claim": "In the non-annotated path, attrs sorts the class body fields by the `_CountingAttr` counter.",
+      "quote": "the counter matters for the non-annotated path, which sorts the class body by it"
+    },
+    {
+      "claim": "After the annotation loop, `_transform_attrs` computes `unannotated = ca_names - annot_names` and raises `UnannotatedAttributeError` listing the offenders if it is non-empty.",
+      "quote": "computes `unannotated = ca_names - annot_names` and, if it is non-empty, raises [`UnannotatedAttributeError` listing the offenders]"
+    },
+    {
+      "claim": "The `UnannotatedAttributeError` is raised before the builder has written anything onto the class.",
+      "quote": "That happens here, at the very top of the build, before the builder has written anything onto the class"
+    },
+    {
+      "claim": "`_transform_attrs` passes `kw_only is not no` as the `kw_only` argument to `Attribute.from_counting_attr`.",
+      "quote": "`_transform_attrs` passes [`kw_only is not no`]"
+    },
+    {
+      "claim": "`Attribute.from_counting_attr` copies fifteen values from the `_CountingAttr`.",
+      "quote": "`from_counting_attr` then copies fifteen values across"
+    },
+    {
+      "claim": "`Attribute.from_counting_attr` resolves kw_only as `kw_only if ca.kw_only is None else ca.kw_only`.",
+      "quote": "the per-field setting wins over the class default via [`kw_only if ca.kw_only is None else ca.kw_only`]"
+    },
+    {
+      "claim": "`Attribute.from_counting_attr` records `alias_is_default` as `ca.alias is None`.",
+      "quote": "`alias_is_default` is recorded as [`ca.alias is None`]"
+    },
+    {
+      "claim": "`Attribute.from_counting_attr` raises a `ValueError` if the user supplied both an annotation and `field(type=...)`.",
+      "quote": "this method would have [raised a `ValueError`] rather than guess"
+    },
+    {
+      "claim": "`Attribute.__init__` writes its values through `bound_setattr = _OBJ_SETATTR.__get__(self)`.",
+      "quote": "writes every one of those values through [`bound_setattr = _OBJ_SETATTR.__get__(self)`]"
+    },
+    {
+      "claim": "`Attribute` defines `__setattr__` to raise `FrozenInstanceError`.",
+      "quote": "because `Attribute` defines [`__setattr__` to raise `FrozenInstanceError`]"
+    },
+    {
+      "claim": "In `_determine_attrib_eq_order`, a callable passed as `eq` becomes `(True, that_callable)` while a bare `True` stays `(True, None)`.",
+      "quote": "a callable in `eq` would have [become `(True, that_callable)`]; a bare `True` stays `(True, None)`"
+    },
+    {
+      "claim": "`_collect_base_attrs` walks `reversed(cls.__mro__[1:-1])`.",
+      "quote": "it walks [`reversed(cls.__mro__[1:-1])`]"
+    },
+    {
+      "claim": "`_collect_base_attrs` skips attributes already defined on the decorated class or already marked `inherited`.",
+      "quote": "skips anything already defined on this class or already marked `inherited`"
+    },
+    {
+      "claim": "`_collect_base_attrs` keeps only the furthest-back definition of each attribute name.",
+      "quote": "[keeps only the furthest-back definition of each name]"
+    },
+    {
+      "claim": "`define` always uses `_collect_base_attrs`, while the legacy forward-walking variant is reachable only through `attr.s`.",
+      "quote": "`define` always routes here; the legacy forward-walking variant is reachable only through `attr.s`"
+    },
+    {
+      "claim": "In `_transform_attrs`, any field without an explicit alias gets `name.lstrip(\"_\")` as its alias.",
+      "quote": "Any field without one gets `name.lstrip(\"_\")`"
+    },
+    {
+      "claim": "The alias-writing code in `_transform_attrs` carries the comment \"Evolve is very slow, so we hold our nose and do it dirty\".",
+      "quote": "[*\"Evolve is very slow, so we hold our nose and do it dirty\"*]"
+    },
+    {
+      "claim": "The first alias pass in `_transform_attrs` runs before the `field_transformer` hook is invoked.",
+      "quote": "Crucially this happens *before* the [`field_transformer` hook]"
+    },
+    {
+      "claim": "`_transform_attrs` runs a second alias pass after the `field_transformer` hook to cover fields the hook added.",
+      "quote": "a [second alias pass afterwards] catches any field the hook invented"
+    },
+    {
+      "claim": "`_transform_attrs` checks fields with `init is not False` and `kw_only is False` and raises `ValueError: No mandatory attributes allowed after an attribute with a default value or factory` when a mandatory field follows one with a default.",
+      "quote": "it raises [`ValueError: No mandatory attributes allowed after an attribute with a default value or factory`]"
+    },
+    {
+      "claim": "`_make_attr_tuple_class` builds a bare `tuple` subclass with one `property` per field name.",
+      "quote": "builds [a bare `tuple` subclass with one `property` per field name]"
+    },
+    {
+      "claim": "The attribute tuple class is created after the `field_transformer` runs, because the transformer may add or remove names.",
+      "quote": "It is created *after* the transformer precisely because the transformer may add or remove names."
+    },
+    {
+      "claim": "`_transform_attrs` returns `_Attributes(AttrsClass(attrs), base_attrs, base_attr_map)`.",
+      "quote": "returned as [`_Attributes(AttrsClass(attrs), base_attrs, base_attr_map)`]"
+    },
+    {
+      "claim": "`_ClassBuilder.__init__` sets `self._slots = props.is_slotted`, `self._frozen = props.is_frozen`, and `self._cache_hash = props.hashability is HASHABLE_CACHED`.",
+      "quote": "[`self._slots = props.is_slotted`, `self._frozen = props.is_frozen`, `self._cache_hash = props.hashability is HASHABLE_CACHED`]"
+    },
+    {
+      "claim": "`_ClassBuilder.__init__` sets `self._cls_dict = dict(cls.__dict__) if props.is_slotted else {}`.",
+      "quote": "[`self._cls_dict = dict(cls.__dict__) if props.is_slotted else {}`]"
+    },
+    {
+      "claim": "`_ClassBuilder.__init__` looks up the pre-init hook with `getattr(cls, \"__attrs_pre_init__\", False)` and does the same for `__attrs_post_init__`.",
+      "quote": "[`getattr(cls, \"__attrs_pre_init__\", False)`] and the same for `__attrs_post_init__`"
+    },
+    {
+      "claim": "When no `__attrs_pre_init__` exists, `_ClassBuilder.__init__` makes no `inspect.signature` call and leaves the hook flags False.",
+      "quote": "so no `inspect.signature` call is made and both flags stay `False`"
+    },
+    {
+      "claim": "`_ClassBuilder.__init__` puts `__attrs_attrs__` and `__attrs_props__` into the class dict.",
+      "quote": "Two entries go onto the class dict immediately: [`__attrs_attrs__` and `__attrs_props__`]"
+    },
+    {
+      "claim": "`__attrs_attrs__` holds the generated attribute tuple that `fields()` and `has()` read.",
+      "quote": "The first is the `SomeClassAttributes` tuple from the last chapter; it is the entire public introspection surface that `fields()`, `has()`, and every third-party tool will read."
+    },
+    {
+      "claim": "`_ClassBuilder.__init__` has a branch `elif self._on_setattr in (_DEFAULT_ON_SETATTR, setters.validate, setters.convert)` taken when the class is not frozen.",
+      "quote": "[`elif self._on_setattr in (_DEFAULT_ON_SETATTR, setters.validate, setters.convert)`]"
+    },
+    {
+      "claim": "In that branch the builder loops over the attributes looking for a non-None `validator` or `converter`, breaking early if it finds both.",
+      "quote": "it loops over the two attributes looking for a non-`None` `validator` or `converter`, breaking early if it finds both"
+    },
+    {
+      "claim": "When `self._on_setattr == _DEFAULT_ON_SETATTR and not (has_validator or has_converter)` holds, the builder sets `self._on_setattr = None`.",
+      "quote": "The condition `self._on_setattr == _DEFAULT_ON_SETATTR and not (has_validator or has_converter)` holds, and the builder sets `self._on_setattr = None`."
+    },
+    {
+      "claim": "The code comment for the on_setattr pruning reads \"If class-level on_setattr is set to convert + validate, but there's no field to convert or validate, pretend like there's no on_setattr.\"",
+      "quote": "*\"If class-level on_setattr is set to convert + validate, but there's no field to convert or validate, pretend like there's no on_setattr.\"*"
+    },
+    {
+      "claim": "Even after the builder clears its working `_on_setattr`, the `ClassProps` record still reports the original `on_setattr_hook`.",
+      "quote": "The `ClassProps` record still reports `on_setattr_hook=<wrapped_pipe>` \u2014 only the builder's working copy was cleared."
+    },
+    {
+      "claim": "The on_setattr shortcut recognizes only the three built-in hooks by equality, so a custom `on_setattr` callable is always kept.",
+      "quote": "The shortcut recognizes only the three built-in hooks by equality \u2014 a custom `on_setattr` callable is always kept"
+    },
+    {
+      "claim": "`_make_getstate_setstate` returns a pair of functions named `slots_getstate` and `slots_setstate`.",
+      "quote": "the builder calls `_make_getstate_setstate`, which the trace records returning the pair `slots_getstate` / `slots_setstate`"
+    },
+    {
+      "claim": "`slots_getstate` and `slots_setstate` close over `state_attr_names`, the field names minus `__weakref__`.",
+      "quote": "Both close over [`state_attr_names`, the field names minus `__weakref__`]"
+    },
+    {
+      "claim": "`slots_getstate` returns a plain dict mapping name to value.",
+      "quote": "`slots_getstate` returns a plain dict of name to value."
+    },
+    {
+      "claim": "`slots_setstate` accepts either a tuple (for pickles written by attrs before v22.2.0) or a dict, and when given a dict sets only the names actually present.",
+      "quote": "[either a tuple \u2014 for pickles written by *attrs* before v22.2.0 \u2014 or a dict, in which case it sets only the names actually present]"
+    },
+    {
+      "claim": "`slots_setstate` skips state keys it does not find rather than raising.",
+      "quote": "`slots_setstate` skips state keys it doesn't find rather than raising"
+    },
+    {
+      "claim": "When the class has both `__module__` and `__qualname__`, `_ClassBuilder.__init__` sets `self._add_method_dunders = self._add_method_dunders_unsafe`, the variant that assigns without `contextlib.suppress`.",
+      "quote": "[`self._add_method_dunders = self._add_method_dunders_unsafe`] \u2014 the variant that assigns without `contextlib.suppress`"
+    },
+    {
+      "claim": "`add_repr` calls `_make_repr_script`, which returns a source string and a globals dict.",
+      "quote": "`add_repr(None)` calls `_make_repr_script`, which returns a source string and a globals dict."
+    },
+    {
+      "claim": "The generated `__repr__` begins by looking up `_compat.repr_context.already_repring`, a thread-local set of `id(self)` values, and returns `'...'` if the instance is already being repr'd.",
+      "quote": "[opens with a lookup of `_compat.repr_context.already_repring`] \u2014 a thread-local set of `id(self)` values \u2014 and if this instance is already being repr'd somewhere up the stack, it returns `'...'` instead of recursing forever"
+    },
+    {
+      "claim": "The repr thread-local lives in `attr/_compat.py` rather than `attr/_make.py` so generated functions do not hold a direct reference to it, which would break cloudpickle.",
+      "quote": "deliberately [lives in `_compat` rather than `_make`] so the generated functions don't hold a direct reference to it, which would break cloudpickle"
+    },
+    {
+      "claim": "The generated `__repr__` renders the class name from `self.__class__.__qualname__`.",
+      "quote": "The class name is rendered from [`self.__class__.__qualname__`]"
+    },
+    {
+      "claim": "In the generated `__repr__`, a field with `init=False` is read via `getattr(self, name, NOTHING)` rather than `self.name`.",
+      "quote": "a field with `init=False` is read via [`getattr(self, name, NOTHING)`] rather than `self.name`"
+    },
+    {
+      "claim": "`add_repr` appends the tuple `(script, globs, _attach_repr)` to `self._script_snippets` and sets `_repr_added = True`.",
+      "quote": "[appends `(script, globs, _attach_repr)` to `self._script_snippets`] and sets `_repr_added = True`"
+    },
+    {
+      "claim": "`add_str` refuses to run unless `_repr_added` is True.",
+      "quote": "a flag that only exists so `add_str` can refuse to run without it"
+    },
+    {
+      "claim": "The script from `_make_eq_script` begins with `if other.__class__ is not self.__class__: return NotImplemented`.",
+      "quote": "    if other.__class__ is not self.__class__:\n        return NotImplemented"
+    },
+    {
+      "claim": "The generated `__eq__` is a single `and`-chain comparing the fields, built field by field.",
+      "quote": "then a single `and`-chain over the fields \u2014 `self.a_number == other.a_number and self.list_of_numbers == other.list_of_numbers` \u2014 [built field by field]"
+    },
+    {
+      "claim": "attrs does not generate a `__ne__`; `add_eq` assigns one shared module-level function.",
+      "quote": "A `__ne__` is not generated; `add_eq` [assigns the one shared module-level function]"
+    },
+    {
+      "claim": "The shared `__ne__` calls `self.__eq__(other)` and forwards `NotImplemented` rather than inverting it.",
+      "quote": "which calls `self.__eq__(other)` and [forwards `NotImplemented` rather than inverting it]"
+    },
+    {
+      "claim": "`add_setattr` builds `sa_attrs` from `a.on_setattr or self._on_setattr` for each field.",
+      "quote": "It walks the fields building `sa_attrs` from [`a.on_setattr or self._on_setattr`]"
+    },
+    {
+      "claim": "`add_setattr` returns without writing a `__setattr__` when `sa_attrs` is empty.",
+      "quote": "`sa_attrs` stays empty, and the method returns on the spot. **No `__setattr__` is written at all.**"
+    },
+    {
+      "claim": "The generated `__setattr__` looks the field up in a dict and, if the hook is a generator function, drives it around the assignment.",
+      "quote": "the generated `__setattr__` would have looked up the field in a dict, [checked whether the hook is a generator function and if so driven it around the assignment]"
+    },
+    {
+      "claim": "`add_setattr` refuses outright if the user defined their own `__setattr__`.",
+      "quote": "would have [refused outright if the user had their own `__setattr__`]"
+    },
+    {
+      "claim": "`ClassProps.is_hashable` is True only for `HASHABLE` or `HASHABLE_CACHED` hashability.",
+      "quote": "it is `True` only for [`HASHABLE` or `HASHABLE_CACHED`]"
+    },
+    {
+      "claim": "`make_unhashable` sets `self._cls_dict[\"__hash__\"] = None`.",
+      "quote": "[`make_unhashable`] writes a single entry: `self._cls_dict[\"__hash__\"] = None`"
+    },
+    {
+      "claim": "`attrs.wrap` calls `builder.add_init()` when `props.added_init` is True.",
+      "quote": "`props.added_init` is `True`, so [`attrs.wrap` calls `builder.add_init()`]"
+    },
+    {
+      "claim": "When `init=False`, attrs routes the identical generated script to `__attrs_init__` instead of `__init__`.",
+      "quote": "would have routed the identical script to `__attrs_init__` instead, leaving the user's own `__init__` untouched"
+    },
+    {
+      "claim": "attrs rejects `cache_hash=True` when `init=False`.",
+      "quote": "it also rejects `cache_hash=True` there, since there'd be nothing to initialize the cache"
+    },
+    {
+      "claim": "`add_init` passes `self._on_setattr` as the `cls_on_setattr` argument to `_make_init_script`.",
+      "quote": "Notice what `add_init` passes as `cls_on_setattr`: `self._on_setattr`"
+    },
+    {
+      "claim": "`_make_init_script` computes `has_cls_on_setattr` as its first step.",
+      "quote": "the first thing `_make_init_script` computes, [`has_cls_on_setattr`]"
+    },
+    {
+      "claim": "`_make_init_script` skips entirely any field that is both `init=False` and has no default.",
+      "quote": "[any field that is both `init=False` and has no default is skipped entirely]"
+    },
+    {
+      "claim": "`_make_init_script` builds `attr_dict`, a `{name: Attribute}` map used by the generated code at runtime.",
+      "quote": "both land in `attr_dict`, a `{name: Attribute}` map that the generated code will consult at runtime"
+    },
+    {
+      "claim": "`_make_init_script` computes `needs_cached_setattr = cache_hash or frozen`.",
+      "quote": "[`needs_cached_setattr = cache_hash or frozen`]"
+    },
+    {
+      "claim": "When `needs_cached_setattr` is False and no field carries an on_setattr, the generated init does not open with `_setattr = _cached_setattr_get(self)`.",
+      "quote": "The script will not open with `_setattr = _cached_setattr_get(self)`."
+    },
+    {
+      "claim": "`_determine_setters(frozen=False, slots=True, base_attr_map={})` returns `((), _assign, _assign_with_converter)`.",
+      "quote": "returns, as the trace records, `((), <function _assign>, <function _assign_with_converter>)`"
+    },
+    {
+      "claim": "For a frozen slotted class, `_determine_setters` returns a `_setattr` strategy going through a cached `object.__setattr__`.",
+      "quote": "A frozen slotted class would get `_setattr` (going through a cached `object.__setattr__`)"
+    },
+    {
+      "claim": "For a frozen dict class, `_determine_setters` yields direct `_inst_dict['x'] = \u2026` writes.",
+      "quote": "a frozen dict class would get direct `_inst_dict['x'] = \u2026` writes"
+    },
+    {
+      "claim": "In `_attrs_to_init_script`, the generated parameter name is taken from `arg_name = a.alias` while the attribute written on self is `a.name`.",
+      "quote": "[`arg_name = a.alias`] \u2014 this is where chapter 2's quiet `name.lstrip(\"_\")` becomes the public contract"
+    },
+    {
+      "claim": "For a field with a non-Factory default, the generated parameter is `name=attr_dict['name'].default`.",
+      "quote": "the parameter becomes `a_number=attr_dict['a_number'].default`"
+    },
+    {
+      "claim": "`_assign` returns a bare assignment string such as `'self.a_number = a_number'` when `has_on_setattr` is False.",
+      "quote": "[`_assign` takes its fast path] and emits a bare assignment instead of relegating to `_setattr`"
+    },
+    {
+      "claim": "The generated `__init__` references defaults indirectly through `attr_dict` rather than baking the value into the source string.",
+      "quote": "The default is referenced *indirectly*, through `attr_dict`, so the `Attribute` object remains the single source of truth rather than having `42` baked into the string."
+    },
+    {
+      "claim": "For a field with a `Factory` default, the generated parameter default is the `NOTHING` sentinel and the body contains an if/else calling the factory.",
+      "quote": "Its parameter becomes `list_of_numbers=NOTHING` \u2014 a sentinel, not a list"
+    },
+    {
+      "claim": "The factory is injected into the generated globals under a name built from `_INIT_FACTORY_PAT = \"__attr_factory_%s\"`.",
+      "quote": "injected into the globals under the mangled name from [`_INIT_FACTORY_PAT = \"__attr_factory_%s\"`]"
+    },
+    {
+      "claim": "Validators are emitted in the generated `__init__` after every assignment, inside `if _config._run_validators is True:`.",
+      "quote": "emitted *after* every assignment, inside [`if _config._run_validators is True:`]"
+    },
+    {
+      "claim": "A `__attrs_post_init__` call is emitted at the very end of the generated `__init__`.",
+      "quote": "A `__attrs_post_init__` would have been called at the very end."
+    },
+    {
+      "claim": "`_attrs_to_init_script` builds the `annotations` dict from `a.type` for each `init=True` field, keyed by alias, with `'return': None` included.",
+      "quote": "built from [`a.type` for each `init=True` field] \u2014 keyed, again, by alias"
+    },
+    {
+      "claim": "`_make_init_script` merges the defining module's entire `__dict__` into the generated globals if the module is importable.",
+      "quote": "[if the defining module is importable, its entire `__dict__` is merged in]"
+    },
+    {
+      "claim": "The comment for merging the module dict into init globals states \"This makes `typing.get_type_hints(CLS.__init__)` resolve string types.\"",
+      "quote": "*\"This makes `typing.get_type_hints(CLS.__init__)` resolve string types.\"*"
+    },
+    {
+      "claim": "`_make_init_script` adds `NOTHING` and `attr_dict` to the generated globals.",
+      "quote": "Then [`NOTHING` and `attr_dict` are added]"
+    },
+    {
+      "claim": "The module's names are merged into the init globals after the names attrs injected, so a module-level name like `__attr_factory_<field>` replaces the attrs-injected callable.",
+      "quote": "the module's names are merged in *after* the ones attrs injected, so a module-level name shaped like `__attr_factory_<field>`, `__attr_validator_<field>` or `__attr_converter_<field>` silently replaces the callable attrs meant to use"
+    },
+    {
+      "claim": "`add_init` queues a `_attach_init` hook that sets `init.__annotations__ = annotations` and stamps the function onto the class dict.",
+      "quote": "`add_init` queues the snippet and a `_attach_init` hook that will later set `init.__annotations__ = annotations` and stamp the function onto the class dict."
+    },
+    {
+      "claim": "`__replace__` is added only when `PY_3_13_PLUS and not _has_own_attribute(cls, \"__replace__\")`.",
+      "quote": "[`PY_3_13_PLUS and not _has_own_attribute(cls, \"__replace__\")`]"
+    },
+    {
+      "claim": "`add_replace` defines a three-line proxy function and passes it to `_add_method_dunders_unsafe`, which mutates it in place.",
+      "quote": "[`add_replace`] defines a three-line proxy and hands it to `_add_method_dunders_unsafe`, which mutates it in place"
+    },
+    {
+      "claim": "`evolve` re-runs `__init__` using each field's alias as a keyword, so converters and validators fire again and `init=False` fields are skipped.",
+      "quote": "[`evolve`] re-runs `__init__` with each field's *alias* as a keyword, so all converters and validators fire again and any `init=False` field is skipped rather than carried over"
+    },
+    {
+      "claim": "`add_match_args` writes `__match_args__` containing every field that is `init=True` and not keyword-only.",
+      "quote": "[`add_match_args`] writes `('a_number', 'list_of_numbers')` \u2014 every field that is `init=True` and not keyword-only"
+    },
+    {
+      "claim": "`__match_args__` is built from `field.name` while `__init__` parameters come from `field.alias`.",
+      "quote": "`__match_args__` is built from `field.name`, while `__init__` parameters come from `field.alias`"
+    },
+    {
+      "claim": "`attrs.wrap` calls `builder.build_class()` after all method-adding steps.",
+      "quote": "It calls [`builder.build_class()`]"
+    },
+    {
+      "claim": "`_eval_snippets` joins the queued snippets with newlines into a single source string and merges every snippet's globs dict into one.",
+      "quote": "[`_eval_snippets`] joins the snippets with newlines into a single source string and merges every snippet's globs dict into one"
+    },
+    {
+      "claim": "All generated methods on an attrs class share one globals namespace rather than one per method.",
+      "quote": "There is one namespace for all generated methods on a class, not one per method."
+    },
+    {
+      "claim": "`_generate_unique_filename(cls, \"methods\")` produces a filename of the form `<attrs generated methods __main__.SomeClass>`.",
+      "quote": "produces `'<attrs generated methods __main__.SomeClass>'`"
+    },
+    {
+      "claim": "`_linecache_and_compile` registers the source in `linecache.cache` as the tuple `(len(script), None, script.splitlines(True), filename)`.",
+      "quote": "registers the source under that name in `linecache.cache` as the tuple `(len(script), None, script.splitlines(True), filename)`"
+    },
+    {
+      "claim": "`_generate_unique_filename` appends a counter when the candidate filename is already taken by different source.",
+      "quote": "[the loop appends a counter] until it finds a free one"
+    },
+    {
+      "claim": "`_compile_and_eval` performs `compile(script, filename, \"exec\")` followed by `eval(bytecode, globs, locs)`.",
+      "quote": "[`_compile_and_eval`]: `compile(script, filename, \"exec\")` followed by `eval(bytecode, globs, locs)`"
+    },
+    {
+      "claim": "attrs interpolates field names directly into the compiled source text without any identifier check.",
+      "quote": "attrs interpolates field names directly into the source text it compiles, with no identifier check"
+    },
+    {
+      "claim": "The `make_class` docstring states that validating class and attribute names is the caller's duty.",
+      "quote": "`make_class` [states in its own docstring] that validating names is the caller's duty"
+    },
+    {
+      "claim": "The generated initializer source is built by f-string.",
+      "quote": "[the initializer is built by f-string]"
+    },
+    {
+      "claim": "`_attach_repr` pulls `globs[\"__repr__\"]`, stamps it via `_add_method_dunders_unsafe`, and writes it into `cls_dict`.",
+      "quote": "[`_attach_repr`] pulls `globs[\"__repr__\"]`, stamps it via `_add_method_dunders_unsafe`"
+    },
+    {
+      "claim": "The attach hooks run in registration order: `_attach_repr`, then `_attach_eq`, then `_attach_init`.",
+      "quote": "The three attach hooks then run in registration order."
+    },
+    {
+      "claim": "When `self._slots` is True, `build_class` calls `_create_slots_class` to build a new type instead of patching the original class.",
+      "quote": "so [`build_class` takes the replacement branch] rather than patching in place"
+    },
+    {
+      "claim": "`__slots__` cannot be added to a class after creation.",
+      "quote": "`__slots__` cannot be added to a class after creation"
+    },
+    {
+      "claim": "`_create_slots_class` starts from a copy of the class dict with the field names, `__dict__` and `__weakref__` removed.",
+      "quote": "[a copy of the class dict minus the field names, `__dict__` and `__weakref__`]"
+    },
+    {
+      "claim": "On Python 3.14 and later, `_create_slots_class` clears the original type's descriptors.",
+      "quote": "On 3.14 and later it also [clears the original type's descriptors]"
+    },
+    {
+      "claim": "`_create_slots_class` walks the MRO for inherited slots and an existing `__weakref__`, and appends a weakref slot when none is inherited.",
+      "quote": "It [walks the MRO for inherited slots and an existing `__weakref__`] \u2014 empty here, the only base is `object` \u2014 and so [appends a weakref slot]"
+    },
+    {
+      "claim": "`_create_slots_class` slots only names not inherited from a base, and re-binds slots a base already defines from the collected descriptors instead of redefining them.",
+      "quote": "Only [names not inherited from a base] are slotted, and slots a base already defines are [re-bound from the collected descriptors instead of redefined]"
+    },
+    {
+      "claim": "`_create_slots_class` sets `cd[\"__slots__\"]` and `cd[\"__qualname__\"]` and then calls `type(self._cls)(self._cls.__name__, self._cls.__bases__, cd)`.",
+      "quote": "[`type(self._cls)(self._cls.__name__, self._cls.__bases__, cd)`]"
+    },
+    {
+      "claim": "If the class has a `functools.cached_property`, `_create_slots_class` slots its name and installs a generated `__getattr__` to compute and cache it.",
+      "quote": "this is where its name would have been slotted and [a generated `__getattr__`] installed to compute and cache it"
+    },
+    {
+      "claim": "`_create_slots_class` walks the new class's dict, unwrapping classmethods, staticmethods and properties, and overwrites any closure cell whose contents are the old class.",
+      "quote": "[walks the new class's dict \u2014 unwrapping classmethods, staticmethods and properties \u2014 and overwrites any cell whose contents are the old class]"
+    },
+    {
+      "claim": "`build_class` sets `__attrs_base_of_slotted__ = weakref.ref(cls)` on the original class when building a slotted class.",
+      "quote": "the old class gets [`__attrs_base_of_slotted__ = weakref.ref(cls)`]"
+    },
+    {
+      "claim": "`build_class` calls an inherited `__attrs_init_subclass__` if one exists.",
+      "quote": "Then [an *inherited* `__attrs_init_subclass__` would be called]"
+    },
+    {
+      "claim": "The attrs glossary documents that with slotted classes `object.__init_subclass__` misbehaves and the dead original lingers in `type.__subclasses__` until a garbage collection.",
+      "quote": "[`object.__init_subclass__` misbehaves and the dead original lingers in `type.__subclasses__` until a garbage collection]"
+    },
+    {
+      "claim": "`__ne__` on attrs classes is a plain module-level function assigned straight onto the class rather than generated source.",
+      "quote": "[it is a plain module-level function] assigned straight onto the class"
+    },
+    {
+      "claim": "`attrs.asdict` is a wrapper that forwards to `attr.asdict` and hard-codes `retain_collection_types=True` while leaving `dict_factory` at its `dict` default.",
+      "quote": "It is [a four-line wrapper] that forwards the instance and then hard-codes `retain_collection_types=True`, leaving `dict_factory` at its `dict` default"
+    },
+    {
+      "claim": "`attr.asdict` converts tuples, sets and frozensets to `list` unless `retain_collection_types` is set.",
+      "quote": "the `attr`-namespace function [converts tuples, sets and frozensets to `list`] unless told otherwise"
+    },
+    {
+      "claim": "`asdict` begins by calling `fields(inst.__class__)`.",
+      "quote": "The first thing [`asdict`] does is call [`fields(inst.__class__)`]"
+    },
+    {
+      "claim": "`fields` calls `get_generic_base` to determine whether the argument is a specialized generic.",
+      "quote": "It asks [`get_generic_base`] whether this is a specialized generic like `A[str]`"
+    },
+    {
+      "claim": "`fields` retrieves the attribute tuple with `getattr(cls, \"__attrs_attrs__\", None)`.",
+      "quote": "[`getattr(cls, \"__attrs_attrs__\", None)`] returns the tuple"
+    },
+    {
+      "claim": "`fields` raises `NotAnAttrsClassError` for a plain class and `TypeError` for a non-class, non-instance argument, before doing any work.",
+      "quote": "A plain class would have fallen off the end into `NotAnAttrsClassError`, and a non-class, non-instance argument into `TypeError` \u2014 [both raised before any work is done]"
+    },
+    {
+      "claim": "The `asdict` loop reads values with `getattr(inst, a.name)`, using the field name rather than the alias.",
+      "quote": "the loop reads values with [`getattr(inst, a.name)`] \u2014 the field *name*, not the alias"
+    },
+    {
+      "claim": "`asdict` creates the result with `rv = dict_factory()`.",
+      "quote": "`rv = dict_factory()` creates an empty dict"
+    },
+    {
+      "claim": "In `asdict`, when `filter` is None the per-field skip check does not fire and when `value_serializer` is None the serializer hook does not run.",
+      "quote": "`filter` is `None`, so [the skip check] doesn't fire; `value_serializer` is `None`, so [the hook] doesn't run"
+    },
+    {
+      "claim": "When `recurse` is True, `asdict` computes `value_type = type(v)` and checks it against `_ATOMIC_TYPES`.",
+      "quote": "`recurse` is `True`, so `value_type = type(v)` is computed once and checked against [`_ATOMIC_TYPES`]"
+    },
+    {
+      "claim": "`_ATOMIC_TYPES` is a frozenset containing NoneType, bool, int, float, str, complex, bytes, EllipsisType, type, range and property.",
+      "quote": "a frozenset holding `NoneType`, `bool`, `int`, `float`, `str`, `complex`, `bytes`, `EllipsisType`, `type`, `range` and `property`"
+    },
+    {
+      "claim": "For a value whose type is in `_ATOMIC_TYPES`, `asdict` assigns it into the result dict unchanged.",
+      "quote": "`int` is in it, so [`rv['a_number'] = 1`] and that is the whole story"
+    },
+    {
+      "claim": "`has` checks for `__attrs_attrs__`, and if absent calls `get_generic_base`, returning False when that is None.",
+      "quote": "[`has(list)`] looks for `__attrs_attrs__`, finds nothing, asks `get_generic_base(list)`, gets `None`, and returns `False`"
+    },
+    {
+      "claim": "When a field value is itself an attrs class, `asdict` recurses into itself with the same options.",
+      "quote": "Had it been an attrs class, `asdict` would have recursed into itself with the same options."
+    },
+    {
+      "claim": "In `asdict`'s collection branch, when `retain_collection_types` is True `cf = value_type`, the concrete class of the value.",
+      "quote": "`retain_collection_types` is `True`, so `cf = value_type` \u2014 `list`, the concrete class of this value, not a generic fallback"
+    },
+    {
+      "claim": "`_asdict_anything` applies the same atomic / attrs-class / collection / dict / passthrough cascade, keyed on `type(val)`.",
+      "quote": "the same atomic / attrs-class / collection / dict / passthrough cascade, keyed on `type(val)`"
+    },
+    {
+      "claim": "In `asdict`'s collection branch, the rebuilt collection is produced with `cf(items)`, and on `TypeError` with `cf` a tuple subclass attrs retries as `cf(*items)`.",
+      "quote": "so if `cf(items)` fails *and* `cf` is a tuple subclass, attrs retries as `cf(*items)`"
+    },
+    {
+      "claim": "In `asdict`, a TypeError from a collection constructor that is not a tuple subclass propagates.",
+      "quote": "Any other collection type whose constructor accepts neither shape sees its `TypeError` propagate."
+    },
+    {
+      "claim": "In `asdict`, a dict value is rebuilt with `dict_factory` over key/value pairs, with keys processed using `is_key=True`.",
+      "quote": "[`dict_factory` over key/value pairs], with keys passed `is_key=True` so a collection key collapses to a hashable tuple"
+    },
+    {
+      "claim": "Values that match none of `asdict`'s branches are stored in the output as-is.",
+      "quote": "would have hit [the final `else`] and been stored **as-is**"
+    },
+    {
+      "claim": "`asdict` rebuilds collections shallowly, so nested mutable objects remain shared with the original instance.",
+      "quote": "the rebuilt collections are shallow, so a nested mutable object is still shared with the original instance"
+    },
+    {
+      "claim": "`make_class` normalizes the class name with `unicodedata.normalize(\"NFKC\", name)`.",
+      "quote": "run it through [`unicodedata.normalize(\"NFKC\", name)`]"
+    },
+    {
+      "claim": "NFKC normalization is the same normalization the Python parser applies to identifiers.",
+      "quote": "That is the same normalization the Python parser applies to identifiers"
+    },
+    {
+      "claim": "The `make_class` docstring contains a warning that it is the caller's duty to ensure the class name and attribute names are valid identifiers and that `make_class` will not validate them.",
+      "quote": "it is the caller's duty to ensure the class name and attribute names are valid identifiers, and `make_class` will not validate them"
+    },
+    {
+      "claim": "When `make_class` receives a list for `attrs`, it builds `cls_dict = {a: attrib() for a in attrs}` preserving order.",
+      "quote": "[the list branch] builds `cls_dict = {a: attrib() for a in attrs}`, preserving order"
+    },
+    {
+      "claim": "`make_class` uses a dict `attrs` argument as-is, and raises `TypeError: attrs argument must be a dict or a list.` for any other type.",
+      "quote": "A `dict` input would have been used as-is; anything else raises `TypeError: attrs argument must be a dict or a list.`"
+    },
+    {
+      "claim": "In `_determine_attrib_eq_order`, when `eq is None` the default is returned with no key function and `order` mirrors `eq`.",
+      "quote": "takes the `eq is None` path and returns the default `True` with no key function, then [order mirrors eq]"
+    },
+    {
+      "claim": "In `attrib`, when `factory` is None the default/factory exclusivity check is skipped and `default` remains `NOTHING`.",
+      "quote": "[the default/factory exclusivity check] is skipped and `default` stays `NOTHING`"
+    },
+    {
+      "claim": "The `_CountingAttr` constructor bumps a class-level counter shared across the process.",
+      "quote": "whose constructor [bumps a class-level counter]"
+    },
+    {
+      "claim": "`make_class` pops `__attrs_pre_init__`, `__attrs_post_init__`, and `__init__` out of `cls_dict` into a separate `body` dict together with `class_body`, and installs them as real class members.",
+      "quote": "[three names are *popped* out] of `cls_dict`: `__attrs_pre_init__`, `__attrs_post_init__`, and `__init__`"
+    },
+    {
+      "claim": "`make_class` creates the class with `types.new_class(name, bases, {}, lambda ns: ns.update(body))`.",
+      "quote": "[`types.new_class(name, bases, {}, lambda ns: ns.update(body))`]"
+    },
+    {
+      "claim": "`make_class` uses `sys._getframe(1)` to copy the caller's `__name__` into `type_.__module__`, inside `contextlib.suppress(AttributeError, ValueError)`.",
+      "quote": "[`sys._getframe(1)`] reaches up one stack frame to the caller and copies its `__name__` into `type_.__module__`"
+    },
+    {
+      "claim": "`_determine_attrs_eq_order(cmp=None, eq=None, order=None, default_eq=True)` returns `(True, True)`.",
+      "quote": "runs here, with `default_eq=True`, and returns `(True, True)` \u2014 equality *and* ordering"
+    },
+    {
+      "claim": "`make_class` applies the decorator as `_attrs(these=cls_dict, **attributes_arguments)(type_)`.",
+      "quote": "Then [`_attrs(these=cls_dict, **attributes_arguments)(type_)`]"
+    },
+    {
+      "claim": "`_attrs` is the internal alias for `attr.s`, not `attrs.define`, and the `make_class` docstring states this.",
+      "quote": "`_attrs` is the internal alias for `attr.s`, **not** `attrs.define` \u2014 the docstring [calls this out explicitly]"
+    },
+    {
+      "claim": "The `attr.s` defaults used by `make_class` are `slots=False`, `auto_detect=False`, `auto_exc=False`, `collect_by_mro=False`, `on_setattr=None`, and `force_kw_only=True`.",
+      "quote": "`slots=False`, `auto_detect=False`, `auto_exc=False`, `collect_by_mro=False`, `on_setattr=None`, `force_kw_only=True`"
+    },
+    {
+      "claim": "Classes built by `make_class` never re-run converters or validators on attribute assignment because `attr.s` installs no on_setattr hook.",
+      "quote": "`attr.s` installs nothing, so a `make_class` class never re-runs converters or validators when you assign to an attribute after construction"
+    },
+    {
+      "claim": "When `maybe_cls` is None, the `attrs` decorator returns its `wrap` closure instead of building a class.",
+      "quote": "so [`attrs` returns the `wrap` closure] instead of building anything"
+    },
+    {
+      "claim": "`make_class` sets `cls.__annotations__` from the fields' `type` values only after the class has been built.",
+      "quote": "[`cls.__annotations__`] is set from the fields' `type` values only once the class is finished"
+    },
+    {
+      "claim": "Setting the annotations before the build would have made `_transform_attrs` read them as auto-attribs declarations.",
+      "quote": "because setting annotations earlier would have made `_transform_attrs` read them as auto-attribs declarations"
+    },
+    {
+      "claim": "When `auto_detect` is False, the custom-`__setattr__` probe in `attrs` short-circuits on the `and` without calling `_has_own_attribute`.",
+      "quote": "[the custom-`__setattr__` probe] short-circuits on the `and` without ever calling `_has_own_attribute`"
+    },
+    {
+      "claim": "`_determine_whether_to_implement` returns the flag immediately when it is True or False, and returns `default` when `flag is None and auto_detect is False`.",
+      "quote": "returns the flag immediately when it is `True` or `False`, and returns `default` the moment it sees `flag is None and auto_detect is False`"
+    },
+    {
+      "claim": "`_determine_whether_to_implement` is called five times per class, for eq, init, repr, ordering and pickling.",
+      "quote": "It is called five times for `C` \u2014 eq, init, repr, ordering, pickling"
+    },
+    {
+      "claim": "With `slots=False`, the `getstate_setstate` default resolves to False so no `__getstate__`/`__setstate__` is added.",
+      "quote": "**this class gets no `__getstate__`/`__setstate__`**"
+    },
+    {
+      "claim": "The keyword-only decision in `attrs` is gated on `kw_only` being truthy before `force_kw_only` applies.",
+      "quote": "[the keyword-only decision] is gated on `kw_only` being truthy first"
+    },
+    {
+      "claim": "`make_class` and `attr.s` default `force_kw_only` to True, while `define` defaults it to False.",
+      "quote": "`make_class` and `attr.s` default `force_kw_only` to `True`, while `define` defaults it to `False`"
+    },
+    {
+      "claim": "With `force_kw_only=True` and `kw_only=True`, every attribute becomes keyword-only including inherited ones and ones that set `kw_only=False` themselves.",
+      "quote": "every attribute becomes keyword-only including inherited ones and ones that set `kw_only=False` themselves"
+    },
+    {
+      "claim": "In `_transform_attrs`, when `these is not None` the code sets `ca_list = list(these.items())` and never scans the class body.",
+      "quote": "`these is not None`, so `ca_list = list(these.items())` and the class body is never scanned"
+    },
+    {
+      "claim": "Even in the `these` path, `_transform_attrs` calls `_get_annotations` and uses `anns.get(attr_name)` as each field's type.",
+      "quote": "but its only remaining job is supplying `anns.get(attr_name)` as the type"
+    },
+    {
+      "claim": "The alias-filling loop in `_transform_attrs` writes through `object.__setattr__` to bypass `Attribute`'s frozen `__setattr__`.",
+      "quote": "[the alias-filling loop] reaches past the frozen `__setattr__` with `object.__setattr__`"
+    },
+    {
+      "claim": "When `collect_by_mro` is False, base-class fields are gathered by `_collect_base_attrs_broken`.",
+      "quote": "`collect_by_mro` is `False`, so base-class fields are gathered by [`_collect_base_attrs_broken`]"
+    },
+    {
+      "claim": "The `_collect_base_attrs_broken` docstring says it adheres to the old incorrect behavior.",
+      "quote": "Its own docstring says it \"adhere[s] to the old incorrect behavior\""
+    },
+    {
+      "claim": "`_collect_base_attrs_broken` walks the MRO forward instead of reversed, keeps attributes already marked `inherited`, and mutates the `taken_attr_names` set it was given.",
+      "quote": "it walks the MRO *forward* instead of reversed, it keeps attributes that were already marked `inherited`, and it mutates the `taken_attr_names` set it was given"
+    },
+    {
+      "claim": "`collect_by_mro=False` reproduces the known-wrong field ordering of attrs issue #428 when the new class inherits from other attrs classes.",
+      "quote": "which reproduces the known-wrong field ordering of issue #428 when the new class inherits from other *attrs* classes"
+    },
+    {
+      "claim": "`_ClassBuilder.__init__` sets `self._delete_attribs = not bool(these)`.",
+      "quote": "[`self._delete_attribs = not bool(these)`]"
+    },
+    {
+      "claim": "When `props.on_setattr_hook` is None rather than one of the three recognized hooks, the convert/validate pruning branch in `_ClassBuilder.__init__` is skipped.",
+      "quote": "because `props.on_setattr_hook` is `None` rather than one of the three recognized hooks, [the convert/validate pruning branch] is skipped entirely"
+    },
+    {
+      "claim": "`add_order` is called when `order` resolved to True, and `_make_order` produces four real closures rather than source strings.",
+      "quote": "[`_make_order`] produces four real closures \u2014 not source strings"
+    },
+    {
+      "claim": "The four ordering methods share an `attrs_to_tuple` helper that builds a tuple of the ordered field values.",
+      "quote": "over a shared [`attrs_to_tuple`] helper that builds a tuple of the ordered field values"
+    },
+    {
+      "claim": "`_add_method_dunders_unsafe` stamps `__module__`, `__qualname__` and a generated docstring onto the function.",
+      "quote": "which stamps `__module__`, `__qualname__` (`C.__lt__`, `C.__le__`, \u2026) and a generated docstring"
+    },
+    {
+      "claim": "The ordering methods are placed into the class dict immediately rather than into the snippet queue.",
+      "quote": "lands in `cd` immediately rather than in the snippet queue"
+    },
+    {
+      "claim": "The generated `__lt__` uses the same exact class-identity test as `__eq__` and returns `NotImplemented` otherwise.",
+      "quote": "The type check in [`__lt__`] is the same exact-identity test as `__eq__`"
+    },
+    {
+      "claim": "When both sides of an ordering comparison return `NotImplemented`, Python raises `TypeError: '<' not supported between instances of \u2026`.",
+      "quote": "when both sides return `NotImplemented`, Python raises `TypeError: '<' not supported between instances of \u2026`"
+    },
+    {
+      "claim": "`attr.s` resolves `order` to mirror `eq`, so `make_class` enables ordering by default, while `define` does not.",
+      "quote": "`make_class` enables ordering by default (`attr.s` resolves `order` to mirror `eq`), while `define` does not"
+    },
+    {
+      "claim": "`_determine_setters(frozen=False, slots=False, base_attr_map={})` returns `((), _assign, _assign_with_converter)` because `slots` is irrelevant when the class is not frozen.",
+      "quote": "falls through to the last line \u2014 when a class isn't frozen, `slots` doesn't matter at all \u2014 and returns `((), _assign, _assign_with_converter)`"
+    },
+    {
+      "claim": "For a mandatory field with no factory and no converter, the alias is added to `args` as a bare positional parameter and `_assign('a', 'a', False)` returns `'self.a = a'`.",
+      "quote": "[`_assign('a', 'a', False)`] returns the string `'self.a = a'`"
+    },
+    {
+      "claim": "When fields have no types, the generated init `annotations` dict is just `{'return': None}` because the annotation step requires `a.type` to be non-None.",
+      "quote": "[the annotation step] needs `a.type` to be non-`None` and these fields have no types"
+    },
+    {
+      "claim": "`_make_init_script` copies `sys.modules[cls.__module__].__dict__` into the generated globals.",
+      "quote": "[`_make_init_script` copies in] `sys.modules[cls.__module__].__dict__`"
+    },
+    {
+      "claim": "`add_replace` installs a `__replace__` that forwards to `evolve`.",
+      "quote": "[`add_replace`] installs a `__replace__` that forwards to [`evolve`]"
+    },
+    {
+      "claim": "`add_match_args` collects every `init` and non-`kw_only` field into the `__match_args__` tuple.",
+      "quote": "[`add_match_args`] collects every `init` and non-`kw_only` field into `('a', 'b')`"
+    },
+    {
+      "claim": "`_generate_unique_filename(C, \"methods\")` produces `<attrs generated methods __main__.C>`.",
+      "quote": "[`_generate_unique_filename(C, \"methods\")`] produces `<attrs generated methods __main__.C>`"
+    },
+    {
+      "claim": "The `eval` in `_compile_and_eval` is given the merged `globs` and a separate empty `locs`, so the generated `def` statements bind into `locs` while each function's `__globals__` is the merged globs dict.",
+      "quote": "The `eval` is given `globs` and a separate empty `locs`, so the three `def` statements bind into `locs`"
+    },
+    {
+      "claim": "attrs never removes its entries from the process-wide `linecache.cache`.",
+      "quote": "Each distinct generated source gets a permanent entry in the process-wide `linecache.cache`, and *attrs* never removes it"
+    },
+    {
+      "claim": "Repeated generation with the same filename but different source appends a `-1`, `-2` suffix and adds another linecache entry.",
+      "quote": "repeated calls with the same filename but different source append a `-1`, `-2` suffix and add another entry"
+    },
+    {
+      "claim": "When `self._slots` is False, `build_class` skips `_create_slots_class` and calls `abc.update_abstractmethods(self._patch_original_class())`.",
+      "quote": "so [`build_class`] skips `_create_slots_class` entirely and calls `abc.update_abstractmethods(self._patch_original_class())`"
+    },
+    {
+      "claim": "`_patch_original_class` returns the same class object it was given.",
+      "quote": "[`_patch_original_class`] does three things and returns the object it was given"
+    },
+    {
+      "claim": "`_patch_original_class` skips the loop that strips `attr.ib()` sentinels off the class body when `self._delete_attribs` is False.",
+      "quote": "so [the loop that normally strips `attr.ib()` sentinels off the class body] is skipped"
+    },
+    {
+      "claim": "`_patch_original_class` uses `setattr` to put every entry of `_cls_dict` onto the class.",
+      "quote": "it [`setattr`s every entry of `_cls_dict` onto the class]"
+    },
+    {
+      "claim": "`_patch_original_class` contains a branch that, when the class inherited an attrs-written `__setattr__` but wrote none of its own, resets `__attrs_own_setattr__` and restores `object.__setattr__`.",
+      "quote": "[that branch] resets `__attrs_own_setattr__` and restores `object.__setattr__`"
+    },
+    {
+      "claim": "`abc.update_abstractmethods` recomputes `__abstractmethods__` after the class is patched.",
+      "quote": "`abc.update_abstractmethods` then recomputes `__abstractmethods__`"
+    },
+    {
+      "claim": "`build_class` looks for an inherited `__attrs_init_subclass__`, which is attrs' replacement for the `__init_subclass__` hook that slotted classes break.",
+      "quote": "[`build_class` looks for an inherited `__attrs_init_subclass__`] \u2014 *attrs*' replacement for the `__init_subclass__` hook that slotted classes break"
+    },
+    {
+      "claim": "For non-slotted classes the attrs decorator mutates and returns the same class object, while for slotted classes it returns a different object.",
+      "quote": "For non-slotted classes the decorator mutates and returns the same class object, so any reference captured before it ran still points at the finished class; for slotted classes (the `define` default) it does not"
+    },
+    {
+      "claim": "The in-place patch overwrites same-named class attributes without warning, and since `attr.s` and `make_class` leave `auto_detect` at False, a hand-written `__repr__` or `__eq__` is silently replaced.",
+      "quote": "The in-place patch overwrites same-named attributes without warning, and `attr.s` / `make_class` leave `auto_detect` at `False`, so a hand-written `__repr__` or `__eq__` on a class decorated with `@attr.s` is silently replaced by the generated one."
+    },
+    {
+      "claim": "`attrs.define` sets `auto_detect=True`.",
+      "quote": "Use `@attrs.define`, which sets `auto_detect=True`"
+    },
+    {
+      "claim": "When both `_CountingAttr`s have `type=None`, `make_class` leaves `C.__annotations__` as `{}`.",
+      "quote": "Both `_CountingAttr`s have `type=None`, so `C.__annotations__` becomes `{}`"
+    },
+    {
+      "claim": "The generated `__repr__` for a class with fields `a` and `b` holding 'foo' and 'bar' returns `C(a='foo', b='bar')`.",
+      "quote": "`repr(made)` returns `C(a='foo', b='bar')` from the generated function"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 0.91
+}

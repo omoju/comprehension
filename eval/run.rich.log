@@ -105,3 +105,28 @@ Traceback (most recent call last):
     raise mapped_exc(message) from exc
 httpx2.ReadTimeout: The read operation timed out
 rich          questions         (done)
+rich          extract story     $0.96  287s
+Traceback (most recent call last):
+  File "/Users/omojumiller/dev/comprehension/codestory/eval/run.py", line 46, in <module>
+    run(client, name)
+    ~~~^^^^^^^^^^^^^^
+  File "/Users/omojumiller/dev/comprehension/codestory/eval/run.py", line 34, in run
+    r = step()
+  File "/Users/omojumiller/dev/comprehension/codestory/eval/run.py", line 25, in <lambda>
+    *[(f"extract {arm}", EVAL / "claims" / f"{name}.{arm}.json", (lambda a=arm: extract(client, name, a))) for arm in ARMS],
+                                                                                ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/omojumiller/dev/comprehension/codestory/eval/extract.py", line 45, in extract
+    claims = json.loads(text_of(response))["claims"]
+             ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/local/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/json/decoder.py", line 361, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ~~~~~~~~~~~~~~^^^^^^^^
+json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 150875 (char 150874)
+rich          questions         (done)
+rich          extract story     (done)

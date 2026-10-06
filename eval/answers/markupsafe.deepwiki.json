@@ -1,0 +1,63 @@
+{
+  "repo": "markupsafe",
+  "arm": "deepwiki",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "The argument is a plain `str`, so `escape()` takes the fast path at [__init__.py:39-40] \u2014 `if type(s) is str:` \u2014 and calls the module-level `_escape_inner(s)` (the C `_speedups` version if it imported, otherwise `_native`), wrapping the result in `Markup`. Only the five characters `& < > ' \"` are replaced, so the result is `Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;')` \u2014 the parentheses, dot and semicolon are untouched."
+    },
+    {
+      "id": "p2",
+      "answer": "A `Markup` is a `str` *subclass*, so `type(s) is str` is False and the fast path is skipped; `escape` falls to the `hasattr(s, \"__html__\")` branch [__init__.py:42-43] and returns `Markup(s.__html__())`. `Markup.__html__()` just returns `self`. Per the documented constructor [__init__.py:125-126], `Markup(obj)` itself also calls `__html__()` when the object has one, so `__html__()` ends up being invoked twice during that single `escape()` call \u2014 once by `escape`, once inside the `Markup(...)` constructor \u2014 both returning the same object, which is why the equality holds and no escaping occurs."
+    },
+    {
+      "id": "p3",
+      "answer": "`EscapeFormatter.format_field` checks protocols in order; `User` defines `__html_format__`, so the first branch wins and it calls `user.__html_format__(\"link\")`, which returns the `Markup('<a href=\"/user/{0}\">{1}</a>').format(...)` value. The formatter then does `str(self.escape(rv))`; since `rv` is a `Markup`, `escape()` takes the `__html__` branch and returns it unchanged, so the anchor markup is spliced in verbatim rather than being escaped a second time."
+    },
+    {
+      "id": "p4",
+      "answer": "`Markup` itself implements `__html_format__` [__init__.py:325-329], so `format_field` takes the *first* branch: it calls `comment.__html_format__(\"\")`, which with an empty spec returns `self`, and the subsequent `escape()` is a no-op for a `Markup`. With `{comment:>40}` the same branch is taken but with a non-empty spec, and `Markup.__html_format__` raises `ValueError(\"Unsupported format specification for Markup.\")`."
+    },
+    {
+      "id": "p5",
+      "answer": "`Markup.__add__` accepts operands that are `str` or have `__html__`, escapes the operand with `self.escape(value)`, and returns a `Markup`. First addition: the right operand is a plain `str`, so it is escaped to `&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;`. Second addition: the right operand is a `Markup`, so `escape()` passes it through via `__html__` and `</footer>` is appended verbatim. Final value: `Markup('<footer>&lt;/p&gt; &amp; &lt;script&gt;oops&lt;/script&gt;</footer>')`."
+    },
+    {
+      "id": "p6",
+      "answer": "Per [__init__.py:199-228], `striptags()` (1) finds and removes HTML comments `<!-- ... -->`, (2) removes all `<...>` tags, (3) collapses runs of whitespace to single spaces, and (4) *then* unescapes HTML entities; it returns a plain `str`, not a `Markup`. I can't give the exact returned string for this page: the question's `page` value isn't reproduced in the documentation I have, so the concrete result depends on the full template text. Note the ordering consequence: entity-escaped text such as `&lt;script&gt;` is unescaped only after tag removal, so it comes back as literal `<script>` in the returned string."
+    },
+    {
+      "id": "p7",
+      "answer": "`Markup.format` uses `EscapeFormatter`, which escapes only the *substituted* field values, never the literal text of the template. `self.name` is a plain `str` with neither `__html_format__` nor `__html__`, so it goes through `super().format_field()` and then `escape()`, producing `Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;`. The whole value is `Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')`. The quotes in `class=\"user\"` live in the `Markup` literal, which is already marked safe by its constructor (which does no escaping), so they are left alone."
+    },
+    {
+      "id": "p8",
+      "answer": "`escape()` knows only the `__html__` protocol \u2014 `__html_format__` is consulted exclusively by `EscapeFormatter` during `format()`/`format_map()`. Since `type(user) is not str` but `hasattr(user, \"__html__\")` is true, `escape` returns `Markup(user.__html__())`, i.e. the span markup from the previous question: `Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>')`. No format spec is involved and no re-escaping happens."
+    },
+    {
+      "id": "g2",
+      "answer": "Using `type(s) is str` defeats proxy objects that override `__class__` to claim they are strings; with `isinstance()` such a proxy would take the \"already a str\" fast path and could slip through unescaped. With the identity check, only genuine `str` instances take the fast path. Everything else \u2014 including `str` subclasses such as `Markup` and oddities whose `str()` returns a subclass instance \u2014 falls through to the `__html__` check; if `__html__` exists its output is trusted, otherwise the object is converted with `str(s)` and then `_escape_inner`-escaped. The test suite explicitly covers proxy objects and `str` subclasses."
+    },
+    {
+      "id": "g3",
+      "answer": "`Markup(object)` calls `object.__html__()` if that method exists and uses the returned string; otherwise it converts the object with `str()`. Crucially it performs **no escaping** \u2014 the content is marked safe as-is, which is the real trap: never pass untrusted input to the constructor (use `escape()`/`Markup.escape()` instead). `encoding` and `errors` are documented only as optional parameters for decoding byte strings; the documentation does not state what happens when bytes are passed with `encoding=None`, so I can't settle that case from the docs."
+    },
+    {
+      "id": "g4",
+      "answer": "For `None`: `escape(None)` stringifies it and yields `Markup('None')`, whereas `escape_silent(None)` short-circuits and returns an empty `Markup('')`. For every other value `escape_silent` simply delegates to `escape`, so the behaviour is identical. `soft_str(s)` returns `s` unchanged when `isinstance(s, str)` \u2014 so a `Markup` stays a `Markup` and a plain `str` stays a `str` \u2014 and otherwise returns `str(s)`. The guarantee is type preservation: passing a `Markup` through `soft_str` before `escape` avoids double-escaping, unlike `str(markup)` which would make the already-escaped text get escaped again."
+    },
+    {
+      "id": "g5",
+      "answer": "At import time `markupsafe/__init__.py` does `try: from ._speedups import _escape_inner / except ImportError: from ._native import _escape_inner`. The C extension is preferred; the pure-Python module is the fallback when the extension is missing (PyPy/Jython/GraalVM, compilation failure, `MARKUPSAFE_BUILD_FORCE_PURE=1`, ABI/import errors). Both expose the identical interface `_escape_inner(s: str, /) -> str` and identical functionality/API \u2014 only performance differs (the C version is substantially faster). The test suite's session-scoped `_mod` fixture runs the whole suite against both to enforce equivalence."
+    },
+    {
+      "id": "g6",
+      "answer": "`striptags()` promises: unescape the markup, remove HTML comments and tags, and normalize whitespace, returning a plain `str`. Markup-looking text survives in two situations: (a) because unescaping happens *after* tag removal, entity-escaped sequences such as `&lt;b&gt;` reappear as literal `<b>` in the output; and (b) the result is a plain `str`, not `Markup`, so if you feed it back into a template it will be escaped again rather than being treated as safe. It is a text-extraction helper, not a sanitizer; its handling of newlines, ambiguous matches and whitespace collapsing was buggy enough to need fixes across 2.1.1\u20132.1.5."
+    },
+    {
+      "id": "g7",
+      "answer": "`EscapeFormatter.format_field` dispatches in three steps: (1) if the value has `__html_format__`, call `value.__html_format__(format_spec)`; (2) else if the value has `__html__`, call `value.__html__()` \u2014 but only when no format spec was supplied; (3) otherwise fall back to `string.Formatter.format_field()`. In all cases the result is then passed through `str(self.escape(rv))`, which leaves `Markup`/`__html__` results untouched and escapes everything else. For a class that defines `__html__` but not `__html_format__` and is used with a non-empty format spec, step (2) raises a `ValueError` (the spec cannot be applied safely); the documentation describes this error but does not quote its exact message."
+    }
+  ],
+  "cost": 1.3
+}

@@ -1,0 +1,2008 @@
+{
+  "repo": "requests",
+  "arm": "deepwiki",
+  "words": 22131,
+  "extracted": 489,
+  "sample": [
+    2,
+    64,
+    71,
+    83,
+    94,
+    103,
+    107,
+    109,
+    118,
+    122,
+    141,
+    166,
+    171,
+    189,
+    206,
+    216,
+    249,
+    255,
+    270,
+    286,
+    297,
+    317,
+    318,
+    319,
+    327,
+    345,
+    372,
+    374,
+    376,
+    384,
+    397,
+    398,
+    429,
+    440,
+    446,
+    465,
+    468,
+    470,
+    471,
+    481
+  ],
+  "claims": [
+    {
+      "claim": "The Requests library is built on top of `urllib3` for low-level HTTP operations.",
+      "quote": "The library is built on top of `urllib3` for low-level HTTP operations"
+    },
+    {
+      "claim": "The Requests library provides functions `requests.get()` and `requests.post()`.",
+      "quote": "Simple function calls like `requests.get()` and `requests.post()` for common HTTP operations."
+    },
+    {
+      "claim": "The `Session` class maintains state across multiple requests, including cookies and connection pooling.",
+      "quote": "The `Session` class for maintaining state across multiple requests, including cookies and connection pooling."
+    },
+    {
+      "claim": "Requests officially supports Python 3.10+.",
+      "quote": "The library officially supports Python 3.10+ and runs on PyPy."
+    },
+    {
+      "claim": "Requests provides a `.json()` method on responses.",
+      "quote": "provides a `.json()` method"
+    },
+    {
+      "claim": "Requests uses native Python types like `dict` for headers and cookies.",
+      "quote": "Uses native types like `dict` for headers and cookies"
+    },
+    {
+      "claim": "Browser-style TLS/SSL verification is the default in Requests.",
+      "quote": "Browser-style TLS/SSL verification is standard."
+    },
+    {
+      "claim": "The public API module is `requests.api`.",
+      "quote": "| **Public API** | `requests.api`"
+    },
+    {
+      "claim": "The session manager class is `requests.sessions.Session`.",
+      "quote": "| **Session Manager** | `requests.sessions.Session`"
+    },
+    {
+      "claim": "The request model class is `requests.models.Request`.",
+      "quote": "| **Request Model** | `requests.models.Request`"
+    },
+    {
+      "claim": "The prepared request class is `requests.models.PreparedRequest`.",
+      "quote": "| **Prepared Request** | `requests.models.PreparedRequest`"
+    },
+    {
+      "claim": "The response model class is `requests.models.Response`.",
+      "quote": "| **Response Model** | `requests.models.Response`"
+    },
+    {
+      "claim": "The transport adapter class is `requests.adapters.HTTPAdapter`.",
+      "quote": "| **Transport Adapter** | `requests.adapters.HTTPAdapter`"
+    },
+    {
+      "claim": "`requests.structures` contains `CaseInsensitiveDict`.",
+      "quote": "Structures[\"requests.structures<br/>CaseInsensitiveDict\"]"
+    },
+    {
+      "claim": "`requests.auth` contains `AuthBase`.",
+      "quote": "Auth[\"requests.auth<br/>AuthBase\"]"
+    },
+    {
+      "claim": "Streaming downloads are enabled via `stream=True`.",
+      "quote": "Process large responses incrementally via `stream=True`."
+    },
+    {
+      "claim": "Requests has built-in support for Basic and Digest authentication.",
+      "quote": "Built-in support for Basic and Digest authentication."
+    },
+    {
+      "claim": "Requests honors credentials stored in `.netrc` files automatically.",
+      "quote": "Honors credentials stored in `.netrc` files."
+    },
+    {
+      "claim": "Requests transparently decompresses gzip, deflate, and brotli (if installed) content.",
+      "quote": "Transparent decompression of gzip, deflate, and brotli (if installed)."
+    },
+    {
+      "claim": "Requests has full IDNA support for internationalized domain names.",
+      "quote": "Full IDNA support for internationalized domain names."
+    },
+    {
+      "claim": "Python 2.7 support was dropped in Requests version 2.28.0.",
+      "quote": "Python 2.7 support was dropped in version 2.28.0."
+    },
+    {
+      "claim": "The `requests.api` module provides `get()`, `post()`, `put()`, `delete()`, `head()`, `options()`, `patch()`, and `request()` convenience functions that create temporary sessions.",
+      "quote": "| `requests.api` | `get()`, `post()`, `put()`, `delete()`, `head()`, `options()`, `patch()`, `request()` | Convenience functions that create temporary sessions"
+    },
+    {
+      "claim": "The `requests.sessions` module contains `Session` and `SessionRedirectMixin`.",
+      "quote": "| `requests.sessions` | `Session`, `SessionRedirectMixin` |"
+    },
+    {
+      "claim": "The `requests.adapters` module contains `BaseAdapter` and `HTTPAdapter`.",
+      "quote": "| `requests.adapters` | `BaseAdapter`, `HTTPAdapter` |"
+    },
+    {
+      "claim": "The `requests.auth` module contains `AuthBase`, `HTTPBasicAuth`, and `HTTPDigestAuth`.",
+      "quote": "| `requests.auth` | `AuthBase`, `HTTPBasicAuth`, `HTTPDigestAuth` |"
+    },
+    {
+      "claim": "The `requests.cookies` module contains `RequestsCookieJar`.",
+      "quote": "| `requests.cookies` | `RequestsCookieJar` | Cookie management"
+    },
+    {
+      "claim": "`HTTPAdapter` uses `urllib3.poolmanager.proxy_from_url` to create proxy managers.",
+      "quote": "ProxyManager[\"urllib3.poolmanager.proxy_from_url\"]"
+    },
+    {
+      "claim": "Users can mount custom adapters for specific URL prefixes via `Session.mount()`.",
+      "quote": "users can mount custom adapters for specific URL prefixes via `Session.mount()`"
+    },
+    {
+      "claim": "`SessionRedirectMixin` encapsulates HTTP redirect logic including the `should_strip_auth` security check.",
+      "quote": "`SessionRedirectMixin`: Encapsulates complex HTTP redirect logic, including header re-encoding and security checks like `should_strip_auth`"
+    },
+    {
+      "claim": "The `response` hook is executed immediately after a response is generated by an adapter.",
+      "quote": "the `response` hook is the primary extension point, executed immediately after a response is generated by an adapter"
+    },
+    {
+      "claim": "The `Session` merges settings with method-level arguments taking precedence over session-level attributes, which take precedence over environment variables.",
+      "quote": "The `Session` merges settings from three sources in order of precedence:\n1. Method-level arguments"
+    },
+    {
+      "claim": "The `PreparedRequest.prepare()` pipeline calls prepare_method, then prepare_url, prepare_headers, prepare_cookies, prepare_body, prepare_auth, and prepare_hooks in that order.",
+      "quote": "Request --> prepare_method\n    prepare_method --> prepare_url\n    prepare_url --> prepare_headers\n    prepare_headers --> prepare_cookies\n    prepare_cookies --> prepare_body\n    prepare_body --> prepare_auth\n    prepare_auth --> prepare_hooks"
+    },
+    {
+      "claim": "A `PreparedRequest` is created by calling `prepare()` on a `Request` object or `prepare_request()` on a `Session`.",
+      "quote": "It is created by calling `prepare()` on a `Request` object or `prepare_request()` on a `Session`."
+    },
+    {
+      "claim": "`PreparedRequest.prepare_method()` normalizes the HTTP method to uppercase.",
+      "quote": "`prepare_method()` - Normalizes HTTP method to uppercase"
+    },
+    {
+      "claim": "`PreparedRequest.prepare_url()` handles URL encoding, IDNA encoding, and parameter merging.",
+      "quote": "`prepare_url()` - Handles URL encoding, IDNA encoding, parameter merging"
+    },
+    {
+      "claim": "`PreparedRequest.prepare_headers()` creates a `CaseInsensitiveDict` and validates headers.",
+      "quote": "`prepare_headers()` - Creates `CaseInsensitiveDict`, validates headers"
+    },
+    {
+      "claim": "`PreparedRequest.prepare_cookies()` converts cookies to a Cookie header.",
+      "quote": "`prepare_cookies()` - Converts cookies to Cookie header"
+    },
+    {
+      "claim": "`PreparedRequest.prepare_body()` encodes data/files and sets Content-Type and Content-Length.",
+      "quote": "`prepare_body()` - Encodes data/files, sets Content-Type and Content-Length"
+    },
+    {
+      "claim": "`PreparedRequest.prepare_auth()` applies the authentication handler.",
+      "quote": "`prepare_auth()` - Applies authentication handler"
+    },
+    {
+      "claim": "The `Response` object is built by the `HTTPAdapter` from urllib3's response object.",
+      "quote": "It is built by the `HTTPAdapter` from urllib3's response object."
+    },
+    {
+      "claim": "`Response.status_code` is an int holding the HTTP status code.",
+      "quote": "| `status_code` | int | HTTP status code |"
+    },
+    {
+      "claim": "`Response.headers` is a `CaseInsensitiveDict` of response headers.",
+      "quote": "| `headers` | CaseInsensitiveDict | Response headers |"
+    },
+    {
+      "claim": "`Response.content` holds the response body as bytes.",
+      "quote": "| `content` | bytes | Response body as bytes |"
+    },
+    {
+      "claim": "`Response.text` holds the response body as a unicode string.",
+      "quote": "| `text` | str | Response body as unicode string |"
+    },
+    {
+      "claim": "`Response.history` is a list of Response objects from redirects.",
+      "quote": "| `history` | list | List of Response objects from redirects |"
+    },
+    {
+      "claim": "`Response.cookies` is a `RequestsCookieJar` of cookies set by the server.",
+      "quote": "| `cookies` | RequestsCookieJar | Cookies set by server |"
+    },
+    {
+      "claim": "`Response.elapsed` is a timedelta representing time between request and response.",
+      "quote": "| `elapsed` | timedelta | Time between request and response |"
+    },
+    {
+      "claim": "`Response.raw` holds the underlying urllib3 HTTPResponse.",
+      "quote": "| `raw` | urllib3.HTTPResponse | Underlying urllib3 response |"
+    },
+    {
+      "claim": "`Response.json()` deserializes the JSON response body.",
+      "quote": "`json()` - Deserialize JSON response body"
+    },
+    {
+      "claim": "`Response.raise_for_status()` raises HTTPError for bad status codes.",
+      "quote": "`raise_for_status()` - Raise HTTPError for bad status codes"
+    },
+    {
+      "claim": "`Response.iter_content(chunk_size)` iterates over response content in chunks.",
+      "quote": "`iter_content(chunk_size)` - Iterate over response content in chunks"
+    },
+    {
+      "claim": "`Response.iter_lines()` iterates over response lines.",
+      "quote": "`iter_lines()` - Iterate over response lines"
+    },
+    {
+      "claim": "`Response.close()` releases the connection back to the pool.",
+      "quote": "`close()` - Release connection back to pool"
+    },
+    {
+      "claim": "`BaseAdapter.send(request, **kwargs)` sends a PreparedRequest and returns a Response.",
+      "quote": "`send(request, **kwargs)` - Send PreparedRequest, return Response"
+    },
+    {
+      "claim": "`BaseAdapter.close()` cleans up adapter resources.",
+      "quote": "`close()` - Clean up adapter resources"
+    },
+    {
+      "claim": "`HTTPAdapter` uses urllib3 for HTTP/HTTPS connections.",
+      "quote": "The `HTTPAdapter` is the built-in adapter that uses urllib3 for HTTP/HTTPS connections."
+    },
+    {
+      "claim": "`HTTPAdapter.pool_connections` defaults to 10.",
+      "quote": "PoolConnections[\"pool_connections<br/>int (default: 10)\"]"
+    },
+    {
+      "claim": "`HTTPAdapter.pool_maxsize` defaults to 10.",
+      "quote": "PoolMaxsize[\"pool_maxsize<br/>int (default: 10)\"]"
+    },
+    {
+      "claim": "`HTTPAdapter.init_poolmanager()` initializes the urllib3 PoolManager.",
+      "quote": "| `init_poolmanager()` | Initialize urllib3 PoolManager"
+    },
+    {
+      "claim": "`HTTPAdapter.proxy_manager_for()` gets or creates a ProxyManager for a proxy URL.",
+      "quote": "| `proxy_manager_for()` | Get or create ProxyManager for proxy URL"
+    },
+    {
+      "claim": "`HTTPAdapter.cert_verify()` configures SSL/TLS certificate verification.",
+      "quote": "| `cert_verify()` | Configure SSL/TLS certificate verification"
+    },
+    {
+      "claim": "`HTTPAdapter.build_response()` converts a urllib3 response to a Response object.",
+      "quote": "| `build_response()` | Convert urllib3 response to Response object"
+    },
+    {
+      "claim": "`HTTPAdapter.get_connection_with_tls_context()` gets a urllib3 connection with TLS settings.",
+      "quote": "| `get_connection_with_tls_context()` | Get urllib3 connection with TLS settings"
+    },
+    {
+      "claim": "The HTTPAdapter creates separate connection pools for each unique combination of host and port, verify settings, and cert settings.",
+      "quote": "The adapter creates separate connection pools for each unique combination of:\n- Host and port\n- TLS verification settings (`verify` parameter)\n- Client certificate settings (`cert` parameter)"
+    },
+    {
+      "claim": "`CaseInsensitiveDict` is defined in `structures.py` and preserves the original case of keys while allowing case-insensitive lookups.",
+      "quote": "Defined in `structures.py`, it preserves the original case of keys while allowing case-insensitive lookups."
+    },
+    {
+      "claim": "`LookupDict` is a dictionary subclass for status codes that allows both numeric and named lookups.",
+      "quote": "A dictionary subclass for status codes that allows both numeric and named lookups."
+    },
+    {
+      "claim": "`RequestsCookieJar` is a `CookieJar` subclass with a dictionary-like interface.",
+      "quote": "A `CookieJar` subclass with dictionary-like interface for easier cookie manipulation."
+    },
+    {
+      "claim": "`requests.utils.super_len()` calculates content length for various object types.",
+      "quote": "| `super_len()` | Calculate content length for various object types"
+    },
+    {
+      "claim": "`requests.utils.get_encoding_from_headers()` extracts charset from the Content-Type header.",
+      "quote": "| `get_encoding_from_headers()` | Extract charset from Content-Type header"
+    },
+    {
+      "claim": "`requests.utils.get_auth_from_url()` extracts username and password from a URL.",
+      "quote": "| `get_auth_from_url()` | Extract username/password from URL"
+    },
+    {
+      "claim": "`requests.utils.get_netrc_auth()` gets credentials from the .netrc file.",
+      "quote": "| `get_netrc_auth()` | Get credentials from .netrc file"
+    },
+    {
+      "claim": "`requests.utils.select_proxy()` selects the appropriate proxy for a URL.",
+      "quote": "| `select_proxy()` | Select appropriate proxy for URL"
+    },
+    {
+      "claim": "`requests.utils.should_bypass_proxies()` checks if a URL should bypass the proxy.",
+      "quote": "| `should_bypass_proxies()` | Check if URL should bypass proxy"
+    },
+    {
+      "claim": "`requests.utils.requote_uri()` re-quotes a URI to ensure proper encoding.",
+      "quote": "| `requote_uri()` | Re-quote URI to ensure proper encoding"
+    },
+    {
+      "claim": "`requests.utils.parse_header_links()` parses Link headers.",
+      "quote": "| `parse_header_links()` | Parse Link headers"
+    },
+    {
+      "claim": "`requests.utils.extract_zipped_paths()` extracts files from zip archives.",
+      "quote": "| `extract_zipped_paths()` | Extract files from zip archives"
+    },
+    {
+      "claim": "All authentication handlers inherit from `AuthBase` and implement `__call__(r)` which receives a `PreparedRequest` and returns it after modification.",
+      "quote": "All authentication handlers inherit from `AuthBase` and implement `__call__(r)` which receives a `PreparedRequest` and returns it after modification."
+    },
+    {
+      "claim": "`HTTPBasicAuth` adds an `Authorization` header with Base64-encoded credentials.",
+      "quote": "**HTTPBasicAuth**: Adds `Authorization` header with Base64-encoded credentials"
+    },
+    {
+      "claim": "`HTTPProxyAuth` is similar to HTTPBasicAuth but for proxy authentication.",
+      "quote": "**HTTPProxyAuth**: Similar to HTTPBasicAuth but for proxy authentication"
+    },
+    {
+      "claim": "`HTTPDigestAuth` implements HTTP Digest Authentication with a challenge-response flow.",
+      "quote": "**HTTPDigestAuth**: Implements HTTP Digest Authentication with challenge-response flow"
+    },
+    {
+      "claim": "`ProxyError`, `SSLError`, and `ConnectTimeout` inherit from `ConnectionError`.",
+      "quote": "ConnectionError --> ProxyError\n    ConnectionError --> SSLError\n    ConnectionError --> ConnectTimeout"
+    },
+    {
+      "claim": "`ReadTimeout` and `ConnectTimeout` inherit from `Timeout`.",
+      "quote": "Timeout --> ReadTimeout\n    Timeout --> ConnectTimeout"
+    },
+    {
+      "claim": "`MissingSchema`, `InvalidSchema`, and `InvalidProxyURL` inherit from `InvalidURL`.",
+      "quote": "InvalidURL --> MissingSchema\n    InvalidURL --> InvalidSchema\n    InvalidURL --> InvalidProxyURL"
+    },
+    {
+      "claim": "All Requests exceptions inherit from `RequestException`, which inherits from `IOError`.",
+      "quote": "All exceptions inherit from `RequestException`, which inherits from `IOError`."
+    },
+    {
+      "claim": "Requests exceptions may have `request` and `response` attributes.",
+      "quote": "Each exception may have `request` and `response` attributes providing context about the failed operation."
+    },
+    {
+      "claim": "All Requests convenience methods internally instantiate a `Session` and call its `request` method.",
+      "quote": "All convenience methods internally instantiate a `Session` and call its `request` method to ensure proper resource cleanup"
+    },
+    {
+      "claim": "`requests.head()` defaults `allow_redirects` to False.",
+      "quote": "| `requests.head()` | HEAD | Get headers only (defaults `allow_redirects=False`) |"
+    },
+    {
+      "claim": "`requests.post()` supports `data` and `json` parameters.",
+      "quote": "| `requests.post()` | POST | Create resources (supports `data` and `json`) |"
+    },
+    {
+      "claim": "Each `requests.api` method returns a `Response` object containing the server's response.",
+      "quote": "Each method returns a `Response` object containing the server's response"
+    },
+    {
+      "claim": "Using `Session.prepare_request` ensures session-level state like cookies are merged into the request.",
+      "quote": "Using `Session.prepare_request` ensures session-level state like cookies are merged into the request"
+    },
+    {
+      "claim": "Requests automatically follows redirects for most HTTP verbs by default.",
+      "quote": "Requests automatically follows redirects for most HTTP verbs by default"
+    },
+    {
+      "claim": "Redirect behavior can be controlled per-request via the `allow_redirects` parameter.",
+      "quote": "This behavior can be controlled per-request via the `allow_redirects` parameter"
+    },
+    {
+      "claim": "`requests.exceptions.ConnectionError` indicates a network problem such as DNS failure or refused connection.",
+      "quote": "| `ConnectionError` | A Network problem (e.g. DNS failure, refused connection) |"
+    },
+    {
+      "claim": "`requests.exceptions.JSONDecodeError` is raised by `Response.json()` if decoding fails.",
+      "quote": "| `JSONDecodeError` | Raised by `Response.json()` if decoding fails |"
+    },
+    {
+      "claim": "`TooManyRedirects` is raised when the request exceeds the configured number of maximum redirects.",
+      "quote": "| `TooManyRedirects` | The request exceeded the configured number of maximum redirects |"
+    },
+    {
+      "claim": "`Request` and `PreparedRequest` both inherit from `RequestHooksMixin`.",
+      "quote": "RequestHooksMixin <|-- Request\n    RequestHooksMixin <|-- PreparedRequest"
+    },
+    {
+      "claim": "`PreparedRequest` inherits from `RequestEncodingMixin`.",
+      "quote": "RequestEncodingMixin <|-- PreparedRequest"
+    },
+    {
+      "claim": "`RequestHooksMixin` provides `register_hook()` and `deregister_hook()`.",
+      "quote": "class RequestHooksMixin {\n        +register_hook()\n        +deregister_hook()\n    }"
+    },
+    {
+      "claim": "`RequestEncodingMixin` provides the `path_url` property and `_encode_params()` and `_encode_files()` methods.",
+      "quote": "class RequestEncodingMixin {\n        +path_url\n        +_encode_params()\n        +_encode_files()\n    }"
+    },
+    {
+      "claim": "`PreparedRequest.prepare_headers` validates headers using `check_header_validity`.",
+      "quote": "`prepare_headers(headers)`: Converts headers to `CaseInsensitiveDict` and validates them using `check_header_validity`."
+    },
+    {
+      "claim": "`PreparedRequest.prepare_body` serializes JSON via `complexjson`, multipart/form-data via `_encode_files`, and form-encoded content via `_encode_params`.",
+      "quote": "`prepare_body(data, files, json)`: Serializes the request body, handling JSON via `complexjson`, multipart/form-data via `_encode_files`, or form-encoded content via `_encode_params`."
+    },
+    {
+      "claim": "`PreparedRequest.prepare_cookies` adds cookies to the request headers using `get_cookie_header`.",
+      "quote": "`prepare_cookies(cookies)`: Adds cookies to the request headers using `get_cookie_header`."
+    },
+    {
+      "claim": "`Response.json()` returns the JSON-decoded content using `complexjson`.",
+      "quote": "| `json()` | Returns the JSON-decoded content using `complexjson`. |"
+    },
+    {
+      "claim": "`Response.ok` is True if `status_code` is between 200 and 299.",
+      "quote": "| `ok` | Boolean: `True` if `status_code` is between 200 and 299. |"
+    },
+    {
+      "claim": "`Response.is_redirect` is True if the status code is in `REDIRECT_STATI`.",
+      "quote": "| `is_redirect` | Boolean: `True` if status code is in `REDIRECT_STATI`. |"
+    },
+    {
+      "claim": "`Response.raise_for_status()` raises `HTTPError` for 4xx or 5xx responses.",
+      "quote": "| `raise_for_status()` | Raises `HTTPError` if an error occurred (4xx or 5xx). |"
+    },
+    {
+      "claim": "When a response is a redirect, the previous response is stored in the `history` attribute of the final response.",
+      "quote": "The previous response is stored in the `history` attribute of the final response."
+    },
+    {
+      "claim": "The `Session` automatically extracts cookies from responses and includes them in subsequent requests using a `RequestsCookieJar`.",
+      "quote": "Automatically extracts cookies from responses and includes them in subsequent requests using a `RequestsCookieJar`"
+    },
+    {
+      "claim": "`Session` inherits from `SessionRedirectMixin`.",
+      "quote": "\"Session\" --|> \"SessionRedirectMixin\" : \"inherits\""
+    },
+    {
+      "claim": "Session configuration merging is handled by `merge_setting` and `merge_hooks`.",
+      "quote": "This is handled by `merge_setting` and `merge_hooks`."
+    },
+    {
+      "claim": "In Session merging, setting a method-level key to `None` removes it from the request.",
+      "quote": "| **Omission** | Setting a method-level key to `None` removes it from the request. |"
+    },
+    {
+      "claim": "In Session merging, session and request hooks are combined into lists.",
+      "quote": "| **Hooks** | Session and Request hooks are combined into lists. |"
+    },
+    {
+      "claim": "After every request, `extract_cookies_to_jar` is called to update the session's cookies from the `Set-Cookie` headers in the response.",
+      "quote": "After every request, `extract_cookies_to_jar` is called to update the session's state from the `Set-Cookie` headers in the response"
+    },
+    {
+      "claim": "Users can manually add cookies to `session.cookies` using `cookiejar_from_dict`.",
+      "quote": "Users can manually add cookies to `session.cookies` using `cookiejar_from_dict`"
+    },
+    {
+      "claim": "During request preparation, session cookies are merged with request cookies via `merge_cookies`.",
+      "quote": "During request preparation, session cookies are merged with any cookies passed to the request method via `merge_cookies`"
+    },
+    {
+      "claim": "Requests uses `MockRequest` and `MockResponse` to bridge its models with `http.cookiejar.CookieJar` expectations.",
+      "quote": "Requests uses `MockRequest` and `MockResponse` to bridge its models with the `http.cookiejar.CookieJar` expectations"
+    },
+    {
+      "claim": "The `Session` stores a mapping of URL prefixes to `HTTPAdapter` instances in the `self.adapters` attribute.",
+      "quote": "The `Session` manages a mapping of URL prefixes to `HTTPAdapter` instances in the `self.adapters` attribute"
+    },
+    {
+      "claim": "By default, `Session` mounts an `HTTPAdapter` for `http://` and `https://`.",
+      "quote": "By default, `Session` mounts an `HTTPAdapter` for `http://` and `https://`"
+    },
+    {
+      "claim": "When sending a request, the session selects the adapter with the longest matching prefix for the target URL.",
+      "quote": "the session iterates through its adapters and selects the one with the longest matching prefix for the target URL"
+    },
+    {
+      "claim": "The session strips the `Authorization` header when redirecting to a different hostname or port.",
+      "quote": "The session automatically strips the `Authorization` header when redirecting to a different hostname or port to prevent credential leakage"
+    },
+    {
+      "claim": "`session.max_redirects` defaults to 30.",
+      "quote": "Users can set `session.max_redirects` (default 30)"
+    },
+    {
+      "claim": "`Session.close()` iterates through all mounted adapters and calls their `close()` methods.",
+      "quote": "The `close()` method iterates through all mounted adapters and calls their respective `close()` methods to shut down connection pools"
+    },
+    {
+      "claim": "`HTTPAdapter` implements `BaseAdapter`.",
+      "quote": "\"BaseAdapter\" <|-- \"HTTPAdapter\" : \"implements"
+    },
+    {
+      "claim": "The `HTTPAdapter` `pool_connections` parameter controls the number of urllib3 connection pools to cache.",
+      "quote": "| `pool_connections` | The number of `urllib3` connection pools to cache"
+    },
+    {
+      "claim": "The `HTTPAdapter` `pool_maxsize` parameter controls the maximum number of connections to save in the pool.",
+      "quote": "| `pool_maxsize` | The maximum number of connections to save in the pool"
+    },
+    {
+      "claim": "The `HTTPAdapter` `max_retries` parameter defaults to 0.",
+      "quote": "| `max_retries` | The maximum number of retries each connection should attempt | 0"
+    },
+    {
+      "claim": "The `HTTPAdapter` `pool_block` parameter defaults to False.",
+      "quote": "| `pool_block` | Whether the connection pool should block for connections | False"
+    },
+    {
+      "claim": "`HTTPAdapter.get_connection` returns an appropriate urllib3 connection pool for a given URL, taking proxies into account.",
+      "quote": "The `get_connection` method is responsible for returning an appropriate `urllib3` connection pool for the given URL, taking proxies into account"
+    },
+    {
+      "claim": "If a proxy is configured, the adapter uses `proxy_manager_for` to retrieve or create a `ProxyManager`.",
+      "quote": "If a proxy is configured via the `proxies` dictionary, the adapter uses `proxy_manager_for` to retrieve or create a `ProxyManager`"
+    },
+    {
+      "claim": "If `verify` is a string, it is treated as a path to a CA bundle or directory.",
+      "quote": "If `verify` is a string, it is treated as a path to a CA bundle or directory"
+    },
+    {
+      "claim": "If `verify` is False, certificate requirements are set to `CERT_NONE`.",
+      "quote": "If `False`, certificate requirements are set to `CERT_NONE`"
+    },
+    {
+      "claim": "The `cert` parameter can be a single file path or a tuple containing (cert, key).",
+      "quote": "The `cert` parameter can be a single file path or a tuple containing (cert, key)"
+    },
+    {
+      "claim": "`_urllib3_request_context` generates the `pool_kwargs` consumed by the urllib3 pool.",
+      "quote": "These settings are processed in `_urllib3_request_context` to generate the `pool_kwargs` consumed by the `urllib3` pool during the request lifecycle"
+    },
+    {
+      "claim": "`HTTPAdapter.build_response` initializes a new `Response` object, populates status code, headers, and encoding, attaches the original `PreparedRequest`, and extracts cookies via `extract_cookies_to_jar`.",
+      "quote": "1. Initialize a new `Response` object [src/requests/adapters.py:633]().\n2. Populate status code, headers, and encoding [src/requests/adapters.py:636-640]().\n3. Attach the original `PreparedRequest` [src/requests/adapters.py:650]().\n4. Extract cookies from the response into the `CookieJar` using `extract_cookies_to_jar`"
+    },
+    {
+      "claim": "Redirects are followed automatically by default for GET, POST, PUT, PATCH, DELETE, and OPTIONS but not for HEAD.",
+      "quote": "By default, redirects are followed automatically for `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, and `OPTIONS` methods, but not for `HEAD`"
+    },
+    {
+      "claim": "`REDIRECT_STATI` in `requests.models` contains status codes 301, 302, 303, 307, and 308.",
+      "quote": "**Redirect Status Codes**: 301, 302, 303, 307, 308 (defined in `REDIRECT_STATI`"
+    },
+    {
+      "claim": "For 301 and 302 redirects, POST/PUT/PATCH are transformed to GET while HEAD and GET are preserved.",
+      "quote": "| 301 | Moved Permanently | POST/PUT/PATCH \u2192 GET, HEAD/GET preserved | Body removed on transformation |"
+    },
+    {
+      "claim": "For 303 redirects, POST/PUT/PATCH/DELETE are transformed to GET while HEAD is preserved.",
+      "quote": "| 303 | See Other | POST/PUT/PATCH/DELETE \u2192 GET, HEAD preserved | Body removed on transformation |"
+    },
+    {
+      "claim": "For 307 and 308 redirects, the method is preserved and the body is preserved.",
+      "quote": "| 307 | Temporary Redirect | Method preserved | Body preserved |"
+    },
+    {
+      "claim": "The `max_redirects` default of 30 is defined by `DEFAULT_REDIRECT_LIMIT` in `requests.models`.",
+      "quote": "The default is 30, defined by `DEFAULT_REDIRECT_LIMIT`"
+    },
+    {
+      "claim": "Exceeding max_redirects raises `TooManyRedirects`.",
+      "quote": "Check -->|\"Yes\"| Exception[\"Raise TooManyRedirects\"]"
+    },
+    {
+      "claim": "When a redirect changes the method from POST/PUT/PATCH to GET, `resolve_redirects` removes the Content-Length, Content-Type, and Transfer-Encoding headers.",
+      "quote": "the following headers are automatically removed in `resolve_redirects` [src/requests/sessions.py:255-263]():\n\n- `Content-Length`\n- `Content-Type`\n- `Transfer-Encoding`"
+    },
+    {
+      "claim": "For 307 and 308 redirects the request body must be seekable or an `UnrewindableBodyError` is raised.",
+      "quote": "the body must be seekable (support `.seek()` method) or an `UnrewindableBodyError` will be raised"
+    },
+    {
+      "claim": "Requests uses `requests.utils.rewind_body` to reset the stream position for redirect bodies.",
+      "quote": "Requests uses `requests.utils.rewind_body` to reset the stream position"
+    },
+    {
+      "claim": "`SessionRedirectMixin.should_strip_auth` returns True if the hostname changes.",
+      "quote": "It returns `True` if:\n1. The hostname changes"
+    },
+    {
+      "claim": "`SessionRedirectMixin.should_strip_auth` returns True if the port changes, unless it's a standard HTTP to HTTPS transition on default ports.",
+      "quote": "The port changes (unless it's a standard HTTP -> HTTPS transition on default ports)"
+    },
+    {
+      "claim": "The `Proxy-Authorization` header is stripped during redirects in `resolve_redirects`.",
+      "quote": "The `Proxy-Authorization` header is stripped during redirects in `resolve_redirects`"
+    },
+    {
+      "claim": "`get_redirect_target(resp)` extracts and normalizes the `Location` header.",
+      "quote": "`get_redirect_target(resp)`: Extracts and normalizes the `Location` header"
+    },
+    {
+      "claim": "`get_redirect_target` re-encodes location headers in latin1 before decoding as utf8.",
+      "quote": "It re-encodes location headers in latin1 before decoding as utf8 to handle incorrect encoding by underlying HTTP modules"
+    },
+    {
+      "claim": "`resolve_redirects` is a generator that manages the redirect loop, history, and request preparation.",
+      "quote": "`resolve_redirects(resp, req, ...)`: The main generator that manages the redirect loop, history, and request preparation"
+    },
+    {
+      "claim": "Authentication objects modify `PreparedRequest` objects via their `__call__` method.",
+      "quote": "This happens through the `__call__` method of authentication objects, which gets called with the prepared request as an argument"
+    },
+    {
+      "claim": "`HTTPProxyAuth` inherits from `HTTPBasicAuth`.",
+      "quote": "HTTPBasicAuth <|-- HTTPProxyAuth"
+    },
+    {
+      "claim": "`HTTPDigestAuth` inherits from `AuthBase`.",
+      "quote": "AuthBase <|-- HTTPDigestAuth"
+    },
+    {
+      "claim": "Passing a `(username, password)` tuple to `auth` is automatically converted into an `HTTPBasicAuth` object.",
+      "quote": "Requests provides a shorthand where passing a `(username, password)` tuple is automatically converted into an `HTTPBasicAuth` object"
+    },
+    {
+      "claim": "`_basic_auth_str` generates the `Authorization` header by encoding credentials in `latin1` and base64.",
+      "quote": "this uses the `_basic_auth_str` utility to generate the `Authorization` header by encoding credentials in `latin1` and base64"
+    },
+    {
+      "claim": "`HTTPDigestAuth` maintains state such as nonces and challenge details using `threading.local`.",
+      "quote": "which maintains state (such as nonces and challenge details) using `threading.local` to remain thread-safe"
+    },
+    {
+      "claim": "`HTTPDigestAuth` supports MD5, SHA-256, and SHA-512 algorithms.",
+      "quote": "It supports multiple algorithms including MD5, SHA-256, and SHA-512"
+    },
+    {
+      "claim": "If no `auth` argument is provided, Requests attempts to find credentials in the user's `.netrc` file based on the hostname.",
+      "quote": "If no `auth` argument is provided, Requests attempts to find credentials in the user's `.netrc` file based on the hostname"
+    },
+    {
+      "claim": "Requests searches for the netrc file at `~/.netrc`, `~/_netrc`, or a path defined by the `NETRC` environment variable.",
+      "quote": "Requests searches for this file at `~/.netrc`, `~/_netrc`, or a path defined by the `NETRC` environment variable"
+    },
+    {
+      "claim": "netrc lookup can be disabled by setting `trust_env=False` on a `Session`.",
+      "quote": "This behavior can be disabled by setting `trust_env=False` on a `Session`"
+    },
+    {
+      "claim": "`HTTPProxyAuth` sets the `Proxy-Authorization` header.",
+      "quote": "| **Proxy** | `HTTPProxyAuth` | Sets `Proxy-Authorization` header"
+    },
+    {
+      "claim": "`HTTPBasicAuth.__init__` takes `username` and `password` parameters.",
+      "quote": "The `HTTPBasicAuth` class takes `username` and `password` parameters during initialization"
+    },
+    {
+      "claim": "`HTTPBasicAuth.__call__` sets the `Authorization` header using the `_basic_auth_str` function.",
+      "quote": "Inside this method, it sets the `Authorization` header using the `_basic_auth_str` function"
+    },
+    {
+      "claim": "`_basic_auth_str` issues a `DeprecationWarning` for legacy non-string types.",
+      "quote": "Handles legacy non-string types with a `DeprecationWarning`"
+    },
+    {
+      "claim": "`_basic_auth_str` encodes `str` inputs to `latin1` bytes.",
+      "quote": "Encodes `str` inputs to `latin1` bytes"
+    },
+    {
+      "claim": "`_basic_auth_str` joins the username and password with a colon, applies b64encode, and prefixes with `Basic `.",
+      "quote": "Joins them with a colon (`:`), applies `b64encode`, and prefixes with `Basic `"
+    },
+    {
+      "claim": "`HTTPBasicAuth` inherits from `AuthBase`.",
+      "quote": "The `HTTPBasicAuth` class inherits from `AuthBase`"
+    },
+    {
+      "claim": "`HTTPProxyAuth` overrides `__call__` to populate the `Proxy-Authorization` header.",
+      "quote": "It inherits from `HTTPBasicAuth` but overrides the `__call__` method to populate the `Proxy-Authorization` header instead"
+    },
+    {
+      "claim": "Non-string username/password support in `_basic_auth_str` is scheduled for removal in version 3.0.0.",
+      "quote": "This support is scheduled for removal in version 3.0.0"
+    },
+    {
+      "claim": "`HTTPDigestAuth` uses `nonce_count` for replay protection.",
+      "quote": "**Replay Protection**: Protects against replay attacks using a `nonce_count`"
+    },
+    {
+      "claim": "`HTTPDigestAuth` handles 401 challenges automatically via a response hook mechanism.",
+      "quote": "**Automatic Handling**: Handles 401 challenges automatically via a response hook mechanism"
+    },
+    {
+      "claim": "`HTTPDigestAuth` supports both `str` and `bytes` for credentials.",
+      "quote": "The class supports both `str` and `bytes` for credentials"
+    },
+    {
+      "claim": "`HTTPDigestAuth.init_per_thread_state` populates `_thread_local` storage for the current execution context.",
+      "quote": "The `init_per_thread_state` method ensures that the `_thread_local` storage is populated for the current execution context"
+    },
+    {
+      "claim": "`build_digest_header` parses the server's challenge using `parse_dict_header`.",
+      "quote": "It parses the server's challenge using `parse_dict_header`"
+    },
+    {
+      "claim": "`HTTPDigestAuth` MD5 hashing uses `hashlib.md5` with `usedforsecurity=False`.",
+      "quote": "| **MD5** | `hashlib.md5(..., usedforsecurity=False)` |"
+    },
+    {
+      "claim": "`HTTPDigestAuth` SHA-256 hashing uses `hashlib.sha256` with `usedforsecurity=False`.",
+      "quote": "| **SHA-256** | `hashlib.sha256(..., usedforsecurity=False)` |"
+    },
+    {
+      "claim": "`HTTPDigestAuth` SHA-512 hashing uses `hashlib.sha512` with `usedforsecurity=False`.",
+      "quote": "| **SHA-512** | `hashlib.sha512(..., usedforsecurity=False)` |"
+    },
+    {
+      "claim": "The `KD(s, d)` function in requests.auth represents `H(s:d)` as defined in RFC 2617.",
+      "quote": "The `KD(s, d)` function is used internally to represent `H(s:d)` as defined in RFC 2617"
+    },
+    {
+      "claim": "`handle_401` verifies whether `WWW-Authenticate` contains \"digest\" case-insensitively.",
+      "quote": "**Check for Challenge**: Verifies if `WWW-Authenticate` contains \"digest\" (case-insensitive)"
+    },
+    {
+      "claim": "In `handle_401`, if the nonce has changed the nonce_count is reset to 1.",
+      "quote": "Updates `last_nonce` and increments `nonce_count`. If the nonce has changed, the count is reset to 1"
+    },
+    {
+      "claim": "`handle_401` uses `r.connection.send` to dispatch the new `PreparedRequest`.",
+      "quote": "**Re-sending**: Uses `r.connection.send` to dispatch the new `PreparedRequest` containing the generated credentials"
+    },
+    {
+      "claim": "`HTTPDigestAuth` tracks `num_401_calls` to prevent infinite challenge loops.",
+      "quote": "**Infinite Loop Protection**: Tracks `num_401_calls` to prevent getting stuck in a challenge loop"
+    },
+    {
+      "claim": "`HTTPDigestAuth` only supports \"auth\" for the `qop` parameter; \"auth-int\" is not fully implemented.",
+      "quote": "The \"auth-int\" (integrity) quality of protection is not fully implemented; only \"auth\" is supported for the `qop` parameter"
+    },
+    {
+      "claim": "`AuthBase.__call__` raises NotImplementedError with the message \"Auth hooks must be callable.\"",
+      "quote": "raise NotImplementedError(\"Auth hooks must be callable.\")"
+    },
+    {
+      "claim": "`HTTPDigestAuth.__call__` registers a `response` hook pointing at `self.handle_401`.",
+      "quote": "r.register_hook(\"response\", self.handle_401)"
+    },
+    {
+      "claim": "Requests uses `to_native_string` internally to ensure header keys and values are native strings.",
+      "quote": "Requests uses `to_native_string` internally for this"
+    },
+    {
+      "claim": "Session-level parameters apply to all requests unless overridden by method-level parameters, and method-level parameters do not persist.",
+      "quote": "Method-level parameters override session parameters but do not persist"
+    },
+    {
+      "claim": "`Session` implements the context manager protocol.",
+      "quote": "Sessions implement the context manager protocol and should be closed to release connection pool resources"
+    },
+    {
+      "claim": "To omit a session-level parameter from a specific request, set it to `None`.",
+      "quote": "To omit a session-level parameter from a specific request, set it to `None`"
+    },
+    {
+      "claim": "The `Response` object contains the original `PreparedRequest` in its `request` attribute.",
+      "quote": "The server returns a `Response` ([requests/models.py:613-625]()) object that contains both the response data and the original `PreparedRequest`"
+    },
+    {
+      "claim": "`Request.prepare()` creates a `PreparedRequest` without applying session state.",
+      "quote": "`Request.prepare()` ([requests/models.py:265-285]()) creates a `PreparedRequest` without applying session state"
+    },
+    {
+      "claim": "`Session.prepare_request()` applies session-level cookies, authentication, and headers.",
+      "quote": "`Session.prepare_request()` ([requests/sessions.py:441-450]()) applies session-level cookies, authentication, and headers"
+    },
+    {
+      "claim": "Prepared requests do not automatically include environment-based settings like `REQUESTS_CA_BUNDLE`.",
+      "quote": "Prepared requests do not automatically include environment-based settings like `REQUESTS_CA_BUNDLE`."
+    },
+    {
+      "claim": "`Session.merge_environment_settings()` applies environment settings including proxies, verify, cert, and stream.",
+      "quote": "settings = s.merge_environment_settings(prepped.url, {}, None, None, None)"
+    },
+    {
+      "claim": "With `stream=False` (the default), response content is read immediately and the connection is released.",
+      "quote": "**Immediate release**: With `stream=False` (default), content is read immediately."
+    },
+    {
+      "claim": "With `stream=True`, the connection is released by reading `Response.content` or calling `Response.close()`.",
+      "quote": "**Manual release**: With `stream=True`, read `Response.content` or call `Response.close()`"
+    },
+    {
+      "claim": "File-like objects provided to the `data` parameter are streamed without loading the entire file into memory.",
+      "quote": "File-like objects provided to the `data` parameter are streamed without loading the entire file into memory"
+    },
+    {
+      "claim": "Files must be opened in binary mode ('rb') to ensure correct Content-Length header calculation.",
+      "quote": "Files must be opened in binary mode (`'rb'`) to ensure correct `Content-Length` header calculation"
+    },
+    {
+      "claim": "Generators or iterators without a `__len__()` method provided to the `data` parameter trigger `Transfer-Encoding: chunked`.",
+      "quote": "Generators or iterators without a `__len__()` method provided to the `data` parameter trigger `Transfer-Encoding: chunked` in the outgoing request"
+    },
+    {
+      "claim": "The `files` parameter accepts a list of tuples for multipart/form-data encoding, allowing multiple files under the same form field name.",
+      "quote": "The `files` parameter accepts a list of tuples for multipart/form-data encoding, allowing multiple files under the same form field name"
+    },
+    {
+      "claim": "Requests determines text response encoding using `get_encoding_from_headers` and `get_encodings_from_content`.",
+      "quote": "Requests determines the encoding for text responses using `get_encoding_from_headers` ([requests/utils.py:87]()) and `get_encodings_from_content`"
+    },
+    {
+      "claim": "If no charset is found in headers, Requests defaults to ISO-8859-1 for text content types.",
+      "quote": "If no charset is found in the headers, it defaults to ISO-8859-1 for text content types"
+    },
+    {
+      "claim": "By default Requests verifies SSL certificates for HTTPS requests.",
+      "quote": "By default, Requests verifies SSL certificates for HTTPS requests, similar to web browsers."
+    },
+    {
+      "claim": "By default `verify` is set to `True`.",
+      "quote": "By default, `verify` is set to `True`"
+    },
+    {
+      "claim": "By default Requests verifies the server's certificate against CA certificates provided by the `certifi` package.",
+      "quote": "Requests will verify the server's certificate against the CA certificates provided by the `certifi` package."
+    },
+    {
+      "claim": "Requests checks the `REQUESTS_CA_BUNDLE` environment variable for a CA bundle path.",
+      "quote": "`REQUESTS_CA_BUNDLE` - Primary environment variable."
+    },
+    {
+      "claim": "Requests uses `CURL_CA_BUNDLE` as a fallback if `REQUESTS_CA_BUNDLE` is not set.",
+      "quote": "`CURL_CA_BUNDLE` - Used as fallback if `REQUESTS_CA_BUNDLE` is not set."
+    },
+    {
+      "claim": "If `verify` is a directory path, the directory must have been processed with OpenSSL's `c_rehash` utility.",
+      "quote": "If you specify a directory instead of a file, the directory must have been processed using the `c_rehash` utility supplied with OpenSSL."
+    },
+    {
+      "claim": "When `verify=False`, Requests accepts any TLS certificate, ignores hostname mismatches, and ignores expired certificates.",
+      "quote": "When `verify=False`, Requests will accept any TLS certificate presented by the server, ignore hostname mismatches, and ignore expired certificates."
+    },
+    {
+      "claim": "`requests.certs.where()` returns the file path to the certifi CA bundle.",
+      "quote": "| `certs` | [src/requests/certs.py:15]() | `where()` | Returns the file path to the `certifi` CA bundle. |"
+    },
+    {
+      "claim": "The `cert` parameter can be a single file containing both certificate and private key, or a tuple of (certificate file, key file).",
+      "quote": "This can be a single file containing both the certificate and the private key, or a tuple of (certificate file, key file)."
+    },
+    {
+      "claim": "`_urllib3_request_context` populates `cert_file` and `key_file` in the pool arguments passed to urllib3.",
+      "quote": "The `_urllib3_request_context` function handles these inputs by populating `cert_file` and `key_file` in the pool arguments passed to `urllib3`."
+    },
+    {
+      "claim": "In `_urllib3_request_context`, if `verify` is False it sets `cert_reqs` to \"CERT_NONE\".",
+      "quote": "If `verify` is `False`, it sets `cert_reqs` to `\"CERT_NONE\"`."
+    },
+    {
+      "claim": "In `_urllib3_request_context`, if `verify` is a string pointing to a file it sets `ca_certs`.",
+      "quote": "If `verify` is a string and a file, it sets `ca_certs`."
+    },
+    {
+      "claim": "In `_urllib3_request_context`, if `verify` is a string pointing to a directory it sets `ca_cert_dir`.",
+      "quote": "If `verify` is a string and a directory, it sets `ca_cert_dir`."
+    },
+    {
+      "claim": "In `_urllib3_request_context`, if `client_cert` is a tuple of length 2, index 0 maps to `cert_file` and index 1 maps to `key_file`.",
+      "quote": "If `client_cert` is a tuple of length 2, it maps index 0 to `cert_file` and index 1 to `key_file`."
+    },
+    {
+      "claim": "In `_urllib3_request_context`, if `client_cert` is not a 2-tuple, the value is assigned to `cert_file`.",
+      "quote": "Otherwise, it assigns the value to `cert_file`."
+    },
+    {
+      "claim": "With `stream=True`, only the response headers are downloaded initially.",
+      "quote": "Download only the response headers initially"
+    },
+    {
+      "claim": "With `stream=True`, the body is downloaded only when `Response.content` is accessed or the response is iterated.",
+      "quote": "Download the body only when you access `Response.content` or iterate over the response using methods like `iter_content`"
+    },
+    {
+      "claim": "`Response.iter_content` automatically handles decoding of gzip, deflate, and br transfer-encodings.",
+      "quote": "Automatically handles decoding of `gzip`, `deflate`, and `br` (if brotli is installed) transfer-encodings"
+    },
+    {
+      "claim": "The default `ITER_CHUNK_SIZE` in requests.models is 512.",
+      "quote": "The default `ITER_CHUNK_SIZE` is 512"
+    },
+    {
+      "claim": "`Response.iter_lines()` is not reentrant safe.",
+      "quote": "`iter_lines()` is not reentrant safe"
+    },
+    {
+      "claim": "`Response.raw` returns a `urllib3.response.HTTPResponse` object.",
+      "quote": "This returns a `urllib3.response.HTTPResponse` object"
+    },
+    {
+      "claim": "`Response.raw` is a raw stream of bytes with no transformation.",
+      "quote": "`Response.raw` is a raw stream of bytes with no transformation."
+    },
+    {
+      "claim": "Providing a generator or iterator as the request body causes Requests to set the `Transfer-Encoding: chunked` header.",
+      "quote": "Requests will automatically set the `Transfer-Encoding: chunked` header"
+    },
+    {
+      "claim": "If the server returns a malformed chunked response, Requests raises `requests.exceptions.ChunkedEncodingError`.",
+      "quote": "If the server returns a malformed chunked response, `requests` raises a `requests.exceptions.ChunkedEncodingError`"
+    },
+    {
+      "claim": "Passing `chunk_size=None` to `iter_content` returns the original chunks.",
+      "quote": "for chunk in r.iter_content(chunk_size=None):  # None returns original chunks"
+    },
+    {
+      "claim": "`requests.utils.super_len` determines length of a string or bytes using `len()`.",
+      "quote": "| String/Bytes | `len()` |"
+    },
+    {
+      "claim": "`requests.utils.super_len` determines length of file-like objects via `fstat` using `fileno()` or `tell()`/`seek()`.",
+      "quote": "| File-like | `fstat` via `fileno()` or `tell()`/`seek()`"
+    },
+    {
+      "claim": "`requests.utils.super_len` uses the `len` attribute for objects that have it.",
+      "quote": "| Objects with `len` | `obj.len`"
+    },
+    {
+      "claim": "`Response.iter_content` uses `requests.utils.stream_decode_response_unicode` when `decode_unicode` is requested.",
+      "quote": "If `decode_unicode` is requested, it uses `requests.utils.stream_decode_response_unicode` to handle character set conversion on the fly"
+    },
+    {
+      "claim": "The `proxies` dictionary keys should be the protocol such as `http` or `https`, or a specific host.",
+      "quote": "The keys in the dictionary should be the protocol (e.g., `http`, `https`) or a specific host."
+    },
+    {
+      "claim": "If no `proxies` argument is passed, Requests looks for proxy environment variables via `requests.utils.get_environ_proxies`.",
+      "quote": "Requests looks for configuration in standard environment variables via `requests.utils.get_environ_proxies`"
+    },
+    {
+      "claim": "The `http_proxy` environment variable configures the proxy for HTTP requests.",
+      "quote": "| `http_proxy` | Proxy for HTTP requests |"
+    },
+    {
+      "claim": "The `https_proxy` environment variable configures the proxy for HTTPS requests.",
+      "quote": "| `https_proxy` | Proxy for HTTPS requests |"
+    },
+    {
+      "claim": "The `no_proxy` environment variable is a comma-separated list of hosts/networks to bypass.",
+      "quote": "| `no_proxy` | Comma-separated list of hosts/networks to bypass |"
+    },
+    {
+      "claim": "The `all_proxy` environment variable is a fallback proxy for all protocols.",
+      "quote": "| `all_proxy` | Fallback proxy for all protocols |"
+    },
+    {
+      "claim": "Requests provides `requests.auth.HTTPProxyAuth` to handle proxy credentials.",
+      "quote": "Internally, Requests provides `requests.auth.HTTPProxyAuth` to handle these credentials during the connection phase"
+    },
+    {
+      "claim": "Since Requests 2.x, proxy URLs must include a scheme; omitting it raises `requests.exceptions.MissingSchema`.",
+      "quote": "Since Requests 2.x, proxy URLs must include a scheme (e.g., `http://`). Omitting it will raise a `requests.exceptions.MissingSchema` error"
+    },
+    {
+      "claim": "The proxy selection logic for a URL is encapsulated in `requests.utils.select_proxy`.",
+      "quote": "The logic for selecting which proxy to use for a given URL is encapsulated in `requests.utils.select_proxy`."
+    },
+    {
+      "claim": "SOCKS proxy support in Requests requires the `PySocks` library, installable via the `socks` extra.",
+      "quote": "This requires the `PySocks` library, which can be installed via the `socks` extra."
+    },
+    {
+      "claim": "With the `socks5` scheme, DNS resolution happens on the client.",
+      "quote": "`socks5`: DNS resolution happens on the client."
+    },
+    {
+      "claim": "With the `socks5h` scheme, DNS resolution happens on the proxy server.",
+      "quote": "`socks5h`: DNS resolution happens on the proxy server (remote DNS)."
+    },
+    {
+      "claim": "On Windows, if proxy environment variables are not set, `should_bypass_proxies` can fall back to the registry via `proxy_bypass_registry`.",
+      "quote": "On Windows, if environment variables are not set, it can fall back to the registry via `proxy_bypass_registry`"
+    },
+    {
+      "claim": "`requests.utils.is_ipv4_address(host)` checks if a string is a valid IPv4 address.",
+      "quote": "`is_ipv4_address(host)`: Checks if a string is a valid IPv4 address"
+    },
+    {
+      "claim": "`requests.utils.is_valid_cidr(cidr)` validates CIDR notation.",
+      "quote": "`is_valid_cidr(cidr)`: Validates CIDR notation"
+    },
+    {
+      "claim": "`requests.utils.address_in_network(ip, net)` determines if an IP falls within a specific network range.",
+      "quote": "`address_in_network(ip, net)`: Determines if an IP falls within a specific network range"
+    },
+    {
+      "claim": "`requests.utils.dotted_netmask(mask)` converts a numerical network mask to dotted-quad notation.",
+      "quote": "`dotted_netmask(mask)`: Converts a numerical network mask to dotted-quad notation"
+    },
+    {
+      "claim": "Requests uses `certifi` via `requests.utils.DEFAULT_CA_BUNDLE_PATH` as the default CA bundle.",
+      "quote": "**Default Bundle**: Requests uses `certifi` via `requests.utils.DEFAULT_CA_BUNDLE_PATH`"
+    },
+    {
+      "claim": "The hook system is defined in `src/requests/hooks.py`.",
+      "quote": "The hook system is primarily defined in `src/requests/hooks.py`"
+    },
+    {
+      "claim": "Requests supports exactly one hook event, named `response`.",
+      "quote": "Currently, Requests supports exactly one hook: `response`"
+    },
+    {
+      "claim": "`default_hooks()` initializes a dictionary with an empty list for the `response` key.",
+      "quote": "The `default_hooks` function initializes a dictionary with an empty list for the `response` key"
+    },
+    {
+      "claim": "The `HOOKS` constant in requests.hooks is a list containing `['response']`.",
+      "quote": "| `HOOKS` | Constant list containing `['response']` |"
+    },
+    {
+      "claim": "`dispatch_hook()` iterates through registered hook functions and applies callbacks.",
+      "quote": "| `dispatch_hook()` | The execution engine that iterates and applies callbacks |"
+    },
+    {
+      "claim": "In `dispatch_hook`, if a hook returns a value, that value replaces the current data passed to the next hook.",
+      "quote": "If a hook returns a value, that value replaces the current data being processed, which is then passed to the next hook in the chain"
+    },
+    {
+      "claim": "If a single callable is provided as a hook, `dispatch_hook` wraps it in a list before execution.",
+      "quote": "If a single callable is provided, `dispatch_hook` wraps it in a list before execution"
+    },
+    {
+      "claim": "If a hook function returns `None`, the original response object is retained.",
+      "quote": "If a hook function returns `None`, the original response object is retained."
+    },
+    {
+      "claim": "Hooks receive the response object as the first argument and additional keyword arguments via `**kwargs`.",
+      "quote": "Hooks receive the response object as the first argument. Additional keyword arguments passed to `dispatch_hook` (like `timeout` or `stream`) are forwarded to the hook via `**kwargs`"
+    },
+    {
+      "claim": "Hooks are executed in the order they appear in the list.",
+      "quote": "**Order of Execution**: Hooks are executed in the order they appear in the list"
+    },
+    {
+      "claim": "The hook system does not wrap hook execution in try-except blocks, so exceptions propagate to the user.",
+      "quote": "The hook system does not provide internal try-except blocks; exceptions raised within a hook will propagate up the call stack to the user"
+    },
+    {
+      "claim": "By default, Requests does not impose any timeout on requests.",
+      "quote": "By default, Requests does **not** impose any timeout"
+    },
+    {
+      "claim": "The connect timeout is the maximum number of seconds Requests waits to establish a TCP connection to the remote server.",
+      "quote": "The **connect timeout** is the maximum number of seconds Requests will wait for the client to establish a TCP connection to the remote server."
+    },
+    {
+      "claim": "The read timeout is the maximum number of seconds the client waits between bytes received from the server.",
+      "quote": "Specifically, it measures the time between bytes received from the server."
+    },
+    {
+      "claim": "The read timeout is not a time limit on the entire response download.",
+      "quote": "The read timeout is **not** a time limit on the entire response download."
+    },
+    {
+      "claim": "When a single numeric timeout value is provided, it applies to both connect and read timeouts.",
+      "quote": "When a single numeric value is provided, it applies to **both** connect and read timeouts"
+    },
+    {
+      "claim": "Passing a tuple as `timeout` configures `(connect_timeout, read_timeout)` independently.",
+      "quote": "pass a tuple of `(connect_timeout, read_timeout)`"
+    },
+    {
+      "claim": "Passing `None` as the timeout disables timeouts, allowing the request to wait indefinitely.",
+      "quote": "Passing `None` as the timeout value disables timeouts entirely, allowing the request to wait indefinitely"
+    },
+    {
+      "claim": "The `HTTPAdapter` converts the timeout parameter into a `urllib3.util.Timeout` object aliased as `TimeoutSauce`.",
+      "quote": "where it is converted into a `urllib3.util.Timeout` object (aliased as `TimeoutSauce` in the adapter)"
+    },
+    {
+      "claim": "When a domain resolves to multiple IP addresses, the connect timeout applies to each individual connection attempt.",
+      "quote": "The connect timeout applies to **each individual connection attempt**, not the total time across all attempts."
+    },
+    {
+      "claim": "`requests.exceptions.ConnectTimeout` is raised when the connection to the server times out.",
+      "quote": "| `ConnectTimeout` | Raised when the connection to the server times out. |"
+    },
+    {
+      "claim": "`requests.exceptions.ReadTimeout` is raised when the server does not send data within the read timeout period.",
+      "quote": "| `ReadTimeout` | Raised when the server does not send data within the read timeout period. |"
+    },
+    {
+      "claim": "`requests.exceptions.Timeout` is the base class for `ConnectTimeout` and `ReadTimeout`.",
+      "quote": "| `Timeout` | Base class for both `ConnectTimeout` and `ReadTimeout`. |"
+    },
+    {
+      "claim": "`HTTPAdapter` uses `DEFAULT_RETRIES` of 0 by default for max_retries.",
+      "quote": "By default, `HTTPAdapter` uses `DEFAULT_RETRIES` which is 0"
+    },
+    {
+      "claim": "`requests.utils.requote_uri(uri)` safely re-quotes a URI while preserving already encoded characters.",
+      "quote": "**`requote_uri(uri)`**: Safely re-quotes a URI, ensuring it's properly encoded while preserving already encoded characters"
+    },
+    {
+      "claim": "`requests.utils.unquote_unreserved(uri)` un-escapes percent-escape sequences for unreserved characters.",
+      "quote": "**`unquote_unreserved(uri)`**: Un-escapes any percent-escape sequences in a URI that are unreserved characters"
+    },
+    {
+      "claim": "`requests.utils.urldefragauth(url)` removes authentication and fragment components from a URL.",
+      "quote": "**`urldefragauth(url)`**: Removes authentication and fragment components from a URL"
+    },
+    {
+      "claim": "`requests.utils.prepend_scheme_if_needed(url, scheme)` adds a scheme to a URL if it doesn't already have one.",
+      "quote": "**`prepend_scheme_if_needed(url, scheme)`**: Adds a scheme (e.g., \"http\") to a URL if it doesn't already have one"
+    },
+    {
+      "claim": "`requests.utils.parse_dict_header(value)` parses an HTTP header value as a dictionary.",
+      "quote": "**`parse_dict_header(value)`**: Parses a HTTP header value as a dictionary"
+    },
+    {
+      "claim": "`requests.utils._parse_list_header` is an internal alias for `parse_http_list`.",
+      "quote": "**`_parse_list_header(value)`**: Internal alias for `parse_http_list`, used to parse comma-separated headers"
+    },
+    {
+      "claim": "`requests.utils.unquote_header_value(value, is_filename=False)` unquotes a header value handling escaped characters.",
+      "quote": "**`unquote_header_value(value, is_filename=False)`**: Unquotes a header value, handling escaped characters"
+    },
+    {
+      "claim": "`requests.utils.parse_header_links(value)` parses the HTTP Link header into a list of dictionaries.",
+      "quote": "**`parse_header_links(value)`**: Parses the HTTP `Link` header into a list of dictionaries"
+    },
+    {
+      "claim": "`requests.utils.get_encodings_from_content(content)` extracts encodings from HTML meta tags.",
+      "quote": "**`get_encodings_from_content(content)`**: Extracts encodings from HTML `<meta>` tags"
+    },
+    {
+      "claim": "`requests.utils.guess_json_utf(data)` detects the UTF encoding of JSON data by examining byte patterns.",
+      "quote": "**`guess_json_utf(data)`**: Detects the specific UTF encoding of JSON data by examining byte patterns"
+    },
+    {
+      "claim": "`requests.utils.get_environ_proxies(url, no_proxy=None)` returns a dictionary of proxies defined in environment variables.",
+      "quote": "**`get_environ_proxies(url, no_proxy=None)`**: Returns a dictionary of proxies defined in environment variables like `HTTP_PROXY` or `HTTPS_PROXY`"
+    },
+    {
+      "claim": "`requests.utils.to_key_val_list(value)` converts dicts or lists of tuples into a standardized list of key-value pairs.",
+      "quote": "**`to_key_val_list(value)`**: Converts various input formats (dicts, lists of tuples) into a standardized list of key-value pairs"
+    },
+    {
+      "claim": "`requests.utils.dict_to_sequence(d)` converts a dictionary-like object to a sequence of items.",
+      "quote": "**`dict_to_sequence(d)`**: Converts a dictionary-like object to a sequence of items"
+    },
+    {
+      "claim": "`requests.utils.guess_filename(obj)` guesses the filename of a file-like object by checking the `name` attribute.",
+      "quote": "**`guess_filename(obj)`**: Tries to guess the filename of a file-like object by checking the `name` attribute"
+    },
+    {
+      "claim": "`requests.utils.extract_zipped_paths(path)` handles paths pointing inside a ZIP archive by extracting them to temporary files.",
+      "quote": "**`extract_zipped_paths(path)`**: Handles paths that point to members inside a ZIP archive by extracting them to temporary files"
+    },
+    {
+      "claim": "`CaseInsensitiveDict` is a `MutableMapping` variant providing case-insensitive key access while preserving original case.",
+      "quote": "`CaseInsensitiveDict`: A `MutableMapping` variant that provides case-insensitive access to keys while preserving the original case for display and iteration"
+    },
+    {
+      "claim": "`LookupDict` is a dictionary subclass allowing attribute-style access and returning None for missing keys.",
+      "quote": "`LookupDict`: A dictionary subclass that allows attribute-style access and provides a default `None` value for missing keys"
+    },
+    {
+      "claim": "`CaseInsensitiveDict` maintains an internal `OrderedDict` named `_store`.",
+      "quote": "The class maintains an internal `OrderedDict` named `_store`"
+    },
+    {
+      "claim": "In `CaseInsensitiveDict.__setitem__`, the key is lowercased and the value stored as a tuple of (original_key, value).",
+      "quote": "the key is lowercased and used as the internal key. The value is stored as a tuple containing `(original_key, value)`"
+    },
+    {
+      "claim": "`CaseInsensitiveDict.__getitem__` converts the provided key to lowercase before accessing `_store`.",
+      "quote": "Lookups in `__getitem__` convert the provided key to lowercase before accessing `_store`"
+    },
+    {
+      "claim": "`CaseInsensitiveDict.__iter__` yields the original_key from the stored tuple.",
+      "quote": "When iterating over the dictionary (`__iter__`), it yields the `original_key` from the stored tuple"
+    },
+    {
+      "claim": "`CaseInsensitiveDict.__eq__` constructs a temporary `CaseInsensitiveDict` from the comparison object and compares `lower_items()`.",
+      "quote": "It constructs a temporary `CaseInsensitiveDict` from the comparison object and compares their `lower_items()`"
+    },
+    {
+      "claim": "`CaseInsensitiveDict.lower_items()` yields (lowercase_key, value) pairs.",
+      "quote": "| `lower_items` | `() -> Iterator[tuple[str, _VT]]` | Yields `(lowercase_key, value)` pairs"
+    },
+    {
+      "claim": "`CaseInsensitiveDict.copy()` returns a new `CaseInsensitiveDict` instance with the same values.",
+      "quote": "| `copy` | `() -> CaseInsensitiveDict` | Returns a new instance populated with the same values"
+    },
+    {
+      "claim": "`LookupDict.__getattr__` looks up keys in `__dict__` and raises AttributeError if missing.",
+      "quote": "It overrides `__getattr__` to look up keys in the internal `__dict__`. If the key is missing, it raises an `AttributeError`"
+    },
+    {
+      "claim": "`LookupDict.__getitem__` returns `None` instead of raising KeyError for missing keys.",
+      "quote": "It overrides `__getitem__` to return `None` instead of raising a `KeyError` if a key is missing from `__dict__`"
+    },
+    {
+      "claim": "`LookupDict` has a `name` attribute used in its `__repr__`.",
+      "quote": "It includes a `name` attribute primarily used for its string representation in `__repr__`"
+    },
+    {
+      "claim": "`LookupDict.__repr__` produces output in the form `<lookup 'name'>`.",
+      "quote": "| `repr` | `{...}` | `<lookup 'name'>`"
+    },
+    {
+      "claim": "`CaseInsensitiveDict` inherits from `MutableMapping`.",
+      "quote": "MutableMapping <|-- CaseInsensitiveDict"
+    },
+    {
+      "claim": "`LookupDict` inherits from `dict`.",
+      "quote": "dict <|-- LookupDict"
+    },
+    {
+      "claim": "`PreparedRequest.headers` and `Response.headers` use `CaseInsensitiveDict`.",
+      "quote": "Both `PreparedRequest.headers` and `Response.headers` use `CaseInsensitiveDict`"
+    },
+    {
+      "claim": "The `requests.codes` object is an instance of `LookupDict`.",
+      "quote": "The `requests.codes` object is an instance of `LookupDict`"
+    },
+    {
+      "claim": "`requests.status_codes._init` maps titles from the `_codes` dictionary to integer status codes using `setattr`.",
+      "quote": "It is initialized in `requests.status_codes._init` by mapping various titles (e.g., \"ok\", \"OK\", \"okay\") from the `_codes` dictionary to their integer status codes using `setattr`"
+    },
+    {
+      "claim": "`resolve_proxies` with `trust_env=True` merges environment proxies with explicit proxies.",
+      "quote": "**trust_env=True** (default): Merges environment proxies with explicit proxies."
+    },
+    {
+      "claim": "`resolve_proxies` with `trust_env=False` uses only explicit proxies and ignores the environment.",
+      "quote": "**trust_env=False**: Uses only explicit proxies, ignores environment."
+    },
+    {
+      "claim": "In `resolve_proxies`, explicit proxies take precedence over environment proxies via `setdefault()`.",
+      "quote": "Explicit proxies take precedence over environment proxies via `setdefault()`"
+    },
+    {
+      "claim": "`should_bypass_proxies` returns True if the parsed URL hostname is None.",
+      "quote": "CheckHostname -->|Yes| ReturnTrue[\"Return True (file:// URLs)\"]"
+    },
+    {
+      "claim": "`select_proxy` checks proxy keys in the order: `scheme://hostname`, `scheme`, `all://hostname`, `all`.",
+      "quote": "1. `scheme://hostname` - Most specific (e.g., `http://api.example.com`)\n2. `scheme` - Protocol-level (e.g., `http`)\n3. `all://hostname` - Host-specific fallback\n4. `all` - Global fallback"
+    },
+    {
+      "claim": "If the URL has no hostname, `select_proxy` returns `proxies.get(scheme, proxies.get('all'))`.",
+      "quote": "NoHostname -->|Yes| CheckSchemeOnly[\"proxies.get(scheme, proxies.get('all'))\"]"
+    },
+    {
+      "claim": "`address_in_network` uses `struct.unpack('=L', socket.inet_aton(ip))` to convert IPs for bitwise comparison.",
+      "quote": "CheckAddr[\"address_in_network(ip, net)\"] --> UnpackIP[\"struct.unpack('=L', socket.inet_aton(ip))\"]"
+    },
+    {
+      "claim": "`is_valid_cidr` validates that the mask portion is between 1 and 32.",
+      "quote": "Split --> ValidateMask[\"Check mask 1-32\"]"
+    },
+    {
+      "claim": "The Windows `proxy_bypass_registry` reads the ProxyEnable and ProxyOverride values from the HKCU Internet Settings key.",
+      "quote": "OpenKey[\"winreg.OpenKey(HKCU, Internet Settings)\"] --> ReadEnable[\"Read ProxyEnable value\"]"
+    },
+    {
+      "claim": "The Windows proxy bypass implementation supports the `<local>` keyword and wildcard patterns, converting `*` to `.*` and `?` to `.`.",
+      "quote": "The Windows implementation supports the `<local>` keyword and wildcard patterns (converting `*` to `.*` and `?` to `.`)."
+    },
+    {
+      "claim": "`requests.utils._parse_content_type_header()` splits the header on semicolons to separate media type from parameters.",
+      "quote": "Splits header on semicolons to separate media type from parameters"
+    },
+    {
+      "claim": "`_parse_content_type_header` strips quotes and whitespace from parameter values.",
+      "quote": "Strips quotes and whitespace from values"
+    },
+    {
+      "claim": "`_parse_content_type_header` converts parameter names to lowercase.",
+      "quote": "Converts parameter names to lowercase"
+    },
+    {
+      "claim": "`_parse_content_type_header` sets the value to `True` for parameters without values.",
+      "quote": "Handles parameters without values (sets value to `True`)"
+    },
+    {
+      "claim": "`get_encoding_from_headers` returns the charset parameter when present, stripped of quotes.",
+      "quote": "| Any | `charset=X` present | `X` (stripped) | Explicit declaration takes precedence"
+    },
+    {
+      "claim": "`get_encoding_from_headers` returns `ISO-8859-1` for `text/*` content types without a charset.",
+      "quote": "| `text/*` | No charset | `ISO-8859-1` | RFC 2616 default for text"
+    },
+    {
+      "claim": "`get_encoding_from_headers` returns `utf-8` for `application/json` content types without a charset.",
+      "quote": "| `application/json` | No charset | `utf-8` | RFC 4627 specifies UTF-8 for JSON"
+    },
+    {
+      "claim": "`get_encoding_from_headers` returns None when the Content-Type header is absent.",
+      "quote": "HasCT -->|\"no\"| ReturnNone[\"return None\"]"
+    },
+    {
+      "claim": "`get_encodings_from_content` returns encodings in the order they are found in the content.",
+      "quote": "Encodings are returned in the order they are found in the content"
+    },
+    {
+      "claim": "`get_encodings_from_content` checks for HTML5 `<meta charset=\"...\">`, HTML4 http-equiv content-type meta tags, and XML declarations.",
+      "quote": "1. HTML5 `<meta charset=\"...\">` [src/requests/utils.py:483-483]()\n2. HTML4 `<meta http-equiv=\"Content-type\" content=\"...charset=...\">`"
+    },
+    {
+      "claim": "`get_encodings_from_content` emits a `DeprecationWarning`.",
+      "quote": "Note: Emits a `DeprecationWarning` suggesting the use of `charset_normalizer` or `beautifulsoup4` for more robust parsing"
+    },
+    {
+      "claim": "`guess_json_utf` examines the first 4 bytes of the data.",
+      "quote": "Sample[\"Extract first 4 bytes\"]"
+    },
+    {
+      "claim": "`guess_json_utf` returns 'utf-32' if a UTF-32 LE or BE BOM is found.",
+      "quote": "Is32 -->|\"yes\"| Return32[\"return 'utf-32'\"]"
+    },
+    {
+      "claim": "`guess_json_utf` returns 'utf-8-sig' if the first three bytes are a UTF-8 BOM.",
+      "quote": "Is8 -->|\"yes\"| Return8sig[\"return 'utf-8-sig'\"]"
+    },
+    {
+      "claim": "`guess_json_utf` returns 'utf-16' if the first two bytes are a UTF-16 BOM.",
+      "quote": "Is16 -->|\"yes\"| Return16[\"return 'utf-16'\"]"
+    },
+    {
+      "claim": "`guess_json_utf` returns 'utf-8' when there are no null bytes in the first four bytes.",
+      "quote": "NullCount -->|\"0\"| Return8[\"return 'utf-8'\"]"
+    },
+    {
+      "claim": "`guess_json_utf` returns 'utf-16-be' when the 1st and 3rd of the first four bytes are null.",
+      "quote": "Check2Nulls -->|\"1st and 3rd null\"| Return16BE[\"return 'utf-16-be'\"]"
+    },
+    {
+      "claim": "`guess_json_utf` returns 'utf-16-le' when the 2nd and 4th of the first four bytes are null.",
+      "quote": "Check2Nulls -->|\"2nd and 4th null\"| Return16LE[\"return 'utf-16-le'\"]"
+    },
+    {
+      "claim": "`guess_json_utf` returns 'utf-32-be' when the first three of four bytes are null.",
+      "quote": "Check3Nulls -->|\"first 3 null\"| Return32BE[\"return 'utf-32-be'\"]"
+    },
+    {
+      "claim": "`guess_json_utf` returns 'utf-32-le' when the last three of four bytes are null.",
+      "quote": "Check3Nulls -->|\"last 3 null\"| Return32LE[\"return 'utf-32-le'\"]"
+    },
+    {
+      "claim": "`guess_json_utf` returns None when the null byte count is other than 0, 2, or 3.",
+      "quote": "NullCount -->|\"other\"| ReturnNone[\"return None\"]"
+    },
+    {
+      "claim": "`_resolve_char_detection()` in compat.py tries to import 'chardet' first and then 'charset_normalizer'.",
+      "quote": "1. **`chardet`** - Checked first [src/requests/compat.py:39-42]().\n2. **`charset_normalizer`** - Checked if `chardet` is missing"
+    },
+    {
+      "claim": "The result of `_resolve_char_detection` is assigned to `compat.chardet`.",
+      "quote": "The result is assigned to `compat.chardet`"
+    },
+    {
+      "claim": "In Requests 2.x, `RequestException` subclasses `IOError` rather than `RuntimeError`.",
+      "quote": "In version 2.x, `RequestException` was changed to subclass `IOError` (rather than `RuntimeError`)"
+    },
+    {
+      "claim": "`ConnectionError` is raised when network problems such as DNS failures or refused connections occur.",
+      "quote": "When network problems occur (DNS failures, refused connections), Requests raises a `ConnectionError`"
+    },
+    {
+      "claim": "Unsuccessful HTTP status codes do not automatically raise exceptions in Requests.",
+      "quote": "Unsuccessful HTTP status codes (4XX or 5XX) do not automatically raise exceptions."
+    },
+    {
+      "claim": "`ConnectTimeout` errors are generally safe to retry.",
+      "quote": "`ConnectTimeout` errors are generally safe to retry"
+    },
+    {
+      "claim": "`MissingSchema` is raised when a URL lacks a protocol.",
+      "quote": "`MissingSchema`: Raised when a URL lacks a protocol (e.g., \"localhost:8000\")"
+    },
+    {
+      "claim": "`InvalidSchema` is raised for unsupported protocols.",
+      "quote": "`InvalidSchema`: Raised for unsupported protocols"
+    },
+    {
+      "claim": "`InvalidURL` is raised for malformed URLs.",
+      "quote": "`InvalidURL`: Raised for malformed URLs"
+    },
+    {
+      "claim": "The `RequestException` base class stores `request` and `response` attributes.",
+      "quote": "The base `RequestException` class is designed to store the context of the failure, specifically the `request` and `response` objects involved"
+    },
+    {
+      "claim": "`JSONDecodeError` inherits from both `InvalidJSONError` and the environment's native JSONDecodeError.",
+      "quote": "`JSONDecodeError` is a specialized exception that inherits from both `InvalidJSONError` and the environment's native `JSONDecodeError`"
+    },
+    {
+      "claim": "`JSONDecodeError` implements `__reduce__` to preserve pickling behavior from the underlying JSON library.",
+      "quote": "It implements `__reduce__` to preserve pickling behavior from the underlying JSON library"
+    },
+    {
+      "claim": "`ContentDecodingError` is raised when the server sends a malformed body or uses an unsupported compression format.",
+      "quote": "If the server sends a malformed body or uses an unsupported compression format, Requests raises `ContentDecodingError`"
+    },
+    {
+      "claim": "Requests uses internal regex validators in `_internal_utils.py` to ensure header names and values are well-formed, raising `InvalidHeader` for invalid values.",
+      "quote": "Requests uses internal regex validators to ensure header names and values are well-formed. Providing invalid header values can trigger an `InvalidHeader` exception"
+    },
+    {
+      "claim": "`make init` installs development dependencies from `requirements-dev.txt`.",
+      "quote": "**Initialization**: `make init` installs development dependencies from `requirements-dev.txt`"
+    },
+    {
+      "claim": "`make test` executes the test suite located in the `tests/` directory.",
+      "quote": "**Testing**: The `make test` command executes the test suite located in the `tests/` directory"
+    },
+    {
+      "claim": "Code coverage is tracked using `pytest-cov` with configuration in `.coveragerc`.",
+      "quote": "Code coverage is tracked using `pytest-cov`, with configurations defined in `.coveragerc`"
+    },
+    {
+      "claim": "The publish process creates a virtual environment named `.publishenv` using `build` and `twine`.",
+      "quote": "The build process creates a virtual environment `.publishenv` to handle distribution via `build` and `twine`"
+    },
+    {
+      "claim": "`make test` runs `python -m pytest tests`.",
+      "quote": "This executes `python -m pytest tests`"
+    },
+    {
+      "claim": "`make docs` executes `make html` within the docs directory.",
+      "quote": "This executes `make html` within the `docs` directory"
+    },
+    {
+      "claim": "Requests documentation is generated using Sphinx and written in reStructuredText.",
+      "quote": "Documentation is authored in reStructuredText (`.rst`) and generated using Sphinx."
+    },
+    {
+      "claim": "The Requests documentation style uses a 79-character line limit.",
+      "quote": "Documentation follows a semi-formal, approachable prose style with a 79-character line limit"
+    },
+    {
+      "claim": "Contributors can provide system context using `python -m requests.help`.",
+      "quote": "Contributors are encouraged to provide system context using `python -m requests.help` when reporting issues"
+    },
+    {
+      "claim": "Requests requires Python 3.10 or later.",
+      "quote": "Python 3.10 or later"
+    },
+    {
+      "claim": "The requirements-dev.txt includes pytest, httpbin, and trustme.",
+      "quote": "which includes `pytest`, `httpbin`, and `trustme`"
+    },
+    {
+      "claim": "The project uses setuptools as the build backend.",
+      "quote": "The project utilizes `setuptools` as the build backend"
+    },
+    {
+      "claim": "`setup.py` is a minimal wrapper that calls `setup()` for legacy build environments.",
+      "quote": "| `setup.py` | Minimal wrapper that calls `setup()` to support legacy build environments"
+    },
+    {
+      "claim": "`tox.ini` configures multi-environment testing across Python versions 3.10 through 3.14.",
+      "quote": "| `tox.ini` | Configures multi-environment testing across Python versions 3.10 through 3.14"
+    },
+    {
+      "claim": "The `clean_proxy_environ` fixture removes proxy environment variables before every test using `monkeypatch.delenv`.",
+      "quote": "**`clean_proxy_environ`**: Automatically removes proxy environment variables (e.g., `http_proxy`, `no_proxy`) before every test to ensure a clean state by using `monkeypatch.delenv`"
+    },
+    {
+      "claim": "The `httpbin` and `httpbin_secure` fixtures ensure URLs have trailing slashes via the `prepare_url` helper.",
+      "quote": "**`httpbin` / `httpbin_secure`**: Wrappers around `pytest-httpbin` that ensure URLs have trailing slashes via the `prepare_url` helper"
+    },
+    {
+      "claim": "The `nosan_server` fixture spawns a local HTTPServer using `trustme` with a certificate having only a commonName and no subjectAltName.",
+      "quote": "**`nosan_server`**: Spawns a local `HTTPServer` using `trustme` to generate a certificate with only a `commonName` and no `subjectAltName`"
+    },
+    {
+      "claim": "`tests/__init__.py` ensures `SNIMissingWarning` from urllib3 always fires during testing.",
+      "quote": "it ensures `SNIMissingWarning` from `urllib3` always fires during testing"
+    },
+    {
+      "claim": "The test `Server` class is a `threading.Thread` subclass that manages a raw socket and uses `select.select` to handle connections.",
+      "quote": "**`Server`**: A `threading.Thread` subclass that manages a raw socket. It uses `select.select` to handle connections"
+    },
+    {
+      "claim": "`consume_socket_content` reads all available data from a socket until a timeout or EOF.",
+      "quote": "**`consume_socket_content`**: A utility function that reads all available data from a socket until a timeout or EOF is reached"
+    },
+    {
+      "claim": "`TLSServer` is a subclass of `Server` that wraps the socket in an `ssl.SSLContext` and sets `verify_mode` to `ssl.CERT_OPTIONAL` for mutual TLS.",
+      "quote": "**`TLSServer`**: A subclass of `Server` that wraps the socket in an `ssl.SSLContext`. It supports mutual TLS by loading a `cacert` and setting `verify_mode` to `ssl.CERT_OPTIONAL`"
+    },
+    {
+      "claim": "The tox `use_chardet_on_py3` environment tests with the `chardet` extra enabled.",
+      "quote": "The `use_chardet_on_py3` environment specifically tests with the `chardet` extra enabled"
+    },
+    {
+      "claim": "Ruff is configured with target version Python 3.10 and enforces rules I, UP, E, W, and F.",
+      "quote": "Target version is Python 3.10. It enforces rules for imports (`I`), pyupgrade (`UP`), and standard errors/warnings (`E`, `W`, `F`)"
+    },
+    {
+      "claim": "Ruff is configured to use double quotes and space indentation.",
+      "quote": "It is configured to use double quotes and space indentation"
+    },
+    {
+      "claim": "Pyright is set to `strict` mode and focuses on the `src/requests` directory.",
+      "quote": "Set to `strict` mode, focusing on the `src/requests` directory"
+    },
+    {
+      "claim": "`make test-readme` uses `setup.py check` to validate RestructuredText for PyPI.",
+      "quote": "This uses `setup.py check` to ensure valid RestructuredText for PyPI"
+    },
+    {
+      "claim": "The GitHub Actions test matrix runs Python versions 3.10 through 3.15-dev, including 3.14t and PyPy 3.11.",
+      "quote": "**Python versions**: 3.10 through 3.15-dev, including experimental \"t\" (freethreading) builds and PyPy 3.11"
+    },
+    {
+      "claim": "The GitHub Actions test matrix runs on Ubuntu 22.04, macOS, and Windows.",
+      "quote": "**Operating systems**: Ubuntu 22.04, macOS, and Windows"
+    },
+    {
+      "claim": "PyPy 3.11 is excluded on Windows in the test matrix.",
+      "quote": "**Exclusions**: PyPy 3.11 is excluded on Windows due to OpenSSL/Rust installation constraints"
+    },
+    {
+      "claim": "The main test job runs `make` to install dependencies and `make ci` to execute the test suite with coverage.",
+      "quote": "1. `make`: Installs dependencies [[.github/workflows/run-tests.yml:36-36]]().\n2. `make ci`: Executes the test suite with coverage reporting"
+    },
+    {
+      "claim": "The `no_chardet` test job uninstalls `charset_normalizer` and `chardet` before running tests.",
+      "quote": "**No Character Detection** (`no_chardet`): Uninstalls `charset_normalizer` and `chardet` before running tests"
+    },
+    {
+      "claim": "The `urllib3` test job installs `urllib3<2` to verify backward compatibility.",
+      "quote": "**urllib3 1.x Compatibility** (`urllib3`): Specifically installs `urllib3<2`"
+    },
+    {
+      "claim": "The lint workflow uses pre-commit v4.6.0 on ubuntu-24.04.",
+      "quote": "**Lint Workflow**: Uses `pre-commit` (v4.6.0) on `ubuntu-24.04`"
+    },
+    {
+      "claim": "The pre-commit config includes `ruff-check` and `ruff-format` hooks.",
+      "quote": "including `ruff-check` and `ruff-format`"
+    },
+    {
+      "claim": "The type check workflow runs pyright against the `src/requests/` directory on Python 3.10 and 3.14.",
+      "quote": "**Type Check Workflow**: Runs `pyright` against the `src/requests/` directory across Python 3.10 and 3.14"
+    },
+    {
+      "claim": "The CodeQL workflow runs on pushes to main, pull requests, and a weekly schedule.",
+      "quote": "It runs on pushes to `main`, PRs, and a weekly schedule"
+    },
+    {
+      "claim": "The zizmor workflow analyzes GitHub Actions workflow files for security misconfigurations.",
+      "quote": "**zizmor**: Analyzes the GitHub Actions workflow files themselves for security misconfigurations"
+    },
+    {
+      "claim": "The publish workflow uses the `build` module version 1.4.0 to create distributions.",
+      "quote": "**Build**: Uses the `build` module (v1.4.0) to create distributions."
+    },
+    {
+      "claim": "The publish workflow sets `SOURCE_DATE_EPOCH` to the timestamp of the last commit for reproducible builds.",
+      "quote": "It sets `SOURCE_DATE_EPOCH` to the timestamp of the last commit for reproducible builds"
+    },
+    {
+      "claim": "Publishing to PyPI is triggered by version tags and uses Trusted Publishing via `id-token: write` permissions with attestations enabled.",
+      "quote": "**PyPI**: Triggered by version tags (e.g., `v2.31.0`). It uses Trusted Publishing (OIDC) via `id-token: write` permissions and enables `attestations`"
+    },
+    {
+      "claim": "Publishing to Test PyPI is triggered manually via `workflow_dispatch`.",
+      "quote": "**Test PyPI**: Triggered manually via `workflow_dispatch` for verification"
+    },
+    {
+      "claim": "The lock-threads workflow runs daily to lock issues and pull requests inactive for 90 days.",
+      "quote": "The `lock-threads` workflow runs daily to lock inactive issues and pull requests (inactive for 90 days)"
+    },
+    {
+      "claim": "Dependabot is configured to check `github-actions` and `pre-commit` ecosystems weekly.",
+      "quote": "Check `github-actions` and `pre-commit` ecosystems weekly"
+    },
+    {
+      "claim": "Dependabot is configured to ignore patch updates.",
+      "quote": "Ignore patch updates to reduce noise"
+    },
+    {
+      "claim": "The Sphinx `project` configuration value is `u\"Requests\"`.",
+      "quote": "| `project` | `u\"Requests\"` | Displayed in documentation titles"
+    },
+    {
+      "claim": "The Sphinx configuration enables the autodoc, intersphinx, todo, and viewcode extensions.",
+      "quote": "| `extensions` | `autodoc`, `intersphinx`, `todo`, `viewcode` | Enable Sphinx extensions"
+    },
+    {
+      "claim": "The Sphinx `templates_path` is set to `[\"_templates\"]`.",
+      "quote": "| `templates_path` | `[\"_templates\"]` | Location of custom templates"
+    },
+    {
+      "claim": "The Sphinx `source_suffix` is `\".rst\"`.",
+      "quote": "| `source_suffix` | `\".rst\"` | File extension for documentation files"
+    },
+    {
+      "claim": "The Sphinx `html_theme` is `\"alabaster\"`.",
+      "quote": "| `html_theme` | `\"alabaster\"` | Theme used for HTML output"
+    },
+    {
+      "claim": "The Sphinx `version` value is set from `requests.__version__`.",
+      "quote": "| `version` | `requests.__version__` | Version dynamically pulled from code"
+    },
+    {
+      "claim": "The Sphinx configuration sets `todo_include_todos` to True.",
+      "quote": "| `todo_include_todos`| `True` | Include todo items in final output"
+    },
+    {
+      "claim": "The Sphinx conf.py adds the parent directory to `sys.path` so autodoc can import the requests package.",
+      "quote": "The configuration explicitly adds the parent directory to `sys.path` to allow `autodoc` to import the `requests` package"
+    },
+    {
+      "claim": "The documentation requirements pin Sphinx to version 7.2.6.",
+      "quote": "The documentation requires specific versions of Sphinx, currently pinned to `7.2.6`"
+    },
+    {
+      "claim": "The docs Makefile `html` target executes `$(SPHINXBUILD) -b html`.",
+      "quote": "The `Makefile` defines the `html` target which executes `$(SPHINXBUILD) -b html`"
+    },
+    {
+      "claim": "Sphinx output is generated in the `_build` directory, with HTML in `_build/html`.",
+      "quote": "The output is generated in the `_build` directory, specifically `_build/html` for HTML builds"
+    },
+    {
+      "claim": "The Read the Docs configuration uses Ubuntu 22.04 and Python 3.12.",
+      "quote": "It uses Ubuntu 22.04 and Python 3.12 for the build environment"
+    },
+    {
+      "claim": "The Read the Docs configuration triggers the `dirhtml` builder.",
+      "quote": "triggers the `dirhtml` builder"
+    },
+    {
+      "claim": "The Read the Docs configuration also builds PDF and ePub formats.",
+      "quote": "It also builds PDF and ePub formats"
+    },
+    {
+      "claim": "`docs/community/updates.rst` includes the project's `HISTORY.md` file.",
+      "quote": "**Updates**: `docs/community/updates.rst` includes the project's `HISTORY.md` file to show a chronological changelog"
+    },
+    {
+      "claim": "`docs/dev/authors.rst` includes the top-level `AUTHORS.rst` file.",
+      "quote": "**Authors**: `docs/dev/authors.rst` includes the top-level `AUTHORS.rst` file to list project contributors"
+    },
+    {
+      "claim": "The documentation uses `flask_theme_support.FlaskyStyle` for syntax highlighting.",
+      "quote": "The documentation uses the `alabaster` theme but utilizes `flask_theme_support.FlaskyStyle` for syntax highlighting"
+    },
+    {
+      "claim": "The Requests project is licensed under the Apache License, Version 2.0.",
+      "quote": "The Requests documentation and project are protected under the **Apache License, Version 2.0**"
+    },
+    {
+      "claim": "The Sphinx configuration lists copyright as held by Kenneth Reitz and contributors.",
+      "quote": "Copyright is held by Kenneth Reitz and contributors"
+    },
+    {
+      "claim": "Security vulnerabilities for Requests are reported by opening a draft Security Advisory on GitHub.",
+      "quote": "**Draft Advisory**: Open a [draft Security Advisory](https://github.com/psf/requests/security/advisories/new) via GitHub"
+    },
+    {
+      "claim": "The Requests security policy promises an initial response within 2 days.",
+      "quote": "| Initial response | Within 2 days (typically \u226412 hours)"
+    },
+    {
+      "claim": "The Requests security policy targets a fix within 2 weeks from initial disclosure.",
+      "quote": "| Fix development | Target of 2 weeks from initial disclosure"
+    },
+    {
+      "claim": "The Requests security policy notifies downstream packagers at least 1 week before release.",
+      "quote": "| Downstream notification | At least 1 week before release"
+    },
+    {
+      "claim": "Security releases for Requests are made on a weekday.",
+      "quote": "| Release | On a weekday following notification period"
+    },
+    {
+      "claim": "The Requests CodeQL workflow runs on every push to the `main` branch.",
+      "quote": "Run on every push to the `main` branch"
+    },
+    {
+      "claim": "The Requests CodeQL workflow runs on all pull requests targeting `main`.",
+      "quote": "Run on all pull requests targeting `main`"
+    },
+    {
+      "claim": "The Requests CodeQL workflow performs a weekly scheduled scan.",
+      "quote": "Perform a weekly scheduled scan"
+    },
+    {
+      "claim": "The CodeQL workflow uses the `github/codeql-action/init` action for Python scanning.",
+      "quote": "The analysis uses the `github/codeql-action/init` action to initialize the environment for Python scanning"
+    },
+    {
+      "claim": "Downstream notification recipients include the Python Maintenance Team at Red Hat (python-maint@redhat.com).",
+      "quote": "**Python Maintenance Team, Red Hat**: `python-maint@redhat.com`"
+    },
+    {
+      "claim": "Downstream notification recipients include Daniele Tricoli of Debian.",
+      "quote": "**Daniele Tricoli, Debian**: `@eriol`"
+    },
+    {
+      "claim": "`src/requests/__version__.py` defines `__title__` as \"requests\".",
+      "quote": "| `__title__` | `\"requests\"` |"
+    },
+    {
+      "claim": "`src/requests/__version__.py` defines `__description__` as \"Python HTTP for Humans.\"",
+      "quote": "| `__description__` | `\"Python HTTP for Humans.\"` |"
+    },
+    {
+      "claim": "`src/requests/__version__.py` defines `__version__` as \"2.34.2\".",
+      "quote": "| `__version__` | `\"2.34.2\"` |"
+    },
+    {
+      "claim": "`src/requests/__version__.py` defines `__build__` as 0x023402.",
+      "quote": "| `__build__` | `0x023402` |"
+    },
+    {
+      "claim": "`src/requests/__version__.py` defines `__author__` as \"Kenneth Reitz\".",
+      "quote": "| `__author__` | `\"Kenneth Reitz\"` |"
+    },
+    {
+      "claim": "`src/requests/__version__.py` defines `__author_email__` as \"me@kennethreitz.org\".",
+      "quote": "| `__author_email__` | `\"me@kennethreitz.org\"` |"
+    },
+    {
+      "claim": "`src/requests/__version__.py` defines `__license__` as \"Apache-2.0\".",
+      "quote": "| `__license__` | `\"Apache-2.0\"` |"
+    },
+    {
+      "claim": "`src/requests/__version__.py` defines `__copyright__` as \"Copyright Kenneth Reitz\".",
+      "quote": "| `__copyright__` | `\"Copyright Kenneth Reitz\"` |"
+    },
+    {
+      "claim": "`src/requests/__version__.py` defines `__url__` as \"https://requests.readthedocs.io\".",
+      "quote": "| `__url__` | `\"https://requests.readthedocs.io\"` |"
+    },
+    {
+      "claim": "Inline types were introduced in Requests version 2.34.0 to replace external type stubs.",
+      "quote": "Recent updates include the introduction of inline types in version 2.34.0 to replace external type stubs."
+    },
+    {
+      "claim": "Requests requires Python 3.10 or later as of version 2.33.0.",
+      "quote": "As of version 2.33.0, Requests requires Python 3.10 or later."
+    },
+    {
+      "claim": "Python 3.9 support was dropped in Requests v2.33.0.",
+      "quote": "| Python 3.9     | **Dropped**   | - | v2.33.0 |"
+    },
+    {
+      "claim": "Python 3.8 support was dropped in Requests v2.32.5.",
+      "quote": "| Python 3.8     | **Dropped**   | - | v2.32.5 |"
+    },
+    {
+      "claim": "Python 3.7 support was dropped in Requests v2.32.0.",
+      "quote": "| Python 3.7     | **Dropped**   | - | v2.32.0 |"
+    },
+    {
+      "claim": "Python 3.12 support was added in Requests v2.32.0.",
+      "quote": "| Python 3.12    | Supported     | v2.32.0 | - |"
+    },
+    {
+      "claim": "Python 3.14 support was added in Requests v2.32.5.",
+      "quote": "| Python 3.14    | Supported     | v2.32.5 | - |"
+    },
+    {
+      "claim": "Python 3.15 support was added in Requests v2.34.0.",
+      "quote": "| Python 3.15    | Supported     | v2.34.0 | - |"
+    },
+    {
+      "claim": "The Requests project is classified with Development Status 5 - Production/Stable.",
+      "quote": "**Development Status**: 5 - Production/Stable"
+    },
+    {
+      "claim": "The Requests project classifiers include \"Programming Language :: Python :: Free Threading\" with value 2 - Beta.",
+      "quote": "**Programming Language :: Python :: Free Threading**: 2 - Beta"
+    },
+    {
+      "claim": "The Requests MANIFEST.in includes README.md, LICENSE, NOTICE, HISTORY.md, requirements-dev.txt, tests/*.py, and tests/certs/*.",
+      "quote": "| `README.md` | Project documentation |"
+    },
+    {
+      "claim": "The Requests build backend is `setuptools.build_meta`.",
+      "quote": "**Build Backend**: `setuptools.build_meta`"
+    },
+    {
+      "claim": "The Requests version is dynamically pulled from `requests.__version__.__version__`.",
+      "quote": "**Dynamic Versioning**: Version is pulled from `requests.__version__.__version__`"
+    },
+    {
+      "claim": "Requests source files are located in the `src` directory.",
+      "quote": "**Package Location**: Source files are located in the `src` directory."
+    },
+    {
+      "claim": "Requests requires `urllib3>=1.26, <3`.",
+      "quote": "| `urllib3` | Connection pooling and HTTP protocol | `>=1.26, <3` |"
+    },
+    {
+      "claim": "Requests requires `certifi>=2023.5.7`.",
+      "quote": "| `certifi` | CA Bundle for SSL verification | `>=2023.5.7` |"
+    },
+    {
+      "claim": "Requests requires `idna>=2.5, <4`.",
+      "quote": "| `idna` | Internationalized Domain Names in Applications | `>=2.5, <4` |"
+    },
+    {
+      "claim": "Requests requires `charset_normalizer>=2, <4`.",
+      "quote": "| `charset_normalizer` | Character encoding detection | `>=2, <4` |"
+    },
+    {
+      "claim": "Ian Stapleton Cordasco is a maintainer of Requests.",
+      "quote": "| Ian Stapleton Cordasco | Maintainer |"
+    },
+    {
+      "claim": "Nate Prewitt is a maintainer of Requests.",
+      "quote": "| Nate Prewitt | Maintainer |"
+    },
+    {
+      "claim": "The `requests.__init__` module calls `check_compatibility()` to verify dependency versions.",
+      "quote": "Init -- \"check_compatibility()\" --> urllib3"
+    },
+    {
+      "claim": "`check_compatibility` verifies chardet version is >= 3.0.2 and < 8.0.0.",
+      "quote": "DetectLib -- \"chardet\" --> CheckChardet[\"Verify 3.0.2 <= chardet < 8.0.0\"]"
+    },
+    {
+      "claim": "`check_compatibility` verifies charset_normalizer version is >= 2.0.0 and < 4.0.0.",
+      "quote": "DetectLib -- \"charset_normalizer\" --> CheckNormalizer[\"Verify 2.0.0 <= charset_normalizer < 4.0.0\"]"
+    },
+    {
+      "claim": "`check_compatibility` raises a `RequestsDependencyWarning` when version verification fails.",
+      "quote": "VerifyUrllib3 -- \"Fail\" --> Warn[\"Raise RequestsDependencyWarning\"]"
+    },
+    {
+      "claim": "The `socks` extra requires `PySocks>=1.5.6, !=1.5.7`.",
+      "quote": "| `socks` | `PySocks>=1.5.6, !=1.5.7` | Enables support for SOCKS4/SOCKS5 proxies. |"
+    },
+    {
+      "claim": "The `use_chardet_on_py3` extra requires `chardet>=3.0.2, <8`.",
+      "quote": "| `use_chardet_on_py3` | `chardet>=3.0.2, <8` | Forces the use of `chardet` instead of `charset_normalizer`. |"
+    },
+    {
+      "claim": "The `security` extra is an empty list.",
+      "quote": "| `security` | `[]` | Legacy extra for security enhancements. |"
+    },
+    {
+      "claim": "`_resolve_char_detection` iterates through the tuple (\"chardet\", \"charset_normalizer\").",
+      "quote": "The function `_resolve_char_detection` iterates through a list of supported libraries: `(\"chardet\", \"charset_normalizer\")`"
+    },
+    {
+      "claim": "`_resolve_char_detection` attempts to import each library using `importlib.import_module`.",
+      "quote": "It attempts to import each using `importlib.import_module`"
+    },
+    {
+      "claim": "The first successfully imported char detection module is assigned to the `chardet` symbol.",
+      "quote": "The first successfully imported module is assigned to the `chardet` symbol used throughout the library"
+    },
+    {
+      "claim": "`requests.help.info()` provides diagnostic data about the system's SSL version.",
+      "quote": "The `requests.help.info()` function provides diagnostic data about the system's SSL version"
+    },
+    {
+      "claim": "If `idna` lacks a `__version__` attribute, Requests returns an empty string rather than crashing.",
+      "quote": "If `idna` lacks a `__version__` attribute (common in very old versions), Requests handles it gracefully by returning an empty string"
+    },
+    {
+      "claim": "`requests.packages` aliases modules in `sys.modules` starting with the package name to the `requests.packages` prefix.",
+      "quote": "This is achieved by iterating through `sys.modules` and aliasing any module starting with the package name to the `requests.packages` prefix."
+    },
+    {
+      "claim": "`requests.packages.urllib3` is the same object as the global `urllib3`.",
+      "quote": "meaning `requests.packages.urllib3` is the same object as the global `urllib3`"
+    },
+    {
+      "claim": "`setup.py` checks `sys.version_info` and exits with an error if the Python version is below 3.10.",
+      "quote": "**Enforcement**: `setup.py` checks `sys.version_info` and exits with an error if the version is below 3.10."
+    },
+    {
+      "claim": "`pyproject.toml` specifies `requires-python = \">=3.10\"`.",
+      "quote": "**Metadata**: `requires-python = \">=3.10\"` is specified in the project configuration."
+    },
+    {
+      "claim": "A major release of Requests uses version format vX.0.0 and includes breaking changes.",
+      "quote": "| **Major** | `vX.0.0` | Includes breaking changes that disrupt backwards compatibility"
+    },
+    {
+      "claim": "A minor release of Requests uses version format vX.Y.0 and includes new features and bug fixes that are backwards compatible.",
+      "quote": "| **Minor** | `vX.Y.0` | Includes new features and bug fixes; guaranteed to be backwards compatible within the same major version"
+    },
+    {
+      "claim": "A hotfix release of Requests is limited to bug fixes and does not include dependency upgrades.",
+      "quote": "| **Hotfix** | `vX.Y.Z` | Strictly limited to bug fixes missed in the previous release. Does **not** include dependency upgrades"
+    },
+    {
+      "claim": "The Requests publish workflow is triggered by a push to a tag matching `v*`.",
+      "quote": "**Trigger**: A push to a tag matching `v*`"
+    },
+    {
+      "claim": "The Requests publish workflow uses `pypa/gh-action-pypi-publish` with OIDC attestations.",
+      "quote": "**Publish**: Uses `pypa/gh-action-pypi-publish` with OpenID Connect (OIDC) attestations for secure PyPI uploads"
+    },
+    {
+      "claim": "Requests migrated to a PEP 517 build system using setuptools starting with version 2.33.0.",
+      "quote": "Starting with version 2.33.0, the project migrated to a PEP 517 build system using `setuptools`"
+    },
+    {
+      "claim": "PyPy 3.11 support was added for Linux and macOS in Requests.",
+      "quote": "| **PyPy 3.11** | \u2713 Supported | Added for Linux and macOS"
+    },
+    {
+      "claim": "CVE-2026-25645 was addressed in v2.33.0 by updating `requests.utils.extract_zipped_paths` to use non-deterministic locations.",
+      "quote": "**CVE-2026-25645 (v2.33.0)**: Updated `requests.utils.extract_zipped_paths` to use non-deterministic locations to prevent malicious file replacement"
+    },
+    {
+      "claim": "CVE-2024-47081 was fixed in v2.32.4 where malicious URLs could trick netrc into retrieving credentials for the wrong host.",
+      "quote": "**CVE-2024-47081 (v2.32.4)**: Fixed an issue where malicious URLs could trick `netrc` into retrieving credentials for the wrong host"
+    },
+    {
+      "claim": "CVE-2024-35195 was fixed in v2.32.0 where `verify=False` on an initial request leaked into subsequent requests to the same origin.",
+      "quote": "**CVE-2024-35195 (v2.32.0)**: Fixed a session-level vulnerability where `verify=False` on an initial request leaked into subsequent requests to the same origin"
+    },
+    {
+      "claim": "Requests v2.34.1 widened `json` input types to `Mapping` and `Sequence`.",
+      "quote": "**Input Type Widening**: v2.34.1 widened `json` input types to `Mapping` and `Sequence`"
+    },
+    {
+      "claim": "Requests v2.34.2 moved `headers` types back to `Mapping` from `MutableMapping`.",
+      "quote": "**Header Type Reversion**: v2.34.2 moved `headers` back to `Mapping` (from `MutableMapping`)"
+    },
+    {
+      "claim": "Requests v2.32.5 reverted the global `SSLContext` caching feature introduced in 2.32.0.",
+      "quote": "In version 2.32.5, the team reverted a global `SSLContext` caching feature originally introduced in 2.32.0"
+    },
+    {
+      "claim": "The `src/requests/py.typed` file signals PEP 561 compliance for the requests package.",
+      "quote": "**Marker File**: `src/requests/py.typed` signals PEP 561 compliance."
+    },
+    {
+      "claim": "`requests.__init__` initializes a `NullHandler` for the `requests` logger.",
+      "quote": "The package initializes a `NullHandler` for the `requests` logger to prevent \"No handler found\" warnings."
+    },
+    {
+      "claim": "`requests.__init__` silences urllib3's `DependencyWarning` and configures `FileModeWarning` to default.",
+      "quote": "**Warning Suppression**: Silences `urllib3`'s `DependencyWarning` and configures `FileModeWarning` to default."
+    },
+    {
+      "claim": "If the standard library `ssl` module lacks SNI support, Requests attempts to inject `pyopenssl` into urllib3.",
+      "quote": "**SNI Support**: If the standard library `ssl` module lacks SNI support, Requests attempts to inject `pyopenssl` into `urllib3`."
+    },
+    {
+      "claim": "`check_compatibility` verifies that urllib3 is at least version 1.21.1.",
+      "quote": "The `check_compatibility` function verifies that `urllib3` is at least version 1.21.1"
+    },
+    {
+      "claim": "`src/requests/__version__.py` defines `__cake__` as \"\u2728 \ud83c\udf70 \u2728\".",
+      "quote": "| `__cake__` | `__version__.py:14` | \"\u2728 \ud83c\udf70 \u2728\" |"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "cost": 1.55
+}
