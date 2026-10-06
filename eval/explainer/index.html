@@ -32,7 +32,7 @@ svg { width: 100%; height: auto; display: block; font-family: var(--mono); font-
 svg text { fill: var(--ink) } svg .mut { fill: var(--muted) }
 .node rect { fill: var(--sheet); stroke: var(--ink); stroke-width: 1 } .node.story rect { fill: var(--story-soft); stroke: var(--story) } .node.wiki rect { fill: var(--wiki-soft); stroke: var(--wiki) }
 .node.role rect { stroke-dasharray: 4 3 }
-.wire { stroke: var(--ink); stroke-width: 1.2; fill: none } .wire.story { stroke: var(--story) } .wire.wiki { stroke: var(--wiki) } .wire.blocked { stroke: var(--no); stroke-dasharray: 3 3 }
+.wire { stroke: var(--ink); stroke-width: 1.2; fill: none } .wire.story { stroke: var(--story) } .wire.wiki { stroke: var(--wiki) } .node.blocked rect { stroke: var(--no); stroke-dasharray: 3 3; fill: var(--sheet) } .node.blocked text.never { fill: var(--no); font-size: 11px }
 .dimmed { opacity: var(--dim) }
 .roles { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px }
 .roles button { font: 500 12.5px/1.2 var(--mono); padding: 7px 11px; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); color: var(--ink); cursor: pointer }
@@ -172,14 +172,13 @@ const EDGES = [['repo', 'writer', ''], ['writer', 'keys', ''], ['keys', 'checks'
 function flow(active) {
   const W = 200, H = 40; let s = `<svg viewBox="0 0 800 320" role="img"><title>Information flow</title>`;
   const c = k => [NODES[k][0] + W / 2, NODES[k][1] + H / 2];
-  for (const [a, b, cls] of EDGES) { const [x1, y1] = c(a), [x2, y2] = c(b); let dim = ''; if (active) { const r = ROLES[active]; const blocked = r.not.includes(a) && b === active; dim = (a === active || b === active) ? (blocked ? ' blocked' : '') : ' dimmed'; } s += `<line class="wire ${cls}${dim}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`; }
-  if (active) for (const n of ROLES[active].not) { if (!NODES[n]) continue; const [x1, y1] = c(n), [x2, y2] = c(active); s += `<line class="wire blocked" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`; }
-  for (const [k, [x, y, label]] of Object.entries(NODES)) { const role = ROLES[k] ? ' role' : ''; const cls = k === 'story' ? ' story' : k === 'wiki' ? ' wiki' : ''; let dim = ''; if (active && k !== active) { const r = ROLES[active]; dim = (r.saw.includes(k) || r.not.includes(k) || EDGES.some(([a, b]) => (a === active && b === k) || (b === active && a === k))) ? '' : ' dimmed'; } s += `<g class="node${role}${cls}${dim}"><rect x="${x}" y="${y}" width="${W}" height="${H}" rx="6"/><text x="${x + W / 2}" y="${y + H / 2}" text-anchor="middle" dominant-baseline="central">${label}</text></g>`; }
+  for (const [a, b, cls] of EDGES) { const [x1, y1] = c(a), [x2, y2] = c(b); let dim = ''; if (active) { const r = ROLES[active]; if (r.not.includes(a) && b === active) continue; dim = (a === active || b === active) ? '' : ' dimmed'; } s += `<line class="wire ${cls}${dim}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`; }
+  for (const [k, [x, y, label]] of Object.entries(NODES)) { const role = ROLES[k] ? ' role' : ''; const cls = k === 'story' ? ' story' : k === 'wiki' ? ' wiki' : ''; let dim = '', blocked = ''; if (active && k !== active) { const r = ROLES[active]; blocked = r.not.includes(k) ? ' blocked' : ''; dim = (r.saw.includes(k) || blocked || EDGES.some(([a, b]) => (a === active && b === k) || (b === active && a === k))) ? '' : ' dimmed'; } s += `<g class="node${role}${cls}${dim}${blocked}"><rect x="${x}" y="${y}" width="${W}" height="${H}" rx="6"/><text x="${x + W / 2}" y="${y + H / 2}" text-anchor="middle" dominant-baseline="central">${label}</text>${blocked ? `<text class="never" x="${x + W}" y="${y - 6}" text-anchor="end">never seen by ${ROLES[active].name.toLowerCase()}</text>` : ''}</g>`; }
   return s + `</svg>`;
 }
 const rolesEl = document.getElementById('roles'); const fig = document.getElementById('flowfig'); const note = document.getElementById('rolenote'); let activeRole = null;
-for (const [k, r] of Object.entries(ROLES)) { const b = document.createElement('button'); b.textContent = r.name; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { activeRole = activeRole === k ? null : k; [...rolesEl.children].forEach(x => x.setAttribute('aria-pressed', String(x.textContent === r.name && activeRole))); fig.innerHTML = flow(activeRole); note.textContent = activeRole ? r.note : 'Click a role above. Solid lines: what flows in. Red dashed: what was kept out.'; }; rolesEl.appendChild(b); }
-fig.innerHTML = flow(null); note.textContent = 'Solid lines show what flows where. Click a role to see what it was given and what it was kept from.';
+for (const [k, r] of Object.entries(ROLES)) { const b = document.createElement('button'); b.textContent = r.name; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { activeRole = activeRole === k ? null : k; [...rolesEl.children].forEach(x => x.setAttribute('aria-pressed', String(x.textContent === r.name && activeRole))); fig.innerHTML = flow(activeRole); note.textContent = activeRole ? r.note : 'Click a role above. Lines show what flowed in and out; a red dashed box is something that role never saw.'; }; rolesEl.appendChild(b); }
+fig.innerHTML = flow(null); note.textContent = 'Lines show what flows where. Click a role: what it never saw is outlined in red, with no line to it.';
 
 // ---- per repo bars
 let kind = 'general';
