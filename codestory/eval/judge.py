@@ -16,12 +16,13 @@ from __future__ import annotations
 
 import json
 import random
+import re
 import sys
 from pathlib import Path
 
 from common import ARMS, EVAL, SEED, arm_commit, arm_tree, ask, save_trace, text_of, usage_cost
 from jev import JevError, decide
-from outline import repo_block, repo_info
+from outline import NOISE, git, repo_context, repo_info
 
 BATCH = 20
 
@@ -89,6 +90,38 @@ def lines_text(tree: Path, refs: list[str]) -> str:
     return "\n\n".join(out)
 
 
+IDENT = re.compile(r"[A-Za-z_][A-Za-z0-9_]{2,}")
+
+
+def judge_block(tree: Path, claims: list[str]) -> dict:
+    """The repository for the judge, source first: the files these claims name, then every other non-test source
+    file, then docs. Without this, the shared repo block led with README and docs and, in the large repositories,
+    left out the very files the claims were about (the first run's "unverifiable" column)."""
+    info = repo_info(tree)
+    paths = [p for p in git(tree, "ls-files").splitlines() if not NOISE.search(p)]
+    skip = re.compile(r"(^|/)(tests?|examples?|docs?|benchmarks?|scripts?|tools?)/|(^|/)(test_|conftest|setup\.py|bench)")
+    source = [p for p in paths if p.endswith(".py") and not skip.search(p)]
+    names = {t for c in claims for t in IDENT.findall(c)}
+    joined = " ".join(claims)
+
+    def score(p: str) -> tuple:
+        """Lower sorts first: files the claims name by module or path, then files defining the most named things."""
+        stem = Path(p).stem.lstrip("_")
+        by_name = stem.lower() in {n.lower() for n in names} or Path(p).name in joined
+        try:
+            text = (tree / p).read_text()
+        except (UnicodeDecodeError, OSError):
+            return (2, 0)
+        defined = sum(1 for n in names if f"def {n}(" in text or f"class {n}(" in text or f"class {n}:" in text)
+        return (0 if by_name else 1 if defined else 2, -defined)
+
+    ranked = sorted(source, key=score)
+    first = [p for p in ranked if score(p)[0] < 2]
+    focus = set(first) | set(source)
+    text = f"Repository: {info['name']} at commit {info['commit'][:7]}\n\n{repo_context(tree, focus, order=first)}"
+    return {"type": "text", "text": text, "cache_control": {"type": "ephemeral"}}
+
+
 def sampled_claims(name: str) -> list[dict]:
     items = []
     for arm in ARMS:
@@ -108,9 +141,9 @@ def judge_claims(client, name: str) -> dict:
         by_tree.setdefault(it["tree"], []).append(it)
     for tree, group in by_tree.items():
         tree_path = Path(tree)
-        block = repo_block(tree_path, repo_info(tree_path))
         for b in range(0, len(group), BATCH):
             batch = group[b : b + BATCH]
+            block = judge_block(tree_path, [it["claim"] for it in batch])
             listing = "\n".join(f"{i + 1}. {it['claim']}" for i, it in enumerate(batch))
             response = ask(client, CLAIMS_SYSTEM, [block, {"type": "text", "text": f"<claims>\n{listing}\n</claims>\n\nJudge every claim."}],
                            CLAIMS_SCHEMA)

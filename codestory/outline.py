@@ -126,11 +126,12 @@ def traced_files(story: Path) -> set[str]:
     return found
 
 
-def repo_context(repo: Path, focus: set[str] | None = None) -> str:
+def repo_context(repo: Path, focus: set[str] | None = None, order: list[str] | None = None) -> str:
     """The repo as the model will see it: a file list, then as many files as fit, with line numbers.
 
     With a trace, the files the data passes through come first, then the README and docs, then the rest while the
-    budget lasts: in a large repo the model sees what matters. Without one, the README and docs come first."""
+    budget lasts: in a large repo the model sees what matters. Without one, the README and docs come first.
+    `order` puts the named files before everything else, in that order."""
     files = []
     for path in git(repo, "ls-files").splitlines():
         if NOISE.search(path):
@@ -143,7 +144,8 @@ def repo_context(repo: Path, focus: set[str] | None = None) -> str:
 
     listing = "\n".join(f"{p}  ({t.count(chr(10))} lines)" for p, t in files)
     focus = focus or set()
-    files.sort(key=lambda f: (f[0] not in focus, not GUIDES.search(f[0])))  # stable: repo order within each group
+    rank = {p: i for i, p in enumerate(order or [])}
+    files.sort(key=lambda f: (rank.get(f[0], len(rank)), f[0] not in focus, not GUIDES.search(f[0])))  # stable: repo order within each group
     parts, used, skipped = [], 0, []
     for path, text in files:
         numbered = "\n".join(f"{i:5}  {line}" for i, line in enumerate(text.splitlines(), 1))
