@@ -1,0 +1,210 @@
+<title>How the Comparison Worked</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a stepper; one idea per screen, a figure on top, a short explanation under it, prev/next at the bottom. */
+:root {
+  --bg: #f7f5f0; --sheet: #ffffff; --ink: #1d1b17; --muted: #5f5b53; --rule: #d9d4c9;
+  --story: #1f5f8b; --story-soft: #dfeaf4; --wiki: #8b5a1f; --wiki-soft: #f5ecdc;
+  --ok: #2d6a4f; --no: #a23b2a; --hi: #fff1c2; --dim: .28;
+  --serif: "Source Serif 4", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15140f; --sheet: #1f1d18; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e;
+  --story: #7fb3d9; --story-soft: #1b2b38; --wiki: #d9a05c; --wiki-soft: #332718;
+  --ok: #7cc49a; --no: #e08674; --hi: #3b3418; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15140f; --sheet: #1f1d18; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e;
+  --story: #7fb3d9; --story-soft: #1b2b38; --wiki: #d9a05c; --wiki-soft: #332718;
+  --ok: #7cc49a; --no: #e08674; --hi: #3b3418; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--serif); margin: 0; padding-block: 28px 80px; padding-inline: 16px }
+main { max-width: 860px; margin: 0 auto }
+.kicker { font: 500 12px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+h1 { font: 600 30px/1.15 var(--serif); margin: 6px 0 18px; text-wrap: balance }
+h2 { font: 600 22px/1.25 var(--serif); margin: 0 0 10px; text-wrap: balance }
+p { margin: 0 0 12px; max-width: 68ch }
+.steps { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 18px; padding: 0; list-style: none }
+.steps button { font: 500 12px/1.2 var(--mono); padding: 6px 10px; border: 1px solid var(--rule); background: var(--sheet); color: var(--muted); border-radius: 999px; cursor: pointer }
+.steps button[aria-current="step"] { color: var(--ink); border-color: var(--ink) }
+.steps button:focus-visible { outline: 2px solid var(--story); outline-offset: 2px }
+section { display: none } section.on { display: block }
+.fig { background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; margin: 0 0 18px; overflow-x: auto }
+svg { width: 100%; height: auto; display: block; font-family: var(--mono); font-size: 12px }
+svg text { fill: var(--ink) } svg .mut { fill: var(--muted) }
+.node rect { fill: var(--sheet); stroke: var(--ink); stroke-width: 1 } .node.story rect { fill: var(--story-soft); stroke: var(--story) } .node.wiki rect { fill: var(--wiki-soft); stroke: var(--wiki) }
+.node.role rect { stroke-dasharray: 4 3 }
+.wire { stroke: var(--ink); stroke-width: 1.2; fill: none } .wire.story { stroke: var(--story) } .wire.wiki { stroke: var(--wiki) } .wire.blocked { stroke: var(--no); stroke-dasharray: 3 3 }
+.dimmed { opacity: var(--dim) }
+.roles { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px }
+.roles button { font: 500 12.5px/1.2 var(--mono); padding: 7px 11px; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); color: var(--ink); cursor: pointer }
+.roles button[aria-pressed="true"] { background: var(--hi); border-color: var(--ink) }
+.note { background: var(--hi); border-radius: 8px; padding: 10px 14px; font-size: 15.5px; margin: 0 0 12px }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px }
+.col { border: 1px solid var(--rule); border-radius: 10px; padding: 14px; min-width: 0; background: var(--sheet) }
+.col h3 { margin: 0 0 6px; font: 600 16px/1.3 var(--serif) } .col.story h3 { color: var(--story) } .col.wiki h3 { color: var(--wiki) }
+.col p, .col li { font-size: 15px } .col ul { padding-left: 18px; margin: 6px 0 }
+.q { border-left: 3px solid var(--rule); padding: 6px 12px; margin: 0 0 10px; font-size: 15px } .q b { font: 500 12px var(--mono); color: var(--muted) }
+.q code, code { font: 13.5px var(--mono); background: var(--bg); padding: 1px 4px; border-radius: 3px }
+pre { font: 13px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; overflow-x: auto; margin: 0 0 12px }
+.bars { display: grid; grid-template-columns: 90px 1fr; gap: 6px 12px; align-items: center; font: 13px var(--mono) }
+.bar { height: 14px; border-radius: 3px; position: relative } .bar.story { background: var(--story) } .bar.wiki { background: var(--wiki) }
+.track { display: grid; gap: 3px } .track span { font-size: 11px; color: var(--muted); margin-left: 6px }
+.ctl { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 12px; font: 13px var(--mono) }
+.ctl button { font: 500 12.5px var(--mono); padding: 6px 10px; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); color: var(--ink); cursor: pointer }
+.ctl button[aria-pressed="true"] { background: var(--hi); border-color: var(--ink) }
+.big { font: 600 40px/1 var(--serif); font-variant-numeric: tabular-nums } .big.story { color: var(--story) } .big.wiki { color: var(--wiki) }
+.pair { display: flex; gap: 28px; align-items: baseline; margin: 6px 0 10px } .pair small { display: block; font: 12px var(--mono); color: var(--muted) }
+.nav { display: flex; justify-content: space-between; margin-top: 18px }
+.nav button { font: 500 14px var(--serif); padding: 8px 14px; border: 1px solid var(--rule); border-radius: 8px; background: var(--sheet); color: var(--ink); cursor: pointer }
+.nav button:disabled { opacity: .4; cursor: default }
+.tag { display: inline-block; padding: 1px 7px; border-radius: 4px; font: 500 12px/1.4 var(--mono) } .tag.story { background: var(--story-soft); color: var(--story) } .tag.wiki { background: var(--wiki-soft); color: var(--wiki) }
+.caveat { display: grid; gap: 10px } .caveat div { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; background: var(--sheet); font-size: 15.5px }
+.caveat b { display: block; font: 500 12px var(--mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 3px }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+</style>
+<main>
+<div class="kicker">codestories · the comprehension measure (H2) · how it was done</div>
+<h1>Is 76% against 56% a real result, and what exactly does it say?</h1>
+<ul class="steps" id="steps"></ul>
+
+<section data-title="1 · The claim">
+<h2>What was measured</h2>
+<div class="fig">
+  <div class="pair"><div><span class="big story">__GEN_S__%</span><small><span class="tag story">story</span> general questions</small></div>
+  <div><span class="big wiki">__GEN_D__%</span><small><span class="tag wiki">deepwiki</span> general questions</small></div></div>
+  <div class="pair"><div><span class="big story">__PATH_S__%</span><small><span class="tag story">story</span> path questions</small></div>
+  <div><span class="big wiki">__PATH_D__%</span><small><span class="tag wiki">deepwiki</span> path questions</small></div></div>
+</div>
+<p>Those are percentage scores on a quiz. A reader that has seen only one document about a repository, and never the code, is asked questions about the code. Each answer is marked correct (1), partly (½) or wrong (0). The percentage is the average over all questions, pooled across nine repositories.</p>
+<p>So the claim behind "76% vs 56%" is: <em>a reader given a CodeStory answered owner questions about the repository better than a reader given DeepWiki's wiki for the same repository.</em> Whether that is a fair sentence depends on three things: who the reader was, where the questions came from, and how the marking was done. The next screens show each.</p>
+</section>
+
+<section data-title="2 · Two documents">
+<h2>The two arms, same code</h2>
+<div class="cols">
+  <div class="col story"><h3>Story</h3><p>Written by the CodeStories pipeline: one real run of the repository's intended use is traced, and the story follows the data through it. 6–10 chapters, about 6,000–10,000 words. Every claim links to lines at a pinned commit; each chapter has a proof that runs.</p></div>
+  <div class="col wiki"><h3>DeepWiki</h3><p>Cognition's generated wiki for the same repository, every page, fetched through its public server on 2 October. Organised by the code's structure. 14,000–33,000 words per repository, with <code>[file:lines]()</code> references.</p></div>
+</div>
+<p style="margin-top:14px">Nine repositories count: requests, flask, click, httpx, rich, attrs, jinja, markupsafe, tqdm. A tenth, itsdangerous, was used to build the pipeline and is reported but not counted. For eight of the nine, DeepWiki's pages describe the very same commit the story cites; the two that differ (attrs, markupsafe) are each judged against their own commit.</p>
+<p>The reader for each arm gets the whole document. DeepWiki's is two to four times longer; nothing was trimmed.</p>
+</section>
+
+<section data-title="3 · Who saw what">
+<h2>The part that makes it fair: who saw what</h2>
+<p>Click a role to see what it was given and what it was kept from. The rule throughout: nobody who writes a question, answers one, or marks one knows which arm is which, or sees anything that would let them favour one.</p>
+<div class="roles" id="roles"></div>
+<div class="fig" id="flowfig"></div>
+<div class="note" id="rolenote">Click a role above.</div>
+</section>
+
+<section data-title="4 · The questions">
+<h2>Where the questions came from</h2>
+<p>A model that never saw either document was given the repository, the intended-use script, and the trace of that run. It wrote 8 <b>path</b> questions (what happens to the data on this run) and 7 <b>general</b> questions (what an owner would ask: guarantees, failure modes, risky defaults), each with a key.</p>
+<div class="q"><b>PATH · requests p8</b><br>Nearby wrong input: if the scenario had passed <code>auth=('user', 'pass', 'extra')</code> instead of a 2-tuple, what would happen during preparation?</div>
+<div class="q"><b>GENERAL · requests g3</b><br>Under what exact conditions does requests drop the <code>Authorization</code> header when following a redirect, and which cross-scheme case is deliberately allowed?</div>
+<div class="q"><b>GENERAL · requests g5</b><br>What retry behaviour does a default <code>HTTPAdapter</code> provide, and what is the difference between <code>max_retries=0</code> and <code>max_retries=3</code>?</div>
+<p><b>Keys are checked before anyone reads an arm.</b> A path question's key comes with a small program that must run against the repository and assert the keyed answer; a general question's key names the source lines that settle it, which must exist. Keys that fail are dropped, not fixed: 3 of 135 were. The writer can be wrong; it cannot be wrong in a way that survives.</p>
+<pre>__CHECK__</pre>
+</section>
+
+<section data-title="5 · Reading and marking">
+<h2>Reading and marking</h2>
+<p><b>The reader</b> is a model given one arm's full text and the fifteen questions. No repository, no tools, no web. It may answer "the text does not say", which is marked wrong.</p>
+<p><b>The grader</b> is a model given the question, the key, and the answer, and nothing else: not the arm, not the document. It marks correct, partly or wrong, with a one-line reason. Here is one it marked wrong:</p>
+<div class="q"><b>requests g1 · <span class="tag wiki">deepwiki</span> · wrong</b><br><i>Question:</i> What does <code>prepare_cookies</code> guarantee about being called more than once on the same PreparedRequest?<br><i>Answer given:</i> "The documentation describes <code>prepare_cookies(cookies)</code> only as converting cookies into the Cookie header via <code>get_cookie_header</code>…; it does not state any guarantee about calling it more than once…"<br><i>Grader:</i> Denies the once-only contract and misses both the cookielib <code>has_header</code> mechanism and the fact that <code>resolve_redirects</code> pops the Cookie header before re-preparing.</div>
+<p>Same questions, same keys, same grader for both arms. The only thing that differs between the two scores is the document the reader was handed.</p>
+</section>
+
+<section data-title="6 · Per repository">
+<h2>The nine repositories, side by side</h2>
+<div class="ctl"><span>show:</span><button id="kgen" aria-pressed="true">general questions</button><button id="kpath" aria-pressed="false">path questions</button></div>
+<div class="fig"><div class="bars" id="bars"></div></div>
+<p id="barnote"></p>
+</section>
+
+<section data-title="7 · Is it luck?">
+<h2>Could nine repositories give this by chance?</h2>
+<p>Nine is not many. The preregistration's answer is a bootstrap: pretend the nine are the whole world, draw nine of them <em>with replacement</em> (so some appear twice, some not at all), recompute the difference, and repeat. The spread of those differences is the uncertainty. Draw some.</p>
+<div class="ctl"><button id="d1">draw 1</button><button id="d100">draw 100</button><button id="d2000">draw 2,000</button><button id="dreset">reset</button><span id="dcount"></span></div>
+<div class="fig" id="bootfig"></div>
+<p id="bootnote"></p>
+<p>The preregistered run used 10,000 draws with a fixed seed: the 95% interval for the general-question difference was <b>+__GCI0__ to +__GCI1__ points</b>; for path questions, <b>+__PCI0__ to +__PCI1__</b>. An interval that stays above zero is what "not luck" means here. The general one clears zero, by less than the path one does.</p>
+</section>
+
+<section data-title="8 · The honest sentence">
+<h2>What you can say, and what you can't</h2>
+<div class="caveat">
+  <div><b>The reader was a model</b>Claude Opus, reading the text with no tools. No human read for this measure. The one human signal is Omoju's blind read of two stories, recorded before the numbers, and the 20-claim hand check on the accuracy judge.</div>
+  <div><b>"General" meant the core modules, not the whole repository</b>Checked after the decision: all 61 general questions are keyed to files the traced run passes through. The question writer had the trace in front of it, and in these libraries the intended use runs through the core. The stories visit those files; they don't visit <code>docs/</code>, the CI, or the far corners. Nothing here measures questions about those.</div>
+  <div><b>Nine small, pure-Python libraries</b>Nothing here says anything about large, multi-language systems, and the interval for general questions starts at +5 points: real, not huge.</div>
+  <div><b>The other measure went the other way</b>The same study found the stories no more accurate than DeepWiki (0.71 vs 0.54 contradicted claims per 1,000 words; 10 vs 7 of 360), which is why the preregistered rule said kill. Comprehension and accuracy are separate findings; quote them together.</div>
+</div>
+<p style="margin-top:16px"><b>The sentence that survives all of that:</b> on nine small Python libraries, a model reader given a CodeStory answered owner-style questions about the core modules of the repository better than one given DeepWiki (76% vs 56%; 95% interval on the difference +5 to +33 points, resampling repositories), with questions written from the code and one traced run by a model that saw neither document, keys checked by execution, and blind grading. On questions about the traced run itself the gap was +35 points.</p>
+<p>Everything on this page comes from <code>eval/</code> in the repository: the questions, every answer, every grade, and every model response.</p>
+</section>
+
+<div class="nav"><button id="prev">← Back</button><button id="next">Next →</button></div>
+</main>
+<script>
+const DATA = __DATA__;
+// ---- stepper
+const sections = [...document.querySelectorAll('section')]; const steps = document.getElementById('steps'); let cur = 0;
+sections.forEach((s, i) => { const li = document.createElement('li'); const b = document.createElement('button'); b.textContent = s.dataset.title; b.onclick = () => go(i); li.appendChild(b); steps.appendChild(li); });
+function go(i) { cur = Math.max(0, Math.min(sections.length - 1, i)); sections.forEach((s, j) => s.classList.toggle('on', j === cur)); [...steps.querySelectorAll('button')].forEach((b, j) => b.toggleAttribute('aria-current', j === cur) || (j === cur ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'))); document.getElementById('prev').disabled = cur === 0; document.getElementById('next').disabled = cur === sections.length - 1; try { localStorage.setItem('h2-step', cur) } catch (e) {} }
+document.getElementById('prev').onclick = () => go(cur - 1); document.getElementById('next').onclick = () => go(cur + 1);
+let start = 0; try { start = +localStorage.getItem('h2-step') || 0 } catch (e) {} go(start);
+
+// ---- who saw what (SVG)
+const ROLES = {
+  writer: { name: 'Question writer', saw: ['repo', 'trace'], not: ['story', 'wiki'], note: 'The question writer saw the repository and the traced run, and never either document. Its questions and keys were written before any reader existed; keys were then checked by running them.' },
+  reader: { name: 'Reader', saw: ['story'], not: ['repo', 'trace', 'wiki', 'keys'], note: 'A reader saw one document and the questions. No code, no trace, no keys, no tools. A second, separate reader saw the other document. Neither knew there was a comparison.' },
+  grader: { name: 'Grader', saw: ['keys', 'answers'], not: ['story', 'wiki', 'repo'], note: 'The grader saw the question, the key and the answer, with the arm unnamed. It never saw either document, so it could not favour the one it preferred.' },
+  checks: { name: 'Key checks', saw: ['repo', 'keys'], not: ['story', 'wiki'], note: 'Code, not a model: each path key ships a program that must run and assert the answer against the repository; each general key names lines that must exist. 3 of 135 questions failed and were dropped before any reading.' },
+};
+const NODES = { repo: [40, 40, 'Repository + trace'], story: [40, 130, 'Story'], wiki: [40, 200, 'DeepWiki'], writer: [300, 40, 'Question writer'], keys: [560, 40, 'Questions + keys'], checks: [560, 110, 'Key checks (code)'], reader: [300, 165, 'Reader (one arm)'], answers: [560, 190, 'Answers'], grader: [560, 260, 'Grader'], score: [300, 260, 'Score'] };
+const EDGES = [['repo', 'writer', ''], ['writer', 'keys', ''], ['keys', 'checks', ''], ['repo', 'checks', ''], ['story', 'reader', 'story'], ['wiki', 'reader', 'wiki'], ['keys', 'reader', ''], ['reader', 'answers', ''], ['answers', 'grader', ''], ['keys', 'grader', ''], ['grader', 'score', '']];
+function flow(active) {
+  const W = 200, H = 40; let s = `<svg viewBox="0 0 800 320" role="img"><title>Information flow</title>`;
+  const c = k => [NODES[k][0] + W / 2, NODES[k][1] + H / 2];
+  for (const [a, b, cls] of EDGES) { const [x1, y1] = c(a), [x2, y2] = c(b); let dim = ''; if (active) { const r = ROLES[active]; const blocked = r.not.includes(a) && b === active; dim = (a === active || b === active) ? (blocked ? ' blocked' : '') : ' dimmed'; } s += `<line class="wire ${cls}${dim}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`; }
+  if (active) for (const n of ROLES[active].not) { if (!NODES[n]) continue; const [x1, y1] = c(n), [x2, y2] = c(active); s += `<line class="wire blocked" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`; }
+  for (const [k, [x, y, label]] of Object.entries(NODES)) { const role = ROLES[k] ? ' role' : ''; const cls = k === 'story' ? ' story' : k === 'wiki' ? ' wiki' : ''; let dim = ''; if (active && k !== active) { const r = ROLES[active]; dim = (r.saw.includes(k) || r.not.includes(k) || EDGES.some(([a, b]) => (a === active && b === k) || (b === active && a === k))) ? '' : ' dimmed'; } s += `<g class="node${role}${cls}${dim}"><rect x="${x}" y="${y}" width="${W}" height="${H}" rx="6"/><text x="${x + W / 2}" y="${y + H / 2}" text-anchor="middle" dominant-baseline="central">${label}</text></g>`; }
+  return s + `</svg>`;
+}
+const rolesEl = document.getElementById('roles'); const fig = document.getElementById('flowfig'); const note = document.getElementById('rolenote'); let activeRole = null;
+for (const [k, r] of Object.entries(ROLES)) { const b = document.createElement('button'); b.textContent = r.name; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { activeRole = activeRole === k ? null : k; [...rolesEl.children].forEach(x => x.setAttribute('aria-pressed', String(x.textContent === r.name && activeRole))); fig.innerHTML = flow(activeRole); note.textContent = activeRole ? r.note : 'Click a role above. Solid lines: what flows in. Red dashed: what was kept out.'; }; rolesEl.appendChild(b); }
+fig.innerHTML = flow(null); note.textContent = 'Solid lines show what flows where. Click a role to see what it was given and what it was kept from.';
+
+// ---- per repo bars
+let kind = 'general';
+function pct(xs) { return xs.length ? 100 * xs.reduce((a, b) => a + b, 0) / xs.length : 0 }
+function bars() {
+  const el = document.getElementById('bars'); el.innerHTML = '';
+  for (const r of DATA.repos) { const s = pct(r.story[kind]), d = pct(r.deepwiki[kind]); el.insertAdjacentHTML('beforeend', `<div>${r.repo}</div><div class="track"><div class="bar story" style="width:${s}%"><span>${s.toFixed(0)}% story</span></div><div class="bar wiki" style="width:${d}%"><span>${d.toFixed(0)}% deepwiki</span></div></div>`); }
+  const wins = DATA.repos.filter(r => pct(r.story[kind]) > pct(r.deepwiki[kind])).length;
+  document.getElementById('barnote').textContent = kind === 'general' ? `The story scores higher on ${wins} of 9 repositories. flask and jinja go the other way: the DeepWiki reader did better on owner questions there. Pooled over all 61 general questions: ${DATA.pooled.story.general.toFixed(1)}% vs ${DATA.pooled.deepwiki.general.toFixed(1)}%.` : `On the traced run itself the story wins on all 9; pooled over 71 path questions: ${DATA.pooled.story.path.toFixed(1)}% vs ${DATA.pooled.deepwiki.path.toFixed(1)}%. This is the story's home ground: it is literally the account of that run.`;
+}
+document.getElementById('kgen').onclick = () => { kind = 'general'; document.getElementById('kgen').setAttribute('aria-pressed', 'true'); document.getElementById('kpath').setAttribute('aria-pressed', 'false'); bars(); };
+document.getElementById('kpath').onclick = () => { kind = 'path'; document.getElementById('kpath').setAttribute('aria-pressed', 'true'); document.getElementById('kgen').setAttribute('aria-pressed', 'false'); bars(); };
+bars();
+
+// ---- bootstrap
+let draws = [];
+function pooledDiff(sample) { const s = sample.flatMap(r => r.story.general), d = sample.flatMap(r => r.deepwiki.general); return pct(s) - pct(d); }
+function draw(n) { for (let i = 0; i < n; i++) { const sample = Array.from({ length: 9 }, () => DATA.repos[Math.floor(Math.random() * 9)]); draws.push(pooledDiff(sample)); } boot(); }
+function boot() {
+  const W = 800, H = 260, L = 50, R = 20, T = 20, B = 40; const lo = -20, hi = 50; const bins = 35; const counts = new Array(bins).fill(0);
+  for (const d of draws) { const i = Math.min(bins - 1, Math.max(0, Math.floor((d - lo) / (hi - lo) * bins))); counts[i]++; }
+  const max = Math.max(1, ...counts); const x = v => L + (v - lo) / (hi - lo) * (W - L - R); const bw = (W - L - R) / bins;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img"><title>Bootstrap distribution of the general-question difference</title>`;
+  counts.forEach((c, i) => { const h = (H - T - B) * c / max; s += `<rect x="${L + i * bw + 1}" y="${H - B - h}" width="${bw - 2}" height="${h}" fill="var(--story)" opacity=".8"/>`; });
+  s += `<line x1="${x(0)}" y1="${T}" x2="${x(0)}" y2="${H - B}" stroke="var(--no)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="${x(0) + 5}" y="${T + 12}" fill="var(--no)">0: no difference</text>`;
+  const obs = DATA.pooled.story.general - DATA.pooled.deepwiki.general; s += `<line x1="${x(obs)}" y1="${T}" x2="${x(obs)}" y2="${H - B}" stroke="var(--ink)" stroke-width="1.2"/><text x="${x(obs) + 5}" y="${T + 28}">observed +${obs.toFixed(1)}</text>`;
+  if (draws.length >= 40) { const sorted = [...draws].sort((a, b) => a - b); const a = sorted[Math.floor(.025 * sorted.length)], b = sorted[Math.ceil(.975 * sorted.length) - 1]; s += `<rect x="${x(a)}" y="${H - B + 6}" width="${x(b) - x(a)}" height="6" fill="var(--ok)"/><text x="${x(a)}" y="${H - B + 28}" fill="var(--ok)">95%: +${a.toFixed(0)} to +${b.toFixed(0)}</text>`; }
+  for (const v of [-20, -10, 0, 10, 20, 30, 40, 50]) s += `<text class="mut" x="${x(v)}" y="${H - 8}" text-anchor="middle">${v > 0 ? '+' : ''}${v}</text>`;
+  s += `<text class="mut" x="${W / 2}" y="${H - B + 36}" text-anchor="middle">story minus deepwiki, general questions, percentage points</text></svg>`;
+  document.getElementById('bootfig').innerHTML = s; document.getElementById('dcount').textContent = `${draws.length} draws`;
+  document.getElementById('bootnote').textContent = draws.length === 0 ? 'No draws yet. The black line is the observed difference; the red dashed line is zero.' : draws.length < 40 ? 'Each draw is one imaginary world of nine repositories. Keep going until the shape settles.' : 'The green bar is the middle 95% of the draws. If it sits entirely to the right of zero, chance alone rarely produces a story advantage this small or smaller.';
+}
+document.getElementById('d1').onclick = () => draw(1); document.getElementById('d100').onclick = () => draw(100); document.getElementById('d2000').onclick = () => draw(2000); document.getElementById('dreset').onclick = () => { draws = []; boot(); };
+boot();
+</script>
