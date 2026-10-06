@@ -1,0 +1,190 @@
+{
+  "repo": "rich",
+  "arms": {
+    "story": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Identifies _collect_renderables, render_str producing two Text objects joined with Text(sep) into exactly one Text 'Hello World!', matching the key."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Gives _extra_width = 5 (2 edges + 3 dividers), width 95 passed down, and widths [14, 35, 19, 16] totalling 89, as in the key."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly says the detected color system is None because the file is not a tty, and that Style.render returns text unchanged so no ANSI escapes are written."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "States [] at width 100 and [6] at width 11 with the correct reasoning, matching the key despite hedging."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly identifies the style else-branch with get_style/split_lines_terminator/apply_style and the two buffered segments ('Hello World!' with bold red, and '\\n')."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Names box.HEAVY_HEAD (unsubstituted) and Box.get_top, and gives the exact 89-cell border string as in the key."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Correctly says markup is parsed at render time via render_str/markup.render giving plain 'Solo: A Star Wars Story' with a single red span over 'Solo'."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "Lists the same three first lines and correctly explains the absence of ANSI escapes (styles=False plus color system None)."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Covers the record=True requirement, the assert (and its disappearance under -O), and clear=True emptying the shared buffer so a second call gets nothing."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Gives the correct precedence order and names TTY_COMPATIBLE and FORCE_COLOR as the environment overrides, plus the swallowed ValueError."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Explains markup parsing of user data, MarkupError for an unmatched closing tag, and names escape()/markup=False as the supported fixes."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Matches the key on None-padding short rows, adding and back-filling a column for extra cells, and NotRenderableError via is_renderable."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correctly names the two substitution cases and get_plain_headed_box, but wrongly claims safe_box=False turns off substitution generally, whereas the key says the ascii_only fallback ignores `safe` and cannot be disabled."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Matches the key on quiet discarding the buffer, on_broken_pipe's default (quiet + devnull + SystemExit(1)), and the PYTHONIOENCODING hint on UnicodeEncodeError."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Correctly describes theme-stack lookup first, then cached Style.parse, the link copy, and StyleSyntaxError becoming errors.MissingStyle unless a default is given."
+      }
+    ],
+    "deepwiki": [
+      {
+        "id": "p1",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "It correctly names _collect_renderables/render_str and the \"Hello World!\" content, but declines to state the key fact that exactly one Text renderable is produced."
+      },
+      {
+        "id": "p2",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "It refuses to give _extra_width (5), the width passed (95), or the widths list [14, 35, 19, 16]."
+      },
+      {
+        "id": "p3",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "It declines to state that the detected color system was None because the file is not a tty, only offering the general rule conditionally."
+      },
+      {
+        "id": "p4",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correct that width 100 yields an empty list, but it won't commit to the break offset [6] at width 11."
+      },
+      {
+        "id": "p5",
+        "kind": "path",
+        "grade": "wrong",
+        "reason": "It denies that a separate styled branch exists and provides none of the two segments in the buffer."
+      },
+      {
+        "id": "p6",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correctly identifies HEAVY_HEAD and Box.get_top (plus substitute), but does not give the exact 89-cell top border string."
+      },
+      {
+        "id": "p7",
+        "kind": "path",
+        "grade": "correct",
+        "reason": "It correctly states the markup is parsed by render_str, giving plain \"Solo: A Star Wars Story\" with a red span over \"Solo\", matching the key in substance despite hedging on indices."
+      },
+      {
+        "id": "p8",
+        "kind": "path",
+        "grade": "partly",
+        "reason": "Correct that no ANSI escapes appear, but it fails to give the first three lines of exported text."
+      },
+      {
+        "id": "g1",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Gets record=True requirement, clear=True default and empty second call, but misses the enforcement detail (bare assert/AssertionError and -O behavior)."
+      },
+      {
+        "id": "g2",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Lists the relevant overrides (force_terminal, FORCE_COLOR, TTY_COMPATIBLE, TERM) but explicitly declines to give the precedence order the question asks for, and misplaces TTY_COMPATIBLE's position/Idle & Jupyter cases."
+      },
+      {
+        "id": "g3",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Covers silent mis-rendering, MarkupError for orphan closing tags and @-handler failures, and markup.escape()/markup=False as the supported fixes."
+      },
+      {
+        "id": "g4",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "States short-row padding with empty cells, auto-created columns with inherited highlight, and NotRenderableError for non-renderables, matching the key (only the back-fill detail is omitted)."
+      },
+      {
+        "id": "g5",
+        "kind": "general",
+        "grade": "correct",
+        "reason": "Accurately describes both substitutions in Box.substitute and that only the legacy-Windows swap is disabled via safe_box=False."
+      },
+      {
+        "id": "g6",
+        "kind": "general",
+        "grade": "wrong",
+        "reason": "It claims the behaviour is undocumented and gives none of the buffer-discard, on_broken_pipe, or UnicodeEncodeError hint details."
+      },
+      {
+        "id": "g7",
+        "kind": "general",
+        "grade": "partly",
+        "reason": "Correct on Style passthrough-by-name, theme stack then Style.parse, and MissingStyle when unresolved, but muddles that get_style wraps the StyleSyntaxError into MissingStyle rather than propagating it."
+      }
+    ]
+  },
+  "cost": 0.2
+}

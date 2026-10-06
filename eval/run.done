@@ -7,3 +7,4 @@ flask exit=0
 jinja exit=0
 attrs exit=0
 tqdm exit=0
+rich exit=0

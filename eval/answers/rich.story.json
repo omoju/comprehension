@@ -1,0 +1,67 @@
+{
+  "repo": "rich",
+  "arm": "story",
+  "answers": [
+    {
+      "id": "p1",
+      "answer": "`Console._collect_renderables` (console.py#L1500-L1587) does it. Each `str` goes through `rich_cast` (no-op) and `render_str` (markup + emoji + ReprHighlighter), producing `<text 'Hello' [] ''>` and `<text 'World!' [] ''>`; then `check_text` joins them with a separator `Text(' ', justify=None, end='\\n')` via `Text.join`. Exactly one renderable comes out: `[<text 'Hello World!' [] ''>]` \u2014 plain text 'Hello World!', length 12, `spans == []`, `style == ''`, `end == '\\n'` (no `Styled` wrapper, since the console's own `style` is None)."
+    },
+    {
+      "id": "p2",
+      "answer": "`_extra_width` is 5 \u2014 2 cells for the outer edges plus 1 per divider between the 4 columns (2 + 3). So `max_width` 100 \u2212 5 = 95 is handed down as `options.update_width(95)` and that 95 is the budget `_calculate_column_widths` measures against. The returned widths are `[14, 35, 19, 16]` (Date fixed at width 12 + 2 padding; the others measured from content), summing to 84, giving a table width of 84 + 5 = 89."
+    },
+    {
+      "id": "p3",
+      "answer": "No colour system at all: `_detect_color_system` asked `is_terminal`, which resolved `file` to `<_io.TextIOWrapper name='<stdout>'>` whose `isatty()` is `False`, so it returned `None` and `self._color_system` is `None`. Styles are still parsed, composed and carried on segments, but at the last step `Style.render` short-circuits on `color_system is None` (style.py#L710-L711) and returns the text unchanged \u2014 so the bytes written contain no SGR/ANSI sequences. Note this is decided once at construction, not at write time."
+    },
+    {
+      "id": "p4",
+      "answer": "At width 100 `divide_line(str(line), 100, fold=True)` returns `[]` \u2014 no break offsets; 'Hello ' (5 visible cells, cursor advances 6) and 'World!' (6 cells against 94 remaining) both fit. The documentation does not state the width-11 result, but by the algorithm it describes (`cell_len(word.rstrip())` must fit the remaining room, trailing whitespace may overrun) 'Hello ' leaves the cursor at 6, and 'World!' needs 6 against 5 remaining, so a break would be recorded at offset 6, i.e. `[6]`. `fold=True` would only chop mid-word (via `chop_cells`) if a single word were wider than the whole line, which is not the case here."
+    },
+    {
+      "id": "p5",
+      "answer": "It takes the lower branch of `Console.print` at console.py#L1729-L1741: `render_style = self.get_style(style)` is resolved, a spare `Segment.line()` is created, and the render is driven through `Segment.split_lines_terminator(render(...))` with `Segment.apply_style(line, render_style)` applied to each line (base style + segment style). After the `crop` pass (`split_and_crop_lines` at width 100, which leaves the 12-cell line alone and re-appends a fresh newline), the buffer \u2014 and the copy appended to `_record_buffer` \u2014 holds exactly `[Segment('Hello World!', Style(color=Color('red', ColorType.STANDARD, number=1), bold=True)), Segment('\\n')]`."
+    },
+    {
+      "id": "p6",
+      "answer": "The box is `box.HEAVY_HEAD` (the `Table` default; `Box.substitute` left it intact because `legacy_windows` is False and `ascii_only` is False under utf-8), and the method is `Box.get_top(widths)` (box.py#L95-L113). For `[14, 35, 19, 16]` it is `'\u250f' + '\u2501'*14 + '\u2533' + '\u2501'*35 + '\u2533' + '\u2501'*19 + '\u2533' + '\u2501'*16 + '\u2513'` \u2014 89 characters, matching the table width. It is emitted as `Segment('\u250f\u2501\u2501\u2501\u2026\u2513', Style())` followed by `Segment('\\n')`."
+    },
+    {
+      "id": "p7",
+      "answer": "The markup is not touched at `add_row` time; the string is stored verbatim. It is interpreted during rendering, when the cell's `Padding.__rich_console__` sends it through `Console.render` \u2192 `render_str` \u2192 `markup.render`, whose tag parser turns `[red]\u2026[/red]` into a `Span` over the enclosed range (markup still enabled inside cells; highlighting is off). The plain text is `'Solo: A Star Wars Story'` \u2014 23 visible cells, which is also how `Measurement.get` sized it \u2014 and the trace shows a resulting `Segment('Solo', \u2026)` carrying the red style. The documentation does not print the exact span tuple, but it is one span covering the four characters 'Solo' with style 'red'."
+    },
+    {
+      "id": "p8",
+      "answer": "`export_text()` returns `'Hello World!\\nWhere there is a Will there is a way.\\n\u250f\u2501\u2501\u2501\u2026\u2518\\n'`, so the first three lines are: 1) `Hello World!`, 2) `Where there is a Will there is a way.`, 3) the table's top border `\u250f\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2533\u2026\u2513` (89 cells). There are no ANSI escape sequences: the colour system was `None` so `Style.render` emitted nothing, and `export_text` with the default `styles=False` just joins `segment.text` for non-control segments."
+    },
+    {
+      "id": "g1",
+      "answer": "They require the console to have been constructed with `record=True` \u2014 the flag cannot be enabled retroactively, since `_record_buffer` is only filled by writes that happen while it is set. The precondition is an `assert` (console.py#L2204-L2206), so under `python -O` it disappears and a forgotten flag silently yields an empty string instead of raising. All three exporters share the one `_record_buffer` and `clear` defaults to `True`, so a second call (in any format) gets nothing; pass `clear=False` if you need more than one export of the same run."
+    },
+    {
+      "id": "g2",
+      "answer": "`Console.is_terminal` (console.py#L930-L976) works down overrides in this order: an explicit `force_terminal`, an Idle check, Jupyter, the `TTY_COMPATIBLE` environment variable ('0' forces false, '1' forces true), `FORCE_COLOR`, and only then `file.isatty()`. The environment overrides are therefore `TTY_COMPATIBLE` and `FORCE_COLOR` (plus the constructor's `force_terminal=True`). If `isatty()` raises `ValueError` on a closed file, it is swallowed and the answer is 'not a terminal' rather than an exception."
+    },
+    {
+      "id": "g3",
+      "answer": "Any string passed to `print`/`log` containing `[...]` is parsed as markup: tags inject styles you did not ask for, `:name:` sequences become emoji, and the `ReprHighlighter` additionally styles numbers, paths, quoted strings, etc. A closing tag with nothing to close raises `MarkupError` from inside `print` (unclosed opening tags are closed silently at end of text). The supported mitigations are `rich.markup.escape()` on the value (markup.py#L48-L70) \u2014 that is the way to get literal square brackets \u2014 or `markup=False` per call or on the `Console`. For table cells, pass a `Text` object instead of a raw `str`, since `Text(...)` never parses markup."
+    },
+    {
+      "id": "g4",
+      "answer": "Arity is not validated. A row with fewer values than columns is padded out with `None`, each of which becomes an empty-string cell; a row with more values grows the table, creating a new `Column` and back-filling every existing row with `Text(\"\")` so the grid stays rectangular. Each value must pass `is_renderable`: a `str`, or an object with `__rich__` or `__rich_console__` \u2014 anything else (int, datetime, Decimal) raises `errors.NotRenderableError` naming the type, at insert time. Because the check is interleaved with mutation, cells for earlier columns are already appended when a later one raises and the `Row` is never appended, leaving the table ragged \u2014 treat that error as fatal for the `Table` instance."
+    },
+    {
+      "id": "g5",
+      "answer": "`Box.substitute` (box.py#L67-L83) swaps the box in two cases: on legacy Windows (e.g. `HEAVY_HEAD` \u2192 `SQUARE` from the substitution table) and when `options.ascii_only` is true, which is defined as `not encoding.startswith('utf')` \u2014 the encoding being read off the output file object, so redirecting into e.g. a cp1252 pipe silently renders ASCII `+-|`. Whether substitution runs is governed by `pick_bool(table.safe_box, console.safe_box)`, so setting `safe_box=False` on the Table or Console turns it off; pinning `box=box.ASCII` (or another explicit box) is the way to ensure the output never varies. Separately, `get_plain_headed_box` strips header-specific characters when `show_header` is false."
+    },
+    {
+      "id": "g6",
+      "answer": "With `quiet=True`, `_check_buffer` deletes the buffer and the output is silently discarded \u2014 the only silent path in the write stage (console.py#L2050-L2052). A `BrokenPipeError` during the write is caught and routed to `on_broken_pipe`, whose default sets `quiet`, redirects stdout to `/dev/null` and raises `SystemExit(1)` (override the method if your service must survive a closed pipe). A `UnicodeEncodeError` is re-raised with a `PYTHONIOENCODING` hint appended (console.py#L2125-L2127)."
+    },
+    {
+      "id": "g7",
+      "answer": "`Console.get_style` first asks the thread-local `ThemeStack`, whose `get` is bound to the top theme dict's `.get`, so a theme name like `repr.number` resolves there. If that returns `None` the string is treated as a style definition and goes to `Style.parse` (an `lru_cache(maxsize=4096)` word-by-word parser handling `on`, `not`, `link`, attribute names and colours). The final line returns `style.copy() if style.link else style`, so link-bearing styles are copied and all others are shared (safe because `Style` is slotted and immutable). An unparseable name is a hard failure: `StyleSyntaxError` from `parse` becomes `errors.MissingStyle` and propagates out of `print` \u2014 pass `default=` to `get_style` when the name comes from config or user input."
+    }
+  ],
+  "cost": 0.4
+}

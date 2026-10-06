@@ -1,0 +1,140 @@
+<title>CodeStories vs DeepWiki</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column, 68ch, with the two verdicts side by side and tables allowed to run wider. */
+:root {
+  --bg: #f7f5f0; --sheet: #ffffff; --ink: #1d1b17; --muted: #5d5a53; --rule: #d9d4c9;
+  --story: #1f5f8b; --story-soft: #e3eef6; --wiki: #8b5a1f; --wiki-soft: #f6ede0;
+  --ok: #2d6a4f; --no: #a23b2a; --mark: #fff4d6;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15140f; --sheet: #1e1c17; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e;
+  --story: #7fb3d9; --story-soft: #1b2b38; --wiki: #d9a05c; --wiki-soft: #332718;
+  --ok: #7cc49a; --no: #e08674; --mark: #3b3418; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15140f; --sheet: #1e1c17; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e;
+  --story: #7fb3d9; --story-soft: #1b2b38; --wiki: #d9a05c; --wiki-soft: #332718;
+  --ok: #7cc49a; --no: #e08674; --mark: #3b3418; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--serif); margin: 0; padding-block: 40px 96px; padding-inline: 16px }
+main { max-width: 68ch; margin: 0 auto }
+h1 { font: 600 34px/1.15 var(--serif); margin: 0 0 8px; text-wrap: balance }
+h2 { font: 600 22px/1.25 var(--serif); margin: 48px 0 12px; text-wrap: balance }
+h3 { font: 600 17px/1.3 var(--serif); margin: 24px 0 8px }
+p { margin: 0 0 14px }
+.kicker { font: 500 12px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px }
+.lede { font-size: 19px; color: var(--muted) }
+.verdicts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 24px 0 }
+.card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; min-width: 0 }
+.card .who { font: 500 12px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.card .big { font: 600 32px/1.1 var(--serif); margin: 6px 0 10px; text-transform: capitalize }
+.card .big.ship { color: var(--ok) } .card .big.pivot { color: var(--wiki) } .card .big.kill { color: var(--no) }
+.card p { font-size: 15.5px; margin-bottom: 8px }
+ul.checks { list-style: none; padding: 0; margin: 10px 0 0; font: 14px/1.5 var(--mono) }
+ul.checks li { display: flex; gap: 10px; align-items: baseline }
+ul.checks .mark { font-weight: 500 } ul.checks .ok .mark { color: var(--ok) } ul.checks .no .mark { color: var(--no) }
+.measures { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 18px 0 }
+.m { background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; min-width: 0 }
+.m .label { font: 500 12px/1.3 var(--mono); color: var(--muted); letter-spacing: .04em }
+.m .pair { display: flex; gap: 18px; margin-top: 8px; font-variant-numeric: tabular-nums }
+.m .pair div { flex: 1 } .m .pair b { display: block; font: 600 26px/1.1 var(--serif) }
+.m .pair small { font: 12px/1.2 var(--mono); color: var(--muted) }
+.m .ci { font: 12.5px/1.4 var(--mono); color: var(--muted); margin-top: 8px }
+.tag { display: inline-block; padding: 1px 7px; border-radius: 4px; font: 500 12px/1.4 var(--mono) }
+.tag.story { background: var(--story-soft); color: var(--story) } .tag.deepwiki { background: var(--wiki-soft); color: var(--wiki) }
+.tbl { overflow-x: auto; margin: 14px 0 }
+table { border-collapse: collapse; font: 13.5px/1.45 var(--mono); min-width: 100% }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap }
+th { font-weight: 500; color: var(--muted) } td.n, th.n { text-align: right; font-variant-numeric: tabular-nums }
+tr.story td:nth-child(2) { color: var(--story) } tr.deepwiki td:nth-child(2) { color: var(--wiki) }
+tr.insample td { color: var(--muted) }
+blockquote { margin: 12px 0; padding: 10px 16px; border-left: 3px solid var(--rule); color: var(--ink); background: var(--sheet); border-radius: 0 8px 8px 0 }
+blockquote.omoju { border-left-color: var(--story) }
+code { font: 14px var(--mono) }
+.foot { color: var(--muted); font-size: 14.5px; margin-top: 56px; border-top: 1px solid var(--rule); padding-top: 14px }
+a { color: var(--story) }
+</style>
+<main>
+<div class="kicker">comprehension · codestories · decided 2026-10-06</div>
+<h1>Is a CodeStory better than generated documentation?</h1>
+<p class="lede">A repository told as a story that follows its data through one real run, every claim linked to pinned
+lines and every chapter backed by a proof that runs, against DeepWiki's generated wiki for the same ten Python
+libraries. The rule for deciding was written and committed before any result existed.</p>
+
+<div class="verdicts">
+  <div class="card">
+    <div class="who">The preregistered rule (§8)</div>
+    <div class="big ship">ship</div>
+    <p>the checking works and the story form helps: build it out.</p>
+    <ul class="checks"><li class='ok'><span class='mark'>✓</span> H1: story density &lt;= 1/2 DeepWiki</li><li class='ok'><span class='mark'>✓</span> general: story &gt;= DeepWiki - 5</li><li class='ok'><span class='mark'>✓</span> path: story &gt;= DeepWiki + 10</li></ul>
+  </div>
+  <div class="card">
+    <div class="who">Omoju, after reading and before any metric (§9)</div>
+    <div class="big">—</div>
+    <p>Not yet recorded.</p>
+    <p><em>What "it helps" would feel like, written before the runs:</em> —</p>
+  </div>
+</div>
+
+<h2>The measures</h2>
+<p>Nine repositories out of sample (<code>itsdangerous</code> was used to build the pipeline and is reported but not
+counted). H1 is accountability: contradicted claims per 1,000 words, from a blind judge reading 40 sampled claims
+per arm per repository against the code at the commit each arm describes. H2 is comprehension: a reader model
+given only one arm's text answers questions written from the code and the run, never from either arm, with keys
+checked by execution.</p>
+<div class="measures">
+  <div class="m"><div class="label">contradicted claims / 1k words</div>
+    <div class="pair"><div><b>0.07</b><small><span class="tag story">story</span></small></div>
+    <div><b>0.69</b><small><span class="tag deepwiki">deepwiki</span></small></div></div>
+    <div class="ci">ratio story/deepwiki, 95% CI 0.00–0.31 · rule: ≤ 0.5</div></div>
+  <div class="m"><div class="label">path questions (this run)</div>
+    <div class="pair"><div><b>98%</b><small><span class="tag story">story</span></small></div>
+    <div><b>63%</b><small><span class="tag deepwiki">deepwiki</span></small></div></div>
+    <div class="ci">difference, 95% CI 23 to 47 points · rule: ≥ +10</div></div>
+  <div class="m"><div class="label">general questions (whole repo)</div>
+    <div class="pair"><div><b>76%</b><small><span class="tag story">story</span></small></div>
+    <div><b>56%</b><small><span class="tag deepwiki">deepwiki</span></small></div></div>
+    <div class="ci">difference, 95% CI 5 to 33 points · rule: ≥ −5</div></div>
+</div>
+<p>Intervals resample whole repositories (10,000 draws, fixed seed). The decision uses the point estimates; where an
+interval crosses a threshold, it says so here.</p>
+
+<h3>Per repository</h3>
+<div class="tbl"><table>
+<tr><th>repo</th><th>arm</th><th class="n">words</th><th class="n">claims</th><th class="n">contradicted</th><th class="n">unverifiable</th><th class="n">per 1k words</th><th class="n">path</th><th class="n">general</th><th class="n">Jev agrees</th></tr>
+<tr class='story'><td>attrs</td><td>story</td><td class='n'>9,375</td><td class='n'>237</td><td class='n'>0/40</td><td class='n'>32</td><td class='n'>0.00</td><td class='n'>100%</td><td class='n'>71%</td><td class='n'>40/40</td></tr><tr class='deepwiki'><td>attrs</td><td>deepwiki</td><td class='n'>14,140</td><td class='n'>363</td><td class='n'>0/40</td><td class='n'>6</td><td class='n'>0.00</td><td class='n'>56%</td><td class='n'>36%</td><td class='n'>39/40</td></tr><tr class='story'><td>click</td><td>story</td><td class='n'>8,601</td><td class='n'>248</td><td class='n'>0/40</td><td class='n'>35</td><td class='n'>0.00</td><td class='n'>94%</td><td class='n'>71%</td><td class='n'>40/40</td></tr><tr class='deepwiki'><td>click</td><td>deepwiki</td><td class='n'>33,482</td><td class='n'>558</td><td class='n'>2/40</td><td class='n'>20</td><td class='n'>0.83</td><td class='n'>75%</td><td class='n'>36%</td><td class='n'>39/40</td></tr><tr class='story'><td>flask</td><td>story</td><td class='n'>7,261</td><td class='n'>192</td><td class='n'>0/40</td><td class='n'>35</td><td class='n'>0.00</td><td class='n'>94%</td><td class='n'>42%</td><td class='n'>39/40</td></tr><tr class='deepwiki'><td>flask</td><td>deepwiki</td><td class='n'>28,535</td><td class='n'>687</td><td class='n'>0/40</td><td class='n'>19</td><td class='n'>0.00</td><td class='n'>75%</td><td class='n'>58%</td><td class='n'>40/40</td></tr><tr class='story'><td>httpx</td><td>story</td><td class='n'>8,108</td><td class='n'>227</td><td class='n'>0/40</td><td class='n'>18</td><td class='n'>0.00</td><td class='n'>94%</td><td class='n'>79%</td><td class='n'>31/31</td></tr><tr class='deepwiki'><td>httpx</td><td>deepwiki</td><td class='n'>27,567</td><td class='n'>725</td><td class='n'>3/40</td><td class='n'>13</td><td class='n'>1.97</td><td class='n'>69%</td><td class='n'>50%</td><td class='n'>38/40</td></tr><tr class='story insample'><td>itsdangerous*</td><td>story</td><td class='n'>7,707</td><td class='n'>123</td><td class='n'>0/40</td><td class='n'>0</td><td class='n'>0.00</td><td class='n'>94%</td><td class='n'>92%</td><td class='n'>39/40</td></tr><tr class='deepwiki insample'><td>itsdangerous*</td><td>deepwiki</td><td class='n'>12,089</td><td class='n'>291</td><td class='n'>2/40</td><td class='n'>0</td><td class='n'>1.20</td><td class='n'>94%</td><td class='n'>100%</td><td class='n'>37/40</td></tr><tr class='story'><td>jinja</td><td>story</td><td class='n'>8,842</td><td class='n'>210</td><td class='n'>0/40</td><td class='n'>25</td><td class='n'>0.00</td><td class='n'>100%</td><td class='n'>57%</td><td class='n'>40/40</td></tr><tr class='deepwiki'><td>jinja</td><td>deepwiki</td><td class='n'>15,506</td><td class='n'>473</td><td class='n'>1/40</td><td class='n'>8</td><td class='n'>0.76</td><td class='n'>50%</td><td class='n'>79%</td><td class='n'>39/40</td></tr><tr class='story'><td>markupsafe</td><td>story</td><td class='n'>5,961</td><td class='n'>97</td><td class='n'>1/40</td><td class='n'>2</td><td class='n'>0.41</td><td class='n'>100%</td><td class='n'>92%</td><td class='n'>39/40</td></tr><tr class='deepwiki'><td>markupsafe</td><td>deepwiki</td><td class='n'>31,855</td><td class='n'>312</td><td class='n'>3/40</td><td class='n'>1</td><td class='n'>0.73</td><td class='n'>94%</td><td class='n'>75%</td><td class='n'>40/40</td></tr><tr class='story'><td>requests</td><td>story</td><td class='n'>10,347</td><td class='n'>277</td><td class='n'>0/40</td><td class='n'>34</td><td class='n'>0.00</td><td class='n'>100%</td><td class='n'>100%</td><td class='n'>21/21</td></tr><tr class='deepwiki'><td>requests</td><td>deepwiki</td><td class='n'>22,131</td><td class='n'>489</td><td class='n'>0/40</td><td class='n'>11</td><td class='n'>0.00</td><td class='n'>64%</td><td class='n'>71%</td><td class='n'>40/40</td></tr><tr class='story'><td>rich</td><td>story</td><td class='n'>9,560</td><td class='n'>300</td><td class='n'>0/40</td><td class='n'>39</td><td class='n'>0.00</td><td class='n'>100%</td><td class='n'>93%</td><td class='n'>15/15</td></tr><tr class='deepwiki'><td>rich</td><td>deepwiki</td><td class='n'>25,426</td><td class='n'>1876</td><td class='n'>0/40</td><td class='n'>40</td><td class='n'>0.00</td><td class='n'>38%</td><td class='n'>64%</td><td class='n'>0/0</td></tr><tr class='story'><td>tqdm</td><td>story</td><td class='n'>8,751</td><td class='n'>177</td><td class='n'>0/40</td><td class='n'>23</td><td class='n'>0.00</td><td class='n'>100%</td><td class='n'>79%</td><td class='n'>31/32</td></tr><tr class='deepwiki'><td>tqdm</td><td>deepwiki</td><td class='n'>17,075</td><td class='n'>455</td><td class='n'>0/40</td><td class='n'>19</td><td class='n'>0.00</td><td class='n'>44%</td><td class='n'>36%</td><td class='n'>39/40</td></tr>
+</table></div>
+<p><small>* in sample. "Jev agrees": a second, cheaper model's verdict on the same claim and the lines the judge cited.</small></p>
+
+<h2>Robustness</h2>
+<p>Every story was generated by the same pipeline with no hand edits. A chapter that failed a check (a citation to
+lines that don't exist, a proof that doesn't pass) went back to the model with the verdict, at most twice.
+"Refs resolve" is the share of DeepWiki's own <code>[path:lines]()</code> references that point at lines existing
+at the commit its pages are pinned to.</p>
+<div class="tbl"><table>
+<tr><th>repo</th><th class="n">chapters</th><th class="n">citations</th><th class="n">repairs</th><th class="n">still failing</th><th class="n">cost</th><th class="n">time</th><th class="n">DeepWiki words</th><th class="n">refs resolve</th></tr>
+<tr><td>attrs</td><td class='n'>9</td><td class='n'>212</td><td class='n'>1</td><td class='n'>0</td><td class='n'>$5.20</td><td class='n'>20 min</td><td class='n'>17,699</td><td class='n'>94%</td></tr><tr><td>click</td><td class='n'>9</td><td class='n'>227</td><td class='n'>1</td><td class='n'>0</td><td class='n'>$4.44</td><td class='n'>16 min</td><td class='n'>52,198</td><td class='n'>90%</td></tr><tr><td>flask</td><td class='n'>8</td><td class='n'>138</td><td class='n'>2</td><td class='n'>0</td><td class='n'>$3.86</td><td class='n'>13 min</td><td class='n'>36,447</td><td class='n'>95%</td></tr><tr><td>httpx</td><td class='n'>8</td><td class='n'>210</td><td class='n'>0</td><td class='n'>0</td><td class='n'>$3.34</td><td class='n'>9 min</td><td class='n'>38,220</td><td class='n'>94%</td></tr><tr><td>itsdangerous</td><td class='n'>0</td><td class='n'>0</td><td class='n'>0</td><td class='n'>0</td><td class='n'>$0.00</td><td class='n'>0 min</td><td class='n'>17,655</td><td class='n'>79%</td></tr><tr><td>jinja</td><td class='n'>8</td><td class='n'>190</td><td class='n'>1</td><td class='n'>0</td><td class='n'>$4.42</td><td class='n'>17 min</td><td class='n'>19,978</td><td class='n'>96%</td></tr><tr><td>markupsafe</td><td class='n'>6</td><td class='n'>104</td><td class='n'>2</td><td class='n'>0</td><td class='n'>$2.31</td><td class='n'>11 min</td><td class='n'>45,504</td><td class='n'>91%</td></tr><tr><td>requests</td><td class='n'>10</td><td class='n'>241</td><td class='n'>0</td><td class='n'>0</td><td class='n'>$4.30</td><td class='n'>14 min</td><td class='n'>29,267</td><td class='n'>98%</td></tr><tr><td>rich</td><td class='n'>9</td><td class='n'>261</td><td class='n'>1</td><td class='n'>0</td><td class='n'>$5.29</td><td class='n'>20 min</td><td class='n'>62,473</td><td class='n'>96%</td></tr><tr><td>tqdm</td><td class='n'>9</td><td class='n'>177</td><td class='n'>1</td><td class='n'>0</td><td class='n'>$4.78</td><td class='n'>16 min</td><td class='n'>21,545</td><td class='n'>99%</td></tr>
+</table></div>
+<p>All ten stories: $37.94 in model calls. The evaluation itself (questions, extraction, judging, reading,
+grading) is in <code>eval/</code> with every model response saved.</p>
+
+<h2>Was the judge trustworthy?</h2>
+<p>Before any comparison ran, the judge was tested on planted lies: 10 true claims per arm from the in-sample
+repository, each with a false twin that changes one specific, judged blind among the truths.
+Story claims: 10/10 lies caught, 0/10 truths wrongly flagged.
+DeepWiki claims: 10/10 caught, 0/10 wrongly flagged.
+The passing bar (every lie caught, at most one false alarm per arm) was written into the test before it ran.</p>
+<p>Omoju’s hand check of 20 judged claims (§5.1.5) is recorded in <code>eval/handcheck.md</code>.</p>
+
+<h2>What changed after preregistration</h2>
+<blockquote>2026-10-05 · Reruns after infrastructure failures (§10). The first launch of the nine-repository run finished the question stage for six repositories, then every claim-extraction call on a DeepWiki text timed out in the API client&#x27;s stream reader (nine long streams at once). No result had been produced or seen. The client timeout was raised (3600 s, 3 retries) and the run resumed from the finished stages; nothing already written was redone.</blockquote><blockquote>2026-10-05 · Claim extraction in chunks for long texts. For rich, the DeepWiki text (62,473 words) yielded more claims than fit in one model output (64k tokens); the JSON was cut off. Extraction now splits a text over 25,000 words at DeepWiki page boundaries and concatenates the claims, with the same prompt. Only rich/DeepWiki is affected; the eight other repositories&#x27; extractions were single calls and are unchanged. Decided before any metric was computed or read.</blockquote>
+
+<h2>Read one</h2>
+<p>The reading page keeps the title, the real-world premise, a control-flow chart of the run drawn from executed
+lines, and the code beside the narrative. Each chapter's proof is a file you can run.</p>
+<ul><li><a href="https://claude.ai/artifact/JyeDNbyYZyMt1ivYxWwshL">itsdangerous</a></li><li><a href="https://claude.ai/artifact/XvZvFsbrfAkfmqxKV8krcs">markupsafe</a></li><li><a href="https://claude.ai/artifact/F39FKqTiN4o5G86Vq4xU5A">requests</a></li><li><a href="https://claude.ai/artifact/PsTSWzUhRqCwLYjxXsqdNw">rich</a></li></ul>
+
+<div class="foot">Preregistration, pipeline and every intermediate file are in the repository. The decision rule
+was committed before the first result and is quoted here unchanged. Stories are written by Claude; this page is
+generated from <code>eval/results.json</code>.</div>
+</main>
