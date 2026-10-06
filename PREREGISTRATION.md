@@ -136,7 +136,7 @@ independent of the numbers:
    both are published with the disagreement.
 
 > *What "it helps" would feel like (Omoju, to fill in before the runs):*
->
+> I get a reasonable understanding of the code base, I know what the critical paths are, I know where the security boundaries are. 
 > …
 
 ## 10. Exclusions and failures
