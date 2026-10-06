@@ -139,7 +139,8 @@ independent of the numbers:
 > I get a reasonable understanding of the code base, I know what the critical paths are, I know where the security boundaries are.
 
 > *Verdict after reading, before any metric (Omoju; stories read: …):*
->
+> SHIP. I read One GET, End to End, and it made sense to me. 
+> SHIP. I also read What Actually Reaches the Terminal, this was something I wasn't farmiliar with at all. I was able to follow it, and understand how it works. What made it good was being able to click on each thing in the control flow diagram, and then jump into where that was in the code base. In my mind, I could follow that data through the system. SHIP
 > **…** — …
 
 ## 10. Exclusions and failures
