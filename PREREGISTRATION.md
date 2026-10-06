@@ -185,3 +185,20 @@ independent of the numbers:
   questions, answers and grades are untouched. The first run's judgments are kept in `eval/judgments-first-run/`
   and its results in `eval/results-first-run.md`; both sets of numbers are published. Omoju's §9 verdict was
   recorded before either. The change can only move claims from unverifiable to supported or contradicted.
+
+## 13. Decision · 6 October 2026
+
+**The rule (§8) says KILL.** On the nine out-of-sample repositories, the story arm had 0.71 contradicted claims per
+1,000 words against DeepWiki's 0.54 (10 vs 7 contradicted of 360 sampled each; ratio 1.3, 95% CI 0.55–4.86). H1
+did not hold. H2 held with room: path questions 97.9% vs 62.7% (+35 points, CI +23 to +47); general questions
+76.2% vs 55.7% (+20, CI +5 to +33).
+
+**Omoju's verdict (§9.2), recorded before any metric: SHIP.** The two disagree; per §9.3 the rule stands and both
+are published. Omoju's hand check of 20 judged claims (§5.1.5): 18/20 agreement; both disagreements were
+"unverifiable" labels on claims about test files, which the judge does not read; none concerned a contradicted or
+supported label.
+
+Second judge (Jev) agreement with the primary judge on the 720 sampled claims: reported per repository in
+`eval/results.md`.
+
+The decision closes this preregistration. Any further work is a new one.

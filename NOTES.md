@@ -2,7 +2,11 @@
 *The project's memory between sessions. "Pick up here" is always current; below it: the plan, settled decisions,
 lessons, a short log (newest first), and Omoju's opening paragraph. Code and git say what changed; this says why.*
 
-## ▶ Pick up here (2026-10-05 night · results are in)
+## ▶ Pick up here (2026-10-06 · decided)
+**Decision day done.** Rule: KILL (PREREGISTRATION §13). Omoju: SHIP, recorded first. Hand check 18/20.
+Results page published. This cycle is closed; a next one needs a new preregistration (candidates below).
+
+## The state on 5 October, kept for the record
 **State.** The preregistered comparison has run on all 9 out-of-sample repos. **The rule (§8) says KILL; Omoju's
 §9 verdict, recorded first, says SHIP.** Both are published with the disagreement, as §9.3 requires.
 `eval/results.md` (numbers), `eval/results.html` (the page), `eval/results-first-run.md` (the first, broken
@@ -66,7 +70,7 @@ ship / pivot to stories of *changes* / kill.
 | Sat 3 | run the head-to-head | |
 | Sun 4 | buffer; Omoju reads 2–3 | |
 | Mon 5 | results page, README (Claude drafts; posts are Omoju's); publish. **Then remind Omoju to send Sha Ma a short note** | run done (2 §10 reruns, 1 §12 chunking); §9.1 + §9.2 (ship) recorded first; first judging pass blind → re-judged (§12); **rule: KILL** |
-| Tue 6 | decide by the rule | |
+| Tue 6 | decide by the rule | **KILL** by the rule; Omoju: ship; hand check 18/20; page published |
 
 Cuts, in order: 10 → 5 repos; drop the docs arm; drop Omoju's reads.
 

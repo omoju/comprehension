@@ -42,8 +42,13 @@ Ten stories exist in `stories/` (itsdangerous in `stories/itsdangerous-close-thi
 
 A preregistered head-to-head against DeepWiki on ten pure-Python repositories: [`PREREGISTRATION.md`](PREREGISTRATION.md)
 fixes the hypotheses, measures and decision rule before any result; `codestory/eval/` is the harness; `eval/`
-holds every intermediate (questions, claims, judgments, answers, grades, every model response). Results:
-`eval/results.md` once the run is in.
+holds every intermediate (questions, claims, judgments, answers, grades, every model response).
+
+**Decided 6 October 2026: the rule said kill.** Stories helped a reader a great deal (path questions 98% vs 63%,
+general 76% vs 56%) but were not more accurate than DeepWiki's pages (0.71 vs 0.54 contradicted claims per 1,000
+words; 10 vs 7 of 360 sampled). Omoju's verdict, recorded before the numbers, was ship; the preregistration says
+the rule stands, and both are published. The numbers, both judging passes, and every deviation:
+`eval/results.md`, `PREREGISTRATION.md` §12–13.
 
 ## Rules of the project
 
