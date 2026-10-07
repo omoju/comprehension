@@ -28,6 +28,11 @@ class JevError(RuntimeError):
     pass
 
 
+def configured() -> bool:
+    """Are the Cloudflare keys set? Without them the judge is skipped, not failed."""
+    return bool(os.environ.get("CLOUDFLARE_ACCOUNT_ID") and os.environ.get("CLOUDFLARE_API_TOKEN"))
+
+
 def decide(state: object, questions: dict) -> dict:
     """Ask Jev every question about one state, in a single call. Returns {question_name: answer}."""
     account = os.environ.get("CLOUDFLARE_ACCOUNT_ID")

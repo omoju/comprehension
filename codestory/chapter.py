@@ -21,6 +21,7 @@ from pathlib import Path
 
 import env  # noqa: F401  (loads .env)
 from claims import judge_text
+from jev import JevError, configured as jev_configured
 from outline import MODEL, READERS, REPAIRS, numbered_trace, repo_block
 from verify import check_text, read_proofs, repo_path, split_proofs, write_proofs
 
@@ -220,11 +221,19 @@ def main(story_arg: str, only: int | None, upto: int | None = None, repairs: int
             v = check_text(text, path.name, outline, repo, cache, proofs)
         previous = text
 
-        judged = judge_text(text, outline, repo)
+        if jev_configured():
+            try:
+                judged = judge_text(text, outline, repo)
+            except JevError as e:  # the judge is advisory: a failure is reported, not fatal
+                judged, judge_note = [], f"judge failed: {e}"
+            else:
+                judge_note = ""
+        else:
+            judged, judge_note = [], "judge skipped: no Cloudflare keys in .env"
         lies = [j for j in judged if j["failed"]]
         rows.append({"n": n, "file": path.name, "words": len(text.split()), "citations": v.citations,
                      "proofs": v.proofs, "errors": v.errors, "contradicted": lies, "judged": len(judged),
-                     "seconds": round(secs), "cost": usage.cost, "repairs": repaired})
+                     "seconds": round(secs), "cost": usage.cost, "repairs": repaired, "judge_note": judge_note})
         status = "ok" if not (v.errors or lies) else f"{len(v.errors)} check errors, {len(lies)} contradicted"
         if repaired:
             status += f" after {repaired} repair{'s' if repaired > 1 else ''}"
@@ -235,10 +244,14 @@ def main(story_arg: str, only: int | None, upto: int | None = None, repairs: int
              "| # | chapter | words | citations | repairs | check errors | contradicted ¶ | time | cost |",
              "|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
+        judged = f"{len(r['contradicted'])}/{r['judged']}" if r["judged"] or not r["judge_note"] else "—"
         lines.append(f"| {r['n']} | [{r['file']}]({r['file']}) | {r['words']} | {r['citations']} | {r['repairs']} "
-                     f"| {len(r['errors'])} | {len(r['contradicted'])}/{r['judged']} | {r['seconds']}s | ${r['cost']:.2f} |")
+                     f"| {len(r['errors'])} | {judged} | {r['seconds']}s | ${r['cost']:.2f} |")
     lines.append(f"\n**Total:** ${sum(r['cost'] for r in rows):.2f}, {sum(r['seconds'] for r in rows)}s, "
                  f"{sum(r['repairs'] for r in rows)} repairs\n")
+    notes = {r["judge_note"] for r in rows if r["judge_note"]}
+    if notes:
+        lines.append("Contradiction judge: " + "; ".join(sorted(notes)) + "\n")
     for r in rows:
         if r["errors"] or r["contradicted"]:
             lines.append(f"\n## {r['file']}")
