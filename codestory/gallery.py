@@ -51,9 +51,7 @@ header, main, footer {{ padding-left: 11rem }}
 header {{ margin-bottom: 3rem; border-bottom: 1px solid var(--rule); padding-bottom: 1.2rem }}
 h1 {{ font-size: 2.05rem; font-weight: 500; line-height: 1.25; font-variant-caps: small-caps; letter-spacing: 0.055em; margin-bottom: 0.4rem }}
 h1 a {{ color: inherit; text-decoration: none }}
-nav {{ margin-top: 0.9rem }} nav ul {{ list-style: none; display: flex; flex-wrap: wrap; gap: 1.9rem }}
-nav a {{ color: var(--ink-soft); text-decoration: none; font-variant-caps: small-caps; letter-spacing: 0.07em; font-size: 0.95rem }}
-nav a:hover, nav a[aria-current] {{ color: var(--accent) }}
+h1 a:hover {{ color: var(--accent) }}
 main {{ margin-bottom: 4rem; position: relative }}
 main > h2 {{ float: left; clear: left; width: 8.5rem; margin-left: -11rem; margin-top: 0.45rem; margin-bottom: 0.6rem; font-family: var(--sans); font-size: 0.78rem; font-weight: 500;
   text-transform: lowercase; text-align: right; letter-spacing: 0.02em; line-height: 1.3; color: var(--accent) }}
@@ -74,13 +72,6 @@ footer {{ border-top: 1px solid var(--rule); padding-top: 1.2rem; color: var(--i
 </style></head><body>
 <header>
   <h1><a href="https://omojumiller.com/">Omoju Miller</a></h1>
-  <nav><ul>
-    <li><a href="https://omojumiller.com/">Home</a></li>
-    <li><a href="https://omojumiller.com/writing/">Writing</a></li>
-    <li><a href="https://omojumiller.com/cv/">CV</a></li>
-    <li><a href="https://omojumiller.com/now/">Now</a></li>
-    <li><a href="./" aria-current="page">CodeStories</a></li>
-  </ul></nav>
 </header>
 <main>
   <h2>the stories</h2>
