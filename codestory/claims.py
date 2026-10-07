@@ -19,7 +19,7 @@ from verify import find_citations, git, repo_path
 
 # A contradiction is a lie: the story is wrong. "supported" is informational: narrative paragraphs always say more
 # than the lines they link to, so it scores low on true prose too. The cut-off sits in the gap seen on
-# judge-tests/ (lies 0.77-0.93, truths 0.12-0.51; Jev varies ~0.03 run to run). Fit on 14 paragraphs: provisional.
+# planted-lie tests (lies 0.77-0.93, truths 0.12-0.51; Jev varies ~0.03 run to run). Fit on 14 paragraphs: provisional.
 CONTRADICTED_FAIL = 0.7
 
 _SCOPE = ("Read `passage`, then `code` (the exact source lines it links to). Storytelling (characters, "

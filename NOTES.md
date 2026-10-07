@@ -195,20 +195,20 @@ left, design for verification, context engineering, the quality loop, cross-mode
   understands. DeepWiki: structure-first generated docs, no described post-generation check; its best-known
   failure (an unpublished VS Code extension presented as the main install) is code that exists but never runs.
 - **09-25** · Proofs moved to `proofs/`. Steps scenario → outline → chapters built; the first run was green and wrong
-  (tracer disabled, kept in `stories/itsdangerous-journey-broken/`); fixed and rerun (`stories/itsdangerous-journey/`,
+  (tracer disabled); fixed and rerun (
   first person, ch1–2). Omoju: wrong point of view ("a tour of modules") → follow the data through a traced run;
   "imagine… an abstract syntax tree, with main at the root… a story generated from the traversal of data through
-  that tree." Stage 2 first chapters (`stories/itsdangerous-owner/`, ch1–4). Jev live; judge tested. Stage 1 ran
+  that tree." Stage 2 first chapters (module tour, ch1–4, rejected). Jev live; judge tested. Stage 1 ran
   (15 chapters, $0.64).
 - **09-23** · Jev chosen for decisions. Claude writes; chapter count open; teach as we build (stages 1–5:
   one call → pipeline → repair loop → tool-using agent → evals). Hand-written chapter 1 + `verify.py`; drift test
   passed (change one default → the story fails, pointing at the passage).
 - **09-22** · Project opened. Ship-or-kill 2026-10-06.
 
-**What's in `stories/`**: `itsdangerous/` hand-written ch1 + `judge-tests/` (planted lies) ·
-`itsdangerous-generated/` stage-1 outline (15 ch.) · `itsdangerous-owner/` module-tour ch1–4 (rejected) ·
-`itsdangerous-data/` first hand-run trace · `itsdangerous-journey-broken/` the disabled-tracer run ·
-`itsdangerous-journey/` first-person ch1–2 · **`itsdangerous-close-third/` current story and reading page**.
+**What's in `stories/`**: `itsdangerous-close-third/` the itsdangerous story and reading page · `bench/<repo>/` the nine
+comparison stories · `bench/markupsafe-ste/` the Simplified Technical English telling (rejected, kept as evidence).
+Earlier itsdangerous attempts (hand-written ch1, the module tour, the disabled-tracer run, first person) were
+removed before the repository went public; the lessons they taught are in this file and the git history.
 
 ## Origin · Omoju's opening paragraph, verbatim (2026-09-23)
 

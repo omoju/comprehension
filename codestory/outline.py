@@ -5,7 +5,7 @@
 
 Needs <story-dir>/scenario.py and trace.txt from scenario.py. Chapters are spans of the trace.
 
-Writes <story-dir>/outline.json in the same shape as the hand-written stories/itsdangerous/outline.json.
+Writes <story-dir>/outline.json: title, premise, reader, repo (url, commit, local path) and the chapters.
 The plan is checked (spans, question threads, length); a plan that fails is handed back to the model with the
 errors, in the same conversation, up to REPAIRS times. --repair starts from the existing outline.json instead of
 planning afresh (the previous plan is kept as outline.prev.json). --dry-run writes the prompt to
