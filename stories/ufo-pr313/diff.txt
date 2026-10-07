@@ -1,0 +1,244 @@
+## test: "/" + "/"   (before: pass, after: pass)
+  test: "/" + "/"()  [test/base.test.ts:35]
+    withBase(input="/", base="/")  [src/utils.ts:290] *
+      … 1 unchanged call (isEmptyURL)
+      → "/"
+    → undefined
+
+## test: "/foo" + ""   (before: pass, after: pass)
+  test: "/foo" + ""()  [test/base.test.ts:35]
+    withBase(input="", base="/foo")  [src/utils.ts:290] *
+      … 4 unchanged calls (hasProtocol, isEmptyURL, joinURL, withoutTrailingSlash)
+      → "/foo"
+    → undefined
+
+## test: "/foo/" + "/"   (before: pass, after: pass)
+  test: "/foo/" + "/"()  [test/base.test.ts:35]
+    withBase(input="/", base="/foo/")  [src/utils.ts:290] *
+      … 4 unchanged calls (hasProtocol, isEmptyURL, joinURL, withoutTrailingSlash)
+      → "/foo"
+    → undefined
+
+## test: "/foo" + "/bar"   (before: pass, after: pass)
+  test: "/foo" + "/bar"()  [test/base.test.ts:35]
+    withBase(input="/bar", base="/foo")  [src/utils.ts:290] *
+      … 4 unchanged calls (hasProtocol, isEmptyURL, joinURL, withoutTrailingSlash)
+      → "/foo/bar"
+    → undefined
+
+## test: "/base/" + "/base"   (before: pass, after: pass)
+  test: "/base/" + "/base"()  [test/base.test.ts:35]
+    withBase(input="/base", base="/base/")  [src/utils.ts:290] *
+      … 3 unchanged calls (hasProtocol, isEmptyURL, withoutTrailingSlash)
+      → "/base"
+    → undefined
+
+## test: "/base" + "/base/"   (before: pass, after: pass)
+  test: "/base" + "/base/"()  [test/base.test.ts:35]
+    withBase(input="/base/", base="/base")  [src/utils.ts:290] *
+      … 3 unchanged calls (hasProtocol, isEmptyURL, withoutTrailingSlash)
+      → "/base/"
+    → undefined
+
+## test: "/base" + "/base/a"   (before: pass, after: pass)
+  test: "/base" + "/base/a"()  [test/base.test.ts:35]
+    withBase(input="/base/a", base="/base")  [src/utils.ts:290] *
+      … 3 unchanged calls (hasProtocol, isEmptyURL, withoutTrailingSlash)
+      → "/base/a"
+    → undefined
+
+## test: "/base/" + "/base/a"   (before: pass, after: pass)
+  test: "/base/" + "/base/a"()  [test/base.test.ts:35]
+    withBase(input="/base/a", base="/base/")  [src/utils.ts:290] *
+      … 3 unchanged calls (hasProtocol, isEmptyURL, withoutTrailingSlash)
+      → "/base/a"
+    → undefined
+
+## test: "/base/" + "https://test.com"   (before: pass, after: pass)
+  test: "/base/" + "https://test.com"()  [test/base.test.ts:35]
+    withBase(input="https://test.com", base="/base/")  [src/utils.ts:290] *
+      … 2 unchanged calls (hasProtocol, isEmptyURL)
+      → "https://test.com"
+    → undefined
+
+## test: "/" + "https://test.com"   (before: pass, after: pass)
+  test: "/" + "https://test.com"()  [test/base.test.ts:35]
+    withBase(input="https://test.com", base="/")  [src/utils.ts:290] *
+      … 1 unchanged call (isEmptyURL)
+      → "https://test.com"
+    → undefined
+
+## test: "/admin/" + "/admin-dashboard"   (before: fail, after: pass)
+~ test: "/admin/" + "/admin-dashboard"()  [test/base.test.ts:35]
+~   before raised AssertionError("expected '/admin-dashboard' to be '/admin/admin-dashboard' // Object.is equality")
+~   withBase(input="/admin-dashboard", base="/admin/")  [src/utils.ts:290] *
+~     before → "/admin-dashboard"
+      … 3 unchanged calls (hasProtocol, isEmptyURL, withoutTrailingSlash)
++     joinURL(base="/admin", input=["/admin-dashboard"])  [src/utils.ts:427]
++       isNonEmptyURL(url="/admin-dashboard")  [src/utils.ts:412]
++         → true
++       withTrailingSlash(input="/admin", respectQueryAndFragment=undefined)  [src/utils.ts:191]
++         → "/admin/"
++       → "/admin/admin-dashboard"
+~     → "/admin/admin-dashboard"
+~   → undefined
+
+## test: "/admin/" + "/admin/admin-dashboard"   (before: pass, after: pass)
+  test: "/admin/" + "/admin/admin-dashboard"()  [test/base.test.ts:35]
+    withBase(input="/admin/admin-dashboard", base="/admin/")  [src/utils.ts:290] *
+      … 3 unchanged calls (hasProtocol, isEmptyURL, withoutTrailingSlash)
+      → "/admin/admin-dashboard"
+    → undefined
+
+## test: "/admin" + "/admin-dashboard"   (before: fail, after: pass)
+~ test: "/admin" + "/admin-dashboard"()  [test/base.test.ts:35]
+~   before raised AssertionError("expected '/admin-dashboard' to be '/admin/admin-dashboard' // Object.is equality")
+~   withBase(input="/admin-dashboard", base="/admin")  [src/utils.ts:290] *
+~     before → "/admin-dashboard"
+      … 3 unchanged calls (hasProtocol, isEmptyURL, withoutTrailingSlash)
++     joinURL(base="/admin", input=["/admin-dashboard"])  [src/utils.ts:427]
++       isNonEmptyURL(url="/admin-dashboard")  [src/utils.ts:412]
++         → true
++       withTrailingSlash(input="/admin", respectQueryAndFragment=undefined)  [src/utils.ts:191]
++         → "/admin/"
++       → "/admin/admin-dashboard"
+~     → "/admin/admin-dashboard"
+~   → undefined
+
+## test: "/admin/" + "/admin/dashboard"   (before: pass, after: pass)
+  test: "/admin/" + "/admin/dashboard"()  [test/base.test.ts:35]
+    withBase(input="/admin/dashboard", base="/admin/")  [src/utils.ts:290] *
+      … 3 unchanged calls (hasProtocol, isEmptyURL, withoutTrailingSlash)
+      → "/admin/dashboard"
+    → undefined
+
+## test: "/"-"/"   (before: pass, after: pass)
+  test: "/"-"/"()  [test/base.test.ts:68]
+    withoutBase(input="/", base="/")  [src/utils.ts:318] *
+      … 1 unchanged call (isEmptyURL)
+      → "/"
+    → undefined
+
+## test: "/"-"/foo"   (before: pass, after: pass)
+  test: "/"-"/foo"()  [test/base.test.ts:68]
+    withoutBase(input="/", base="/foo")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/"
+    → undefined
+
+## test: "/"-"/foo/"   (before: pass, after: pass)
+  test: "/"-"/foo/"()  [test/base.test.ts:68]
+    withoutBase(input="/", base="/foo/")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/"
+    → undefined
+
+## test: "/bar"-"/foo"   (before: pass, after: pass)
+  test: "/bar"-"/foo"()  [test/base.test.ts:68]
+    withoutBase(input="/bar", base="/foo")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/bar"
+    → undefined
+
+## test: "/base"-"/base/"   (before: pass, after: pass)
+  test: "/base"-"/base/"()  [test/base.test.ts:68]
+    withoutBase(input="/base", base="/base/")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/"
+    → undefined
+
+## test: "/base/"-"/base"   (before: pass, after: pass)
+  test: "/base/"-"/base"()  [test/base.test.ts:68]
+    withoutBase(input="/base/", base="/base")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/"
+    → undefined
+
+## test: "/base/a"-"/base"   (before: pass, after: pass)
+  test: "/base/a"-"/base"()  [test/base.test.ts:68]
+    withoutBase(input="/base/a", base="/base")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/a"
+    → undefined
+
+## test: "/base/a"-"/base/"   (before: pass, after: pass)
+  test: "/base/a"-"/base/"()  [test/base.test.ts:68]
+    withoutBase(input="/base/a", base="/base/")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/a"
+    → undefined
+
+## test: "/base/a"-"/base/a/"   (before: pass, after: pass)
+  test: "/base/a"-"/base/a/"()  [test/base.test.ts:68]
+    withoutBase(input="/base/a", base="/base/a/")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/"
+    → undefined
+
+## test: "/test/"-"/"   (before: pass, after: pass)
+  test: "/test/"-"/"()  [test/base.test.ts:68]
+    withoutBase(input="/test/", base="/")  [src/utils.ts:318] *
+      … 1 unchanged call (isEmptyURL)
+      → "/test/"
+    → undefined
+
+## test: "/?test"-"/"   (before: pass, after: pass)
+  test: "/?test"-"/"()  [test/base.test.ts:68]
+    withoutBase(input="/?test", base="/")  [src/utils.ts:318] *
+      … 1 unchanged call (isEmptyURL)
+      → "/?test"
+    → undefined
+
+## test: "/api?test"-"/api"   (before: pass, after: pass)
+  test: "/api?test"-"/api"()  [test/base.test.ts:68]
+    withoutBase(input="/api?test", base="/api")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/?test"
+    → undefined
+
+## test: "https://test.com"-"/base/"   (before: pass, after: pass)
+  test: "https://test.com"-"/base/"()  [test/base.test.ts:68]
+    withoutBase(input="https://test.com", base="/base/")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "https://test.com"
+    → undefined
+
+## test: "https://test.com"-"/"   (before: pass, after: pass)
+  test: "https://test.com"-"/"()  [test/base.test.ts:68]
+    withoutBase(input="https://test.com", base="/")  [src/utils.ts:318] *
+      … 1 unchanged call (isEmptyURL)
+      → "https://test.com"
+    → undefined
+
+## test: "/admin-dashboard"-"/admin/"   (before: fail, after: pass)
+~ test: "/admin-dashboard"-"/admin/"()  [test/base.test.ts:68]
+~   before raised AssertionError("expected '/-dashboard' to be '/admin-dashboard' // Object.is equality")
+~   withoutBase(input="/admin-dashboard", base="/admin/")  [src/utils.ts:318] *
+~     before → "/-dashboard"
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+~     → "/admin-dashboard"
+~   → undefined
+
+## test: "/admin/admin-dashboard"-"/admin/"   (before: pass, after: pass)
+  test: "/admin/admin-dashboard"-"/admin/"()  [test/base.test.ts:68]
+    withoutBase(input="/admin/admin-dashboard", base="/admin/")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/admin-dashboard"
+    → undefined
+
+## test: "/admin-dashboard"-"/admin"   (before: fail, after: pass)
+~ test: "/admin-dashboard"-"/admin"()  [test/base.test.ts:68]
+~   before raised AssertionError("expected '/-dashboard' to be '/admin-dashboard' // Object.is equality")
+~   withoutBase(input="/admin-dashboard", base="/admin")  [src/utils.ts:318] *
+~     before → "/-dashboard"
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+~     → "/admin-dashboard"
+~   → undefined
+
+## test: "/admin/dashboard"-"/admin/"   (before: pass, after: pass)
+  test: "/admin/dashboard"-"/admin/"()  [test/base.test.ts:68]
+    withoutBase(input="/admin/dashboard", base="/admin/")  [src/utils.ts:318] *
+      … 2 unchanged calls (isEmptyURL, withoutTrailingSlash)
+      → "/dashboard"
+    → undefined
+

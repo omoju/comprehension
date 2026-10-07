@@ -1,0 +1,225 @@
+{
+ "fn": "scenario",
+ "file": "scenario",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "test: \"/\" + \"/\" => /",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: \"/foo\" + \"\" => /foo",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: \"/foo/\" + \"/\" => /foo",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: \"/foo\" + \"/bar\" => /foo/bar",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: \"/base/\" + \"/base\" => /base",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: \"/base\" + \"/base/\" => /base/",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: \"/base\" + \"/base/a\" => /base/a",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: \"/base/\" + \"/base/a\" => /base/a",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: \"/base/\" + \"https://test.com\" => https://test.com",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: \"/\" + \"https://test.com\" => https://test.com",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: a genuine prefix with an absent next char still returns the input",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 26,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: a genuine prefix with a '/' next char still returns the input",
+   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
+   "line": 31,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: prepends the base when the match is not on a segment boundary (trailing-slash base)",
+   "file": "tests/unit/codestory/cs_ufo_pr313_02.spec.ts",
+   "line": 5,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: prepends the base when the match is not on a segment boundary (no-trailing-slash base)",
+   "file": "tests/unit/codestory/cs_ufo_pr313_02.spec.ts",
+   "line": 10,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: still leaves a genuine '/' boundary prefix untouched (unchanged by the fix)",
+   "file": "tests/unit/codestory/cs_ufo_pr313_02.spec.ts",
+   "line": 15,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: returns the input untouched when the base is empty ('/')",
+   "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
+   "line": 9,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: returns the input untouched when it does not start with the base",
+   "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
+   "line": 15,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: still trims a genuine prefix ending on a '/' boundary",
+   "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
+   "line": 21,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: still trims a prefix that ends at end-of-string",
+   "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
+   "line": 26,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: still respects the '?' query boundary",
+   "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
+   "line": 32,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: returns a false-prefix path unchanged instead of /-dashboard (trailing-slash base)",
+   "file": "tests/unit/codestory/cs_ufo_pr313_04.spec.ts",
+   "line": 5,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: returns a false-prefix path unchanged instead of /-dashboard (bare base)",
+   "file": "tests/unit/codestory/cs_ufo_pr313_04.spec.ts",
+   "line": 10,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: still never yields the old mangled form",
+   "file": "tests/unit/codestory/cs_ufo_pr313_04.spec.ts",
+   "line": 14,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: still trims a genuine prefix at a slash boundary",
+   "file": "tests/unit/codestory/cs_ufo_pr313_04.spec.ts",
+   "line": 18,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  }
+ ],
+ "lines": {}
+}
