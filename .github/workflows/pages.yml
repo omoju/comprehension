@@ -1,4 +1,4 @@
-# Serves the repository as a static site, so stories/<repo>/index.html are readable at omoju.github.io/comprehension/stories/.
+# Serves the repository as a static site, so stories/<repo>/index.html are readable at omojumiller.com/comprehension/stories/.
 # Enable once in the repository settings: Pages → Source → GitHub Actions.
 name: pages
 on:
