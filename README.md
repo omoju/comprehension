@@ -28,17 +28,41 @@ screens open the code as a sheet). The pages are static files; with GitHub Pages
 Pipeline and data flow: [`codestory/README.md`](codestory/README.md). Running log and current state:
 [`NOTES.md`](NOTES.md).
 
-### Run it
+### Make a story of your own repository
 
-Python 3.13, [`uv`](https://docs.astral.sh/uv/) on the path, keys in `.env` (copy `.env.example`).
+Python 3.13 and [`uv`](https://docs.astral.sh/uv/) on the path; an Anthropic API key. Then:
 
 ```bash
-sh codestory/restore_repos.sh                     # the demo repositories at the exact commits the stories cite
+git clone https://github.com/omoju/comprehension.git && cd comprehension
+uv venv .venv --python 3.13 && uv pip install --python .venv/bin/python -r requirements.txt
+cp .env.example .env            # put ANTHROPIC_API_KEY in it; the Cloudflare keys are optional
+.venv/bin/python codestory/story.py https://github.com/<owner>/<repo> --open
+```
+
+One command does the whole run: it clones the repository, has the model write and trace its intended use, plans the
+chapters, writes each one, checks every citation and runs every proof (sending failures back to the model up to twice),
+and renders the three-pane page at `stories/<repo>/index.html`. `--reader owner|maintainer|user` picks who the story
+is for (default: owner). Each stage is resumable: if it stops, run the same command again.
+
+What to expect: **$2–6 in model calls and 10–25 minutes** for a library of a few thousand lines; `stories/<repo>/report.md`
+lists every chapter with its checks, repairs and cost. The contradiction judge (Jev, on Cloudflare) runs only if
+its keys are in `.env`; without them the report says it was skipped.
+
+What it can't do yet: repositories that aren't Python; intended uses that need the network, credentials or services
+(the scenario must run offline; for HTTP libraries the pipeline found local transports on its own, but it can fail);
+repositories much over 400,000 characters of source (the model sees the traced files first, the rest as room allows);
+and, as the comparison below found, it does not make every sentence right: read the report, run the proofs, and
+treat a chapter like any other claim about code.
+
+The stages one at a time, if you want them:
+
+```bash
 .venv/bin/python codestory/scenario.py demo-repos/markupsafe stories/mine
 .venv/bin/python codestory/outline.py  demo-repos/markupsafe stories/mine --reader owner
 .venv/bin/python codestory/chapter.py  stories/mine
 .venv/bin/python codestory/render.py   stories/mine                      # → stories/mine/index.html, the three-pane page
 .venv/bin/python codestory/verify.py   stories/mine                      # citations, drift, proofs
+sh codestory/restore_repos.sh                                            # the ten demo repositories at their pinned commits
 ```
 
 Ten stories exist in `stories/` (itsdangerous in `stories/itsdangerous-close-third/`, the rest in `stories/bench/`).

@@ -119,7 +119,7 @@ def main(repo_arg: str, story_arg: str) -> int:
             calls = count_calls(json.loads((story / "trace.json").read_text())) if run.returncode == 0 else 0
             if run.returncode == 0 and calls >= MIN_CALLS:
                 lines = save_story_trace(story)
-                print(f"  attempt {attempt}: ran, {calls} calls traced → {lines} lines in {story / 'trace.txt'}")
+                print(f"  attempt {attempt}: ran, {calls} calls traced → {lines} lines in {story.name}/trace.txt")
                 return 0
             error = ((run.stderr.strip() or run.stdout.strip())[-3000:] if run.returncode
                      else f"The script ran, but only {calls} calls into the repository's code were recorded. "

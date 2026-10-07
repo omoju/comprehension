@@ -1,0 +1,191 @@
+scenario()  [scenario.py:1]
+  loads(__s='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', parse_float=<class 'float'>)  [src/tomli/_parser.py:164]
+    Output.__init__(self=<Output>)  [src/tomli/_parser.py:328]
+      NestedDict.__init__(self=<NestedDict>)  [src/tomli/_parser.py:294]
+        → None
+      Flags.__init__(self=<Flags>)  [src/tomli/_parser.py:244]
+        → None
+      → None
+    make_safe_parse_float(parse_float=<class 'float'>)  [src/tomli/_parser.py:783]
+      → <class 'float'>
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=0, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 0
+    … skip_chars ×1 more  [src/tomli/_parser.py:333]
+    Flags.finalize_pending(self=<Flags>)  [src/tomli/_parser.py:251]
+      → None
+    create_list_rule(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=1, out=<tomli._parser.Output object at 0x10af46a50>)  [src/tomli/_parser.py:405]
+      skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=3, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+        → 3
+      parse_key(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=3)  [src/tomli/_parser.py:478]
+        parse_key_part(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=3)  [src/tomli/_parser.py:500]
+          skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=3, chars=frozenset({'-', '0', '1', '2', '3', '4', ...}))  [src/tomli/_parser.py:333]
+            → 10
+          → (10, 'players')
+        skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=10, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+          → 10
+        → (10, ('players',))
+      Flags.is_(self=<Flags>, key=('players',), flag=0)  [src/tomli/_parser.py:275]
+        → False
+      Flags.unset_all(self=<Flags>, key=('players',))  [src/tomli/_parser.py:256]
+        → None
+      Flags.set(self=<Flags>, key=('players',), flag=1, recursive=False)  [src/tomli/_parser.py:264]
+        → None
+      NestedDict.append_nest_to_list(self=<NestedDict>, key=('players',))  [src/tomli/_parser.py:315]
+        NestedDict.get_or_create_nest(self=<NestedDict>, key=(), access_lists=True)  [src/tomli/_parser.py:298]
+          → {}
+        → None
+      → (12, ('players',))
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=12, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 12
+    skip_comment(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=12)  [src/tomli/_parser.py:364]
+      → 12
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=13, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 13
+    key_value_rule(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=13, out=<tomli._parser.Output object at 0x10af46a50>, header=('players',), parse_float=<class 'float'>)  [src/tomli/_parser.py:428]
+      parse_key_value_pair(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=13, parse_float=<class 'float'>, nest_lvl=0)  [src/tomli/_parser.py:462]
+        parse_key(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=13)  [src/tomli/_parser.py:478]
+          parse_key_part(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=13)  [src/tomli/_parser.py:500]
+            skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=13, chars=frozenset({'-', '0', '1', '2', '3', '4', ...}))  [src/tomli/_parser.py:333]
+              → 17
+            → (17, 'name')
+          skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=17, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+            → 18
+          → (18, ('name',))
+        skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=19, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+          → 20
+        parse_value(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=20, parse_float=<class 'float'>, nest_lvl=0)  [src/tomli/_parser.py:703]
+          parse_one_line_basic_str(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=20)  [src/tomli/_parser.py:516]
+            parse_basic_str(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=21, multiline=False)  [src/tomli/_parser.py:671]
+              → (30, 'Lehtinen')
+            → (30, 'Lehtinen')
+          → (30, 'Lehtinen')
+        → (30, ('name',), 'Lehtinen')
+      Flags.is_(self=<Flags>, key=('players',), flag=0)  [src/tomli/_parser.py:275]
+        → False
+      NestedDict.get_or_create_nest(self=<NestedDict>, key=('players',), access_lists=True)  [src/tomli/_parser.py:298]
+        → {}
+      → 30
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=30, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 30
+    skip_comment(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=30)  [src/tomli/_parser.py:364]
+      → 30
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=31, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 31
+    key_value_rule(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=31, out=<tomli._parser.Output object at 0x10af46a50>, header=('players',), parse_float=<class 'float'>)  [src/tomli/_parser.py:428]
+      parse_key_value_pair(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=31, parse_float=<class 'float'>, nest_lvl=0)  [src/tomli/_parser.py:462]
+        parse_key(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=31)  [src/tomli/_parser.py:478]
+          parse_key_part(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=31)  [src/tomli/_parser.py:500]
+            skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=31, chars=frozenset({'-', '0', '1', '2', '3', '4', ...}))  [src/tomli/_parser.py:333]
+              → 37
+            → (37, 'number')
+          skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=37, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+            → 38
+          → (38, ('number',))
+        skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=39, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+          → 40
+        parse_value(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=40, parse_float=<class 'float'>, nest_lvl=0)  [src/tomli/_parser.py:703]
+          match_to_number(match=<re.Match object; span=(40, 42), match='26'>, parse_float=<class 'float'>)  [src/tomli/_re.py:116]
+            → 26
+          → (42, 26)
+        → (42, ('number',), 26)
+      Flags.is_(self=<Flags>, key=('players',), flag=0)  [src/tomli/_parser.py:275]
+        → False
+      NestedDict.get_or_create_nest(self=<NestedDict>, key=('players',), access_lists=True)  [src/tomli/_parser.py:298]
+        → {'name': 'Lehtinen'}
+      → 42
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=42, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 42
+    skip_comment(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=42)  [src/tomli/_parser.py:364]
+      → 42
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=43, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 43
+    … skip_chars ×1 more  [src/tomli/_parser.py:333]
+    Flags.finalize_pending(self=<Flags>)  [src/tomli/_parser.py:251]
+      → None
+    create_list_rule(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=44, out=<tomli._parser.Output object at 0x10af46a50>)  [src/tomli/_parser.py:405]
+      skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=46, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+        → 46
+      parse_key(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=46)  [src/tomli/_parser.py:478]
+        parse_key_part(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=46)  [src/tomli/_parser.py:500]
+          skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=46, chars=frozenset({'-', '0', '1', '2', '3', '4', ...}))  [src/tomli/_parser.py:333]
+            → 53
+          → (53, 'players')
+        skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=53, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+          → 53
+        → (53, ('players',))
+      Flags.is_(self=<Flags>, key=('players',), flag=0)  [src/tomli/_parser.py:275]
+        → False
+      Flags.unset_all(self=<Flags>, key=('players',))  [src/tomli/_parser.py:256]
+        → None
+      Flags.set(self=<Flags>, key=('players',), flag=1, recursive=False)  [src/tomli/_parser.py:264]
+        → None
+      NestedDict.append_nest_to_list(self=<NestedDict>, key=('players',))  [src/tomli/_parser.py:315]
+        NestedDict.get_or_create_nest(self=<NestedDict>, key=(), access_lists=True)  [src/tomli/_parser.py:298]
+          → {'players': [{'name': 'Lehtinen', 'number': 26}]}
+        → None
+      → (55, ('players',))
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=55, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 55
+    skip_comment(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=55)  [src/tomli/_parser.py:364]
+      → 55
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=56, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 56
+    key_value_rule(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=56, out=<tomli._parser.Output object at 0x10af46a50>, header=('players',), parse_float=<class 'float'>)  [src/tomli/_parser.py:428]
+      parse_key_value_pair(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=56, parse_float=<class 'float'>, nest_lvl=0)  [src/tomli/_parser.py:462]
+        parse_key(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=56)  [src/tomli/_parser.py:478]
+          parse_key_part(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=56)  [src/tomli/_parser.py:500]
+            skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=56, chars=frozenset({'-', '0', '1', '2', '3', '4', ...}))  [src/tomli/_parser.py:333]
+              → 60
+            → (60, 'name')
+          skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=60, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+            → 61
+          → (61, ('name',))
+        skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=62, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+          → 63
+        parse_value(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=63, parse_float=<class 'float'>, nest_lvl=0)  [src/tomli/_parser.py:703]
+          parse_one_line_basic_str(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=63)  [src/tomli/_parser.py:516]
+            parse_basic_str(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=64, multiline=False)  [src/tomli/_parser.py:671]
+              → (73, 'Numminen')
+            → (73, 'Numminen')
+          → (73, 'Numminen')
+        → (73, ('name',), 'Numminen')
+      Flags.is_(self=<Flags>, key=('players',), flag=0)  [src/tomli/_parser.py:275]
+        → False
+      NestedDict.get_or_create_nest(self=<NestedDict>, key=('players',), access_lists=True)  [src/tomli/_parser.py:298]
+        → {}
+      → 73
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=73, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 73
+    skip_comment(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=73)  [src/tomli/_parser.py:364]
+      → 73
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=74, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 74
+    key_value_rule(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=74, out=<tomli._parser.Output object at 0x10af46a50>, header=('players',), parse_float=<class 'float'>)  [src/tomli/_parser.py:428]
+      parse_key_value_pair(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=74, parse_float=<class 'float'>, nest_lvl=0)  [src/tomli/_parser.py:462]
+        parse_key(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=74)  [src/tomli/_parser.py:478]
+          parse_key_part(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=74)  [src/tomli/_parser.py:500]
+            skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=74, chars=frozenset({'-', '0', '1', '2', '3', '4', ...}))  [src/tomli/_parser.py:333]
+              → 80
+            → (80, 'number')
+          skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=80, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+            → 81
+          → (81, ('number',))
+        skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=82, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+          → 83
+        parse_value(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=83, parse_float=<class 'float'>, nest_lvl=0)  [src/tomli/_parser.py:703]
+          match_to_number(match=<re.Match object; span=(83, 85), match='27'>, parse_float=<class 'float'>)  [src/tomli/_re.py:116]
+            → 27
+          → (85, 27)
+        → (85, ('number',), 27)
+      Flags.is_(self=<Flags>, key=('players',), flag=0)  [src/tomli/_parser.py:275]
+        → False
+      NestedDict.get_or_create_nest(self=<NestedDict>, key=('players',), access_lists=True)  [src/tomli/_parser.py:298]
+        → {'name': 'Numminen'}
+      → 85
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=85, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 85
+    skip_comment(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=85)  [src/tomli/_parser.py:364]
+      → 85
+    skip_chars(src='\n[[players]]\nname = "Lehtinen"\nnum...rs]]\nname = "Numminen"\nnumber = 27\n', pos=86, chars=frozenset({'\t', ' '}))  [src/tomli/_parser.py:333]
+      → 86
+    → {'players': [{'name': 'Lehtinen', 'number': 26}, {'name': 'Numminen', 'number': 27}]}

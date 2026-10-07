@@ -1,0 +1,1526 @@
+{
+ "fn": "scenario",
+ "file": "scenario.py",
+ "line": 1,
+ "args": {},
+ "calls": [
+  {
+   "fn": "loads",
+   "file": "src/tomli/_parser.py",
+   "line": 164,
+   "called_from": "scenario.py:15",
+   "args": {
+    "__s": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+    "parse_float": "<class 'float'>"
+   },
+   "calls": [
+    {
+     "fn": "Output.__init__",
+     "file": "src/tomli/_parser.py",
+     "line": 328,
+     "called_from": "_parser.py:176",
+     "args": {
+      "self": "<Output>"
+     },
+     "calls": [
+      {
+       "fn": "NestedDict.__init__",
+       "file": "src/tomli/_parser.py",
+       "line": 294,
+       "called_from": "_parser.py:329",
+       "args": {
+        "self": "<NestedDict>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 4
+      },
+      {
+       "fn": "Flags.__init__",
+       "file": "src/tomli/_parser.py",
+       "line": 244,
+       "called_from": "_parser.py:330",
+       "args": {
+        "self": "<Flags>"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 6
+      }
+     ],
+     "returned": "None",
+     "tl": 3
+    },
+    {
+     "fn": "make_safe_parse_float",
+     "file": "src/tomli/_parser.py",
+     "line": 783,
+     "called_from": "_parser.py:178",
+     "args": {
+      "parse_float": "<class 'float'>"
+     },
+     "calls": [],
+     "returned": "<class 'float'>",
+     "tl": 9
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:184",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "0",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "0",
+     "tl": 11
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "args": {},
+     "calls": [],
+     "repeat": 1,
+     "returned": "1",
+     "tl": 13
+    },
+    {
+     "fn": "Flags.finalize_pending",
+     "file": "src/tomli/_parser.py",
+     "line": 251,
+     "called_from": "_parser.py:209",
+     "args": {
+      "self": "<Flags>"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 14
+    },
+    {
+     "fn": "create_list_rule",
+     "file": "src/tomli/_parser.py",
+     "line": 405,
+     "called_from": "_parser.py:211",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "1",
+      "out": "<tomli._parser.Output object at 0x10af46a50>"
+     },
+     "calls": [
+      {
+       "fn": "skip_chars",
+       "file": "src/tomli/_parser.py",
+       "line": 333,
+       "called_from": "_parser.py:407",
+       "args": {
+        "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+        "pos": "3",
+        "chars": "frozenset({'\\t', ' '})"
+       },
+       "calls": [],
+       "returned": "3",
+       "tl": 17
+      },
+      {
+       "fn": "parse_key",
+       "file": "src/tomli/_parser.py",
+       "line": 478,
+       "called_from": "_parser.py:408",
+       "args": {
+        "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+        "pos": "3"
+       },
+       "calls": [
+        {
+         "fn": "parse_key_part",
+         "file": "src/tomli/_parser.py",
+         "line": 500,
+         "called_from": "_parser.py:479",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "3"
+         },
+         "calls": [
+          {
+           "fn": "skip_chars",
+           "file": "src/tomli/_parser.py",
+           "line": 333,
+           "called_from": "_parser.py:507",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "3",
+            "chars": "frozenset({'-', '0', '1', '2', '3', '4', ...})"
+           },
+           "calls": [],
+           "returned": "10",
+           "tl": 21
+          }
+         ],
+         "returned": "(10, 'players')",
+         "tl": 20
+        },
+        {
+         "fn": "skip_chars",
+         "file": "src/tomli/_parser.py",
+         "line": 333,
+         "called_from": "_parser.py:481",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "10",
+          "chars": "frozenset({'\\t', ' '})"
+         },
+         "calls": [],
+         "returned": "10",
+         "tl": 24
+        }
+       ],
+       "returned": "(10, ('players',))",
+       "tl": 19
+      },
+      {
+       "fn": "Flags.is_",
+       "file": "src/tomli/_parser.py",
+       "line": 275,
+       "called_from": "_parser.py:410",
+       "args": {
+        "self": "<Flags>",
+        "key": "('players',)",
+        "flag": "0"
+       },
+       "calls": [],
+       "returned": "False",
+       "tl": 27
+      },
+      {
+       "fn": "Flags.unset_all",
+       "file": "src/tomli/_parser.py",
+       "line": 256,
+       "called_from": "_parser.py:413",
+       "args": {
+        "self": "<Flags>",
+        "key": "('players',)"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 29
+      },
+      {
+       "fn": "Flags.set",
+       "file": "src/tomli/_parser.py",
+       "line": 264,
+       "called_from": "_parser.py:415",
+       "args": {
+        "self": "<Flags>",
+        "key": "('players',)",
+        "flag": "1",
+        "recursive": "False"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 31
+      },
+      {
+       "fn": "NestedDict.append_nest_to_list",
+       "file": "src/tomli/_parser.py",
+       "line": 315,
+       "called_from": "_parser.py:417",
+       "args": {
+        "self": "<NestedDict>",
+        "key": "('players',)"
+       },
+       "calls": [
+        {
+         "fn": "NestedDict.get_or_create_nest",
+         "file": "src/tomli/_parser.py",
+         "line": 298,
+         "called_from": "_parser.py:316",
+         "args": {
+          "self": "<NestedDict>",
+          "key": "()",
+          "access_lists": "True"
+         },
+         "calls": [],
+         "returned": "{}",
+         "tl": 34
+        }
+       ],
+       "returned": "None",
+       "tl": 33
+      }
+     ],
+     "returned": "(12, ('players',))",
+     "tl": 16
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:214",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "12",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "12",
+     "tl": 38
+    },
+    {
+     "fn": "skip_comment",
+     "file": "src/tomli/_parser.py",
+     "line": 364,
+     "called_from": "_parser.py:219",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "12"
+     },
+     "calls": [],
+     "returned": "12",
+     "tl": 40
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:184",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "13",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "13",
+     "tl": 42
+    },
+    {
+     "fn": "key_value_rule",
+     "file": "src/tomli/_parser.py",
+     "line": 428,
+     "called_from": "_parser.py:202",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "13",
+      "out": "<tomli._parser.Output object at 0x10af46a50>",
+      "header": "('players',)",
+      "parse_float": "<class 'float'>"
+     },
+     "calls": [
+      {
+       "fn": "parse_key_value_pair",
+       "file": "src/tomli/_parser.py",
+       "line": 462,
+       "called_from": "_parser.py:431",
+       "args": {
+        "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+        "pos": "13",
+        "parse_float": "<class 'float'>",
+        "nest_lvl": "0"
+       },
+       "calls": [
+        {
+         "fn": "parse_key",
+         "file": "src/tomli/_parser.py",
+         "line": 478,
+         "called_from": "_parser.py:465",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "13"
+         },
+         "calls": [
+          {
+           "fn": "parse_key_part",
+           "file": "src/tomli/_parser.py",
+           "line": 500,
+           "called_from": "_parser.py:479",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "13"
+           },
+           "calls": [
+            {
+             "fn": "skip_chars",
+             "file": "src/tomli/_parser.py",
+             "line": 333,
+             "called_from": "_parser.py:507",
+             "args": {
+              "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+              "pos": "13",
+              "chars": "frozenset({'-', '0', '1', '2', '3', '4', ...})"
+             },
+             "calls": [],
+             "returned": "17",
+             "tl": 48
+            }
+           ],
+           "returned": "(17, 'name')",
+           "tl": 47
+          },
+          {
+           "fn": "skip_chars",
+           "file": "src/tomli/_parser.py",
+           "line": 333,
+           "called_from": "_parser.py:481",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "17",
+            "chars": "frozenset({'\\t', ' '})"
+           },
+           "calls": [],
+           "returned": "18",
+           "tl": 51
+          }
+         ],
+         "returned": "(18, ('name',))",
+         "tl": 46
+        },
+        {
+         "fn": "skip_chars",
+         "file": "src/tomli/_parser.py",
+         "line": 333,
+         "called_from": "_parser.py:473",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "19",
+          "chars": "frozenset({'\\t', ' '})"
+         },
+         "calls": [],
+         "returned": "20",
+         "tl": 54
+        },
+        {
+         "fn": "parse_value",
+         "file": "src/tomli/_parser.py",
+         "line": 703,
+         "called_from": "_parser.py:474",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "20",
+          "parse_float": "<class 'float'>",
+          "nest_lvl": "0"
+         },
+         "calls": [
+          {
+           "fn": "parse_one_line_basic_str",
+           "file": "src/tomli/_parser.py",
+           "line": 516,
+           "called_from": "_parser.py:725",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "20"
+           },
+           "calls": [
+            {
+             "fn": "parse_basic_str",
+             "file": "src/tomli/_parser.py",
+             "line": 671,
+             "called_from": "_parser.py:518",
+             "args": {
+              "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+              "pos": "21",
+              "multiline": "False"
+             },
+             "calls": [],
+             "returned": "(30, 'Lehtinen')",
+             "tl": 58
+            }
+           ],
+           "returned": "(30, 'Lehtinen')",
+           "tl": 57
+          }
+         ],
+         "returned": "(30, 'Lehtinen')",
+         "tl": 56
+        }
+       ],
+       "returned": "(30, ('name',), 'Lehtinen')",
+       "tl": 45
+      },
+      {
+       "fn": "Flags.is_",
+       "file": "src/tomli/_parser.py",
+       "line": 275,
+       "called_from": "_parser.py:444",
+       "args": {
+        "self": "<Flags>",
+        "key": "('players',)",
+        "flag": "0"
+       },
+       "calls": [],
+       "returned": "False",
+       "tl": 63
+      },
+      {
+       "fn": "NestedDict.get_or_create_nest",
+       "file": "src/tomli/_parser.py",
+       "line": 298,
+       "called_from": "_parser.py:450",
+       "args": {
+        "self": "<NestedDict>",
+        "key": "('players',)",
+        "access_lists": "True"
+       },
+       "calls": [],
+       "returned": "{}",
+       "tl": 65
+      }
+     ],
+     "returned": "30",
+     "tl": 44
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:203",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "30",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "30",
+     "tl": 68
+    },
+    {
+     "fn": "skip_comment",
+     "file": "src/tomli/_parser.py",
+     "line": 364,
+     "called_from": "_parser.py:219",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "30"
+     },
+     "calls": [],
+     "returned": "30",
+     "tl": 70
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:184",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "31",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "31",
+     "tl": 72
+    },
+    {
+     "fn": "key_value_rule",
+     "file": "src/tomli/_parser.py",
+     "line": 428,
+     "called_from": "_parser.py:202",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "31",
+      "out": "<tomli._parser.Output object at 0x10af46a50>",
+      "header": "('players',)",
+      "parse_float": "<class 'float'>"
+     },
+     "calls": [
+      {
+       "fn": "parse_key_value_pair",
+       "file": "src/tomli/_parser.py",
+       "line": 462,
+       "called_from": "_parser.py:431",
+       "args": {
+        "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+        "pos": "31",
+        "parse_float": "<class 'float'>",
+        "nest_lvl": "0"
+       },
+       "calls": [
+        {
+         "fn": "parse_key",
+         "file": "src/tomli/_parser.py",
+         "line": 478,
+         "called_from": "_parser.py:465",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "31"
+         },
+         "calls": [
+          {
+           "fn": "parse_key_part",
+           "file": "src/tomli/_parser.py",
+           "line": 500,
+           "called_from": "_parser.py:479",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "31"
+           },
+           "calls": [
+            {
+             "fn": "skip_chars",
+             "file": "src/tomli/_parser.py",
+             "line": 333,
+             "called_from": "_parser.py:507",
+             "args": {
+              "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+              "pos": "31",
+              "chars": "frozenset({'-', '0', '1', '2', '3', '4', ...})"
+             },
+             "calls": [],
+             "returned": "37",
+             "tl": 78
+            }
+           ],
+           "returned": "(37, 'number')",
+           "tl": 77
+          },
+          {
+           "fn": "skip_chars",
+           "file": "src/tomli/_parser.py",
+           "line": 333,
+           "called_from": "_parser.py:481",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "37",
+            "chars": "frozenset({'\\t', ' '})"
+           },
+           "calls": [],
+           "returned": "38",
+           "tl": 81
+          }
+         ],
+         "returned": "(38, ('number',))",
+         "tl": 76
+        },
+        {
+         "fn": "skip_chars",
+         "file": "src/tomli/_parser.py",
+         "line": 333,
+         "called_from": "_parser.py:473",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "39",
+          "chars": "frozenset({'\\t', ' '})"
+         },
+         "calls": [],
+         "returned": "40",
+         "tl": 84
+        },
+        {
+         "fn": "parse_value",
+         "file": "src/tomli/_parser.py",
+         "line": 703,
+         "called_from": "_parser.py:474",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "40",
+          "parse_float": "<class 'float'>",
+          "nest_lvl": "0"
+         },
+         "calls": [
+          {
+           "fn": "match_to_number",
+           "file": "src/tomli/_re.py",
+           "line": 116,
+           "called_from": "_parser.py:766",
+           "args": {
+            "match": "<re.Match object; span=(40, 42), match='26'>",
+            "parse_float": "<class 'float'>"
+           },
+           "calls": [],
+           "returned": "26",
+           "tl": 87
+          }
+         ],
+         "returned": "(42, 26)",
+         "tl": 86
+        }
+       ],
+       "returned": "(42, ('number',), 26)",
+       "tl": 75
+      },
+      {
+       "fn": "Flags.is_",
+       "file": "src/tomli/_parser.py",
+       "line": 275,
+       "called_from": "_parser.py:444",
+       "args": {
+        "self": "<Flags>",
+        "key": "('players',)",
+        "flag": "0"
+       },
+       "calls": [],
+       "returned": "False",
+       "tl": 91
+      },
+      {
+       "fn": "NestedDict.get_or_create_nest",
+       "file": "src/tomli/_parser.py",
+       "line": 298,
+       "called_from": "_parser.py:450",
+       "args": {
+        "self": "<NestedDict>",
+        "key": "('players',)",
+        "access_lists": "True"
+       },
+       "calls": [],
+       "returned": "{'name': 'Lehtinen'}",
+       "tl": 93
+      }
+     ],
+     "returned": "42",
+     "tl": 74
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:203",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "42",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "42",
+     "tl": 96
+    },
+    {
+     "fn": "skip_comment",
+     "file": "src/tomli/_parser.py",
+     "line": 364,
+     "called_from": "_parser.py:219",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "42"
+     },
+     "calls": [],
+     "returned": "42",
+     "tl": 98
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:184",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "43",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "43",
+     "tl": 100
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "args": {},
+     "calls": [],
+     "repeat": 1,
+     "returned": "44",
+     "tl": 102
+    },
+    {
+     "fn": "Flags.finalize_pending",
+     "file": "src/tomli/_parser.py",
+     "line": 251,
+     "called_from": "_parser.py:209",
+     "args": {
+      "self": "<Flags>"
+     },
+     "calls": [],
+     "returned": "None",
+     "tl": 103
+    },
+    {
+     "fn": "create_list_rule",
+     "file": "src/tomli/_parser.py",
+     "line": 405,
+     "called_from": "_parser.py:211",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "44",
+      "out": "<tomli._parser.Output object at 0x10af46a50>"
+     },
+     "calls": [
+      {
+       "fn": "skip_chars",
+       "file": "src/tomli/_parser.py",
+       "line": 333,
+       "called_from": "_parser.py:407",
+       "args": {
+        "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+        "pos": "46",
+        "chars": "frozenset({'\\t', ' '})"
+       },
+       "calls": [],
+       "returned": "46",
+       "tl": 106
+      },
+      {
+       "fn": "parse_key",
+       "file": "src/tomli/_parser.py",
+       "line": 478,
+       "called_from": "_parser.py:408",
+       "args": {
+        "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+        "pos": "46"
+       },
+       "calls": [
+        {
+         "fn": "parse_key_part",
+         "file": "src/tomli/_parser.py",
+         "line": 500,
+         "called_from": "_parser.py:479",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "46"
+         },
+         "calls": [
+          {
+           "fn": "skip_chars",
+           "file": "src/tomli/_parser.py",
+           "line": 333,
+           "called_from": "_parser.py:507",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "46",
+            "chars": "frozenset({'-', '0', '1', '2', '3', '4', ...})"
+           },
+           "calls": [],
+           "returned": "53",
+           "tl": 110
+          }
+         ],
+         "returned": "(53, 'players')",
+         "tl": 109
+        },
+        {
+         "fn": "skip_chars",
+         "file": "src/tomli/_parser.py",
+         "line": 333,
+         "called_from": "_parser.py:481",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "53",
+          "chars": "frozenset({'\\t', ' '})"
+         },
+         "calls": [],
+         "returned": "53",
+         "tl": 113
+        }
+       ],
+       "returned": "(53, ('players',))",
+       "tl": 108
+      },
+      {
+       "fn": "Flags.is_",
+       "file": "src/tomli/_parser.py",
+       "line": 275,
+       "called_from": "_parser.py:410",
+       "args": {
+        "self": "<Flags>",
+        "key": "('players',)",
+        "flag": "0"
+       },
+       "calls": [],
+       "returned": "False",
+       "tl": 116
+      },
+      {
+       "fn": "Flags.unset_all",
+       "file": "src/tomli/_parser.py",
+       "line": 256,
+       "called_from": "_parser.py:413",
+       "args": {
+        "self": "<Flags>",
+        "key": "('players',)"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 118
+      },
+      {
+       "fn": "Flags.set",
+       "file": "src/tomli/_parser.py",
+       "line": 264,
+       "called_from": "_parser.py:415",
+       "args": {
+        "self": "<Flags>",
+        "key": "('players',)",
+        "flag": "1",
+        "recursive": "False"
+       },
+       "calls": [],
+       "returned": "None",
+       "tl": 120
+      },
+      {
+       "fn": "NestedDict.append_nest_to_list",
+       "file": "src/tomli/_parser.py",
+       "line": 315,
+       "called_from": "_parser.py:417",
+       "args": {
+        "self": "<NestedDict>",
+        "key": "('players',)"
+       },
+       "calls": [
+        {
+         "fn": "NestedDict.get_or_create_nest",
+         "file": "src/tomli/_parser.py",
+         "line": 298,
+         "called_from": "_parser.py:316",
+         "args": {
+          "self": "<NestedDict>",
+          "key": "()",
+          "access_lists": "True"
+         },
+         "calls": [],
+         "returned": "{'players': [{'name': 'Lehtinen', 'number': 26}]}",
+         "tl": 123
+        }
+       ],
+       "returned": "None",
+       "tl": 122
+      }
+     ],
+     "returned": "(55, ('players',))",
+     "tl": 105
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:214",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "55",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "55",
+     "tl": 127
+    },
+    {
+     "fn": "skip_comment",
+     "file": "src/tomli/_parser.py",
+     "line": 364,
+     "called_from": "_parser.py:219",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "55"
+     },
+     "calls": [],
+     "returned": "55",
+     "tl": 129
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:184",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "56",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "56",
+     "tl": 131
+    },
+    {
+     "fn": "key_value_rule",
+     "file": "src/tomli/_parser.py",
+     "line": 428,
+     "called_from": "_parser.py:202",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "56",
+      "out": "<tomli._parser.Output object at 0x10af46a50>",
+      "header": "('players',)",
+      "parse_float": "<class 'float'>"
+     },
+     "calls": [
+      {
+       "fn": "parse_key_value_pair",
+       "file": "src/tomli/_parser.py",
+       "line": 462,
+       "called_from": "_parser.py:431",
+       "args": {
+        "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+        "pos": "56",
+        "parse_float": "<class 'float'>",
+        "nest_lvl": "0"
+       },
+       "calls": [
+        {
+         "fn": "parse_key",
+         "file": "src/tomli/_parser.py",
+         "line": 478,
+         "called_from": "_parser.py:465",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "56"
+         },
+         "calls": [
+          {
+           "fn": "parse_key_part",
+           "file": "src/tomli/_parser.py",
+           "line": 500,
+           "called_from": "_parser.py:479",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "56"
+           },
+           "calls": [
+            {
+             "fn": "skip_chars",
+             "file": "src/tomli/_parser.py",
+             "line": 333,
+             "called_from": "_parser.py:507",
+             "args": {
+              "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+              "pos": "56",
+              "chars": "frozenset({'-', '0', '1', '2', '3', '4', ...})"
+             },
+             "calls": [],
+             "returned": "60",
+             "tl": 137
+            }
+           ],
+           "returned": "(60, 'name')",
+           "tl": 136
+          },
+          {
+           "fn": "skip_chars",
+           "file": "src/tomli/_parser.py",
+           "line": 333,
+           "called_from": "_parser.py:481",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "60",
+            "chars": "frozenset({'\\t', ' '})"
+           },
+           "calls": [],
+           "returned": "61",
+           "tl": 140
+          }
+         ],
+         "returned": "(61, ('name',))",
+         "tl": 135
+        },
+        {
+         "fn": "skip_chars",
+         "file": "src/tomli/_parser.py",
+         "line": 333,
+         "called_from": "_parser.py:473",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "62",
+          "chars": "frozenset({'\\t', ' '})"
+         },
+         "calls": [],
+         "returned": "63",
+         "tl": 143
+        },
+        {
+         "fn": "parse_value",
+         "file": "src/tomli/_parser.py",
+         "line": 703,
+         "called_from": "_parser.py:474",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "63",
+          "parse_float": "<class 'float'>",
+          "nest_lvl": "0"
+         },
+         "calls": [
+          {
+           "fn": "parse_one_line_basic_str",
+           "file": "src/tomli/_parser.py",
+           "line": 516,
+           "called_from": "_parser.py:725",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "63"
+           },
+           "calls": [
+            {
+             "fn": "parse_basic_str",
+             "file": "src/tomli/_parser.py",
+             "line": 671,
+             "called_from": "_parser.py:518",
+             "args": {
+              "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+              "pos": "64",
+              "multiline": "False"
+             },
+             "calls": [],
+             "returned": "(73, 'Numminen')",
+             "tl": 147
+            }
+           ],
+           "returned": "(73, 'Numminen')",
+           "tl": 146
+          }
+         ],
+         "returned": "(73, 'Numminen')",
+         "tl": 145
+        }
+       ],
+       "returned": "(73, ('name',), 'Numminen')",
+       "tl": 134
+      },
+      {
+       "fn": "Flags.is_",
+       "file": "src/tomli/_parser.py",
+       "line": 275,
+       "called_from": "_parser.py:444",
+       "args": {
+        "self": "<Flags>",
+        "key": "('players',)",
+        "flag": "0"
+       },
+       "calls": [],
+       "returned": "False",
+       "tl": 152
+      },
+      {
+       "fn": "NestedDict.get_or_create_nest",
+       "file": "src/tomli/_parser.py",
+       "line": 298,
+       "called_from": "_parser.py:450",
+       "args": {
+        "self": "<NestedDict>",
+        "key": "('players',)",
+        "access_lists": "True"
+       },
+       "calls": [],
+       "returned": "{}",
+       "tl": 154
+      }
+     ],
+     "returned": "73",
+     "tl": 133
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:203",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "73",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "73",
+     "tl": 157
+    },
+    {
+     "fn": "skip_comment",
+     "file": "src/tomli/_parser.py",
+     "line": 364,
+     "called_from": "_parser.py:219",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "73"
+     },
+     "calls": [],
+     "returned": "73",
+     "tl": 159
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:184",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "74",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "74",
+     "tl": 161
+    },
+    {
+     "fn": "key_value_rule",
+     "file": "src/tomli/_parser.py",
+     "line": 428,
+     "called_from": "_parser.py:202",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "74",
+      "out": "<tomli._parser.Output object at 0x10af46a50>",
+      "header": "('players',)",
+      "parse_float": "<class 'float'>"
+     },
+     "calls": [
+      {
+       "fn": "parse_key_value_pair",
+       "file": "src/tomli/_parser.py",
+       "line": 462,
+       "called_from": "_parser.py:431",
+       "args": {
+        "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+        "pos": "74",
+        "parse_float": "<class 'float'>",
+        "nest_lvl": "0"
+       },
+       "calls": [
+        {
+         "fn": "parse_key",
+         "file": "src/tomli/_parser.py",
+         "line": 478,
+         "called_from": "_parser.py:465",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "74"
+         },
+         "calls": [
+          {
+           "fn": "parse_key_part",
+           "file": "src/tomli/_parser.py",
+           "line": 500,
+           "called_from": "_parser.py:479",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "74"
+           },
+           "calls": [
+            {
+             "fn": "skip_chars",
+             "file": "src/tomli/_parser.py",
+             "line": 333,
+             "called_from": "_parser.py:507",
+             "args": {
+              "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+              "pos": "74",
+              "chars": "frozenset({'-', '0', '1', '2', '3', '4', ...})"
+             },
+             "calls": [],
+             "returned": "80",
+             "tl": 167
+            }
+           ],
+           "returned": "(80, 'number')",
+           "tl": 166
+          },
+          {
+           "fn": "skip_chars",
+           "file": "src/tomli/_parser.py",
+           "line": 333,
+           "called_from": "_parser.py:481",
+           "args": {
+            "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+            "pos": "80",
+            "chars": "frozenset({'\\t', ' '})"
+           },
+           "calls": [],
+           "returned": "81",
+           "tl": 170
+          }
+         ],
+         "returned": "(81, ('number',))",
+         "tl": 165
+        },
+        {
+         "fn": "skip_chars",
+         "file": "src/tomli/_parser.py",
+         "line": 333,
+         "called_from": "_parser.py:473",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "82",
+          "chars": "frozenset({'\\t', ' '})"
+         },
+         "calls": [],
+         "returned": "83",
+         "tl": 173
+        },
+        {
+         "fn": "parse_value",
+         "file": "src/tomli/_parser.py",
+         "line": 703,
+         "called_from": "_parser.py:474",
+         "args": {
+          "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+          "pos": "83",
+          "parse_float": "<class 'float'>",
+          "nest_lvl": "0"
+         },
+         "calls": [
+          {
+           "fn": "match_to_number",
+           "file": "src/tomli/_re.py",
+           "line": 116,
+           "called_from": "_parser.py:766",
+           "args": {
+            "match": "<re.Match object; span=(83, 85), match='27'>",
+            "parse_float": "<class 'float'>"
+           },
+           "calls": [],
+           "returned": "27",
+           "tl": 176
+          }
+         ],
+         "returned": "(85, 27)",
+         "tl": 175
+        }
+       ],
+       "returned": "(85, ('number',), 27)",
+       "tl": 164
+      },
+      {
+       "fn": "Flags.is_",
+       "file": "src/tomli/_parser.py",
+       "line": 275,
+       "called_from": "_parser.py:444",
+       "args": {
+        "self": "<Flags>",
+        "key": "('players',)",
+        "flag": "0"
+       },
+       "calls": [],
+       "returned": "False",
+       "tl": 180
+      },
+      {
+       "fn": "NestedDict.get_or_create_nest",
+       "file": "src/tomli/_parser.py",
+       "line": 298,
+       "called_from": "_parser.py:450",
+       "args": {
+        "self": "<NestedDict>",
+        "key": "('players',)",
+        "access_lists": "True"
+       },
+       "calls": [],
+       "returned": "{'name': 'Numminen'}",
+       "tl": 182
+      }
+     ],
+     "returned": "85",
+     "tl": 163
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:203",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "85",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "returned": "85",
+     "tl": 185
+    },
+    {
+     "fn": "skip_comment",
+     "file": "src/tomli/_parser.py",
+     "line": 364,
+     "called_from": "_parser.py:219",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "85"
+     },
+     "calls": [],
+     "returned": "85",
+     "tl": 187
+    },
+    {
+     "fn": "skip_chars",
+     "file": "src/tomli/_parser.py",
+     "line": 333,
+     "called_from": "_parser.py:184",
+     "args": {
+      "src": "'\\n[[players]]\\nname = \"Lehtinen\"\\nnum...rs]]\\nname = \"Numminen\"\\nnumber = 27\\n'",
+      "pos": "86",
+      "chars": "frozenset({'\\t', ' '})"
+     },
+     "calls": [],
+     "raised": "IndexError('string index out of range')",
+     "returned": "86",
+     "tl": 189
+    }
+   ],
+   "raised": "IndexError('string index out of range')",
+   "returned": "{'players': [{'name': 'Lehtinen', 'number': 26}, {'name': 'Numminen', 'number': 27}]}",
+   "tl": 2
+  }
+ ],
+ "lines": {
+  "src/tomli/_parser.py": [
+   169,
+   170,
+   175,
+   176,
+   177,
+   178,
+   182,
+   184,
+   194,
+   195,
+   196,
+   197,
+   198,
+   199,
+   200,
+   201,
+   202,
+   203,
+   204,
+   205,
+   206,
+   209,
+   210,
+   211,
+   214,
+   219,
+   222,
+   223,
+   226,
+   230,
+   232,
+   245,
+   246,
+   252,
+   254,
+   257,
+   258,
+   262,
+   265,
+   266,
+   267,
+   271,
+   272,
+   273,
+   276,
+   278,
+   279,
+   286,
+   287,
+   288,
+   289,
+   290,
+   296,
+   304,
+   305,
+   306,
+   308,
+   309,
+   310,
+   311,
+   313,
+   316,
+   317,
+   318,
+   319,
+   320,
+   322,
+   324,
+   329,
+   330,
+   334,
+   335,
+   336,
+   337,
+   338,
+   339,
+   365,
+   366,
+   369,
+   373,
+   406,
+   407,
+   408,
+   410,
+   413,
+   415,
+   416,
+   417,
+   421,
+   425,
+   431,
+   432,
+   433,
+   435,
+   436,
+   444,
+   449,
+   450,
+   453,
+   456,
+   458,
+   459,
+   465,
+   466,
+   467,
+   470,
+   472,
+   473,
+   474,
+   475,
+   479,
+   480,
+   481,
+   482,
+   483,
+   484,
+   487,
+   488,
+   501,
+   502,
+   505,
+   506,
+   507,
+   508,
+   517,
+   518,
+   672,
+   676,
+   677,
+   678,
+   679,
+   680,
+   681,
+   682,
+   685,
+   686,
+   687,
+   692,
+   698,
+   700,
+   706,
+   714,
+   715,
+   722,
+   723,
+   725,
+   728,
+   734,
+   737,
+   742,
+   746,
+   750,
+   751,
+   757,
+   758,
+   764,
+   765,
+   766,
+   792,
+   793
+  ],
+  "src/tomli/_re.py": [
+   117,
+   119
+  ]
+ },
+ "tl": 1
+}

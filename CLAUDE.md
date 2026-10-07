@@ -17,6 +17,8 @@ and the story fails like a test when the code changes. Started 2026-09-22. **Shi
 - **Smallest demonstration first.** Working on real repositories beats a document. Demo before docs.
 - **Interruptible.** Work in pieces that can be dropped for a week and picked up. `NOTES.local.md` always says where we
   are; `NOTES.md` is the public record and carries no working state.
+- **Pull requests for new work.** The repository is public; changes go on a branch and arrive on `main` through a
+  pull request, so each change has a description and a diff someone can read.
 - **Public by default.** Meant to be shown, talked about and used in a talk. No real people's private data, no secrets.
 - **Omoju writes their own public words.** Claude writes the code, the technical docs and the generated stories; essays,
   posts and talks are Omoju's.
