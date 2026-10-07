@@ -5,7 +5,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:wght@400;500;600&display=swap">
 <style>
 :root { --ink: #211f1b; --ink-soft: #3d3931; --ink-faint: #56514a; --paper: #fdfdfa; --rule: #cdc8bd; --accent: #AA0000; --link: #483D8B;
-  --sans: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; --serif: 'EB Garamond', Garamond, Georgia, serif }
+  --sans: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; --serif: 'EB Garamond', Garamond, Georgia, serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', monospace; --chip: #efede6 }
 * { margin: 0; padding: 0; box-sizing: border-box }
 body { font-family: var(--serif); font-size: 20px; line-height: 1.62; color: var(--ink); background: var(--paper); max-width: 53rem; margin: 0 auto; padding: 4rem 2rem;
   font-variant-numeric: oldstyle-nums proportional-nums; font-feature-settings: "onum" 1, "kern" 1, "liga" 1; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased }
@@ -24,9 +25,12 @@ p.lede::first-line { font-variant-caps: small-caps; letter-spacing: 0.03em }
 main a { color: var(--link); text-decoration: none; border-bottom: 1px solid rgba(72, 61, 139, 0.3); transition: border-color 0.15s ease, color 0.15s ease }
 main a:hover { color: var(--accent); border-bottom-color: var(--accent) }
 ul.stories { list-style: none; margin-bottom: 1.15rem }
-ul.stories li { margin-bottom: 1.3rem; text-align: left; hyphens: none }
-ul.stories strong a { border-bottom: none }
+ul.stories li { margin-bottom: 1.9rem; text-align: left; hyphens: none }
+ul.stories a.repo { display: block; font-size: 1.32rem; font-weight: 600; font-variant-caps: small-caps; letter-spacing: 0.045em; border-bottom: none; line-height: 1.3 }
+ul.stories a.repo .owner { font-weight: 400; color: var(--ink-faint) }
+ul.stories .headline { display: block; font-style: italic; color: var(--ink-soft); margin-bottom: 0.2rem }
 ul.stories .meta { display: block; font-size: 0.92rem; color: var(--ink-faint); font-variant-caps: small-caps; letter-spacing: 0.06em; margin-top: 0.1rem }
+code, .sha { font-family: var(--mono); font-size: 0.78em; color: var(--accent); background: var(--chip); padding: 0.12em 0.4em; border-radius: 4px; font-variant-numeric: normal; font-variant-caps: normal; letter-spacing: 0 }
 hr { border: none; text-align: center; margin: 2.6rem 0 } hr::before { content: "❧"; color: var(--ink-faint); font-size: 1.2rem }
 .aside { color: var(--ink-soft); font-size: 0.95rem; text-align: left; hyphens: none }
 footer { border-top: 1px solid var(--rule); padding-top: 1.2rem; color: var(--ink-faint); font-size: 0.92rem } footer a { color: inherit }
@@ -45,46 +49,53 @@ footer { border-top: 1px solid var(--rule); padding-top: 1.2rem; color: var(--in
   <a href="https://github.com/omoju/comprehension">the repository</a>.</p>
   <ul class="stories">
 <li>
-  <strong><a href="itsdangerous-close-third/index.html">A Token and Its Word: One Round Trip Through ItsDangerous</a></strong>
+  <a class="repo" href="itsdangerous-close-third/index.html"><span class="owner">pallets/</span>itsdangerous</a>
+  <span class="headline">A Token and Its Word: One Round Trip Through ItsDangerous</span>
   A web app wants to hand a user&#x27;s identity — `{&quot;id&quot;: 5, &quot;name&quot;: &quot;itsdangerous&quot;}` — to an untrusted place (a URL, a cookie, an email link) and get it back later without having stored anything server-side. The data must survive the trip in a form that is safe for URLs, and any tampering must be detectable on return. `URLSafeSerializer(&quot;secret key&quot;, &quot;auth&quot;)` is the promise; this story follows the dict out to a token and back again, and notes exactly what that promise covers and what it does not.
-  <span class="meta">pallets/itsdangerous at 672971d · 8 chapters · 8,005 words · 129 citations · for the owner</span>
+  <span class="meta">at <span class="sha">672971d</span> · 8 chapters · 8,005 words · 129 citations · for the owner</span>
 </li>
 <li>
-  <strong><a href="bench/requests/index.html">One GET, End to End: What Requests Promises and Where It Trusts You</a></strong>
+  <a class="repo" href="bench/requests/index.html"><span class="owner">psf/</span>requests</a>
+  <span class="headline">One GET, End to End: What Requests Promises and Where It Trusts You</span>
   A caller has a URL and a pair of credentials: `requests.get(&#x27;http://127.0.0.1:54897/basic-auth/user/pass&#x27;, auth=(&#x27;user&#x27;,&#x27;pass&#x27;))`. Between that line and a parsed JSON dict lies every decision Requests makes on your behalf \u2014 which headers it adds, whether it checks a certificate, how long it will wait, where it will send your password next, and what it does with a response body it has not yet read. This story follows that URL and that password through the library, stopping wherever a guarantee is made or a default quietly decides something for you.
-  <span class="meta">psf/requests at 611c616 · 10 chapters · 10,838 words · 241 citations · for the owner</span>
+  <span class="meta">at <span class="sha">611c616</span> · 10 chapters · 10,838 words · 241 citations · for the owner</span>
 </li>
 <li>
-  <strong><a href="bench/flask/index.html">One Request Through Flask: What the Framework Promises Between `environ` and `200 OK`</a></strong>
+  <a class="repo" href="bench/flask/index.html"><span class="owner">pallets/</span>flask</a>
+  <span class="headline">One Request Through Flask: What the Framework Promises Between `environ` and `200 OK`</span>
   A ten-line application 
 
 `app = Flask(__name__)`, one route returning `&quot;Hello, World!&quot;` 
 
  is the smallest thing anyone can be asked to sign off on. Nothing is configured: no secret key, no error handlers, no blueprints, no before/after hooks. Everything that happens between the client&#x27;s `GET /` and the `200 OK` it gets back is Flask&#x27;s own behaviour, running on its defaults. This story follows one WSGI environ dict from the moment the test client builds it to the moment the response iterator closes, and asks at each step: what is guaranteed here, what are the defaults, and what happens when something goes wrong.
-  <span class="meta">pallets/flask at d73fa1c · 8 chapters · 7,637 words · 138 citations · for the owner</span>
+  <span class="meta">at <span class="sha">d73fa1c</span> · 8 chapters · 7,637 words · 138 citations · for the owner</span>
 </li>
 <li>
-  <strong><a href="bench/click/index.html">Hello, Click: one value&#x27;s round trip through a command line</a></strong>
+  <a class="repo" href="bench/click/index.html"><span class="owner">pallets/</span>click</a>
+  <span class="headline">Hello, Click: one value&#x27;s round trip through a command line</span>
   A caller has a Python function, `hello(count, name)`, and wants it to behave like a real command line program: `--count=3` typed on the command line, a name asked for interactively, output captured so a test can assert on it. Nothing in the function knows about argv, prompts, encodings, or exit codes. The data that arrives 
 u2014 the argument list `[&#x27;--count=3&#x27;]` and the keystrokes `&#x27;Click\n&#x27;` 
 u2014 has to cross from an untrusted outside world into a typed Python call, and a result has to come back out with an exit code that means something. This is the story of that crossing, and of the guarantees Click makes along the way.
-  <span class="meta">pallets/click at 06b2a67 · 9 chapters · 8,601 words · 227 citations · for the owner</span>
+  <span class="meta">at <span class="sha">06b2a67</span> · 9 chapters · 8,601 words · 227 citations · for the owner</span>
 </li>
 <li>
-  <strong><a href="bench/httpx/index.html">A Request That Never Touches the Network</a></strong>
+  <a class="repo" href="bench/httpx/index.html"><span class="owner">encode/</span>httpx</a>
+  <span class="headline">A Request That Never Touches the Network</span>
   A caller wants to exercise a plain Python WSGI application through the real httpx client 	er
  	er 	er 	er 	er 	er 	er
 
 same headers, same cookie jar, same response model 	er but with no socket, no DNS and no TLS anywhere in the path. The input is modest: the string &quot;/&quot; and one custom header, handed to `client.get()`. Everything interesting is what the client does to that input on the way down, and what it guarantees about what comes back up. The reader following it is the person who has to sign off on that stack: which defaults are in force, where a failure would surface, and what the transport boundary does and does not promise.
-  <span class="meta">encode/httpx at b5addb6 · 8 chapters · 8,441 words · 210 citations · for the owner</span>
+  <span class="meta">at <span class="sha">b5addb6</span> · 8 chapters · 8,441 words · 210 citations · for the owner</span>
 </li>
 <li>
-  <strong><a href="bench/rich/index.html">What Actually Reaches the Terminal: Two Strings and a Table Through Rich</a></strong>
+  <a class="repo" href="bench/rich/index.html"><span class="owner">Textualize/</span>rich</a>
+  <span class="headline">What Actually Reaches the Terminal: Two Strings and a Table Through Rich</span>
   A caller wants styled, laid-out text on a terminal: colours, markup tags like [bold cyan]\u2026[/bold cyan], and a four-column table that fits the available width \u2014 without hand-writing ANSI escape sequences, without overflowing the line, and with the option to capture whatever was produced for later inspection. The data handed in is ordinary Python: two plain strings, one markup string, and a table of cell strings. Everything between that data and the bytes on the file object is Rich&#x27;s job, and the owner of this code has to vouch for it: what it promises, where it decides on the caller&#x27;s behalf, and how it fails.
-  <span class="meta">Textualize/rich at 9d8f9a3 · 9 chapters · 9,560 words · 261 citations · for the owner</span>
+  <span class="meta">at <span class="sha">9d8f9a3</span> · 9 chapters · 9,560 words · 261 citations · for the owner</span>
 </li>
 <li>
-  <strong><a href="bench/attrs/index.html">The Class That Was Rewritten: One Run Through attrs</a></strong>
+  <a class="repo" href="bench/attrs/index.html"><span class="owner">python-attrs/</span>attrs</a>
+  <span class="headline">The Class That Was Rewritten: One Run Through attrs</span>
   Writing a Python class with a handful of data fields means hand-writing nine or more dunder methods 
 
 
@@ -94,32 +105,36 @@ same headers, same cookie jar, same response model 	er but with no socket, no DN
 
 
  and keeping them in sync forever. *attrs* offers to write them for you. The price is that a decorator gets to inspect your class body at import time and, for slotted classes, hand you back a *different class object* than the one you wrote. This story follows one real run of the README example: a class body with two annotated fields walks into `@define`, comes out as a finished, slotted, unhashable class; an instance of it is compared and serialized to a dict; and finally a second class is conjured at runtime from nothing but two strings. The reader is the person who has to sign off on all of that: what is guaranteed, what is silently decided, and where it can bite.
-  <span class="meta">python-attrs/attrs at 8f76777 · 9 chapters · 9,424 words · 212 citations · for the owner</span>
+  <span class="meta">at <span class="sha">8f76777</span> · 9 chapters · 9,424 words · 212 citations · for the owner</span>
 </li>
 <li>
-  <strong><a href="bench/jinja/index.html">The Template That Knew Its Parent</a></strong>
+  <a class="repo" href="bench/jinja/index.html"><span class="owner">pallets/</span>jinja</a>
+  <span class="headline">The Template That Knew Its Parent</span>
   A web page is two files: a layout with holes in it, and a member list that fills the holes. Jinja&#x27;s job is to turn that pair of strings into one correct, injection-safe HTML document 
 i
 
  and to do it fast enough to be worth caching. The story follows one string, the source of `members.html`, from the moment a DictLoader hands it over, through lexing, parsing, code generation and `exec`, until it comes back as rendered HTML with an ampersand safely escaped. Along the way it passes every decision an owner has to vouch for: what gets cached and when it goes stale, when the autoescape question is actually asked, what the generated Python is allowed to do, and who decides which file a template may pull in.
-  <span class="meta">pallets/jinja at 5ef7011 · 8 chapters · 9,038 words · 190 citations · for the owner</span>
+  <span class="meta">at <span class="sha">5ef7011</span> · 8 chapters · 9,038 words · 190 citations · for the owner</span>
 </li>
 <li>
-  <strong><a href="bench/markupsafe/index.html">Nothing Gets Out Unescaped: A Run Through MarkupSafe</a></strong>
+  <a class="repo" href="bench/markupsafe/index.html"><span class="owner">pallets/</span>markupsafe</a>
+  <span class="headline">Nothing Gets Out Unescaped: A Run Through MarkupSafe</span>
   A web page wants to show a comment somebody posted: `&lt;script&gt;alert(document.cookie);&lt;/script&gt;`. Printed as-is into HTML, that string stops being text and starts being code \u2014 it is a cross-site scripting payload. MarkupSafe exists to make the difference between &quot;text&quot; and &quot;markup&quot; a property of the value itself, carried in its type, so that a template can mix trusted and untrusted pieces and the untrusted ones can only ever arrive as inert characters. This story follows that one untrusted comment from the moment it is handed to `escape()` until it comes back out of a rendered fragment as plain text again, and notes at each step exactly what is guaranteed, what is merely trusted, and who is responsible for which.
-  <span class="meta">pallets/markupsafe at b2e4d9c · 6 chapters · 5,977 words · 104 citations · for the owner</span>
+  <span class="meta">at <span class="sha">b2e4d9c</span> · 6 chapters · 5,977 words · 104 citations · for the owner</span>
 </li>
 <li>
-  <strong><a href="bench/tqdm/index.html">Four Characters and a Progress Bar: What tqdm Promises While It Prints</a></strong>
+  <a class="repo" href="bench/tqdm/index.html"><span class="owner">tqdm/</span>tqdm</a>
+  <span class="headline">Four Characters and a Progress Bar: What tqdm Promises While It Prints</span>
   A caller has a four-item list and a loop that does real work, and wants to see progress without writing any printing logic. The list is handed to `tqdm(...)`: from that moment it is no longer just a list but the payload of a progress meter that must allocate a global write lock, start a background thread, probe the terminal, render a frame, throttle itself, and clean up after the loop ends \u2014 all on `sys.stderr`, all without changing what the loop iterates over. This story follows that list through one real run and asks, at each step, what is guaranteed and what could go wrong.
-  <span class="meta">tqdm/tqdm at 9cf5a12 · 9 chapters · 9,337 words · 177 citations · for the owner</span>
+  <span class="meta">at <span class="sha">9cf5a12</span> · 9 chapters · 9,337 words · 177 citations · for the owner</span>
 </li>
 <li>
-  <strong><a href="tomli/index.html">Two Players and a Parser: What `tomli.loads` Promises</a></strong>
+  <a class="repo" href="tomli/index.html"><span class="owner">hukkin/</span>tomli</a>
+  <span class="headline">Two Players and a Parser: What `tomli.loads` Promises</span>
   A caller hands Tomli a TOML string 
 s a document with two `[[players]]` records 
 s and expects back a plain Python dict of builtin types, or a clean `TOMLDecodeError` if the document is malformed. Nothing else: no partial results, no custom classes, no surprises. The string is the protagonist; the story follows it from the public entry point, through the single-pass statement loop, into the nested dict that is handed back, and notes at every branch what would have happened had the input been hostile or merely wrong.
-  <span class="meta">hukkin/tomli at 18d8d59 · 8 chapters · 7,776 words · 173 citations · for the owner</span>
+  <span class="meta">at <span class="sha">18d8d59</span> · 8 chapters · 7,776 words · 173 citations · for the owner</span>
 </li>
   </ul>
   <hr>
