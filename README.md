@@ -48,7 +48,8 @@ holds every intermediate (questions, claims, judgments, answers, grades, every m
 general 76% vs 56%) but were not more accurate than DeepWiki's pages (0.71 vs 0.54 contradicted claims per 1,000
 words; 10 vs 7 of 360 sampled). Omoju's verdict, recorded before the numbers, was ship; the preregistration says
 the rule stands, and both are published. The numbers, both judging passes, and every deviation:
-`eval/results.md`, `PREREGISTRATION.md` §12–13.
+`eval/results.md`, `PREREGISTRATION.md` §12–13. Two interactive explainers walk through how each measure was
+produced: `eval/explainer/index.html` (comprehension, H2) and `eval/explainer/h1.html` (accuracy, H1).
 
 ## Rules of the project
 

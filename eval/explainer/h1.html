@@ -1,0 +1,240 @@
+<title>How the Accuracy Measure Worked</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a stepper, one idea per screen; same tokens as the comprehension explainer so the two read as a pair. */
+:root {
+  --bg: #f7f5f0; --sheet: #ffffff; --ink: #1d1b17; --muted: #5f5b53; --rule: #d9d4c9;
+  --story: #1f5f8b; --story-soft: #dfeaf4; --wiki: #8b5a1f; --wiki-soft: #f5ecdc;
+  --ok: #2d6a4f; --no: #a23b2a; --hi: #fff1c2; --dim: .28;
+  --serif: "Source Serif 4", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15140f; --sheet: #1f1d18; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e;
+  --story: #7fb3d9; --story-soft: #1b2b38; --wiki: #d9a05c; --wiki-soft: #332718;
+  --ok: #7cc49a; --no: #e08674; --hi: #3b3418; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15140f; --sheet: #1f1d18; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e;
+  --story: #7fb3d9; --story-soft: #1b2b38; --wiki: #d9a05c; --wiki-soft: #332718;
+  --ok: #7cc49a; --no: #e08674; --hi: #3b3418; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--serif); margin: 0; padding-block: 28px 80px; padding-inline: 16px }
+main { max-width: 860px; margin: 0 auto }
+.kicker { font: 500 12px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+h1 { font: 600 30px/1.15 var(--serif); margin: 6px 0 18px; text-wrap: balance }
+h2 { font: 600 22px/1.25 var(--serif); margin: 0 0 10px; text-wrap: balance }
+p { margin: 0 0 12px; max-width: 68ch }
+.steps { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 18px; padding: 0; list-style: none }
+.steps button { font: 500 12px/1.2 var(--mono); padding: 6px 10px; border: 1px solid var(--rule); background: var(--sheet); color: var(--muted); border-radius: 999px; cursor: pointer }
+.steps button[aria-current="step"] { color: var(--ink); border-color: var(--ink) }
+.steps button:focus-visible, button:focus-visible { outline: 2px solid var(--story); outline-offset: 2px }
+section { display: none } section.on { display: block }
+.fig { background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; margin: 0 0 18px; overflow-x: auto }
+svg { width: 100%; height: auto; display: block; font-family: var(--mono); font-size: 12px } svg text { fill: var(--ink) } svg .mut { fill: var(--muted) }
+.node rect { fill: var(--sheet); stroke: var(--ink); stroke-width: 1 } .node.story rect { fill: var(--story-soft); stroke: var(--story) } .node.wiki rect { fill: var(--wiki-soft); stroke: var(--wiki) } .node.role rect { stroke-dasharray: 4 3 }
+.node.blocked rect { stroke: var(--no); stroke-dasharray: 3 3; fill: var(--sheet) } .node.blocked text.never { fill: var(--no); font-size: 11px }
+.wire { stroke: var(--ink); stroke-width: 1.2; fill: none } .wire.story { stroke: var(--story) } .wire.wiki { stroke: var(--wiki) } .dimmed { opacity: var(--dim) }
+.roles, .ctl { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 12px; font: 13px var(--mono) }
+.roles button, .ctl button { font: 500 12.5px/1.2 var(--mono); padding: 7px 11px; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); color: var(--ink); cursor: pointer }
+.roles button[aria-pressed="true"], .ctl button[aria-pressed="true"] { background: var(--hi); border-color: var(--ink) }
+.note { background: var(--hi); border-radius: 8px; padding: 10px 14px; font-size: 15.5px; margin: 0 0 12px }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px }
+.col { border: 1px solid var(--rule); border-radius: 10px; padding: 14px; min-width: 0; background: var(--sheet) } .col h3 { margin: 0 0 6px; font: 600 16px/1.3 var(--serif) } .col.story h3 { color: var(--story) } .col.wiki h3 { color: var(--wiki) } .col p, .col li { font-size: 15px } .col ul { padding-left: 18px; margin: 6px 0 }
+.q { border-left: 3px solid var(--rule); padding: 6px 12px; margin: 0 0 10px; font-size: 15px } .q b { font: 500 12px var(--mono); color: var(--muted) } .q.story { border-left-color: var(--story) } .q.wiki { border-left-color: var(--wiki) }
+code { font: 13.5px var(--mono); background: var(--bg); padding: 1px 4px; border-radius: 3px }
+table { border-collapse: collapse; font: 13px/1.45 var(--mono); min-width: 100% } th, td { text-align: left; padding: 5px 9px; border-bottom: 1px solid var(--rule); white-space: nowrap } th { font-weight: 500; color: var(--muted) } td.n, th.n { text-align: right; font-variant-numeric: tabular-nums }
+tr.story td:nth-child(2) { color: var(--story) } tr.deepwiki td:nth-child(2) { color: var(--wiki) }
+.big { font: 600 40px/1 var(--serif); font-variant-numeric: tabular-nums } .big.story { color: var(--story) } .big.wiki { color: var(--wiki) }
+.pair { display: flex; gap: 28px; align-items: baseline; margin: 6px 0 10px; flex-wrap: wrap } .pair small { display: block; font: 12px var(--mono); color: var(--muted) }
+.tag { display: inline-block; padding: 1px 7px; border-radius: 4px; font: 500 12px/1.4 var(--mono) } .tag.story { background: var(--story-soft); color: var(--story) } .tag.wiki { background: var(--wiki-soft); color: var(--wiki) }
+.tag.contradicted { background: var(--no); color: #fff } .tag.supported { background: var(--ok); color: #fff } .tag.unverifiable { background: var(--rule); color: var(--ink) }
+.formula { font: 15px/1.8 var(--mono); background: var(--bg); border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px; margin: 0 0 12px; overflow-x: auto; white-space: nowrap }
+.formula b { color: var(--story) } .formula i { color: var(--wiki); font-style: normal }
+details { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 12px; margin: 0 0 8px; background: var(--sheet); font-size: 15px } summary { cursor: pointer; font-size: 15px } details p { margin: 8px 0 4px; font-size: 14.5px }
+.nav { display: flex; justify-content: space-between; margin-top: 18px } .nav button { font: 500 14px var(--serif); padding: 8px 14px; border: 1px solid var(--rule); border-radius: 8px; background: var(--sheet); color: var(--ink); cursor: pointer } .nav button:disabled { opacity: .4; cursor: default }
+.caveat { display: grid; gap: 10px } .caveat div { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; background: var(--sheet); font-size: 15.5px } .caveat b { display: block; font: 500 12px var(--mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 3px }
+input[type=range] { width: 220px; vertical-align: middle }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+</style>
+<main>
+<div class="kicker">codestories · the accuracy measure (H1) · how it was done</div>
+<h1>Why the rule said kill: 0.71 against 0.54, and what those numbers are</h1>
+<ul class="steps" id="steps"></ul>
+
+<section data-title="1 · The claim">
+<h2>What was measured</h2>
+<div class="fig">
+  <div class="pair"><div><span class="big story">0.71</span><small><span class="tag story">story</span> contradicted claims per 1,000 words</small></div>
+  <div><span class="big wiki">0.54</span><small><span class="tag wiki">deepwiki</span> contradicted claims per 1,000 words</small></div></div>
+  <p style="margin:0;font:13px var(--mono);color:var(--muted)">raw: 10 vs 7 contradicted, of 360 sampled claims each · the rule needed story ≤ ½ × deepwiki</p>
+</div>
+<p>H1 was the core claim of the project: that a story whose every sentence links to pinned lines, with a proof per chapter, would contradict the code <em>far</em> less often than generated documentation. "Far less" was fixed in advance as half the rate or better. The measured rate came out higher, not lower. This explainer shows how the rate was produced, why it came out that way, and what it does and doesn't mean.</p>
+<p>A "contradicted claim" is a sentence about the code that the code shows to be false. The rate is per 1,000 words of text, so a long wiki and a short story can be compared. Each piece of that definition is a design decision, and each gets a screen.</p>
+</section>
+
+<section data-title="2 · What is a claim">
+<h2>Turning prose into checkable claims</h2>
+<p>You can't check a paragraph. You can check "<code>Response.ok</code> is True if <code>status_code</code> is between 200 and 299." So the first step rewrites each text into atomic claims: one fact each, standing alone, with "it" and "this" resolved. The same prompt did this for both arms. It keeps behaviour, names, values, defaults, conditions and order; it drops narrative, advice, opinion, and anything about tests, CI or project history.</p>
+<div class="cols">
+  <div class="col story"><h3>From the requests story</h3><ul><li>In `merge_setting`, if either value is not a `Mapping`, the request value is returned as-is with no merging.</li><li>In `merge_setting`, both mappings are flattened with `to_key_val_list` and inserted into `dict_class` with session items first and request items second.</li><li>In `merge_setting`, any key whose merged value is `None` is deleted from the result.</li></ul></div>
+  <div class="col wiki"><h3>From the requests DeepWiki</h3><ul><li>`PreparedRequest.prepare_cookies` adds cookies to the request headers using `get_cookie_header`.</li><li>`Response.json()` returns the JSON-decoded content using `complexjson`.</li><li>`Response.ok` is True if `status_code` is between 200 and 299.</li></ul></div>
+</div>
+<p style="margin-top:14px">Two numbers come out of this step and both matter later: how many claims a text makes, and how many words it took. The story arm made about <b>26 claims per 1,000 words</b>, DeepWiki about <b>28</b>. Stories are denser in checkable statements: a concrete telling has more places to be right or wrong.</p>
+</section>
+
+<section data-title="3 · Sampling">
+<h2>Forty per arm per repository</h2>
+<p>Judging every claim would have meant about 8,000 judgments. The preregistration said: sample up to 40 claims per repository per arm, with a fixed random seed, so the sample is the same on any rerun and nobody can pick it. That's 360 story claims and 360 DeepWiki claims across the nine repositories, 720 in all.</p>
+<p>The rate is then scaled back up: if 2 of 40 sampled claims are contradicted and the text made 489 claims in 22,131 words, the estimate is (2 ÷ 40) × (489 ÷ 22,131 × 1,000) = 1.10 contradicted claims per 1,000 words. Screen 7 lets you work that formula.</p>
+<p>Sampling has a cost that shows up in screen 8: with 40 draws, the difference between 0 and 2 contradicted is one or two sentences, and the interval around the final ratio is wide.</p>
+</section>
+
+<section data-title="4 · The judge">
+<h2>Who judged, and what it saw</h2>
+<p>The judge is <code>claude-opus-5</code> through the API, same as every other role: no tools, no fine-tuning, fresh conversation per batch. It was given the repository's source at the commit the arm describes, and a numbered list of 20 claims, and asked to label each <span class="tag contradicted">contradicted</span>, <span class="tag supported">supported</span> or <span class="tag unverifiable">unverifiable</span>, citing the lines that decide it.</p>
+<div class="roles" id="roles"></div>
+<div class="fig" id="flowfig"></div>
+<div class="note" id="rolenote"></div>
+<p>Blind in two ways. The 80 sampled claims of a repository, both arms, were shuffled together before batching, so a batch mixes story and wiki claims and the judge is never told which is which. And the instruction was symmetric: "a claim that is true but imprecise is supported; a claim that is wrong in any specific is contradicted," whatever the source.</p>
+<p>A second model, Jev (TypeSafe's, on Cloudflare: a different vendor), then re-scored each claim from only the claim and the lines Claude cited, as a probability of contradiction. Jev agreed with Claude's label on <b>703/720 (98%)</b> of the claims it could score. Claude's label decides; Jev is the check on a shared blind spot.</p>
+</section>
+
+<section data-title="5 · Testing the judge">
+<h2>The judge was tested before it was trusted</h2>
+<p>A judge that calls everything "supported" would make both arms look perfect. So before the comparison, it was tested on known answers: 10 true claims per arm from the in-sample repository, each paired with a <em>false twin</em>, the same sentence with one specific changed. The 40 were shuffled and judged blind. The passing bar was written down first: every lie caught, at most one truth wrongly flagged, per arm.</p>
+<div class="q"><b>TRUE</b> In `Serializer.dumps` the payload is wrapped as `want_bytes(self.dump_payload(obj))`.<br><b>TWIN</b> In `Serializer.dumps` the payload is wrapped as `self.dump_payload(want_bytes(obj))`. → <span class="tag contradicted">contradicted</span></div><div class="q"><b>TRUE</b> `URLSafeSerializerMixin.load_payload` delegates to `super().load_payload(json)`, the base `Serializer.load_payload`.<br><b>TWIN</b> `URLSafeSerializerMixin.load_payload` delegates to `self.serializer.loads(json)`, bypassing the base `Serializer.load_payload`. → <span class="tag contradicted">contradicted</span></div><div class="q"><b>TRUE</b> `.pre-commit-config.yaml` enables the hooks `ruff` and `ruff-format`.<br><b>TWIN</b> `.pre-commit-config.yaml` enables the hooks `ruff` and `black`. → <span class="tag contradicted">contradicted</span></div>
+<p><b>Result: 20/20 lies caught, 0 truths wrongly flagged.</b> That is the evidence that the judge can tell a lie from a truth when it can see the code. It is not evidence that the judge could see the code in every repository, which is the next screen.</p>
+</section>
+
+<section data-title="6 · Run twice">
+<h2>The judge was run twice, and the first time it was half blind</h2>
+<p>The judge reads the repository as a block of files that has to fit a budget. Without a trace to say which files matter, that block led with the README and docs, and in the large repositories the budget ran out before the source: for rich the judge saw 1 of about 80 modules. It did the honest thing and said "unverifiable: that file was not shown." But unverifiable counts as <em>not contradicted</em> in the metric. The first pass found almost nothing wrong with the stories, because it couldn't see the code they were about, and the rule said ship.</p>
+<div class="ctl"><span>show pass:</span><button id="p1" aria-pressed="true">first (source mostly unseen)</button><button id="p2" aria-pressed="false">second (source in view)</button></div>
+<div class="fig"><table id="passtbl"></table></div>
+<p id="passnote"></p>
+<p>The fix put the source files the claims name first, then the rest of the package, then docs; it was checked without the model by listing what each batch would see. The judge re-ran on the <em>same</em> 720 claims; nothing else was re-run. Both passes are published, the change is logged in the preregistration's deviations, and the change can only move claims out of "unverifiable", so it could only make the story look worse or the same. It made it look worse.</p>
+</section>
+
+<section data-title="7 · The formula">
+<h2>Why the story loses on the rate with nearly the same raw count</h2>
+<div class="formula">rate = (contradicted ÷ sampled) × (claims extracted ÷ words × 1000)</div>
+<div class="formula"><b>story</b>: (10 ÷ 360) × (1,965 ÷ 76,806 × 1000) = <b>0.71</b><br><i>deepwiki</i>: (7 ÷ 360) × (5,938 ÷ 215,717 × 1000) = <i>0.54</i></div>
+<p>Ten versus seven wrong sentences is close. The gap in the rate comes from the second factor: the story packs more checkable claims into each thousand words, so the same proportion of wrong claims is more wrong claims per word. The metric was preregistered that way on purpose, as a rate per word of what a reader reads, and it stands. But it is worth seeing what it rewards. Move the slider to change how many claims per 1,000 words the story makes, holding its proportion of wrong claims fixed:</p>
+<div class="ctl"><label>story claims per 1k words: <input id="cpw" type="range" min="10" max="35" step="1" value="26"></label><span id="cpwv"></span></div>
+<p id="cpwnote"></p>
+<p style="font-size:14.5px;color:var(--muted)">This slider is an illustration of the formula, not a result. The result is the top line.</p>
+</section>
+
+<section data-title="8 · The 17">
+<h2>Every contradicted claim, in full</h2>
+<p>Here is the whole of H1's evidence: 10 story claims and 7 DeepWiki claims that the second judging pass labelled contradicted, with the judge's reason and Jev's independent probability. Read them; they are the finding.</p>
+<h3 style="font:600 16px var(--serif);margin:14px 0 8px"><span class="tag story">story</span> 10 contradicted</h3>
+<details class="q story"><summary><b>attrs</b> · Setting the annotations before the build would have made `_transform_attrs` read them as auto-attribs declarations.</summary><p><b>judge:</b> `make_class` passes `these=cls_dict`, and `_transform_attrs` takes the `these is not None` branch so annotations are never interpreted as auto-attribs declarations; the complaint would instead come from `from_counting_attr`&#x27;s &quot;Type annotation and type argument cannot both be present&quot; check.</p><p><b>lines:</b> src/attr/_make.py:399-403, src/attr/_make.py:441-451, src/attr/_make.py:2600-2605 · <b>Jev:</b> 0.30</p></details>
+<details class="q story"><summary><b>attrs</b> · `_generate_unique_filename` appends a counter when the candidate filename is already taken by different source.</summary><p><b>judge:</b> `_generate_unique_filename` just formats a string; the collision counter logic lives in `_linecache_and_compile`.</p><p><b>lines:</b> src/attr/_make.py:1634-1641, src/attr/_make.py:245-259 · <b>Jev:</b> 0.42</p></details>
+<details class="q story"><summary><b>click</b> · `Option.resolve_envvar_value` returns `None` immediately when no `envvar` is declared.</summary><p><b>judge:</b> `Option.resolve_envvar_value` falls back to the `auto_envvar_prefix`-derived variable before returning `None`, so it does not return `None` immediately.</p><p><b>lines:</b> src/click/core.py:3664-3676 · <b>Jev:</b> 0.43</p></details>
+<details class="q story"><summary><b>httpx</b> · `Request.__init__` re-wraps the URL with a `copy_with()` call</summary><p><b>judge:</b> The URL is constructed via `URL(url)`/`URL(url, params=params)`, not with a `copy_with()` call.</p><p><b>lines:</b> httpx/_models.py:399-399 · <b>Jev:</b> 0.89</p></details>
+<details class="q story"><summary><b>markupsafe</b> · The three branch tests in `EscapeFormatter.format_field` are `hasattr` checks.</summary><p><b>judge:</b> There are only two `hasattr` tests (`__html_format__` and `__html__`); the third branch is an unconditional `else`.</p><p><b>lines:</b> src/markupsafe/__init__.py:339-353 · <b>Jev:</b> 0.48</p></details>
+<details class="q story"><summary><b>markupsafe</b> · The C implementation in `_speedups.c` writes each replacement directly to an output buffer in a single pass.</summary><p><b>judge:</b> The C code makes two passes: GET_DELTA first scans the input to compute the size, then DO_ESCAPE writes to the new buffer.</p><p><b>lines:</b> src/markupsafe/_speedups.c:3-16, src/markupsafe/_speedups.c:83-96 · <b>Jev:</b> 0.33</p></details>
+<details class="q story"><summary><b>rich</b> · In `Text.render`, the combined active styles are cached by the tuple of style ids.</summary><p><b>judge:</b> The cache key is a tuple of resolved `Style` objects (`styles = tuple(style_map[_style_id] ...)`), not a tuple of style ids.</p><p><b>lines:</b> rich/text.py:754-766 · <b>Jev:</b> 0.76</p></details>
+<details class="q story"><summary><b>rich</b> · A zero-width joiner sequence counts as one cell under `cell_len`.</summary><p><b>judge:</b> In _cell_len a ZWJ merely causes the following character to be skipped, so the joined sequence takes the width of the leading character (2 cells for a wide emoji), not one cell.</p><p><b>lines:</b> rich/cells.py:144-158 · <b>Jev:</b> 0.45</p></details>
+<details class="q story"><summary><b>rich</b> · `Text.wrap` calls `divide_line(str(line), width, fold=True)` for each line.</summary><p><b>judge:</b> wrap calls divide_line(str(line), width, fold=wrap_overflow == &quot;fold&quot;) and only in the non-no_wrap branch, so fold is not always True.</p><p><b>lines:</b> rich/text.py:1233-1240 · <b>Jev:</b> 0.73</p></details>
+<details class="q story"><summary><b>tqdm</b> · The first thing `tqdm.__new__` does is `with cls.get_lock():`.</summary><p><b>judge:</b> The first statement is `instance = object.__new__(cls)`; the lock is acquired only afterwards.</p><p><b>lines:</b> tqdm/std.py:664-666 · <b>Jev:</b> 0.94</p></details>
+<h3 style="font:600 16px var(--serif);margin:14px 0 8px"><span class="tag wiki">deepwiki</span> 7 contradicted</h3>
+<details class="q deepwiki"><summary><b>click</b> · The `Abort` exception is a subclass of `ClickException` and exits with status code 1.</summary><p><b>judge:</b> `Abort` subclasses `RuntimeError`, not `ClickException`, and carries no exit code.</p><p><b>lines:</b> src/click/exceptions.py:362-363 · <b>Jev:</b> 0.84</p></details>
+<details class="q deepwiki"><summary><b>jinja</b> · `PackageLoader` loads templates from a directory within a Python package using `importlib.resources`.</summary><p><b>judge:</b> PackageLoader uses importlib.util.find_spec, import_module, zipimport and plain os file access, not importlib.resources.</p><p><b>lines:</b> src/jinja2/loaders.py:302-401 · <b>Jev:</b> 0.77</p></details>
+<details class="q deepwiki"><summary><b>markupsafe</b> · The publish workflow is triggered on push of tags and on workflow_dispatch.</summary><p><b>judge:</b> The publish workflow triggers only on push of tags; there is no workflow_dispatch trigger.</p><p><b>lines:</b> .github/workflows/publish.yaml:2-4 · <b>Jev:</b> 0.80</p></details>
+<details class="q deepwiki"><summary><b>markupsafe</b> · `Markup.format_map()` is defined at lines 317-323 of `src/markupsafe/__init__.py`.</summary><p><b>judge:</b> format_map is defined at lines 327-333, not 317-323.</p><p><b>lines:</b> src/markupsafe/__init__.py:327-333 · <b>Jev:</b> 0.86</p></details>
+<details class="q deepwiki"><summary><b>markupsafe</b> · The publish workflow artifacts are named `build-sdist` and `build-wheels-{os}`.</summary><p><b>judge:</b> The sdist artifact is named &quot;sdist&quot; and wheel artifacts are named &quot;{platform}-{arch|all}&quot;, not &quot;build-sdist&quot;/&quot;build-wheels-{os}&quot;.</p><p><b>lines:</b> .github/workflows/publish.yaml:26-30, .github/workflows/publish.yaml:77-81 · <b>Jev:</b> 0.94</p></details>
+<details class="q deepwiki"><summary><b>requests</b> · `Response.ok` is True if `status_code` is between 200 and 299.</summary><p><b>judge:</b> `ok` returns True whenever `raise_for_status()` doesn&#x27;t raise, i.e. for any status code below 400 (including 3xx), not only 200-299.</p><p><b>lines:</b> src/requests/models.py:861-874, src/requests/models.py:1160-1171 · <b>Jev:</b> 0.68</p></details>
+<details class="q deepwiki"><summary><b>requests</b> · `_parse_content_type_header` sets the value to `True` for parameters without values.</summary><p><b>judge:</b> The loop only records parameters containing &#x27;=&#x27;, and never assigns True for value-less parameters.</p><p><b>lines:</b> src/requests/utils.py:560-566 · <b>Jev:</b> 0.79</p></details>
+<p style="margin-top:12px">Two things stand out. The story's errors are small misstatements of mechanism in otherwise accurate paragraphs, and every one sits in a chapter whose citation and proof checks passed: those checks pin lines and values, they don't read the sentence. DeepWiki's errors include two about CI workflow files and one about line numbers, kinds of claim a story never makes.</p>
+</section>
+
+<section data-title="9 · Is it luck?">
+<h2>Could it be the sample?</h2>
+<p>Ten versus seven, out of 360 each, is a difference of three sentences. The preregistered bootstrap resamples whole repositories (some twice, some not at all), recomputes both rates and their ratio, and repeats. Draw and watch.</p>
+<div class="ctl"><button id="d1">draw 1</button><button id="d100">draw 100</button><button id="d2000">draw 2,000</button><button id="dreset">reset</button><span id="dcount"></span></div>
+<div class="fig" id="bootfig"></div>
+<p id="bootnote"></p>
+<p>The preregistered run (10,000 draws, fixed seed) gave a 95% interval for the ratio of <b>0.55 to 4.86</b>. It crosses ½ (where the story would have passed) and 1 (where the two arms are equal). Statistically, nine repositories and 40 claims each cannot tell these two arms apart on accuracy. The rule was written to use the point estimate, and the point estimate is 1.3: on the wrong side of ½ by a wide margin. So the rule says kill, and the interval says the honest sentence is "no better," not "worse."</p>
+</section>
+
+<section data-title="10 · The honest sentence">
+<h2>What you can say, and what you can't</h2>
+<div class="caveat">
+  <div><b>Not more accurate, and not shown to be less</b>The point estimate is against the story; the interval includes equality. "The stories were not more accurate than DeepWiki's pages" is the sentence; "were less accurate" is not supported.</div>
+  <div><b>The checks worked as built, and that wasn't enough</b>All 76 chapters passed citation, drift and proof checks. Ten sampled sentences were still wrong about the code. The pipeline's own paragraph judge (Jev at a 0.7 cut-off) caught 4 of those 10. The eval's judge, with the source in view, caught all 10. That judge exists and is tested; the prototype didn't use it inside the pipeline.</div>
+  <div><b>Omoju's hand check</b>20 judged claims, arm hidden: 18 agreed with the judge. Both disagreements were "unverifiable" labels on claims about test files, which the judge doesn't read; none concerned a contradicted or supported label.</div>
+  <div><b>One extraction was chunked</b>rich's DeepWiki text was too long for one output and was extracted in three page-aligned chunks; it yielded 74 claims per 1,000 words against 17–31 elsewhere. That raises DeepWiki's pooled claims-per-word and so <em>raises</em> DeepWiki's rate; without rich, DeepWiki's rate would be 0.47 and the story's 0.54. The direction of the result does not change.</div>
+  <div><b>Same model family throughout</b>The judge is a Claude model, as is the author. Jev, from another vendor, agreed on 703/720 (98%) of the claims it scored; that and the hand check are the guards.</div>
+</div>
+<p style="margin-top:16px"><b>The sentence that survives:</b> on nine small Python libraries, a blind model judge reading the code found CodeStories no more accurate than DeepWiki's pages (0.71 vs 0.54 contradicted claims per 1,000 words; 10 vs 7 of 360 sampled; 95% interval on the ratio 0.55–4.86). The checks a story carries, that its lines exist, haven't changed, and its proofs run, did not make its sentences more accurate than generated documentation. The preregistered rule required half the rate; it said kill.</p>
+<p>Everything on this page comes from <code>eval/</code> in the repository: both judging passes, every claim, every verdict, and the judge's test.</p>
+</section>
+
+<div class="nav"><button id="prev">← Back</button><button id="next">Next →</button></div>
+</main>
+<script>
+const DATA = {"repos": [{"repo": "attrs", "first": {"story": {"words": 9375, "extracted": 237, "sampled": 40, "contradicted": 0, "supported": 8, "unverifiable": 32, "density": 0.0}, "deepwiki": {"words": 14140, "extracted": 363, "sampled": 40, "contradicted": 0, "supported": 34, "unverifiable": 6, "density": 0.0}}, "second": {"story": {"words": 9375, "extracted": 237, "sampled": 40, "contradicted": 2, "supported": 38, "unverifiable": 0, "density": 1.2640000000000002}, "deepwiki": {"words": 14140, "extracted": 363, "sampled": 40, "contradicted": 0, "supported": 32, "unverifiable": 8, "density": 0.0}}}, {"repo": "click", "first": {"story": {"words": 8601, "extracted": 248, "sampled": 40, "contradicted": 0, "supported": 5, "unverifiable": 35, "density": 0.0}, "deepwiki": {"words": 33482, "extracted": 558, "sampled": 40, "contradicted": 2, "supported": 18, "unverifiable": 20, "density": 0.8332835553431694}}, "second": {"story": {"words": 8601, "extracted": 248, "sampled": 40, "contradicted": 1, "supported": 38, "unverifiable": 1, "density": 0.7208464132077665}, "deepwiki": {"words": 33482, "extracted": 558, "sampled": 40, "contradicted": 1, "supported": 31, "unverifiable": 8, "density": 0.4166417776715847}}}, {"repo": "flask", "first": {"story": {"words": 7261, "extracted": 192, "sampled": 40, "contradicted": 0, "supported": 5, "unverifiable": 35, "density": 0.0}, "deepwiki": {"words": 28535, "extracted": 687, "sampled": 40, "contradicted": 0, "supported": 21, "unverifiable": 19, "density": 0.0}}, "second": {"story": {"words": 7261, "extracted": 192, "sampled": 40, "contradicted": 0, "supported": 38, "unverifiable": 2, "density": 0.0}, "deepwiki": {"words": 28535, "extracted": 687, "sampled": 40, "contradicted": 0, "supported": 33, "unverifiable": 7, "density": 0.0}}}, {"repo": "httpx", "first": {"story": {"words": 8108, "extracted": 227, "sampled": 40, "contradicted": 0, "supported": 22, "unverifiable": 18, "density": 0.0}, "deepwiki": {"words": 27567, "extracted": 725, "sampled": 40, "contradicted": 3, "supported": 24, "unverifiable": 13, "density": 1.9724670802045925}}, "second": {"story": {"words": 8108, "extracted": 227, "sampled": 40, "contradicted": 1, "supported": 39, "unverifiable": 0, "density": 0.6999259990133202}, "deepwiki": {"words": 27567, "extracted": 725, "sampled": 40, "contradicted": 0, "supported": 35, "unverifiable": 5, "density": 0.0}}}, {"repo": "jinja", "first": {"story": {"words": 8842, "extracted": 210, "sampled": 40, "contradicted": 0, "supported": 15, "unverifiable": 25, "density": 0.0}, "deepwiki": {"words": 15506, "extracted": 473, "sampled": 40, "contradicted": 1, "supported": 31, "unverifiable": 8, "density": 0.76260802270089}}, "second": {"story": {"words": 8842, "extracted": 210, "sampled": 40, "contradicted": 0, "supported": 40, "unverifiable": 0, "density": 0.0}, "deepwiki": {"words": 15506, "extracted": 473, "sampled": 40, "contradicted": 1, "supported": 34, "unverifiable": 5, "density": 0.76260802270089}}}, {"repo": "markupsafe", "first": {"story": {"words": 5961, "extracted": 97, "sampled": 40, "contradicted": 1, "supported": 37, "unverifiable": 2, "density": 0.40681093776212046}, "deepwiki": {"words": 31855, "extracted": 312, "sampled": 40, "contradicted": 3, "supported": 36, "unverifiable": 1, "density": 0.7345785590959032}}, "second": {"story": {"words": 5961, "extracted": 97, "sampled": 40, "contradicted": 2, "supported": 37, "unverifiable": 1, "density": 0.8136218755242409}, "deepwiki": {"words": 31855, "extracted": 312, "sampled": 40, "contradicted": 3, "supported": 36, "unverifiable": 1, "density": 0.7345785590959032}}}, {"repo": "requests", "first": {"story": {"words": 10347, "extracted": 277, "sampled": 40, "contradicted": 0, "supported": 6, "unverifiable": 34, "density": 0.0}, "deepwiki": {"words": 22131, "extracted": 489, "sampled": 40, "contradicted": 0, "supported": 29, "unverifiable": 11, "density": 0.0}}, "second": {"story": {"words": 10347, "extracted": 277, "sampled": 40, "contradicted": 0, "supported": 40, "unverifiable": 0, "density": 0.0}, "deepwiki": {"words": 22131, "extracted": 489, "sampled": 40, "contradicted": 2, "supported": 32, "unverifiable": 6, "density": 1.1047851430120645}}}, {"repo": "rich", "first": {"story": {"words": 9560, "extracted": 300, "sampled": 40, "contradicted": 0, "supported": 1, "unverifiable": 39, "density": 0.0}, "deepwiki": {"words": 25426, "extracted": 1876, "sampled": 40, "contradicted": 0, "supported": 0, "unverifiable": 40, "density": 0.0}}, "second": {"story": {"words": 9560, "extracted": 300, "sampled": 40, "contradicted": 3, "supported": 31, "unverifiable": 6, "density": 2.3535564853556483}, "deepwiki": {"words": 25426, "extracted": 1876, "sampled": 40, "contradicted": 0, "supported": 33, "unverifiable": 7, "density": 0.0}}}, {"repo": "tqdm", "first": {"story": {"words": 8751, "extracted": 177, "sampled": 40, "contradicted": 0, "supported": 17, "unverifiable": 23, "density": 0.0}, "deepwiki": {"words": 17075, "extracted": 455, "sampled": 40, "contradicted": 0, "supported": 21, "unverifiable": 19, "density": 0.0}}, "second": {"story": {"words": 8751, "extracted": 177, "sampled": 40, "contradicted": 1, "supported": 39, "unverifiable": 0, "density": 0.5056564964004114}, "deepwiki": {"words": 17075, "extracted": 455, "sampled": 40, "contradicted": 0, "supported": 38, "unverifiable": 2, "density": 0.0}}}], "pooled": {"first": {"story": {"contradicted": 1, "sampled": 360, "extracted": 1965, "words": 76806, "unverifiable": 243, "density": 0.07106649654106884}, "deepwiki": {"contradicted": 9, "sampled": 360, "extracted": 5938, "words": 215717, "unverifiable": 137, "density": 0.6881701488524317}}, "second": {"story": {"contradicted": 10, "sampled": 360, "extracted": 1965, "words": 76806, "unverifiable": 10, "density": 0.7106649654106884}, "deepwiki": {"contradicted": 7, "sampled": 360, "extracted": 5938, "words": 215717, "unverifiable": 49, "density": 0.5352434491074468}}}};
+const sections = [...document.querySelectorAll('section')]; const steps = document.getElementById('steps'); let cur = 0;
+sections.forEach((s, i) => { const li = document.createElement('li'); const b = document.createElement('button'); b.textContent = s.dataset.title; b.onclick = () => go(i); li.appendChild(b); steps.appendChild(li); });
+function go(i) { cur = Math.max(0, Math.min(sections.length - 1, i)); sections.forEach((s, j) => s.classList.toggle('on', j === cur)); [...steps.querySelectorAll('button')].forEach((b, j) => j === cur ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current')); document.getElementById('prev').disabled = cur === 0; document.getElementById('next').disabled = cur === sections.length - 1; try { localStorage.setItem('h1-step', cur) } catch (e) {} }
+document.getElementById('prev').onclick = () => go(cur - 1); document.getElementById('next').onclick = () => go(cur + 1);
+let start = 0; try { start = +localStorage.getItem('h1-step') || 0 } catch (e) {} go(start);
+
+// who saw what
+const ROLES = {
+  extractor: { name: 'Claim extractor', saw: ['story', 'wiki'], not: ['repo'], note: 'The extractor saw one text at a time and rewrote it into atomic claims. It never saw the code, so it could not quietly fix a claim while extracting it.' },
+  judge: { name: 'Judge', saw: ['repo', 'claims'], not: ['story', 'wiki'], note: 'The judge saw the repository at the pinned commit and a shuffled batch of 20 claims from both arms, unlabelled. It never saw either text, only the claims pulled from them.' },
+  jev: { name: 'Second judge (Jev)', saw: ['verdicts'], not: ['repo', 'story', 'wiki'], note: 'Jev, a different vendor’s model, saw only a claim and the lines Claude cited for it, and gave a probability that the lines contradict the claim. A check on a shared blind spot, not the decider.' },
+};
+const NODES = { repo: [40, 40, 'Repository at pinned commit'], story: [40, 130, 'The story (all chapters)'], wiki: [40, 200, 'The DeepWiki wiki (all pages)'], extractor: [300, 165, 'Claim extractor'], claims: [560, 165, 'Claims, sampled 40 + 40, shuffled'], judge: [560, 60, 'Judge (sees code + claims)'], verdicts: [300, 60, 'Verdicts + cited lines'], jev: [300, 260, 'Second judge (Jev)'] };
+const EDGES = [['story', 'extractor', 'story'], ['wiki', 'extractor', 'wiki'], ['extractor', 'claims', ''], ['claims', 'judge', ''], ['repo', 'judge', ''], ['judge', 'verdicts', ''], ['verdicts', 'jev', '']];
+function flow(active) {
+  const W = 230, H = 40; let s = `<svg viewBox="0 0 820 320" role="img"><title>Information flow for the accuracy measure</title>`;
+  const c = k => [NODES[k][0] + W / 2, NODES[k][1] + H / 2];
+  for (const [a, b, cls] of EDGES) { const [x1, y1] = c(a), [x2, y2] = c(b); let dim = ''; if (active) { const r = ROLES[active]; if (r.not.includes(a) && b === active) continue; dim = (a === active || b === active) ? '' : ' dimmed'; } s += `<line class="wire ${cls}${dim}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`; }
+  for (const [k, [x, y, label]] of Object.entries(NODES)) { const role = ROLES[k] ? ' role' : ''; const cls = k === 'story' ? ' story' : k === 'wiki' ? ' wiki' : ''; let dim = '', blocked = ''; if (active && k !== active) { const r = ROLES[active]; blocked = r.not.includes(k) ? ' blocked' : ''; dim = (r.saw.includes(k) || blocked || EDGES.some(([a, b]) => (a === active && b === k) || (b === active && a === k))) ? '' : ' dimmed'; } s += `<g class="node${role}${cls}${dim}${blocked}"><rect x="${x}" y="${y}" width="${W}" height="${H}" rx="6"/><text x="${x + W / 2}" y="${y + H / 2}" text-anchor="middle" dominant-baseline="central">${label}</text>${blocked ? `<text class="never" x="${x + W}" y="${y - 6}" text-anchor="end">never seen by ${ROLES[active].name.toLowerCase()}</text>` : ''}</g>`; }
+  return s + `</svg>`;
+}
+const rolesEl = document.getElementById('roles'); const fig = document.getElementById('flowfig'); const note = document.getElementById('rolenote'); let activeRole = null;
+for (const [k, r] of Object.entries(ROLES)) { const b = document.createElement('button'); b.textContent = r.name; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { activeRole = activeRole === k ? null : k; [...rolesEl.children].forEach(x => x.setAttribute('aria-pressed', String(x.textContent === r.name && !!activeRole))); fig.innerHTML = flow(activeRole); note.textContent = activeRole ? r.note : 'Lines show what flows where. Click a role: what it never saw is outlined in red, with no line to it.'; }; rolesEl.appendChild(b); }
+fig.innerHTML = flow(null); note.textContent = 'Lines show what flows where. Click a role: what it never saw is outlined in red, with no line to it.';
+
+// two passes
+let pass = 'first';
+function passTable() {
+  const rows = DATA.repos.map(r => { const a = r[pass]; return ['story', 'deepwiki'].map(arm => `<tr class="${arm}"><td>${r.repo}</td><td>${arm}</td><td class="n">${a[arm].contradicted}</td><td class="n">${a[arm].unverifiable}</td><td class="n">${a[arm].supported}</td><td class="n">${a[arm].density.toFixed(2)}</td></tr>`).join('') }).join('');
+  const p = DATA.pooled[pass];
+  document.getElementById('passtbl').innerHTML = `<tr><th>repo</th><th>arm</th><th class="n">contradicted</th><th class="n">unverifiable</th><th class="n">supported</th><th class="n">per 1k words</th></tr>${rows}<tr><td><b>pooled</b></td><td></td><td class="n">${p.story.contradicted} / ${p.deepwiki.contradicted}</td><td class="n">${p.story.unverifiable} / ${p.deepwiki.unverifiable}</td><td></td><td class="n"><b>${p.story.density.toFixed(2)} / ${p.deepwiki.density.toFixed(2)}</b></td></tr>`;
+  document.getElementById('passnote').textContent = pass === 'first' ? `First pass: ${p.story.unverifiable} of 360 story claims unverifiable. The judge could not see the files; the story's rate of ${p.story.density.toFixed(2)} is an artefact of that, and the rule read it as ship.` : `Second pass: ${p.story.unverifiable} unverifiable. With the source in view, ${p.story.contradicted} story claims and ${p.deepwiki.contradicted} DeepWiki claims are contradicted; rates ${p.story.density.toFixed(2)} vs ${p.deepwiki.density.toFixed(2)}; the rule says kill.`;
+}
+document.getElementById('p1').onclick = () => { pass = 'first'; document.getElementById('p1').setAttribute('aria-pressed', 'true'); document.getElementById('p2').setAttribute('aria-pressed', 'false'); passTable(); };
+document.getElementById('p2').onclick = () => { pass = 'second'; document.getElementById('p2').setAttribute('aria-pressed', 'true'); document.getElementById('p1').setAttribute('aria-pressed', 'false'); passTable(); };
+passTable();
+
+// formula slider
+const P = DATA.pooled.second; const propWrong = P.story.contradicted / P.story.sampled;
+function slide() { const cpw = +document.getElementById('cpw').value; const rate = propWrong * cpw; document.getElementById('cpwv').textContent = `${cpw} → story rate ${rate.toFixed(2)} per 1k words`; document.getElementById('cpwnote').textContent = rate <= 0.5 * P.deepwiki.density ? `At ${cpw} claims per 1,000 words the same proportion of wrong claims would give ${rate.toFixed(2)}, under the rule's bar of ${(0.5 * P.deepwiki.density).toFixed(2)}. A vaguer story with the same error rate would have passed H1.` : rate < P.deepwiki.density ? `At ${cpw} claims per 1,000 words the story's rate would be ${rate.toFixed(2)}: below DeepWiki's ${P.deepwiki.density.toFixed(2)}, but not under the rule's bar of half, ${(0.5 * P.deepwiki.density).toFixed(2)}.` : `At ${cpw} claims per 1,000 words the story's rate would be ${rate.toFixed(2)}, above DeepWiki's ${P.deepwiki.density.toFixed(2)}. The metric prices every concrete sentence as a chance to be wrong.`; }
+document.getElementById('cpw').oninput = slide; slide();
+
+// bootstrap of the ratio
+let draws = [];
+function ratio(sample) { const f = arm => { let c = 0, n = 0, e = 0, w = 0; for (const r of sample) { const a = r.second[arm]; c += a.contradicted; n += a.sampled; e += a.extracted; w += a.words; } return (c / n) * (e / w * 1000); }; const d = f('deepwiki'); return d > 0 ? f('story') / d : null; }
+function draw(n) { for (let i = 0; i < n; i++) { const sample = Array.from({ length: 9 }, () => DATA.repos[Math.floor(Math.random() * 9)]); const r = ratio(sample); if (r !== null) draws.push(r); } boot(); }
+function boot() {
+  const W = 800, H = 260, L = 50, R = 20, T = 20, B = 44; const lo = 0, hi = 6; const bins = 36; const counts = new Array(bins).fill(0);
+  for (const d of draws) { const i = Math.min(bins - 1, Math.max(0, Math.floor((d - lo) / (hi - lo) * bins))); counts[i]++; }
+  const max = Math.max(1, ...counts); const x = v => L + (v - lo) / (hi - lo) * (W - L - R); const bw = (W - L - R) / bins;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img"><title>Bootstrap distribution of the ratio of contradiction rates</title>`;
+  counts.forEach((c, i) => { const h = (H - T - B) * c / max; s += `<rect x="${L + i * bw + 1}" y="${H - B - h}" width="${bw - 2}" height="${h}" fill="var(--story)" opacity=".8"/>`; });
+  s += `<line x1="${x(0.5)}" y1="${T}" x2="${x(0.5)}" y2="${H - B}" stroke="var(--ok)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="${x(0.5) + 5}" y="${T + 12}" fill="var(--ok)">½: the rule's bar</text>`;
+  s += `<line x1="${x(1)}" y1="${T}" x2="${x(1)}" y2="${H - B}" stroke="var(--no)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="${x(1) + 5}" y="${T + 28}" fill="var(--no)">1: equal</text>`;
+  const obs = P.story.density / P.deepwiki.density; s += `<line x1="${x(obs)}" y1="${T}" x2="${x(obs)}" y2="${H - B}" stroke="var(--ink)" stroke-width="1.2"/><text x="${x(obs) + 5}" y="${T + 44}">observed ${obs.toFixed(2)}</text>`;
+  if (draws.length >= 40) { const sorted = [...draws].sort((a, b) => a - b); const a = sorted[Math.floor(.025 * sorted.length)], b = sorted[Math.ceil(.975 * sorted.length) - 1]; s += `<rect x="${x(a)}" y="${H - B + 6}" width="${x(Math.min(b, hi)) - x(a)}" height="6" fill="var(--ok)"/><text x="${x(a)}" y="${H - B + 28}" fill="var(--ok)">95%: ${a.toFixed(2)} to ${b.toFixed(2)}</text>`; }
+  for (const v of [0, 1, 2, 3, 4, 5, 6]) s += `<text class="mut" x="${x(v)}" y="${H - 8}" text-anchor="middle">${v}</text>`;
+  s += `<text class="mut" x="${W / 2}" y="${H - B + 40}" text-anchor="middle">story rate ÷ deepwiki rate (draws above 6 are binned at 6)</text></svg>`;
+  document.getElementById('bootfig').innerHTML = s; document.getElementById('dcount').textContent = `${draws.length} draws`;
+  document.getElementById('bootnote').textContent = draws.length === 0 ? 'No draws yet. Black: the observed ratio. Green dashed: ½, where the story would have passed. Red dashed: 1, equal.' : draws.length < 40 ? 'Each draw is one imaginary world of nine repositories. The ratio jumps around because a single repository with two or three contradicted claims changes the numerator a lot.' : 'The green bar is the middle 95% of the draws. It straddles both ½ and 1: the data cannot separate "story passes" from "arms equal" from "story worse." The rule used the point estimate, as written.';
+}
+document.getElementById('d1').onclick = () => draw(1); document.getElementById('d100').onclick = () => draw(100); document.getElementById('d2000').onclick = () => draw(2000); document.getElementById('dreset').onclick = () => { draws = []; boot(); };
+boot();
+</script>
