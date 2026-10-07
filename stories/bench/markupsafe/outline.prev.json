@@ -6,7 +6,7 @@
     "name": "pallets/markupsafe",
     "url": "https://github.com/pallets/markupsafe",
     "commit": "b2e4d9c7687be25695fffbe93a37622302b24fb1",
-    "local_path": "/Users/omojumiller/dev/comprehension/demo-repos/markupsafe",
+    "local_path": "demo-repos/markupsafe",
     "import_path": "src"
   },
   "chapters": [

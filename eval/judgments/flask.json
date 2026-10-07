@@ -6,7 +6,7 @@
       "arm": "story",
       "claim": "A before-request hook returning a non-`None` value prevents the view and the remaining before-request hooks from being called.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1387-1395",
@@ -20,7 +20,7 @@
       "arm": "story",
       "claim": "A `str` response body is encoded as UTF-8 and the response Content-Type is `text/html; charset=utf-8`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1236-1238",
@@ -35,7 +35,7 @@
       "arm": "deepwiki",
       "claim": "`src/flask/views.py` contains View and MethodView.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/views.py:16-16",
@@ -49,7 +49,7 @@
       "arm": "deepwiki",
       "claim": "`SecureCookieSessionInterface` serializes session data using `TaggedJSONSerializer`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/sessions.py:273-273",
@@ -63,7 +63,7 @@
       "arm": "deepwiki",
       "claim": "`Flask.handle_user_exception` is the entry point for all exceptions from view code, routing HTTP errors to `handle_http_exception`, non-HTTP errors to a registered handler, or re-raising.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1020-1021",
@@ -77,7 +77,7 @@
       "arm": "story",
       "claim": "`handle_user_exception` searches for an error handler by status code and exception MRO across blueprint scope then app scope.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:890-898",
@@ -91,7 +91,7 @@
       "arm": "story",
       "claim": "`Flask.__call__` looks up `wsgi_app` on the instance, so a reassigned `app.wsgi_app` is what runs.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1621-1628"
@@ -104,7 +104,7 @@
       "arm": "story",
       "claim": "In `preprocess_request`'s scope names, `None` represents the app scope and the remaining entries are blueprint names.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1379-1385"
@@ -117,7 +117,7 @@
       "arm": "story",
       "claim": "`Flask.default_config` contains twenty-nine keys.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:207-239"
@@ -130,7 +130,7 @@
       "arm": "deepwiki",
       "claim": "`flask.abort` raises an `HTTPException` for a given status code, terminating the current view function.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/helpers.py:281-301"
@@ -143,7 +143,7 @@
       "arm": "deepwiki",
       "claim": "Flask registers three built-in commands on FlaskGroup: `run`, `shell`, and `routes`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/cli.py:593-596"
@@ -156,7 +156,7 @@
       "arm": "story",
       "claim": "`Flask.test_client` checks `test_client_class`, which is `None` by default.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:809-814",
@@ -170,7 +170,7 @@
       "arm": "deepwiki",
       "claim": "Extensions store their application-specific state in the `Flask.extensions` dictionary.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/app.py:376-385"
@@ -183,7 +183,7 @@
       "arm": "deepwiki",
       "claim": "`SecureCookieSessionInterface.session_class` is `SecureCookieSession`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/sessions.py:301-301"
@@ -196,7 +196,7 @@
       "arm": "deepwiki",
       "claim": "The `appcontext_tearing_down` signal sends an `exc` keyword argument.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1479-1480"
@@ -209,7 +209,7 @@
       "arm": "story",
       "claim": "The `route` decorator returns the original function unchanged.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/scaffold.py:368-373"
@@ -222,7 +222,7 @@
       "arm": "deepwiki",
       "claim": "The `SESSION_COOKIE_SECURE` config key defaults to `False`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:223-223"
@@ -235,7 +235,7 @@
       "arm": "story",
       "claim": "The static folder setter in `Scaffold` strips trailing slashes from the value and stores it.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/scaffold.py:233-238"
@@ -248,7 +248,7 @@
       "arm": "story",
       "claim": "`AppContext.match_request` calls `self.url_adapter.match(return_rule=True)`, stores an `HTTPException` on `self._request.routing_exception`, and otherwise assigns `self._request.url_rule` and `self._request.view_args` from the result.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/ctx.py:405-414"
@@ -261,7 +261,7 @@
       "arm": "story",
       "claim": "In `make_response`, a 3-tuple return value is interpreted as `(body, status, headers)`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1291-1293"
@@ -274,7 +274,7 @@
       "arm": "story",
       "claim": "Passing `static_folder=None` prevents the static route from being added.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:352-364",
@@ -288,7 +288,7 @@
       "arm": "story",
       "claim": "`AppContext.push` sets `self._cv_token = _cv_app.set(self)`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/ctx.py:430-433"
@@ -301,7 +301,7 @@
       "arm": "story",
       "claim": "`FlaskClient.open` closes `self._context_stack`, popping any contexts preserved by an earlier call.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/testing.py:230-233"
@@ -314,7 +314,7 @@
       "arm": "deepwiki",
       "claim": "`Blueprint` can define its own `template_folder` and `static_folder`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/blueprints.py:19-31",
@@ -328,7 +328,7 @@
       "arm": "deepwiki",
       "claim": "Flask's CLI supports loading environment variables from `.env` and `.flaskenv` files if `python-dotenv` is installed.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/cli.py:732-755"
@@ -341,7 +341,7 @@
       "arm": "story",
       "claim": "When `PROVIDE_AUTOMATIC_OPTIONS` is `True` and `OPTIONS` was not declared, `add_url_rule` adds `OPTIONS` to the rule's methods and sets `provide_automatic_options=True` on the rule object.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/app.py:633-651"
@@ -354,7 +354,7 @@
       "arm": "deepwiki",
       "claim": "In dotenv precedence, the OS environment has the highest priority and `.flaskenv` has the lowest.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/cli.py:747-761"
@@ -367,7 +367,7 @@
       "arm": "deepwiki",
       "claim": "`Flask.make_response` wraps `str` or `bytes` return values in a Response with `text/html` content type.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1317-1327",
@@ -381,7 +381,7 @@
       "arm": "story",
       "claim": "The JSON provider stores the app as a `weakref.proxy`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/json/provider.py:38-39"
@@ -394,7 +394,7 @@
       "arm": "deepwiki",
       "claim": "`src/flask/cli.py` contains the Click-based CLI including FlaskGroup, run_command, and shell_command.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/cli.py:531-531",
@@ -409,7 +409,7 @@
       "arm": "deepwiki",
       "claim": "The `match` sort mode for `flask routes` outputs routes in the order Werkzeug's URL map would match them.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/cli.py:1049-1058",
@@ -424,7 +424,7 @@
       "arm": "deepwiki",
       "claim": "`request.url_rule` is a `werkzeug.routing.Rule` or `None`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/wrappers.py:43-43"
@@ -437,7 +437,7 @@
       "arm": "story",
       "claim": "With no allow-list, `get_host` reads `HTTP_HOST` out of the environ and returns it unchanged.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "unverifiable",
       "lines": [
         "src/flask/app.py:535-535"
@@ -450,7 +450,7 @@
       "arm": "story",
       "claim": "In `add_url_rule`, methods default to `(\"GET\",)` when none are declared.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/app.py:621-622"
@@ -463,7 +463,7 @@
       "arm": "deepwiki",
       "claim": "Flask's publish-pypi job uses `pypa/gh-action-pypi-publish` with OIDC trusted publishing and the `id-token: write` permission.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "unverifiable",
       "lines": [
         ".github/workflows/publish.yaml:1-62"
@@ -476,7 +476,7 @@
       "arm": "deepwiki",
       "claim": "Blinker >= 1.9 is a required dependency of Flask.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "unverifiable",
       "lines": [
         "pyproject.toml:1-278"
@@ -489,7 +489,7 @@
       "arm": "story",
       "claim": "After `_got_first_request` becomes `True`, `_check_setup_finished` raises `AssertionError` with a message stating the setup method can no longer be called because the application has already handled its first request.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/app.py:410-420"
@@ -502,7 +502,7 @@
       "arm": "deepwiki",
       "claim": "`get_flashed_messages()` retrieves and clears messages from the session.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/helpers.py:391-394"
@@ -515,7 +515,7 @@
       "arm": "story",
       "claim": "`dispatch_request` returns the view's return value to `full_dispatch_request`, which passes it to `finalize_request`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1015-1022"
@@ -528,7 +528,7 @@
       "arm": "story",
       "claim": "`make_response` raises `TypeError` with a message naming the endpoint when the return value is `None`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1308-1314"
@@ -541,7 +541,7 @@
       "arm": "deepwiki",
       "claim": "The `SESSION_COOKIE_NAME` config key defaults to `\"session\"`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:219-219"
@@ -554,7 +554,7 @@
       "arm": "story",
       "claim": "If `TRUSTED_HOSTS` is set and the host does not match, `get_host` raises a `SecurityError`, which is a 400.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "unverifiable",
       "lines": [
         "src/flask/app.py:530-535"
@@ -567,7 +567,7 @@
       "arm": "story",
       "claim": "In `make_response`, a `dict` or `list` return value is passed to `self.json.response(rv)`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1328-1329"
@@ -580,7 +580,7 @@
       "arm": "deepwiki",
       "claim": "Flask's coverage configuration enables branch coverage.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "unverifiable",
       "lines": [
         "pyproject.toml:1-1"
@@ -593,7 +593,7 @@
       "arm": "story",
       "claim": "The `PREFERRED_URL_SCHEME` config key defaults to `'http'`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:234-234"
@@ -606,7 +606,7 @@
       "arm": "deepwiki",
       "claim": "The `template_rendered` signal sends `template` and `context` keyword arguments.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/templating.py:130-132"
@@ -619,7 +619,7 @@
       "arm": "deepwiki",
       "claim": "`FlaskClient.session_transaction()` opens a temporary request context, calls `open_session`, allows modifications, then calls `save_session` to update the client's cookie jar.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/testing.py:160-183"
@@ -632,7 +632,7 @@
       "arm": "story",
       "claim": "`dispatch_request` returns `self.make_default_options_response(ctx)` when `getattr(rule, \"provide_automatic_options\", False)` is true and `req.method == \"OPTIONS\"`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:985-990"
@@ -645,7 +645,7 @@
       "arm": "deepwiki",
       "claim": "`stream_template()` returns an `Iterator[str]`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/templating.py:181-184"
@@ -658,7 +658,7 @@
       "arm": "story",
       "claim": "`Request.blueprint` is `None` when the endpoint contains no `.`, and `Request.blueprints` is then an empty list.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/wrappers.py:173-195"
@@ -671,7 +671,7 @@
       "arm": "story",
       "claim": "`auto_find_instance_path` calls `find_package` with the import name.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/app.py:515-518"
@@ -684,7 +684,7 @@
       "arm": "story",
       "claim": "`SecureCookieSessionInterface.open_session` calls `self.get_signing_serializer(app)` and returns `None` if it returns `None`, before reading any cookies.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/sessions.py:323-329"
@@ -697,7 +697,7 @@
       "arm": "deepwiki",
       "claim": "`Flask.make_response` converts `dict` or `list` return values using `flask.json.jsonify()`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1328-1329",
@@ -711,7 +711,7 @@
       "arm": "deepwiki",
       "claim": "Blueprint templates have lower precedence than the application's own templates folder.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/blueprints.py:148-152",
@@ -725,7 +725,7 @@
       "arm": "story",
       "claim": "With `from_error_handler=False`, an exception raised by a `request_finished` subscriber propagates rather than being logged and swallowed.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1043-1054"
@@ -738,7 +738,7 @@
       "arm": "story",
       "claim": "`preprocess_request` returns `None` when no preprocessors or before-request functions apply.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1387-1395"
@@ -751,7 +751,7 @@
       "arm": "deepwiki",
       "claim": "`FlaskGroup._load_plugin_commands()` scans `flask.commands` entry points at runtime via `importlib.metadata.entry_points`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/cli.py:600-607"
@@ -764,7 +764,7 @@
       "arm": "deepwiki",
       "claim": "A blueprint route's final endpoint string is `<blueprint_name>.<view_function_name>`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/blueprints.py:104-116",
@@ -778,7 +778,7 @@
       "arm": "story",
       "claim": "`make_null_session` constructs the session interface's `null_session_class`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/sessions.py:150-160"
@@ -791,7 +791,7 @@
       "arm": "story",
       "claim": "`App.__init__` passes a subset of its arguments to `Scaffold.__init__`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/app.py:292-298"
@@ -804,7 +804,7 @@
       "arm": "deepwiki",
       "claim": "In Flask 3.2, `request_ctx` remains as a deprecated alias for `app_ctx`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/globals.py:65-77"
@@ -817,7 +817,7 @@
       "arm": "deepwiki",
       "claim": "The `request_finished` signal is emitted after request dispatching.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1042-1047",
@@ -831,7 +831,7 @@
       "arm": "story",
       "claim": "`FlaskClient.open` calls `super().open(request, ...)` to hand the environ to the WSGI application.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/testing.py:235-239"
@@ -844,7 +844,7 @@
       "arm": "story",
       "claim": "`Config` is a subclass of `dict` that also stores `root_path`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/config.py:50-100"
@@ -857,7 +857,7 @@
       "arm": "deepwiki",
       "claim": "In Flask 3.2, many internal methods take the `AppContext` directly instead of using the context proxies.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:833-835",
@@ -872,7 +872,7 @@
       "arm": "story",
       "claim": "`Flask.test_client` imports `FlaskClient` and constructs it with the app, the app's `response_class`, and `use_cookies=True`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:809-814"
@@ -885,7 +885,7 @@
       "arm": "deepwiki",
       "claim": "Flask requires ItsDangerous version >= 2.2 in the 3.x series.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "unverifiable",
       "lines": [
         "pyproject.toml:1-1"
@@ -898,7 +898,7 @@
       "arm": "story",
       "claim": "For a `str` return value, `make_response` does `rv = self.response_class(rv, status=status, headers=headers)` and then sets `status = headers = None`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1317-1327"
@@ -911,7 +911,7 @@
       "arm": "deepwiki",
       "claim": "The `_AppCtxGlobals` class is defined in `src/flask/ctx.py`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/ctx.py:30-30"
@@ -924,7 +924,7 @@
       "arm": "deepwiki",
       "claim": "AWS Elastic Beanstalk looks for an `application.py` file and a WSGI callable named `application`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "unverifiable",
       "lines": [
         "docs/deploying/index.rst:1-1"
@@ -937,7 +937,7 @@
       "arm": "deepwiki",
       "claim": "Flask's `docs` dependency group contains pallets-sphinx-themes, sphinx<9, sphinx-tabs, and sphinxcontrib-log-cabinet.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "unverifiable",
       "lines": [
         "pyproject.toml:1-1"
@@ -950,7 +950,7 @@
       "arm": "story",
       "claim": "After-request hooks run before the session is saved, so they cannot inspect or modify the session cookie.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1410-1419"
@@ -963,7 +963,7 @@
       "arm": "deepwiki",
       "claim": "Context processors are functions that return a dictionary of variables merged into the template context.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/scaffold.py:549-564",
@@ -977,7 +977,7 @@
       "arm": "deepwiki",
       "claim": "`app.route()` is a convenience wrapper around `add_url_rule(rule, endpoint=None, view_func=None, **options)`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/sansio/scaffold.py:343-373",
@@ -991,7 +991,7 @@
       "arm": "deepwiki",
       "claim": "`render_template()` uses `app.jinja_env.get_or_select_template()`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/templating.py:146-148"
@@ -1004,7 +1004,7 @@
       "arm": "story",
       "claim": "The `PROVIDE_AUTOMATIC_OPTIONS` config key defaults to `True`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:237-237"
@@ -1017,7 +1017,7 @@
       "arm": "deepwiki",
       "claim": "Configuring Werkzeug's ProxyFix middleware is required to trust `X-Forwarded-For` and `X-Forwarded-Proto` headers.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "unverifiable",
       "lines": [
         "docs/deploying/proxy_fix.rst:1-1"
@@ -1030,7 +1030,7 @@
       "arm": "deepwiki",
       "claim": "The `AppContext` object is stored in a Python `ContextVar` named `_cv_app`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/flask",
+      "tree": "eval/checkouts/flask",
       "label": "supported",
       "lines": [
         "src/flask/globals.py:40-43"
@@ -1043,7 +1043,7 @@
       "arm": "story",
       "claim": "The default session interface is a class-level `SecureCookieSessionInterface()` shared by every `Flask` instance.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:249-253"
@@ -1056,7 +1056,7 @@
       "arm": "story",
       "claim": "`ensure_sync` routes an `async def` view through `async_to_sync`.",
       "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+      "tree": "demo-repos/flask",
       "label": "supported",
       "lines": [
         "src/flask/app.py:1077-1080"

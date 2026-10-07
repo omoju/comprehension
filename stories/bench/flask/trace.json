@@ -91,7 +91,7 @@
           "import_name": "'__main__'"
          },
          "calls": [],
-         "returned": "'/Users/omojumiller/dev/comprehension/stories/bench/flask'",
+         "returned": "'stories/bench/flask'",
          "tl": 9
         }
        ],
@@ -126,15 +126,15 @@
            },
            "calls": [],
            "raised": "ValueError('__main__.__spec__ is None')",
-           "returned": "'/Users/omojumiller/dev/comprehension/demo-repos/flask'",
+           "returned": "'demo-repos/flask'",
            "tl": 14
           }
          ],
-         "returned": "(None, '/Users/omojumiller/dev/comprehension/demo-repos/flask')",
+         "returned": "(None, 'demo-repos/flask')",
          "tl": 13
         }
        ],
-       "returned": "'/Users/omojumiller/dev/comprehension/demo-repos/flask/instance'",
+       "returned": "'demo-repos/flask/instance'",
        "tl": 12
       },
       {
@@ -164,7 +164,7 @@
          "called_from": "app.py:493",
          "args": {
           "self": "<Config>",
-          "root_path": "'/Users/omojumiller/dev/comprehension/stories/bench/flask'",
+          "root_path": "'stories/bench/flask'",
           "defaults": "{'APPLICATION_ROOT': '/', 'DEBUG': False, 'EXPLAIN_TEMPLATE_LOADING': False, 'MAX_CONTENT_LENGTH': None, 'MAX_COOKIE_SIZE': 4093, 'MAX_FORM_MEMORY_SIZE': 500000, ...}"
          },
          "calls": [],
@@ -222,7 +222,7 @@
         "self": "<Flask>"
        },
        "calls": [],
-       "returned": "'/Users/omojumiller/dev/comprehension/stories/bench/flask/static'",
+       "returned": "'stories/bench/flask/static'",
        "tl": 30
       }
      ],
@@ -247,7 +247,7 @@
         "self": "<Flask>"
        },
        "calls": [],
-       "returned": "'/Users/omojumiller/dev/comprehension/stories/bench/flask/static'",
+       "returned": "'stories/bench/flask/static'",
        "tl": 34
       },
       {
@@ -257,7 +257,7 @@
        "args": {},
        "calls": [],
        "repeat": 1,
-       "returned": "'/Users/omojumiller/dev/comprehension/stories/bench/flask/static'",
+       "returned": "'stories/bench/flask/static'",
        "tl": 36
       }
      ],

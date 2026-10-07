@@ -6,7 +6,7 @@
     "name": "pallets/flask",
     "url": "https://github.com/pallets/flask",
     "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
-    "local_path": "/Users/omojumiller/dev/comprehension/demo-repos/flask",
+    "local_path": "demo-repos/flask",
     "import_path": "src"
   },
   "chapters": [

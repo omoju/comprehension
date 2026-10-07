@@ -6,7 +6,7 @@
       "arm": "deepwiki",
       "claim": "`HTTPBasicAuth` inherits from `AuthBase`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/auth.py:78-86"
@@ -19,7 +19,7 @@
       "arm": "deepwiki",
       "claim": "When a redirect changes the method from POST/PUT/PATCH to GET, `resolve_redirects` removes the Content-Length, Content-Type, and Transfer-Encoding headers.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "HISTORY.md:914-916"
@@ -32,7 +32,7 @@
       "arm": "story",
       "claim": "If an integer `max_retries` is passed to `HTTPAdapter`, `Retry.from_int` builds the retry policy.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "supported",
       "lines": [
         "src/requests/adapters.py:208-211"
@@ -45,7 +45,7 @@
       "arm": "story",
       "claim": "For redirect statuses other than 307 and 308, `resolve_redirects` discards the body and the `Content-Length`, `Content-Type` and `Transfer-Encoding` headers.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "resolve_redirects lives in src/requests/sessions.py, which is not included in the shown files.",
@@ -56,7 +56,7 @@
       "arm": "story",
       "claim": "`Session.should_strip_auth` strips auth on any hostname change, permits an `http`\u2192`https` upgrade on standard ports, permits a same-scheme hop between default ports, and otherwise strips on a changed port or scheme.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Session.should_strip_auth is defined in src/requests/sessions.py, which is not shown.",
@@ -67,7 +67,7 @@
       "arm": "story",
       "claim": "In the stream branch of `prepare_body`, `self._body_position = body.tell()` is recorded, and if `tell()` raises `OSError` a bare `object()` sentinel is stored instead.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "PreparedRequest.prepare_body is in src/requests/models.py, which is not shown.",
@@ -78,7 +78,7 @@
       "arm": "deepwiki",
       "claim": "`_parse_content_type_header` strips quotes and whitespace from parameter values.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/adapters.py:53-60"
@@ -91,7 +91,7 @@
       "arm": "deepwiki",
       "claim": "Requests v2.34.2 moved `headers` types back to `Mapping` from `MutableMapping`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "HISTORY.md:10-14",
@@ -105,7 +105,7 @@
       "arm": "deepwiki",
       "claim": "A minor release of Requests uses version format vX.Y.0 and includes new features and bug fixes that are backwards compatible.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "docs/community/release-process.rst:26-35"
@@ -118,7 +118,7 @@
       "arm": "story",
       "claim": "`Session.get_adapter` raises `InvalidSchema(f\"No connection adapters were found for {url!r}\")` when no mounted prefix matches.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Session.get_adapter is in src/requests/sessions.py, which is not shown.",
@@ -129,7 +129,7 @@
       "arm": "story",
       "claim": "In `Session.request`, a URL passed as `bytes` is decoded as UTF-8.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Session.request is in src/requests/sessions.py, which is not shown.",
@@ -140,7 +140,7 @@
       "arm": "deepwiki",
       "claim": "`Response.ok` is True if `status_code` is between 200 and 299.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/__init__.py:184-185"
@@ -153,7 +153,7 @@
       "arm": "deepwiki",
       "claim": "`TooManyRedirects` is raised when the request exceeds the configured number of maximum redirects.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "docs/user/quickstart.rst:565-566",
@@ -167,7 +167,7 @@
       "arm": "story",
       "claim": "`prepare_auth` does not check the URL scheme before attaching Basic credentials.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "prepare_auth is defined in src/requests/models.py, which is not shown.",
@@ -178,7 +178,7 @@
       "arm": "story",
       "claim": "`Session.request` builds a `Request` passing `data=data or {}` and `params=params or {}`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Session.request's Request construction is in src/requests/sessions.py, which is not shown.",
@@ -189,7 +189,7 @@
       "arm": "deepwiki",
       "claim": "The tox `use_chardet_on_py3` environment tests with the `chardet` extra enabled.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "pyproject.toml:56-56"
@@ -202,7 +202,7 @@
       "arm": "story",
       "claim": "`Response.apparent_encoding` uses charset_normalizer or chardet to guess the encoding.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Response.apparent_encoding is in src/requests/models.py, which is not shown.",
@@ -213,7 +213,7 @@
       "arm": "story",
       "claim": "`Session.get` sets `allow_redirects` to `True` by default.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Session.get is defined in src/requests/sessions.py, which is not shown (requests/api.py only sets allow_redirects for head()).",
@@ -224,7 +224,7 @@
       "arm": "deepwiki",
       "claim": "The Sphinx `source_suffix` is `\".rst\"`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "docs/conf.py:51-51"
@@ -237,7 +237,7 @@
       "arm": "story",
       "claim": "`bool(r)` on a `Response` is equivalent to `status_code < 400`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Response.__bool__/ok are in src/requests/models.py, which is not shown.",
@@ -248,7 +248,7 @@
       "arm": "story",
       "claim": "`MockRequest` wraps a `PreparedRequest` and exposes `get_type()`, `get_host()` and `get_full_url()` by re-parsing `self._r.url`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "MockRequest is defined in src/requests/cookies.py, which is not shown.",
@@ -259,7 +259,7 @@
       "arm": "story",
       "claim": "`get_encoding_from_headers` returns `ISO-8859-1` for a content type containing `text` when no charset is given.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "get_encoding_from_headers is in src/requests/utils.py, which is not shown; only prose in docs discusses the ISO-8859-1 default.",
@@ -270,7 +270,7 @@
       "arm": "deepwiki",
       "claim": "`guess_json_utf` examines the first 4 bytes of the data.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/adapters.py:53-60"
@@ -283,7 +283,7 @@
       "arm": "story",
       "claim": "`Response.iter_content` raises `TypeError` for a non-integer chunk size.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Response.iter_content is in src/requests/models.py, which is not shown; only a HISTORY.md changelog entry mentions the type check.",
@@ -294,7 +294,7 @@
       "arm": "story",
       "claim": "When `auth` is `None`, `prepare_auth` calls `get_auth_from_url(self.url)` and uses any `user:pass@` embedded in the URL as credentials.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "prepare_auth is in src/requests/models.py, which is not shown.",
@@ -305,7 +305,7 @@
       "arm": "story",
       "claim": "Immediately after `rebuild_auth` strips credentials, `.netrc` may supply fresh credentials for the new host if `trust_env` is enabled.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "rebuild_auth and netrc handling live in src/requests/sessions.py and utils.py, neither of which is shown.",
@@ -316,7 +316,7 @@
       "arm": "deepwiki",
       "claim": "When sending a request, the session selects the adapter with the longest matching prefix for the target URL.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "docs/user/advanced.rst:996-998"
@@ -329,7 +329,7 @@
       "arm": "story",
       "claim": "`Response.text` accesses `self.content` twice: once for an emptiness check and once to decode.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Response.text is in src/requests/models.py, which is not shown.",
@@ -340,7 +340,7 @@
       "arm": "story",
       "claim": "`Session.__enter__` returns the session itself.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Session.__enter__ is in src/requests/sessions.py, which is not shown; docs only demonstrate context-manager usage.",
@@ -351,7 +351,7 @@
       "arm": "deepwiki",
       "claim": "The hook system is defined in `src/requests/hooks.py`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/hooks.py:1-26"
@@ -364,7 +364,7 @@
       "arm": "story",
       "claim": "`Response.__repr__` renders a response as `<Response [200]>` for status 200.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Response.__repr__ is in src/requests/models.py, which is not shown.",
@@ -375,7 +375,7 @@
       "arm": "deepwiki",
       "claim": "`requests.utils.guess_filename(obj)` guesses the filename of a file-like object by checking the `name` attribute.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/adapters.py:53-60"
@@ -388,7 +388,7 @@
       "arm": "deepwiki",
       "claim": "All Requests exceptions inherit from `RequestException`, which inherits from `IOError`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/exceptions.py:20-23",
@@ -402,7 +402,7 @@
       "arm": "story",
       "claim": "`Request.__init__` converts `hooks=None` into `{}`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [],
       "reason": "Request.__init__ is in src/requests/models.py, which is not shown.",
@@ -413,7 +413,7 @@
       "arm": "story",
       "claim": "`should_bypass_proxies` calls `proxy_bypass(hostname)` inside a `with set_environ(\"no_proxy\", no_proxy_arg)` block.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/utils.py:1-1"
@@ -426,7 +426,7 @@
       "arm": "deepwiki",
       "claim": "`InvalidURL` is raised for malformed URLs.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/exceptions.py:118-119",
@@ -440,7 +440,7 @@
       "arm": "deepwiki",
       "claim": "`LookupDict.__getattr__` looks up keys in `__dict__` and raises AttributeError if missing.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/status_codes.py:21-21"
@@ -453,7 +453,7 @@
       "arm": "deepwiki",
       "claim": "The `Session` class maintains state across multiple requests, including cookies and connection pooling.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "docs/user/advanced.rst:13-18"
@@ -466,7 +466,7 @@
       "arm": "story",
       "claim": "`Response.iter_content` returns the `generate()` generator without starting it when the response has not been consumed.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/models.py:1-1"
@@ -479,7 +479,7 @@
       "arm": "story",
       "claim": "The `CaseInsensitiveDict` docstring states that if two keys differ only in case, the behavior is undefined.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/structures.py:1-1"
@@ -492,7 +492,7 @@
       "arm": "story",
       "claim": "During preparation, auth is applied after headers, so netrc credentials take precedence over an `Authorization` header set via `headers=`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "supported",
       "lines": [
         "docs/user/authentication.rst:39-45",
@@ -506,7 +506,7 @@
       "arm": "deepwiki",
       "claim": "The `Response` object contains the original `PreparedRequest` in its `request` attribute.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/adapters.py:375-400"
@@ -519,7 +519,7 @@
       "arm": "deepwiki",
       "claim": "The `Session` automatically extracts cookies from responses and includes them in subsequent requests using a `RequestsCookieJar`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "docs/user/advanced.rst:13-30",
@@ -534,7 +534,7 @@
       "arm": "deepwiki",
       "claim": "The Requests version is dynamically pulled from `requests.__version__.__version__`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "pyproject.toml:80-81"
@@ -547,7 +547,7 @@
       "arm": "deepwiki",
       "claim": "If a single callable is provided as a hook, `dispatch_hook` wraps it in a list before execution.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/hooks.py:40-44"
@@ -560,7 +560,7 @@
       "arm": "deepwiki",
       "claim": "`_parse_content_type_header` converts parameter names to lowercase.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/adapters.py:53-60"
@@ -573,7 +573,7 @@
       "arm": "deepwiki",
       "claim": "A major release of Requests uses version format vX.0.0 and includes breaking changes.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "docs/community/release-process.rst:9-18"
@@ -586,7 +586,7 @@
       "arm": "deepwiki",
       "claim": "`setup.py` checks `sys.version_info` and exits with an error if the Python version is below 3.10.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "setup.py:1-5"
@@ -599,7 +599,7 @@
       "arm": "deepwiki",
       "claim": "`HTTPAdapter` implements `BaseAdapter`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/adapters.py:158-158"
@@ -612,7 +612,7 @@
       "arm": "story",
       "claim": "`Session.prepare_request` upper-cases the method at sessions.py line 542.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/sessions.py:1-1"
@@ -625,7 +625,7 @@
       "arm": "deepwiki",
       "claim": "`_parse_content_type_header` sets the value to `True` for parameters without values.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/adapters.py:53-60"
@@ -638,7 +638,7 @@
       "arm": "deepwiki",
       "claim": "In `_urllib3_request_context`, if `client_cert` is not a 2-tuple, the value is assigned to `cert_file`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/adapters.py:106-113"
@@ -651,7 +651,7 @@
       "arm": "deepwiki",
       "claim": "The Sphinx `templates_path` is set to `[\"_templates\"]`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "docs/conf.py:45-46"
@@ -664,7 +664,7 @@
       "arm": "story",
       "claim": "`HTTPAdapter.close` clears its PoolManager and any ProxyManagers, closing the pooled connections.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "supported",
       "lines": [
         "src/requests/adapters.py:555-563"
@@ -677,7 +677,7 @@
       "arm": "deepwiki",
       "claim": "`requests.exceptions.ReadTimeout` is raised when the server does not send data within the read timeout period.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/exceptions.py:98-99",
@@ -691,7 +691,7 @@
       "arm": "story",
       "claim": "`Session.__init__` sets `self.cert = None`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/sessions.py:1-1"
@@ -704,7 +704,7 @@
       "arm": "deepwiki",
       "claim": "Requests uses `CURL_CA_BUNDLE` as a fallback if `REQUESTS_CA_BUNDLE` is not set.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "docs/user/advanced.rst:238-239",
@@ -718,7 +718,7 @@
       "arm": "deepwiki",
       "claim": "`make test-readme` uses `setup.py check` to validate RestructuredText for PyPI.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "Makefile:10-11"
@@ -731,7 +731,7 @@
       "arm": "story",
       "claim": "`MockRequest.get_full_url()` prefers a caller-set `Host` header over the URL's host when determining the request's domain.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/cookies.py:1-1"
@@ -744,7 +744,7 @@
       "arm": "story",
       "claim": "`Session.prepare_request` never mutates `session.cookies`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/sessions.py:1-1"
@@ -757,7 +757,7 @@
       "arm": "deepwiki",
       "claim": "`HTTPDigestAuth` supports both `str` and `bytes` for credentials.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/auth.py:136-143"
@@ -770,7 +770,7 @@
       "arm": "story",
       "claim": "`HTTPAdapter.send` calls `conn.urlopen` with `redirect=False`, `assert_same_host=False`, `preload_content=False`, `decode_content=False`, `retries=self.max_retries`, and the resolved timeout and chunked flag.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "supported",
       "lines": [
         "src/requests/adapters.py:696-708"
@@ -783,7 +783,7 @@
       "arm": "story",
       "claim": "`Session.get_redirect_target` consults `resp.is_redirect`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/sessions.py:1-1"
@@ -796,7 +796,7 @@
       "arm": "deepwiki",
       "claim": "If `idna` lacks a `__version__` attribute, Requests returns an empty string rather than crashing.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/help.py:101-103"
@@ -809,7 +809,7 @@
       "arm": "story",
       "claim": "Comments in `PreparedRequest.prepare` state that `prepare_hooks` must come after `prepare_auth` because an auth handler may register a hook.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/models.py:1-1"
@@ -822,7 +822,7 @@
       "arm": "story",
       "claim": "After calling the auth handler, `prepare_auth` runs `self.__dict__.update(r.__dict__)` and then `self.prepare_content_length(self.body)`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/models.py:1-1"
@@ -835,7 +835,7 @@
       "arm": "deepwiki",
       "claim": "Python 3.14 support was added in Requests v2.32.5.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "HISTORY.md:99-111"
@@ -848,7 +848,7 @@
       "arm": "deepwiki",
       "claim": "Ruff is configured to use double quotes and space indentation.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "pyproject.toml:106-109"
@@ -861,7 +861,7 @@
       "arm": "story",
       "claim": "`HTTPBasicAuth.__call__` mutates the request in place and returns the same object.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "supported",
       "lines": [
         "src/requests/auth.py:111-113"
@@ -874,7 +874,7 @@
       "arm": "story",
       "claim": "`resolve_redirects` accepts a `yield_requests` parameter that defaults to `False`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/sessions.py:1-1"
@@ -887,7 +887,7 @@
       "arm": "deepwiki",
       "claim": "`CaseInsensitiveDict` is defined in `structures.py` and preserves the original case of keys while allowing case-insensitive lookups.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/adapters.py:52-52"
@@ -900,7 +900,7 @@
       "arm": "story",
       "claim": "`CaseInsensitiveDict.items()` is inherited from `MutableMapping` and is driven by `__iter__` and `__getitem__`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/structures.py:1-1"
@@ -913,7 +913,7 @@
       "arm": "deepwiki",
       "claim": "Session configuration merging is handled by `merge_setting` and `merge_hooks`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/api.py:70-71"
@@ -926,7 +926,7 @@
       "arm": "deepwiki",
       "claim": "`src/requests/__version__.py` defines `__author__` as \"Kenneth Reitz\".",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/__version__.py:10-10"
@@ -939,7 +939,7 @@
       "arm": "story",
       "claim": "`Response.is_redirect` returns `\"location\" in self.headers and self.status_code in REDIRECT_STATI`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/models.py:1-1"
@@ -952,7 +952,7 @@
       "arm": "story",
       "claim": "`PreparedRequest.__init__` sets `method`, `url`, `headers`, `_cookies`, `body` and `_body_position` to `None`, and `hooks` to `{'response': []}`.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/models.py:1-1"
@@ -965,7 +965,7 @@
       "arm": "story",
       "claim": "`prepare_url` contains an early return: if `\":\" in url and not url.lower().startswith(\"http\")`, it sets `self.url = url` and returns.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "unverifiable",
       "lines": [
         "src/requests/models.py:1-1"
@@ -978,7 +978,7 @@
       "arm": "deepwiki",
       "claim": "`requests.utils.select_proxy()` selects the appropriate proxy for a URL.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         "src/requests/adapters.py:53-58",
@@ -992,7 +992,7 @@
       "arm": "story",
       "claim": "A password containing a character outside latin-1 causes `_basic_auth_str` to raise `UnicodeEncodeError` during preparation.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+      "tree": "demo-repos/requests",
       "label": "supported",
       "lines": [
         "src/requests/auth.py:65-73",
@@ -1006,7 +1006,7 @@
       "arm": "deepwiki",
       "claim": "The pre-commit config includes `ruff-check` and `ruff-format` hooks.",
       "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/requests",
+      "tree": "eval/checkouts/requests",
       "label": "supported",
       "lines": [
         ".pre-commit-config.yaml:15-21"

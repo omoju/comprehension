@@ -6,7 +6,7 @@
       "arm": "story",
       "claim": "When `signer=None` is passed, `Serializer.__init__` uses the class default signer, which for the plain serializer is `Signer`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:97-99",
@@ -20,7 +20,7 @@
       "arm": "deepwiki",
       "claim": "Fallback signer configurations may be a dict of signer kwargs, a tuple of (signer_class, kwargs), or a signer class.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:297-307",
@@ -34,7 +34,7 @@
       "arm": "deepwiki",
       "claim": "`bytes_to_int()` right-justifies the input to 8 bytes with `rjust(8, b'\\x00')` before unpacking with `_int64_struct.unpack()`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/encoding.py:44-54"
@@ -47,7 +47,7 @@
       "arm": "story",
       "claim": "`Signer.verify_signature` calls `want_bytes` on the value before comparison.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:227-242"
@@ -60,7 +60,7 @@
       "arm": "deepwiki",
       "claim": "In `Serializer`, the newest secret key is used for signing while all keys are tried during verification.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:203-208",
@@ -74,7 +74,7 @@
       "arm": "story",
       "claim": "`BadSignature` has a `payload` attribute defined in exc.py.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/exc.py:22-33"
@@ -87,7 +87,7 @@
       "arm": "story",
       "claim": "The payload attached to the `BadSignature` raised by `Signer.unsign` is the raw, still-base64, undeserialised value.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:244-256"
@@ -100,7 +100,7 @@
       "arm": "deepwiki",
       "claim": "`URLSafeTimedSerializer.loads()` raises `SignatureExpired` when the token is older than `max_age`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/timed.py:138-146",
@@ -115,7 +115,7 @@
       "arm": "deepwiki",
       "claim": "The tox `docs` environment runs `sphinx-build -E -W -b dirhtml`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "pyproject.toml:175-178"
@@ -128,7 +128,7 @@
       "arm": "deepwiki",
       "claim": "`Signer.derive_key` raises `TypeError` for an unknown key derivation method.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:210-213"
@@ -141,7 +141,7 @@
       "arm": "story",
       "claim": "`Serializer.__init__` allows `salt=None`, deferring the decision to the `Signer`'s own default.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:210-214"
@@ -154,7 +154,7 @@
       "arm": "deepwiki",
       "claim": "`Serializer` uses `Signer`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:97-99",
@@ -168,7 +168,7 @@
       "arm": "story",
       "claim": "`BadPayload` descends from `BadData` in exc.py.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/exc.py:92-92"
@@ -181,7 +181,7 @@
       "arm": "story",
       "claim": "In `Serializer.dumps` the payload is wrapped as `want_bytes(self.dump_payload(obj))`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:314-314"
@@ -194,7 +194,7 @@
       "arm": "deepwiki",
       "claim": "`TimedSerializer.iter_unsigners()` returns an iterator of `TimestampSigner`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/timed.py:177-180"
@@ -207,7 +207,7 @@
       "arm": "deepwiki",
       "claim": "The GitHub Actions workflow `publish.yaml` is triggered by git tag pushes and contains `build`, `create-release`, and `publish-pypi` jobs.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         ".github/workflows/publish.yaml:1-45"
@@ -220,7 +220,7 @@
       "arm": "story",
       "claim": "`Signer.verify_signature` wraps `base64_decode(sig)` in a bare `try`/`except Exception` that returns `False`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:229-232"
@@ -233,7 +233,7 @@
       "arm": "story",
       "claim": "`want_bytes` in encoding.py encodes text as UTF-8 with `errors='strict'`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/encoding.py:11-17"
@@ -246,7 +246,7 @@
       "arm": "story",
       "claim": "`HMACAlgorithm.get_signature` calls `hmac.new(key, msg=value, digestmod=self.digest_method)` and returns `mac.digest()`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:62-64"
@@ -259,7 +259,7 @@
       "arm": "story",
       "claim": "`Serializer.iter_unsigners` iterates `self.fallback_signers`, treating a dict entry as kwargs with `self.signer` as the class, a tuple entry as `(class, kwargs)`, and anything else as a signer class with `self.signer_kwargs`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:297-307"
@@ -272,7 +272,7 @@
       "arm": "deepwiki",
       "claim": "`URLSafeSerializer.dumps()` converts Python objects to signed strings.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/url_safe.py:72-76",
@@ -286,7 +286,7 @@
       "arm": "deepwiki",
       "claim": "The GitHub Actions workflow `tests.yaml` is triggered by pull requests and pushes to main and stable branches.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         ".github/workflows/tests.yaml:2-7"
@@ -299,7 +299,7 @@
       "arm": "deepwiki",
       "claim": "`docs/conf.py` defines project links for Donate, PyPI Releases, Source Code, Issue Tracker, and Discord Chat in `html_context[\"project_links\"]`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "docs/conf.py:37-45"
@@ -312,7 +312,7 @@
       "arm": "story",
       "claim": "`URLSafeTimedSerializer` is a separate class defined in url_safe.py that provides age limits.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/url_safe.py:79-83"
@@ -325,7 +325,7 @@
       "arm": "story",
       "claim": "`Signer.default_digest_method` is `_lazy_sha1`, a function that defers the `hashlib.sha1` attribute access to call time.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:40-45",
@@ -339,7 +339,7 @@
       "arm": "deepwiki",
       "claim": "The `django-concat` key derivation computes `digest_method(salt + b\"signer\" + secret_key).digest()`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:202-205"
@@ -352,7 +352,7 @@
       "arm": "deepwiki",
       "claim": "The GitHub Actions workflow `lock.yaml` runs on a daily schedule and contains a `lock` job.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "contradicted",
       "lines": [
         ".github/workflows/tests.yaml:1-8",
@@ -366,7 +366,7 @@
       "arm": "deepwiki",
       "claim": "The `hmac` key derivation computes `hmac.new(secret_key, salt, digestmod).digest()`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:206-209"
@@ -379,7 +379,7 @@
       "arm": "deepwiki",
       "claim": "`TestTimestampSigner` contains 8 test methods.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "contradicted",
       "lines": [
         "tests/test_itsdangerous/test_timed.py:29-93"
@@ -392,7 +392,7 @@
       "arm": "story",
       "claim": "`URLSafeSerializerMixin` comes first in the bases of `URLSafeSerializer`, so the mixin's `load_payload` is used.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/url_safe.py:72-76",
@@ -406,7 +406,7 @@
       "arm": "story",
       "claim": "`Signer.__init__` stores `key_derivation` without validating it.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:160-163",
@@ -420,7 +420,7 @@
       "arm": "deepwiki",
       "claim": "The publish workflow's publish-pypi job uses `pypa/gh-action-pypi-publish` with `packages-dir: artifact/`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         ".github/workflows/publish.yaml:44-47"
@@ -433,7 +433,7 @@
       "arm": "story",
       "claim": "`Signer.__init__` converts `sep` with `want_bytes` and raises `ValueError` if `self.sep` is in `_base64_alphabet`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:144-151"
@@ -446,7 +446,7 @@
       "arm": "story",
       "claim": "When `fallback_signers=None` is passed, `Serializer.__init__` sets it to a copy of `default_fallback_signers`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:228-229"
@@ -459,7 +459,7 @@
       "arm": "story",
       "claim": "`Serializer.loads` calls `unsign` before `load_payload`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:337-341"
@@ -472,7 +472,7 @@
       "arm": "deepwiki",
       "claim": "The test suite lives in `tests/test_itsdangerous/` and includes `test_signer.py`, `test_serializer.py`, `test_timed.py`, and `test_encoding.py`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "tests/test_itsdangerous/test_signer.py:1-10",
@@ -488,7 +488,7 @@
       "arm": "deepwiki",
       "claim": "`docs/conf.py` sets `autodoc_preserve_defaults = True`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "docs/conf.py:24"
@@ -501,7 +501,7 @@
       "arm": "deepwiki",
       "claim": "The `gha-update` dependency group contains `gha-update` conditioned on `python_full_version >= \"3.12\"`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "pyproject.toml:39-41"
@@ -514,7 +514,7 @@
       "arm": "deepwiki",
       "claim": "`TimedSerializer.default_signer` is `TimestampSigner`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/timed.py:175-175"
@@ -527,7 +527,7 @@
       "arm": "story",
       "claim": "`Serializer.dump_payload` passes the serializer output through `want_bytes` to encode it to UTF-8.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:271-276",
@@ -541,7 +541,7 @@
       "arm": "story",
       "claim": "If `Serializer.loads` exhausts all candidate signers, it re-raises the last `BadSignature` rather than the first or an aggregate.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:335-343"
@@ -554,7 +554,7 @@
       "arm": "deepwiki",
       "claim": "`Signer` supports the key derivation methods `concat`, `django-concat`, `hmac`, and `none`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:200-213"
@@ -567,7 +567,7 @@
       "arm": "story",
       "claim": "`_CompactJSON.loads('{\"id\":5,\"name\":\"itsdangerous\"}')` returns `{'id': 5, 'name': 'itsdangerous'}`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/_json.py:10-12"
@@ -580,7 +580,7 @@
       "arm": "deepwiki",
       "claim": "`tests/test_itsdangerous/test_serializer.py` defines fixtures named `serializer_factory`, `serializer`, and `value`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "tests/test_itsdangerous/test_serializer.py:36-46"
@@ -593,7 +593,7 @@
       "arm": "story",
       "claim": "The default value of the `salt` parameter in `Serializer.__init__` is `b\"itsdangerous\"`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:190-194"
@@ -606,7 +606,7 @@
       "arm": "deepwiki",
       "claim": "The `secret_key` parameter accepts a list of keys for key rotation.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:67-73",
@@ -620,7 +620,7 @@
       "arm": "story",
       "claim": "The `URLSafeSerializer` constructor accepts parameters `secret_key`, `salt` (defaulting to `'auth'` in the example), `serializer`, `serializer_kwargs`, `signer`, `signer_kwargs`, and `fallback_signers`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/url_safe.py:72-76",
@@ -635,7 +635,7 @@
       "arm": "deepwiki",
       "claim": "The pre-commit workflow uses `pre-commit-ci/lite-action@v1.1.0`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         ".github/workflows/pre-commit.yaml:24-24"
@@ -648,7 +648,7 @@
       "arm": "story",
       "claim": "`Serializer.make_signer` returns `self.signer(self.secret_keys, salt=salt, **self.signer_kwargs)`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:278-285"
@@ -661,7 +661,7 @@
       "arm": "deepwiki",
       "claim": "`Signer` uses `.` as the default separator between payload and signature.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:133-133",
@@ -675,7 +675,7 @@
       "arm": "deepwiki",
       "claim": "`HMACAlgorithm` defines a `get_signature()` method.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:62-64"
@@ -688,7 +688,7 @@
       "arm": "story",
       "claim": "Passing `sep=\"-\"` to `Signer.__init__` raises `ValueError` at construction time.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:144-151",
@@ -702,7 +702,7 @@
       "arm": "deepwiki",
       "claim": "`TimestampSigner.unsign` raises `SignatureExpired` with the message `f\"Signature age {age} > {max_age} seconds\"` when the age exceeds max_age.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/timed.py:141-146"
@@ -715,7 +715,7 @@
       "arm": "story",
       "claim": "`Signer.verify_signature` loops over `reversed(self.secret_keys)`, derives a key for each, and returns `True` on the first algorithm match, otherwise `False`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:236-242"
@@ -728,7 +728,7 @@
       "arm": "deepwiki",
       "claim": "The `pre-commit` dependency group contains `pre-commit` and `pre-commit-uv`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "pyproject.toml:42-45"
@@ -741,7 +741,7 @@
       "arm": "story",
       "claim": "`Signer.unsign` raises `BadSignature` with the message \"No b'.' found in value\" when the separator is absent.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:248-249"
@@ -754,7 +754,7 @@
       "arm": "story",
       "claim": "When `is_text_serializer` is `True`, `Serializer.load_payload` decodes the payload bytes to UTF-8 text before calling the serializer's `loads`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:259-263"
@@ -767,7 +767,7 @@
       "arm": "deepwiki",
       "claim": "`TimestampSigner` embeds the timestamp base64 encoded.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/timed.py:45-51"
@@ -780,7 +780,7 @@
       "arm": "deepwiki",
       "claim": "`Signer` has a `secret_keys` attribute of type `list[bytes]`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:143-143"
@@ -793,7 +793,7 @@
       "arm": "deepwiki",
       "claim": "The pyproject.toml Changes URL is 'https://itsdangerous.palletsprojects.com/page/changes/'.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "pyproject.toml:21-21"
@@ -806,7 +806,7 @@
       "arm": "story",
       "claim": "`_CompactJSON` in _json.py defaults `separators` to `(\",\", \":\")` and `ensure_ascii` to `False`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/_json.py:14-18"
@@ -819,7 +819,7 @@
       "arm": "story",
       "claim": "`Signer.verify_signature` recomputes the signature rather than storing an expected signature.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:24-28"
@@ -832,7 +832,7 @@
       "arm": "deepwiki",
       "claim": "The tests workflow's typing job sets `python-version-file: pyproject.toml`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         ".github/workflows/tests.yaml:41-43"
@@ -845,7 +845,7 @@
       "arm": "deepwiki",
       "claim": "`Signer` provides `sign()`, `unsign()`, and `validate()` methods.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:222-266"
@@ -858,7 +858,7 @@
       "arm": "story",
       "claim": "`Serializer.make_signer` substitutes `self.salt` when the `salt` argument is `None`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:282-285"
@@ -871,7 +871,7 @@
       "arm": "deepwiki",
       "claim": "`docs/conf.py` enables the extensions `sphinx.ext.autodoc`, `sphinx.ext.extlinks`, `sphinx.ext.intersphinx`, `sphinxcontrib.log_cabinet`, and `pallets_sphinx_themes`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "docs/conf.py:14-20"
@@ -884,7 +884,7 @@
       "arm": "deepwiki",
       "claim": "The `secret_key` parameter of `Signer` is required.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:129-133"
@@ -897,7 +897,7 @@
       "arm": "story",
       "claim": "`SigningAlgorithm` is a generic base class in signer.py that can be subclassed to verify other signature schemes.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:15-28",
@@ -911,7 +911,7 @@
       "arm": "deepwiki",
       "claim": "The project declares `requires-python = \">=3.10\"` in pyproject.toml.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "pyproject.toml:16-16"
@@ -924,7 +924,7 @@
       "arm": "deepwiki",
       "claim": "`.readthedocs.yaml` installs `uv` via `asdf`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         ".readthedocs.yaml:6-10"
@@ -937,7 +937,7 @@
       "arm": "story",
       "claim": "`Signer.__init__` calls `_make_keys_list` on the secret key argument.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:143"
@@ -950,7 +950,7 @@
       "arm": "deepwiki",
       "claim": "`.pre-commit-config.yaml` enables the hooks `ruff` and `ruff-format`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         ".pre-commit-config.yaml:2-6"
@@ -963,7 +963,7 @@
       "arm": "story",
       "claim": "`URLSafeSerializerMixin.load_payload` delegates to `super().load_payload(json)`, the base `Serializer.load_payload`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/url_safe.py:53",
@@ -977,7 +977,7 @@
       "arm": "story",
       "claim": "When `signer_kwargs=None` is passed, `Serializer.__init__` sets it to `{}`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:226"
@@ -990,7 +990,7 @@
       "arm": "deepwiki",
       "claim": "`URLSafeSerializer` combines `URLSafeSerializerMixin` with the `Serializer` class.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/itsdangerous",
+      "tree": "eval/checkouts/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/url_safe.py:72-76"
@@ -1003,7 +1003,7 @@
       "arm": "story",
       "claim": "`SigningAlgorithm.verify_signature` is a base-class method inherited by `HMACAlgorithm` and returns `hmac.compare_digest(sig, self.get_signature(key, value))`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:24-28",
@@ -1017,7 +1017,7 @@
       "arm": "story",
       "claim": "The URL-safe base64 alphabet used is `A-Za-z0-9-_`, excluding `+` and `/`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/encoding.py:20-25",
@@ -1031,7 +1031,7 @@
       "arm": "story",
       "claim": "`Serializer.loads` iterates `self.iter_unsigners(salt)` and returns `self.load_payload(signer.unsign(s))` inside a try block.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:337-343"
@@ -1044,7 +1044,7 @@
       "arm": "story",
       "claim": "`Signer.default_key_derivation` is the string `\"django-concat\"`, used when `key_derivation` is `None`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/signer.py:127",
@@ -1058,7 +1058,7 @@
       "arm": "story",
       "claim": "`Serializer.__init__` calls `is_text_serializer(serializer)`.",
       "commit": "672971d66a2ef9f85151e53283113f33d642dabd",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/itsdangerous",
+      "tree": "demo-repos/itsdangerous",
       "label": "supported",
       "lines": [
         "src/itsdangerous/serializer.py:219-220"

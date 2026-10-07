@@ -1092,7 +1092,7 @@
                  "returned": "('def __init__(self, a_number=attr_dict...s = __attr_factory_list_of_numbers()\\n', {'__attr_factory_list_of_numbers': <class 'list'>}, {'a_number': <class 'int'>, 'list_of_numbers': list[int], 'return': None})"
                 }
                ],
-               "returned": "('def __init__(self, a_number=attr_dict...s = __attr_factory_list_of_numbers()\\n', {'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, '__cached__': None, ...}, {'a_number': <class 'int'>, 'list_of_numbers': list[int], 'return': None})"
+               "returned": "('def __init__(self, a_number=attr_dict...s = __attr_factory_list_of_numbers()\\n', {'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': 'stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, '__cached__': None, ...}, {'a_number': <class 'int'>, 'list_of_numbers': list[int], 'return': None})"
               }
              ],
              "returned": "<_ClassBuilder(cls=SomeClass)>"
@@ -1228,7 +1228,7 @@
                  "args": {
                   "script": "'def __repr__(self):\\n  try:\\n    alre...s = __attr_factory_list_of_numbers()\\n'",
                   "filename": "'<attrs generated methods __main__.SomeClass>'",
-                  "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
+                  "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': 'stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
                   "locals": "None"
                  },
                  "calls": [
@@ -1239,7 +1239,7 @@
                    "called_from": "_make.py:261",
                    "args": {
                     "script": "'def __repr__(self):\\n  try:\\n    alre...s = __attr_factory_list_of_numbers()\\n'",
-                    "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
+                    "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, '_SRC': 'stories/bench/attrs/src', '__attr_factory_list_of_numbers': <class 'list'>, '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
                     "locs": "{}",
                     "filename": "'<attrs generated methods __main__.SomeClass>'"
                    },
@@ -2511,7 +2511,7 @@
            "returned": "('def __init__(self, a, b):\\n    self.a = a\\n    self.b = b\\n', {}, {'return': None})"
           }
          ],
-         "returned": "('def __init__(self, a, b):\\n    self.a = a\\n    self.b = b\\n', {'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, '__cached__': None, ...}, {'return': None})"
+         "returned": "('def __init__(self, a, b):\\n    self.a = a\\n    self.b = b\\n', {'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': 'stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, '__cached__': None, ...}, {'return': None})"
         }
        ],
        "returned": "<_ClassBuilder(cls=C)>"
@@ -2647,7 +2647,7 @@
            "args": {
             "script": "'def __repr__(self):\\n  try:\\n    alre... b):\\n    self.a = a\\n    self.b = b\\n'",
             "filename": "'<attrs generated methods __main__.C>'",
-            "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
+            "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': 'stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
             "locals": "None"
            },
            "calls": [
@@ -2658,7 +2658,7 @@
              "called_from": "_make.py:261",
              "args": {
               "script": "'def __repr__(self):\\n  try:\\n    alre... b):\\n    self.a = a\\n    self.b = b\\n'",
-              "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': '/Users/omojumiller/dev/comprehension/stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
+              "globs": "{'AttributeError': <class 'AttributeError'>, 'Factory': <class 'attr._make.Factory'>, 'NOTHING': NOTHING, 'SomeClass': <class '__main__.SomeClass'>, '_SRC': 'stories/bench/attrs/src', '__builtins__': {'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'BlockingIOError': <class 'BlockingIOError'>, ...}, ...}",
               "locs": "{}",
               "filename": "'<attrs generated methods __main__.C>'"
              },

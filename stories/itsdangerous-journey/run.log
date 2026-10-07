@@ -1,5 +1,5 @@
 == step 1: scenario
-  attempt 1: ran, 60 calls traced → /Users/omojumiller/dev/comprehension/stories/itsdangerous-journey/trace.txt
+  attempt 1: ran, 60 calls traced → stories/itsdangerous-journey/trace.txt
 == step 2: outline
 Sign This, Then Trust It: One Token Through ItsDangerous  [owner]: 7 chapters
    1. Two Strings Become a Configuration  [trace 4-15]

@@ -1,7 +1,7 @@
 == step 1: scenario
   attempt 1: failed  (The README's "A Simple Example" is the first thing the docs show: create a `URLSafeSerializer("secre…)
   attempt 2: ran  (The README's "A Simple Example" is the library's headline use: build a `URLSafeSerializer("secret ke…)
-  trace: 4 lines → /Users/omojumiller/dev/comprehension/stories/itsdangerous-journey/trace.txt
+  trace: 4 lines → stories/itsdangerous-journey/trace.txt
 == step 2: outline
 It's Dangerous, So Better Sign This: One Token's Round Trip  [owner]: 8 chapters
    1. Two Strings Become a Trust Boundary  [trace 1-1]

@@ -1,8 +1,8 @@
 click         questions         $1.38  168s
 Traceback (most recent call last):
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpcore2/_exceptions.py", line 13, in map_exceptions
+  File ".venv/lib/python3.13/site-packages/httpcore2/_exceptions.py", line 13, in map_exceptions
     yield
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpcore2/_backends/sync.py", line 127, in read
+  File ".venv/lib/python3.13/site-packages/httpcore2/_backends/sync.py", line 127, in read
     return self._sock.recv(max_bytes)
            ~~~~~~~~~~~~~~~^^^^^^^^^^^
   File "/usr/local/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/ssl.py", line 1285, in recv
@@ -16,92 +16,92 @@ TimeoutError: The read operation timed out
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpx2/_transports/default.py", line 98, in map_httpcore_exceptions
+  File ".venv/lib/python3.13/site-packages/httpx2/_transports/default.py", line 98, in map_httpcore_exceptions
     yield
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpx2/_transports/default.py", line 124, in __iter__
+  File ".venv/lib/python3.13/site-packages/httpx2/_transports/default.py", line 124, in __iter__
     yield from self._httpcore_stream
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpcore2/_sync/connection_pool.py", line 426, in __iter__
+  File ".venv/lib/python3.13/site-packages/httpcore2/_sync/connection_pool.py", line 426, in __iter__
     for chunk in iterator:
                  ^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py", line 320, in __iter__
+  File ".venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py", line 320, in __iter__
     raise exc
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py", line 312, in __iter__
+  File ".venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py", line 312, in __iter__
     for chunk in iterator:
                  ^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py", line 188, in _receive_response_body
+  File ".venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py", line 188, in _receive_response_body
     event = self._receive_event(timeout=timeout)
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py", line 200, in _receive_event
+  File ".venv/lib/python3.13/site-packages/httpcore2/_sync/http11.py", line 200, in _receive_event
     data = self._network_stream.read(self.READ_NUM_BYTES, timeout=timeout)
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpcore2/_backends/sync.py", line 125, in read
+  File ".venv/lib/python3.13/site-packages/httpcore2/_backends/sync.py", line 125, in read
     with map_exceptions(exc_map):
          ~~~~~~~~~~~~~~^^^^^^^^^
   File "/usr/local/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
     self.gen.throw(value)
     ~~~~~~~~~~~~~~^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpcore2/_exceptions.py", line 17, in map_exceptions
+  File ".venv/lib/python3.13/site-packages/httpcore2/_exceptions.py", line 17, in map_exceptions
     raise to_exc(exc) from exc
 httpcore2.ReadTimeout: The read operation timed out
 
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/omojumiller/dev/comprehension/codestory/eval/run.py", line 46, in <module>
+  File "codestory/eval/run.py", line 46, in <module>
     run(client, name)
     ~~~^^^^^^^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/codestory/eval/run.py", line 34, in run
+  File "codestory/eval/run.py", line 34, in run
     r = step()
-  File "/Users/omojumiller/dev/comprehension/codestory/eval/run.py", line 25, in <lambda>
+  File "codestory/eval/run.py", line 25, in <lambda>
     *[(f"extract {arm}", EVAL / "claims" / f"{name}.{arm}.json", (lambda a=arm: extract(client, name, a))) for arm in ARMS],
                                                                                 ~~~~~~~^^^^^^^^^^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/codestory/eval/extract.py", line 43, in extract
+  File "codestory/eval/extract.py", line 43, in extract
     response = ask(client, SYSTEM, f"<text>\n{text}\n</text>\n\nList every checkable claim in the text.", SCHEMA, max_tokens=64000)
-  File "/Users/omojumiller/dev/comprehension/codestory/eval/common.py", line 78, in ask
+  File "codestory/eval/common.py", line 78, in ask
     return stream.get_final_message()
            ~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/anthropic/lib/streaming/_beta_messages.py", line 101, in get_final_message
+  File ".venv/lib/python3.13/site-packages/anthropic/lib/streaming/_beta_messages.py", line 101, in get_final_message
     self.until_done()
     ~~~~~~~~~~~~~~~^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/anthropic/lib/streaming/_beta_messages.py", line 128, in until_done
+  File ".venv/lib/python3.13/site-packages/anthropic/lib/streaming/_beta_messages.py", line 128, in until_done
     consume_sync_iterator(self)
     ~~~~~~~~~~~~~~~~~~~~~^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/anthropic/_utils/_streams.py", line 6, in consume_sync_iterator
+  File ".venv/lib/python3.13/site-packages/anthropic/_utils/_streams.py", line 6, in consume_sync_iterator
     for _ in iterator:
              ^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/anthropic/lib/streaming/_beta_messages.py", line 75, in __iter__
+  File ".venv/lib/python3.13/site-packages/anthropic/lib/streaming/_beta_messages.py", line 75, in __iter__
     for item in self._iterator:
                 ^^^^^^^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/anthropic/lib/streaming/_beta_messages.py", line 136, in __stream__
+  File ".venv/lib/python3.13/site-packages/anthropic/lib/streaming/_beta_messages.py", line 136, in __stream__
     for sse_event in self._raw_stream:
                      ^^^^^^^^^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/anthropic/_streaming.py", line 49, in __iter__
+  File ".venv/lib/python3.13/site-packages/anthropic/_streaming.py", line 49, in __iter__
     for item in self._iterator:
                 ^^^^^^^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/anthropic/_streaming.py", line 71, in __stream__
+  File ".venv/lib/python3.13/site-packages/anthropic/_streaming.py", line 71, in __stream__
     for sse in iterator:
                ^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/anthropic/_streaming.py", line 53, in _iter_events
+  File ".venv/lib/python3.13/site-packages/anthropic/_streaming.py", line 53, in _iter_events
     yield from self._decoder.iter_bytes(self.response.iter_bytes())
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/anthropic/_streaming.py", line 394, in iter_bytes
+  File ".venv/lib/python3.13/site-packages/anthropic/_streaming.py", line 394, in iter_bytes
     for chunk in self._iter_chunks(iterator):
                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/anthropic/_streaming.py", line 405, in _iter_chunks
+  File ".venv/lib/python3.13/site-packages/anthropic/_streaming.py", line 405, in _iter_chunks
     for chunk in iterator:
                  ^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpx2/_models.py", line 892, in iter_bytes
+  File ".venv/lib/python3.13/site-packages/httpx2/_models.py", line 892, in iter_bytes
     for raw_bytes in self.iter_raw():
                      ~~~~~~~~~~~~~^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpx2/_models.py", line 947, in iter_raw
+  File ".venv/lib/python3.13/site-packages/httpx2/_models.py", line 947, in iter_raw
     for raw_stream_bytes in self.stream:
                             ^^^^^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpx2/_client.py", line 143, in __iter__
+  File ".venv/lib/python3.13/site-packages/httpx2/_client.py", line 143, in __iter__
     yield from self._stream
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpx2/_transports/default.py", line 123, in __iter__
+  File ".venv/lib/python3.13/site-packages/httpx2/_transports/default.py", line 123, in __iter__
     with map_httpcore_exceptions():
          ~~~~~~~~~~~~~~~~~~~~~~~^^
   File "/usr/local/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/contextlib.py", line 162, in __exit__
     self.gen.throw(value)
     ~~~~~~~~~~~~~~^^^^^^^
-  File "/Users/omojumiller/dev/comprehension/.venv/lib/python3.13/site-packages/httpx2/_transports/default.py", line 115, in map_httpcore_exceptions
+  File ".venv/lib/python3.13/site-packages/httpx2/_transports/default.py", line 115, in map_httpcore_exceptions
     raise mapped_exc(message) from exc
 httpx2.ReadTimeout: The read operation timed out
 click         questions         (done)

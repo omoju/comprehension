@@ -6,7 +6,7 @@
       "arm": "story",
       "claim": "`Parser.parse_statement` dispatches keyword statements via `getattr(self, f\"parse_{value}\")`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/parser.py:171-173"
@@ -19,7 +19,7 @@
       "arm": "deepwiki",
       "claim": "The Jinja lexer recognizes string literals in single and double quotes.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/lexer.py:29-31"
@@ -32,7 +32,7 @@
       "arm": "deepwiki",
       "claim": "`PackageLoader` loads templates from a directory within a Python package using `importlib.resources`.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "contradicted",
       "lines": [
         "src/jinja2/loaders.py:302-401"
@@ -45,7 +45,7 @@
       "arm": "deepwiki",
       "claim": "In `NativeEnvironment`, a dictionary renders as a Python dict rather than its string representation.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/nativetypes.py:16-47",
@@ -59,7 +59,7 @@
       "arm": "deepwiki",
       "claim": "The publishing workflow uses `uv build` and `pypa/gh-action-pypi-publish`.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "unverifiable",
       "lines": [
         ".github/workflows/publish.yaml:1-47"
@@ -72,7 +72,7 @@
       "arm": "story",
       "claim": "A second `{% extends %}` makes `visit_Extends` emit `raise TemplateRuntimeError(\"extended multiple times\")` and raise `CompilerExit`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:1002-1017"
@@ -85,7 +85,7 @@
       "arm": "deepwiki",
       "claim": "By default, blocks cannot access variables from outside their scope, such as loop variables.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:919-932",
@@ -99,7 +99,7 @@
       "arm": "deepwiki",
       "claim": "`NativeEnvironment` is defined in nativetypes.py.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/nativetypes.py:88-92"
@@ -112,7 +112,7 @@
       "arm": "story",
       "claim": "`Context.globals_keys` is `set(globals)` and is used by `_get_default_module` to decide whether new globals require a fresh module instance",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/runtime.py:179-179",
@@ -126,7 +126,7 @@
       "arm": "story",
       "claim": "`Parser.subparse`'s main loop recognises only `data`, `variable_begin` and `block_begin` tokens, raising `AssertionError` for anything else",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/parser.py:1005-1029"
@@ -139,7 +139,7 @@
       "arm": "deepwiki",
       "claim": "If a filter is not found in `env.filters`, Jinja2 raises a `TemplateRuntimeError` or `UndefinedError`.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:514-525",
@@ -153,7 +153,7 @@
       "arm": "story",
       "claim": "`Context.resolve_or_missing` checks `vars` first, then `parent`, and returns the `missing` sentinel if neither has the name",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/runtime.py:239-245"
@@ -166,7 +166,7 @@
       "arm": "story",
       "claim": "`nodes.TemplateData.as_const` returns the template text wrapped in `Markup` when autoescaping is enabled",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/nodes.py:614-620"
@@ -179,7 +179,7 @@
       "arm": "deepwiki",
       "claim": "The `publish-pypi` job requires `id-token: write` permissions for the OIDC handshake.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "unverifiable",
       "lines": [
         ".github/workflows/publish.yaml:1-47"
@@ -192,7 +192,7 @@
       "arm": "deepwiki",
       "claim": "`uv.lock` is the deterministic lockfile for all development and test dependencies.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "unverifiable",
       "lines": [
         "pyproject.toml:1-211"
@@ -205,7 +205,7 @@
       "arm": "deepwiki",
       "claim": "The `is_undefined` utility in jinja2.utils checks if a value is an instance of `Undefined`.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/utils.py:104-118"
@@ -218,7 +218,7 @@
       "arm": "deepwiki",
       "claim": "The `select` filter filters items based on a test.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/filters.py:1534-1562",
@@ -232,7 +232,7 @@
       "arm": "story",
       "claim": "`Environment.join_path` default implementation returns its first argument unchanged",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:943-953"
@@ -245,7 +245,7 @@
       "arm": "story",
       "claim": "`Parser.flush_data` wraps buffered nodes in an `Output` node and clears the buffer",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/parser.py:998-1002"
@@ -258,7 +258,7 @@
       "arm": "story",
       "claim": "`Template.render` joins the generated stream with `self.environment.concat(...)`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:1289-1292"
@@ -271,7 +271,7 @@
       "arm": "story",
       "claim": "`{{ user.url }}` is parsed via `parse_tuple` whose postfix parser produces `Getattr(node=Name('user','load'), attr='url')`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/parser.py:1011-1014",
@@ -285,7 +285,7 @@
       "arm": "deepwiki",
       "claim": "Variables assigned inside an `if` block persist in the outer scope.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:230-241",
@@ -299,7 +299,7 @@
       "arm": "deepwiki",
       "claim": "If a required block has not been overridden when a template is rendered, Jinja raises a `TemplateRuntimeError`.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:963-970"
@@ -312,7 +312,7 @@
       "arm": "story",
       "claim": "`Parser.parse_statement` falls back to `self.extensions.get(token.value)` for custom tags",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/parser.py:178-180"
@@ -325,7 +325,7 @@
       "arm": "deepwiki",
       "claim": "The `auto_aiter` function in src/jinja2/async_utils.py supports iterating over both standard and asynchronous iterables.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/async_utils.py:87-93"
@@ -338,7 +338,7 @@
       "arm": "story",
       "claim": "When `is_async` is False the async-only runtime names are excluded from the generated import line",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:832-837"
@@ -351,7 +351,7 @@
       "arm": "story",
       "claim": "`create_cache` returns `None` for a cache size of 0, disabling template caching",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:83-93"
@@ -364,7 +364,7 @@
       "arm": "deepwiki",
       "claim": "The `xmlattr` filter converts a dict to XML attributes.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/filters.py:259-318"
@@ -377,7 +377,7 @@
       "arm": "deepwiki",
       "claim": "EditorConfig enforces 4 spaces for Python, 2 spaces for YAML/HTML, and LF line endings.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "unverifiable",
       "lines": [
         ".editorconfig:1-13"
@@ -390,7 +390,7 @@
       "arm": "deepwiki",
       "claim": "The extension hook `preprocess` modifies source text before lexing.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/ext.py:99-106",
@@ -404,7 +404,7 @@
       "arm": "story",
       "claim": "`CodeGenerator.__init__` attaches an `Optimizer` when `optimized` is True",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:316-319"
@@ -417,7 +417,7 @@
       "arm": "deepwiki",
       "claim": "The `EvalContext` allows filters to check if autoescaping is currently active.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/filters.py:259-318",
@@ -431,7 +431,7 @@
       "arm": "story",
       "claim": "`CodeGenerator.blockvisit` writes `pass` before walking the nodes",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:440-449"
@@ -444,7 +444,7 @@
       "arm": "deepwiki",
       "claim": "The `@pass_context`, `@pass_eval_context`, and `@pass_environment` decorators are defined in `jinja2.utils`.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/utils.py:38-82"
@@ -457,7 +457,7 @@
       "arm": "deepwiki",
       "claim": "The `xmlattr` filter disallows keys containing spaces or the characters `/`, `>`, or `=`.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/filters.py:256-256",
@@ -471,7 +471,7 @@
       "arm": "story",
       "claim": "`compiler.generate` returns `generator.stream.getvalue()`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:117-122"
@@ -484,7 +484,7 @@
       "arm": "story",
       "claim": "With no extensions, `Environment.preprocess` collapses to `str(source)`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:654-658"
@@ -497,7 +497,7 @@
       "arm": "story",
       "claim": "`CodeGenerator.visit_Template` emits the load name as `name = 'members.html'` for a template named members.html",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:864-865"
@@ -510,7 +510,7 @@
       "arm": "deepwiki",
       "claim": "The `for` loop iterates over sequences such as lists, dictionaries, or any iterable object.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/runtime.py:394-432",
@@ -524,7 +524,7 @@
       "arm": "deepwiki",
       "claim": "`trim_blocks` and `lstrip_blocks` can be enabled globally in the Environment.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:305-306",
@@ -538,7 +538,7 @@
       "arm": "story",
       "claim": "`create_cache` returns a plain `dict` for a negative cache size, which never evicts",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:90-91"
@@ -551,7 +551,7 @@
       "arm": "story",
       "claim": "The generated block function header is `def block_title(context, missing=missing, environment=environment):`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:841-841",
@@ -566,7 +566,7 @@
       "arm": "deepwiki",
       "claim": "Tests are mappings of test names to boolean callables.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/tests.py:216-256",
@@ -580,7 +580,7 @@
       "arm": "story",
       "claim": "`visit_Block` returns without writing anything when `frame.toplevel` and `has_known_extends` are both true",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:945-953"
@@ -593,7 +593,7 @@
       "arm": "story",
       "claim": "`Parser.__init__` stores the name and filename and calls the environment to tokenize the source",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/parser.py:61-64"
@@ -606,7 +606,7 @@
       "arm": "deepwiki",
       "claim": "`loop.index` is the current iteration, 1-indexed.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/runtime.py:461-464"
@@ -619,7 +619,7 @@
       "arm": "story",
       "claim": "`Template.is_up_to_date` calls the uptodate closure and compares the captured source against the mapping's current value",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:1485-1490",
@@ -633,7 +633,7 @@
       "arm": "story",
       "claim": "The `Environment` constructor stores the `autoescape` argument without calling it",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:349"
@@ -646,7 +646,7 @@
       "arm": "story",
       "claim": "An empty data group is dropped by the lexer because `TOKEN_DATA` is in `ignore_if_empty`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/lexer.py:160-162",
@@ -660,7 +660,7 @@
       "arm": "deepwiki",
       "claim": "The `@internalcode` decorator is defined in src/jinja2/utils.py.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/utils.py:98-101"
@@ -673,7 +673,7 @@
       "arm": "story",
       "claim": "The symbol visitor in idtracking stops at `Block` nodes and does not descend into them",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/idtracking.py:312-313"
@@ -686,7 +686,7 @@
       "arm": "deepwiki",
       "claim": "The `length` filter returns the sequence length.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/filters.py:1834-1834"
@@ -699,7 +699,7 @@
       "arm": "deepwiki",
       "claim": "The `autoescape` parameter can be a boolean or a callable that takes a template name and returns a boolean.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:313-313",
@@ -713,7 +713,7 @@
       "arm": "story",
       "claim": "`EvalContext.__init__` calls `environment.autoescape` with the template name when it is callable",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/nodes.py:80-83"
@@ -726,7 +726,7 @@
       "arm": "deepwiki",
       "claim": "The `Undefined` base class is defined in src/jinja2/runtime.py.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/runtime.py:796-809"
@@ -739,7 +739,7 @@
       "arm": "story",
       "claim": "A `Frame` constructed with no parent creates a root `Symbols` at level 0",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:177-178",
@@ -753,7 +753,7 @@
       "arm": "story",
       "claim": "`DictLoader.get_source` raises `TemplateNotFound(template)` when the name is not in the mapping",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/loaders.py:444-450"
@@ -766,7 +766,7 @@
       "arm": "story",
       "claim": "`Environment.compile` catches only `TemplateSyntaxError` and re-raises it through `handle_exception`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:758-770"
@@ -779,7 +779,7 @@
       "arm": "deepwiki",
       "claim": "`BytecodeCache` is defined in src/jinja2/bccache.py and is an interface for persisting compiled template bytecode.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/bccache.py:101-142"
@@ -792,7 +792,7 @@
       "arm": "story",
       "claim": "`CodeGenerator.visit_Template` emits block functions after the root function, one per entry in `self.blocks` in `find_all` order",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:847-852",
@@ -806,7 +806,7 @@
       "arm": "deepwiki",
       "claim": "`FileSystemLoader` has a `followlinks` parameter controlling whether to follow symbolic links.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/loaders.py:179-192",
@@ -820,7 +820,7 @@
       "arm": "deepwiki",
       "claim": "The `Context` class tracks template inheritance through its `blocks` attribute.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/runtime.py:181-184",
@@ -834,7 +834,7 @@
       "arm": "deepwiki",
       "claim": "`Environment.filters` defaults to `DEFAULT_FILTERS` defined in src/jinja2/defaults.py.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:352-352",
@@ -848,7 +848,7 @@
       "arm": "story",
       "claim": "`Environment.getattr` tries a real Python attribute first, falls back to item access, and returns an `Undefined` if both fail",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:484-495"
@@ -861,7 +861,7 @@
       "arm": "story",
       "claim": "`Lexer.wrap` discards whitespace and comment tokens",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/lexer.py:149-159",
@@ -875,7 +875,7 @@
       "arm": "story",
       "claim": "`DictLoader.__init__` binds the mapping argument to `self.mapping` and returns without copying it",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/loaders.py:441-442"
@@ -888,7 +888,7 @@
       "arm": "story",
       "claim": "A parent template's `visit_Block` generates `yield from context.blocks['title'][0](context)`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:958-975"
@@ -901,7 +901,7 @@
       "arm": "story",
       "claim": "`Environment.make_globals(None)` returns `ChainMap({}, self.globals)`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:1127-1130"
@@ -914,7 +914,7 @@
       "arm": "deepwiki",
       "claim": "The `super()` function renders the content of the parent block within an overriding block.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/runtime.py:186-198",
@@ -928,7 +928,7 @@
       "arm": "story",
       "claim": "`CodeGenerator.visit_Template` writes the root function header `def root(context, missing=missing, environment=environment):` with `extra=1`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:841",
@@ -942,7 +942,7 @@
       "arm": "deepwiki",
       "claim": "The sandbox blocks the generator attributes `gi_frame` and `gi_code`.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/sandbox.py:33-34",
@@ -956,7 +956,7 @@
       "arm": "deepwiki",
       "claim": "The tox configuration uses `uv-venv-lock-runner`.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "unverifiable",
       "lines": [
         "src/jinja2/__init__.py:1-5"
@@ -969,7 +969,7 @@
       "arm": "deepwiki",
       "claim": "If `auto_reload` is enabled in the Environment, the `uptodate` function is checked whenever a template is requested.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:962-972"
@@ -982,7 +982,7 @@
       "arm": "deepwiki",
       "claim": "Built-in filters are defined in filters.py and are usually prefixed with `do_` in the Python source code.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/filters.py:214-221",
@@ -996,7 +996,7 @@
       "arm": "deepwiki",
       "claim": "`Environment.from_string` creates a template from a string.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:1089-1108"
@@ -1009,7 +1009,7 @@
       "arm": "deepwiki",
       "claim": "To create a custom loader, you subclass `BaseLoader` and override the `get_source` method.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/loaders.py:42-99"
@@ -1022,7 +1022,7 @@
       "arm": "story",
       "claim": "`visit_Extends` fails if `frame.toplevel` is not True",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:994-997"
@@ -1035,7 +1035,7 @@
       "arm": "story",
       "claim": "`Environment._parse` constructs a `Parser` and calls its parse method",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:617-621"
@@ -1048,7 +1048,7 @@
       "arm": "deepwiki",
       "claim": "`{% include [\"page.html\", \"default.html\"] %}` accepts a list of template names.",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/jinja",
+      "tree": "eval/checkouts/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/environment.py:1071-1087",
@@ -1062,7 +1062,7 @@
       "arm": "story",
       "claim": "`visit_For` sets `extended_loop` False and emits an ordinary Python loop when the loop is not recursive, contains no scoped block, and the body does not use `loop`",
       "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+      "tree": "demo-repos/jinja",
       "label": "supported",
       "lines": [
         "src/jinja2/compiler.py:1184-1189",

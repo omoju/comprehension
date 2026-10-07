@@ -34,14 +34,13 @@ means the same. The eval's claim-level judge, with the source in view, caught wh
 1. Omoju: hand-check `eval/handcheck.md` (20 claims, §5.1.5); `handcheck.py --score` reports agreement.
 2. Omoju reads `eval/results.md`, the §12 entries, and the list of contradictions; the decision is the rule's.
 3. Claude: results page final (hand-check agreement in), README status line, publish the page; NOTES closed out.
-4. Omoju: own words (post / talk notes). Then the note to Sha Ma.
+4. Omoju: own words (post / talk notes).
 5. If Omoju wants a next cycle, it is a **new** preregistration, not a reinterpretation. The obvious candidate:
    move the eval's claim-level judge (source in view, blind, tested on planted lies) into the pipeline as the
    stage-3 check on prose, and re-test H1. Or the pivot path from §8: stories of *changes*.
 
 **Open decisions (Omoju)**
-1. Sha reminder in `NOTES.md`: keep or move before publishing the repo.
-2. Which reading pages to publish beyond the four.
+1. Which reading pages to publish beyond the four.
 
 **Pipeline**, run from the root with `.venv/bin/python` (Python 3.13; keys in `.env`):
 `codestory/scenario.py <repo> <dir>` → `outline.py <repo> <dir> --reader owner|maintainer|user [--max-chapters N]`
@@ -69,7 +68,7 @@ ship / pivot to stories of *changes* / kill.
 | Fri 2 | run all 10; build the eval (questions, keys, DeepWiki + docs fetch) | all 10 run, 76/76 green ($38); eval built, judge tested, dry run on itsdangerous |
 | Sat 3 | run the head-to-head | |
 | Sun 4 | buffer; Omoju reads 2–3 | |
-| Mon 5 | results page, README (Claude drafts; posts are Omoju's); publish. **Then remind Omoju to send Sha Ma a short note** | run done (2 §10 reruns, 1 §12 chunking); §9.1 + §9.2 (ship) recorded first; first judging pass blind → re-judged (§12); **rule: KILL** |
+| Mon 5 | results page, README (Claude drafts; posts are Omoju's); publish. | run done (2 §10 reruns, 1 §12 chunking); §9.1 + §9.2 (ship) recorded first; first judging pass blind → re-judged (§12); **rule: KILL** |
 | Tue 6 | decide by the rule | **KILL** by the rule; Omoju: ship; hand check 18/20; page published |
 
 Cuts, in order: 10 → 5 repos; drop the docs arm; drop Omoju's reads.

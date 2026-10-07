@@ -20,7 +20,7 @@ import re
 import sys
 from pathlib import Path
 
-from common import ARMS, EVAL, SEED, arm_commit, arm_tree, ask, save_trace, text_of, usage_cost
+from common import ARMS, EVAL, ROOT, SEED, arm_commit, arm_tree, ask, save_trace, text_of, usage_cost
 from jev import JevError, decide
 from outline import NOISE, git, repo_context, repo_info
 
@@ -128,7 +128,7 @@ def sampled_claims(name: str) -> list[dict]:
         data = json.loads((EVAL / "claims" / f"{name}.{arm}.json").read_text())
         for i in data["sample"]:
             items.append({"id": f"{arm}:{i}", "arm": arm, "claim": data["claims"][i]["claim"],
-                          "commit": arm_commit(name, arm), "tree": str(arm_tree(name, arm))})
+                          "commit": arm_commit(name, arm), "tree": str(arm_tree(name, arm).relative_to(ROOT))})
     random.Random(f"{SEED}:{name}:judge").shuffle(items)
     return items
 
@@ -140,7 +140,7 @@ def judge_claims(client, name: str) -> dict:
     for it in items:
         by_tree.setdefault(it["tree"], []).append(it)
     for tree, group in by_tree.items():
-        tree_path = Path(tree)
+        tree_path = ROOT / tree
         for b in range(0, len(group), BATCH):
             batch = group[b : b + BATCH]
             block = judge_block(tree_path, [it["claim"] for it in batch])

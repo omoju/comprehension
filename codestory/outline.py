@@ -103,11 +103,22 @@ def git(repo: Path, *args: str) -> str:
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, check=True).stdout.strip()
 
 
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def relative_to_root(path: Path) -> str:
+    """Paths stored in outputs are relative to the project root, so the files carry no machine-specific prefix."""
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path.resolve())
+
+
 def repo_info(repo: Path) -> dict:
     remote = git(repo, "remote", "get-url", "origin")
     url = re.sub(r"^git@github\.com:", "https://github.com/", remote).removesuffix(".git")
     return {"name": url.split("github.com/")[-1], "url": url, "commit": git(repo, "rev-parse", "HEAD"),
-            "local_path": str(repo.resolve()), "import_path": "src" if (repo / "src").is_dir() else "."}
+            "local_path": relative_to_root(repo), "import_path": "src" if (repo / "src").is_dir() else "."}
 
 
 GUIDES = re.compile(r"(^|/)(readme[^/]*|pyproject\.toml|setup\.(py|cfg))$|^(docs|examples?)/", re.I)

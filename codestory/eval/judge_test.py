@@ -15,7 +15,7 @@ import json
 import random
 import sys
 
-from common import ARMS, EVAL, SEED, arm_commit, arm_tree, ask, save_trace, text_of, usage_cost
+from common import ARMS, EVAL, ROOT, SEED, arm_commit, arm_tree, ask, save_trace, text_of, usage_cost
 from judge import judge_claims
 
 N = 10
@@ -45,7 +45,7 @@ def main(name: str) -> int:
         cost += usage_cost(response.usage)
         twins = json.loads(text_of(response))["twins"]
         for i, (t, f) in enumerate(zip(truths, twins)):
-            common = {"arm": arm, "commit": arm_commit(name, arm), "tree": str(arm_tree(name, arm))}
+            common = {"arm": arm, "commit": arm_commit(name, arm), "tree": str(arm_tree(name, arm).relative_to(ROOT))}
             items.append({"id": f"{arm}:t{i}", "claim": t, "truth": True, **common})
             items.append({"id": f"{arm}:f{i}", "claim": f, "truth": False, **common})
 

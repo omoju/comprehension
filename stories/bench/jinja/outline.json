@@ -6,7 +6,7 @@
     "name": "pallets/jinja",
     "url": "https://github.com/pallets/jinja",
     "commit": "5ef70112a1ff19c05324ff889dd30405b1002044",
-    "local_path": "/Users/omojumiller/dev/comprehension/demo-repos/jinja",
+    "local_path": "demo-repos/jinja",
     "import_path": "src"
   },
   "chapters": [

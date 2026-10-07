@@ -7,18 +7,18 @@ scenario()  [scenario.py:1]
         Scaffold.static_url_path(self=<Flask>, value=None)  [src/flask/sansio/scaffold.py:264]
           → None
         get_root_path(import_name='__main__')  [src/flask/helpers.py:587]
-          → '/Users/omojumiller/dev/comprehension/stories/bench/flask'
+          → 'stories/bench/flask'
         → None
       App.auto_find_instance_path(self=<Flask>)  [src/flask/sansio/app.py:507]
         find_package(import_name='__main__')  [src/flask/sansio/scaffold.py:762]
           _find_package_path(import_name='__main__')  [src/flask/sansio/scaffold.py:717]
-            → '/Users/omojumiller/dev/comprehension/demo-repos/flask'
-          → (None, '/Users/omojumiller/dev/comprehension/demo-repos/flask')
-        → '/Users/omojumiller/dev/comprehension/demo-repos/flask/instance'
+            → 'demo-repos/flask'
+          → (None, 'demo-repos/flask')
+        → 'demo-repos/flask/instance'
       App.make_config(self=<Flask>, instance_relative=False)  [src/flask/sansio/app.py:479]
         get_debug_flag()  [src/flask/helpers.py:28]
           → False
-        Config.__init__(self=<Config>, root_path='/Users/omojumiller/dev/comprehension/stories/bench/flask', defaults={'APPLICATION_ROOT': '/', 'DEBUG': False, 'EXPLAIN_TEMPLATE_LOADING': False, 'MAX_CONTENT_LENGTH': None, 'MAX_COOKIE_SIZE': 4093, 'MAX_FORM_MEMORY_SIZE': 500000, ...})  [src/flask/config.py:94]
+        Config.__init__(self=<Config>, root_path='stories/bench/flask', defaults={'APPLICATION_ROOT': '/', 'DEBUG': False, 'EXPLAIN_TEMPLATE_LOADING': False, 'MAX_CONTENT_LENGTH': None, 'MAX_COOKIE_SIZE': 4093, 'MAX_FORM_MEMORY_SIZE': 500000, ...})  [src/flask/config.py:94]
           → None
         → <Config {'DEBUG': False, 'TESTING': Fa...93, 'PROVIDE_AUTOMATIC_OPTIONS': True}>
       App.make_aborter(self=<Flask>)  [src/flask/sansio/app.py:495]
@@ -28,11 +28,11 @@ scenario()  [scenario.py:1]
       → None
     Scaffold.has_static_folder(self=<Flask>)  [src/flask/sansio/scaffold.py:240]
       Scaffold.static_folder(self=<Flask>)  [src/flask/sansio/scaffold.py:223]
-        → '/Users/omojumiller/dev/comprehension/stories/bench/flask/static'
+        → 'stories/bench/flask/static'
       → True
     Scaffold.static_url_path(self=<Flask>)  [src/flask/sansio/scaffold.py:248]
       Scaffold.static_folder(self=<Flask>)  [src/flask/sansio/scaffold.py:223]
-        → '/Users/omojumiller/dev/comprehension/stories/bench/flask/static'
+        → 'stories/bench/flask/static'
       … Scaffold.static_folder ×1 more  [src/flask/sansio/scaffold.py:223]
       → '/static'
     setupmethod.<locals>.wrapper_func(self=<Flask>)  [src/flask/sansio/scaffold.py:45]

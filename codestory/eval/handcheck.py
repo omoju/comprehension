@@ -15,7 +15,7 @@ import re
 import sys
 from pathlib import Path
 
-from common import ARMS, EVAL, IN_SAMPLE, SEED
+from common import ARMS, EVAL, IN_SAMPLE, ROOT, SEED
 
 PER_ARM = 10
 
@@ -42,7 +42,7 @@ def cited(it: dict) -> str:
         try:
             path, span = ref.rsplit(":", 1)
             start, _, end = span.partition("-")
-            lines = (Path(it["tree"]) / path).read_text(errors="replace").splitlines()[int(start) - 1 : int(end or start)]
+            lines = (ROOT / it["tree"] / path).read_text(errors="replace").splitlines()[int(start) - 1 : int(end or start)]
             out.append(f"{ref}\n```\n" + "\n".join(lines[:40]) + ("\n…" if len(lines) > 40 else "") + "\n```")
         except (ValueError, OSError):
             out.append(f"{ref} (could not be read)")

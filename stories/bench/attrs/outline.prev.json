@@ -6,7 +6,7 @@
     "name": "python-attrs/attrs",
     "url": "https://github.com/python-attrs/attrs",
     "commit": "8f767776326faaed11e6c2974798787f6e19b343",
-    "local_path": "/Users/omojumiller/dev/comprehension/demo-repos/attrs",
+    "local_path": "demo-repos/attrs",
     "import_path": "src"
   },
   "chapters": [

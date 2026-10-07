@@ -6,7 +6,7 @@
     "name": "tqdm/tqdm",
     "url": "https://github.com/tqdm/tqdm",
     "commit": "9cf5a12b1f955468a17f0ba3c59092b23e4258ac",
-    "local_path": "/Users/omojumiller/dev/comprehension/demo-repos/tqdm",
+    "local_path": "demo-repos/tqdm",
     "import_path": "."
   },
   "chapters": [

@@ -6,7 +6,7 @@
     "name": "psf/requests",
     "url": "https://github.com/psf/requests",
     "commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
-    "local_path": "/Users/omojumiller/dev/comprehension/demo-repos/requests",
+    "local_path": "demo-repos/requests",
     "import_path": "src"
   },
   "chapters": [

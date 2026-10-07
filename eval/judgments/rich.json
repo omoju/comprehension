@@ -6,7 +6,7 @@
       "arm": "deepwiki",
       "claim": "`Column.overflow` defaults to `\"ellipsis\"`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:90-91"
@@ -19,7 +19,7 @@
       "arm": "story",
       "claim": "In `Text.render`, the combined active styles are cached by the tuple of style ids.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "contradicted",
       "lines": [
         "rich/text.py:754-766"
@@ -32,7 +32,7 @@
       "arm": "story",
       "claim": "When a line is shorter than the crop width and `pad=False`, `adjust_line_length` copies the line unchanged without padding it out to the console width.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:1-10"
@@ -45,7 +45,7 @@
       "arm": "story",
       "claim": "`ReprHighlighter` has four highlight patterns: tags, `name=value` pairs, braces, and one combined alternation.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:45-45"
@@ -58,7 +58,7 @@
       "arm": "deepwiki",
       "claim": "`Console.push_render_hook(hook)` registers a `RenderHook` that receives renderables before output.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:843-850",
@@ -72,7 +72,7 @@
       "arm": "story",
       "claim": "`Text.split` takes an early return and returns `Lines` built from a copy when there are no newlines.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/text.py:1062-1083"
@@ -85,7 +85,7 @@
       "arm": "deepwiki",
       "claim": "The `Table` `show_edge` parameter defaults to `True`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:203-203"
@@ -98,7 +98,7 @@
       "arm": "story",
       "claim": "In `Table._render`, body rows get their style from `get_row_style`, which composes alternating `row_styles` with any per-row style.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:310-318",
@@ -112,7 +112,7 @@
       "arm": "deepwiki",
       "claim": "`Console.save_text()` writes exported text directly to a file and is a wrapper around `export_text()`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:2224-2242"
@@ -125,7 +125,7 @@
       "arm": "story",
       "claim": "The Console's buffer depth counter means nested prints only increment it and nothing reaches the file until the outermost context exits.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:813-820",
@@ -139,7 +139,7 @@
       "arm": "story",
       "claim": "`Padding.unpack` raises `ValueError` naming the length it received for any other number of values.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/padding.py:60-74"
@@ -152,7 +152,7 @@
       "arm": "story",
       "claim": "`Console.width` returns `self._width` in preference to any OS-reported width.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:1012-1013",
@@ -166,7 +166,7 @@
       "arm": "deepwiki",
       "claim": "`Style` instances can be combined with the `+` operator via `__add__`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/style.py:757-759"
@@ -179,7 +179,7 @@
       "arm": "story",
       "claim": "In `Console.get_style`, a `StyleSyntaxError` from `Style.parse` is converted to `errors.MissingStyle` and propagates out of `print`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:1488-1498",
@@ -193,7 +193,7 @@
       "arm": "story",
       "claim": "`_write_buffer` resolves `self.file` twice, once for `write` and once for `flush`, and then runs `del self._buffer[:]`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:2121-2130"
@@ -206,7 +206,7 @@
       "arm": "story",
       "claim": "`cell_len` routes strings under 512 characters through an LRU cache of 4096 entries.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:2382-2383"
@@ -219,7 +219,7 @@
       "arm": "story",
       "claim": "`adjust_line_length` returns the line as a shallow copy unchanged when it is shorter than the target length and `pad=False`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:1-10"
@@ -232,7 +232,7 @@
       "arm": "deepwiki",
       "claim": "If the user presses Enter without typing and a default is set, that default is returned immediately without calling `process_response()`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:1-1"
@@ -245,7 +245,7 @@
       "arm": "deepwiki",
       "claim": "`Color` is a NamedTuple with fields `name`, `type`, `number`, and `triplet`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/color.py:303-313"
@@ -258,7 +258,7 @@
       "arm": "deepwiki",
       "claim": "`_Cell` is a NamedTuple in rich/table.py with fields `style`, `renderable`, and `vertical`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:142-150"
@@ -271,7 +271,7 @@
       "arm": "deepwiki",
       "claim": "The pretty printing API detects recursive data structures using a set of object IDs to prevent infinite loops.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/pretty.py:617-627"
@@ -284,7 +284,7 @@
       "arm": "deepwiki",
       "claim": "`Style.parse()` supports links using the syntax \"link URL\".",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/style.py:543-547"
@@ -297,7 +297,7 @@
       "arm": "story",
       "claim": "`Padding.__rich_console__` renders its inner renderable at `width - left - right`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/padding.py:92-92"
@@ -310,7 +310,7 @@
       "arm": "story",
       "claim": "`Table.add_column` builds one `Column` dataclass and appends it to the table's columns.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:403-420"
@@ -323,7 +323,7 @@
       "arm": "story",
       "claim": "`Console.export_text` reads from the record buffer.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:2204-2222"
@@ -336,7 +336,7 @@
       "arm": "deepwiki",
       "claim": "`JupyterMixin` enables Rich objects to be rendered in Jupyter notebooks using the `_repr_mimebundle_` protocol.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/jupyter.py:36-56"
@@ -349,7 +349,7 @@
       "arm": "story",
       "claim": "`ConsoleOptions.copy` builds a new instance with a shallow-copied `__dict__`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:147-155"
@@ -362,7 +362,7 @@
       "arm": "story",
       "claim": "`Text.rstrip_end` does nothing when the text length is below the given width.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/text.py:666-678"
@@ -375,7 +375,7 @@
       "arm": "story",
       "claim": "Measurement forces highlighting off.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/measure.py:98-101"
@@ -388,7 +388,7 @@
       "arm": "deepwiki",
       "claim": "The `Console` `safe_box` parameter restricts box characters to those renderable on legacy Windows.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:611-611",
@@ -402,7 +402,7 @@
       "arm": "deepwiki",
       "claim": "The GitHub Actions CI is triggered on every pull request.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:1-1"
@@ -415,7 +415,7 @@
       "arm": "deepwiki",
       "claim": "The `TTY_COMPATIBLE` environment variable set to `\"1\"` forces `is_terminal=True`, and `\"0\"` forces `is_terminal=False`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:955-961"
@@ -428,7 +428,7 @@
       "arm": "deepwiki",
       "claim": "`Constrain.__rich_measure__` calls `Measurement.get` after updating `options` with `self.width`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/constrain.py:31-37"
@@ -441,7 +441,7 @@
       "arm": "story",
       "claim": "`Console.render` confirms the object has `__rich_console__` and is not itself a class before calling it.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:1317-1319"
@@ -454,7 +454,7 @@
       "arm": "deepwiki",
       "claim": "The `PromptBase` parameter `password` defaults to `False` and masks input characters.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:1-1"
@@ -467,7 +467,7 @@
       "arm": "story",
       "claim": "`Console.__exit__` calls `_exit_buffer`, which decrements `_buffer_index` and then calls `_check_buffer`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:817-820",
@@ -481,7 +481,7 @@
       "arm": "deepwiki",
       "claim": "The `TTY_INTERACTIVE` environment variable set to `\"1\"` forces `is_interactive=True`, and `\"0\"` forces `is_interactive=False`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:730-742"
@@ -494,7 +494,7 @@
       "arm": "story",
       "claim": "The `ThemeStack` holds named styles such as `repr.number`, `table.header` and `log.time`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:745-747"
@@ -507,7 +507,7 @@
       "arm": "story",
       "claim": "Rich deletes five control characters (`\\r`, `\\b`, `\\a`, `\\v`, `\\f`) from every string it renders, with no flag to disable it.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/control.py:9-18",
@@ -522,7 +522,7 @@
       "arm": "deepwiki",
       "claim": "`Confirm` has `response_type = bool` and `choices = [\"y\", \"n\"]`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:1-1"
@@ -535,7 +535,7 @@
       "arm": "deepwiki",
       "claim": "`Align.left()`, `Align.center()`, and `Align.right()` are class method shortcuts for the corresponding align values.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/align.py:77-141"
@@ -548,7 +548,7 @@
       "arm": "deepwiki",
       "claim": "`Task.total` is `Optional[float]`; a value of `None` triggers the pulse animation.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:1-1"
@@ -561,7 +561,7 @@
       "arm": "deepwiki",
       "claim": "`Table.add_row` appends a `Row` and distributes cell content to `Column._cells`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:440-467"
@@ -574,7 +574,7 @@
       "arm": "deepwiki",
       "claim": "The `SegmentLines` class wraps an `Iterable[List[Segment]]` and implements `__rich_console__`, appending a newline segment after each row when `new_lines=True`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:1-60"
@@ -587,7 +587,7 @@
       "arm": "deepwiki",
       "claim": "`_ReadContext` is a ContextManager that calls `progress.start()` on enter and `progress.stop()` on exit.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/progress.py:285-303"
@@ -600,7 +600,7 @@
       "arm": "story",
       "claim": "A closing markup tag with nothing to close raises `MarkupError`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/markup.py:170-176"
@@ -613,7 +613,7 @@
       "arm": "story",
       "claim": "`Table.__init__` normalises `header_style` and `footer_style` with `or \"\"` so `None` becomes an empty string.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:235-236"
@@ -626,7 +626,7 @@
       "arm": "deepwiki",
       "claim": "If `auto_refresh=True`, `Live.start()` creates and starts a `_RefreshThread`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/live.py:141-143"
@@ -639,7 +639,7 @@
       "arm": "deepwiki",
       "claim": "`TimeElapsedColumn` renders elapsed time as `H:MM:SS`, shows `\"-:--:--\"` before the task starts, and uses `task.finished_time` when finished.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/progress.py:688-697"
@@ -652,7 +652,7 @@
       "arm": "story",
       "claim": "The first line of `ConsoleOptions.update` is `options = self.copy()`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:170-171"
@@ -665,7 +665,7 @@
       "arm": "deepwiki",
       "claim": "`Table.__rich_measure__` computes minimum width as the sum of each column's minimum measurement plus border overhead.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:341-343",
@@ -679,7 +679,7 @@
       "arm": "deepwiki",
       "claim": "Pretty printing handles attrs objects using `attr.fields`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/pretty.py:65-67",
@@ -693,7 +693,7 @@
       "arm": "story",
       "claim": "`Table.__rich_console__` passes the content budget down with `options.update_width(...)`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:486-490"
@@ -706,7 +706,7 @@
       "arm": "story",
       "claim": "For a column with an explicit width, `Table._measure_column` does not inspect the cells.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:728-733"
@@ -719,7 +719,7 @@
       "arm": "deepwiki",
       "claim": "`ratio_distribute` from `rich/_ratio.py` distributes remaining space among flexible columns proportionally.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:536-553"
@@ -732,7 +732,7 @@
       "arm": "deepwiki",
       "claim": "`Table.add_section()` marks the most recently added row as the end of a section by setting `Row.end_section = True`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:469-473"
@@ -745,7 +745,7 @@
       "arm": "deepwiki",
       "claim": "In `Inspect.__init__`, if `dunder=True` then `private` is also set to `True`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/_inspect.py:59"
@@ -758,7 +758,7 @@
       "arm": "deepwiki",
       "claim": "`ColorType.DEFAULT` has value 0 and represents the terminal default foreground/background.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "unverifiable",
       "lines": [
         "rich/color.py:1-1"
@@ -771,7 +771,7 @@
       "arm": "story",
       "claim": "`pick_bool` returns the first non-`None` of its arguments.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/_pick.py:13-17"
@@ -784,7 +784,7 @@
       "arm": "story",
       "claim": "A zero-width joiner sequence counts as one cell under `cell_len`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "contradicted",
       "lines": [
         "rich/cells.py:144-158"
@@ -797,7 +797,7 @@
       "arm": "deepwiki",
       "claim": "`Table.add_row` creates new unnamed columns automatically when more renderables are provided than columns exist.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:451-456"
@@ -810,7 +810,7 @@
       "arm": "story",
       "claim": "`Table.__init__` defaults `show_edge` to `True`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:203"
@@ -823,7 +823,7 @@
       "arm": "deepwiki",
       "claim": "`Span.extend(cells)` extends the span end by cells and returns a `Span`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/text.py:102-115"
@@ -836,7 +836,7 @@
       "arm": "deepwiki",
       "claim": "`JupyterMixin._repr_mimebundle_` returns a dict with both `text/plain` and `text/html` MIME types.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/jupyter.py:41-56"
@@ -849,7 +849,7 @@
       "arm": "story",
       "claim": "`'bold'` is present in rich's style attribute table.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/style.py:108-109"
@@ -862,7 +862,7 @@
       "arm": "story",
       "claim": "The `legacy_windows` flag chooses between the win32 API renderer and an ordinary `file.write` at the end of output.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:2074-2094",
@@ -876,7 +876,7 @@
       "arm": "deepwiki",
       "claim": "rich/prompt.py provides `Prompt` and `Confirm` for interactive input.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/prompt.py:304-313",
@@ -890,7 +890,7 @@
       "arm": "story",
       "claim": "In `Table._get_cells`, the header style is `get_style(self.header_style or \"\") + get_style(column.header_style)`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:670-674"
@@ -903,7 +903,7 @@
       "arm": "story",
       "claim": "`Style.parse` short-circuits to a null `Style()` for an empty or `\"none\"` definition.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/style.py:510-511"
@@ -916,7 +916,7 @@
       "arm": "story",
       "claim": "`Table.add_row` validates cells at insert time rather than render time.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:459-467"
@@ -929,7 +929,7 @@
       "arm": "deepwiki",
       "claim": "`PromptBase.check_choice()` performs an exact string membership check when case-sensitive.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/prompt.py:222-225"
@@ -942,7 +942,7 @@
       "arm": "story",
       "claim": "`_check_buffer` deletes the buffer and drops output when `self.quiet` is set.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:2050-2052"
@@ -955,7 +955,7 @@
       "arm": "story",
       "claim": "`Style.__bool__` returns `False` for a null style.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/style.py:340-342"
@@ -968,7 +968,7 @@
       "arm": "story",
       "claim": "`Text.wrap` calls `divide_line(str(line), width, fold=True)` for each line.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "contradicted",
       "lines": [
         "rich/text.py:1233-1240"
@@ -981,7 +981,7 @@
       "arm": "deepwiki",
       "claim": "`Progress.task_ids` returns IDs of all non-removed tasks.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/progress.py:1154-1158",
@@ -995,7 +995,7 @@
       "arm": "story",
       "claim": "`Table.add_row`'s `add_cell` closure appends the value to `column._cells`.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "supported",
       "lines": [
         "rich/table.py:440-441"
@@ -1008,7 +1008,7 @@
       "arm": "story",
       "claim": "`Segment.split_and_crop_lines` at `self.width` is the only unconditional enforcement of the console width.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/demo-repos/rich",
+      "tree": "demo-repos/rich",
       "label": "unverifiable",
       "lines": [
         "rich/console.py:1749-1756",
@@ -1022,7 +1022,7 @@
       "arm": "deepwiki",
       "claim": "Jupyter detection checks for the presence of `get_ipython` in the global namespace.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:505-512"
@@ -1035,7 +1035,7 @@
       "arm": "deepwiki",
       "claim": "When recording is enabled, `Console` maintains a thread-safe buffer `_record_buffer` of rendered `Segment` objects.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/console.py:744-748",
@@ -1049,7 +1049,7 @@
       "arm": "deepwiki",
       "claim": "The `Spinner` class uses a registry of predefined animation frames and updates based on the current time during the render cycle.",
       "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
-      "tree": "/Users/omojumiller/dev/comprehension/eval/checkouts/rich",
+      "tree": "eval/checkouts/rich",
       "label": "supported",
       "lines": [
         "rich/spinner.py:34-48",
