@@ -80,3 +80,13 @@ python3 codestory/diff.py <repo> <base> <head> <out-dir> --pkg <package> --spec 
 It writes the merged run (`diff.txt`: `+` happens only after the change, `-` only before, `~` is the same call with
 other values, ` *` marks a function the change edited), each test's outcome before and after, and the changed
 functions no test reaches. No model is involved.
+
+## Models
+
+`llm.py` is the one place a stage asks a model. `CODESTORY_PROVIDER` chooses how you sign in (see `.env.example`):
+`anthropic` (an API key), `claude-cli` (your Claude login, through the Claude Code CLI), `codex-cli` (your ChatGPT
+login, through the Codex CLI), or `foundry` (a deployment on Azure AI Foundry, with a key or your
+`az login`). The CLIs sign in for us: their own login and terms apply, and nothing here reads their credentials.
+The `anthropic` provider marks the repository block for prompt caching and asks for server-side fallback; the CLIs
+and Foundry cache on their own terms. A CLI on a subscription reports what the API would have charged; Foundry and
+Codex report tokens only.
