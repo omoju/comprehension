@@ -1,0 +1,84 @@
+{
+ "provider": "claude-cli",
+ "model": "claude-opus-4-8[1m]",
+ "usage": {
+  "input_tokens": 2,
+  "output_tokens": 2585,
+  "cache_read_input_tokens": 0,
+  "cache_creation_input_tokens": 36065
+ },
+ "cost": 0.45372900000000005,
+ "text": "# Chapter 1 \u00b7 withBase, where nothing should change\n\n> **Before:** Ten inputs enter `withBase`; each leaves by one of three doors \u2014 empty base, protocol input, or a genuine prefix \u2014 and comes out as the trace shows.\n> **After:** The same ten inputs leave by the same three doors with the same values, even though a new one-character lookahead now runs on the prefix door.\n\nThe first ten test cases hand their data to `withBase(input, base)` and expect to get it back exactly as the base run produced it. These are the untouched cases, and their job here is to prove the new guard doesn't disturb them.\n\nThree of them never reach the changed lines at all. For `\"/\" + \"/\"` the base is `/`, so `isEmptyURL(base)` is true and the function returns the input `/` straight away \u2014 one unchanged call, output `\"/\"` (trace 3\u20136). The same early door catches both protocol inputs: `\"/base/\" + \"https://test.com\"` and `\"/\" + \"https://test.com\"` return `https://test.com` because `hasProtocol(input)` is true (trace 57\u201369). On the head this is [the first `if` in `withBase`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L291-L293); it reads the same as [the base's](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L291-L293), so the data takes the identical path on both sides.\n\nFour more fall past that door to `joinURL`. `\"/foo\" + \"\"` turns `\"\"` into `/foo`, `\"/foo/\" + \"/\"` gives `/foo`, `\"/foo\" + \"/bar\"` gives `/foo/bar` (trace 8\u201327). In each of these, `input.startsWith(_base)` is false \u2014 `\"\"`, `/`, and `/bar` don't begin with `/foo` \u2014 so the data skips the prefix branch entirely and lands at [`joinURL(_base, input)`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L302). The new lookahead lives inside the prefix branch, so data that never enters that branch never meets it.\n\nThe interesting cases are the three that *do* enter the prefix branch and must still come out unchanged. Take `\"/base/\" + \"/base\"`: `withoutTrailingSlash` makes `_base` = `/base`, and `input.startsWith(\"/base\")` is true. On the base run, [that was enough to return the input](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L295-L297) \u2014 output `/base` (trace 33). On the head, the function now reads one character further: `nextChar = input[_base.length]` is `input[5]`, which is `undefined` because the input is only five characters long. [The guard `!nextChar || nextChar === \"/\" || nextChar === \"?\"`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L296-L300) sees that `!nextChar` is true and still returns the input \u2014 same output, `/base`.\n\nThe other two prefix cases land on the `/` branch of that same guard. `\"/base\" + \"/base/a\"` and `\"/base/\" + \"/base/a\"` both reduce `_base` to `/base`, and `input[5]` is `/`; the guard's `nextChar === \"/\"` arm fires and returns `/base/a` (trace 47, 54). `\"/base\" + \"/base/\"` likewise has `input[5]` = `/` and returns `/base/` (trace 41). Every one of these would have returned by the simpler `startsWith`-only check before; now they return by a lookahead that happens to agree with it, because the character after the base is always absent or a `/`.\n\n> **For the reviewer:** These ten cases are your assurance that the guard is a narrowing, not a rewrite. Confirm that for every preserved prefix case the character after the base is `undefined`, `/`, or `?` \u2014 the trace shows exactly that, which is why their outputs are identical on both sides.\n\n```ts proof\nimport { describe, it, expect } from \"vitest\";\nimport { withBase } from \"../../../src\";\n\n// Chapter 1: the ten withBase cases that must behave identically\n// before and after the change. These all pass on head AND base.\ndescribe(\"withBase \u2014 preserved cases (ch.1)\", () => {\n  const cases: Array<{ base: string; input: string; out: string }> = [\n    { base: \"/\", input: \"/\", out: \"/\" },\n    { base: \"/foo\", input: \"\", out: \"/foo\" },\n    { base: \"/foo/\", input: \"/\", out: \"/foo\" },\n    { base: \"/foo\", input: \"/bar\", out: \"/foo/bar\" },\n    { base: \"/base/\", input: \"/base\", out: \"/base\" },\n    { base: \"/base\", input: \"/base/\", out: \"/base/\" },\n    { base: \"/base\", input: \"/base/a\", out: \"/base/a\" },\n    { base: \"/base/\", input: \"/base/a\", out: \"/base/a\" },\n    { base: \"/base/\", input: \"https://test.com\", out: \"https://test.com\" },\n    { base: \"/\", input: \"https://test.com\", out: \"https://test.com\" },\n  ];\n\n  for (const c of cases) {\n    it(`${JSON.stringify(c.base)} + ${JSON.stringify(c.input)} => ${c.out}`, () => {\n      expect(withBase(c.input, c.base)).toBe(c.out);\n    });\n  }\n\n  it(\"a genuine prefix with an absent next char still returns the input\", () => {\n    // _base = \"/base\", input[5] is undefined -> early return keeps input\n    expect(withBase(\"/base\", \"/base/\")).toBe(\"/base\");\n  });\n\n  it(\"a genuine prefix with a '/' next char still returns the input\", () => {\n    // _base = \"/base\", input[5] is \"/\" -> early return keeps input\n    expect(withBase(\"/base/a\", \"/base\")).toBe(\"/base/a\");\n  });\n});\n```",
+ "raw": {
+  "type": "result",
+  "subtype": "success",
+  "is_error": false,
+  "api_error_status": null,
+  "duration_ms": 33998,
+  "duration_api_ms": 35190,
+  "ttft_ms": 7847,
+  "ttft_stream_ms": 1255,
+  "time_to_request_ms": 90,
+  "num_turns": 1,
+  "result": "# Chapter 1 \u00b7 withBase, where nothing should change\n\n> **Before:** Ten inputs enter `withBase`; each leaves by one of three doors \u2014 empty base, protocol input, or a genuine prefix \u2014 and comes out as the trace shows.\n> **After:** The same ten inputs leave by the same three doors with the same values, even though a new one-character lookahead now runs on the prefix door.\n\nThe first ten test cases hand their data to `withBase(input, base)` and expect to get it back exactly as the base run produced it. These are the untouched cases, and their job here is to prove the new guard doesn't disturb them.\n\nThree of them never reach the changed lines at all. For `\"/\" + \"/\"` the base is `/`, so `isEmptyURL(base)` is true and the function returns the input `/` straight away \u2014 one unchanged call, output `\"/\"` (trace 3\u20136). The same early door catches both protocol inputs: `\"/base/\" + \"https://test.com\"` and `\"/\" + \"https://test.com\"` return `https://test.com` because `hasProtocol(input)` is true (trace 57\u201369). On the head this is [the first `if` in `withBase`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L291-L293); it reads the same as [the base's](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L291-L293), so the data takes the identical path on both sides.\n\nFour more fall past that door to `joinURL`. `\"/foo\" + \"\"` turns `\"\"` into `/foo`, `\"/foo/\" + \"/\"` gives `/foo`, `\"/foo\" + \"/bar\"` gives `/foo/bar` (trace 8\u201327). In each of these, `input.startsWith(_base)` is false \u2014 `\"\"`, `/`, and `/bar` don't begin with `/foo` \u2014 so the data skips the prefix branch entirely and lands at [`joinURL(_base, input)`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L302). The new lookahead lives inside the prefix branch, so data that never enters that branch never meets it.\n\nThe interesting cases are the three that *do* enter the prefix branch and must still come out unchanged. Take `\"/base/\" + \"/base\"`: `withoutTrailingSlash` makes `_base` = `/base`, and `input.startsWith(\"/base\")` is true. On the base run, [that was enough to return the input](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L295-L297) \u2014 output `/base` (trace 33). On the head, the function now reads one character further: `nextChar = input[_base.length]` is `input[5]`, which is `undefined` because the input is only five characters long. [The guard `!nextChar || nextChar === \"/\" || nextChar === \"?\"`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L296-L300) sees that `!nextChar` is true and still returns the input \u2014 same output, `/base`.\n\nThe other two prefix cases land on the `/` branch of that same guard. `\"/base\" + \"/base/a\"` and `\"/base/\" + \"/base/a\"` both reduce `_base` to `/base`, and `input[5]` is `/`; the guard's `nextChar === \"/\"` arm fires and returns `/base/a` (trace 47, 54). `\"/base\" + \"/base/\"` likewise has `input[5]` = `/` and returns `/base/` (trace 41). Every one of these would have returned by the simpler `startsWith`-only check before; now they return by a lookahead that happens to agree with it, because the character after the base is always absent or a `/`.\n\n> **For the reviewer:** These ten cases are your assurance that the guard is a narrowing, not a rewrite. Confirm that for every preserved prefix case the character after the base is `undefined`, `/`, or `?` \u2014 the trace shows exactly that, which is why their outputs are identical on both sides.\n\n```ts proof\nimport { describe, it, expect } from \"vitest\";\nimport { withBase } from \"../../../src\";\n\n// Chapter 1: the ten withBase cases that must behave identically\n// before and after the change. These all pass on head AND base.\ndescribe(\"withBase \u2014 preserved cases (ch.1)\", () => {\n  const cases: Array<{ base: string; input: string; out: string }> = [\n    { base: \"/\", input: \"/\", out: \"/\" },\n    { base: \"/foo\", input: \"\", out: \"/foo\" },\n    { base: \"/foo/\", input: \"/\", out: \"/foo\" },\n    { base: \"/foo\", input: \"/bar\", out: \"/foo/bar\" },\n    { base: \"/base/\", input: \"/base\", out: \"/base\" },\n    { base: \"/base\", input: \"/base/\", out: \"/base/\" },\n    { base: \"/base\", input: \"/base/a\", out: \"/base/a\" },\n    { base: \"/base/\", input: \"/base/a\", out: \"/base/a\" },\n    { base: \"/base/\", input: \"https://test.com\", out: \"https://test.com\" },\n    { base: \"/\", input: \"https://test.com\", out: \"https://test.com\" },\n  ];\n\n  for (const c of cases) {\n    it(`${JSON.stringify(c.base)} + ${JSON.stringify(c.input)} => ${c.out}`, () => {\n      expect(withBase(c.input, c.base)).toBe(c.out);\n    });\n  }\n\n  it(\"a genuine prefix with an absent next char still returns the input\", () => {\n    // _base = \"/base\", input[5] is undefined -> early return keeps input\n    expect(withBase(\"/base\", \"/base/\")).toBe(\"/base\");\n  });\n\n  it(\"a genuine prefix with a '/' next char still returns the input\", () => {\n    // _base = \"/base\", input[5] is \"/\" -> early return keeps input\n    expect(withBase(\"/base/a\", \"/base\")).toBe(\"/base/a\");\n  });\n});\n```",
+  "stop_reason": "end_turn",
+  "session_id": "afe7913a-6271-48fa-b044-6c4a7ce11862",
+  "total_cost_usd": 0.45372900000000005,
+  "usage": {
+   "input_tokens": 2,
+   "cache_creation_input_tokens": 36065,
+   "cache_read_input_tokens": 0,
+   "output_tokens": 2585,
+   "server_tool_use": {
+    "web_search_requests": 0,
+    "web_fetch_requests": 0
+   },
+   "service_tier": "standard",
+   "cache_creation": {
+    "ephemeral_1h_input_tokens": 36065,
+    "ephemeral_5m_input_tokens": 0
+   },
+   "inference_geo": "not_available",
+   "iterations": [
+    {
+     "input_tokens": 2,
+     "output_tokens": 2585,
+     "cache_read_input_tokens": 0,
+     "cache_creation_input_tokens": 36065,
+     "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 36065
+     },
+     "type": "message"
+    }
+   ],
+   "speed": "standard"
+  },
+  "modelUsage": {
+   "claude-haiku-4-5-20251001": {
+    "inputTokens": 28349,
+    "outputTokens": 19,
+    "cacheReadInputTokens": 0,
+    "cacheCreationInputTokens": 0,
+    "webSearchRequests": 0,
+    "costUSD": 0.028444,
+    "contextWindow": 200000,
+    "maxOutputTokens": 32000
+   },
+   "claude-opus-4-8[1m]": {
+    "inputTokens": 2,
+    "outputTokens": 2585,
+    "cacheReadInputTokens": 0,
+    "cacheCreationInputTokens": 36065,
+    "webSearchRequests": 0,
+    "costUSD": 0.425285,
+    "contextWindow": 1000000,
+    "maxOutputTokens": 64000
+   }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "uuid": "5070ffcb-5f96-4572-be55-ad19f9aa836f"
+ }
+}

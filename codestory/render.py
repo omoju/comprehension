@@ -4,6 +4,11 @@
 
 The map is drawn from the recorded trace, grouped by the chapters' trace spans, so it can't disagree with the
 story. Code comes from the repository at the pinned commit. No model calls. Standard library only.
+
+A change story (outline mode "diff", from review.py) gets the same desk: the map is drawn from the merged
+before-and-after run (only after, only before, other result, edited), the header carries the verdict and the
+evidence (each test before and after, what no test reaches), and the code pane shows either side of the change,
+with the changed lines marked. TypeScript decisions come from codestory/ts/decisions.mjs.
 """
 
 from __future__ import annotations
@@ -13,10 +18,13 @@ import collections
 import html
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 from verify import git, repo_path
+
+TS_DECISIONS = Path(__file__).resolve().parent / "ts" / "decisions.mjs"
 
 HELPER_CALLS = 5   # a function called this often is plumbing (want_bytes); leave it off the map
 MAP_DEPTH = 4      # deeper calls stay in the chapters, not on the map
@@ -183,6 +191,8 @@ def function_end(source: str, first: int) -> int:
 
 def build(story: Path) -> str:
     outline = json.loads((story / "outline.json").read_text())
+    if outline.get("mode") == "diff":
+        return build_diff(story, outline)
     repo, info = repo_path(outline), outline["repo"]
     chapters = []
     for c in outline["chapters"]:
@@ -205,12 +215,147 @@ def build(story: Path) -> str:
         except Exception:
             continue  # the scenario file, or a path that isn't in the repo
     items = flow(story, outline, files)
+    for it in items:
+        if it["kind"] == "step":
+            it["rev"] = info["commit"]
 
-    data = {"title": outline["title"], "premise": outline["premise"], "reader": outline.get("reader", ""),
+    data = {"mode": "repo", "title": outline["title"], "premise": outline["premise"],
+            "reader": outline.get("reader", ""),
             "repo": {"name": info["name"], "url": info["url"], "commit": info["commit"]},
-            "chapters": chapters, "flow": items, "files": files}
+            "chapters": chapters, "flow": items, "files": {f"{info['commit']}:{p}": t for p, t in files.items()}}
     payload = json.dumps(data).replace("</", "<\\/")
     name = outline["title"].split(":")[0].strip()  # the tab shows the story's name, not its subtitle
+    return TEMPLATE.replace("__TITLE__", html.escape(name)).replace("__DATA__", payload)
+
+
+def ts_decisions(pkg_dir: Path, requests: list[dict]) -> dict[tuple, dict]:
+    """Decisions and end lines for TypeScript functions, in one call: {(file, line, side, test): result}."""
+    if not requests:
+        return {}
+    payload = json.dumps({"pkg": str(pkg_dir), "requests": requests})
+    done = subprocess.run(["node", str(TS_DECISIONS)], input=payload, capture_output=True, text=True)
+    if done.returncode != 0:
+        print(f"  (no decisions: {done.stderr.strip()[-300:]})")
+        return {}
+    return {(r["file"], r["line"], q["side"], q["test"]): r for r, q in zip(json.loads(done.stdout), requests)}
+
+
+def diff_flow(trees: list[dict], spans: list[tuple], files: dict, revs: dict, touched: set, pkg_dir: Path) -> list[dict]:
+    """The map of a change: per test, the calls that differ (or lead to a difference), in run order, each marked
+    with its side; a function's decisions are drawn when the run recorded which lines executed."""
+    from diff import interesting, key
+
+    def chapter_of(tl):
+        return next((n for n, a, b in spans if a <= tl <= b), None)
+
+    # First pass: what is visible, and the decisions to ask for (one node process for all of them).
+    visible, requests = [], []
+    for ti, t in enumerate(trees):
+        if not interesting(t["tree"], touched):
+            continue
+        visible.append((ti, None, 0))
+
+        def walk(node, depth):
+            shown = [c for c in node["calls"] if interesting(c, touched)]
+            i = 0
+            while i < len(shown):
+                j = i + 1
+                while j < len(shown) and (shown[j]["fn"], shown[j]["mark"]) == (shown[i]["fn"], shown[i]["mark"]):
+                    j += 1  # a run of the same call on the same side is one box on the map: "fn ×N"
+                child = {**shown[i], "repeat": j - i} if j - i > 1 else shown[i]
+                i = j
+                if depth <= MAP_DEPTH:
+                    visible.append((ti, child, depth))
+                    side = "base" if child["mark"] == "-" else "head"
+                    ran = t.get("lines", {}).get(side, {}).get(child["file"])
+                    src = files.get(f"{revs[side]}:{child['file']}")
+                    if src is not None and child["file"].endswith((".ts", ".tsx", ".mts", ".js", ".mjs", ".vue")):
+                        requests.append({"file": child["file"], "source": src, "line": child["line"],
+                                         "ran": ran or [], "side": side, "test": ti})
+                walk(child, depth + 1)
+
+        walk(t["tree"], 1)
+    found = ts_decisions(pkg_dir, requests)
+
+    items, current = [], None
+    for ti, node, depth in visible:
+        t = trees[ti]
+        if node is None:
+            current = chapter_of(t["tree"].get("tl", 0)) or current
+            items.append({"kind": "test", "label": t["test"], "before": t["before"], "after": t["after"],
+                          "chapter": current})
+            continue
+        side = "base" if node["mark"] == "-" else "head"
+        current = chapter_of(node.get("tl", 0)) or current
+        got = found.get((node["file"], node["line"], side, ti), {})
+        clean = lambda v: re.sub(r" object at 0x[0-9a-f]+", "", v or "")  # noqa: E731
+        items.append({"kind": "step", "fn": node["fn"] + (f" ×{node['repeat']}" if node.get("repeat") else ""),
+                      "file": node["file"], "line": node["line"],
+                      "end": got.get("end", node["line"]), "depth": depth, "mark": node["mark"],
+                      "edited": key(node) in touched, "rev": revs[side], "side": side,
+                      "returned": clean(node.get("returned") or (f"raised {node['raised']}" if "raised" in node else "")),
+                      "before": clean((node.get("before") or {}).get("outcome", "")), "chapter": current})
+        if t.get("lines", {}).get(side):  # decisions only where the run said which lines ran
+            for d in got.get("decisions", []):
+                items.append({**d, "file": node["file"], "rev": revs[side], "chapter": current})
+    return items
+
+
+def build_diff(story: Path, outline: dict) -> str:
+    from diff import hunks, repo_dir
+    from diff_verify import line_map
+
+    setup = json.loads((story / "changes.json").read_text())
+    summary = json.loads((story / "diff.json").read_text())
+    trees = json.loads((story / "diff.tree.json").read_text())
+    verified = json.loads((story / "verify.json").read_text()) if (story / "verify.json").exists() else {}
+    repo, info = repo_dir(setup), outline["repo"]
+    revs = {"base": info["base"], "head": info["head"]}
+    touched = {(f["name"], path) for path, c in setup["files"].items() for f in c["functions"]}
+
+    chapters = []
+    for c in outline["chapters"]:
+        found = sorted(story.glob(f"{c['n']:02}-*.md"))
+        chapters.append({"n": c["n"], "title": c["title"], "kind": c["kind"], "data_in": c["before"],
+                         "data_out": c["after"], "span": c["trace_lines"], "tests": c["tests"],
+                         "md": found[0].read_text() if found else None, "proof": verified.get(str(c["n"]))})
+
+    changed_lines = {p: {"head": sorted(set(h["new"])), "base": sorted(set(h["old"]))}
+                     for p, h in hunks(repo, revs["base"], revs["head"], setup["pkg"]).items()}
+    wanted = {(rev, p) for p in changed_lines for rev in revs.values()}
+    stack = [t["tree"] for t in trees]
+    while stack:
+        n = stack.pop()
+        if "/" in n["file"]:
+            wanted.add((revs["base"] if n.get("mark") == "-" else revs["head"], n["file"]))
+        stack += n["calls"]
+    cite = re.compile(re.escape(info["url"]) + r"/blob/([0-9a-f]{7,40})/([^\s#)]+)#L\d+")
+    for ch in chapters:
+        for sha, path in cite.findall(ch["md"] or ""):
+            rev = next((r for r in revs.values() if r.startswith(sha) or sha.startswith(r)), None)
+            if rev:
+                wanted.add((rev, path))
+    files = {}
+    for rev, path in sorted(wanted):
+        try:
+            files[f"{rev}:{path}"] = git(repo, "show", f"{rev}:{path}")
+        except Exception:
+            continue  # added or deleted on that side
+    maps = {}  # head line -> base line, for the code pane's before/after switch
+    for path in changed_lines:
+        h, b = files.get(f"{revs['head']}:{path}"), files.get(f"{revs['base']}:{path}")
+        if h is not None and b is not None:
+            maps[path] = line_map(h.splitlines(), b.splitlines())
+
+    spans = [(c["n"], c["trace_lines"][0], c["trace_lines"][-1]) for c in outline["chapters"]]
+    items = diff_flow(trees, spans, files, revs, touched, repo / setup["pkg"])
+    data = {"mode": "diff", "title": outline["title"], "premise": outline["premise"], "verdict": outline["verdict"],
+            "reader": outline.get("reader", ""), "unexercised": outline.get("unexercised", []),
+            "tests": summary["tests"], "number": info.get("number"),
+            "repo": {"name": info["name"], "url": info["url"], "commit": revs["head"], **revs},
+            "chapters": chapters, "flow": items, "files": files, "changed": changed_lines, "maps": maps}
+    payload = json.dumps(data).replace("</", "<\\/")
+    name = outline["title"].split(":")[0].strip()
     return TEMPLATE.replace("__TITLE__", html.escape(name)).replace("__DATA__", payload)
 
 
@@ -222,16 +367,19 @@ TEMPLATE = r"""<title>__TITLE__</title>
 :root {
   --paper: #f5f6f8; --sheet: #ffffff; --ink: #1c2230; --muted: #5d6679; --rule: #dde1e8;
   --route: #2f4db3; --route-soft: #e6ebfa; --mark: #fff0bf; --mark-edge: #e3b93a; --faint: #9aa2b1;
+  --add: #1d7a45; --add-soft: #e2f3e8; --del: #b3261e; --del-soft: #fbe7e5; --chg: #946200; --chg-soft: #fbf0d3;
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
   --sans: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --paper: #12151c; --sheet: #181c25; --ink: #e4e7ee; --muted: #9ba3b4; --rule: #2a303c;
-  --route: #8ea4ff; --route-soft: #202a47; --mark: #3b3219; --mark-edge: #b8902a; --faint: #5f6878; color-scheme: dark } }
+  --route: #8ea4ff; --route-soft: #202a47; --mark: #3b3219; --mark-edge: #b8902a; --faint: #5f6878;
+  --add: #6fd39a; --add-soft: #15301f; --del: #f2928a; --del-soft: #3a1d1b; --chg: #e8c15a; --chg-soft: #352c14; color-scheme: dark } }
 :root[data-theme="dark"] {
   --paper: #12151c; --sheet: #181c25; --ink: #e4e7ee; --muted: #9ba3b4; --rule: #2a303c;
-  --route: #8ea4ff; --route-soft: #202a47; --mark: #3b3219; --mark-edge: #b8902a; --faint: #5f6878; color-scheme: dark }
+  --route: #8ea4ff; --route-soft: #202a47; --mark: #3b3219; --mark-edge: #b8902a; --faint: #5f6878;
+  --add: #6fd39a; --add-soft: #15301f; --del: #f2928a; --del-soft: #3a1d1b; --chg: #e8c15a; --chg-soft: #352c14; color-scheme: dark }
 
 * { box-sizing: border-box }
 body { background: var(--paper); color: var(--ink); font: 15px/1.5 var(--sans); padding-inline: 16px; padding-block: 0 }
@@ -243,6 +391,20 @@ header.top { max-width: 2000px; margin: 0 auto; padding-block: 28px 20px; displa
 .eyebrow { font: 500 12px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
 h1 { font: 600 clamp(28px, 4vw, 40px)/1.1 var(--serif); margin: 0; text-wrap: balance }
 .premise { font: 17px/1.55 var(--serif); color: var(--muted); max-width: 72ch; margin: 0 }
+
+/* A change story's verdict and evidence */
+.evidence { display: grid; gap: 14px; max-width: 120ch; margin-top: 4px }
+.verdict { font: 16.5px/1.55 var(--serif); background: var(--sheet); border: 1px solid var(--rule); border-left: 3px solid var(--route); border-radius: 6px; padding: 12px 16px; margin: 0 }
+.evidence h2 { font: 600 12px/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px }
+.evidence table { border-collapse: collapse; font: 13.5px/1.4 var(--sans); display: block; overflow-x: auto }
+.evidence td, .evidence th { border-bottom: 1px solid var(--rule); padding: 6px 14px 6px 0; text-align: left; vertical-align: top }
+.evidence th { font: 600 11px/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.pill { font: 500 11.5px/1 var(--mono); padding: 3px 6px; border-radius: 4px; white-space: nowrap; display: inline-block }
+.pill.pass { background: var(--add-soft); color: var(--add) }
+.pill.fail { background: var(--del-soft); color: var(--del) }
+.pill.other { background: var(--chg-soft); color: var(--chg) }
+.unexercised { margin: 0; padding-left: 18px; font: 14px/1.5 var(--sans) }
+.unexercised code { font: 12.5px var(--mono) }
 
 .desk { max-width: 2000px; margin: 0 auto; display: grid; grid-template-columns: 380px minmax(0, 1fr) clamp(440px, calc(100vw - 1140px), 880px); gap: 28px; align-items: start; padding-block: 20px 80px }
 
@@ -269,6 +431,12 @@ h1 { font: 600 clamp(28px, 4vw, 40px)/1.1 var(--serif); margin: 0; text-wrap: ba
 #chart .exit rect { fill: none; stroke: var(--faint); stroke-dasharray: 4 3 }
 #chart .exit text, #chart .ans.side { fill: var(--muted) }
 #chart .ans { font-family: var(--sans); font-size: 10.5px; font-weight: 600 }
+#chart .node.m-add .shape { stroke: var(--add); fill: var(--add-soft) }
+#chart .node.m-del .shape { stroke: var(--del); stroke-dasharray: 4 3; fill: var(--del-soft) }
+#chart .node.m-chg .shape { stroke: var(--chg); fill: var(--chg-soft) }
+#chart .node.test .shape { fill: var(--sheet); stroke: var(--ink) }
+#chart .node.test text { fill: var(--ink) }
+#chart .edited { fill: var(--route); stroke: var(--sheet); stroke-width: 1.5 }
 #chart marker path { fill: var(--ink) }
 #chart marker#dash path { fill: var(--faint) }
 
@@ -285,6 +453,10 @@ h1 { font: 600 clamp(28px, 4vw, 40px)/1.1 var(--serif); margin: 0; text-wrap: ba
 .chapter pre code { background: none; padding: 0 }
 .chapter blockquote { margin: 0 0 18px; padding: 10px 14px; border-left: 3px solid var(--route); background: var(--route-soft); font: 14px/1.5 var(--sans); border-radius: 0 6px 6px 0; overflow-wrap: anywhere }
 .chapter blockquote p { margin: 0 }
+.chapter blockquote.ba.before { border-left-color: var(--del); background: var(--del-soft) }
+.chapter blockquote.ba.after { border-left-color: var(--add); background: var(--add-soft) }
+.proofchip { font: 13px/1.45 var(--sans); color: var(--muted); margin: -6px 0 16px }
+.proofchip .pill { margin-right: 4px }
 .chapter blockquote.aside { border-left-color: var(--mark-edge); background: var(--mark); font: 16px/1.55 var(--serif); padding: 12px 16px }
 .chapter blockquote.aside strong:first-child { display: block; font: 600 11px/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); margin-bottom: 4px }
 .chapter table { border-collapse: collapse; font: 14px/1.4 var(--sans); display: block; overflow-x: auto }
@@ -298,10 +470,16 @@ a.cite:hover, a.cite.on { background: var(--mark) }
 .code { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; display: grid; grid-template-rows: auto minmax(0, 1fr); max-height: calc(100vh - 24px); min-width: 0 }
 .code-head { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--rule); font: 12.5px/1.3 var(--mono); min-width: 0 }
 .code-head .where { overflow-wrap: anywhere }
+.code-head .side { font: 600 10.5px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; padding: 3px 6px; border-radius: 4px }
+.code-head .side.head { background: var(--add-soft); color: var(--add) }
+.code-head .side.base { background: var(--del-soft); color: var(--del) }
+.code-head .flip { background: none; border: 1px solid var(--rule); border-radius: 4px; padding: 2px 8px; cursor: pointer; font: 12px var(--sans) }
 .code-head .close { display: none; background: none; border: 1px solid var(--rule); border-radius: 4px; padding: 2px 8px; cursor: pointer }
 .code-body { overflow: auto; font: 12.5px/1.55 var(--mono); padding-block: 8px }
 .ln { display: grid; grid-template-columns: 3.2em 1fr; white-space: pre; padding-right: 14px }
 .ln span:first-child { color: var(--faint); text-align: right; padding-right: 12px; user-select: none; font-variant-numeric: tabular-nums }
+.ln.chg.head { background: var(--add-soft) }
+.ln.chg.base { background: var(--del-soft) }
 .ln.hl { background: var(--mark) }
 .ln.hl span:first-child { color: var(--ink) }
 .code-empty { padding: 16px; color: var(--muted); font: 14px/1.5 var(--sans) }
@@ -324,12 +502,13 @@ a.cite:hover, a.cite.on { background: var(--mark) }
   <div class="eyebrow" id="meta"></div>
   <h1 id="title"></h1>
   <p class="premise" id="premise"></p>
+  <section class="evidence" id="evidence" hidden></section>
 </header>
 <div class="desk">
-  <nav class="map" aria-label="Control flow"><h2>Control flow of this run</h2><p class="legend">Boxes are calls, diamonds are decisions, dashed exits are roads not taken. Click anything to see its code.</p><svg id="chart" role="img" aria-label="Flowchart of the data's path through the code"></svg></nav>
+  <nav class="map" aria-label="Control flow"><h2 id="maptitle">Control flow of this run</h2><p class="legend" id="legend">Boxes are calls, diamonds are decisions, dashed exits are roads not taken. Click anything to see its code.</p><svg id="chart" role="img" aria-label="Flowchart of the data's path through the code"></svg></nav>
   <main class="story" id="story"></main>
   <aside class="code" id="code" aria-label="Source code">
-    <div class="code-head"><span class="where" id="where">Source</span><span><a id="gh" target="_blank" rel="noopener">GitHub ↗</a> <button class="close" id="close">Close</button></span></div>
+    <div class="code-head"><span class="where" id="where">Source</span><span><span class="side" id="side" hidden></span> <button class="flip" id="flip" hidden></button> <a id="gh" target="_blank" rel="noopener">GitHub ↗</a> <button class="close" id="close">Close</button></span></div>
     <div class="code-body" id="codebody"><div class="code-empty">Click an underlined phrase in the story, or a step on the map, to see its code here.</div></div>
   </aside>
 </div>
@@ -340,11 +519,27 @@ a.cite:hover, a.cite.on { background: var(--mark) }
 const D = JSON.parse(document.getElementById("data").textContent);
 const $ = (id) => document.getElementById(id);
 const short = (s, n) => s.length > n ? s.slice(0, n - 1) + "…" : s;
-const permalink = (path, a, b) => `${D.repo.url}/blob/${D.repo.commit}/${path}#L${a}` + (b && b !== a ? `-L${b}` : "");
+const permalink = (path, a, b, rev) => `${D.repo.url}/blob/${rev || D.repo.commit}/${path}#L${a}` + (b && b !== a ? `-L${b}` : "");
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const diffMode = D.mode === "diff";
+const sideOf = (rev) => (diffMode && rev === D.repo.base ? "base" : "head");
 
-$("meta").textContent = `${D.repo.name} @ ${D.repo.commit.slice(0, 7)} · written for the ${D.reader}`;
+$("meta").textContent = diffMode
+  ? `${D.repo.name}${D.number ? " #" + D.number : ""} · ${D.repo.base.slice(0, 7)} → ${D.repo.head.slice(0, 7)} · written for the ${D.reader}`
+  : `${D.repo.name} @ ${D.repo.commit.slice(0, 7)} · written for the ${D.reader}`;
 $("title").textContent = D.title;
 $("premise").innerHTML = marked.parseInline(D.premise);
+const pill = (s) => `<span class="pill ${s === "pass" ? "pass" : /^(fail|runaway|unfinished|not loaded)/.test(s) ? "fail" : "other"}">${esc(s.length > 60 ? s.slice(0, 59) + "…" : s)}</span>`;
+if (diffMode) {  // the verdict, then the evidence: each test before and after, and what no test reaches
+  const ev = $("evidence");
+  ev.hidden = false;
+  const rows = D.tests.map((t) => `<tr><td>${esc(t.test)}</td><td>${pill(t.before)}</td><td>${pill(t.after)}</td></tr>`).join("");
+  ev.innerHTML = `<p class="verdict"></p><div><h2>The tests, before and after the change</h2><table><thead><tr><th>Test</th><th>Before</th><th>After</th></tr></thead><tbody>${rows}</tbody></table></div>`
+    + (D.unexercised.length ? `<div><h2>Changed, but no test reaches it</h2><ul class="unexercised">${D.unexercised.map((u) => `<li><code>${esc(u.function)}</code>: ${esc(u.check)}</li>`).join("")}</ul></div>` : "");
+  ev.querySelector(".verdict").innerHTML = marked.parseInline(D.verdict);
+  $("maptitle").textContent = "The change, call by call";
+  $("legend").textContent = "Green: only after the change. Red, dashed: only before. Amber: the same call, another result. A blue dot: the change edited that function. Click anything to see its code.";
+}
 
 // ---- flowchart: laid out top to bottom on one spine; roads not taken exit to the right
 const NS = "http://www.w3.org/2000/svg";
@@ -387,9 +582,11 @@ for (const it of D.flow) {
   const top = y + (prevBottom == null ? 0 : GAP);
   const g = el("g", { class: "node", tabindex: 0 }, nodes);
   let h;
-  if (it.kind === "start" || it.kind === "end") {
-    const lines = wrap(it.label, 30); h = 14 + lines.length * 13;
-    g.classList.add("term");
+  if (it.kind === "start" || it.kind === "end" || it.kind === "test") {
+    const label = it.kind === "test" ? `${it.label} (before: ${it.before}, after: ${it.after})` : it.label;
+    const lines = wrap(label, 30).slice(0, 5); h = 14 + lines.length * 13;
+    g.classList.add(it.kind === "test" ? "test" : "term");
+    if (it.kind === "test") { const title = el("title", {}, g); title.textContent = label; g.onclick = () => { if (it.chapter) $("ch-" + it.chapter).scrollIntoView(); }; }
     el("rect", { x: CX - BOX / 2, y: top, width: BOX, height: h, rx: h / 2, class: "shape" }, g);
     textLines(g, lines, CX, top + 17, "middle");
   } else if (it.kind === "data") {
@@ -401,13 +598,17 @@ for (const it of D.flow) {
     g.onclick = () => {};
   } else if (it.kind === "step") {
     const name = it.fn.length > 28 && it.fn.includes(".") ? [it.fn.slice(0, it.fn.lastIndexOf(".")), it.fn.slice(it.fn.lastIndexOf("."))] : wrap(it.fn, 28);
-    const val = it.returned && it.returned !== "None" ? ["→ " + (it.returned.length > 26 ? it.returned.slice(0, 25) + "…" : it.returned)] : [];
+    const val = it.returned && it.returned !== "None" && it.returned !== "undefined" ? ["→ " + (it.returned.length > 26 ? it.returned.slice(0, 25) + "…" : it.returned)] : [];
     h = 12 + (name.length + val.length) * 13;
+    if (it.mark) g.classList.add({ "+": "m-add", "-": "m-del", "~": "m-chg" }[it.mark] || "m-same");
     el("rect", { x: CX - BOX / 2, y: top, width: BOX, height: h, rx: 3, class: "shape" }, g);
+    if (it.edited) el("circle", { cx: CX - BOX / 2, cy: top + h / 2, r: 4.5, class: "edited" }, g);
     textLines(g, name, CX, top + 16, "middle");
     textLines(g, val, CX, top + 16 + name.length * 13, "middle", "val");
-    const title = el("title", {}, g); title.textContent = `${it.fn}  (${it.file}:${it.line})` + (it.returned ? `\nreturns ${it.returned}` : "");
-    g.onclick = () => { showCode(it.file, it.line, it.end); if (it.chapter) $("ch-" + it.chapter).scrollIntoView(); };
+    const how = { "+": "only after the change", "-": "only before the change", "~": "the same call, another result" }[it.mark];
+    const title = el("title", {}, g); title.textContent = `${it.fn}  (${it.file}:${it.line})` + (how ? `\n${how}` : "") + (it.edited ? "\nthe change edited this function" : "")
+      + (it.returned ? `\nreturns ${it.returned}` : "") + (it.before ? `\nbefore: ${it.before}` : "");
+    g.onclick = () => { showCode(it.file, it.line, it.end, it.rev); if (it.chapter) $("ch-" + it.chapter).scrollIntoView(); };
   } else {  // decision
     let lines = wrap(it.question, 16);
     if (lines.length > 3) lines = [...lines.slice(0, 2), lines[2].slice(0, 15) + "…"];
@@ -425,7 +626,7 @@ for (const it of D.flow) {
     textLines(ex, exitLines, SIDE_X + 6, ey + 15, "start");
     sa.setAttribute("x", CX + hw + 3);
     const title = el("title", {}, g); title.textContent = `${it.question}\ntaken: ${it.answer}\notherwise (${it.side}): ${it.exit}\n${it.file}:${it.line}`;
-    g.onclick = () => { showCode(it.file, it.line, it.end); if (it.chapter) $("ch-" + it.chapter).scrollIntoView(); };
+    g.onclick = () => { showCode(it.file, it.line, it.end, it.rev); if (it.chapter) $("ch-" + it.chapter).scrollIntoView(); };
   }
   if (prevBottom != null) connect(prevBottom, top, pendingLabel);
   pendingLabel = it.kind === "decision" ? it.answer : null;
@@ -448,28 +649,55 @@ svg.setAttribute("height", y);
 
 // ---- story
 const story = $("story");
-const cite = new RegExp(D.repo.url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "/blob/[0-9a-f]+/([^#]+)#L(\\d+)(?:-L(\\d+))?");
+const cite = new RegExp(D.repo.url.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "/blob/([0-9a-f]+)/([^#]+)#L(\\d+)(?:-L(\\d+))?");
+const fullRev = (sha) => [D.repo.base, D.repo.head, D.repo.commit].find((r) => r && (r.startsWith(sha) || sha.startsWith(r))) || sha;
+function proofText(ch) {
+  const p = ch.proof;
+  if (!p || !p.head) return "";
+  const after = p.head === "pass" ? "passes after the change" : `after the change: ${p.head}`;
+  const before = p.base === "pass" ? (ch.kind === "preserved" ? "passes before it too, as it should" : "passes before it too")
+    : /^(fail|unfinished|runaway)/.test(p.base) ? "fails before it" : `before it: ${p.base}`;
+  return `${pill(p.head)} ${pill(p.base)} This chapter's proof ${after}, and ${before}.`;
+}
 for (const ch of D.chapters) {
   const sec = document.createElement("section");
   sec.className = "chapter"; sec.id = "ch-" + ch.n; sec.dataset.n = ch.n;
   const prose = document.createElement("div"); prose.className = "prose";
   if (ch.md) {
     prose.innerHTML = marked.parse(ch.md);
+    for (const q of prose.querySelectorAll("blockquote")) {  // one quote holding both Before and After: split it
+      const p = q.querySelector("p");
+      const at = p ? p.innerHTML.search(/<strong>After:?<\/strong>/i) : -1;
+      if (at > 0 && /^\s*<strong>Before:?<\/strong>/i.test(p.innerHTML)) {
+        const after = document.createElement("blockquote");
+        after.innerHTML = `<p>${p.innerHTML.slice(at)}</p>`;
+        p.innerHTML = p.innerHTML.slice(0, at).trim();
+        q.after(after);
+      }
+    }
     for (const q of prose.querySelectorAll("blockquote")) {  // "**For the owner:** …" callouts
       const lead = q.querySelector("p > strong:first-child");
       if (lead && /^for the /i.test(lead.textContent)) q.classList.add("aside");
+      if (lead && /^before:?$/i.test(lead.textContent.trim())) q.classList.add("ba", "before");
+      if (lead && /^after:?$/i.test(lead.textContent.trim())) q.classList.add("ba", "after");
+    }
+    const chip = proofText(ch);
+    if (chip) {
+      const p = document.createElement("p"); p.className = "proofchip"; p.innerHTML = chip;
+      const h = prose.querySelector("h1"); if (h) h.after(p); else prose.prepend(p);
     }
     for (const a of prose.querySelectorAll("a[href]")) {
       const m = a.getAttribute("href").match(cite);
       if (!m) { a.target = "_blank"; a.rel = "noopener"; continue; }
       a.className = "cite";
-      a.dataset.path = m[1]; a.dataset.a = m[2]; a.dataset.b = m[3] || m[2];
+      a.dataset.rev = fullRev(m[1]); a.dataset.path = m[2]; a.dataset.a = m[3]; a.dataset.b = m[4] || m[3];
+      if (diffMode) a.title = sideOf(a.dataset.rev) === "base" ? "the code before the change" : "the code after the change";
       a.onclick = (e) => { e.preventDefault(); pick(a, true); };
     }
   } else {
     prose.innerHTML = `<h1></h1><div class="pending">This chapter is planned but not written yet.<div class="io"></div></div>`;
     prose.querySelector("h1").textContent = `Chapter ${ch.n} · ${ch.title}`;
-    prose.querySelector(".io").textContent = `enters as ${ch.data_in}\nleaves as ${ch.data_out}`;
+    prose.querySelector(".io").textContent = diffMode ? `before: ${ch.data_in}\nafter: ${ch.data_out}` : `enters as ${ch.data_in}\nleaves as ${ch.data_out}`;
   }
   sec.append(prose);
   story.append(sec);
@@ -477,19 +705,29 @@ for (const ch of D.chapters) {
 
 // ---- code panel
 const panel = $("code");
-let pinned = null;
-function showCode(path, a, b) {
-  a = +a; b = +b;
-  const src = D.files[path];
+let pinned = null, shown = null;
+function showCode(path, a, b, rev) {
+  a = +a; b = +b; rev = rev || D.repo.commit;
+  shown = { path, a, b, rev };
+  const src = D.files[`${rev}:${path}`];
+  const side = sideOf(rev);
   $("where").textContent = `${path}:${a}${b !== a ? "-" + b : ""}`;
-  $("gh").href = permalink(path, a, b);
+  $("gh").href = permalink(path, a, b, rev);
+  if (diffMode) {
+    $("side").hidden = false; $("side").className = "side " + side;
+    $("side").textContent = side === "head" ? "after" : "before";
+    const other = side === "head" ? D.repo.base : D.repo.head;
+    $("flip").hidden = D.files[`${other}:${path}`] === undefined;
+    $("flip").textContent = side === "head" ? "Show before" : "Show after";
+  }
+  const marks = diffMode && D.changed[path] ? new Set(D.changed[path][side]) : null;
   const body = $("codebody");
   body.textContent = "";
   if (src === undefined) { body.innerHTML = '<div class="code-empty">This file is not part of the repository snapshot.</div>'; return; }
   const frag = document.createDocumentFragment();
   src.split("\n").forEach((text, i) => {
     const row = document.createElement("div");
-    row.className = "ln" + (i + 1 >= a && i + 1 <= b ? " hl" : "");
+    row.className = "ln" + (marks && marks.has(i + 1) ? " chg " + side : "") + (i + 1 >= a && i + 1 <= b ? " hl" : "");
     const n = document.createElement("span"); n.textContent = i + 1;
     const t = document.createElement("span"); t.textContent = text || " ";
     row.append(n, t); frag.append(row);
@@ -503,9 +741,20 @@ function pick(a, byClick) {
   document.querySelectorAll("a.cite.on").forEach((x) => x.classList.remove("on"));
   a.classList.add("on");
   if (byClick) pinned = a.closest("p, li, td, blockquote");
-  showCode(a.dataset.path, a.dataset.a, a.dataset.b);
+  showCode(a.dataset.path, a.dataset.a, a.dataset.b, a.dataset.rev);
 }
 $("close").onclick = () => panel.classList.remove("open");
+// The other side of the same file, at the matching lines (unchanged lines map exactly; changed ones to the nearest).
+$("flip").onclick = () => {
+  if (!shown) return;
+  const { path, a, b, rev } = shown;
+  const toBase = rev === D.repo.head;
+  const fwd = D.maps[path] || {};
+  const map = toBase ? fwd : Object.fromEntries(Object.entries(fwd).map(([h, l]) => [l, +h]));
+  const near = (n) => { for (let k = n; k > 0; k--) if (map[k] !== undefined) return map[k] + (n - k); return n; };
+  const na = near(a);
+  showCode(path, na, Math.max(na, near(b)), toBase ? D.repo.base : D.repo.head);
+};
 
 // ---- follow the reader: current chapter on the map, current paragraph's code on the right
 const wide = () => window.matchMedia("(min-width: 1361px)").matches;

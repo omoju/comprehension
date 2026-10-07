@@ -1,0 +1,188 @@
+{
+ "tests": [
+  {
+   "test": "\"/\" + \"/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/foo\" + \"\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/foo/\" + \"/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/foo\" + \"/bar\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/base/\" + \"/base\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/base\" + \"/base/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/base\" + \"/base/a\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/base/\" + \"/base/a\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/base/\" + \"https://test.com\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/\" + \"https://test.com\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/admin/\" + \"/admin-dashboard\"",
+   "before": "fail",
+   "after": "pass"
+  },
+  {
+   "test": "\"/admin/\" + \"/admin/admin-dashboard\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/admin\" + \"/admin-dashboard\"",
+   "before": "fail",
+   "after": "pass"
+  },
+  {
+   "test": "\"/admin/\" + \"/admin/dashboard\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/\"-\"/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/\"-\"/foo\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/\"-\"/foo/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/bar\"-\"/foo\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/base\"-\"/base/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/base/\"-\"/base\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/base/a\"-\"/base\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/base/a\"-\"/base/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/base/a\"-\"/base/a/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/test/\"-\"/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/?test\"-\"/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/api?test\"-\"/api\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"https://test.com\"-\"/base/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"https://test.com\"-\"/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/admin-dashboard\"-\"/admin/\"",
+   "before": "fail",
+   "after": "pass"
+  },
+  {
+   "test": "\"/admin/admin-dashboard\"-\"/admin/\"",
+   "before": "pass",
+   "after": "pass"
+  },
+  {
+   "test": "\"/admin-dashboard\"-\"/admin\"",
+   "before": "fail",
+   "after": "pass"
+  },
+  {
+   "test": "\"/admin/dashboard\"-\"/admin/\"",
+   "before": "pass",
+   "after": "pass"
+  }
+ ],
+ "coverage": [
+  {
+   "file": "src/utils.ts",
+   "function": "withBase",
+   "kind": "modified",
+   "reached": true
+  },
+  {
+   "file": "src/utils.ts",
+   "function": "withoutBase",
+   "kind": "modified",
+   "reached": true
+  }
+ ],
+ "touched": [
+  "src/utils.ts::withBase",
+  "src/utils.ts::withoutBase"
+ ],
+ "proofs": [
+  "\"/admin/\" + \"/admin-dashboard\"",
+  "\"/admin\" + \"/admin-dashboard\"",
+  "\"/admin-dashboard\"-\"/admin/\"",
+  "\"/admin-dashboard\"-\"/admin\""
+ ]
+}

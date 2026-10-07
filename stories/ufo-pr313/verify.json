@@ -1,0 +1,26 @@
+{
+ "1": {
+  "head": "pass",
+  "base": "pass",
+  "errors": [],
+  "warnings": []
+ },
+ "2": {
+  "head": "pass",
+  "base": "fail: AssertionError(\"expected '/admin-dashboard' to be '/admin/admin-dashboard' // Object.is equality\")",
+  "errors": [],
+  "warnings": []
+ },
+ "3": {
+  "head": "pass",
+  "base": "pass",
+  "errors": [],
+  "warnings": []
+ },
+ "4": {
+  "head": "pass",
+  "base": "fail: AssertionError(\"expected '/-dashboard' to be '/admin-dashboard' // Object.is equality\")",
+  "errors": [],
+  "warnings": []
+ }
+}
