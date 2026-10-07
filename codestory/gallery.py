@@ -19,56 +19,79 @@ ORDER = ["itsdangerous-close-third", "bench/requests", "bench/flask", "bench/cli
          "bench/attrs", "bench/jinja", "bench/markupsafe", "bench/tqdm", "tomli"]
 
 
-def card(rel: str) -> str:
+def entry(rel: str) -> str:
     d = STORIES / rel
     o = json.loads((d / "outline.json").read_text())
     rows = re.findall(r"^\| (\d+) \| \[.*?\]\(.*?\) \| (\d+) \| (\d+) \|", (d / "report.md").read_text(), re.M)
     words, cites = sum(int(r[1]) for r in rows), sum(int(r[2]) for r in rows)
     repo = o["repo"]
-    return f"""<a class="card" href="{rel}/index.html">
-  <div class="repo">{html.escape(repo['name'])} <span class="sha">@ {repo['commit'][:7]}</span></div>
-  <h2>{html.escape(o['title'])}</h2>
-  <p>{html.escape(o['premise'])}</p>
-  <div class="meta">{len(rows)} chapters · {words:,} words · {cites} citations · reader: {html.escape(o['reader'])}</div>
-</a>"""
+    return f"""<li>
+  <strong><a href="{rel}/index.html">{html.escape(o['title'])}</a></strong>
+  {html.escape(o['premise'])}
+  <span class="meta">{html.escape(repo['name'])} at {repo['commit'][:7]} · {len(rows)} chapters · {words:,} words · {cites} citations · for the {html.escape(o['reader'])}</span>
+</li>"""
 
 
 def main() -> None:
-    cards = "\n".join(card(r) for r in ORDER)
+    entries = "\n".join(entry(r) for r in ORDER)
+    # The page follows omojumiller.com's own stylesheet (themes/minimalist in omoju/omoju.github.io): EB Garamond,
+    # paper and ink, small-caps heads, a marginal section head in the one accent colour, a fleuron for a rule.
     page = f"""<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CodeStories</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeStories · Omoju Miller</title>
+<meta name="description" content="Ten Python libraries, each told as a story that follows its data through one real run, every claim pinned to lines, every chapter with a proof.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:wght@400;500;600&display=swap">
 <style>
-:root {{ --bg: #f7f5f0; --sheet: #fff; --ink: #1d1b17; --muted: #5f5b53; --rule: #d9d4c9; --accent: #1f5f8b;
-  --serif: "Source Serif 4", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace }}
-@media (prefers-color-scheme: dark) {{ :root:not([data-theme="light"]) {{ --bg: #15140f; --sheet: #1f1d18; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e; --accent: #7fb3d9; color-scheme: dark }} }}
-:root[data-theme="dark"] {{ --bg: #15140f; --sheet: #1f1d18; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e; --accent: #7fb3d9; color-scheme: dark }}
-body {{ margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(--serif); padding-block: 40px 80px; padding-inline: 16px }}
-main {{ max-width: 1100px; margin: 0 auto }}
-.kicker {{ font: 500 12px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }}
-h1 {{ font: 600 34px/1.15 var(--serif); margin: 6px 0 10px }}
-.lede {{ color: var(--muted); max-width: 70ch; font-size: 18px; margin: 0 0 28px }}
-.grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px }}
-.card {{ display: block; background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; padding: 18px 20px; color: inherit; text-decoration: none; min-width: 0 }}
-.card:hover, .card:focus-visible {{ border-color: var(--accent); outline: none }}
-.card .repo {{ font: 500 12.5px var(--mono); color: var(--accent) }} .card .sha {{ color: var(--muted); font-weight: 400 }}
-.card h2 {{ font: 600 20px/1.25 var(--serif); margin: 8px 0 8px; text-wrap: balance }}
-.card p {{ margin: 0 0 12px; font-size: 15px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden }}
-.card .meta {{ font: 12px/1.4 var(--mono); color: var(--muted) }}
-.foot {{ margin-top: 36px; color: var(--muted); font-size: 15px; max-width: 70ch }}
-</style></head><body><main>
-<div class="kicker">comprehension · codestories</div>
-<h1>Ten repositories, told as stories</h1>
-<p class="lede">Each page follows one real run of a library's intended use: a control-flow chart of that run on the left, the story
-in the middle, the code it cites on the right. Every claim links to lines at a pinned commit; every chapter has a proof you
-can run. Written by Claude, checked by code; the comparison that decided their fate is in the repository.</p>
-<div class="grid">
-{cards}
-</div>
-<p class="foot">The three-pane layout needs a window about 1,360px wide; narrower screens show the code as a sheet you open from the text.
-Pages are static and self-contained: the code you see is embedded from the repository at the pinned commit.</p>
-</main></body></html>
+:root {{ --ink: #211f1b; --ink-soft: #3d3931; --ink-faint: #56514a; --paper: #fdfdfa; --rule: #cdc8bd; --accent: #AA0000; --link: #483D8B;
+  --sans: 'Inter', -apple-system, 'Helvetica Neue', sans-serif; --serif: 'EB Garamond', Garamond, Georgia, serif }}
+* {{ margin: 0; padding: 0; box-sizing: border-box }}
+body {{ font-family: var(--serif); font-size: 20px; line-height: 1.62; color: var(--ink); background: var(--paper); max-width: 53rem; margin: 0 auto; padding: 4rem 2rem;
+  font-variant-numeric: oldstyle-nums proportional-nums; font-feature-settings: "onum" 1, "kern" 1, "liga" 1; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased }}
+header, main, footer {{ padding-left: 11rem }}
+header {{ margin-bottom: 3rem; border-bottom: 1px solid var(--rule); padding-bottom: 1.2rem }}
+h1 {{ font-size: 2.05rem; font-weight: 500; line-height: 1.25; font-variant-caps: small-caps; letter-spacing: 0.055em; margin-bottom: 0.4rem }}
+h1 a {{ color: inherit; text-decoration: none }}
+h1 a:hover {{ color: var(--accent) }}
+main {{ margin-bottom: 4rem; position: relative }}
+main > h2 {{ float: left; clear: left; width: 8.5rem; margin-left: -11rem; margin-top: 0.45rem; margin-bottom: 0.6rem; font-family: var(--sans); font-size: 0.78rem; font-weight: 500;
+  text-transform: lowercase; text-align: right; letter-spacing: 0.02em; line-height: 1.3; color: var(--accent) }}
+.title {{ font-size: 1.32rem; font-weight: 600; font-variant-caps: small-caps; letter-spacing: 0.045em; margin-bottom: 0.7rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--rule) }}
+p {{ margin-bottom: 1.15rem; text-align: justify; hyphens: auto; -webkit-hyphens: auto }}
+p.lede::first-letter {{ float: left; font-size: 3.4em; line-height: 0.82; padding: 0.06em 0.08em 0 0; margin-right: 0.04em; color: var(--accent); font-weight: 500 }}
+p.lede::first-line {{ font-variant-caps: small-caps; letter-spacing: 0.03em }}
+main a {{ color: var(--link); text-decoration: none; border-bottom: 1px solid rgba(72, 61, 139, 0.3); transition: border-color 0.15s ease, color 0.15s ease }}
+main a:hover {{ color: var(--accent); border-bottom-color: var(--accent) }}
+ul.stories {{ list-style: none; margin-bottom: 1.15rem }}
+ul.stories li {{ margin-bottom: 1.3rem; text-align: left; hyphens: none }}
+ul.stories strong a {{ border-bottom: none }}
+ul.stories .meta {{ display: block; font-size: 0.92rem; color: var(--ink-faint); font-variant-caps: small-caps; letter-spacing: 0.06em; margin-top: 0.1rem }}
+hr {{ border: none; text-align: center; margin: 2.6rem 0 }} hr::before {{ content: "❧"; color: var(--ink-faint); font-size: 1.2rem }}
+.aside {{ color: var(--ink-soft); font-size: 0.95rem; text-align: left; hyphens: none }}
+footer {{ border-top: 1px solid var(--rule); padding-top: 1.2rem; color: var(--ink-faint); font-size: 0.92rem }} footer a {{ color: inherit }}
+@media (max-width: 60rem) {{ header, main, footer {{ padding-left: 0 }} main > h2 {{ float: none; width: auto; margin: 1.6rem 0 0.6rem; text-align: left }} body {{ padding: 2.4rem 1.2rem; font-size: 18px }} }}
+</style></head><body>
+<header>
+  <h1><a href="https://omojumiller.com/">Omoju Miller</a></h1>
+</header>
+<main>
+  <h2>the stories</h2>
+  <div class="title">CodeStories</div>
+  <p class="lede">Ten Python libraries, each told as a story that follows its data through one real run of the library's intended use.
+  The page you open has three panes: a control-flow chart of that run, the story, and the code it cites, side by side. Every
+  claim links to lines at a pinned commit; every chapter ends in a proof you can run. The stories were written by Claude and
+  checked by code; the comparison that decided their fate, preregistered and run against DeepWiki, is in
+  <a href="https://github.com/omoju/comprehension">the repository</a>.</p>
+  <ul class="stories">
+{entries}
+  </ul>
+  <hr>
+  <h2>reading them</h2>
+  <p class="aside">The three panes need a window about 1,360 pixels wide; on a narrower screen the code opens as a sheet from the text.
+  Each page is a single static file with the cited code embedded from the repository at the pinned commit, so nothing on it
+  can drift from what the story was checked against. The proofs live beside each story as <code>proofs/NN.py</code>.</p>
+</main>
+<footer><p>&copy; Omoju Miller. Stories by Claude, checked by code; <a href="https://github.com/omoju/comprehension">source and evaluation</a>.</p></footer>
+</body></html>
 """
     (STORIES / "index.html").write_text(page)
     print(f"wrote stories/index.html ({len(ORDER)} stories)")
