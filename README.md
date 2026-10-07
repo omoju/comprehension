@@ -11,7 +11,7 @@ A repository explained as a story that follows its data through one real run of 
 **Read one first:** [`stories/index.html`](stories/index.html) lists the ten. Each reading page has three panes: the
 control-flow chart of the run, the story, and the code it cites, side by side (on a window about 1,360px wide; narrower
 screens open the code as a sheet). The pages are static files; with GitHub Pages enabled for this repository
-(Settings → Pages → Source: GitHub Actions) they are served at `https://<user>.github.io/comprehension/stories/`.
+(Settings → Pages → Source: GitHub Actions) they are served at `https://omoju.github.io/comprehension/stories/`.
 
 - **The plot is a run.** A model writes the intended-use scenario; a tracer records every call into the repository
   with its arguments and return values. Chapters are spans of that trace.
