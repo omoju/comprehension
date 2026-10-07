@@ -30,12 +30,13 @@ Pipeline and data flow: [`codestory/README.md`](codestory/README.md). Running lo
 
 ### Make a story of your own repository
 
-Python 3.13 and [`uv`](https://docs.astral.sh/uv/) on the path; an Anthropic API key. Then:
+Python 3.13 and [`uv`](https://docs.astral.sh/uv/) on the path; a model: an Anthropic API key, or your Claude or
+ChatGPT login (through the `claude` or `codex` CLI), or a deployment on Azure AI Foundry (see `.env.example`). Then:
 
 ```bash
 git clone https://github.com/omoju/comprehension.git && cd comprehension
 uv venv .venv --python 3.13 && uv pip install --python .venv/bin/python -r requirements.txt
-cp .env.example .env            # put ANTHROPIC_API_KEY in it; the Cloudflare keys are optional
+cp .env.example .env            # choose CODESTORY_PROVIDER and its keys; the Cloudflare keys are optional
 .venv/bin/python codestory/story.py https://github.com/<owner>/<repo> --open
 ```
 

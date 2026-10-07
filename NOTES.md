@@ -93,6 +93,15 @@ the human check.
   Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-07** · Models are swappable (`codestory/llm.py`): every stage asks through one function, and
+  `CODESTORY_PROVIDER` chooses how to sign in. An Anthropic API key, as before (and still the default when one is
+  set); a Claude login, through `claude -p`; a ChatGPT login, through `codex exec`; or a deployment on Azure AI
+  Foundry (OpenAI models through the Responses API, Claude models through Foundry's Messages API; a key or
+  `az login`). The CLIs sign in for us; nothing reads their credentials. The checks and the repair loop are
+  unchanged; for a CLI, a repair conversation goes as one transcript. Checked: markupsafe end to end on `claude-cli`
+  (scenario first try, 4 chapters, 0 repairs, every citation and proof passing; $3.37 at API prices, on a
+  subscription), and the smoke test (`python codestory/llm.py`) on `claude-cli`, `codex-cli` and `foundry` (an OpenAI
+  and a Claude deployment). Not yet run here: `anthropic`, for want of a key; its call is the old one, moved.
 - **10-07** · TypeScript tracer (`codestory/ts/`) and `diff.py`, which runs a change's own tests on its base and
   its head and compares the two runs call by call; no model. Checked on ufo #313 (its 32 tests pass traced; 4 fail
   on the base and pass on the head, and the run reaches both changed functions) and on a private TypeScript codebase
