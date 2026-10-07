@@ -5,115 +5,34 @@
  "args": {},
  "calls": [
   {
-   "fn": "test: \"/\" + \"/\" => /",
+   "fn": "test: leaves /admin-dashboard intact when the base is /admin/",
    "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 21,
+   "line": 5,
    "args": {},
    "calls": [],
    "returned": "undefined",
    "lines": {}
   },
   {
-   "fn": "test: \"/foo\" + \"\" => /foo",
+   "fn": "test: leaves /admin-dashboard intact when the base is /admin",
    "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 21,
+   "line": 9,
    "args": {},
    "calls": [],
    "returned": "undefined",
    "lines": {}
   },
   {
-   "fn": "test: \"/foo/\" + \"/\" => /foo",
+   "fn": "test: still strips a real base followed by a slash",
    "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 21,
+   "line": 13,
    "args": {},
    "calls": [],
    "returned": "undefined",
    "lines": {}
   },
   {
-   "fn": "test: \"/foo\" + \"/bar\" => /foo/bar",
-   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 21,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: \"/base/\" + \"/base\" => /base",
-   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 21,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: \"/base\" + \"/base/\" => /base/",
-   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 21,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: \"/base\" + \"/base/a\" => /base/a",
-   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 21,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: \"/base/\" + \"/base/a\" => /base/a",
-   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 21,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: \"/base/\" + \"https://test.com\" => https://test.com",
-   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 21,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: \"/\" + \"https://test.com\" => https://test.com",
-   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 21,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: a genuine prefix with an absent next char still returns the input",
-   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 26,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: a genuine prefix with a '/' next char still returns the input",
-   "file": "tests/unit/codestory/cs_ufo_pr313_01.spec.ts",
-   "line": 31,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: prepends the base when the match is not on a segment boundary (trailing-slash base)",
+   "fn": "test: prefixes /admin-dashboard under base /admin/",
    "file": "tests/unit/codestory/cs_ufo_pr313_02.spec.ts",
    "line": 5,
    "args": {},
@@ -122,25 +41,34 @@
    "lines": {}
   },
   {
-   "fn": "test: prepends the base when the match is not on a segment boundary (no-trailing-slash base)",
+   "fn": "test: prefixes /admin-dashboard under base /admin",
    "file": "tests/unit/codestory/cs_ufo_pr313_02.spec.ts",
-   "line": 10,
+   "line": 9,
    "args": {},
    "calls": [],
    "returned": "undefined",
    "lines": {}
   },
   {
-   "fn": "test: still leaves a genuine '/' boundary prefix untouched (unchanged by the fix)",
+   "fn": "test: still leaves inputs that genuinely carry the base untouched",
    "file": "tests/unit/codestory/cs_ufo_pr313_02.spec.ts",
-   "line": 15,
+   "line": 13,
    "args": {},
    "calls": [],
    "returned": "undefined",
    "lines": {}
   },
   {
-   "fn": "test: returns the input untouched when the base is empty ('/')",
+   "fn": "test: strips the base when a query string follows it directly",
+   "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
+   "line": 5,
+   "args": {},
+   "calls": [],
+   "returned": "undefined",
+   "lines": {}
+  },
+  {
+   "fn": "test: strips the base at a path segment boundary",
    "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
    "line": 9,
    "args": {},
@@ -149,7 +77,7 @@
    "lines": {}
   },
   {
-   "fn": "test: returns the input untouched when it does not start with the base",
+   "fn": "test: collapses an input equal to the base to the root",
    "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
    "line": 15,
    "args": {},
@@ -158,34 +86,16 @@
    "lines": {}
   },
   {
-   "fn": "test: still trims a genuine prefix ending on a '/' boundary",
+   "fn": "test: leaves inputs alone for a root base or a non-matching base",
    "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
-   "line": 21,
+   "line": 20,
    "args": {},
    "calls": [],
    "returned": "undefined",
    "lines": {}
   },
   {
-   "fn": "test: still trims a prefix that ends at end-of-string",
-   "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
-   "line": 26,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: still respects the '?' query boundary",
-   "file": "tests/unit/codestory/cs_ufo_pr313_03.spec.ts",
-   "line": 32,
-   "args": {},
-   "calls": [],
-   "returned": "undefined",
-   "lines": {}
-  },
-  {
-   "fn": "test: returns a false-prefix path unchanged instead of /-dashboard (trailing-slash base)",
+   "fn": "test: returns an input equal to the trimmed base unchanged",
    "file": "tests/unit/codestory/cs_ufo_pr313_04.spec.ts",
    "line": 5,
    "args": {},
@@ -194,27 +104,27 @@
    "lines": {}
   },
   {
-   "fn": "test: returns a false-prefix path unchanged instead of /-dashboard (bare base)",
+   "fn": "test: returns inputs with '/' right after the base unchanged",
    "file": "tests/unit/codestory/cs_ufo_pr313_04.spec.ts",
-   "line": 10,
+   "line": 9,
    "args": {},
    "calls": [],
    "returned": "undefined",
    "lines": {}
   },
   {
-   "fn": "test: still never yields the old mangled form",
+   "fn": "test: still joins inputs that do not start with the base",
    "file": "tests/unit/codestory/cs_ufo_pr313_04.spec.ts",
-   "line": 14,
+   "line": 15,
    "args": {},
    "calls": [],
    "returned": "undefined",
    "lines": {}
   },
   {
-   "fn": "test: still trims a genuine prefix at a slash boundary",
+   "fn": "test: still exits early for root bases and protocol URLs",
    "file": "tests/unit/codestory/cs_ufo_pr313_04.spec.ts",
-   "line": 18,
+   "line": 21,
    "args": {},
    "calls": [],
    "returned": "undefined",

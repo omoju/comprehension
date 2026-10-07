@@ -1,84 +1,156 @@
 {
  "provider": "claude-cli",
- "model": "claude-opus-4-8[1m]",
+ "model": "claude-opus-5-5",
  "usage": {
   "input_tokens": 2,
-  "output_tokens": 3961,
-  "cache_read_input_tokens": 1149,
-  "cache_creation_input_tokens": 36348
+  "output_tokens": 2642,
+  "cache_read_input_tokens": 1536,
+  "cache_creation_input_tokens": 36489
  },
- "cost": 0.4925605,
- "text": "# Chapter 3 \u00b7 withoutBase, where nothing should change\n\n> **Before:** Thirteen paths pass through `withoutBase` \u2014 some trimmed of a real base (`/base/a` minus `/base` \u2192 `/a`), some respecting a query boundary (`/api?test` minus `/api` \u2192 `/?test`), some left whole because they never matched (`/bar` minus `/foo` \u2192 `/bar`) or because the base was empty or the input had a protocol.\n> **After:** Every one of them comes back with exactly the same value; the new boundary guard runs but never changes an answer.\n\nNow the data turns to the other function. `withoutBase` is the inverse of `withBase`: instead of adding a missing base, it strips a present one. Thirteen cases flow through it in this span, and the reviewer's question is whether the new lookahead \u2014 the same idea as chapter 2, placed inside `withoutBase` \u2014 disturbs any of them. It does not, and here is why for each shape.\n\nThe first door is `isEmptyURL(base)`. For `/`-`/`, `/test/`-`/`, `/?test`-`/`, and `https://test.com`-`/`, the base is `/`, so [`withoutBase` returns the input immediately](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L318-L321) \u2014 `/`, `/test/`, `/?test`, and `https://test.com` respectively (trace 117\u2013119, 180\u2013182, 187\u2013189, 208\u2013210). This door is [untouched by the change](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L315-L317), so the values match the base run exactly.\n\nThe second door is `!input.startsWith(_base)`. For `/`-`/foo`, `/`-`/foo/`, `/bar`-`/foo`, and `https://test.com`-`/base/`, `_base` is `/foo`, `/foo`, `/foo`, and `/base`, and the input never begins with those strings, so [the function returns the input unchanged](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L322-L325): `/`, `/`, `/bar`, and `https://test.com` (trace 124\u2013126, 131\u2013133, 138\u2013140, 201\u2013203). The new guard sits *after* this door, so a non-match never reaches it; both sides agree.\n\nThe cases that do get past both doors are the genuine prefixes, and this is where the new `nextChar` check actually runs. For `/base/a` minus `/base`, `_base` is `/base`, `input.startsWith(\"/base\")` is true, and `nextChar = input[5]` is `/`. [The guard `nextChar && nextChar !== \"/\" && nextChar !== \"?\"`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L326-L330) is false because `nextChar === \"/\"`, so control falls through to the slice: `input.slice(5)` is `/a`, whose first character is `/`, so it returns `/a` (trace 159\u2013161). The base run had no guard and reached the same slice, giving the same `/a` (trace 158). The twin case `/base/a` minus `/base/` behaves identically \u2014 `withoutTrailingSlash` turns the base into `/base` too, so `nextChar` is again `/` and the result is again `/a` (trace 166\u2013168).\n\nTwo more prefixes land on the boundary characters the guard was written to accept. For `/base`-`/base/`, `_base` is `/base`, and `nextChar = input[5]` is `undefined` (the string ends there); the guard's leading `nextChar &&` short-circuits to false, the slice yields `\"\"`, and the leading-slash step returns `/` (trace 145\u2013147). For `/api?test`-`/api`, `nextChar = input[4]` is `?`; the guard's `nextChar !== \"?\"` arm fails, so it falls through, slices to `?test`, and prepends a slash to give `/?test` (trace 194\u2013196). The `?` boundary is exactly the query case the fix preserves \u2014 on the base run, with no guard, the slice produced the same `/?test` (trace 193).\n\nSo across all thirteen cases the guard runs on four of them and declines to act on every one, because in each the character after the base is `/`, `?`, or absent. The outputs are identical to the base run, line for line.\n\n> **For the reviewer:** These thirteen cases are the preserved half of the evidence for `withoutBase`; the two genuinely-changed cases (`/admin-dashboard` against `/admin`) come in the next span. Note that the `?` boundary is load-bearing here: the `/api?test` \u2192 `/?test` result survives only because the guard treats `?` as a real boundary, so keep that character in the accepted set if you refactor it.\n\n```ts proof\nimport { describe, it, expect } from \"vitest\";\nimport { withoutBase } from \"../../../src\";\n\n// Chapter 3: withoutBase \u2014 cases that are preserved across the change.\n// Each assertion holds on BOTH the base and the head: the new nextChar\n// guard runs on the genuine-prefix cases but never alters their result,\n// because the character after the base is '/', '?', or absent.\ndescribe(\"withoutBase preserved behaviour (PR #313, chapter 3)\", () => {\n  it(\"returns the input untouched when the base is empty ('/')\", () => {\n    expect(withoutBase(\"/test/\", \"/\")).toBe(\"/test/\");\n    expect(withoutBase(\"/?test\", \"/\")).toBe(\"/?test\");\n    expect(withoutBase(\"https://test.com\", \"/\")).toBe(\"https://test.com\");\n  });\n\n  it(\"returns the input untouched when it does not start with the base\", () => {\n    expect(withoutBase(\"/bar\", \"/foo\")).toBe(\"/bar\");\n    expect(withoutBase(\"/\", \"/foo\")).toBe(\"/\");\n    expect(withoutBase(\"https://test.com\", \"/base/\")).toBe(\"https://test.com\");\n  });\n\n  it(\"still trims a genuine prefix ending on a '/' boundary\", () => {\n    expect(withoutBase(\"/base/a\", \"/base\")).toBe(\"/a\");\n    expect(withoutBase(\"/base/a\", \"/base/\")).toBe(\"/a\");\n  });\n\n  it(\"still trims a prefix that ends at end-of-string\", () => {\n    expect(withoutBase(\"/base\", \"/base/\")).toBe(\"/\");\n    expect(withoutBase(\"/base/\", \"/base\")).toBe(\"/\");\n    expect(withoutBase(\"/base/a\", \"/base/a/\")).toBe(\"/\");\n  });\n\n  it(\"still respects the '?' query boundary\", () => {\n    expect(withoutBase(\"/api?test\", \"/api\")).toBe(\"/?test\");\n  });\n});\n```",
+ "cost": 0.3487944,
+ "text": "# Chapter 3 \u00b7 Genuine base matches, including a query right after the base, are still removed\n\n> **Before:** `\"/api?test\"` with base `\"/api\"` became `\"/?test\"`, `\"/base/a\"` became `\"/a\"`, and `\"/base\"` with base `\"/base/\"` became `\"/\"`.\n\n> **After:** The results are the same. The character after the base is `\"?\"`, `\"/\"` or missing, so the guard lets each input through to the existing slice.\n\nA stricter `withoutBase` carries its own risk. The Nuxt router strips the base from every request before it looks for a page. If the new check rejected real matches, `/admin/settings` would stop resolving, and so would `/admin?tab=users` or a bare `/admin`. This chapter follows the original fourteen `withoutBase` cases through the new guard. All of them come out as they did before.\n\nEvery one of these inputs goes through the same steps. `withoutBase` [trims the trailing slash from the base](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L322) and checks [the old `startsWith` test](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L323-L325). Only then does it reach [the new guard](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L326-L330). The guard looks at `nextChar`, the character at `input[_base.length]`, which is the first character past the base. It refuses only when that character exists and is neither `\"/\"` nor `\"?\"`.\n\nThe query case decides whether the change is safe, so it is worth following in detail. For `\"/api?test\"` with base `\"/api\"`, `nextChar` is `\"?\"`. The guard lets it pass. [The unchanged slice](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L331-L332) leaves `\"?test\"` and adds a leading slash, so the result is `\"/?test\"`. That is what [the old code](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L322-L323) returned too.\n\nThe segment cases work the same way with `\"/\"` as the next character. `\"/base/a\"` loses `\"/base\"` and becomes `\"/a\"`, whether the base is `\"/base\"` or `\"/base/\"`. `\"/base/\"` with base `\"/base\"` becomes `\"/\"`.\n\nWhen the input is exactly the base, `nextChar` is `undefined`. The guard's first condition is falsy, so the input passes. `\"/base\"` with base `\"/base/\"` slices down to `\"\"` and comes back as `\"/\"`. `\"/base/a\"` with base `\"/base/a/\"` does the same.\n\nSome inputs never reach the guard. A root base `\"/\"` stops at [the `isEmptyURL` exit](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L319-L321), so `\"/\"`, `\"/test/\"`, `\"/?test\"` and `\"https://test.com\"` are returned as they are. Inputs that don't start with the base fail the `startsWith` test first. In those cases `\"/\"` stays `\"/\"`, `\"/bar\"` stays `\"/bar\"`, and `\"https://test.com\"` with base `\"/base/\"` is returned unchanged.\n\nThis answers the earlier question. A query directly after the base is still stripped correctly, and an input equal to the base still collapses to `\"/\"`.\n\n> **For the reviewer:** Only one test covers the `\"?\"` boundary: `\"/api?test\"` with base `\"/api\"`. No test covers a base with a trailing slash before a query, such as `\"/api?test\"` with base `\"/api/\"`. Ask for that case, because a trailing slash is how Nuxt usually writes `baseURL`.\n\nThe guard narrows what `withoutBase` counts as a match without blocking any match the old tests depended on.\n\n```ts proof\nimport { describe, it, expect } from \"vitest\";\nimport { withoutBase } from \"../../../src\";\n\ndescribe(\"withoutBase still strips genuine base matches\", () => {\n  it(\"strips the base when a query string follows it directly\", () => {\n    expect(withoutBase(\"/api?test\", \"/api\")).toBe(\"/?test\");\n  });\n\n  it(\"strips the base at a path segment boundary\", () => {\n    expect(withoutBase(\"/base/a\", \"/base\")).toBe(\"/a\");\n    expect(withoutBase(\"/base/a\", \"/base/\")).toBe(\"/a\");\n    expect(withoutBase(\"/base/\", \"/base\")).toBe(\"/\");\n  });\n\n  it(\"collapses an input equal to the base to the root\", () => {\n    expect(withoutBase(\"/base\", \"/base/\")).toBe(\"/\");\n    expect(withoutBase(\"/base/a\", \"/base/a/\")).toBe(\"/\");\n  });\n\n  it(\"leaves inputs alone for a root base or a non-matching base\", () => {\n    expect(withoutBase(\"/test/\", \"/\")).toBe(\"/test/\");\n    expect(withoutBase(\"/?test\", \"/\")).toBe(\"/?test\");\n    expect(withoutBase(\"/bar\", \"/foo\")).toBe(\"/bar\");\n    expect(withoutBase(\"https://test.com\", \"/base/\")).toBe(\"https://test.com\");\n  });\n});\n```",
  "raw": {
-  "type": "result",
-  "subtype": "success",
-  "is_error": false,
-  "api_error_status": null,
-  "duration_ms": 47946,
-  "duration_api_ms": 48269,
-  "ttft_ms": 19056,
-  "ttft_stream_ms": 1240,
-  "time_to_request_ms": 105,
-  "num_turns": 1,
-  "result": "# Chapter 3 \u00b7 withoutBase, where nothing should change\n\n> **Before:** Thirteen paths pass through `withoutBase` \u2014 some trimmed of a real base (`/base/a` minus `/base` \u2192 `/a`), some respecting a query boundary (`/api?test` minus `/api` \u2192 `/?test`), some left whole because they never matched (`/bar` minus `/foo` \u2192 `/bar`) or because the base was empty or the input had a protocol.\n> **After:** Every one of them comes back with exactly the same value; the new boundary guard runs but never changes an answer.\n\nNow the data turns to the other function. `withoutBase` is the inverse of `withBase`: instead of adding a missing base, it strips a present one. Thirteen cases flow through it in this span, and the reviewer's question is whether the new lookahead \u2014 the same idea as chapter 2, placed inside `withoutBase` \u2014 disturbs any of them. It does not, and here is why for each shape.\n\nThe first door is `isEmptyURL(base)`. For `/`-`/`, `/test/`-`/`, `/?test`-`/`, and `https://test.com`-`/`, the base is `/`, so [`withoutBase` returns the input immediately](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L318-L321) \u2014 `/`, `/test/`, `/?test`, and `https://test.com` respectively (trace 117\u2013119, 180\u2013182, 187\u2013189, 208\u2013210). This door is [untouched by the change](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L315-L317), so the values match the base run exactly.\n\nThe second door is `!input.startsWith(_base)`. For `/`-`/foo`, `/`-`/foo/`, `/bar`-`/foo`, and `https://test.com`-`/base/`, `_base` is `/foo`, `/foo`, `/foo`, and `/base`, and the input never begins with those strings, so [the function returns the input unchanged](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L322-L325): `/`, `/`, `/bar`, and `https://test.com` (trace 124\u2013126, 131\u2013133, 138\u2013140, 201\u2013203). The new guard sits *after* this door, so a non-match never reaches it; both sides agree.\n\nThe cases that do get past both doors are the genuine prefixes, and this is where the new `nextChar` check actually runs. For `/base/a` minus `/base`, `_base` is `/base`, `input.startsWith(\"/base\")` is true, and `nextChar = input[5]` is `/`. [The guard `nextChar && nextChar !== \"/\" && nextChar !== \"?\"`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L326-L330) is false because `nextChar === \"/\"`, so control falls through to the slice: `input.slice(5)` is `/a`, whose first character is `/`, so it returns `/a` (trace 159\u2013161). The base run had no guard and reached the same slice, giving the same `/a` (trace 158). The twin case `/base/a` minus `/base/` behaves identically \u2014 `withoutTrailingSlash` turns the base into `/base` too, so `nextChar` is again `/` and the result is again `/a` (trace 166\u2013168).\n\nTwo more prefixes land on the boundary characters the guard was written to accept. For `/base`-`/base/`, `_base` is `/base`, and `nextChar = input[5]` is `undefined` (the string ends there); the guard's leading `nextChar &&` short-circuits to false, the slice yields `\"\"`, and the leading-slash step returns `/` (trace 145\u2013147). For `/api?test`-`/api`, `nextChar = input[4]` is `?`; the guard's `nextChar !== \"?\"` arm fails, so it falls through, slices to `?test`, and prepends a slash to give `/?test` (trace 194\u2013196). The `?` boundary is exactly the query case the fix preserves \u2014 on the base run, with no guard, the slice produced the same `/?test` (trace 193).\n\nSo across all thirteen cases the guard runs on four of them and declines to act on every one, because in each the character after the base is `/`, `?`, or absent. The outputs are identical to the base run, line for line.\n\n> **For the reviewer:** These thirteen cases are the preserved half of the evidence for `withoutBase`; the two genuinely-changed cases (`/admin-dashboard` against `/admin`) come in the next span. Note that the `?` boundary is load-bearing here: the `/api?test` \u2192 `/?test` result survives only because the guard treats `?` as a real boundary, so keep that character in the accepted set if you refactor it.\n\n```ts proof\nimport { describe, it, expect } from \"vitest\";\nimport { withoutBase } from \"../../../src\";\n\n// Chapter 3: withoutBase \u2014 cases that are preserved across the change.\n// Each assertion holds on BOTH the base and the head: the new nextChar\n// guard runs on the genuine-prefix cases but never alters their result,\n// because the character after the base is '/', '?', or absent.\ndescribe(\"withoutBase preserved behaviour (PR #313, chapter 3)\", () => {\n  it(\"returns the input untouched when the base is empty ('/')\", () => {\n    expect(withoutBase(\"/test/\", \"/\")).toBe(\"/test/\");\n    expect(withoutBase(\"/?test\", \"/\")).toBe(\"/?test\");\n    expect(withoutBase(\"https://test.com\", \"/\")).toBe(\"https://test.com\");\n  });\n\n  it(\"returns the input untouched when it does not start with the base\", () => {\n    expect(withoutBase(\"/bar\", \"/foo\")).toBe(\"/bar\");\n    expect(withoutBase(\"/\", \"/foo\")).toBe(\"/\");\n    expect(withoutBase(\"https://test.com\", \"/base/\")).toBe(\"https://test.com\");\n  });\n\n  it(\"still trims a genuine prefix ending on a '/' boundary\", () => {\n    expect(withoutBase(\"/base/a\", \"/base\")).toBe(\"/a\");\n    expect(withoutBase(\"/base/a\", \"/base/\")).toBe(\"/a\");\n  });\n\n  it(\"still trims a prefix that ends at end-of-string\", () => {\n    expect(withoutBase(\"/base\", \"/base/\")).toBe(\"/\");\n    expect(withoutBase(\"/base/\", \"/base\")).toBe(\"/\");\n    expect(withoutBase(\"/base/a\", \"/base/a/\")).toBe(\"/\");\n  });\n\n  it(\"still respects the '?' query boundary\", () => {\n    expect(withoutBase(\"/api?test\", \"/api\")).toBe(\"/?test\");\n  });\n});\n```",
+  "duration_api_ms": 36685,
   "stop_reason": "end_turn",
-  "session_id": "9dd0372c-15eb-42bc-a6e8-b27d2f7e99fe",
-  "total_cost_usd": 0.4925605,
+  "session_id": "d751876c-a402-468d-902a-cd0ee78a99ca",
+  "total_cost_usd": 0.3487944,
   "usage": {
    "input_tokens": 2,
-   "cache_creation_input_tokens": 36348,
-   "cache_read_input_tokens": 1149,
-   "output_tokens": 3961,
+   "cache_creation_input_tokens": 36489,
+   "cache_read_input_tokens": 1536,
+   "output_tokens": 2642,
+   "output_tokens_details": {
+    "thinking_tokens": 766
+   },
    "server_tool_use": {
     "web_search_requests": 0,
     "web_fetch_requests": 0
    },
    "service_tier": "standard",
    "cache_creation": {
-    "ephemeral_1h_input_tokens": 36348,
+    "ephemeral_1h_input_tokens": 36489,
     "ephemeral_5m_input_tokens": 0
    },
    "inference_geo": "not_available",
    "iterations": [
     {
      "input_tokens": 2,
-     "output_tokens": 3961,
-     "cache_read_input_tokens": 1149,
-     "cache_creation_input_tokens": 36348,
+     "output_tokens": 2642,
+     "cache_read_input_tokens": 1536,
+     "cache_creation_input_tokens": 36489,
      "cache_creation": {
       "ephemeral_5m_input_tokens": 0,
-      "ephemeral_1h_input_tokens": 36348
+      "ephemeral_1h_input_tokens": 36489
      },
      "type": "message"
     }
    ],
-   "speed": "standard"
+   "speed": "standard",
+   "fallback_credit": null
   },
   "modelUsage": {
-   "claude-haiku-4-5-20251001": {
-    "inputTokens": 29381,
-    "outputTokens": 18,
+   "claude-haiku-5-5": {
+    "inputTokens": 37142,
+    "outputTokens": 26,
     "cacheReadInputTokens": 0,
     "cacheCreationInputTokens": 0,
     "webSearchRequests": 0,
-    "costUSD": 0.029471,
-    "contextWindow": 200000,
-    "maxOutputTokens": 32000
-   },
-   "claude-opus-4-8[1m]": {
-    "inputTokens": 2,
-    "outputTokens": 3961,
-    "cacheReadInputTokens": 1149,
-    "cacheCreationInputTokens": 36348,
-    "webSearchRequests": 0,
-    "costUSD": 0.4630895,
+    "costUSD": 0.0037272000000000004,
     "contextWindow": 1000000,
-    "maxOutputTokens": 64000
+    "maxOutputTokens": 128000,
+    "thinkingTokens": 0,
+    "canonicalModel": "claude-haiku-5-5",
+    "provider": "firstParty",
+    "costBasis": "list"
+   },
+   "claude-opus-5-5": {
+    "inputTokens": 2,
+    "outputTokens": 2642,
+    "cacheReadInputTokens": 1536,
+    "cacheCreationInputTokens": 36489,
+    "webSearchRequests": 0,
+    "costUSD": 0.3450672,
+    "contextWindow": 1000000,
+    "maxOutputTokens": 128000,
+    "thinkingTokens": 766,
+    "canonicalModel": "claude-opus-5-5",
+    "provider": "firstParty",
+    "costBasis": "list"
    }
   },
   "permission_denials": [],
   "terminal_reason": "completed",
   "fast_mode_state": "off",
-  "uuid": "0a7d4554-b2cf-4f2f-817e-439233868c64"
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+   "spawned": 0,
+   "requested": {
+    "background": 0,
+    "foreground": 0,
+    "unset": 0
+   },
+   "started_in_background": 0,
+   "max_depth": 0,
+   "spawned_by_subagents": 0,
+   "completed": 0,
+   "failed": 0,
+   "killed": {
+    "parent": 0,
+    "user": 0,
+    "system": 0
+   },
+   "refused": {
+    "depth_limit": 0,
+    "concurrency_limit": 0,
+    "budget": 0
+   },
+   "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# Chapter 3 \u00b7 Genuine base matches, including a query right after the base, are still removed\n\n> **Before:** `\"/api?test\"` with base `\"/api\"` became `\"/?test\"`, `\"/base/a\"` became `\"/a\"`, and `\"/base\"` with base `\"/base/\"` became `\"/\"`.\n\n> **After:** The results are the same. The character after the base is `\"?\"`, `\"/\"` or missing, so the guard lets each input through to the existing slice.\n\nA stricter `withoutBase` carries its own risk. The Nuxt router strips the base from every request before it looks for a page. If the new check rejected real matches, `/admin/settings` would stop resolving, and so would `/admin?tab=users` or a bare `/admin`. This chapter follows the original fourteen `withoutBase` cases through the new guard. All of them come out as they did before.\n\nEvery one of these inputs goes through the same steps. `withoutBase` [trims the trailing slash from the base](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L322) and checks [the old `startsWith` test](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L323-L325). Only then does it reach [the new guard](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L326-L330). The guard looks at `nextChar`, the character at `input[_base.length]`, which is the first character past the base. It refuses only when that character exists and is neither `\"/\"` nor `\"?\"`.\n\nThe query case decides whether the change is safe, so it is worth following in detail. For `\"/api?test\"` with base `\"/api\"`, `nextChar` is `\"?\"`. The guard lets it pass. [The unchanged slice](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L331-L332) leaves `\"?test\"` and adds a leading slash, so the result is `\"/?test\"`. That is what [the old code](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L322-L323) returned too.\n\nThe segment cases work the same way with `\"/\"` as the next character. `\"/base/a\"` loses `\"/base\"` and becomes `\"/a\"`, whether the base is `\"/base\"` or `\"/base/\"`. `\"/base/\"` with base `\"/base\"` becomes `\"/\"`.\n\nWhen the input is exactly the base, `nextChar` is `undefined`. The guard's first condition is falsy, so the input passes. `\"/base\"` with base `\"/base/\"` slices down to `\"\"` and comes back as `\"/\"`. `\"/base/a\"` with base `\"/base/a/\"` does the same.\n\nSome inputs never reach the guard. A root base `\"/\"` stops at [the `isEmptyURL` exit](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L319-L321), so `\"/\"`, `\"/test/\"`, `\"/?test\"` and `\"https://test.com\"` are returned as they are. Inputs that don't start with the base fail the `startsWith` test first. In those cases `\"/\"` stays `\"/\"`, `\"/bar\"` stays `\"/bar\"`, and `\"https://test.com\"` with base `\"/base/\"` is returned unchanged.\n\nThis answers the earlier question. A query directly after the base is still stripped correctly, and an input equal to the base still collapses to `\"/\"`.\n\n> **For the reviewer:** Only one test covers the `\"?\"` boundary: `\"/api?test\"` with base `\"/api\"`. No test covers a base with a trailing slash before a query, such as `\"/api?test\"` with base `\"/api/\"`. Ask for that case, because a trailing slash is how Nuxt usually writes `baseURL`.\n\nThe guard narrows what `withoutBase` counts as a match without blocking any match the old tests depended on.\n\n```ts proof\nimport { describe, it, expect } from \"vitest\";\nimport { withoutBase } from \"../../../src\";\n\ndescribe(\"withoutBase still strips genuine base matches\", () => {\n  it(\"strips the base when a query string follows it directly\", () => {\n    expect(withoutBase(\"/api?test\", \"/api\")).toBe(\"/?test\");\n  });\n\n  it(\"strips the base at a path segment boundary\", () => {\n    expect(withoutBase(\"/base/a\", \"/base\")).toBe(\"/a\");\n    expect(withoutBase(\"/base/a\", \"/base/\")).toBe(\"/a\");\n    expect(withoutBase(\"/base/\", \"/base\")).toBe(\"/\");\n  });\n\n  it(\"collapses an input equal to the base to the root\", () => {\n    expect(withoutBase(\"/base\", \"/base/\")).toBe(\"/\");\n    expect(withoutBase(\"/base/a\", \"/base/a/\")).toBe(\"/\");\n  });\n\n  it(\"leaves inputs alone for a root base or a non-matching base\", () => {\n    expect(withoutBase(\"/test/\", \"/\")).toBe(\"/test/\");\n    expect(withoutBase(\"/?test\", \"/\")).toBe(\"/?test\");\n    expect(withoutBase(\"/bar\", \"/foo\")).toBe(\"/bar\");\n    expect(withoutBase(\"https://test.com\", \"/base/\")).toBe(\"https://test.com\");\n  });\n});\n```",
+  "ttft_ms": 11302,
+  "type": "result",
+  "duration_ms": 35643,
+  "uuid": "8b81860a-3b0f-4753-b27d-39bb3b60cb3b",
+  "ttft_stream_ms": 1966,
+  "time_to_request_ms": 134,
+  "time_to_request_phases_ms": {
+   "other": 17,
+   "system_prompt": 1,
+   "resume_other": 1,
+   "process_user_input": 3,
+   "input_attachments": 91,
+   "input_hooks": 2,
+   "tool_pool_refresh": 1,
+   "init_message": 8,
+   "engine_pickup": 1,
+   "message_prep": 1,
+   "model_config_wait": 1,
+   "autocompact": 2,
+   "query_setup": 0,
+   "model_gates": 0,
+   "tool_schema_build": 1,
+   "message_normalization": 0,
+   "client_creation": 2,
+   "request_build": 2
+  },
+  "turn_start_resume_kind": "none",
+  "process_turn_index": 0,
+  "time_to_request_loop_lag_ms": 39,
+  "time_to_request_cpu_ms": 247,
+  "time_to_request_major_faults": 1,
+  "input_attachments_detail": {
+   "slowest_producer": "at_mentioned_files",
+   "slowest_producer_ms": 72,
+   "cpu_ms": 182,
+   "major_faults": 1
+  },
+  "first_content_frame_ms": 1967,
+  "queued_turn_count": 0,
+  "result_index": 0
  }
 }

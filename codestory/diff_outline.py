@@ -24,10 +24,10 @@ from pathlib import Path
 import env  # noqa: F401  (loads .env)
 import llm
 from diff import repo_dir
-from outline import (CONTEXT_BUDGET, NOISE, READERS, REPAIRS, git, relative_to_root, span_errors, thread_errors,
-                     usage_line)
+from outline import CONTEXT_BUDGET, NOISE, READERS, REPAIRS, git, relative_to_root, thread_errors, usage_line
+from style import check_summary, words
 
-MAX_CHAPTERS = 8
+MAX_CHAPTERS = 5
 DIFF_CONTEXT = 6  # lines of context around each hunk in the diff the model reads
 
 SYSTEM = """You plan code stories about a change. A code story explains code by following its data through a real
@@ -46,10 +46,12 @@ says how it ended before and after.
 The formula: each chapter is a function. A chapter covers one contiguous span of the trace and explains one
 difference the data meets: kind "changed" for behaviour the change makes different, kind "preserved" for behaviour
 it keeps where the reader would reasonably worry (a chapter of either kind must cover at least one marked line).
-`before` and `after` say what the data experiences on each side, with the real values from the trace. Chapters
-follow the trace's order; the next chapter picks the data up where this one leaves it. Use as few chapters as the
+`before` and `after` say what the data experiences on each side, in one short sentence each (at most 25 words), with
+the real values from the trace. Order the chapters by what the reader needs first: the heart of the change, then its
+edge cases, then what stays the same (spans may come in any order, but must not overlap). Use as few chapters as the
 change needs for this reader, within the budget: a small fix may need two. Repetition (the same difference in
-several tests) is told once.
+several tests) is told once. Chapter titles are plain-language claims a reader can take in at a glance ("A third
+read of the same photo is turned away"), not function names.
 
 The evidence must be accounted for:
 - Every changed function the run reaches is explained by some chapter: list its name, exactly as in the change
@@ -60,7 +62,10 @@ The evidence must be accounted for:
   The run says nothing about those functions, so the chapters must not pretend it does. A file's changes outside
   any function (named "<path> (outside functions)" in the change list) may go there too, when they matter.
 
-`verdict` is one paragraph for the reader: what the change makes true, the evidence, and the risk that remains.
+`premise` is the stakes, as a concrete situation in the world, in at most 70 words: who meets this code, with what,
+and what went wrong (or was missing) for them before the change. Take it from the pull request's description when
+it says. `verdict` is at most 70 words for the reader: what the change makes true, the evidence in one phrase, and
+the risk that remains. Both are prose for a person, not a list of functions.
 Characters are real things in the code the data meets. Facts are claims a reader can check against the code or the
 trace. Open questions are what the data or the reader wonders about that a later chapter answers; give each an id
 like "q2.1" (chapter 2, question 1); every question is answered by exactly one later chapter, which lists the id in
@@ -164,8 +169,10 @@ def change_block(story: Path, changes: dict, info: dict) -> dict:
     base, head = changes["base"], changes["head"]
     paths = changed_paths(changes)
     diff = git(repo, "diff", f"-U{DIFF_CONTEXT}", "--no-color", base, head, "--", *paths) if paths else ""
+    described = (story / "pr.md").read_text()[:6000] if (story / "pr.md").exists() else ""
     parts = [f"Repository: {info['name']} ({info['url']}), the change {base[:7]}..{head[:7]} in {changes['pkg']}/"
-             + (f"\nPull request #{info['number']}: {info['title']}" if info.get("number") else ""),
+             + (f"\nPull request #{info['number']}: {info['title']}" if info.get("number") else "")
+             + (f"\n<pull_request_description>\n{described}\n</pull_request_description>" if described else ""),
              f"<diff>\n{diff}\n</diff>"]
     used, skipped = sum(len(p) for p in parts), []
 
@@ -212,10 +219,33 @@ def evidence_block(changes: dict, summary: dict) -> str:
             + "\n</never_reached>")
 
 
+def spans_apart(chapters: list[dict], trace_len: int) -> list[str]:
+    """Chapters numbered 1..k, spans well-formed and inside the trace, no two overlapping; any order (the reader's)."""
+    errors = []
+    if [c["n"] for c in chapters] != list(range(1, len(chapters) + 1)):
+        errors.append(f"chapters are numbered {[c['n'] for c in chapters]}, not 1..{len(chapters)}")
+    taken = []
+    for c in chapters:
+        span = c["trace_lines"]
+        if len(span) != 2 or not (1 <= span[0] <= span[1] <= trace_len):
+            errors.append(f"ch{c['n']} has a bad trace span {span} (trace has {trace_len} lines)")
+            continue
+        for n, a, b in taken:
+            if span[0] <= b and a <= span[1]:
+                errors.append(f"ch{c['n']}'s span {span} overlaps ch{n}'s [{a}, {b}]")
+        taken.append((c["n"], span[0], span[1]))
+    return errors
+
+
 def check_diff_plan(plan: dict, trace: list[str], changes: dict, summary: dict, max_chapters: int) -> list[str]:
     """Everything code can decide about a change story's plan. Empty means it may flow on to the chapters."""
     chapters = plan["chapters"]
-    errors = span_errors(chapters, len(trace)) + thread_errors(chapters)
+    errors = spans_apart(chapters, len(trace)) + thread_errors(chapters)
+    errors += check_summary("premise", plan["premise"]) + check_summary("verdict", plan["verdict"])
+    for c in chapters:
+        for side in ("before", "after"):
+            if words(c[side]) > 30:
+                errors.append(f"ch{c['n']}'s {side} runs {words(c[side])} words; one short sentence, at most 25")
     if len(chapters) > max_chapters:
         errors.append(f"{len(chapters)} chapters, budget is {max_chapters}: merge the thinnest into their neighbours")
     known = {f["name"] for c in changes["files"].values() for f in c["functions"]}
@@ -254,6 +284,18 @@ def print_plan(plan: dict, reader: str, errors: list[str]) -> None:
         print(f"   unexercised: {u['function']}")
     for e in errors:
         print(f"  ! {e}")
+
+
+def drop_written(story: Path) -> None:
+    """Chapters belong to the plan that asked for them: a new plan discards the old chapters, their proofs, their
+    model answers and the reports on them, or the chapter stage would keep them and repair them toward the new plan."""
+    import shutil
+    for f in story.glob("[0-9][0-9]-*.md"):
+        f.unlink()
+    for d in ("proofs", "traces"):
+        shutil.rmtree(story / d, ignore_errors=True)
+    for f in ("report.md", "verify.json", "story.json", "index.html", "proofs.base.json", "proofs.head.json"):
+        (story / f).unlink(missing_ok=True)
 
 
 def repair_request(errors: list[str]) -> str:
@@ -310,6 +352,7 @@ def main(story_arg: str, reader: str, max_chapters: int, repair: bool, dry_run: 
         outline = {"mode": "diff", "title": plan["title"], "premise": plan["premise"], "verdict": plan["verdict"],
                    "reader": reader, "repo": info, "chapters": plan["chapters"], "unexercised": plan["unexercised"]}
         (story / "outline.json").write_text(json.dumps(outline, indent=2) + "\n")
+        drop_written(story)
     for name, reply in replies:
         print(f"\n{name}: {usage_line(reply.usage, reply.cost)}")
     return 1 if errors else 0

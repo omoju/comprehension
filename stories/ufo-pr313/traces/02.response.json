@@ -1,84 +1,156 @@
 {
  "provider": "claude-cli",
- "model": "claude-opus-4-8[1m]",
+ "model": "claude-opus-5-5",
  "usage": {
   "input_tokens": 2,
-  "output_tokens": 2426,
-  "cache_read_input_tokens": 1149,
-  "cache_creation_input_tokens": 36366
+  "output_tokens": 2403,
+  "cache_read_input_tokens": 1536,
+  "cache_creation_input_tokens": 36430
  },
- "cost": 0.45445650000000004,
- "text": "# Chapter 2 \u00b7 withBase stops dropping the base on a false prefix\n\n> **Before:** `/admin-dashboard` reaches `withBase` with base `/admin/`, is judged to already contain the base, and comes back unchanged as `/admin-dashboard` \u2014 the base silently dropped \u2014 so the test raises `AssertionError`.\n> **After:** The same input reaches the same point but is now judged *not* to contain the base, falls through to `joinURL`, and comes back as `/admin/admin-dashboard`.\n\nTwo inputs enter this span expecting the base to be prepended, and two neighbours enter expecting to be left alone. They all reach the prefix branch of `withBase`; the change decides them differently.\n\nFollow `/admin-dashboard` with base `/admin/`. `isEmptyURL(\"/admin/\")` is false and `hasProtocol(\"/admin-dashboard\")` is false, so the data passes the first door. `withoutTrailingSlash(\"/admin/\")` trims the trailing slash to give `_base` = `/admin`, and `input.startsWith(\"/admin\")` is true \u2014 the input really does begin with those six characters (trace 74\u201376).\n\nOn the base run, that was the whole test. [The old code returned the input the moment `startsWith` was true](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L295-L297), so the data came straight back as `/admin-dashboard` (trace 75). The test expected `/admin/admin-dashboard`, so it raised `AssertionError(\"expected '/admin-dashboard' to be '/admin/admin-dashboard'\")` (trace 73).\n\nOn the head, the function reads one character past the base before trusting the match. `nextChar = input[_base.length]` is `input[6]`, which is `-`. [The guard `!nextChar || nextChar === \"/\" || nextChar === \"?\"`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L295-L301) is false for `-`: it is defined, and it is neither `/` nor `?`. So the early return is skipped, and the data falls through to [`joinURL(_base, input)`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L302) \u2014 `joinURL(\"/admin\", [\"/admin-dashboard\"])`.\n\nInside `joinURL` the trace shows the work: `isNonEmptyURL(\"/admin-dashboard\")` returns `true`, then `withTrailingSlash(\"/admin\")` returns `/admin/`, and the segment is appended to give `/admin/admin-dashboard` (trace 77\u201383). The test that failed on the base now passes.\n\nThe case `/admin-dashboard` with base `/admin` (no trailing slash) runs the identical path: `withoutTrailingSlash(\"/admin\")` leaves `_base` = `/admin`, `input[6]` is again `-`, the guard is again false, and `joinURL` again yields `/admin/admin-dashboard` (trace 96\u2013105). Before, it too returned the bare input and raised the same `AssertionError` (trace 95).\n\nThe two neighbours confirm the guard only touches false prefixes. For `/admin/admin-dashboard` with base `/admin/`, `_base` = `/admin` and `input[6]` is `/`; the guard's `nextChar === \"/\"` arm fires and the input returns unchanged \u2014 `/admin/admin-dashboard` on both sides (trace 88\u201390). For `/admin/dashboard` with base `/admin/`, `input[6]` is again `/`, so it returns `/admin/dashboard` unchanged on both sides (trace 110\u2013112). These were correct before and stay correct; only the boundary character distinguishes them from the two fixed cases.\n\n> **For the reviewer:** The new behaviour is that a base counts as \"already present\" only when the character after it is end-of-string, `/`, or `?`. Confirm this is the intended boundary set, because `#` is deliberately excluded here and no test exercises a fragment like `/admin#x` against base `/admin`.\n\n```ts proof\nimport { describe, it, expect } from \"vitest\";\nimport { withBase } from \"../../../src\";\n\ndescribe(\"withBase \u00b7 false prefix is no longer treated as having the base\", () => {\n  it(\"prepends the base when the match is not on a segment boundary (trailing-slash base)\", () => {\n    // base run returns \"/admin-dashboard\" (base dropped); head returns \"/admin/admin-dashboard\"\n    expect(withBase(\"/admin-dashboard\", \"/admin/\")).toBe(\"/admin/admin-dashboard\");\n  });\n\n  it(\"prepends the base when the match is not on a segment boundary (no-trailing-slash base)\", () => {\n    // base run returns \"/admin-dashboard\"; head returns \"/admin/admin-dashboard\"\n    expect(withBase(\"/admin-dashboard\", \"/admin\")).toBe(\"/admin/admin-dashboard\");\n  });\n\n  it(\"still leaves a genuine '/' boundary prefix untouched (unchanged by the fix)\", () => {\n    expect(withBase(\"/admin/admin-dashboard\", \"/admin/\")).toBe(\"/admin/admin-dashboard\");\n    expect(withBase(\"/admin/dashboard\", \"/admin/\")).toBe(\"/admin/dashboard\");\n  });\n});\n```",
+ "cost": 0.343537,
+ "text": "# Chapter 2 \u00b7 Adding the base now prefixes \"/admin-dashboard\" instead of skipping it\n\n> **Before:** `withBase(\"/admin-dashboard\", \"/admin/\")` and `withBase(\"/admin-dashboard\", \"/admin\")` saw the `\"/admin\"` prefix and returned `\"/admin-dashboard\"` with no base added.\n\n> **After:** The character after `\"/admin\"` is `\"-\"`, so the code falls through to `joinURL(\"/admin\", \"/admin-dashboard\")`, which returns `\"/admin/admin-dashboard\"`.\n\nThe same Nuxt app needs to go the other way: given the page path `\"/admin-dashboard\"`, it builds a link the browser can follow. That link must start with the base `/admin/`, because the app is only served there. `withBase` exists to guarantee that prefix. Before this change, it returned a link that pointed outside the app.\n\nThe path reaches `withBase` with the base `\"/admin/\"`. It passes the [early exits](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L291-L293), since the base is not empty and the path has no protocol. The base is trimmed to `\"/admin\"`, and [the `startsWith` test](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L295) passes on both sides.\n\nThis is where the versions split. In the old code, a passing prefix test was the whole decision: `withBase` [returned the input as it was](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L295-L297) and treated `\"/admin-dashboard\"` as already based. The test failed with `expected '/admin-dashboard' to be '/admin/admin-dashboard'`.\n\nThe new code [reads the character past the base](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L296), `\"-\"`. It only [returns early](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L298-L300) when that character is missing, `\"/\"` or `\"?\"`. With `\"-\"` it falls through to [`joinURL(\"/admin\", \"/admin-dashboard\")`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L302), a call the old code never made for this input. Inside, `joinURL` [drops the segment's leading slash and appends it](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L433-L434) to `withTrailingSlash(\"/admin\")`, which is `\"/admin/\"`. The result is `\"/admin/admin-dashboard\"`. The base written as `\"/admin\"` takes the same path to the same result.\n\nThe two inputs that really do carry the base are unchanged. For `\"/admin/dashboard\"` and `\"/admin/admin-dashboard\"` with base `\"/admin/\"`, the character after `\"/admin\"` is `\"/\"`, so each is returned untouched. As a result, `withBase` is still idempotent on its own output. Feeding it `\"/admin/admin-dashboard\"` again does not produce a second prefix.\n\n> **For the reviewer:** The `\"#\"` gap from `withoutBase` exists here too. Reading the code, `withBase(\"/admin#top\", \"/admin\")` now sees `\"#\"`, falls through to `joinURL`, and returns `\"/admin/admin#top\"`. The old code returned `\"/admin#top\"`. This changes a correct link into a wrong one, and no test runs it. Ask the author to add `\"#\"` to the boundary set, or to justify leaving it out and add a test.\n\n> **For the reviewer:** None of the `withBase` tests put a `\"?\"` directly after the base. The `\"?\"` branch of the new condition is therefore covered only by the code itself. Request a case such as `withBase(\"/admin?x=1\", \"/admin\")` expecting `\"/admin?x=1\"`.\n\nWith this change, `withBase` adds the prefix whenever the first segment is not exactly the base, so links to a page whose name merely starts with the base now land inside the app.\n\n```ts proof\nimport { describe, it, expect } from \"vitest\";\nimport { withBase } from \"../../../src\";\n\ndescribe(\"withBase only treats the base as present at a segment boundary\", () => {\n  it(\"prefixes /admin-dashboard under base /admin/\", () => {\n    expect(withBase(\"/admin-dashboard\", \"/admin/\")).toBe(\"/admin/admin-dashboard\");\n  });\n\n  it(\"prefixes /admin-dashboard under base /admin\", () => {\n    expect(withBase(\"/admin-dashboard\", \"/admin\")).toBe(\"/admin/admin-dashboard\");\n  });\n\n  it(\"still leaves inputs that genuinely carry the base untouched\", () => {\n    expect(withBase(\"/admin/dashboard\", \"/admin/\")).toBe(\"/admin/dashboard\");\n    expect(withBase(\"/admin/admin-dashboard\", \"/admin/\")).toBe(\n      \"/admin/admin-dashboard\",\n    );\n  });\n});\n```",
  "raw": {
-  "type": "result",
-  "subtype": "success",
-  "is_error": false,
-  "api_error_status": null,
-  "duration_ms": 31496,
-  "duration_api_ms": 32732,
-  "ttft_ms": 12172,
-  "ttft_stream_ms": 3942,
-  "time_to_request_ms": 80,
-  "num_turns": 1,
-  "result": "# Chapter 2 \u00b7 withBase stops dropping the base on a false prefix\n\n> **Before:** `/admin-dashboard` reaches `withBase` with base `/admin/`, is judged to already contain the base, and comes back unchanged as `/admin-dashboard` \u2014 the base silently dropped \u2014 so the test raises `AssertionError`.\n> **After:** The same input reaches the same point but is now judged *not* to contain the base, falls through to `joinURL`, and comes back as `/admin/admin-dashboard`.\n\nTwo inputs enter this span expecting the base to be prepended, and two neighbours enter expecting to be left alone. They all reach the prefix branch of `withBase`; the change decides them differently.\n\nFollow `/admin-dashboard` with base `/admin/`. `isEmptyURL(\"/admin/\")` is false and `hasProtocol(\"/admin-dashboard\")` is false, so the data passes the first door. `withoutTrailingSlash(\"/admin/\")` trims the trailing slash to give `_base` = `/admin`, and `input.startsWith(\"/admin\")` is true \u2014 the input really does begin with those six characters (trace 74\u201376).\n\nOn the base run, that was the whole test. [The old code returned the input the moment `startsWith` was true](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L295-L297), so the data came straight back as `/admin-dashboard` (trace 75). The test expected `/admin/admin-dashboard`, so it raised `AssertionError(\"expected '/admin-dashboard' to be '/admin/admin-dashboard'\")` (trace 73).\n\nOn the head, the function reads one character past the base before trusting the match. `nextChar = input[_base.length]` is `input[6]`, which is `-`. [The guard `!nextChar || nextChar === \"/\" || nextChar === \"?\"`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L295-L301) is false for `-`: it is defined, and it is neither `/` nor `?`. So the early return is skipped, and the data falls through to [`joinURL(_base, input)`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L302) \u2014 `joinURL(\"/admin\", [\"/admin-dashboard\"])`.\n\nInside `joinURL` the trace shows the work: `isNonEmptyURL(\"/admin-dashboard\")` returns `true`, then `withTrailingSlash(\"/admin\")` returns `/admin/`, and the segment is appended to give `/admin/admin-dashboard` (trace 77\u201383). The test that failed on the base now passes.\n\nThe case `/admin-dashboard` with base `/admin` (no trailing slash) runs the identical path: `withoutTrailingSlash(\"/admin\")` leaves `_base` = `/admin`, `input[6]` is again `-`, the guard is again false, and `joinURL` again yields `/admin/admin-dashboard` (trace 96\u2013105). Before, it too returned the bare input and raised the same `AssertionError` (trace 95).\n\nThe two neighbours confirm the guard only touches false prefixes. For `/admin/admin-dashboard` with base `/admin/`, `_base` = `/admin` and `input[6]` is `/`; the guard's `nextChar === \"/\"` arm fires and the input returns unchanged \u2014 `/admin/admin-dashboard` on both sides (trace 88\u201390). For `/admin/dashboard` with base `/admin/`, `input[6]` is again `/`, so it returns `/admin/dashboard` unchanged on both sides (trace 110\u2013112). These were correct before and stay correct; only the boundary character distinguishes them from the two fixed cases.\n\n> **For the reviewer:** The new behaviour is that a base counts as \"already present\" only when the character after it is end-of-string, `/`, or `?`. Confirm this is the intended boundary set, because `#` is deliberately excluded here and no test exercises a fragment like `/admin#x` against base `/admin`.\n\n```ts proof\nimport { describe, it, expect } from \"vitest\";\nimport { withBase } from \"../../../src\";\n\ndescribe(\"withBase \u00b7 false prefix is no longer treated as having the base\", () => {\n  it(\"prepends the base when the match is not on a segment boundary (trailing-slash base)\", () => {\n    // base run returns \"/admin-dashboard\" (base dropped); head returns \"/admin/admin-dashboard\"\n    expect(withBase(\"/admin-dashboard\", \"/admin/\")).toBe(\"/admin/admin-dashboard\");\n  });\n\n  it(\"prepends the base when the match is not on a segment boundary (no-trailing-slash base)\", () => {\n    // base run returns \"/admin-dashboard\"; head returns \"/admin/admin-dashboard\"\n    expect(withBase(\"/admin-dashboard\", \"/admin\")).toBe(\"/admin/admin-dashboard\");\n  });\n\n  it(\"still leaves a genuine '/' boundary prefix untouched (unchanged by the fix)\", () => {\n    expect(withBase(\"/admin/admin-dashboard\", \"/admin/\")).toBe(\"/admin/admin-dashboard\");\n    expect(withBase(\"/admin/dashboard\", \"/admin/\")).toBe(\"/admin/dashboard\");\n  });\n});\n```",
+  "duration_api_ms": 24224,
   "stop_reason": "end_turn",
-  "session_id": "5ae9133d-2b5f-45f4-9b6c-c9b5079d67af",
-  "total_cost_usd": 0.45445650000000004,
+  "session_id": "1e7b0c9b-4a15-4107-a011-d68f727cd550",
+  "total_cost_usd": 0.343537,
   "usage": {
    "input_tokens": 2,
-   "cache_creation_input_tokens": 36366,
-   "cache_read_input_tokens": 1149,
-   "output_tokens": 2426,
+   "cache_creation_input_tokens": 36430,
+   "cache_read_input_tokens": 1536,
+   "output_tokens": 2403,
+   "output_tokens_details": {
+    "thinking_tokens": 555
+   },
    "server_tool_use": {
     "web_search_requests": 0,
     "web_fetch_requests": 0
    },
    "service_tier": "standard",
    "cache_creation": {
-    "ephemeral_1h_input_tokens": 36366,
+    "ephemeral_1h_input_tokens": 36430,
     "ephemeral_5m_input_tokens": 0
    },
    "inference_geo": "not_available",
    "iterations": [
     {
      "input_tokens": 2,
-     "output_tokens": 2426,
-     "cache_read_input_tokens": 1149,
-     "cache_creation_input_tokens": 36366,
+     "output_tokens": 2403,
+     "cache_read_input_tokens": 1536,
+     "cache_creation_input_tokens": 36430,
      "cache_creation": {
       "ephemeral_5m_input_tokens": 0,
-      "ephemeral_1h_input_tokens": 36366
+      "ephemeral_1h_input_tokens": 36430
      },
      "type": "message"
     }
    ],
-   "speed": "standard"
+   "speed": "standard",
+   "fallback_credit": null
   },
   "modelUsage": {
-   "claude-haiku-4-5-20251001": {
-    "inputTokens": 29477,
-    "outputTokens": 17,
+   "claude-haiku-5-5": {
+    "inputTokens": 37083,
+    "outputTokens": 27,
     "cacheReadInputTokens": 0,
     "cacheCreationInputTokens": 0,
     "webSearchRequests": 0,
-    "costUSD": 0.029561999999999998,
-    "contextWindow": 200000,
-    "maxOutputTokens": 32000
-   },
-   "claude-opus-4-8[1m]": {
-    "inputTokens": 2,
-    "outputTokens": 2426,
-    "cacheReadInputTokens": 1149,
-    "cacheCreationInputTokens": 36366,
-    "webSearchRequests": 0,
-    "costUSD": 0.42489450000000006,
+    "costUSD": 0.0037218,
     "contextWindow": 1000000,
-    "maxOutputTokens": 64000
+    "maxOutputTokens": 128000,
+    "thinkingTokens": 0,
+    "canonicalModel": "claude-haiku-5-5",
+    "provider": "firstParty",
+    "costBasis": "list"
+   },
+   "claude-opus-5-5": {
+    "inputTokens": 2,
+    "outputTokens": 2403,
+    "cacheReadInputTokens": 1536,
+    "cacheCreationInputTokens": 36430,
+    "webSearchRequests": 0,
+    "costUSD": 0.3398152,
+    "contextWindow": 1000000,
+    "maxOutputTokens": 128000,
+    "thinkingTokens": 555,
+    "canonicalModel": "claude-opus-5-5",
+    "provider": "firstParty",
+    "costBasis": "list"
    }
   },
   "permission_denials": [],
   "terminal_reason": "completed",
   "fast_mode_state": "off",
-  "uuid": "7d5e2fcc-9b12-4366-a9d7-08829b5a3def"
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+   "spawned": 0,
+   "requested": {
+    "background": 0,
+    "foreground": 0,
+    "unset": 0
+   },
+   "started_in_background": 0,
+   "max_depth": 0,
+   "spawned_by_subagents": 0,
+   "completed": 0,
+   "failed": 0,
+   "killed": {
+    "parent": 0,
+    "user": 0,
+    "system": 0
+   },
+   "refused": {
+    "depth_limit": 0,
+    "concurrency_limit": 0,
+    "budget": 0
+   },
+   "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# Chapter 2 \u00b7 Adding the base now prefixes \"/admin-dashboard\" instead of skipping it\n\n> **Before:** `withBase(\"/admin-dashboard\", \"/admin/\")` and `withBase(\"/admin-dashboard\", \"/admin\")` saw the `\"/admin\"` prefix and returned `\"/admin-dashboard\"` with no base added.\n\n> **After:** The character after `\"/admin\"` is `\"-\"`, so the code falls through to `joinURL(\"/admin\", \"/admin-dashboard\")`, which returns `\"/admin/admin-dashboard\"`.\n\nThe same Nuxt app needs to go the other way: given the page path `\"/admin-dashboard\"`, it builds a link the browser can follow. That link must start with the base `/admin/`, because the app is only served there. `withBase` exists to guarantee that prefix. Before this change, it returned a link that pointed outside the app.\n\nThe path reaches `withBase` with the base `\"/admin/\"`. It passes the [early exits](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L291-L293), since the base is not empty and the path has no protocol. The base is trimmed to `\"/admin\"`, and [the `startsWith` test](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L295) passes on both sides.\n\nThis is where the versions split. In the old code, a passing prefix test was the whole decision: `withBase` [returned the input as it was](https://github.com/unjs/ufo/blob/5fb179d51384301ffb66b48e213863a27cadd1ff/src/utils.ts#L295-L297) and treated `\"/admin-dashboard\"` as already based. The test failed with `expected '/admin-dashboard' to be '/admin/admin-dashboard'`.\n\nThe new code [reads the character past the base](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L296), `\"-\"`. It only [returns early](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L298-L300) when that character is missing, `\"/\"` or `\"?\"`. With `\"-\"` it falls through to [`joinURL(\"/admin\", \"/admin-dashboard\")`](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L302), a call the old code never made for this input. Inside, `joinURL` [drops the segment's leading slash and appends it](https://github.com/unjs/ufo/blob/cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c/src/utils.ts#L433-L434) to `withTrailingSlash(\"/admin\")`, which is `\"/admin/\"`. The result is `\"/admin/admin-dashboard\"`. The base written as `\"/admin\"` takes the same path to the same result.\n\nThe two inputs that really do carry the base are unchanged. For `\"/admin/dashboard\"` and `\"/admin/admin-dashboard\"` with base `\"/admin/\"`, the character after `\"/admin\"` is `\"/\"`, so each is returned untouched. As a result, `withBase` is still idempotent on its own output. Feeding it `\"/admin/admin-dashboard\"` again does not produce a second prefix.\n\n> **For the reviewer:** The `\"#\"` gap from `withoutBase` exists here too. Reading the code, `withBase(\"/admin#top\", \"/admin\")` now sees `\"#\"`, falls through to `joinURL`, and returns `\"/admin/admin#top\"`. The old code returned `\"/admin#top\"`. This changes a correct link into a wrong one, and no test runs it. Ask the author to add `\"#\"` to the boundary set, or to justify leaving it out and add a test.\n\n> **For the reviewer:** None of the `withBase` tests put a `\"?\"` directly after the base. The `\"?\"` branch of the new condition is therefore covered only by the code itself. Request a case such as `withBase(\"/admin?x=1\", \"/admin\")` expecting `\"/admin?x=1\"`.\n\nWith this change, `withBase` adds the prefix whenever the first segment is not exactly the base, so links to a page whose name merely starts with the base now land inside the app.\n\n```ts proof\nimport { describe, it, expect } from \"vitest\";\nimport { withBase } from \"../../../src\";\n\ndescribe(\"withBase only treats the base as present at a segment boundary\", () => {\n  it(\"prefixes /admin-dashboard under base /admin/\", () => {\n    expect(withBase(\"/admin-dashboard\", \"/admin/\")).toBe(\"/admin/admin-dashboard\");\n  });\n\n  it(\"prefixes /admin-dashboard under base /admin\", () => {\n    expect(withBase(\"/admin-dashboard\", \"/admin\")).toBe(\"/admin/admin-dashboard\");\n  });\n\n  it(\"still leaves inputs that genuinely carry the base untouched\", () => {\n    expect(withBase(\"/admin/dashboard\", \"/admin/\")).toBe(\"/admin/dashboard\");\n    expect(withBase(\"/admin/admin-dashboard\", \"/admin/\")).toBe(\n      \"/admin/admin-dashboard\",\n    );\n  });\n});\n```",
+  "ttft_ms": 6223,
+  "type": "result",
+  "duration_ms": 23494,
+  "uuid": "d141da21-a80d-40ed-860b-bd60e329c6da",
+  "ttft_stream_ms": 604,
+  "time_to_request_ms": 92,
+  "time_to_request_phases_ms": {
+   "other": 21,
+   "system_prompt": 1,
+   "resume_other": 1,
+   "process_user_input": 3,
+   "input_attachments": 42,
+   "input_hooks": 1,
+   "tool_pool_refresh": 2,
+   "init_message": 7,
+   "engine_pickup": 1,
+   "message_prep": 1,
+   "model_config_wait": 1,
+   "autocompact": 4,
+   "query_setup": 0,
+   "model_gates": 0,
+   "tool_schema_build": 1,
+   "message_normalization": 1,
+   "client_creation": 1,
+   "request_build": 4
+  },
+  "turn_start_resume_kind": "none",
+  "process_turn_index": 0,
+  "time_to_request_loop_lag_ms": 42,
+  "time_to_request_cpu_ms": 135,
+  "time_to_request_major_faults": 0,
+  "input_attachments_detail": {
+   "slowest_producer": "at_mentioned_files",
+   "slowest_producer_ms": 26,
+   "cpu_ms": 65,
+   "major_faults": 0
+  },
+  "first_content_frame_ms": 604,
+  "queued_turn_count": 0,
+  "result_index": 0
  }
 }

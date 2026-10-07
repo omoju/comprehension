@@ -19,6 +19,7 @@ from pathlib import Path
 
 import env  # noqa: F401  (loads .env)
 import llm
+import style
 from chapter import Usage, money, slug
 from diff_outline import change_block, evidence_block, load, numbered
 from diff_verify import Report, chapter_files, proof_name, split_proof, verify
@@ -32,12 +33,11 @@ before and after, the two runs merged into one numbered trace (`+` happens only 
 `~` is the same call with other values and its `before` lines show the old ones, ` *` marks a function the change
 edited), the plan, and the reader the story is for.
 
-The formula: each chapter is a function. It covers one span of the trace. It begins with the data exactly as it
-enters that span and ends with the data exactly as it leaves. Tell what happens to it on the head, and wherever the
-base differed, what happened there instead, with the real values from the trace on both sides: the reader should see
-what the data looks like at each step, before and after. Follow the trace's order. Don't re-tell earlier chapters;
-don't run ahead into later ones. If the plan marks the chapter "preserved", show the behaviour that stays the same
-and why the change doesn't disturb it.
+The formula: each chapter covers one span of the trace and turns on one difference. Open on what is at stake for
+this data, then go straight to the moment the two versions part ways: what the head does with it, what the base did
+instead, with the real values on both sides. Get there fast; the steps before it are a clause. Don't re-tell earlier
+chapters; don't run ahead into later ones. If the plan marks the chapter "preserved", show the behaviour that stays
+the same and why the change doesn't disturb it, briefly.
 
 Voice: the functions and classes the data meets are the other characters; say what they do to it and why the change
 made them do it differently. Plain, concrete, warm; never cute at the expense of accuracy. The reader's concerns
@@ -49,12 +49,14 @@ blockquote whose first words are the reader's role in bold, like `> **For the re
 the narration and the advice in the callouts; typically one or two per chapter, never more than three. Callouts are
 written plainly: one topic per sentence, active voice, and any action as an imperative.
 
+{writing}
+
 Accountability, which is not optional:
-- Every claim about the code links to the exact lines that show it, as a permalink:
-  [text](REPO_URL/blob/HEAD/path/to/file#L10-L14) for the code after the change, and
-  [text](REPO_URL/blob/BASE/path/to/file#L10-L14) for the code before it. Use the full hashes given. Line numbers
-  must be the real ones from the numbered file of that side. Cite the head for what the code does now; cite the base
-  only to show what it did before.
+- Every claim about the code links to the exact lines that show it, as a permalink that starts with the prefix the
+  request gives for that side (the repository's URL, `/blob/` and the side's full commit hash), then the file's path
+  and its lines: [the new guard](<the prefix for the code after the change>src/utils.ts#L327-L330). Never write the
+  words HEAD or BASE in a link. Line numbers must be the real ones from the numbered file of that side. Cite the code
+  after the change for what it does now; cite the code before it only to show what it did then.
 - Values you show must be the ones in the trace. Say only what the code and trace show; mark inference as such. The
   runs say nothing about code they never reached: don't claim behaviour for it.
 - End with a proof: one fenced code block whose info string is exactly `ts proof`, holding a whole spec file, as the
@@ -63,8 +65,11 @@ Accountability, which is not optional:
   chapter's proof passes on both. Every assertion must be able to fail if the story were wrong: never assert that a
   value equals itself, or that true is true.
 
-Format: Markdown, starting with "# Chapter N · Title", then a blockquote "**Before:** <before>" and a blockquote
+Format: Markdown, starting with "# Chapter N · Title", then a blockquote "**Before:** <before>", a blank line, and a
+blockquote
 "**After:** <after>", then the story, then the proof. Nothing else."""
+
+SYSTEM = SYSTEM.replace("{writing}", style.WRITING)
 
 PROOF_HOW = {
     "japa": """The proof is a whole Japa spec file. It is saved as {pkg}/{path} and run from {pkg}/ with
@@ -100,8 +105,21 @@ def chapter_request(n: int, outline: dict, story: Path, changes: dict, summary: 
             (f"<previous_chapter>\n{previous}\n</previous_chapter>\n\n" if previous else "")
             + f"Write chapter {n}: {chapter['title']} (kind: {chapter['kind']}). It covers trace lines "
             f"{chapter['trace_lines'][0]}-{chapter['trace_lines'][-1]}.\n"
-            f"REPO_URL = {info['url']}\nBASE = {info['base']}\nHEAD = {info['head']}\n\n{how}")},
+            f"Links to the code after the change start with: {info['url']}/blob/{info['head']}/\n"
+            f"Links to the code before the change start with: {info['url']}/blob/{info['base']}/\n\n{how}")},
     ]
+
+
+def readable(story: Path, reports: dict[int, Report]) -> dict[int, Report]:
+    """The checks on how a chapter reads (style.py), added to the checks on what it claims; a chapter with no
+    citations, or citations by branch name, fails here rather than passing with a warning."""
+    url = json.loads((story / "outline.json").read_text())["repo"]["url"]
+    for n, r in reports.items():
+        md = chapter_files(story, n)[0]
+        if md:
+            text = md.read_text()
+            r.errors += style.check_links(text, url) + style.check_chapter(text)
+    return reports
 
 
 def repair_request(r: Report) -> str:
@@ -109,8 +127,8 @@ def repair_request(r: Report) -> str:
             + (f"\n\nThe proof's outcome: on the head, {r.head}; on the base, {r.base}." if r.head else "")
             + "\n\nReturn the whole corrected chapter, in the same format. Fix what the checks name: re-read the cited "
               "lines on the side the link names and fix the link or the claim; make the proof pass on the head and, "
-              "for a changed chapter, fail on the base. Keep the span, the Before/After lines and everything that "
-              "passed as it is.")
+              "for a changed chapter, fail on the base; where it is too long, cut the plumbing and the repeated cases, "
+              "not the decisive moment. Keep everything else that passed as it is.")
 
 
 def ask(messages: list[dict], n: int, story: Path, name: str) -> tuple[llm.Reply, float]:
@@ -175,8 +193,8 @@ def main(story_arg: str, only: int | None, repairs: int) -> int:
               f"{money(usage[n].cost)}", flush=True)
 
     # Check everything at once (a proof run boots the app, once per side), then repair what failed, then recheck it.
-    print("\n  checking: citations, and proofs on the head and the base…", flush=True)
-    reports = verify(story, ns)
+    print("\n  checking: citations, how it reads, and proofs on the head and the base…", flush=True)
+    reports = readable(story, verify(story, ns))
     for attempt in range(1, repairs + 1):
         failing = [n for n in ns if reports[n].errors]
         if not failing:
@@ -191,7 +209,7 @@ def main(story_arg: str, only: int | None, repairs: int) -> int:
             usage[n].add(reply.usage, reply.cost)
             repaired[n] += 1
             save(reply.text.strip() + "\n", n, outline, story)
-        reports.update(verify(story, failing))
+        reports.update(readable(story, verify(story, failing)))
 
     lines = [f"# Report · {outline['title']} · reader: {outline['reader']}\n",
              f"Change {outline['repo']['base'][:7]} → {outline['repo']['head'][:7]} · model: {llm.describe()}\n",
