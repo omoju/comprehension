@@ -8,6 +8,11 @@ not something you take on trust.
 
 A repository explained as a story that follows its data through one real run of its intended use.
 
+**Read one first:** [`stories/index.html`](stories/index.html) lists the ten. Each reading page has three panes: the
+control-flow chart of the run, the story, and the code it cites, side by side (on a window about 1,360px wide; narrower
+screens open the code as a sheet). The pages are static files; with GitHub Pages enabled for this repository
+(Settings → Pages → Source: GitHub Actions) they are served at `https://<user>.github.io/comprehension/stories/`.
+
 - **The plot is a run.** A model writes the intended-use scenario; a tracer records every call into the repository
   with its arguments and return values. Chapters are spans of that trace.
 - **Every claim links to the lines**, as a permalink at a pinned commit. A checker verifies that the lines exist
@@ -32,7 +37,7 @@ sh codestory/restore_repos.sh                     # the demo repositories at the
 .venv/bin/python codestory/scenario.py demo-repos/markupsafe stories/mine
 .venv/bin/python codestory/outline.py  demo-repos/markupsafe stories/mine --reader owner
 .venv/bin/python codestory/chapter.py  stories/mine
-.venv/bin/python codestory/render.py   stories/mine                      # → stories/mine/index.html
+.venv/bin/python codestory/render.py   stories/mine                      # → stories/mine/index.html, the three-pane page
 .venv/bin/python codestory/verify.py   stories/mine                      # citations, drift, proofs
 ```
 
@@ -56,3 +61,7 @@ produced: `eval/explainer/index.html` (comprehension, H2) and `eval/explainer/h1
 Two-week cycles with a date and a kill criterion set in advance. Plain formats (Markdown, JSON, git permalinks)
 and swappable models. Demonstrations before documents. Public by default: no private data, no secrets.
 Claude writes the code, the technical docs and the stories; the essays and talks are Omoju's.
+
+## License
+
+MIT. The stories quote the repositories they describe under those projects' own licenses, with permalinks as attribution.
