@@ -21,8 +21,6 @@ and the story fails like a test when the code changes. Started 2026-09-22. **Shi
   posts and talks are Omoju's.
 - **Checks before generation.** Every model output has a deterministic check where one is possible (run it, diff it,
   pin it), a model judge only for what's left, and a judge is tested on known answers before it is trusted.
-- **Teach while building.** Omoju is learning agentic engineering through this project. Explain the idea behind each
-  change (context, loops, judges, evals, failure modes) peer to peer; skip general software basics.
 
 ## How CodeStories is shaped
 - The reader is chosen per run (`codestory/readers/`); the reader decides emphasis.
