@@ -1,0 +1,4 @@
+{
+  "why": "The README's Usage section opens with `tomli.loads(toml_str)` on a `[[players]]` TOML document and asserts the resulting dict, which is the library's canonical, intended use; this script reproduces that exact first example so the data journey runs from a TOML source string through the parser to a plain Python dict.",
+  "attempts": 1
+}

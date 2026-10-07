@@ -107,6 +107,14 @@ i
   <p>A caller has a four-item list and a loop that does real work, and wants to see progress without writing any printing logic. The list is handed to `tqdm(...)`: from that moment it is no longer just a list but the payload of a progress meter that must allocate a global write lock, start a background thread, probe the terminal, render a frame, throttle itself, and clean up after the loop ends \u2014 all on `sys.stderr`, all without changing what the loop iterates over. This story follows that list through one real run and asks, at each step, what is guaranteed and what could go wrong.</p>
   <div class="meta">9 chapters · 9,337 words · 177 citations · reader: owner</div>
 </a>
+<a class="card" href="tomli/index.html">
+  <div class="repo">hukkin/tomli <span class="sha">@ 18d8d59</span></div>
+  <h2>Two Players and a Parser: What `tomli.loads` Promises</h2>
+  <p>A caller hands Tomli a TOML string 
+s a document with two `[[players]]` records 
+s and expects back a plain Python dict of builtin types, or a clean `TOMLDecodeError` if the document is malformed. Nothing else: no partial results, no custom classes, no surprises. The string is the protagonist; the story follows it from the public entry point, through the single-pass statement loop, into the nested dict that is handed back, and notes at every branch what would have happened had the input been hostile or merely wrong.</p>
+  <div class="meta">8 chapters · 7,776 words · 173 citations · reader: owner</div>
+</a>
 </div>
 <p class="foot">The three-pane layout needs a window about 1,360px wide; narrower screens show the code as a sheet you open from the text.
 Pages are static and self-contained: the code you see is embedded from the repository at the pinned commit.</p>

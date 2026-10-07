@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 STORIES = ROOT / "stories"
 ORDER = ["itsdangerous-close-third", "bench/requests", "bench/flask", "bench/click", "bench/httpx", "bench/rich",
-         "bench/attrs", "bench/jinja", "bench/markupsafe", "bench/tqdm"]
+         "bench/attrs", "bench/jinja", "bench/markupsafe", "bench/tqdm", "tomli"]
 
 
 def card(rel: str) -> str:
