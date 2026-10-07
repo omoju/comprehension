@@ -25,6 +25,7 @@ from pathlib import Path
 from verify import git, repo_path
 
 TS_DECISIONS = Path(__file__).resolve().parent / "ts" / "decisions.mjs"
+TS_FILES = (".ts", ".tsx", ".mts", ".js", ".mjs", ".vue")
 
 HELPER_CALLS = 5   # a function called this often is plumbing (want_bytes); leave it off the map
 MAP_DEPTH = 4      # deeper calls stay in the chapters, not on the map
@@ -134,24 +135,43 @@ def flow(story: Path, outline: dict, files: dict) -> list[dict]:
     def shown(node, depth):
         return depth == 1 or (depth <= MAP_DEPTH and counts[node["fn"]] < HELPER_CALLS)
 
+    # TypeScript functions get their ends and decisions from decisions.mjs, in one call for every step on the map.
+    requests, stack = {}, [(tree, 0)]
+    while stack:
+        node, depth = stack.pop()
+        if depth and shown(node, depth) and node["file"].endswith(TS_FILES) and node["file"] in files:
+            requests[(node["file"], node["line"])] = {
+                "file": node["file"], "source": files[node["file"]], "line": node["line"],
+                "ran": sorted(ran_lines.get(node["file"], ())), "side": "repo", "test": 0}
+        stack += [(c, depth + 1) for c in node["calls"]]
+    scenario = story / "scenario.json"
+    pkg = (json.loads(scenario.read_text()).get("pkg") if scenario.exists() else None) or "."
+    ts = ts_decisions(repo_path(outline) / pkg, list(requests.values())) if requests else {}
+
+    def shape(node) -> tuple[int, list[dict]]:
+        """The function's last line and the decisions it made: TypeScript's from decisions.mjs, Python's from its AST."""
+        src = files.get(node["file"])
+        if node["file"].endswith(TS_FILES):
+            got = ts.get((node["file"], node["line"], "repo", 0), {})
+            return got.get("end", node["line"]), got.get("decisions", [])
+        if src is None:
+            return node["line"], []
+        return function_end(src, node["line"]), decisions(src, node["line"], ran_lines.get(node["file"], set()))
+
     def walk(node, depth):
         nonlocal line
         here = node.get("tl", line)  # compressed traces carry their own line numbers
         line += 1
         visible = depth and shown(node, depth)
+        end, made = shape(node) if visible else (node["line"], [])
         if visible:
             chapter = next((n for n, a, b in spans if a <= here <= b), current[0])
             current[0] = chapter
             returned = re.sub(r" object at 0x[0-9a-f]+", "", node.get("returned", ""))  # addresses change every run
-            src = files.get(node["file"])
             items.append({"kind": "step", "fn": node["fn"] + (f" ×{node['repeat']}" if "repeat" in node else ""), "file": node["file"], "line": node["line"],
-                          "end": function_end(src, node["line"]) if src else node["line"], "depth": depth,
-                          "returned": returned, "chapter": chapter})
+                          "end": end, "depth": depth, "returned": returned, "chapter": chapter})
         # this function's decisions and its calls, interleaved in the order they happen
-        events = []
-        if visible and node["file"] in files:
-            for d in decisions(files[node["file"]], node["line"], ran_lines.get(node["file"], set())):
-                events.append((d["line"], 0, d))
+        events = [(d["line"], 0, d) for d in made]
         for i, child in enumerate(node["calls"]):
             at = int(str(child.get("called_from") or ":0").rsplit(":", 1)[-1] or 0)
             events.append((at, 1, i))
@@ -167,7 +187,7 @@ def flow(story: Path, outline: dict, files: dict) -> list[dict]:
             line += 1
         if depth == 1:
             value = re.sub(r" object at 0x[0-9a-f]+", "", node.get("returned", ""))
-            if value and value != "None":
+            if value and value not in ("None", "undefined"):
                 items.append({"kind": "data", "label": value, "chapter": current[0]})
 
     walk(tree, 0)
@@ -189,10 +209,20 @@ def function_end(source: str, first: int) -> int:
     return first
 
 
-def build(story: Path) -> str:
+def story_data(story: Path) -> dict:
+    """Everything a reading page shows, as data: the page below embeds it, the review app reads it."""
     outline = json.loads((story / "outline.json").read_text())
-    if outline.get("mode") == "diff":
-        return build_diff(story, outline)
+    return diff_data(story, outline) if outline.get("mode") == "diff" else repo_data(story, outline)
+
+
+def build(story: Path) -> str:
+    data = story_data(story)
+    payload = json.dumps(data).replace("</", "<\\/")
+    name = data["title"].split(":")[0].strip()  # the tab shows the story's name, not its subtitle
+    return TEMPLATE.replace("__TITLE__", html.escape(name)).replace("__DATA__", payload)
+
+
+def repo_data(story: Path, outline: dict) -> dict:
     repo, info = repo_path(outline), outline["repo"]
     chapters = []
     for c in outline["chapters"]:
@@ -223,9 +253,9 @@ def build(story: Path) -> str:
             "reader": outline.get("reader", ""),
             "repo": {"name": info["name"], "url": info["url"], "commit": info["commit"]},
             "chapters": chapters, "flow": items, "files": {f"{info['commit']}:{p}": t for p, t in files.items()}}
-    payload = json.dumps(data).replace("</", "<\\/")
-    name = outline["title"].split(":")[0].strip()  # the tab shows the story's name, not its subtitle
-    return TEMPLATE.replace("__TITLE__", html.escape(name)).replace("__DATA__", payload)
+    scenario = next((story / f for f in ("scenario.py", "scenario.spec.ts", "scenario.test.ts") if (story / f).exists()), None)
+    data["scenario"] = scenario.read_text() if scenario else ""
+    return data
 
 
 def ts_decisions(pkg_dir: Path, requests: list[dict]) -> dict[tuple, dict]:
@@ -301,7 +331,7 @@ def diff_flow(trees: list[dict], spans: list[tuple], files: dict, revs: dict, to
     return items
 
 
-def build_diff(story: Path, outline: dict) -> str:
+def diff_data(story: Path, outline: dict) -> dict:
     from diff import hunks, repo_dir
     from diff_verify import line_map
 
@@ -354,9 +384,40 @@ def build_diff(story: Path, outline: dict) -> str:
             "tests": summary["tests"], "number": info.get("number"),
             "repo": {"name": info["name"], "url": info["url"], "commit": revs["head"], **revs},
             "chapters": chapters, "flow": items, "files": files, "changed": changed_lines, "maps": maps}
-    payload = json.dumps(data).replace("</", "<\\/")
-    name = outline["title"].split(":")[0].strip()
-    return TEMPLATE.replace("__TITLE__", html.escape(name)).replace("__DATA__", payload)
+    for ch in chapters:  # what the run shows inside each chapter: the calls whose result changed, with both values
+        ch["run"] = moments(trees, ch["span"], touched)
+    return data
+
+
+def moments(trees: list[dict], span: list[int], touched: set, most: int = 3) -> list[dict]:
+    """A chapter's evidence from the run, for a reader: up to `most` calls in its span that differ between the two
+    sides, each with its arguments and both results. Calls whose result changed come first, then calls to functions
+    the change edited; helpers that merely run on one side come last, if at all."""
+    from diff import key, outcome
+    found = []
+
+    def walk(node, depth, test):
+        tl = node.get("tl", 0)
+        shallow = node.get("mark") == "~" or depth <= 2 or key(node) in touched  # a one-sided helper deep down is noise
+        if span[0] <= tl <= span[-1] and node.get("mark") in ("~", "+", "-") and depth and shallow:
+            found.append({"depth": depth, "test": test, "fn": node["fn"], "mark": node["mark"],
+                          "edited": key(node) in touched, "args": node.get("args", {}),
+                          "after": outcome(node) if node["mark"] != "-" else None,
+                          "before": (node.get("before") or {}).get("outcome") if node["mark"] == "~"
+                          else outcome(node) if node["mark"] == "-" else None})
+        for c in node["calls"]:
+            walk(c, depth + 1, test)
+
+    for t in trees:
+        walk(t["tree"], 0, t["test"])
+    found.sort(key=lambda m: (m["mark"] != "~", not m["edited"], m["depth"]))
+    seen, out = set(), []
+    for m in found:
+        if m["fn"] in seen:
+            continue
+        seen.add(m["fn"])
+        out.append(m)
+    return out[:most]
 
 
 TEMPLATE = r"""<title>__TITLE__</title>
@@ -804,4 +865,5 @@ if __name__ == "__main__":
     story = Path(sys.argv[1])
     out = story / "index.html"
     out.write_text(build(story))
+    (story / "story.json").write_text(json.dumps(story_data(story)) + "\n")  # for the review app's reader
     print(f"wrote {out} ({out.stat().st_size // 1024} KB)")
