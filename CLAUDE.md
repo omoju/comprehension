@@ -15,7 +15,8 @@ and the story fails like a test when the code changes. Started 2026-09-22. **Shi
 - **Protocols, not lock-in.** Plain formats (Markdown, JSON, git permalinks) and swappable models. Nothing that only
   works inside one vendor's platform.
 - **Smallest demonstration first.** Working on real repositories beats a document. Demo before docs.
-- **Interruptible.** Work in pieces that can be dropped for a week and picked up. `NOTES.md` always says where we are.
+- **Interruptible.** Work in pieces that can be dropped for a week and picked up. `NOTES.local.md` always says where we
+  are; `NOTES.md` is the public record and carries no working state.
 - **Public by default.** Meant to be shown, talked about and used in a talk. No real people's private data, no secrets.
 - **Omoju writes their own public words.** Claude writes the code, the technical docs and the generated stories; essays,
   posts and talks are Omoju's.
@@ -32,5 +33,6 @@ and the story fails like a test when the code changes. Started 2026-09-22. **Shi
   and the code beside the narrative.
 
 ## Start of a session
-1. Read this file, then `NOTES.md` (running log, newest first; "Pick up here" says where to resume).
+1. Read this file, then `NOTES.md` (the public record: decisions, lessons, log) and `NOTES.local.md` if it exists
+   (working state for an open cycle; gitignored; "Pick up here" says where to resume).
 2. Keys live in `.env` at the root (never commit it). The pipeline is in `codestory/`; each script's docstring says how to run it.

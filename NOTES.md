@@ -1,46 +1,14 @@
 # comprehension · notes
-*The project's memory between sessions. "Pick up here" is always current; below it: the plan, settled decisions,
-lessons, a short log (newest first), and Omoju's opening paragraph. Code and git say what changed; this says why.*
+*The record of how CodeStories was built: the decisions as they were settled, the lessons with their evidence, and a
+log, newest first. The git history has the rest. Working state for an open cycle lives in `NOTES.local.md`, which
+is not committed.*
 
-## ▶ Pick up here (2026-10-06 · decided)
-**Decision day done.** Rule: KILL (PREREGISTRATION §13). Omoju: SHIP, recorded first. Hand check 18/20.
-Results page published. This cycle is closed; a next one needs a new preregistration (candidates below).
-
-## The state on 5 October, kept for the record
-**State.** The preregistered comparison has run on all 9 out-of-sample repos. **The rule (§8) says KILL; Omoju's
-§9 verdict, recorded first, says SHIP.** Both are published with the disagreement, as §9.3 requires.
-`eval/results.md` (numbers), `eval/results.html` (the page), `eval/results-first-run.md` (the first, broken
-judging pass; see §12). Tomorrow, 6 October, is the decision date: the rule has decided; what remains is the
-write-up, publishing, and Omoju's own words.
-
-**The numbers (9 repos, pooled).** H1: story 0.71 vs DeepWiki 0.54 contradicted claims / 1k words (ratio 1.3,
-95% CI 0.55–4.86: crosses both ½ and 1). Raw: 10 vs 7 contradicted of 360 sampled each; the story's density is
-higher because it makes more checkable claims per word (26 vs 20 per 1k). H2: path 97.9% vs 62.7% (+35, CI
-+23 to +47); general 76.2% vs 55.7% (+20, CI +5 to +33). Both H2 thresholds cleared with room; H1 failed.
-
-**What the 10 story contradictions are** (all listed in the 10-05 log): small, real inaccuracies in narrative
-detail about code: "the first thing `tqdm.__new__` does is take the lock" (it isn't), "`fold=True`" (only
-sometimes), "cached by a tuple of style ids" (of Style objects), "three `hasattr` checks" (two and an else).
-None was caught by the pipeline's paragraph judge (Jev ≥ 0.7 on only 4 of 10). The citation and proof checks
-passed on every one: they check that lines exist and values hold, not that every sentence about the code is right.
-DeepWiki's 7: two about CI workflow files, one wrong line number, `Response.ok` "200–299" (it's < 400).
-
-**What the result says, plainly.** The story form helps a reader a lot (H2). The accountability machinery as built
-(permalinks + drift + proofs + a paragraph judge) does not make the *prose* more accurate than generated docs
-(H1). The rule was written so that a small accuracy edge would mean the checking isn't earning its cost; no edge
-means the same. The eval's claim-level judge, with the source in view, caught what the pipeline's judge missed.
-
-**Tomorrow (Tuesday 6 October)**
-1. Omoju: hand-check `eval/handcheck.md` (20 claims, §5.1.5); `handcheck.py --score` reports agreement.
-2. Omoju reads `eval/results.md`, the §12 entries, and the list of contradictions; the decision is the rule's.
-3. Claude: results page final (hand-check agreement in), README status line, publish the page; NOTES closed out.
-4. Omoju: own words (post / talk notes).
-5. If Omoju wants a next cycle, it is a **new** preregistration, not a reinterpretation. The obvious candidate:
-   move the eval's claim-level judge (source in view, blind, tested on planted lies) into the pipeline as the
-   stage-3 check on prose, and re-test H1. Or the pivot path from §8: stories of *changes*.
-
-**Open decisions (Omoju)**
-1. Which reading pages to publish beyond the four.
+## Status
+**Cycle 1 (22 September – 6 October 2026) is closed.** The preregistered comparison against DeepWiki ran on nine
+repositories; the rule said **kill** on accuracy (H1) while comprehension (H2) came out strongly for the stories;
+Omoju's blind verdict, recorded first, was ship. The decision and both verdicts: `PREREGISTRATION.md` §13; the
+numbers: `eval/results.md`; how each measure was produced: `eval/explainer/`. Cost: ≈ $192 in model calls over the
+two weeks (stories ≈ $65, outline repairs ≈ $21, evaluation ≈ $103), pennies on Jev.
 
 **Pipeline**, run from the root with `.venv/bin/python` (Python 3.13; keys in `.env`):
 `codestory/scenario.py <repo> <dir>` → `outline.py <repo> <dir> --reader owner|maintainer|user [--max-chapters N]`
@@ -51,33 +19,13 @@ story is the stage-3 pass. The judge is reported, never repaired on.
 Checks: `verify.py <dir>` (citations, drift, proofs), `claims.py <dir> <chapter>` (Jev contradiction judge).
 Each repo gets its own environment at `demo-repos/<repo>/.codestory-venv` (created on first use).
 
-**Spend so far:** ≈ $192 on Anthropic (10-05: eval run $68, re-judge $35, misc $1; (≈ $20 to 09-30; 10-01: 15 outline repairs ≈ $21, repair-loop test ≈ $1.5;
-10-02: 9 stories $37.94, STE $1.82, eval build + judge test + in-sample dry run ≈ $6), pennies on Jev.
-
-## The plan to Tuesday 6 October
-Question: is a CodeStory better than generated documentation? Head-to-head against DeepWiki on 10 pure-Python repos
-(requests, flask, click, httpx, rich, attrs, itsdangerous, jinja, markupsafe, tqdm; itsdangerous is in-sample).
-Arms: story / DeepWiki (via its MCP) / official docs. Measures: contradictions per 1k words (H1); reader-model QA
-with execution-checked keys, path vs general questions (H2). **The formal rule in `PREREGISTRATION.md` decides**:
-ship / pivot to stories of *changes* / kill.
-
-| Day | Work | Status |
-|---|---|---|
-| Wed 30 | voice; full itsdangerous story; per-repo venv; trace-ordered context; preregistration | done, plus the reading page; repo list not yet approved |
-| Thu 1 | repair loop; pilot 2 repos; self-story | repair loop done (outline + chapter), outlines repaired to 10 ch.; chapters await go |
-| Fri 2 | run all 10; build the eval (questions, keys, DeepWiki + docs fetch) | all 10 run, 76/76 green ($38); eval built, judge tested, dry run on itsdangerous |
-| Sat 3 | run the head-to-head | |
-| Sun 4 | buffer; Omoju reads 2–3 | |
-| Mon 5 | results page, README (Claude drafts; posts are Omoju's); publish. | run done (2 §10 reruns, 1 §12 chunking); §9.1 + §9.2 (ship) recorded first; first judging pass blind → re-judged (§12); **rule: KILL** |
-| Tue 6 | decide by the rule | **KILL** by the rule; Omoju: ship; hand check 18/20; page published |
-
-Cuts, in order: 10 → 5 repos; drop the docs arm; drop Omoju's reads.
-
-**Context worth using in the write-up:** Sha Ma et al., "Agentic AI and Code Reviews: Toward a Pattern Language
-for Code Reviews in the Age of Agentic AI" (*Enterprise Technology Leadership Journal*, Fall 2026, IT Revolution).
-Code review's value includes knowledge sharing; the paper's patterns rebuild the *gate* (defects, risk, policy) but
-not the knowledge sharing. CodeStories targets that half. Several of its patterns are already in the pipeline (shift
-left, design for verification, context engineering, the quality loop, cross-model judging, durable records).
+**The evaluation** (`codestory/eval/`, one line each): `questions.py` writes 8 path + 7 general questions from the
+repo, scenario and trace only, with keys checked by running them (dropped if the check fails); `extract.py` pulls
+atomic claims from each arm with one prompt and samples 40 with a fixed seed; `judge.py claims` labels them blind
+with the source the claims name in context, then Jev re-scores from the cited lines; `read.py` answers the questions
+from one arm's text; `judge.py grade` scores correct/partly/wrong blind; `analyze.py` pools, bootstraps over
+repositories and applies §8; `results_page.py` renders the page from the JSON; `handcheck.py` prepares and scores
+the human check.
 
 ## Settled decisions
 - **Claude writes the stories**, automatically, for any repo (09-23). Chapter count is whatever the journey needs (09-23).
