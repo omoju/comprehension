@@ -56,3 +56,27 @@ Every model stage is the same loop:
 
 The checks are the design: the model fills whatever gap the check leaves, so each check says what we actually want
 (a minimum of calls per chapter, not just a cap on their count; an assert that can fail, not just an assert).
+
+## TypeScript, and a change's two runs
+
+`codestory/ts/` traces TypeScript and JavaScript (Node 20.6 or later). `register.mjs` installs a module loader hook
+ahead of the package's own TypeScript loader, and `instrument.mjs` rewrites each named function as
+`return __cs$(…, () => { body })` without adding a line, so every line number stays the file's own and a permalink
+needs no source map. `runtime.mjs` records the calls (with AsyncLocalStorage, so awaited calls nest under their
+caller) in `trace.py`'s shape, and, through `coverage.mjs`, the lines each test ran (V8 coverage, mapped back through
+the source maps). A test is the root of a run: the calls made while it runs are what is recorded. Two test runners
+so far: Japa, for AdonisJS (`register.mjs`), and Vitest, for Vite and Vue, `.vue` script blocks included
+(`vite-plugin.mjs`, `vitest-run.mjs`; run `npm install --legacy-peer-deps` in `codestory/ts/web` once, so the traced
+repository needs no test runner of its own).
+
+`diff.py` uses it to trace a change. It checks out the base and the head as worktrees, runs the head's tests on both
+(on the base, imports of what the change adds become `undefined`, so only the tests that use them fail), and compares
+the two runs call by call:
+
+```bash
+python3 codestory/diff.py <repo> <base> <head> <out-dir> --pkg <package> --spec <test file> [--runner vitest]
+```
+
+It writes the merged run (`diff.txt`: `+` happens only after the change, `-` only before, `~` is the same call with
+other values, ` *` marks a function the change edited), each test's outcome before and after, and the changed
+functions no test reaches. No model is involved.

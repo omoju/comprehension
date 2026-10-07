@@ -93,6 +93,16 @@ the human check.
   Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-07** · TypeScript tracer (`codestory/ts/`) and `diff.py`, which runs a change's own tests on its base and
+  its head and compares the two runs call by call; no model. Checked on ufo #313 (its 32 tests pass traced; 4 fail
+  on the base and pass on the head, and the run reaches both changed functions) and on a private TypeScript codebase
+  (896 backend and 549 frontend files instrument and compile with no line moved; 1,123 frontend tests pass traced as
+  they do untraced). Lessons: rewrite the source before its compiler sees it and never add a line, so a permalink
+  needs no source map. A loop that only awaits resolved promises starves the event loop: no signal handler or timer
+  runs again, so the trace is saved as each test's calls open, not on SIGTERM. The head's tests import what the
+  change adds; on the base those imports become `undefined`, or no test in the file runs at all. Not every thenable
+  is a promise: a query builder runs its query when `then` is called, so only native promises are awaited for their
+  result. A table-driven test builds its own title, so the title is read from the runner, not the source.
 - **10-05 night** · First results (judge mostly blind on source): SHIP. Diagnosed: `repo_block` without a trace
   leads with docs; large repos' source cut. Fixed (`judge_block`: files the claims name first, then package source,
   then docs; verified without model calls), re-judged the same 720 claims ($35), §12 entry: **KILL** (0.71 vs
