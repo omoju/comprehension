@@ -1,6 +1,7 @@
 """codestory review: a local web app around review.py.
 
-    .venv/bin/python codestory/app/server.py [--port 8765]
+    ./review                                        # from the repository root: sets up, then starts and opens the app
+    .venv/bin/python codestory/app/server.py [--port 8765] [--open]
 
 Sign in to GitHub and to a model provider, point at a pull request, read the change story written about it, write
 your notes, ask the assistant about the story, then let it draft the review comments, approve them and post them to
@@ -28,6 +29,7 @@ import sys
 import threading
 import traceback
 import urllib.parse
+import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -497,13 +499,22 @@ def main() -> int:
     global PORT
     ap = argparse.ArgumentParser(description="codestory review: a local web app around review.py")
     ap.add_argument("--port", type=int, default=PORT)
+    ap.add_argument("--open", action=argparse.BooleanOptionalAction, default=False, help="open the app in a browser")
     a = ap.parse_args()
     PORT = a.port
     state.setup()
     state.apply_model_settings()
-    httpd = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+    try:
+        httpd = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+    except OSError as e:
+        print(f"codestory review: port {PORT} is taken ({e.strerror}). If the app is already running, its link is the "
+              "first line it printed; or start another with --port.", file=sys.stderr)
+        return 1
     httpd.daemon_threads = True
-    print(f"codestory review: http://127.0.0.1:{PORT}/?t={TOKEN}\n  (data in {state.HOME}; Ctrl-C to stop)", flush=True)
+    link = f"http://127.0.0.1:{PORT}/?t={TOKEN}"
+    print(f"codestory review: {link}\n  (data in {state.HOME}; Ctrl-C to stop)", flush=True)
+    if a.open:
+        threading.Thread(target=webbrowser.open, args=(link,), daemon=True).start()  # some openers block
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

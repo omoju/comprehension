@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# codestory review, from a clone of this repository:
+#
+#     ./review [--port 8765] [--no-open]
+#
+# The first run builds .venv (Python 3.13, with uv); every run says which optional tools are missing, then starts the
+# app and opens it in your browser. Ctrl-C stops it. macOS, Linux and WSL.
+set -euo pipefail
+cd "$(dirname "$0")"
+
+if ! command -v git >/dev/null; then
+  echo "codestory review needs git." >&2; exit 1
+fi
+if ! command -v uv >/dev/null; then
+  echo "codestory review needs uv, which builds its Python environment: https://docs.astral.sh/uv/" >&2
+  echo "  curl -LsSf https://astral.sh/uv/install.sh | sh" >&2
+  exit 1
+fi
+if [ ! -x .venv/bin/python ] || [ requirements.txt -nt .venv/.requirements ]; then
+  echo "Setting up .venv (once)…"
+  [ -x .venv/bin/python ] || uv venv --quiet .venv --python 3.13
+  uv pip install --quiet --python .venv/bin/python -r requirements.txt
+  touch .venv/.requirements
+fi
+
+# Neither stops the app; each limits what it can do. The Setup page shows where the model sign-ins stand.
+if ! node -e 'const [a, b] = process.versions.node.split(".").map(Number); process.exit(a > 20 || (a === 20 && b >= 6) ? 0 : 1)' 2>/dev/null; then
+  echo "  note: TypeScript stories need Node 20.6 or later (https://nodejs.org)"
+fi
+if ! command -v gh >/dev/null; then
+  echo "  note: no GitHub CLI; sign in to GitHub on the app's Setup page instead (https://cli.github.com)"
+fi
+
+exec .venv/bin/python codestory/app/server.py --open "$@"

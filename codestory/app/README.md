@@ -6,8 +6,11 @@ them, and post them to the pull request, each on the lines it concerns. Or point
 of one run through it, with the same notes and assistant.
 
 ```bash
-.venv/bin/python codestory/app/server.py            # prints http://127.0.0.1:8765/?t=… ; open that link
+./review                       # from the repository root: sets up .venv the first time, then starts the app and opens it
 ```
+
+`./review` needs `uv` (and Node 20.6+ for TypeScript); it passes `--port` and `--no-open` through. Without it:
+`.venv/bin/python codestory/app/server.py [--open]` prints `http://127.0.0.1:8765/?t=…`; open that link.
 
 Standard library only; the page uses marked and DOMPurify from cdnjs and its fonts from Google Fonts. Data lives in `~/.codestory`
 (`CODESTORY_HOME` to move it), outside this repository, so a story about a private repository can't be committed

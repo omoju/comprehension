@@ -30,7 +30,7 @@ Pipeline and data flow: [`codestory/README.md`](codestory/README.md). Running lo
 
 ### Make a story of your own repository
 
-Python 3.13 and [`uv`](https://docs.astral.sh/uv/) on the path; a model: an Anthropic API key, or your Claude or
+Python 3.13 and [`uv`](https://docs.astral.sh/uv/) on the path (and Node 20.6+ for a TypeScript repository); a model: an Anthropic API key, or your Claude or
 ChatGPT login (through the `claude` or `codex` CLI), or a deployment on Azure AI Foundry (see `.env.example`). Then:
 
 ```bash
@@ -49,7 +49,8 @@ What to expect: **$2–6 in model calls and 10–25 minutes** for a library of a
 lists every chapter with its checks, repairs and cost. The contradiction judge (Jev, on Cloudflare) runs only if
 its keys are in `.env`; without them the report says it was skipped.
 
-What it can't do yet: repositories that aren't Python; intended uses that need the network, credentials or services
+What it can't do yet: repositories in other languages (Python, and TypeScript or JavaScript packages tested with
+Vitest or Japa, so far); intended uses that need the network, credentials or services
 (the scenario must run offline; for HTTP libraries the pipeline found local transports on its own, but it can fail);
 repositories much over 400,000 characters of source (the model sees the traced files first, the rest as room allows);
 and, as the comparison below found, it does not make every sentence right: read the report, run the proofs, and
@@ -83,6 +84,20 @@ that claims a difference must pass after the change and fail before it, so a pro
 TypeScript and JavaScript packages tested with Japa (AdonisJS) or Vitest (Vite, Vue) so far. An example from a
 public repository: [`stories/ufo-pr313/`](stories/ufo-pr313/) (unjs/ufo, "prevent false prefix matches").
 Pipeline: [`codestory/README.md`](codestory/README.md#a-change-instead-of-a-repository).
+
+### Review a pull request in the app
+
+```bash
+git clone https://github.com/omoju/comprehension.git && cd comprehension
+./review
+```
+
+`./review` sets itself up the first time (it needs `uv`, and Node 20.6+ for TypeScript), then opens **codestory
+review** in your browser: a local app where you paste a pull request, read its story, pin notes to the code, ask an
+assistant about it, and post the review comments it drafts from your notes, each on the lines it concerns. It can also
+explain a repository. Sign in on its Setup page: GitHub through the `gh` CLI, and a model through your Claude or
+ChatGPT login, an Anthropic key or Azure AI Foundry. macOS, Linux and WSL; details in
+[`codestory/app/README.md`](codestory/app/README.md).
 
 ### Is it better than generated documentation?
 
