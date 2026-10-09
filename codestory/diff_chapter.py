@@ -21,7 +21,8 @@ import env  # noqa: F401  (loads .env)
 import llm
 import style
 from chapter import Usage, money, slug
-from diff_outline import change_block, evidence_block, load, numbered
+from diff_outline import (TRACE_BUDGET, change_block, changed_names, evidence_block, load, numbered,
+                          trace_view)
 from diff_verify import Report, chapter_files, proof_name, split_proof, verify
 from outline import READERS, REPAIRS
 
@@ -96,13 +97,22 @@ def chapter_request(n: int, outline: dict, story: Path, changes: dict, summary: 
     name = proof_name(story, n)
     how = PROOF_HOW[changes.get("runner", "japa")].format(pkg=changes["pkg"], path=f"tests/unit/codestory/{name}",
                                                           name=name)
+    # A trace too big to show whole is shown per chapter instead: the chapter's own lines, folded only if they too
+    # are over the budget (the plan, in the shared block, says what the other chapters cover).
+    whole = len(numbered(trace)) <= TRACE_BUDGET
+    lo, hi = chapter["trace_lines"][0], chapter["trace_lines"][-1]
+    shared = f"<trace>\n{numbered(trace)}\n</trace>\n\n" if whole else ""
+    own = "" if whole else (f"<trace>\nThe trace is too long to show whole; these are this chapter's lines, "
+                            f"{lo}-{hi}:\n{trace_view(trace, TRACE_BUDGET, lo, hi, focus=changed_names(changes))}"
+                            "\n</trace>\n\n")
     return [
         change_block(story, changes, info),
         {"type": "text", "cache_control": {"type": "ephemeral"},
-         "text": (f"{evidence_block(changes, summary)}\n\n<trace>\n{numbered(trace)}\n</trace>\n\n"
+         "text": (f"{evidence_block(changes, summary)}\n\n{shared}"
                   f"<reader>\n{profile}\n</reader>\n\n<plan>\n{plan}\n</plan>")},
         {"type": "text", "text": (
             (f"<previous_chapter>\n{previous}\n</previous_chapter>\n\n" if previous else "")
+            + own
             + f"Write chapter {n}: {chapter['title']} (kind: {chapter['kind']}). It covers trace lines "
             f"{chapter['trace_lines'][0]}-{chapter['trace_lines'][-1]}.\n"
             f"Links to the code after the change start with: {info['url']}/blob/{info['head']}/\n"

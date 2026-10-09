@@ -29,6 +29,7 @@ from style import check_summary, words
 
 MAX_CHAPTERS = 5
 DIFF_CONTEXT = 6  # lines of context around each hunk in the diff the model reads
+DIFF_BUDGET = 800_000  # characters of diff; past it, tests and data go first (one PR's whole diff was 617k)
 
 SYSTEM = """You plan code stories about a change. A code story explains code by following its data through a real
 run, in close third person: the story stays with the data as it travels through the code. A change story runs the
@@ -134,6 +135,138 @@ def numbered(lines: list[str]) -> str:
     return "\n".join(f"{i:4}  {line}" for i, line in enumerate(lines, 1))
 
 
+TRACE_BUDGET = 400_000  # characters of trace shown; enough to keep every difference of a 14.6k-line trace
+LINE_MAX = 240  # a line that differs
+CONTEXT_LINE_MAX = 140  # a line that leads to one, or a call that's the same on both sides
+CALL = re.compile(r"^.\s*([A-Za-z_$][\w$.]*)\(")
+RESULT = re.compile(r"^.\s*(before )?→")
+
+
+def changed_names(changes: dict) -> set[str]:
+    return {f["name"] for c in changes["files"].values() for f in c["functions"]}
+
+
+def trace_view(trace: list[str], budget: int = TRACE_BUDGET, lo: int = 1, hi: int | None = None,
+               focus: set[str] = frozenset()) -> str:
+    """Lines lo..hi of the merged trace as the model sees them, numbered as in the trace. Within the budget they are
+    shown whole. A change that adds a feature can trace thousands of new calls (one gave 1.9M characters, past the
+    model's context), so a bigger trace is folded, losing as little of the change as it can:
+
+    - A call whose whole subtree repeats an earlier one, word for word, becomes a pointer to the first (lossless).
+    - Then lines are kept in this order until the budget is spent: the tests; every line that differs (`~`, `-`)
+      with the calls that lead to it; the first call of each function in `focus` (the changed functions); the
+      results of those calls; then the rest, shallowest first. Long lines are clipped.
+    - Each run of lines left out becomes one ⋮ line naming the lines it stands for, how many differ, and the
+      functions called in it, so a chapter's span can still take them in."""
+    hi = hi or len(trace)
+    whole = "\n".join(f"{i:4}  {trace[i - 1]}" for i in range(lo, hi + 1))
+    if len(whole) <= budget:
+        return whole
+    lines = range(lo - 1, hi)  # 0-based from here on
+
+    def indent(line: str) -> int:
+        return len(line) - 1 - len(line[1:].lstrip(" ")) if line and line[0] != "#" else 0
+
+    ind = {i: indent(trace[i]) for i in lines}
+    structural = {i for i in lines if not trace[i].strip() or trace[i].startswith("#") or ind[i] <= 1}
+    end, parent, stack = {}, {}, []
+    for i in lines:
+        while stack and (i in structural or ind[i] <= ind[stack[-1]]):
+            end[stack.pop()] = i - 1
+        parent[i] = stack[-1] if stack else None
+        if i not in structural:
+            stack.append(i)
+    for i in stack:
+        end[i] = hi - 1
+
+    repeats, covered, seen = {}, set(), {}  # repeats: root -> (first, its end)
+    i = lo - 1
+    while i < hi:
+        if i not in structural and end[i] > i:
+            key = "\n".join(x[0] + x[1 + ind[i]:] for x in trace[i:end[i] + 1])
+            if key in seen:
+                repeats[i] = seen[key]
+                covered.update(range(i, end[i] + 1))
+                i = end[i] + 1
+                continue
+            seen[key] = (i, end[i])
+        i += 1
+
+    def results(i: int) -> list[int]:
+        return [j for j in range(i + 1, end.get(i, i) + 1) if ind[j] == ind[i] + 2 and RESULT.match(trace[j])]
+
+    order, first, short = [], set(), {f.split(".")[-1] for f in focus}
+    order += [(0, 0, i) for i in structural]
+    for i in lines:
+        name = (m := CALL.match(trace[i])) and m.group(1)
+        if name and i not in covered and name not in first and (name in focus or name.split(".")[-1] in short):
+            first.add(name)
+            order.append((1, ind[i], i))
+    order += [(2, ind[i], i) for i in lines if i not in covered and trace[i][:1] in "~-" and i not in structural]
+    order += [(3, ind[i], i) for i in lines if i not in covered and i not in structural]
+    order.sort()
+
+    def keep(k: int) -> set[int]:
+        kept = set()
+        for tier, _, i in order[:k]:
+            todo = [i] + (results(i) if tier == 1 else [])
+            while todo:
+                j = todo.pop()
+                if j is not None and j not in kept:
+                    kept.add(j)
+                    todo.append(parent.get(j))
+        return kept
+
+    def render(kept: set[int]) -> list[str]:
+        out, run = [], []
+
+        def flush() -> None:
+            if run:
+                calls = list(dict.fromkeys(m.group(1) for j in run if (m := CALL.match(trace[j]))))
+                marked = sum(1 for j in run if MARKED.search(trace[j]))
+                names = ", ".join(calls[:3]) + (f" +{len(calls) - 3}" if len(calls) > 3 else "")
+                out.append(f"      ⋮ {run[0] + 1}-{run[-1] + 1}" + (f", {marked} marked" if marked else "")
+                           + (f": {names}" if names and len(run) > 2 else ""))
+                run.clear()
+        i = lo - 1
+        while i < hi:
+            if i in kept:
+                flush()
+                most = LINE_MAX if MARKED.search(trace[i]) else CONTEXT_LINE_MAX
+                out.append(f"{i + 1:4}  {trace[i] if len(trace[i]) <= most else trace[i][:most] + ' …'}")
+                i += 1
+            elif i in repeats:  # a repeat is its own ⋮ line, pointing at the first
+                flush()
+                f, e = repeats[i]
+                name = (m := CALL.match(trace[i])) and m.group(1)
+                out.append(f"      ⋮ {i + 1}-{end[i] + 1}{f' {name}' if name else ''}: same as {f + 1}-{e + 1}")
+                i = end[i] + 1
+            else:
+                run.append(i)
+                i += 1
+        flush()
+        return out
+
+    size = lambda rendered: sum(len(x) + 1 for x in rendered)  # noqa: E731
+    low, high = 0, len(order)
+    while low < high:  # the most lines, in order, that fit
+        mid = (low + high + 1) // 2
+        if size(render(keep(mid))) <= budget:
+            low = mid
+        else:
+            high = mid - 1
+    kept = keep(low)
+    out = render(kept)
+    differ = [i for i in lines if trace[i][:1] in "~-"]
+    seen_diff = sum(1 for i in differ if i in kept or i in covered)
+    return "\n".join(out) + (
+        f"\n      (folded to fit: {len(whole):,} characters in full; {len(kept):,} of {len(lines):,} lines shown, "
+        f"{len(covered):,} are repeats of shown lines; {seen_diff:,} of the {len(differ):,} lines that differ are "
+        "shown or repeated. \"⋮ a-b\" stands for trace lines a to b, not shown (with how many differ and what they "
+        "call); "
+        "\"same as c-d\" means they repeat lines c to d word for word. A span can include them.)")
+
+
 def change_info(changes: dict) -> dict:
     repo = repo_dir(changes)
     url = re.sub(r"^git@github\.com:", "https://github.com/", git(repo, "remote", "get-url", "origin")).removesuffix(".git")
@@ -162,13 +295,36 @@ def traced_paths(story: Path) -> set[str]:
     return found
 
 
+def budgeted_diff(repo: Path, base: str, head: str, paths: list[str]) -> str:
+    """The change's diff, whole within DIFF_BUDGET. Past it, files are kept code first, then tests, then data and
+    docs, and the ones left out are named with their size, so the plan can still list what they change."""
+    if not paths:
+        return ""
+    diff = git(repo, "diff", f"-U{DIFF_CONTEXT}", "--no-color", base, head, "--", *paths)
+    if len(diff) <= DIFF_BUDGET:
+        return diff
+    files = re.split(r"\n(?=diff --git )", diff)
+    path = lambda f: f.split("\n", 1)[0].rsplit(" b/", 1)[-1]  # noqa: E731
+    rank = lambda f: (bool(re.search(r"\.(spec|test)\.\w+$", path(f))),  # noqa: E731
+                      not re.search(r"\.([cm]?[jt]sx?|vue|py)$", path(f)))
+    kept, left, used = set(), [], 0
+    for i in sorted(range(len(files)), key=lambda i: rank(files[i])):
+        if used + len(files[i]) <= DIFF_BUDGET:
+            kept.add(i)
+            used += len(files[i])
+        else:
+            left.append(f"{path(files[i])} ({files[i].count(chr(10))} lines of diff)")
+    return "\n".join(files[i] for i in sorted(kept)) + (
+        f"\n\n({len(left)} files' diffs not shown because of the budget: {', '.join(left)})" if left else "")
+
+
 def change_block(story: Path, changes: dict, info: dict) -> dict:
     """The change as the model reads it, one cached block: the diff; every changed file in full on the head and
     the base (numbered, so links can cite either side); then the unchanged files the runs pass through."""
     repo = repo_dir(changes)
     base, head = changes["base"], changes["head"]
     paths = changed_paths(changes)
-    diff = git(repo, "diff", f"-U{DIFF_CONTEXT}", "--no-color", base, head, "--", *paths) if paths else ""
+    diff = budgeted_diff(repo, base, head, paths)
     described = (story / "pr.md").read_text()[:6000] if (story / "pr.md").exists() else ""
     parts = [f"Repository: {info['name']} ({info['url']}), the change {base[:7]}..{head[:7]} in {changes['pkg']}/"
              + (f"\nPull request #{info['number']}: {info['title']}" if info.get("number") else "")
@@ -310,7 +466,8 @@ def main(story_arg: str, reader: str, max_chapters: int, repair: bool, dry_run: 
     info = change_info(changes)
     profile = (READERS / f"{reader}.md").read_text()
     content = [change_block(story, changes, info), {"type": "text", "text": (
-        f"{evidence_block(changes, summary)}\n\n<trace>\n{numbered(trace)}\n</trace>\n\n<reader>\n{profile}\n</reader>"
+        f"{evidence_block(changes, summary)}\n\n<trace>\n{trace_view(trace, focus=changed_names(changes))}\n</trace>"
+        f"\n\n<reader>\n{profile}\n</reader>"
         f"\n\nPlan the story of this change for this reader, in at most {max_chapters} chapters.")}]
     messages: list[dict] = [{"role": "user", "content": content}]
 
@@ -366,5 +523,9 @@ if __name__ == "__main__":
     if len(args) != 1:
         print(__doc__)
         sys.exit(2)
-    sys.exit(main(args[0], opt("--reader", "reviewer"), int(opt("--max-chapters", MAX_CHAPTERS)),
-                  repair="--repair" in argv, dry_run="--dry-run" in argv))
+    try:
+        sys.exit(main(args[0], opt("--reader", "reviewer"), int(opt("--max-chapters", MAX_CHAPTERS)),
+                      repair="--repair" in argv, dry_run="--dry-run" in argv))
+    except llm.LLMError as e:
+        print(f"\n✗ the model could not plan it: {e}")
+        sys.exit(1)
