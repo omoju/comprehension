@@ -1,7 +1,7 @@
 """One command: a repository in, a CodeStory out.
 
     .venv/bin/python codestory/story.py <github-url | local path> [--reader owner|maintainer|user] [--out DIR]
-                                        [--pkg DIR] [--open]
+                                        [--pkg DIR] [--about TEXT] [--open]
 
 Clones the repository into demo-repos/<name> (a URL) or uses the directory you name, then runs the pipeline:
 scenario (find and trace the intended use) → outline (plan the chapters) → chapters (write, check, repair) →
@@ -70,6 +70,26 @@ def language(repo: Path, pkg: str | None) -> str | None:
     return "ts" if (repo / (pkg or ".") / "package.json").exists() else None
 
 
+SOURCE = re.compile(r"\.([cm]?[jt]sx?|vue)$")
+NOT_SOURCE = re.compile(r"(^|/)(node_modules|dist|build|vendor)/|\.(spec|test)\.|\.d\.ts$")
+
+
+def guess_package(repo: Path) -> str | None:
+    """The package of a JavaScript monorepo a story runs in, when --pkg doesn't say: None when the root holds code of
+    its own (or isn't JavaScript), else the top-level package with the most source files."""
+    packages = [d.name for d in repo.iterdir() if d.is_dir() and (d / "package.json").exists()]
+    if not packages or language(repo, None) == "python":
+        return None
+    files = subprocess.run(["git", "-C", str(repo), "ls-files"], capture_output=True, text=True).stdout.splitlines()
+    count: dict[str, int] = {}
+    for f in files:
+        if SOURCE.search(f) and not NOT_SOURCE.search(f):
+            top = f.split("/")[0] if "/" in f and f.split("/")[0] in packages else "."
+            count[top] = count.get(top, 0) + 1
+    best = max(packages, key=lambda p: count.get(p, 0))
+    return best if count.get(best, 0) > count.get(".", 0) else None
+
+
 def record_package(story: Path) -> None:
     """The outline carries the package and test runner the scenario ran in, so the chapters' proofs run there too."""
     setup = json.loads((story / "scenario.json").read_text())
@@ -82,17 +102,18 @@ def record_package(story: Path) -> None:
 
 def main(argv: list[str]) -> int:
     opt = lambda f, d: argv[argv.index(f) + 1] if f in argv else d  # noqa: E731
-    reader, out, pkg = opt("--reader", "owner"), opt("--out", None), opt("--pkg", None)
-    valued = {"--reader", "--out", "--pkg"}
+    reader, out, pkg, about = opt("--reader", "owner"), opt("--out", None), opt("--pkg", None), opt("--about", "")
+    valued = {"--reader", "--out", "--pkg", "--about"}
     args = [a for i, a in enumerate(argv) if not a.startswith("--") and (argv[i - 1:i] or [""])[0] not in valued]
     if len(args) != 1:
         print(__doc__)
         return 2
-    if not (ROOT / ".env").exists():
-        return fail("no .env at the project root: copy .env.example and set ANTHROPIC_API_KEY")
     repo = obtain(args[0])
     if repo is None:
         return fail(f"{args[0]!r} is neither a directory nor a GitHub URL")
+    if pkg is None and (guess := guess_package(repo)):
+        pkg = guess
+        print(f"package: {pkg} (the monorepo's package with the most code; --pkg chooses another)")
     kind = language(repo, pkg)
     if kind is None:
         return fail(f"no package to run: neither a Python one (pyproject.toml / setup.py) nor a JavaScript or "
@@ -118,6 +139,7 @@ def main(argv: list[str]) -> int:
             deps.ensure_tracer(log=lambda m: print(f"   {m}", flush=True))
         except deps.InstallError as e:
             return fail(str(e))
+    scenario += ["--about", about] if about else []
     if not (story / "trace.txt").exists():
         if not step("scenario: find the intended use and trace one run", scenario):
             return fail(f"no working scenario; see {rel(story / 'traces')}/ for the attempts")

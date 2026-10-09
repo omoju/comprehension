@@ -22,7 +22,7 @@ import deps
 import llm
 from diff_verify import VACUOUS, last_error, outcome
 from outline import git, repo_block, repo_context, repo_info
-from scenario import ATTEMPTS, MIN_CALLS, SCHEMA, count_calls, save_story_trace
+from scenario import ATTEMPTS, MIN_CALLS, SCHEMA, asked, count_calls, save_story_trace
 from verify import TS_SPEC_DIR, TS_TIMEOUT, run_spec, spec_name, ts_runner
 
 # The scenario must not touch the instrument that measures it: the runtime's hooks or its settings.
@@ -130,7 +130,7 @@ def save(story: Path, test: dict, name: str) -> int:
     return save_story_trace(story)
 
 
-def main(repo_arg: str, story_arg: str, pkg_arg: str = ".") -> int:
+def main(repo_arg: str, story_arg: str, pkg_arg: str = ".", about: str = "") -> int:
     repo, story = Path(repo_arg).resolve(), Path(story_arg).resolve()
     pkg_dir = (repo / pkg_arg).resolve()
     if not (pkg_dir / "package.json").exists():
@@ -154,7 +154,7 @@ def main(repo_arg: str, story_arg: str, pkg_arg: str = ".") -> int:
     path = f"{'' if pkg == '.' else pkg + '/'}{TS_SPEC_DIR[runner]}codestory-scenario-<id>.spec.ts"
     how = HOW[runner].format(path=path, where=where, include=include)
     messages = [{"role": "user", "content": [package_block(repo, repo_info(repo), pkg),
-                                             {"type": "text", "text": f"{how}\n\nWrite the scenario."}]}]
+                                             {"type": "text", "text": f"{how}\n\nWrite the scenario.{asked(about)}"}]}]
     for attempt in range(1, ATTEMPTS + 1):
         try:
             reply = llm.ask(SYSTEM, messages, schema=SCHEMA, max_tokens=32000)
@@ -174,6 +174,12 @@ def main(repo_arg: str, story_arg: str, pkg_arg: str = ".") -> int:
             name = spec_name("scenario")
             raw = story / "traces" / f"scenario-{attempt}.trace.json"
             tests, code, tail = run_spec(script, pkg_dir, runner, name, raw, include=include, lines=True)
+            if not tests and code is not None and not HARNESS.search(tail):
+                # It didn't load. A boot can fail for reasons of its own (a sign-in, a port), so it gets a second run
+                # before the model is told; a real mistake in the file fails the same way twice.
+                print(f"  attempt {attempt}: the file didn't load; running it once more", flush=True)
+                tests, code, tail = run_spec(script, pkg_dir, runner, name, raw, include=include, lines=True)
+            (story / "traces" / f"scenario-{attempt}.log").write_text(tail)
             if HARNESS.search(tail):  # our setup, not the scenario: stop
                 print(f"  attempt {attempt}: the test runner could not start (harness, not the scenario):\n{tail}")
                 return 3
@@ -195,8 +201,9 @@ def main(repo_arg: str, story_arg: str, pkg_arg: str = ".") -> int:
 if __name__ == "__main__":
     argv = sys.argv[1:]
     pkg = argv[argv.index("--pkg") + 1] if "--pkg" in argv else "."
-    args = [a for i, a in enumerate(argv) if not a.startswith("--") and argv[i - 1:i] != ["--pkg"]]
+    about = argv[argv.index("--about") + 1] if "--about" in argv else ""
+    args = [a for i, a in enumerate(argv) if not a.startswith("--") and argv[i - 1:i] not in (["--pkg"], ["--about"])]
     if len(args) != 2:
         print(__doc__)
         sys.exit(2)
-    sys.exit(main(args[0], args[1], pkg))
+    sys.exit(main(args[0], args[1], pkg, about))
