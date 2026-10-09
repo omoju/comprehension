@@ -3,7 +3,8 @@
     .venv/bin/python codestory/outline.py <path-to-repo> <story-dir> [--reader owner|maintainer|user]
                                          [--max-chapters N] [--repair] [--dry-run]
 
-Needs <story-dir>/scenario.py and trace.txt from scenario.py. Chapters are spans of the trace.
+Needs <story-dir>/scenario.py (scenario.spec.ts for a TypeScript package) and trace.txt from the scenario stage.
+Chapters are spans of the trace.
 
 Writes <story-dir>/outline.json: title, premise, reader, repo (url, commit, local path) and the chapters.
 The plan is checked (spans, question threads, length); a plan that fails is handed back to the model with the
@@ -22,6 +23,7 @@ from pathlib import Path
 
 import env  # noqa: F401  (loads .env)
 import llm
+from style import check_summary
 
 MODEL = llm.DEFAULT_MODELS["anthropic"]  # the evaluation harness (eval/) calls the Anthropic API with this directly
 CONTEXT_BUDGET = 400_000  # characters of source code to show the model (~100k tokens)
@@ -55,6 +57,10 @@ slows down and where it moves quickly. Use as many chapters as this journey need
 budget given with the request. Every chapter must earn its place: enough has to happen to the data in its span
 to carry a chapter. A span of a few trace lines where the data merely passes through belongs inside its
 neighbour; repetitive steps (the same helper called many times) are told once and then passed quickly.
+
+The premise is the stakes: a concrete situation in the world, in at most 70 words, of someone using this code and
+what it does for them (take it from the README when it says). Chapter titles are plain-language claims a reader takes
+in at a glance, not function names. A typical journey needs four to seven chapters.
 
 Characters are real things in the code the data meets (functions, classes, values). Facts are claims about
 behaviour that can be checked against the code or the trace. Open questions are things the data wonders about
@@ -172,6 +178,12 @@ def repo_context(repo: Path, focus: set[str] | None = None, order: list[str] | N
     return f"<file_list>\n{listing}\n</file_list>\n\n" + "\n\n".join(parts) + note
 
 
+def scenario_text(story: Path) -> str:
+    """The intended use: a script (scenario.py) or, for a TypeScript package, a spec file (scenario_ts.py)."""
+    found = next((story / f for f in ("scenario.py", "scenario.spec.ts") if (story / f).exists()), story / "scenario.py")
+    return found.read_text()
+
+
 def numbered_trace(story: Path) -> str:
     lines = (story / "trace.txt").read_text().splitlines()
     return "\n".join(f"{i:4}  {line}" for i, line in enumerate(lines, 1))
@@ -222,7 +234,7 @@ def check_plan(plan: dict, trace: list[str], max_chapters: int) -> list[str]:
     The length budget has two sides. A cap on the count alone was met by merging the two thinnest spans and
     leaving chapters of one call; the minimum per chapter can't be met that way, since the trace fixes the total."""
     chapters = plan["chapters"]
-    errors = span_errors(chapters, len(trace)) + thread_errors(chapters)
+    errors = span_errors(chapters, len(trace)) + thread_errors(chapters) + check_summary("premise", plan["premise"])
     if len(chapters) > max_chapters:
         errors.append(f"{len(chapters)} chapters, budget is {max_chapters}: merge the thinnest spans into their neighbours")
     for c in chapters:
@@ -268,7 +280,7 @@ def main(repo_arg: str, story_arg: str, reader: str, max_chapters: int, repair: 
     repo, story = Path(repo_arg), Path(story_arg)
     info = repo_info(repo)
     profile = (READERS / f"{reader}.md").read_text()
-    scenario = (story / "scenario.py").read_text()
+    scenario = scenario_text(story)
     trace = (story / "trace.txt").read_text().splitlines()
     # Stable first, variable last: the repo block is cached, and runs for other readers reuse it.
     content = [repo_block(repo, info, story), {"type": "text", "text": (

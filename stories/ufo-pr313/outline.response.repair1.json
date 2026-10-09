@@ -1,0 +1,319 @@
+{
+ "provider": "claude-cli",
+ "model": "claude-opus-5-5",
+ "usage": {
+  "input_tokens": 2,
+  "output_tokens": 2925,
+  "cache_read_input_tokens": 2277,
+  "cache_creation_input_tokens": 34433
+ },
+ "cost": 0.3379415,
+ "text": "{\"title\": \"A base like /admin/ now matches only whole path segments, not any path that starts with the same letters\", \"premise\": \"A Nuxt app with baseURL '/admin/' has a page at '/admin-dashboard' (nuxt/nuxt#33924). ufo's withoutBase only checked startsWith, so it treated '/admin' in '/admin-dashboard' as the base and returned '/-dashboard', which breaks routing. withBase had the mirror bug: it decided '/admin-dashboard' already had the base and returned it without prefixing, so the link never got '/admin/' in front.\", \"verdict\": \"withBase and withoutBase now treat the base as present only when '/', '?' or the end of the string follows it. Evidence: four tests that failed before now pass, and all earlier cases still pass. Risk: '#' is not a boundary, so inputs like '/admin#top' now behave differently with no test, and callers relying on the old loose prefix match will see different output.\", \"chapters\": [{\"n\": 1, \"title\": \"withoutBase stops cutting '/admin' out of '/admin-dashboard'\", \"trace_lines\": [213, 243], \"kind\": \"changed\", \"before\": \"withoutBase('/admin-dashboard', '/admin/') and with base '/admin' both returned '/-dashboard', so the assertions failed.\", \"after\": \"Both calls return '/admin-dashboard' unchanged. '/admin/admin-dashboard' still becomes '/admin-dashboard' and '/admin/dashboard' still becomes '/dashboard'.\", \"changed_functions\": [\"withoutBase\"], \"tests\": [\"\\\"/admin-dashboard\\\"-\\\"/admin/\\\"\", \"\\\"/admin-dashboard\\\"-\\\"/admin\\\"\"], \"code\": [\"src/utils.ts:318-333\"], \"characters\": [\"withoutBase\", \"withoutTrailingSlash (turns '/admin/' into '/admin')\", \"nextChar = input[_base.length]\"], \"facts\": [\"The base is normalised by withoutTrailingSlash, so '/admin/' and '/admin' act the same and both become '/admin'.\", \"In '/admin-dashboard' the character after '/admin' is '-', so the new guard at lines 327-330 returns the input untouched.\", \"With '/admin/admin-dashboard' the next character is '/', so the slice still runs and gives '/admin-dashboard' (trace line 226).\", \"Only '/', '?' and the end of the string count as boundaries. '#' does not, so withoutBase('/admin#x', '/admin') would now return the input unchanged, where it used to return '/#x'. No test covers this.\"], \"open_questions\": [{\"id\": \"q1.1\", \"question\": \"withBase uses the same startsWith check. Does it make the same mistake in the other direction?\"}, {\"id\": \"q1.2\", \"question\": \"Do the real boundary cases, such as the query form '/api?test' and the exact match '/base', still have their base stripped?\"}], \"answers\": []}, {\"n\": 2, \"title\": \"withBase now adds '/admin' in front of '/admin-dashboard' instead of treating it as already based\", \"trace_lines\": [71, 113], \"kind\": \"changed\", \"before\": \"withBase('/admin-dashboard', '/admin/' or '/admin') returned '/admin-dashboard' unchanged, so the test expecting '/admin/admin-dashboard' failed.\", \"after\": \"The guard rejects '-' as a boundary, so execution falls through to joinURL('/admin', '/admin-dashboard'), which returns '/admin/admin-dashboard'.\", \"changed_functions\": [\"withBase\"], \"tests\": [\"\\\"/admin/\\\" + \\\"/admin-dashboard\\\"\", \"\\\"/admin\\\" + \\\"/admin-dashboard\\\"\"], \"code\": [\"src/utils.ts:290-303\"], \"characters\": [\"withBase\", \"joinURL\", \"withTrailingSlash\", \"nextChar\"], \"facts\": [\"Only the head run calls joinURL here (trace lines 77-82 and 99-104), and it produces '/admin/admin-dashboard'.\", \"Inputs already under the base, '/admin/admin-dashboard' and '/admin/dashboard', still come back unchanged because the next character is '/'.\", \"withBase('/admin#x', '/admin') would now give '/admin/admin#x' because '#' is not accepted as a boundary. No test covers this.\"], \"open_questions\": [{\"id\": \"q2.1\", \"question\": \"Do the older withBase cases, such as an exact match, an empty input or a full URL, still come back the same?\"}], \"answers\": [{\"id\": \"q1.1\", \"answer\": \"Yes. Before the change, withBase saw '/admin-dashboard' as already having the base and returned it unprefixed. Now it falls through to joinURL and returns '/admin/admin-dashboard'.\"}]}, {\"n\": 3, \"title\": \"withoutBase still strips the base at real boundaries, including before a query\", \"trace_lines\": [115, 211], \"kind\": \"preserved\", \"before\": \"'/api?test' with base '/api' gave '/?test', '/base' with base '/base/' gave '/', and '/base/a' gave '/a'.\", \"after\": \"The same outputs come back: '/?test', '/', '/a'. Inputs that don't match the base, and full URLs, are returned unchanged.\", \"changed_functions\": [\"withoutBase\"], \"tests\": [], \"code\": [\"src/utils.ts:318-333\"], \"characters\": [\"withoutBase\", \"isEmptyURL\"], \"facts\": [\"'?' counts as a boundary, so '/api?test' still becomes '/?test' (trace line 196).\", \"When the input ends exactly at the base, nextChar is undefined, so '/base/a' with base '/base/a/' still gives '/'.\", \"Base '/' still returns early through isEmptyURL and never reaches the new guard.\"], \"open_questions\": [], \"answers\": [{\"id\": \"q1.2\", \"answer\": \"Yes. '/api?test' still gives '/?test', and the exact match '/base' still gives '/', because '?' and the end of the string both count as boundaries.\"}]}, {\"n\": 4, \"title\": \"withBase keeps every earlier result the same\", \"trace_lines\": [1, 69], \"kind\": \"preserved\", \"before\": \"'/base' and '/base/a' with base '/base/' came back unchanged, '' with base '/foo' gave '/foo', and 'https://test.com' passed through untouched.\", \"after\": \"Identical outputs: the next character is the end of the string or '/', and full URLs exit early through hasProtocol.\", \"changed_functions\": [\"withBase\"], \"tests\": [], \"code\": [\"src/utils.ts:290-303\"], \"characters\": [\"withBase\", \"hasProtocol\", \"isEmptyURL\"], \"facts\": [\"'/base/' with base '/base' passes because nextChar is '/'. '/base' with base '/base/' passes because nextChar is undefined.\", \"None of these cases puts '?' right after the base in withBase. That path is accepted only because the code says so.\"], \"open_questions\": [], \"answers\": [{\"id\": \"q2.1\", \"answer\": \"Yes. All ten original withBase cases return the same values on both sides of the change.\"}]}], \"unexercised\": []}",
+ "raw": {
+  "duration_api_ms": 21925,
+  "stop_reason": "tool_use",
+  "session_id": "d3c97b6c-ff97-4a70-bace-e23918db4753",
+  "total_cost_usd": 0.3379415,
+  "usage": {
+   "input_tokens": 2,
+   "cache_creation_input_tokens": 34433,
+   "cache_read_input_tokens": 2277,
+   "output_tokens": 2925,
+   "output_tokens_details": {
+    "thinking_tokens": 425
+   },
+   "server_tool_use": {
+    "web_search_requests": 0,
+    "web_fetch_requests": 0
+   },
+   "service_tier": "standard",
+   "cache_creation": {
+    "ephemeral_1h_input_tokens": 34433,
+    "ephemeral_5m_input_tokens": 0
+   },
+   "inference_geo": "not_available",
+   "iterations": [
+    {
+     "input_tokens": 2,
+     "output_tokens": 2925,
+     "cache_read_input_tokens": 2277,
+     "cache_creation_input_tokens": 34433,
+     "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 34433
+     },
+     "type": "message"
+    }
+   ],
+   "speed": "standard",
+   "fallback_credit": null
+  },
+  "modelUsage": {
+   "claude-haiku-5-5": {
+    "inputTokens": 35016,
+    "outputTokens": 25,
+    "cacheReadInputTokens": 0,
+    "cacheCreationInputTokens": 0,
+    "webSearchRequests": 0,
+    "costUSD": 0.0035141,
+    "contextWindow": 1000000,
+    "maxOutputTokens": 128000,
+    "thinkingTokens": 0,
+    "canonicalModel": "claude-haiku-5-5",
+    "provider": "firstParty",
+    "costBasis": "list"
+   },
+   "claude-opus-5-5": {
+    "inputTokens": 2,
+    "outputTokens": 2925,
+    "cacheReadInputTokens": 2277,
+    "cacheCreationInputTokens": 34433,
+    "webSearchRequests": 0,
+    "costUSD": 0.3344274,
+    "contextWindow": 1000000,
+    "maxOutputTokens": 128000,
+    "thinkingTokens": 425,
+    "canonicalModel": "claude-opus-5-5",
+    "provider": "firstParty",
+    "costBasis": "list"
+   }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+   "spawned": 0,
+   "requested": {
+    "background": 0,
+    "foreground": 0,
+    "unset": 0
+   },
+   "started_in_background": 0,
+   "max_depth": 0,
+   "spawned_by_subagents": 0,
+   "completed": 0,
+   "failed": 0,
+   "killed": {
+    "parent": 0,
+    "user": 0,
+    "system": 0
+   },
+   "refused": {
+    "depth_limit": 0,
+    "concurrency_limit": 0,
+    "budget": 0
+   },
+   "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 2,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"title\":\"A base like /admin/ now matches only whole path segments, not any path that starts with the same letters\",\"premise\":\"A Nuxt app with baseURL '/admin/' has a page at '/admin-dashboard' (nuxt/nuxt#33924). ufo's withoutBase only checked startsWith, so it treated '/admin' in '/admin-dashboard' as the base and returned '/-dashboard', which breaks routing. withBase had the mirror bug: it decided '/admin-dashboard' already had the base and returned it without prefixing, so the link never got '/admin/' in front.\",\"verdict\":\"withBase and withoutBase now treat the base as present only when '/', '?' or the end of the string follows it. Evidence: four tests that failed before now pass, and all earlier cases still pass. Risk: '#' is not a boundary, so inputs like '/admin#top' now behave differently with no test, and callers relying on the old loose prefix match will see different output.\",\"chapters\":[{\"n\":1,\"title\":\"withoutBase stops cutting '/admin' out of '/admin-dashboard'\",\"trace_lines\":[213,243],\"kind\":\"changed\",\"before\":\"withoutBase('/admin-dashboard', '/admin/') and with base '/admin' both returned '/-dashboard', so the assertions failed.\",\"after\":\"Both calls return '/admin-dashboard' unchanged. '/admin/admin-dashboard' still becomes '/admin-dashboard' and '/admin/dashboard' still becomes '/dashboard'.\",\"changed_functions\":[\"withoutBase\"],\"tests\":[\"\\\"/admin-dashboard\\\"-\\\"/admin/\\\"\",\"\\\"/admin-dashboard\\\"-\\\"/admin\\\"\"],\"code\":[\"src/utils.ts:318-333\"],\"characters\":[\"withoutBase\",\"withoutTrailingSlash (turns '/admin/' into '/admin')\",\"nextChar = input[_base.length]\"],\"facts\":[\"The base is normalised by withoutTrailingSlash, so '/admin/' and '/admin' act the same and both become '/admin'.\",\"In '/admin-dashboard' the character after '/admin' is '-', so the new guard at lines 327-330 returns the input untouched.\",\"With '/admin/admin-dashboard' the next character is '/', so the slice still runs and gives '/admin-dashboard' (trace line 226).\",\"Only '/', '?' and the end of the string count as boundaries. '#' does not, so withoutBase('/admin#x', '/admin') would now return the input unchanged, where it used to return '/#x'. No test covers this.\"],\"open_questions\":[{\"id\":\"q1.1\",\"question\":\"withBase uses the same startsWith check. Does it make the same mistake in the other direction?\"},{\"id\":\"q1.2\",\"question\":\"Do the real boundary cases, such as the query form '/api?test' and the exact match '/base', still have their base stripped?\"}],\"answers\":[]},{\"n\":2,\"title\":\"withBase now adds '/admin' in front of '/admin-dashboard' instead of treating it as already based\",\"trace_lines\":[71,113],\"kind\":\"changed\",\"before\":\"withBase('/admin-dashboard', '/admin/' or '/admin') returned '/admin-dashboard' unchanged, so the test expecting '/admin/admin-dashboard' failed.\",\"after\":\"The guard rejects '-' as a boundary, so execution falls through to joinURL('/admin', '/admin-dashboard'), which returns '/admin/admin-dashboard'.\",\"changed_functions\":[\"withBase\"],\"tests\":[\"\\\"/admin/\\\" + \\\"/admin-dashboard\\\"\",\"\\\"/admin\\\" + \\\"/admin-dashboard\\\"\"],\"code\":[\"src/utils.ts:290-303\"],\"characters\":[\"withBase\",\"joinURL\",\"withTrailingSlash\",\"nextChar\"],\"facts\":[\"Only the head run calls joinURL here (trace lines 77-82 and 99-104), and it produces '/admin/admin-dashboard'.\",\"Inputs already under the base, '/admin/admin-dashboard' and '/admin/dashboard', still come back unchanged because the next character is '/'.\",\"withBase('/admin#x', '/admin') would now give '/admin/admin#x' because '#' is not accepted as a boundary. No test covers this.\"],\"open_questions\":[{\"id\":\"q2.1\",\"question\":\"Do the older withBase cases, such as an exact match, an empty input or a full URL, still come back the same?\"}],\"answers\":[{\"id\":\"q1.1\",\"answer\":\"Yes. Before the change, withBase saw '/admin-dashboard' as already having the base and returned it unprefixed. Now it falls through to joinURL and returns '/admin/admin-dashboard'.\"}]},{\"n\":3,\"title\":\"withoutBase still strips the base at real boundaries, including before a query\",\"trace_lines\":[115,211],\"kind\":\"preserved\",\"before\":\"'/api?test' with base '/api' gave '/?test', '/base' with base '/base/' gave '/', and '/base/a' gave '/a'.\",\"after\":\"The same outputs come back: '/?test', '/', '/a'. Inputs that don't match the base, and full URLs, are returned unchanged.\",\"changed_functions\":[\"withoutBase\"],\"tests\":[],\"code\":[\"src/utils.ts:318-333\"],\"characters\":[\"withoutBase\",\"isEmptyURL\"],\"facts\":[\"'?' counts as a boundary, so '/api?test' still becomes '/?test' (trace line 196).\",\"When the input ends exactly at the base, nextChar is undefined, so '/base/a' with base '/base/a/' still gives '/'.\",\"Base '/' still returns early through isEmptyURL and never reaches the new guard.\"],\"open_questions\":[],\"answers\":[{\"id\":\"q1.2\",\"answer\":\"Yes. '/api?test' still gives '/?test', and the exact match '/base' still gives '/', because '?' and the end of the string both count as boundaries.\"}]},{\"n\":4,\"title\":\"withBase keeps every earlier result the same\",\"trace_lines\":[1,69],\"kind\":\"preserved\",\"before\":\"'/base' and '/base/a' with base '/base/' came back unchanged, '' with base '/foo' gave '/foo', and 'https://test.com' passed through untouched.\",\"after\":\"Identical outputs: the next character is the end of the string or '/', and full URLs exit early through hasProtocol.\",\"changed_functions\":[\"withBase\"],\"tests\":[],\"code\":[\"src/utils.ts:290-303\"],\"characters\":[\"withBase\",\"hasProtocol\",\"isEmptyURL\"],\"facts\":[\"'/base/' with base '/base' passes because nextChar is '/'. '/base' with base '/base/' passes because nextChar is undefined.\",\"None of these cases puts '?' right after the base in withBase. That path is accepted only because the code says so.\"],\"open_questions\":[],\"answers\":[{\"id\":\"q2.1\",\"answer\":\"Yes. All ten original withBase cases return the same values on both sides of the change.\"}]}],\"unexercised\":[]}",
+  "structured_output": {
+   "title": "A base like /admin/ now matches only whole path segments, not any path that starts with the same letters",
+   "premise": "A Nuxt app with baseURL '/admin/' has a page at '/admin-dashboard' (nuxt/nuxt#33924). ufo's withoutBase only checked startsWith, so it treated '/admin' in '/admin-dashboard' as the base and returned '/-dashboard', which breaks routing. withBase had the mirror bug: it decided '/admin-dashboard' already had the base and returned it without prefixing, so the link never got '/admin/' in front.",
+   "verdict": "withBase and withoutBase now treat the base as present only when '/', '?' or the end of the string follows it. Evidence: four tests that failed before now pass, and all earlier cases still pass. Risk: '#' is not a boundary, so inputs like '/admin#top' now behave differently with no test, and callers relying on the old loose prefix match will see different output.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "withoutBase stops cutting '/admin' out of '/admin-dashboard'",
+     "trace_lines": [
+      213,
+      243
+     ],
+     "kind": "changed",
+     "before": "withoutBase('/admin-dashboard', '/admin/') and with base '/admin' both returned '/-dashboard', so the assertions failed.",
+     "after": "Both calls return '/admin-dashboard' unchanged. '/admin/admin-dashboard' still becomes '/admin-dashboard' and '/admin/dashboard' still becomes '/dashboard'.",
+     "changed_functions": [
+      "withoutBase"
+     ],
+     "tests": [
+      "\"/admin-dashboard\"-\"/admin/\"",
+      "\"/admin-dashboard\"-\"/admin\""
+     ],
+     "code": [
+      "src/utils.ts:318-333"
+     ],
+     "characters": [
+      "withoutBase",
+      "withoutTrailingSlash (turns '/admin/' into '/admin')",
+      "nextChar = input[_base.length]"
+     ],
+     "facts": [
+      "The base is normalised by withoutTrailingSlash, so '/admin/' and '/admin' act the same and both become '/admin'.",
+      "In '/admin-dashboard' the character after '/admin' is '-', so the new guard at lines 327-330 returns the input untouched.",
+      "With '/admin/admin-dashboard' the next character is '/', so the slice still runs and gives '/admin-dashboard' (trace line 226).",
+      "Only '/', '?' and the end of the string count as boundaries. '#' does not, so withoutBase('/admin#x', '/admin') would now return the input unchanged, where it used to return '/#x'. No test covers this."
+     ],
+     "open_questions": [
+      {
+       "id": "q1.1",
+       "question": "withBase uses the same startsWith check. Does it make the same mistake in the other direction?"
+      },
+      {
+       "id": "q1.2",
+       "question": "Do the real boundary cases, such as the query form '/api?test' and the exact match '/base', still have their base stripped?"
+      }
+     ],
+     "answers": []
+    },
+    {
+     "n": 2,
+     "title": "withBase now adds '/admin' in front of '/admin-dashboard' instead of treating it as already based",
+     "trace_lines": [
+      71,
+      113
+     ],
+     "kind": "changed",
+     "before": "withBase('/admin-dashboard', '/admin/' or '/admin') returned '/admin-dashboard' unchanged, so the test expecting '/admin/admin-dashboard' failed.",
+     "after": "The guard rejects '-' as a boundary, so execution falls through to joinURL('/admin', '/admin-dashboard'), which returns '/admin/admin-dashboard'.",
+     "changed_functions": [
+      "withBase"
+     ],
+     "tests": [
+      "\"/admin/\" + \"/admin-dashboard\"",
+      "\"/admin\" + \"/admin-dashboard\""
+     ],
+     "code": [
+      "src/utils.ts:290-303"
+     ],
+     "characters": [
+      "withBase",
+      "joinURL",
+      "withTrailingSlash",
+      "nextChar"
+     ],
+     "facts": [
+      "Only the head run calls joinURL here (trace lines 77-82 and 99-104), and it produces '/admin/admin-dashboard'.",
+      "Inputs already under the base, '/admin/admin-dashboard' and '/admin/dashboard', still come back unchanged because the next character is '/'.",
+      "withBase('/admin#x', '/admin') would now give '/admin/admin#x' because '#' is not accepted as a boundary. No test covers this."
+     ],
+     "open_questions": [
+      {
+       "id": "q2.1",
+       "question": "Do the older withBase cases, such as an exact match, an empty input or a full URL, still come back the same?"
+      }
+     ],
+     "answers": [
+      {
+       "id": "q1.1",
+       "answer": "Yes. Before the change, withBase saw '/admin-dashboard' as already having the base and returned it unprefixed. Now it falls through to joinURL and returns '/admin/admin-dashboard'."
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "title": "withoutBase still strips the base at real boundaries, including before a query",
+     "trace_lines": [
+      115,
+      211
+     ],
+     "kind": "preserved",
+     "before": "'/api?test' with base '/api' gave '/?test', '/base' with base '/base/' gave '/', and '/base/a' gave '/a'.",
+     "after": "The same outputs come back: '/?test', '/', '/a'. Inputs that don't match the base, and full URLs, are returned unchanged.",
+     "changed_functions": [
+      "withoutBase"
+     ],
+     "tests": [],
+     "code": [
+      "src/utils.ts:318-333"
+     ],
+     "characters": [
+      "withoutBase",
+      "isEmptyURL"
+     ],
+     "facts": [
+      "'?' counts as a boundary, so '/api?test' still becomes '/?test' (trace line 196).",
+      "When the input ends exactly at the base, nextChar is undefined, so '/base/a' with base '/base/a/' still gives '/'.",
+      "Base '/' still returns early through isEmptyURL and never reaches the new guard."
+     ],
+     "open_questions": [],
+     "answers": [
+      {
+       "id": "q1.2",
+       "answer": "Yes. '/api?test' still gives '/?test', and the exact match '/base' still gives '/', because '?' and the end of the string both count as boundaries."
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "title": "withBase keeps every earlier result the same",
+     "trace_lines": [
+      1,
+      69
+     ],
+     "kind": "preserved",
+     "before": "'/base' and '/base/a' with base '/base/' came back unchanged, '' with base '/foo' gave '/foo', and 'https://test.com' passed through untouched.",
+     "after": "Identical outputs: the next character is the end of the string or '/', and full URLs exit early through hasProtocol.",
+     "changed_functions": [
+      "withBase"
+     ],
+     "tests": [],
+     "code": [
+      "src/utils.ts:290-303"
+     ],
+     "characters": [
+      "withBase",
+      "hasProtocol",
+      "isEmptyURL"
+     ],
+     "facts": [
+      "'/base/' with base '/base' passes because nextChar is '/'. '/base' with base '/base/' passes because nextChar is undefined.",
+      "None of these cases puts '?' right after the base in withBase. That path is accepted only because the code says so."
+     ],
+     "open_questions": [],
+     "answers": [
+      {
+       "id": "q2.1",
+       "answer": "Yes. All ten original withBase cases return the same values on both sides of the change."
+      }
+     ]
+    }
+   ],
+   "unexercised": []
+  },
+  "ttft_ms": 4658,
+  "type": "result",
+  "duration_ms": 21255,
+  "uuid": "fca677af-68fd-48c3-bd74-6a8cb7c3cb24",
+  "ttft_stream_ms": 1510,
+  "time_to_request_ms": 77,
+  "time_to_request_phases_ms": {
+   "other": 14,
+   "system_prompt": 1,
+   "resume_other": 0,
+   "process_user_input": 3,
+   "input_attachments": 43,
+   "input_hooks": 1,
+   "tool_pool_refresh": 1,
+   "init_message": 4,
+   "engine_pickup": 1,
+   "message_prep": 0,
+   "model_config_wait": 1,
+   "autocompact": 1,
+   "query_setup": 0,
+   "model_gates": 1,
+   "tool_schema_build": 2,
+   "message_normalization": 0,
+   "client_creation": 2,
+   "request_build": 2
+  },
+  "turn_start_resume_kind": "none",
+  "process_turn_index": 0,
+  "time_to_request_loop_lag_ms": 27,
+  "time_to_request_cpu_ms": 119,
+  "time_to_request_major_faults": 1,
+  "input_attachments_detail": {
+   "slowest_producer": "at_mentioned_files",
+   "slowest_producer_ms": 28,
+   "cpu_ms": 64,
+   "major_faults": 0
+  },
+  "first_content_frame_ms": 1510,
+  "queued_turn_count": 0,
+  "result_index": 0
+ }
+}

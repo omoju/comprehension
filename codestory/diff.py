@@ -339,6 +339,51 @@ def compare(base: dict, head: dict, changes: dict) -> tuple[list[str], dict, lis
 
 # ---------------------------------------------------------------- main
 
+def trace_side(pkg_dir: Path, specs: list[str], out: Path, side: str, a) -> dict | None:
+    """Run the specs on one side and merge their traces. A suite's specs share one run (an application booted once,
+    not once per file); when a run hangs or dies, the specs that never got to report run again one at a time, so one
+    hang costs one spec its result."""
+    merged = {"fn": "scenario", "file": "scenario", "line": 1, "args": {}, "calls": [], "lines": {}}
+    groups: dict[str, list[str]] = {}
+    for spec in specs:
+        parts = Path(spec).parts
+        groups.setdefault(parts[1] if a.runner == "japa" and len(parts) > 2 and parts[0] == "tests" else "", []).append(spec)
+
+    def run(batch: list[str]) -> tuple[int | None, list[dict], str]:
+        out.unlink(missing_ok=True)
+        budget = min(a.timeout * len(batch), max(a.timeout, 1800))
+        code, tail = run_traced(pkg_dir, batch, out, soft=side == "base", timeout=budget, runner=a.runner,
+                                env_extra={"CS_INCLUDE": a.include})
+        return code, json.loads(out.read_text())["calls"] if out.exists() else [], tail
+
+    for batch in groups.values():
+        code, tests, tail = run(batch)
+        merged["calls"] += tests
+        if code in (0, 1):  # 1 is "some tests failed"; anything else, the run itself hung or died
+            continue
+        seen = {Path(t["file"]).name for t in tests}
+        left = [s for s in batch if Path(s).name not in seen]
+        print(f"  {side}: the run {'hung' if code is None else f'died (exit {code})'}"
+              + (f"; running {len(left)} spec{'s' if len(left) != 1 else ''} it never reached one at a time" if left else ""))
+        for spec in left:
+            code, tests, tail = run([spec])
+            merged["calls"] += tests
+            if code is None:
+                print(f"  {side}: {spec} still running after {a.timeout}s; stopped (what ran is kept)")
+                merged.setdefault("timed_out", []).append(spec)
+            elif code not in (0, 1):
+                print(f"  {side}: {spec} crashed (exit {code}); keeping the trace written before it died")
+                merged.setdefault("crashed", []).append(spec)
+            elif not tests:
+                print(f"  {side}: no trace from {spec} (exit {code}):\n{tail}")
+        if code is None and not left:
+            merged.setdefault("timed_out", []).extend(batch)
+    if not merged["calls"]:
+        print(f"  {side}: no test recorded anything")
+        return None
+    return merged
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("repo"), ap.add_argument("base"), ap.add_argument("head"), ap.add_argument("story")
@@ -373,21 +418,9 @@ def main() -> int:
             dst.parent.mkdir(parents=True, exist_ok=True)
             dst.write_text(git(repo, "show", f"{head}:{under(a.pkg, spec)}"))
         out = story / f"trace.{side}.json"
-        out.unlink(missing_ok=True)
-        merged = {"fn": "scenario", "file": "scenario", "line": 1, "args": {}, "calls": [], "lines": {}}
-        for spec in a.spec:
-            code, tail = run_traced(pkg_dir, spec, out, soft=side == "base", timeout=a.timeout, runner=a.runner,
-                                    env_extra={"CS_INCLUDE": a.include})
-            if code is None:
-                print(f"  {side}: {spec} still running after {a.timeout}s; stopped (what ran is kept)")
-                merged.setdefault("timed_out", []).append(spec)
-            elif code not in (0, 1):  # 1 is "some tests failed"; anything else, the process itself died
-                print(f"  {side}: {spec} crashed (exit {code}); keeping the trace written before it died")
-                merged.setdefault("crashed", []).append(spec)
-            if not out.exists():
-                print(f"  {side}: no trace from {spec} (exit {code}):\n{tail}")
-                return 1
-            merged["calls"] += json.loads(out.read_text())["calls"]
+        merged = trace_side(pkg_dir, a.spec, out, side, a)
+        if merged is None:
+            return 1
         out.write_text(json.dumps(merged, indent=1) + "\n")
         trees[side] = merged
         print(f"  {side}: {len(merged['calls'])} tests traced")

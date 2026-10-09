@@ -13,6 +13,8 @@ Options:
     --link NAMES         what each worktree borrows from <repo>'s package, comma-separated (default: node_modules).
                          Anything else the tests need, such as a local .env, has to be named here.
     --max-chapters N     the length budget (default 8)
+    --out DIR            where the story goes (default: stories/<repo>-pr<N> in this project)
+    --title TEXT         the change's title, when --base and --head are given with --pr (no GitHub call is made)
     --keep-worktrees     leave the base and head worktrees in place (by default they are removed at the end)
     --open               open the reading page
 
@@ -60,7 +62,7 @@ def pull_request(repo: Path, number: int) -> dict:
     remote = git(repo, "remote", "get-url", "origin").strip()
     slug = remote.split("github.com")[-1].lstrip(":/").removesuffix(".git")
     done = subprocess.run(["gh", "api", f"repos/{slug}/pulls/{number}", "--jq",
-                           "{base: .base.sha, head: .head.sha, title: .title}"], capture_output=True, text=True)
+                           "{base: .base.sha, head: .head.sha, title: .title, body: .body}"], capture_output=True, text=True)
     if done.returncode != 0:
         raise SystemExit(f"✗ gh api could not read pull request #{number}: {done.stderr.strip()}")
     pr = json.loads(done.stdout)
@@ -97,6 +99,7 @@ def main() -> int:
     ap.add_argument("--pr", type=int), ap.add_argument("--base"), ap.add_argument("--head")
     ap.add_argument("--pkg"), ap.add_argument("--spec", action="append"), ap.add_argument("--reader", default="reviewer")
     ap.add_argument("--runner"), ap.add_argument("--link"), ap.add_argument("--max-chapters", default="8")
+    ap.add_argument("--out"), ap.add_argument("--title", default="")
     ap.add_argument("--keep-worktrees", action="store_true"), ap.add_argument("--open", action="store_true")
     ap.add_argument("-h", "--help", action="store_true")
     a = ap.parse_args()
@@ -105,9 +108,14 @@ def main() -> int:
         return 2
 
     repo = Path(a.repo).resolve()
-    if a.pr:
+    described = ""
+    if a.pr and a.base and a.head:  # resolved by the caller (the review app): no GitHub call
+        base, head = git(repo, "rev-parse", a.base).strip(), git(repo, "rev-parse", a.head).strip()
+        title, name = a.title, f"{repo.name}-pr{a.pr}"
+    elif a.pr:
         pr = pull_request(repo, a.pr)
         base, head, title, name = pr["base"], pr["head"], pr["title"], f"{repo.name}-pr{a.pr}"
+        described = pr.get("body") or ""
     else:
         base, head = git(repo, "rev-parse", a.base).strip(), git(repo, "rev-parse", a.head).strip()
         title, name = "", f"{repo.name}-{base[:7]}-{head[:7]}"
@@ -122,11 +130,14 @@ def main() -> int:
     runner = a.runner or ("japa" if (repo / pkg / "adonisrc.ts").exists() else "vitest")
     link = a.link or "node_modules"
 
-    story = ROOT / "stories" / name
+    story = Path(a.out).resolve() if a.out else ROOT / "stories" / name
     story.mkdir(parents=True, exist_ok=True)
+    shown = lambda p: p.relative_to(ROOT) if p.is_relative_to(ROOT) else p  # noqa: E731
+    if described.strip():  # the author's own account of the change: the planner takes the stakes from it
+        (story / "pr.md").write_text(f"# {title}\n\n{described.strip()}\n")
     print(f"change:  {base[:7]} → {head[:7]}" + (f"  #{a.pr} {title}" if a.pr else ""))
     print(f"package: {pkg} ({runner}); specs: {', '.join(specs)}")
-    print(f"story:   {story.relative_to(ROOT)}\nreader:  {a.reader}\nmodel:   {llm.describe()}")
+    print(f"story:   {shown(story)}\nreader:  {a.reader}\nmodel:   {llm.describe()}")
 
     setup = None
     try:
@@ -161,7 +172,7 @@ def main() -> int:
             release(setup)
 
     page = story / "index.html"
-    print(f"\n✓ {page.relative_to(ROOT)}\n  report: {(story / 'report.md').relative_to(ROOT)}")
+    print(f"\n✓ {shown(page)}\n  report: {shown(story / 'report.md')}")
     if a.open:
         webbrowser.open(page.as_uri())
     return 0

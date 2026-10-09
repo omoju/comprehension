@@ -5,7 +5,8 @@
 Three checks, per chapter:
   1. citations  - every permalink into the repo points at lines that exist at the pinned commit
   2. drift      - the cited lines are unchanged in the repo's working tree (the code moved on; the story didn't)
-  3. proofs     - every proof (proofs/NN.py or .sh, or an inline ```python proof block) runs and passes
+  3. proofs     - every proof (proofs/NN.py, .sh or .ts, or an inline ```python proof block) runs and passes;
+                  a .ts proof is a whole spec file, run in the story's package with its test runner
 
 Exit code 0 only if everything passes. Standard library only.
 """
@@ -17,13 +18,15 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
+import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-PROOF_RE = re.compile(r"```(python|sh) proof\n(.*?)```", re.DOTALL)
-PROOF_EXT = {"python": "py", "sh": "sh"}
+PROOF_RE = re.compile(r"```(python|sh|ts) proof\n(.*?)```", re.DOTALL)
+PROOF_EXT = {"python": "py", "sh": "sh", "ts": "ts"}
 # A heading or rule that only introduces the proof goes with it when the proof moves out.
 PROOF_LEAD_IN = re.compile(r"(\n(-{3,}|#+ [^\n]*proof[^\n]*|[^\n]*runs against the real repository[^\n]*)\s*)+$", re.I)
 
@@ -60,6 +63,73 @@ RUNNERS = {"python": [sys.executable, "-c"], "sh": ["bash", "-c"]}
 
 # Assertions that cannot fail. A proof full of these passes whatever the story says.
 VACUOUS = re.compile(r"\bor\s+True\b|\bassert\s+(True|1)(?![\w.])|\bassert\s+([\w.\[\]'\"]+)\s*==\s*\2\s*($|#)", re.M)
+
+# Where a spec of ours goes inside a TypeScript package: Vitest runs any file it is given; Japa loads only its suites.
+TS_SPEC_DIR = {"vitest": "", "japa": "tests/unit/codestory/"}
+TS_TIMEOUT = 300  # seconds; an AdonisJS app boots for every run
+
+
+def ts_runner(pkg_dir: Path) -> str:
+    return "japa" if (pkg_dir / "adonisrc.ts").exists() else "vitest"
+
+
+def ts_setup(outline: dict, repo: Path) -> dict:
+    """The package a TypeScript story runs in and its test runner, as the scenario ran (story.py records them in the
+    outline); a story planned without them ran in the package at the repository's root."""
+    pkg = outline["repo"].get("pkg") or "."
+    return {"pkg": pkg, "runner": outline["repo"].get("runner") or ts_runner(repo / pkg)}
+
+
+def spec_name(kind: str) -> str:
+    """Unique, so a run selects this file alone and never overwrites one of the package's own."""
+    return f"codestory-{kind}-{uuid.uuid4().hex[:8]}.spec.ts"
+
+
+def run_spec(source: str, pkg_dir: Path, runner: str, name: str, out: Path, include: str = "-/",
+             lines: bool = False, timeout: int = TS_TIMEOUT) -> tuple[list[dict], int | None, str]:
+    """Run one spec file under the TypeScript tracer. It is written into the package, where its imports resolve as
+    the package's own tests' do, and removed again whatever happens. Returns (the tests the run recorded, the exit
+    code or None after a timeout, the tail of the runner's output). `include` names the code to trace; "-/" none."""
+    from diff import run_traced  # diff_verify imports this module
+
+    rel = TS_SPEC_DIR[runner] + name
+    path = pkg_dir / rel
+    made = [d for d in path.parents if d.is_relative_to(pkg_dir) and d != pkg_dir and not d.exists()]
+    out.unlink(missing_ok=True)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(source)
+        code, tail = run_traced(pkg_dir, rel, out, soft=False, timeout=timeout, runner=runner,
+                                env_extra={"CS_INCLUDE": include, **({} if lines else {"CS_LINES": "0"})})
+    finally:
+        path.unlink(missing_ok=True)
+        for d in made:  # deepest first
+            try:
+                d.rmdir()
+            except OSError:
+                pass
+    try:
+        tests = json.loads(out.read_text())["calls"] if out.exists() else []
+    except json.JSONDecodeError:  # cut off mid-write by a timeout
+        tests = []
+    return tests, code, re.sub(r"\x1b\[[0-9;]*m", "", tail)
+
+
+def ts_proof(block: str, outline: dict, repo: Path) -> str:
+    """A ```ts proof's outcome: pass, fail: <why>, not loaded: <the runner's complaint>, or timed out."""
+    from diff_verify import last_error, outcome
+
+    setup = ts_setup(outline, repo)
+    name = spec_name("proof")
+    with tempfile.TemporaryDirectory() as tmp:
+        tests, code, tail = run_spec(block, repo / setup["pkg"], setup["runner"], name, Path(tmp) / "proof.json")
+    if not tests:
+        return f"timed out after {TS_TIMEOUT}s" if code is None else f"not loaded: {last_error(tail, name)}"
+    bad = [o for o in map(outcome, tests) if o != "pass"]
+    if not bad:
+        return "pass"
+    detail = re.search(r"^\s*(\w*Error: .+)$", tail, re.M)  # the runner prints the whole message; the trace clips it
+    return f"fail: {detail.group(1).strip()[:400]}" if bad[0].startswith("fail") and detail else bad[0]
 
 
 @dataclass
@@ -157,6 +227,16 @@ def check_text(text: str, name: str, outline: dict, repo: Path, file_cache: dict
     env = {**os.environ, "PYTHONPATH": str(repo / outline["repo"].get("import_path", "."))}
     for i, (lang, block) in enumerate(PROOF_RE.findall(text) if proofs is None else proofs, 1):
         report.proofs += 1
+        if lang == "ts":
+            from diff_verify import VACUOUS as TS_VACUOUS
+
+            for m in TS_VACUOUS.finditer(block):
+                report.errors.append(f"proof {i} can't fail: {m.group(0).strip()}")
+            result = ts_proof(block, outline, repo)
+            if result != "pass":
+                report.errors.append(f"proof {i} failed: {result.removeprefix('fail: ')}" if result.startswith("fail")
+                                     else f"proof {i} {result}")
+            continue
         for m in VACUOUS.finditer(block):
             line = block[: m.start()].count("\n") + 1
             report.errors.append(f"proof {i} line {line} can't fail: {block.splitlines()[line - 1].strip()}")

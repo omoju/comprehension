@@ -102,6 +102,14 @@ other values, ` *` marks a function the change edited), each test's outcome befo
 functions no test reaches. No model is involved. `decisions.mjs` is `render.py`'s branch finder for
 TypeScript: which way each `if`, `switch` and `try` went, from the lines a test ran.
 
+The repository story works on a TypeScript or JavaScript package too: `story.py <repo> [--pkg <dir>] [--out <dir>]`
+finds a package.json where there is no pyproject.toml, installs the package's dependencies from its lockfile if
+node_modules is missing (`deps.py`), and runs `scenario_ts.py` instead of `scenario.py`. There the intended use is one
+spec file (Vitest; Japa for an AdonisJS app), run inside the package under a temporary name with the code in `src/`
+(or `app/`, or the top-level modules) traced, then removed and kept as `scenario.spec.ts`; the test's calls are the
+trace, with the same gates. Each chapter's proof is a spec file as well (`proofs/NN.ts`), which `verify.py` runs the
+same way and must pass.
+
 ## Models
 
 `llm.py` is the one place a stage asks a model. `CODESTORY_PROVIDER` chooses how you sign in (see `.env.example`):

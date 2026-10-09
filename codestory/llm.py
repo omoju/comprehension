@@ -39,7 +39,11 @@ from pathlib import Path
 
 import env  # noqa: F401  (loads .env)
 
-DEFAULT_MODELS = {"anthropic": "claude-opus-5"}  # the CLIs default to their own choice; Foundry needs a deployment
+DEFAULT_MODELS = {"anthropic": "claude-opus-5-5", "claude-cli": "claude-opus-5-5"}  # Codex picks its own; Foundry
+# needs a deployment. Claude Opus 5.5 needs Claude Code 2.1.280 or later for claude-cli (`claude update`).
+CLAUDE_MODELS = [("claude-opus-5-5", "Claude Opus 5.5"), ("claude-sonnet-5-5", "Claude Sonnet 5.5"),
+                 ("claude-fable-5-1", "Claude Fable 5.1"), ("claude-opus-4-8", "Claude Opus 4.8")]
+NOT_CHAT = ("transcribe", "tts", "whisper", "image", "embedding", "dall", "flux", "sora", "realtime", "audio")
 ANTHROPIC_PRICES = {"input": 5, "cache_write": 6.25, "cache_read": 0.5, "output": 25}  # $/M tokens, Opus
 TIMEOUT = 1800  # seconds for one answer; a chapter at high effort can take minutes
 
@@ -86,6 +90,32 @@ def ask(system: str, messages: list[dict], schema: dict | None = None, max_token
         except json.JSONDecodeError as e:
             raise LLMError(f"{which}: the answer is not the JSON the schema asks for ({e}): {reply.text[:300]}")
     return reply
+
+
+def models(which: str | None = None) -> list[dict]:
+    """The models a provider offers, for a picker: [{"id", "name"}]. Codex's come from its own cache; Foundry's
+    from the deployments on the endpoint (an empty list when they can't be read: type the name)."""
+    which = which or provider()
+    if which in ("anthropic", "claude-cli"):
+        return [{"id": i, "name": n} for i, n in CLAUDE_MODELS]
+    if which == "codex-cli":
+        try:
+            cache = json.loads((Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")) / "models_cache.json").read_text())
+            return [{"id": m["slug"], "name": m.get("display_name") or m["slug"]} for m in cache.get("models", [])
+                    if m.get("visibility") == "list"]
+        except (OSError, json.JSONDecodeError, KeyError):
+            return []
+    if which == "foundry":
+        try:
+            req = urllib.request.Request(f"{foundry_endpoint()}/openai/deployments?api-version=2022-12-01",
+                                         headers=foundry_auth())
+            with urllib.request.urlopen(req, timeout=30) as r:
+                found = json.loads(r.read()).get("data", [])
+        except (LLMError, urllib.error.URLError, json.JSONDecodeError, OSError):
+            return []
+        names = sorted({d.get("id") for d in found if d.get("id")} - {None})
+        return [{"id": n, "name": n} for n in names if not any(x in n.lower() for x in NOT_CHAT)]
+    return []
 
 
 def describe() -> str:

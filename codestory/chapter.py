@@ -23,8 +23,9 @@ import env  # noqa: F401  (loads .env)
 from claims import judge_text
 from jev import JevError, configured as jev_configured
 import llm
-from outline import READERS, REPAIRS, numbered_trace, repo_block
-from verify import check_text, read_proofs, repo_path, split_proofs, write_proofs
+import style
+from outline import READERS, REPAIRS, numbered_trace, repo_block, scenario_text
+from verify import TS_SPEC_DIR, check_text, read_proofs, repo_path, split_proofs, ts_setup, write_proofs
 
 SYSTEM = """You write one chapter of a code story at a time. The story follows the data as it travels through the
 code when the program is used as intended, told in close third person: the narrator stays with the data and sees
@@ -37,9 +38,10 @@ it is about to enter: tell it briefly, as setting, and keep the protagonist in v
 
 The formula: each chapter is a function. It covers one span of the trace. It begins with the data exactly as it
 enters that span and ends with the data exactly as it leaves, and the next chapter picks it up there. Use the real
-values from the trace: the reader should see what the data looks like at each step. Follow the trace's order.
-Where the data passes a branch it doesn't take, the narrator may say briefly what would have happened; stay on
-the road. Don't re-tell earlier chapters; don't run ahead into later ones.
+values: the reader should see what the data looks like at the moments that matter. Follow the order things happen
+in, but spend the words on the decisive moments and pass through the plumbing in a clause. Where the data passes a
+branch it doesn't take, the narrator may say briefly what would have happened; stay on the road. Don't re-tell
+earlier chapters; don't run ahead into later ones.
 
 Voice: the functions and classes the data meets are the other characters; say what they do to it and why. Plain,
 concrete, warm; never cute at the expense of accuracy. The reader's concerns decide where the story slows down
@@ -53,9 +55,12 @@ written plainly, in the manner of a technical instruction: one topic per sentenc
 for the reader as an imperative ("Check that your templates quote all attribute values"), not a suggestion.
 The narration keeps its own voice; only the callouts change register.
 
+{writing}
+
 Accountability, which is not optional:
 - Every claim about the code links to the exact lines that show it, as a permalink in this form:
-  [text](REPO_URL/blob/COMMIT/path/to/file#L10-L14). Use the full commit hash given. Line numbers must be the real
+  [text](REPO_URL/blob/COMMIT/path/to/file#L10-L14), with REPO_URL and COMMIT replaced by the values the request gives
+  (COMMIT is a full 40-character hash; never write the word COMMIT, HEAD or a branch name). Line numbers must be the real
   ones from the numbered source you are shown. Link the lines that prove the claim, not a nearby area.
 - Values you show must be the ones in the trace. Say only what the code and trace show; mark inference as such.
 - End with a proof: a fenced code block whose info string is exactly the proof language given (for example
@@ -68,26 +73,57 @@ Format: Markdown, starting with "# Chapter N · Title", then a one-line blockquo
 then the story, then a blockquote "**Leaves as:** <data_out>", then the proof. Nothing else."""
 
 
+SYSTEM = SYSTEM.replace("{writing}", style.WRITING)
+CHAPTER_WORDS = 650  # a repository chapter carries more than a change's
+
+
 def slug(title: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:50]
 
 
-def proof_language(repo: Path) -> str:
+def proof_language(repo: Path, story: Path | None = None) -> str:
+    """A TypeScript story (its scenario is a spec file) proves itself in its own test runner."""
+    if story is not None and (story / "scenario.spec.ts").exists():
+        return "ts"
     return "python" if any((repo / f).exists() for f in ("pyproject.toml", "setup.py", "setup.cfg")) else "sh"
+
+
+# A TypeScript proof is a whole spec file, like the scenario; the runner is the one exception to the standard library.
+PROOF_TS = {
+    "vitest": ("the proof is a whole Vitest spec file, written like the scenario: `it` and `expect` from 'vitest' "
+               "(installed: the one exception to the standard-library rule). It is saved as {path} and run from "
+               "{where} with Vitest, so import the package's code exactly as the scenario does. It replays the "
+               "scenario up to the end of this chapter's span and `expect`s the values the trace shows (written as "
+               "JavaScript values); it must pass."),
+    "japa": ("the proof is a whole Japa spec file, written like the scenario: `test` from '@japa/runner' (installed: "
+             "the one exception to the standard-library rule), with `assert` from the test context. It is saved as "
+             "{path} and run from {where} with `node ace test unit --files=<its name>`, the application booted as "
+             "for any unit test, so import application code exactly as the scenario does; call `.timeout(10000)` on "
+             "a test that needs longer than 2000 ms. It replays the scenario up to the end of this chapter's span "
+             "and asserts the values the trace shows; it must pass."),
+}
 
 
 def chapter_request(n: int, outline: dict, repo: Path, story: Path, previous: str | None) -> list[dict]:
     """The user turn that asks for chapter n. Rebuilt byte-for-byte on a repair pass, so the cache still hits."""
     chapter = next(c for c in outline["chapters"] if c["n"] == n)
     info = outline["repo"]
-    lang = proof_language(repo)
+    lang = proof_language(repo, story)
     profile = (READERS / f"{outline['reader']}.md").read_text()
     plan = json.dumps({k: outline[k] for k in ("title", "premise", "chapters")}, indent=1)
+    if lang == "ts":
+        ts = ts_setup(outline, repo)
+        where = "the repository root" if ts["pkg"] == "." else f"{ts['pkg']}/"
+        path = f"{'' if ts['pkg'] == '.' else ts['pkg'] + '/'}{TS_SPEC_DIR[ts['runner']]}codestory-proof-<id>.spec.ts"
+        how = PROOF_TS[ts["runner"]].format(path=path, where=where)
+    else:
+        how = "the proof runs from the repository root" + (
+            f" with PYTHONPATH={info.get('import_path', '.')}." if lang == "python" else ", with bash.")
 
     return [
         repo_block(repo, info, story),  # cached: same for every chapter
         {"type": "text", "cache_control": {"type": "ephemeral"},  # cached: same for every chapter of this story
-         "text": (f"<scenario>\n{(story / 'scenario.py').read_text()}\n</scenario>\n\n"
+         "text": (f"<scenario>\n{scenario_text(story)}\n</scenario>\n\n"
                   f"<trace>\n{numbered_trace(story)}\n</trace>\n\n"
                   f"<reader>\n{profile}\n</reader>\n\n<plan>\n{plan}\n</plan>")},
         {"type": "text", "text": (
@@ -95,8 +131,7 @@ def chapter_request(n: int, outline: dict, repo: Path, story: Path, previous: st
             + f"Write chapter {n}: {chapter['title']}. It covers trace lines "
             f"{chapter['trace_lines'][0]}-{chapter['trace_lines'][-1]}.\n"
             f"REPO_URL = {info['url']}\nCOMMIT = {info['commit']}\n"
-            f"Proof language: {lang}. The scenario is shown above; the proof runs from the repository root"
-            + (f" with PYTHONPATH={info.get('import_path', '.')}." if lang == "python" else ", with bash.")
+            f"Proof language: {lang}. The scenario is shown above; {how}"
         )},
     ]
 
@@ -208,6 +243,7 @@ def main(story_arg: str, only: int | None, upto: int | None = None, repairs: int
             path, text, proofs = save_chapter(raw, n, outline, story)
 
         v = check_text(text, path.name, outline, repo, cache, proofs)
+        v.errors += style.check_links(text, outline["repo"]["url"]) + style.check_chapter(text, CHAPTER_WORDS)
         # Stage 3: the chapter goes back with its verdict, in the same conversation, while the context is cached.
         # Only deterministic failures count; the judge below is reported, not acted on.
         while v.errors and repaired < repairs and raw is not None:
@@ -220,6 +256,7 @@ def main(story_arg: str, only: int | None, upto: int | None = None, repairs: int
             raw = response_text(reply)
             path, text, proofs = save_chapter(raw, n, outline, story)
             v = check_text(text, path.name, outline, repo, cache, proofs)
+            v.errors += style.check_links(text, outline["repo"]["url"]) + style.check_chapter(text, CHAPTER_WORDS)
         previous = text
 
         if jev_configured():

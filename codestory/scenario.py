@@ -79,7 +79,14 @@ def harness_failed(run: subprocess.CompletedProcess) -> bool:
     return bool(frames) and frames[-1] == str(TRACER)
 
 
-def main(repo_arg: str, story_arg: str) -> int:
+
+def asked(about: str) -> str:
+    """What the person asking wants the story to follow, if they said."""
+    return (f"\n\nThe person asking wants the story to follow: {about.strip()}\nChoose a run that does that, within the "
+            "rules above. If it can't run as asked (it needs the network, credentials or a service), take the nearest "
+            "run that can, and say so in `why`.") if about.strip() else ""
+
+def main(repo_arg: str, story_arg: str, about: str = "") -> int:
     repo, story = Path(repo_arg).resolve(), Path(story_arg).resolve()
     story.mkdir(parents=True, exist_ok=True)
     if not any((repo / f).exists() for f in ("pyproject.toml", "setup.py", "setup.cfg")):
@@ -88,7 +95,7 @@ def main(repo_arg: str, story_arg: str) -> int:
 
     print(f"  model: {llm.describe()}")
     messages = [{"role": "user", "content": [repo_block(repo, repo_info(repo)),
-                                             {"type": "text", "text": "Write the scenario."}]}]
+                                             {"type": "text", "text": "Write the scenario." + asked(about)}]}]
     for attempt in range(1, ATTEMPTS + 1):
         try:
             reply = llm.ask(SYSTEM, messages, schema=SCHEMA, max_tokens=32000)
@@ -127,7 +134,10 @@ def main(repo_arg: str, story_arg: str) -> int:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
+    argv = sys.argv[1:]
+    about = argv[argv.index("--about") + 1] if "--about" in argv else ""
+    args = [a for i, a in enumerate(argv) if not a.startswith("--") and argv[i - 1:i] != ["--about"]]
+    if len(args) != 2:
         print(__doc__)
         sys.exit(2)
-    sys.exit(main(sys.argv[1], sys.argv[2]))
+    sys.exit(main(args[0], args[1], about))
