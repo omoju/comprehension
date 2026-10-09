@@ -4,7 +4,7 @@ Everything lives under CODESTORY_HOME (default ~/.codestory), outside this repos
 repository can never be committed here by accident:
 
     config.json        provider and model, Foundry endpoint, GitHub sign-in method, registered local checkouts
-    secrets.json       API keys and a GitHub token, when you give them (mode 600)
+    secrets.json       API keys and a GitHub token, when you give them, and the app link's secret (mode 600)
     stories/<id>/      one story per pull request: review.py's output, plus app.json (notes, chat, drafted comments)
     repos/<owner>/<name>/   repositories the app cloned for you
 
@@ -20,6 +20,7 @@ import tempfile
 import threading
 import time
 from pathlib import Path
+from secrets import token_urlsafe
 
 HOME = Path(os.environ.get("CODESTORY_HOME", Path.home() / ".codestory")).expanduser()
 STORIES = HOME / "stories"
@@ -76,6 +77,16 @@ def secrets() -> dict:
 
 def save_secrets(values: dict) -> None:
     write_json(SECRETS, values, private=True)
+
+
+def app_token(new: bool = False) -> str:
+    """The secret in the app's link, kept in secrets.json so a restart doesn't sign out the open tabs. new=True
+    replaces it, which signs every tab out."""
+    sec = secrets()
+    if new or not sec.get("app_token"):
+        sec["app_token"] = token_urlsafe(24)
+        save_secrets(sec)
+    return sec["app_token"]
 
 
 def apply_model_settings() -> None:

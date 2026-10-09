@@ -53,8 +53,11 @@ here by accident.
 ## A repository
 
 "Explain a repository" takes a GitHub link, `owner/name` or a local path, and who the story is for. The app clones
-it (or uses your checkout), installs what it needs, and runs `story.py`: a Python or a TypeScript repository, told
-along one run of its own tests. Notes and the assistant work as for a pull request; there is nothing to post.
+it and installs what it needs, or, if you registered a checkout of it, makes a worktree of that checkout at the
+default branch's head (borrowing what you registered, such as `node_modules,venv,.env`), so your branch and your
+uncommitted work stay out of the story; the worktree is removed when the run ends. Then it runs `story.py`: a Python
+or a TypeScript repository, told along one run of its own tests. In a monorepo, name the package, or leave it blank
+for the one with the most code. Notes and the assistant work as for a pull request; there is nothing to post.
 
 ## Safety
 

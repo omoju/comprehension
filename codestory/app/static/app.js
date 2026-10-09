@@ -129,12 +129,14 @@ async function viewHome(root) {
     h("option", { value: "owner" }, "For an owner: what it guarantees, what could go wrong"),
     h("option", { value: "maintainer" }, "For a maintainer: how it works inside, where it's fragile"),
     h("option", { value: "user" }, "For a user: how to call it correctly"));
+  const about = h("input", { placeholder: "What should the story follow? e.g. a chat message that creates a document (blank: the model picks)", "aria-label": "What the story follows" });
+  const pkg = h("input", { placeholder: "Package in a monorepo, e.g. packages/api (blank: the one with the most code)", "aria-label": "Package" });
   const agree = h("input", { type: "checkbox", id: "agree-repo" });
   const repoMsg = h("div");
   const write = h("button", { class: "btn", disabled: true, onclick: async () => {
     write.disabled = true;
     try {
-      const r = await api("stories", { kind: "repo", repo: repo.value, options: { reader: reader.value } });
+      const r = await api("stories", { kind: "repo", repo: repo.value, options: { reader: reader.value, pkg: pkg.value.trim(), about: about.value.trim() } });
       S.session = null;
       location.hash = `#/story/${encodeURIComponent(r.sid)}`;
     } catch (e) { repoMsg.replaceChildren(h("div", { class: "note-box warn" }, e.message)); write.disabled = false; }
@@ -148,7 +150,7 @@ async function viewHome(root) {
       h("div", { class: "row" }, h("div", { class: "grow" }, url), look), prOut),
     h("div", { class: "card action" }, h("span", { class: "label" }, "02 · Repository"), h("h3", {}, "Explain a repository"),
       h("p", {}, "The story follows one real run of the code's intended use, from the input to the result, for the reader you choose."),
-      repo, reader,
+      repo, reader, about, pkg,
       h("label", { class: "row small muted", for: "agree-repo" }, agree, "I know this runs the repository's code on this machine."),
       h("div", {}, write), repoMsg)));
 

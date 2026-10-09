@@ -7,6 +7,7 @@ its dependencies are installed from its own lockfile (npm, pnpm or yarn), since 
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -17,6 +18,7 @@ from github import GitHub, GitHubError
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import deps  # noqa: E402
+from diff import link, worktree  # noqa: E402
 
 def checkout_for(owner: str, name: str) -> dict:
     """{path, managed, link, pkg, runner}: a registered checkout, or the one this app manages."""
@@ -90,8 +92,11 @@ def prepare(gh: GitHub, pr: dict, log: Callable[[str], None]) -> dict:
 
 
 def prepare_repo(gh: GitHub, owner: str, name: str, log: Callable[[str], None]) -> dict:
-    """A checkout of a repository's default branch, for a story of the whole repository. A registered checkout is
-    used as it stands; a managed clone is fetched and moved to the default branch's head."""
+    """A checkout of a repository's default branch, for a story of the whole repository. A managed clone is fetched
+    and moved to the default branch's head. A registered checkout is left as it is (your branch, your uncommitted
+    work): the story runs in a worktree of it at the default branch's head, under ~/.codestory/worktrees, borrowing
+    what the registration lists (node_modules, venv, .env…) in the root and in every package beside it. finish_repo()
+    removes the worktree afterwards."""
     repo = checkout_for(owner, name)
     path = Path(repo["path"])
     git = ["git", *gh.git_args()]
@@ -101,13 +106,46 @@ def prepare_repo(gh: GitHub, owner: str, name: str, log: Callable[[str], None]) 
         path.parent.mkdir(parents=True, exist_ok=True)
         log(f"cloning {owner}/{name} into {path}")
         run([*git, "clone", "-q", f"https://github.com/{owner}/{name}.git", str(path)], log, env=gh.git_env())
+    run([*git, "-C", str(path), "fetch", "-q", "origin"], log, env=gh.git_env())
+    run(["git", "-C", str(path), "remote", "set-head", "origin", "--auto"], log, env=gh.git_env())
     if repo["managed"]:
-        run([*git, "-C", str(path), "fetch", "-q", "origin"], log, env=gh.git_env())
-        run(["git", "-C", str(path), "remote", "set-head", "origin", "--auto"], log, env=gh.git_env())
         run(["git", "-C", str(path), "checkout", "-q", "--detach", "origin/HEAD"], log)
         install(path, log)
+    else:
+        sha = subprocess.run(["git", "-C", str(path), "rev-parse", "origin/HEAD"], capture_output=True, text=True,
+                             check=True).stdout.strip()
+        wt = state.HOME / "worktrees" / f"{owner}-{name}-{sha[:10]}"
+        log(f"a worktree of {path} at the default branch ({sha[:7]}): {wt}")
+        run(["git", "-C", str(path), "worktree", "prune"], log)  # forget worktrees whose folders are gone
+        worktree(path, sha, wt)
+        names = [x.strip() for x in repo["link"].split(",") if x.strip()]
+        for d in [".", *sorted(p.name for p in wt.iterdir() if p.is_dir() and (p / "package.json").exists())]:
+            link(path / d, wt / d, names)
+        repo = {**repo, "path": str(wt), "source": str(path), "commit": sha}
     ensure_vitest(log)
     return repo
+
+
+def finish_repo(prepared: dict, story: Path, log: Callable[[str], None]) -> None:
+    """After a story ran in a worktree: point the story at your checkout (the commit is there too, so the code panes
+    and the assistant still find it), then remove the worktree, links first so nothing they point at is touched."""
+    outline = story / "outline.json"
+    if outline.exists():
+        data = state.read_json(outline, {})
+        if data.get("repo"):
+            data["repo"]["local_path"] = prepared["source"]
+            outline.write_text(json.dumps(data, indent=2) + "\n")
+    wt = Path(prepared["path"])
+    if not (wt / ".git").exists():
+        return
+    names = [x.strip() for x in prepared["link"].split(",") if x.strip()]
+    for d in [wt, *(p for p in wt.iterdir() if p.is_dir())]:
+        for n in names:
+            if (d / n).is_symlink():
+                (d / n).unlink()
+    done = subprocess.run(["git", "-C", prepared["source"], "worktree", "remove", "--force", str(wt)],
+                          capture_output=True, text=True)
+    log("worktree removed" if done.returncode == 0 else f"could not remove the worktree {wt}: {done.stderr.strip()}")
 
 
 def install(path: Path, log: Callable[[str], None]) -> None:

@@ -11,12 +11,15 @@ from __future__ import annotations
 import collections
 import os
 import queue
+import re
+import shutil
 import signal
 import subprocess
 import sys
 import threading
 import time
 from pathlib import Path
+from typing import Callable
 
 import repos
 import state
@@ -42,6 +45,7 @@ class Job:
         self.proc: subprocess.Popen | None = None
         self.cancelled = False
         self.log_file = state.story_dir(sid) / "run.log"
+        self.after: Callable[[], None] | None = None  # cleanup once the run ends, however it ends
 
     def view(self) -> dict:
         return {"sid": self.sid, "status": self.status, "stage": self.stage, "error": self.error,
@@ -93,9 +97,10 @@ def start_repo(target: dict, options: dict) -> Job:
         return JOBS[sid]
     story = state.story_dir(sid)
     story.mkdir(parents=True, exist_ok=True)
-    if options.get("fresh"):
-        for f in ("outline.json", "trace.txt", "trace.json", "scenario.json"):
-            (story / f).unlink(missing_ok=True)
+    if options.get("fresh") or (options.get("about") or "").strip():  # a new run to follow: everything but the notes
+        for f in story.iterdir():
+            if f.name not in ("app.json", "run.log"):
+                shutil.rmtree(f) if f.is_dir() else f.unlink()
     st = state.app_state(sid)
     st["repo"] = {**target, "reader": options.get("reader") or "owner"}
     state.save_app_state(sid, st)
@@ -109,10 +114,19 @@ def _command(job: Job, gh: GitHub) -> list[str]:
     """Prepare the checkout and say how to write the story."""
     o = job.options
     if job.kind == "repo":
-        path = job.repo.get("path") or repos.prepare_repo(gh, job.repo["owner"], job.repo["name"], job.log)["path"]
+        path = job.repo.get("path")
+        if not path:
+            prepared = repos.prepare_repo(gh, job.repo["owner"], job.repo["name"], job.log)
+            path = prepared["path"]
+            if prepared.get("source"):
+                job.after = lambda: repos.finish_repo(prepared, state.story_dir(job.sid), job.log)
         argv = [sys.executable, "-u", str(STORY), path, "--reader", o.get("reader") or "owner",
                 "--out", str(state.story_dir(job.sid))]
-        return argv + (["--pkg", o["pkg"]] if o.get("pkg") else [])
+        pkg = (o.get("pkg") or "").strip().strip("/")
+        if pkg and (Path(pkg).is_absolute() or ".." in Path(pkg).parts):
+            raise GitHubError(f"{pkg!r} is not a folder inside the repository")
+        about = (o.get("about") or "").strip()
+        return argv + (["--pkg", pkg] if pkg else []) + (["--about", about] if about else [])
     repo = repos.prepare(gh, job.pr, job.log)
     argv = [sys.executable, "-u", str(REVIEW), repo["path"], "--pr", str(job.pr["number"]),
             "--base", job.pr["base"]["sha"], "--head", job.pr["head"]["sha"], "--title", job.pr["title"],
@@ -149,11 +163,29 @@ def _run(job: Job) -> None:
             elif code == 0:
                 job.set("done")
             else:
-                last = next((ln for ln in reversed(job.lines) if ln.startswith("✗")), f"{Path(argv[2]).name} exited {code}")
-                job.set("failed", last.lstrip("✗ "))
+                job.set("failed", failure(job.lines) or f"{Path(argv[2]).name} exited {code}")
         except (GitHubError, repos.deps.InstallError, OSError, subprocess.SubprocessError) as e:
             job.log(f"✗ {e}")
             job.set("cancelled" if job.cancelled else "failed", str(e))
+        finally:
+            if job.after:
+                try:
+                    job.after()
+                except (OSError, subprocess.SubprocessError) as e:
+                    job.log(f"cleanup: {e}")
+
+
+def failure(lines: list[str]) -> str:
+    """Why a run failed, in one line: the exception a traceback in the failed stage ends with, or else that stage's
+    first ✗ line. review.py's own ✗ line comes last and only names the stage, so it is the fallback."""
+    start = max((i for i, ln in enumerate(lines) if ln.startswith("== ")), default=0)
+    stage = lines[start:]
+    if any(ln.startswith("Traceback") for ln in stage):
+        raised = [ln for ln in stage if re.match(r"^[\w.]+(Error|Exception|Exit)\b.*: ", ln)]
+        if raised:
+            return raised[-1][:600]
+    marked = [ln for ln in stage if ln.startswith("✗")] or [ln for ln in lines if ln.startswith("✗")]
+    return marked[0].lstrip("✗ ")[:600] if marked else ""
 
 
 def cancel(sid: str) -> bool:

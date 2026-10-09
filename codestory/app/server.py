@@ -56,7 +56,7 @@ STORY_CSP = ("sandbox allow-scripts allow-popups allow-popups-to-escape-sandbox;
              "script-src 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'unsafe-inline' https://fonts.googleapis.com; "
              "font-src https://fonts.gstatic.com; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'; "
              "frame-ancestors 'self'")  # sandbox: opened in a tab of its own, it still gets an opaque origin
-TOKEN = secrets.token_urlsafe(24)
+TOKEN = ""  # the secret in the printed link: state.app_token(), set in main()
 PORT = 8765
 
 
@@ -125,9 +125,13 @@ class Handler(BaseHTTPRequestHandler):
         path, query = url.path, urllib.parse.parse_qs(url.query)
         if path == "/" and query.get("t") == [TOKEN]:  # the printed link: set the cookie, drop the secret from the URL
             return self.send(303, "", "text/plain", {"Location": "/", "Set-Cookie":
-                             f"cs_token={TOKEN}; HttpOnly; SameSite=Strict; Path=/"})
+                             f"cs_token={TOKEN}; HttpOnly; SameSite=Strict; Path=/; Max-Age=2592000"})
         if not self.cookie_ok():
-            return self.send(401, "Open the link codestory review printed when it started.", "text/plain")
+            why = ("This tab isn't signed in to codestory review. Open the link it printed when it started (also the "
+                   f"first line of {state.HOME / 'server.log'} if it runs in the background).")
+            if path.startswith("/api/"):
+                return self.json({"error": why}, 401)
+            return self.send(401, why, "text/plain")
         if method == "POST" and self.headers.get("X-Codestory") != "1":
             return self.fail(403, "missing X-Codestory header")
         try:
@@ -496,13 +500,15 @@ def import_story(path: Path) -> dict:
 
 
 def main() -> int:
-    global PORT
+    global PORT, TOKEN
     ap = argparse.ArgumentParser(description="codestory review: a local web app around review.py")
     ap.add_argument("--port", type=int, default=PORT)
     ap.add_argument("--open", action=argparse.BooleanOptionalAction, default=False, help="open the app in a browser")
+    ap.add_argument("--new-link", action="store_true", help="a new secret for the link, which signs out every tab")
     a = ap.parse_args()
     PORT = a.port
     state.setup()
+    TOKEN = state.app_token(new=a.new_link)
     state.apply_model_settings()
     try:
         httpd = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
