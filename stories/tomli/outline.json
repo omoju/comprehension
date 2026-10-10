@@ -1,6 +1,6 @@
 {
   "title": "Two Players and a Parser: What `tomli.loads` Promises",
-  "premise": "A caller hands Tomli a TOML string \ns a document with two `[[players]]` records \ns and expects back a plain Python dict of builtin types, or a clean `TOMLDecodeError` if the document is malformed. Nothing else: no partial results, no custom classes, no surprises. The string is the protagonist; the story follows it from the public entry point, through the single-pass statement loop, into the nested dict that is handed back, and notes at every branch what would have happened had the input been hostile or merely wrong.",
+  "premise": "A caller hands Tomli a TOML string — a document with two `[[players]]` records — and expects back a plain Python dict of builtin types, or a clean `TOMLDecodeError` if the document is malformed. Nothing else: no partial results, no custom classes, no surprises. The string is the protagonist; the story follows it from the public entry point, through the single-pass statement loop, into the nested dict that is handed back, and notes at every branch what would have happened had the input been hostile or merely wrong.",
   "reader": "owner",
   "repo": {
     "name": "hukkin/tomli",
@@ -64,7 +64,7 @@
         26
       ],
       "data_in": "src, pos=1 (just past the leading newline), first char '[', second char '['",
-      "data_out": "(10, ('players',)) \ns key parsed, position parked on the closing brackets",
+      "data_out": "(10, ('players',)) — key parsed, position parked on the closing brackets",
       "code": [
         "src/tomli/_parser.py:180-216",
         "src/tomli/_parser.py:405-408",
@@ -302,7 +302,7 @@
     },
     {
       "n": 7,
-      "title": "The same header again \ns legally",
+      "title": "The same header again — legally",
       "trace_lines": [
         96,
         126

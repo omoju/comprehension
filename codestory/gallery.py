@@ -26,10 +26,11 @@ def entry(rel: str) -> str:
     words, cites = sum(int(r[1]) for r in rows), sum(int(r[2]) for r in rows)
     repo = o["repo"]
     owner, name = repo["name"].split("/", 1)
+    premise = re.sub(r"`([^`]+)`", r"<code>\1</code>", html.escape(o["premise"]))  # `x` → inline code chip
     return f"""<li>
   <a class="repo" href="{rel}/index.html"><span class="owner">{html.escape(owner)}/</span>{html.escape(name)}</a>
   <span class="headline">{html.escape(o['title'])}</span>
-  {html.escape(o['premise'])}
+  {premise}
   <span class="meta">at <span class="sha">{repo['commit'][:7]}</span> · {len(rows)} chapters · {words:,} words · {cites} citations · for the {html.escape(o['reader'])}</span>
 </li>"""
 

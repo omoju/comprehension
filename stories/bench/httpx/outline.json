@@ -1,6 +1,6 @@
 {
   "title": "A Request That Never Touches the Network",
-  "premise": "A caller wants to exercise a plain Python WSGI application through the real httpx client \ter\n \ter \ter \ter \ter \ter \ter\n\nsame headers, same cookie jar, same response model \ter but with no socket, no DNS and no TLS anywhere in the path. The input is modest: the string \"/\" and one custom header, handed to `client.get()`. Everything interesting is what the client does to that input on the way down, and what it guarantees about what comes back up. The reader following it is the person who has to sign off on that stack: which defaults are in force, where a failure would surface, and what the transport boundary does and does not promise.",
+  "premise": "A caller wants to exercise a plain Python WSGI application through the real httpx client — same headers, same cookie jar, same response model — but with no socket, no DNS and no TLS anywhere in the path. The input is modest: the string \"/\" and one custom header, handed to `client.get()`. Everything interesting is what the client does to that input on the way down, and what it guarantees about what comes back up. The reader following it is the person who has to sign off on that stack: which defaults are in force, where a failure would surface, and what the transport boundary does and does not promise.",
   "reader": "owner",
   "repo": {
     "name": "encode/httpx",
@@ -70,7 +70,7 @@
         135
       ],
       "data_in": "url='/' as handed to client.get(), together with the client's base_url",
-      "data_out": "URL('http://testserver/') \ter scheme 'http', host 'testserver', port None, path '/', no query, no fragment",
+      "data_out": "URL('http://testserver/') — scheme 'http', host 'testserver', port None, path '/', no query, no fragment",
       "code": [
         "httpx/_client.py:1036-1063",
         "httpx/_client.py:771-825",

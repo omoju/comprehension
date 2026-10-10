@@ -1,6 +1,6 @@
 {
   "title": "Four Characters and a Progress Bar: What tqdm Promises While It Prints",
-  "premise": "A caller has a four-item list and a loop that does real work, and wants to see progress without writing any printing logic. The list is handed to `tqdm(...)`: from that moment it is no longer just a list but the payload of a progress meter that must allocate a global write lock, start a background thread, probe the terminal, render a frame, throttle itself, and clean up after the loop ends \\u2014 all on `sys.stderr`, all without changing what the loop iterates over. This story follows that list through one real run and asks, at each step, what is guaranteed and what could go wrong.",
+  "premise": "A caller has a four-item list and a loop that does real work, and wants to see progress without writing any printing logic. The list is handed to `tqdm(...)`: from that moment it is no longer just a list but the payload of a progress meter that must allocate a global write lock, start a background thread, probe the terminal, render a frame, throttle itself, and clean up after the loop ends — all on `sys.stderr`, all without changing what the loop iterates over. This story follows that list through one real run and asks, at each step, what is guaranteed and what could go wrong.",
   "reader": "owner",
   "repo": {
     "name": "tqdm/tqdm",
@@ -18,7 +18,7 @@
         21
       ],
       "data_in": "`tqdm(['a','b','c','d'])` is called; Python routes to `tqdm.__new__(cls=<type>)`, which ignores the list entirely",
-      "data_out": "`<tqdm.std.tqdm object at 0x109742cf0>` \\u2014 a bare instance, already registered in `tqdm._instances`, with a process-wide `TqdmDefaultWriteLock` built and a daemon `TMonitor` thread running",
+      "data_out": "`<tqdm.std.tqdm object at 0x109742cf0>` — a bare instance, already registered in `tqdm._instances`, with a process-wide `TqdmDefaultWriteLock` built and a daemon `TMonitor` thread running",
       "code": [
         "tqdm/std.py:664-678",
         "tqdm/std.py:766-771",
@@ -156,7 +156,7 @@
         119
       ],
       "data_in": "`tqdm.refresh(self, nolock=False, lock_args=None)` on a bar with `n=0, total=4, elapsed=0, ncols=None`, followed by `tqdm.__iter__(self)` over `['a','b','c','d']`",
-      "data_out": "`'  0%|          | 0/4 [00:00<?, ?it/s]'` written as `'\\r' + s` to stderr (38 chars); then the four items yielded unchanged (`'a'`, `\\u2026 \\u00d74 more`), the `finally` block setting `self.n = 4` and calling `close()`, and a later `__del__` \\u2192 `close()` that returns immediately",
+      "data_out": "`'  0%|          | 0/4 [00:00<?, ?it/s]'` written as `'\\r' + s` to stderr (38 chars); then the four items yielded unchanged (`'a'`, `… ×4 more`), the `finally` block setting `self.n = 4` and calling `close()`, and a later `__del__` → `close()` that returns immediately",
       "code": [
         "tqdm/std.py:1332-1357",
         "tqdm/std.py:1471-1505",
@@ -237,7 +237,7 @@
         120,
         135
       ],
-      "data_in": "`tqdm(chars, desc=\"Processing\")` \\u2192 `tqdm.__new__(cls=<type>)` with a monitor already running",
+      "data_in": "`tqdm(chars, desc=\"Processing\")` → `tqdm.__new__(cls=<type>)` with a monitor already running",
       "data_out": "`<tqdm.std.tqdm object at 0x109a02210>`; `TMonitor.report()` returned `True`, so `cls.monitor` is kept and no second thread starts",
       "code": [
         "tqdm/std.py:664-678",
@@ -309,7 +309,7 @@
         322
       ],
       "data_in": "first item `'a'` yielded, then `set_description('Processing a')`; same for `'b'`",
-      "data_out": "two full repaints \\u2014 `'Processing a:   0%|          | 0/4 [00:00<?, ?it/s]'` and `'Processing b:   0%|          | 0/4 [00:00<?, ?it/s]'` \\u2014 while `n` is still 0 and two items have in fact been consumed",
+      "data_out": "two full repaints — `'Processing a:   0%|          | 0/4 [00:00<?, ?it/s]'` and `'Processing b:   0%|          | 0/4 [00:00<?, ?it/s]'` — while `n` is still 0 and two items have in fact been consumed",
       "code": [
         "tqdm/std.py:1389-1407",
         "tqdm/std.py:1332-1357",
@@ -352,8 +352,8 @@
         323,
         529
       ],
-      "data_in": "`tqdm.__iter__` resumes for the third item and calls `tqdm.update(self, n=2)` with `dt \\u2248 0.11 s \\u2265 mininterval`",
-      "data_out": "`n=2` published as `'Processing b:  50%|\\u2588\\u2588\\u2588\\u2588\\u2588     | 2/4 [00:00<00:00, 18.13it/s]'` with `miniters` tuned to `1.8125`; two more cosmetic `set_description` repaints at the same counter; then a second `update(2)` giving `n=4`, `'Processing d: 100%|\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588| 4/4 [00:00<00:00, 17.50it/s]'` and `miniters` retuned to `1.7514`",
+      "data_in": "`tqdm.__iter__` resumes for the third item and calls `tqdm.update(self, n=2)` with `dt ≈ 0.11 s ≥ mininterval`",
+      "data_out": "`n=2` published as `'Processing b:  50%|█████     | 2/4 [00:00<00:00, 18.13it/s]'` with `miniters` tuned to `1.8125`; two more cosmetic `set_description` repaints at the same counter; then a second `update(2)` giving `n=4`, `'Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.50it/s]'` and `miniters` retuned to `1.7514`",
       "code": [
         "tqdm/std.py:1203-1268",
         "tqdm/std.py:211-239",
@@ -408,7 +408,7 @@
         610
       ],
       "data_in": "the generator's `finally` calls `tqdm.close(self)` on a bar with `n=4`, `pos=0`, `leave=True`; afterwards the caller reads `pbar.format_dict` and calls `close()` again",
-      "data_out": "instance removed from `_instances`; final frame `'Processing d: 100%|\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588\\u2588| 4/4 [00:00<00:00, 17.39it/s]'` followed by `'\\n'`; `disable=True`; `format_dict` still returns `{'n': 4, 'total': 4, 'elapsed': 0.2319, ...}` and both the explicit `close()` and `__del__`'s `close()` return `None` immediately",
+      "data_out": "instance removed from `_instances`; final frame `'Processing d: 100%|██████████| 4/4 [00:00<00:00, 17.39it/s]'` followed by `'\\n'`; `disable=True`; `format_dict` still returns `{'n': 4, 'total': 4, 'elapsed': 0.2319, ...}` and both the explicit `close()` and `__del__`'s `close()` return `None` immediately",
       "code": [
         "tqdm/std.py:1270-1314",
         "tqdm/std.py:687-715",
