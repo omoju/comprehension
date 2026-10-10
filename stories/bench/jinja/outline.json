@@ -17,7 +17,7 @@
         2,
         17
       ],
-      "data_in": "mapping={'base.html': '<!DOCTYPE html>\\u2026', 'members.html': '{% extends \"base.html\" %}\\u2026'}, autoescape=select_autoescape(['html','htm','xml'])",
+      "data_in": "mapping={'base.html': '<!DOCTYPE html>…', 'members.html': '{% extends \"base.html\" %}…'}, autoescape=select_autoescape(['html','htm','xml'])",
       "data_out": "a configured Environment: loader=DictLoader, cache=LRUCache(400), extensions={}, is_async=False, autoescape=<function select_autoescape.<locals>.autoescape>",
       "code": [
         "src/jinja2/loaders.py:432-453",
@@ -61,7 +61,7 @@
         28
       ],
       "data_in": "Environment.get_template(name='members.html', parent=None, globals=None)",
-      "data_out": "the raw source `'{% extends \"base.html\" %}\\n{% block t\\u2026'`, filename None, and an uptodate lambda, handed to Environment.compile",
+      "data_out": "the raw source `'{% extends \"base.html\" %}\\n{% block t…'`, filename None, and an uptodate lambda, handed to Environment.compile",
       "code": [
         "src/jinja2/environment.py:980-1015",
         "src/jinja2/environment.py:955-978",
@@ -104,7 +104,7 @@
         29,
         52
       ],
-      "data_in": "source string + name='members.html' into Environment.compile \\u2192 _parse \\u2192 Parser.__init__",
+      "data_in": "source string + name='members.html' into Environment.compile → _parse → Parser.__init__",
       "data_out": "a TokenStream positioned at Token(lineno=1, type='block_begin', value='{%')",
       "code": [
         "src/jinja2/environment.py:730-770",
@@ -149,7 +149,7 @@
         155
       ],
       "data_in": "TokenStream over members.html",
-      "data_out": "Template(body=[Extends(template=Const('base.html')), Output([TemplateData('\\n')]), Block(name='title',\\u2026), Output([TemplateData('\\n')]), Block(name='content',\\u2026)]) with the environment attached to every node",
+      "data_out": "Template(body=[Extends(template=Const('base.html')), Output([TemplateData('\\n')]), Block(name='title',…), Output([TemplateData('\\n')]), Block(name='content',…)]) with the environment attached to every node",
       "code": [
         "src/jinja2/parser.py:990-1041",
         "src/jinja2/parser.py:163-191",
@@ -197,7 +197,7 @@
         223
       ],
       "data_in": "the Template AST + environment + name='members.html' into generate()",
-      "data_out": "generated source so far: imports, `name = 'members.html'`, `def root(context, \\u2026)` whose body sets `parent_template = None`, runs the extends, and ends with `yield from parent_template.root_render_func(context)`",
+      "data_out": "generated source so far: imports, `name = 'members.html'`, `def root(context, …)` whose body sets `parent_template = None`, runs the extends, and ends with `yield from parent_template.root_render_func(context)`",
       "code": [
         "src/jinja2/compiler.py:101-122",
         "src/jinja2/compiler.py:825-943",
@@ -250,7 +250,7 @@
         224,
         314
       ],
-      "data_in": "the collected blocks {'title': Block(\\u2026), 'content': Block(\\u2026)} and the shared EvalContext",
+      "data_in": "the collected blocks {'title': Block(…), 'content': Block(…)} and the shared EvalContext",
       "data_out": "<Template 'members.html'>, stored in the LRUCache under (weakref(DictLoader), 'members.html')",
       "code": [
         "src/jinja2/compiler.py:910-943",
@@ -315,8 +315,8 @@
         315,
         325
       ],
-      "data_in": "Template.render(users=[{'url':'/user/1','username':'ada'}, \\u2026, {'url':'/user/3','username':'Tom & Jerry'}])",
-      "data_out": "<Context {'range': \\u2026, 'users': [...]} of 'members.html'> with eval_ctx.autoescape = True",
+      "data_in": "Template.render(users=[{'url':'/user/1','username':'ada'}, …, {'url':'/user/3','username':'Tom & Jerry'}])",
+      "data_out": "<Context {'range': …, 'users': [...]} of 'members.html'> with eval_ctx.autoescape = True",
       "code": [
         "src/jinja2/environment.py:1272-1292",
         "src/jinja2/environment.py:1369-1384",
@@ -357,7 +357,7 @@
         457
       ],
       "data_in": "root_render_func(ctx) reaching `parent_template = environment.get_template('base.html', 'members.html')`",
-      "data_out": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n\\u2026\\n  </ul>\\n</div>\\n</body>\\n</html>' \nu2014 with `Tom &amp; Jerry` in it",
+      "data_out": "'<!DOCTYPE html>\\n<html lang=\"en\">\\n…\\n  </ul>\\n</div>\\n</body>\\n</html>' \nu2014 with `Tom &amp; Jerry` in it",
       "code": [
         "src/jinja2/compiler.py:1019-1034",
         "src/jinja2/environment.py:980-1015",

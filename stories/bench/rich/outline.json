@@ -1,6 +1,6 @@
 {
   "title": "What Actually Reaches the Terminal: Two Strings and a Table Through Rich",
-  "premise": "A caller wants styled, laid-out text on a terminal: colours, markup tags like [bold cyan]\\u2026[/bold cyan], and a four-column table that fits the available width \\u2014 without hand-writing ANSI escape sequences, without overflowing the line, and with the option to capture whatever was produced for later inspection. The data handed in is ordinary Python: two plain strings, one markup string, and a table of cell strings. Everything between that data and the bytes on the file object is Rich's job, and the owner of this code has to vouch for it: what it promises, where it decides on the caller's behalf, and how it fails.",
+  "premise": "A caller wants styled, laid-out text on a terminal: colours, markup tags like [bold cyan]…[/bold cyan], and a four-column table that fits the available width — without hand-writing ANSI escape sequences, without overflowing the line, and with the option to capture whatever was produced for later inspection. The data handed in is ordinary Python: two plain strings, one markup string, and a table of cell strings. Everything between that data and the bytes on the file object is Rich's job, and the owner of this code has to vouch for it: what it promises, where it decides on the caller's behalf, and how it fails.",
   "reader": "owner",
   "repo": {
     "name": "Textualize/rich",
@@ -71,7 +71,7 @@
         129
       ],
       "data_in": "objects=('Hello', 'World!'), sep=' ', end='\\n'",
-      "data_out": "[<text 'Hello World!' [] ''>] \\u2014 a single Text with no style spans",
+      "data_out": "[<text 'Hello World!' [] ''>] — a single Text with no style spans",
       "code": [
         "rich/console.py:1652-1713",
         "rich/console.py:1500-1587",
@@ -417,7 +417,7 @@
         544
       ],
       "data_in": "widths=[14, 35, 19, 16] and the raw cell strings",
-      "data_out": "a stream of Segments beginning Segment('\\u250f\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2501\\u2533\\u2026\\u2513', Style()), then Segment('\\n'), Segment('\\u2503', Style()), Segment('Date        ', Style(magenta, bold)), \\u2026",
+      "data_out": "a stream of Segments beginning Segment('┏━━━━━━━━━━━━━━┳…┓', Style()), then Segment('\\n'), Segment('┃', Style()), Segment('Date        ', Style(magenta, bold)), …",
       "code": [
         "rich/table.py:755-935",
         "rich/table.py:627-698",
@@ -472,7 +472,7 @@
         706
       ],
       "data_in": "~80 Segments of table output, self.width == 100",
-      "data_out": "'\\u250f\\u2501\\u2501\\u2501\\u2026\\u2513\\n\\u2026\\u2514\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2518\\n' written once to stdout and flushed, copied into _record_buffer, then export_text returning 'Hello World!\\nWhere there is a Will t\\u2026\\u2534\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2518\\n' and emptying that buffer",
+      "data_out": "'┏━━━…┓\\n…└────────────────┘\\n' written once to stdout and flushed, copied into _record_buffer, then export_text returning 'Hello World!\\nWhere there is a Will t…┴────────────────┘\\n' and emptying that buffer",
       "code": [
         "rich/console.py:1749-1756",
         "rich/segment.py:306-351",

@@ -1,6 +1,6 @@
 {
   "title": "Nothing Gets Out Unescaped: A Run Through MarkupSafe",
-  "premise": "A web page wants to show a comment somebody posted: `<script>alert(document.cookie);</script>`. Printed as-is into HTML, that string stops being text and starts being code \\u2014 it is a cross-site scripting payload. MarkupSafe exists to make the difference between \"text\" and \"markup\" a property of the value itself, carried in its type, so that a template can mix trusted and untrusted pieces and the untrusted ones can only ever arrive as inert characters. This story follows that one untrusted comment from the moment it is handed to `escape()` until it comes back out of a rendered fragment as plain text again, and notes at each step exactly what is guaranteed, what is merely trusted, and who is responsible for which.",
+  "premise": "A web page wants to show a comment somebody posted: `<script>alert(document.cookie);</script>`. Printed as-is into HTML, that string stops being text and starts being code — it is a cross-site scripting payload. MarkupSafe exists to make the difference between \"text\" and \"markup\" a property of the value itself, carried in its type, so that a template can mix trusted and untrusted pieces and the untrusted ones can only ever arrive as inert characters. This story follows that one untrusted comment from the moment it is handed to `escape()` until it comes back out of a rendered fragment as plain text again, and notes at each step exactly what is guaranteed, what is merely trusted, and who is responsible for which.",
   "reader": "owner-ste",
   "repo": {
     "name": "pallets/markupsafe",
@@ -17,7 +17,7 @@
         2,
         17
       ],
-      "data_in": "s = '<script>alert(document.cookie);</script>' \\u2014 a plain str of unknown provenance",
+      "data_in": "s = '<script>alert(document.cookie);</script>' — a plain str of unknown provenance",
       "data_out": "Markup('&lt;script&gt;alert(document.cookie);&lt;/script&gt;'), and the same value again after a second trip through escape()",
       "code": [
         "src/markupsafe/__init__.py:24-45",
@@ -129,7 +129,7 @@
         44
       ],
       "data_in": "Markup('<span class=\"user\">{0}</span>').format('Alice \"The <b>Great</b>\"')",
-      "data_out": "Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>'), then the completed Markup('<a href=\"/user/3\">\\u2026</a>')",
+      "data_out": "Markup('<span class=\"user\">Alice &#34;The &lt;b&gt;Great&lt;/b&gt;&#34;</span>'), then the completed Markup('<a href=\"/user/3\">…</a>')",
       "code": [
         "src/markupsafe/__init__.py:339-354",
         "src/markupsafe/__init__.py:230-240",
@@ -267,8 +267,8 @@
         92,
         101
       ],
-      "data_in": "the page Markup('<p>User: <a href=\"/user/3\">\\u2026&lt;/script&gt;</p>')",
-      "data_out": "'User: Alice \"The <b>Great</b>\" said: <script>alert(document.cookie);</script>' \\u2014 a plain str with live script text in it; and a final Markup rebuilt from a developer-written literal",
+      "data_in": "the page Markup('<p>User: <a href=\"/user/3\">…&lt;/script&gt;</p>')",
+      "data_out": "'User: Alice \"The <b>Great</b>\" said: <script>alert(document.cookie);</script>' — a plain str with live script text in it; and a final Markup rebuilt from a developer-written literal",
       "code": [
         "src/markupsafe/__init__.py:199-228",
         "src/markupsafe/__init__.py:188-197",
