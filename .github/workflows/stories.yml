@@ -12,7 +12,7 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Fetch the repositories the stories cite, at their pinned commits
         run: sh codestory/restore_repos.sh
       - name: Check every story's citations and drift
