@@ -93,6 +93,9 @@ the human check.
   Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-09** · The two explainer pages (`eval/explainer/`) now link omojumiller.com's stylesheet and use the site's page
+  frame, as the gallery does; local CSS keeps only the stepper, figures, flow chart, bars and the two arms' colours.
+  Templates changed the same way, placeholders untouched.
 - **10-07** · Change stories (`review.py`): a pull request told for a reviewer, from its own tests run on its base
   and its head (`diff.py`). The plan check puts the evidence in the open: every changed function the run reaches is
   explained by a chapter, every test that starts passing is claimed as evidence, every changed function no test

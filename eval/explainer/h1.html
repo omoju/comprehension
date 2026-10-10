@@ -1,62 +1,77 @@
-<title>How the Accuracy Measure Worked</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How the Accuracy Measure Worked · CodeStories · Omoju Miller</title>
+<meta name="description" content="How the accuracy measure (H1) was done: claims, sampling, the judge and its blind spot, the formula, every contradicted claim, and why the rule said kill.">
+<link rel="stylesheet" href="https://omojumiller.com/theme/css/style.css">
 <style>
-/* Layout: a stepper, one idea per screen; same tokens as the comprehension explainer so the two read as a pair. */
-:root {
-  --bg: #f7f5f0; --sheet: #ffffff; --ink: #1d1b17; --muted: #5f5b53; --rule: #d9d4c9;
-  --story: #1f5f8b; --story-soft: #dfeaf4; --wiki: #8b5a1f; --wiki-soft: #f5ecdc;
-  --ok: #2d6a4f; --no: #a23b2a; --hi: #fff1c2; --dim: .28;
-  --serif: "Source Serif 4", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
-}
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #15140f; --sheet: #1f1d18; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e;
-  --story: #7fb3d9; --story-soft: #1b2b38; --wiki: #d9a05c; --wiki-soft: #332718;
-  --ok: #7cc49a; --no: #e08674; --hi: #3b3418; color-scheme: dark } }
-:root[data-theme="dark"] {
-  --bg: #15140f; --sheet: #1f1d18; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e;
-  --story: #7fb3d9; --story-soft: #1b2b38; --wiki: #d9a05c; --wiki-soft: #332718;
-  --ok: #7cc49a; --no: #e08674; --hi: #3b3418; color-scheme: dark }
-body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--serif); margin: 0; padding-block: 28px 80px; padding-inline: 16px }
-main { max-width: 860px; margin: 0 auto }
-.kicker { font: 500 12px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
-h1 { font: 600 30px/1.15 var(--serif); margin: 6px 0 18px; text-wrap: balance }
-h2 { font: 600 22px/1.25 var(--serif); margin: 0 0 10px; text-wrap: balance }
-p { margin: 0 0 12px; max-width: 68ch }
-.steps { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 18px; padding: 0; list-style: none }
-.steps button { font: 500 12px/1.2 var(--mono); padding: 6px 10px; border: 1px solid var(--rule); background: var(--sheet); color: var(--muted); border-radius: 999px; cursor: pointer }
-.steps button[aria-current="step"] { color: var(--ink); border-color: var(--ink) }
-.steps button:focus-visible, button:focus-visible { outline: 2px solid var(--story); outline-offset: 2px }
+/* Only what omojumiller.com's stylesheet has no rule for: the stepper, figures, the flow chart, bars, tags, the two arms' colours. */
+:root { --story: #1f5f8b; --story-soft: #dfeaf4; --wiki: #8b5a1f; --wiki-soft: #f5ecdc; --ok: #2d6a4f; --no: #AA0000; --hi: #f7f1dc; --dim: .28;
+  --sheet: #ffffff; --bg: var(--chip); --muted: var(--ink-faint); --serif: 'EB Garamond', Garamond, Georgia, serif }
+/* The stepper reads like the site's nav: small caps, the current step in the accent. */
+ul.steps { list-style: none; padding: 0; margin: 0 0 1.6rem; display: flex; flex-wrap: wrap; gap: .35rem 1.4rem }
+ul.steps li { margin: 0 }
+ul.steps button { font: inherit; font-size: .92rem; font-variant-caps: small-caps; letter-spacing: .07em; color: var(--ink-soft); background: none; border: none; border-bottom: 1px solid transparent; padding: 0; cursor: pointer; white-space: nowrap }
+ul.steps button:hover { color: var(--accent) }
+ul.steps button[aria-current="step"] { color: var(--accent); border-bottom-color: var(--accent) }
+button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px }
 section { display: none } section.on { display: block }
-.fig { background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; margin: 0 0 18px; overflow-x: auto }
-svg { width: 100%; height: auto; display: block; font-family: var(--mono); font-size: 12px } svg text { fill: var(--ink) } svg .mut { fill: var(--muted) }
+/* Each step's heading sits in the margin, as section heads do across the site. */
+.post-body section > h2 { float: left; clear: left; width: 8.5rem; margin: .45rem 0 .6rem -11rem; padding-bottom: 0; border-bottom: none; font-family: var(--sans); font-size: .78rem; font-weight: 500; font-variant-caps: normal; text-transform: lowercase; text-align: right; letter-spacing: .02em; line-height: 1.3; color: var(--accent) }
+@media (max-width: 940px) { .post-body section > h2 { float: none; width: auto; margin: 0 0 .9rem; text-align: left; font-size: .86rem; letter-spacing: .09em } }
+section > h3 { margin-top: 1.2rem }
+/* Figures and panels: the site's chip radius, ragged text, lining figures for numbers. */
+.fig, .note, .col, .q, .caveat div, details, .formula, .bars, table { text-align: left; hyphens: none; -webkit-hyphens: none }
+.fig { background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px; padding: 1rem 1.1rem; margin: 0 0 1.15rem; overflow-x: auto }
+svg { width: 100%; height: auto; display: block; font-family: var(--mono); font-size: 12px; font-variant-numeric: lining-nums tabular-nums }
+svg text { fill: var(--ink) } svg .mut { fill: var(--muted) }
 .node rect { fill: var(--sheet); stroke: var(--ink); stroke-width: 1 } .node.story rect { fill: var(--story-soft); stroke: var(--story) } .node.wiki rect { fill: var(--wiki-soft); stroke: var(--wiki) } .node.role rect { stroke-dasharray: 4 3 }
 .node.blocked rect { stroke: var(--no); stroke-dasharray: 3 3; fill: var(--sheet) } .node.blocked text.never { fill: var(--no); font-size: 11px }
 .wire { stroke: var(--ink); stroke-width: 1.2; fill: none } .wire.story { stroke: var(--story) } .wire.wiki { stroke: var(--wiki) } .dimmed { opacity: var(--dim) }
-.roles, .ctl { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 12px; font: 13px var(--mono) }
-.roles button, .ctl button { font: 500 12.5px/1.2 var(--mono); padding: 7px 11px; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); color: var(--ink); cursor: pointer }
-.roles button[aria-pressed="true"], .ctl button[aria-pressed="true"] { background: var(--hi); border-color: var(--ink) }
-.note { background: var(--hi); border-radius: 8px; padding: 10px 14px; font-size: 15.5px; margin: 0 0 12px }
-.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px }
-.col { border: 1px solid var(--rule); border-radius: 10px; padding: 14px; min-width: 0; background: var(--sheet) } .col h3 { margin: 0 0 6px; font: 600 16px/1.3 var(--serif) } .col.story h3 { color: var(--story) } .col.wiki h3 { color: var(--wiki) } .col p, .col li { font-size: 15px } .col ul { padding-left: 18px; margin: 6px 0 }
-.q { border-left: 3px solid var(--rule); padding: 6px 12px; margin: 0 0 10px; font-size: 15px } .q b { font: 500 12px var(--mono); color: var(--muted) } .q.story { border-left-color: var(--story) } .q.wiki { border-left-color: var(--wiki) }
-code { font: 13.5px var(--mono); background: var(--bg); padding: 1px 4px; border-radius: 3px }
-table { border-collapse: collapse; font: 13px/1.45 var(--mono); min-width: 100% } th, td { text-align: left; padding: 5px 9px; border-bottom: 1px solid var(--rule); white-space: nowrap } th { font-weight: 500; color: var(--muted) } td.n, th.n { text-align: right; font-variant-numeric: tabular-nums }
+.roles, .ctl { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin: 0 0 .9rem; font: .78rem var(--mono); font-variant-numeric: lining-nums; color: var(--ink-soft) }
+.roles button, .ctl button { font: 500 .78rem/1.3 var(--mono); padding: .35em .7em; border: 1px solid var(--rule); border-radius: 4px; background: var(--sheet); color: var(--ink); cursor: pointer; font-variant-numeric: lining-nums; letter-spacing: 0 }
+.roles button:hover, .ctl button:hover { border-color: var(--ink-faint) }
+.roles button[aria-pressed="true"], .ctl button[aria-pressed="true"] { background: var(--chip); border-color: var(--ink) }
+.ctl label { font: inherit } .ctl input[type="range"] { vertical-align: middle; accent-color: var(--story) }
+.note { background: var(--hi); border-radius: 4px; padding: .6rem .9rem; font-size: .95rem; margin: 0 0 1.15rem }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: .9rem }
+.col { border: 1px solid var(--rule); border-radius: 4px; padding: .9rem; min-width: 0; background: var(--sheet) }
+.col h3 { margin: 0 0 .4rem; font-size: 1rem } .col.story h3 { color: var(--story) } .col.wiki h3 { color: var(--wiki) }
+.col p, .col li { font-size: .95rem; margin-bottom: .6rem } .col ul { padding-left: 1.1rem; margin: .4rem 0 0 } .col li { margin-bottom: .45rem }
+.q { border-left: 3px solid var(--rule); padding: .3rem .8rem; margin: 0 0 .8rem; font-size: .95rem } .q > b, .q summary > b { font: 500 .72rem var(--mono); color: var(--muted); letter-spacing: 0 }
+.q.story { border-left-color: var(--story) } .q.wiki, .q.deepwiki { border-left-color: var(--wiki) }
+.q.story summary > b, .q.deepwiki summary > b { font: 600 .95rem var(--serif); color: var(--ink) }
+.big { font: 600 2.4rem/1 var(--serif); font-variant-numeric: lining-nums tabular-nums } .big.story { color: var(--story) } .big.wiki { color: var(--wiki) }
+.pair { display: flex; gap: 1.6rem; align-items: baseline; margin: .3rem 0 .6rem; flex-wrap: wrap } .pair small { display: block; font: .72rem var(--mono); color: var(--muted) }
+.tag { display: inline-block; padding: .05em .5em; border-radius: 4px; font: 500 .72rem/1.5 var(--mono); letter-spacing: 0; font-variant-caps: normal; vertical-align: .1em }
+.tag.story { background: var(--story-soft); color: var(--story) } .tag.wiki { background: var(--wiki-soft); color: var(--wiki) }
+.tag.contradicted { background: var(--no); color: #fff } .tag.supported { background: var(--ok); color: #fff } .tag.unverifiable { background: var(--chip); color: var(--ink) }
+.bars { display: grid; grid-template-columns: 6rem 1fr; gap: .4rem .8rem; align-items: center; font: .74rem var(--mono); font-variant-numeric: lining-nums }
+.bar { height: 14px; border-radius: 3px; position: relative } .bar.story { background: var(--story) } .bar.wiki { background: var(--wiki) }
+.track { display: grid; gap: 3px } .track span { font-size: 11px; color: var(--muted); margin-left: 6px; white-space: nowrap }
+table { border-collapse: collapse; font: .72rem/1.45 var(--mono); font-variant-numeric: lining-nums tabular-nums; min-width: 100% }
+th, td { text-align: left; padding: .25rem .5rem; border-bottom: 1px solid var(--rule); white-space: nowrap } th { font-weight: 500; color: var(--muted) } td.n, th.n { text-align: right }
 tr.story td:nth-child(2) { color: var(--story) } tr.deepwiki td:nth-child(2) { color: var(--wiki) }
-.big { font: 600 40px/1 var(--serif); font-variant-numeric: tabular-nums } .big.story { color: var(--story) } .big.wiki { color: var(--wiki) }
-.pair { display: flex; gap: 28px; align-items: baseline; margin: 6px 0 10px; flex-wrap: wrap } .pair small { display: block; font: 12px var(--mono); color: var(--muted) }
-.tag { display: inline-block; padding: 1px 7px; border-radius: 4px; font: 500 12px/1.4 var(--mono) } .tag.story { background: var(--story-soft); color: var(--story) } .tag.wiki { background: var(--wiki-soft); color: var(--wiki) }
-.tag.contradicted { background: var(--no); color: #fff } .tag.supported { background: var(--ok); color: #fff } .tag.unverifiable { background: var(--rule); color: var(--ink) }
-.formula { font: 15px/1.8 var(--mono); background: var(--bg); border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px; margin: 0 0 12px; overflow-x: auto; white-space: nowrap }
-.formula b { color: var(--story) } .formula i { color: var(--wiki); font-style: normal }
-details { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 12px; margin: 0 0 8px; background: var(--sheet); font-size: 15px } summary { cursor: pointer; font-size: 15px } details p { margin: 8px 0 4px; font-size: 14.5px }
-.nav { display: flex; justify-content: space-between; margin-top: 18px } .nav button { font: 500 14px var(--serif); padding: 8px 14px; border: 1px solid var(--rule); border-radius: 8px; background: var(--sheet); color: var(--ink); cursor: pointer } .nav button:disabled { opacity: .4; cursor: default }
-.caveat { display: grid; gap: 10px } .caveat div { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; background: var(--sheet); font-size: 15.5px } .caveat b { display: block; font: 500 12px var(--mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 3px }
-input[type=range] { width: 220px; vertical-align: middle }
+.formula { font: .85rem/1.8 var(--mono); font-variant-numeric: lining-nums; background: var(--chip); border-radius: 4px; padding: .7rem .9rem; margin: 0 0 .9rem; overflow-x: auto; white-space: nowrap }
+.formula b { color: var(--story); font-weight: 600 } .formula i { color: var(--wiki); font-style: normal }
+details { border: 1px solid var(--rule); border-radius: 4px; padding: .45rem .8rem; margin: 0 0 .5rem; background: var(--sheet); font-size: .95rem }
+summary { cursor: pointer } details p { margin: .5rem 0 .25rem; font-size: .9rem }
+.caveat { display: grid; gap: .6rem } .caveat div { border: 1px solid var(--rule); border-radius: 4px; padding: .6rem .9rem; background: var(--sheet); font-size: .95rem }
+.caveat b { display: block; font-family: var(--sans); font-size: .72rem; font-weight: 500; letter-spacing: .02em; text-transform: lowercase; color: var(--accent); margin-bottom: .2rem }
+.nav { display: flex; justify-content: space-between; margin-top: 1.8rem; padding-top: .8rem; border-top: 1px solid var(--rule) }
+.nav button { font: inherit; font-size: .95rem; font-variant-caps: small-caps; letter-spacing: .07em; color: var(--link); background: none; border: none; padding: 0; cursor: pointer }
+.nav button:hover { color: var(--accent) } .nav button:disabled { opacity: .35; cursor: default; color: var(--ink-faint) }
+.muted { color: var(--muted) }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
 </style>
+</head><body>
+<header>
+  <h1><a href="https://omojumiller.com/">Omoju Miller</a></h1>
+</header>
 <main>
-<div class="kicker">codestories · the accuracy measure (H1) · how it was done</div>
-<h1>Why the rule said kill: 0.71 against 0.54, and what those numbers are</h1>
+<article>
+  <h2 class="entry-title">Why the rule said kill: 0.71 against 0.54, and what those numbers are</h2>
+  <div class="date">codestories · the accuracy measure (H1) · how it was done</div>
+  <div class="post-body">
 <ul class="steps" id="steps"></ul>
 
 <section data-title="1 · The claim">
@@ -64,7 +79,7 @@ input[type=range] { width: 220px; vertical-align: middle }
 <div class="fig">
   <div class="pair"><div><span class="big story">0.71</span><small><span class="tag story">story</span> contradicted claims per 1,000 words</small></div>
   <div><span class="big wiki">0.54</span><small><span class="tag wiki">deepwiki</span> contradicted claims per 1,000 words</small></div></div>
-  <p style="margin:0;font:13px var(--mono);color:var(--muted)">raw: 10 vs 7 contradicted, of 360 sampled claims each · the rule needed story ≤ ½ × deepwiki</p>
+  <p class="muted" style="margin:0;font:.78rem var(--mono)">raw: 10 vs 7 contradicted, of 360 sampled claims each · the rule needed story ≤ ½ × deepwiki</p>
 </div>
 <p>H1 was the core claim of the project: that a story whose every sentence links to pinned lines, with a proof per chapter, would contradict the code <em>far</em> less often than generated documentation. "Far less" was fixed in advance as half the rate or better. The measured rate came out higher, not lower. This explainer shows how the rate was produced, why it came out that way, and what it does and doesn't mean.</p>
 <p>A "contradicted claim" is a sentence about the code that the code shows to be false. The rate is per 1,000 words of text, so a long wiki and a short story can be compared. Each piece of that definition is a design decision, and each gets a screen.</p>
@@ -77,7 +92,7 @@ input[type=range] { width: 220px; vertical-align: middle }
   <div class="col story"><h3>From the requests story</h3><ul><li>In `merge_setting`, if either value is not a `Mapping`, the request value is returned as-is with no merging.</li><li>In `merge_setting`, both mappings are flattened with `to_key_val_list` and inserted into `dict_class` with session items first and request items second.</li><li>In `merge_setting`, any key whose merged value is `None` is deleted from the result.</li></ul></div>
   <div class="col wiki"><h3>From the requests DeepWiki</h3><ul><li>`PreparedRequest.prepare_cookies` adds cookies to the request headers using `get_cookie_header`.</li><li>`Response.json()` returns the JSON-decoded content using `complexjson`.</li><li>`Response.ok` is True if `status_code` is between 200 and 299.</li></ul></div>
 </div>
-<p style="margin-top:14px">Two numbers come out of this step and both matter later: how many claims a text makes, and how many words it took. The story arm made about <b>26 claims per 1,000 words</b>, DeepWiki about <b>28</b>. Stories are denser in checkable statements: a concrete telling has more places to be right or wrong.</p>
+<p style="margin-top:.8rem">Two numbers come out of this step and both matter later: how many claims a text makes, and how many words it took. The story arm made about <b>26 claims per 1,000 words</b>, DeepWiki about <b>28</b>. Stories are denser in checkable statements: a concrete telling has more places to be right or wrong.</p>
 </section>
 
 <section data-title="3 · Sampling">
@@ -120,13 +135,13 @@ input[type=range] { width: 220px; vertical-align: middle }
 <p>Ten versus seven wrong sentences is close. The gap in the rate comes from the second factor: the story packs more checkable claims into each thousand words, so the same proportion of wrong claims is more wrong claims per word. The metric was preregistered that way on purpose, as a rate per word of what a reader reads, and it stands. But it is worth seeing what it rewards. Move the slider to change how many claims per 1,000 words the story makes, holding its proportion of wrong claims fixed:</p>
 <div class="ctl"><label>story claims per 1k words: <input id="cpw" type="range" min="10" max="35" step="1" value="26"></label><span id="cpwv"></span></div>
 <p id="cpwnote"></p>
-<p style="font-size:14.5px;color:var(--muted)">This slider is an illustration of the formula, not a result. The result is the top line.</p>
+<p class="muted" style="font-size:.9rem">This slider is an illustration of the formula, not a result. The result is the top line.</p>
 </section>
 
 <section data-title="8 · The 17">
 <h2>Every contradicted claim, in full</h2>
 <p>Here is the whole of H1's evidence: 10 story claims and 7 DeepWiki claims that the second judging pass labelled contradicted, with the judge's reason and Jev's independent probability. Read them; they are the finding.</p>
-<h3 style="font:600 16px var(--serif);margin:14px 0 8px"><span class="tag story">story</span> 10 contradicted</h3>
+<h3 style="margin:1rem 0 .5rem"><span class="tag story">story</span> 10 contradicted</h3>
 <details class="q story"><summary><b>attrs</b> · Setting the annotations before the build would have made `_transform_attrs` read them as auto-attribs declarations.</summary><p><b>judge:</b> `make_class` passes `these=cls_dict`, and `_transform_attrs` takes the `these is not None` branch so annotations are never interpreted as auto-attribs declarations; the complaint would instead come from `from_counting_attr`&#x27;s &quot;Type annotation and type argument cannot both be present&quot; check.</p><p><b>lines:</b> src/attr/_make.py:399-403, src/attr/_make.py:441-451, src/attr/_make.py:2600-2605 · <b>Jev:</b> 0.30</p></details>
 <details class="q story"><summary><b>attrs</b> · `_generate_unique_filename` appends a counter when the candidate filename is already taken by different source.</summary><p><b>judge:</b> `_generate_unique_filename` just formats a string; the collision counter logic lives in `_linecache_and_compile`.</p><p><b>lines:</b> src/attr/_make.py:1634-1641, src/attr/_make.py:245-259 · <b>Jev:</b> 0.42</p></details>
 <details class="q story"><summary><b>click</b> · `Option.resolve_envvar_value` returns `None` immediately when no `envvar` is declared.</summary><p><b>judge:</b> `Option.resolve_envvar_value` falls back to the `auto_envvar_prefix`-derived variable before returning `None`, so it does not return `None` immediately.</p><p><b>lines:</b> src/click/core.py:3664-3676 · <b>Jev:</b> 0.43</p></details>
@@ -137,7 +152,7 @@ input[type=range] { width: 220px; vertical-align: middle }
 <details class="q story"><summary><b>rich</b> · A zero-width joiner sequence counts as one cell under `cell_len`.</summary><p><b>judge:</b> In _cell_len a ZWJ merely causes the following character to be skipped, so the joined sequence takes the width of the leading character (2 cells for a wide emoji), not one cell.</p><p><b>lines:</b> rich/cells.py:144-158 · <b>Jev:</b> 0.45</p></details>
 <details class="q story"><summary><b>rich</b> · `Text.wrap` calls `divide_line(str(line), width, fold=True)` for each line.</summary><p><b>judge:</b> wrap calls divide_line(str(line), width, fold=wrap_overflow == &quot;fold&quot;) and only in the non-no_wrap branch, so fold is not always True.</p><p><b>lines:</b> rich/text.py:1233-1240 · <b>Jev:</b> 0.73</p></details>
 <details class="q story"><summary><b>tqdm</b> · The first thing `tqdm.__new__` does is `with cls.get_lock():`.</summary><p><b>judge:</b> The first statement is `instance = object.__new__(cls)`; the lock is acquired only afterwards.</p><p><b>lines:</b> tqdm/std.py:664-666 · <b>Jev:</b> 0.94</p></details>
-<h3 style="font:600 16px var(--serif);margin:14px 0 8px"><span class="tag wiki">deepwiki</span> 7 contradicted</h3>
+<h3 style="margin:1rem 0 .5rem"><span class="tag wiki">deepwiki</span> 7 contradicted</h3>
 <details class="q deepwiki"><summary><b>click</b> · The `Abort` exception is a subclass of `ClickException` and exits with status code 1.</summary><p><b>judge:</b> `Abort` subclasses `RuntimeError`, not `ClickException`, and carries no exit code.</p><p><b>lines:</b> src/click/exceptions.py:362-363 · <b>Jev:</b> 0.84</p></details>
 <details class="q deepwiki"><summary><b>jinja</b> · `PackageLoader` loads templates from a directory within a Python package using `importlib.resources`.</summary><p><b>judge:</b> PackageLoader uses importlib.util.find_spec, import_module, zipimport and plain os file access, not importlib.resources.</p><p><b>lines:</b> src/jinja2/loaders.py:302-401 · <b>Jev:</b> 0.77</p></details>
 <details class="q deepwiki"><summary><b>markupsafe</b> · The publish workflow is triggered on push of tags and on workflow_dispatch.</summary><p><b>judge:</b> The publish workflow triggers only on push of tags; there is no workflow_dispatch trigger.</p><p><b>lines:</b> .github/workflows/publish.yaml:2-4 · <b>Jev:</b> 0.80</p></details>
@@ -145,7 +160,7 @@ input[type=range] { width: 220px; vertical-align: middle }
 <details class="q deepwiki"><summary><b>markupsafe</b> · The publish workflow artifacts are named `build-sdist` and `build-wheels-{os}`.</summary><p><b>judge:</b> The sdist artifact is named &quot;sdist&quot; and wheel artifacts are named &quot;{platform}-{arch|all}&quot;, not &quot;build-sdist&quot;/&quot;build-wheels-{os}&quot;.</p><p><b>lines:</b> .github/workflows/publish.yaml:26-30, .github/workflows/publish.yaml:77-81 · <b>Jev:</b> 0.94</p></details>
 <details class="q deepwiki"><summary><b>requests</b> · `Response.ok` is True if `status_code` is between 200 and 299.</summary><p><b>judge:</b> `ok` returns True whenever `raise_for_status()` doesn&#x27;t raise, i.e. for any status code below 400 (including 3xx), not only 200-299.</p><p><b>lines:</b> src/requests/models.py:861-874, src/requests/models.py:1160-1171 · <b>Jev:</b> 0.68</p></details>
 <details class="q deepwiki"><summary><b>requests</b> · `_parse_content_type_header` sets the value to `True` for parameters without values.</summary><p><b>judge:</b> The loop only records parameters containing &#x27;=&#x27;, and never assigns True for value-less parameters.</p><p><b>lines:</b> src/requests/utils.py:560-566 · <b>Jev:</b> 0.79</p></details>
-<p style="margin-top:12px">Two things stand out. The story's errors are small misstatements of mechanism in otherwise accurate paragraphs, and every one sits in a chapter whose citation and proof checks passed: those checks pin lines and values, they don't read the sentence. DeepWiki's errors include two about CI workflow files and one about line numbers, kinds of claim a story never makes.</p>
+<p style="margin-top:.8rem">Two things stand out. The story's errors are small misstatements of mechanism in otherwise accurate paragraphs, and every one sits in a chapter whose citation and proof checks passed: those checks pin lines and values, they don't read the sentence. DeepWiki's errors include two about CI workflow files and one about line numbers, kinds of claim a story never makes.</p>
 </section>
 
 <section data-title="9 · Is it luck?">
@@ -166,12 +181,15 @@ input[type=range] { width: 220px; vertical-align: middle }
   <div><b>One extraction was chunked</b>rich's DeepWiki text was too long for one output and was extracted in three page-aligned chunks; it yielded 74 claims per 1,000 words against 17–31 elsewhere. That raises DeepWiki's pooled claims-per-word and so <em>raises</em> DeepWiki's rate; without rich, DeepWiki's rate would be 0.47 and the story's 0.54. The direction of the result does not change.</div>
   <div><b>Same model family throughout</b>The judge is a Claude model, as is the author. Jev, from another vendor, agreed on 703/720 (98%) of the claims it scored; that and the hand check are the guards.</div>
 </div>
-<p style="margin-top:16px"><b>The sentence that survives:</b> on nine small Python libraries, a blind model judge reading the code found CodeStories no more accurate than DeepWiki's pages (0.71 vs 0.54 contradicted claims per 1,000 words; 10 vs 7 of 360 sampled; 95% interval on the ratio 0.55–4.86). The checks a story carries, that its lines exist, haven't changed, and its proofs run, did not make its sentences more accurate than generated documentation. The preregistered rule required half the rate; it said kill.</p>
+<p style="margin-top:1rem"><b>The sentence that survives:</b> on nine small Python libraries, a blind model judge reading the code found CodeStories no more accurate than DeepWiki's pages (0.71 vs 0.54 contradicted claims per 1,000 words; 10 vs 7 of 360 sampled; 95% interval on the ratio 0.55–4.86). The checks a story carries, that its lines exist, haven't changed, and its proofs run, did not make its sentences more accurate than generated documentation. The preregistered rule required half the rate; it said kill.</p>
 <p>Everything on this page comes from <code>eval/</code> in the repository: both judging passes, every claim, every verdict, and the judge's test.</p>
 </section>
 
 <div class="nav"><button id="prev">← Back</button><button id="next">Next →</button></div>
+  </div>
+</article>
 </main>
+<footer><p>&copy; Omoju Miller. Stories by Claude, checked by code; <a href="https://github.com/omoju/comprehension">source and evaluation</a>.</p></footer>
 <script>
 const DATA = {"repos": [{"repo": "attrs", "first": {"story": {"words": 9375, "extracted": 237, "sampled": 40, "contradicted": 0, "supported": 8, "unverifiable": 32, "density": 0.0}, "deepwiki": {"words": 14140, "extracted": 363, "sampled": 40, "contradicted": 0, "supported": 34, "unverifiable": 6, "density": 0.0}}, "second": {"story": {"words": 9375, "extracted": 237, "sampled": 40, "contradicted": 2, "supported": 38, "unverifiable": 0, "density": 1.2640000000000002}, "deepwiki": {"words": 14140, "extracted": 363, "sampled": 40, "contradicted": 0, "supported": 32, "unverifiable": 8, "density": 0.0}}}, {"repo": "click", "first": {"story": {"words": 8601, "extracted": 248, "sampled": 40, "contradicted": 0, "supported": 5, "unverifiable": 35, "density": 0.0}, "deepwiki": {"words": 33482, "extracted": 558, "sampled": 40, "contradicted": 2, "supported": 18, "unverifiable": 20, "density": 0.8332835553431694}}, "second": {"story": {"words": 8601, "extracted": 248, "sampled": 40, "contradicted": 1, "supported": 38, "unverifiable": 1, "density": 0.7208464132077665}, "deepwiki": {"words": 33482, "extracted": 558, "sampled": 40, "contradicted": 1, "supported": 31, "unverifiable": 8, "density": 0.4166417776715847}}}, {"repo": "flask", "first": {"story": {"words": 7261, "extracted": 192, "sampled": 40, "contradicted": 0, "supported": 5, "unverifiable": 35, "density": 0.0}, "deepwiki": {"words": 28535, "extracted": 687, "sampled": 40, "contradicted": 0, "supported": 21, "unverifiable": 19, "density": 0.0}}, "second": {"story": {"words": 7261, "extracted": 192, "sampled": 40, "contradicted": 0, "supported": 38, "unverifiable": 2, "density": 0.0}, "deepwiki": {"words": 28535, "extracted": 687, "sampled": 40, "contradicted": 0, "supported": 33, "unverifiable": 7, "density": 0.0}}}, {"repo": "httpx", "first": {"story": {"words": 8108, "extracted": 227, "sampled": 40, "contradicted": 0, "supported": 22, "unverifiable": 18, "density": 0.0}, "deepwiki": {"words": 27567, "extracted": 725, "sampled": 40, "contradicted": 3, "supported": 24, "unverifiable": 13, "density": 1.9724670802045925}}, "second": {"story": {"words": 8108, "extracted": 227, "sampled": 40, "contradicted": 1, "supported": 39, "unverifiable": 0, "density": 0.6999259990133202}, "deepwiki": {"words": 27567, "extracted": 725, "sampled": 40, "contradicted": 0, "supported": 35, "unverifiable": 5, "density": 0.0}}}, {"repo": "jinja", "first": {"story": {"words": 8842, "extracted": 210, "sampled": 40, "contradicted": 0, "supported": 15, "unverifiable": 25, "density": 0.0}, "deepwiki": {"words": 15506, "extracted": 473, "sampled": 40, "contradicted": 1, "supported": 31, "unverifiable": 8, "density": 0.76260802270089}}, "second": {"story": {"words": 8842, "extracted": 210, "sampled": 40, "contradicted": 0, "supported": 40, "unverifiable": 0, "density": 0.0}, "deepwiki": {"words": 15506, "extracted": 473, "sampled": 40, "contradicted": 1, "supported": 34, "unverifiable": 5, "density": 0.76260802270089}}}, {"repo": "markupsafe", "first": {"story": {"words": 5961, "extracted": 97, "sampled": 40, "contradicted": 1, "supported": 37, "unverifiable": 2, "density": 0.40681093776212046}, "deepwiki": {"words": 31855, "extracted": 312, "sampled": 40, "contradicted": 3, "supported": 36, "unverifiable": 1, "density": 0.7345785590959032}}, "second": {"story": {"words": 5961, "extracted": 97, "sampled": 40, "contradicted": 2, "supported": 37, "unverifiable": 1, "density": 0.8136218755242409}, "deepwiki": {"words": 31855, "extracted": 312, "sampled": 40, "contradicted": 3, "supported": 36, "unverifiable": 1, "density": 0.7345785590959032}}}, {"repo": "requests", "first": {"story": {"words": 10347, "extracted": 277, "sampled": 40, "contradicted": 0, "supported": 6, "unverifiable": 34, "density": 0.0}, "deepwiki": {"words": 22131, "extracted": 489, "sampled": 40, "contradicted": 0, "supported": 29, "unverifiable": 11, "density": 0.0}}, "second": {"story": {"words": 10347, "extracted": 277, "sampled": 40, "contradicted": 0, "supported": 40, "unverifiable": 0, "density": 0.0}, "deepwiki": {"words": 22131, "extracted": 489, "sampled": 40, "contradicted": 2, "supported": 32, "unverifiable": 6, "density": 1.1047851430120645}}}, {"repo": "rich", "first": {"story": {"words": 9560, "extracted": 300, "sampled": 40, "contradicted": 0, "supported": 1, "unverifiable": 39, "density": 0.0}, "deepwiki": {"words": 25426, "extracted": 1876, "sampled": 40, "contradicted": 0, "supported": 0, "unverifiable": 40, "density": 0.0}}, "second": {"story": {"words": 9560, "extracted": 300, "sampled": 40, "contradicted": 3, "supported": 31, "unverifiable": 6, "density": 2.3535564853556483}, "deepwiki": {"words": 25426, "extracted": 1876, "sampled": 40, "contradicted": 0, "supported": 33, "unverifiable": 7, "density": 0.0}}}, {"repo": "tqdm", "first": {"story": {"words": 8751, "extracted": 177, "sampled": 40, "contradicted": 0, "supported": 17, "unverifiable": 23, "density": 0.0}, "deepwiki": {"words": 17075, "extracted": 455, "sampled": 40, "contradicted": 0, "supported": 21, "unverifiable": 19, "density": 0.0}}, "second": {"story": {"words": 8751, "extracted": 177, "sampled": 40, "contradicted": 1, "supported": 39, "unverifiable": 0, "density": 0.5056564964004114}, "deepwiki": {"words": 17075, "extracted": 455, "sampled": 40, "contradicted": 0, "supported": 38, "unverifiable": 2, "density": 0.0}}}], "pooled": {"first": {"story": {"contradicted": 1, "sampled": 360, "extracted": 1965, "words": 76806, "unverifiable": 243, "density": 0.07106649654106884}, "deepwiki": {"contradicted": 9, "sampled": 360, "extracted": 5938, "words": 215717, "unverifiable": 137, "density": 0.6881701488524317}}, "second": {"story": {"contradicted": 10, "sampled": 360, "extracted": 1965, "words": 76806, "unverifiable": 10, "density": 0.7106649654106884}, "deepwiki": {"contradicted": 7, "sampled": 360, "extracted": 5938, "words": 215717, "unverifiable": 49, "density": 0.5352434491074468}}}};
 const sections = [...document.querySelectorAll('section')]; const steps = document.getElementById('steps'); let cur = 0;
@@ -238,3 +256,4 @@ function boot() {
 document.getElementById('d1').onclick = () => draw(1); document.getElementById('d100').onclick = () => draw(100); document.getElementById('d2000').onclick = () => draw(2000); document.getElementById('dreset').onclick = () => { draws = []; boot(); };
 boot();
 </script>
+</body></html>

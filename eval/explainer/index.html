@@ -1,69 +1,77 @@
-<title>How the Comparison Worked</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How the Comparison Worked · CodeStories · Omoju Miller</title>
+<meta name="description" content="How the comprehension measure (H2) was done: who saw what, where the questions came from, how the marking worked, and what the 76% against 56% can and cannot mean.">
+<link rel="stylesheet" href="https://omojumiller.com/theme/css/style.css">
 <style>
-/* Layout: a stepper; one idea per screen, a figure on top, a short explanation under it, prev/next at the bottom. */
-:root {
-  --bg: #f7f5f0; --sheet: #ffffff; --ink: #1d1b17; --muted: #5f5b53; --rule: #d9d4c9;
-  --story: #1f5f8b; --story-soft: #dfeaf4; --wiki: #8b5a1f; --wiki-soft: #f5ecdc;
-  --ok: #2d6a4f; --no: #a23b2a; --hi: #fff1c2; --dim: .28;
-  --serif: "Source Serif 4", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
-}
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #15140f; --sheet: #1f1d18; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e;
-  --story: #7fb3d9; --story-soft: #1b2b38; --wiki: #d9a05c; --wiki-soft: #332718;
-  --ok: #7cc49a; --no: #e08674; --hi: #3b3418; color-scheme: dark } }
-:root[data-theme="dark"] {
-  --bg: #15140f; --sheet: #1f1d18; --ink: #ece7dc; --muted: #a39d90; --rule: #3a362e;
-  --story: #7fb3d9; --story-soft: #1b2b38; --wiki: #d9a05c; --wiki-soft: #332718;
-  --ok: #7cc49a; --no: #e08674; --hi: #3b3418; color-scheme: dark }
-body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--serif); margin: 0; padding-block: 28px 80px; padding-inline: 16px }
-main { max-width: 860px; margin: 0 auto }
-.kicker { font: 500 12px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
-h1 { font: 600 30px/1.15 var(--serif); margin: 6px 0 18px; text-wrap: balance }
-h2 { font: 600 22px/1.25 var(--serif); margin: 0 0 10px; text-wrap: balance }
-p { margin: 0 0 12px; max-width: 68ch }
-.steps { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 18px; padding: 0; list-style: none }
-.steps button { font: 500 12px/1.2 var(--mono); padding: 6px 10px; border: 1px solid var(--rule); background: var(--sheet); color: var(--muted); border-radius: 999px; cursor: pointer }
-.steps button[aria-current="step"] { color: var(--ink); border-color: var(--ink) }
-.steps button:focus-visible { outline: 2px solid var(--story); outline-offset: 2px }
+/* Only what omojumiller.com's stylesheet has no rule for: the stepper, figures, the flow chart, bars, tags, the two arms' colours. */
+:root { --story: #1f5f8b; --story-soft: #dfeaf4; --wiki: #8b5a1f; --wiki-soft: #f5ecdc; --ok: #2d6a4f; --no: #AA0000; --hi: #f7f1dc; --dim: .28;
+  --sheet: #ffffff; --bg: var(--chip); --muted: var(--ink-faint); --serif: 'EB Garamond', Garamond, Georgia, serif }
+/* The stepper reads like the site's nav: small caps, the current step in the accent. */
+ul.steps { list-style: none; padding: 0; margin: 0 0 1.6rem; display: flex; flex-wrap: wrap; gap: .35rem 1.4rem }
+ul.steps li { margin: 0 }
+ul.steps button { font: inherit; font-size: .92rem; font-variant-caps: small-caps; letter-spacing: .07em; color: var(--ink-soft); background: none; border: none; border-bottom: 1px solid transparent; padding: 0; cursor: pointer; white-space: nowrap }
+ul.steps button:hover { color: var(--accent) }
+ul.steps button[aria-current="step"] { color: var(--accent); border-bottom-color: var(--accent) }
+button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px }
 section { display: none } section.on { display: block }
-.fig { background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; margin: 0 0 18px; overflow-x: auto }
-svg { width: 100%; height: auto; display: block; font-family: var(--mono); font-size: 12px }
+/* Each step's heading sits in the margin, as section heads do across the site. */
+.post-body section > h2 { float: left; clear: left; width: 8.5rem; margin: .45rem 0 .6rem -11rem; padding-bottom: 0; border-bottom: none; font-family: var(--sans); font-size: .78rem; font-weight: 500; font-variant-caps: normal; text-transform: lowercase; text-align: right; letter-spacing: .02em; line-height: 1.3; color: var(--accent) }
+@media (max-width: 940px) { .post-body section > h2 { float: none; width: auto; margin: 0 0 .9rem; text-align: left; font-size: .86rem; letter-spacing: .09em } }
+section > h3 { margin-top: 1.2rem }
+/* Figures and panels: the site's chip radius, ragged text, lining figures for numbers. */
+.fig, .note, .col, .q, .caveat div, details, .formula, .bars, table { text-align: left; hyphens: none; -webkit-hyphens: none }
+.fig { background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px; padding: 1rem 1.1rem; margin: 0 0 1.15rem; overflow-x: auto }
+svg { width: 100%; height: auto; display: block; font-family: var(--mono); font-size: 12px; font-variant-numeric: lining-nums tabular-nums }
 svg text { fill: var(--ink) } svg .mut { fill: var(--muted) }
-.node rect { fill: var(--sheet); stroke: var(--ink); stroke-width: 1 } .node.story rect { fill: var(--story-soft); stroke: var(--story) } .node.wiki rect { fill: var(--wiki-soft); stroke: var(--wiki) }
-.node.role rect { stroke-dasharray: 4 3 }
-.wire { stroke: var(--ink); stroke-width: 1.2; fill: none } .wire.story { stroke: var(--story) } .wire.wiki { stroke: var(--wiki) } .node.blocked rect { stroke: var(--no); stroke-dasharray: 3 3; fill: var(--sheet) } .node.blocked text.never { fill: var(--no); font-size: 11px }
-.dimmed { opacity: var(--dim) }
-.roles { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px }
-.roles button { font: 500 12.5px/1.2 var(--mono); padding: 7px 11px; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); color: var(--ink); cursor: pointer }
-.roles button[aria-pressed="true"] { background: var(--hi); border-color: var(--ink) }
-.note { background: var(--hi); border-radius: 8px; padding: 10px 14px; font-size: 15.5px; margin: 0 0 12px }
-.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px }
-.col { border: 1px solid var(--rule); border-radius: 10px; padding: 14px; min-width: 0; background: var(--sheet) }
-.col h3 { margin: 0 0 6px; font: 600 16px/1.3 var(--serif) } .col.story h3 { color: var(--story) } .col.wiki h3 { color: var(--wiki) }
-.col p, .col li { font-size: 15px } .col ul { padding-left: 18px; margin: 6px 0 }
-.q { border-left: 3px solid var(--rule); padding: 6px 12px; margin: 0 0 10px; font-size: 15px } .q b { font: 500 12px var(--mono); color: var(--muted) }
-.q code, code { font: 13.5px var(--mono); background: var(--bg); padding: 1px 4px; border-radius: 3px }
-pre { font: 13px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; overflow-x: auto; margin: 0 0 12px }
-.bars { display: grid; grid-template-columns: 90px 1fr; gap: 6px 12px; align-items: center; font: 13px var(--mono) }
+.node rect { fill: var(--sheet); stroke: var(--ink); stroke-width: 1 } .node.story rect { fill: var(--story-soft); stroke: var(--story) } .node.wiki rect { fill: var(--wiki-soft); stroke: var(--wiki) } .node.role rect { stroke-dasharray: 4 3 }
+.node.blocked rect { stroke: var(--no); stroke-dasharray: 3 3; fill: var(--sheet) } .node.blocked text.never { fill: var(--no); font-size: 11px }
+.wire { stroke: var(--ink); stroke-width: 1.2; fill: none } .wire.story { stroke: var(--story) } .wire.wiki { stroke: var(--wiki) } .dimmed { opacity: var(--dim) }
+.roles, .ctl { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin: 0 0 .9rem; font: .78rem var(--mono); font-variant-numeric: lining-nums; color: var(--ink-soft) }
+.roles button, .ctl button { font: 500 .78rem/1.3 var(--mono); padding: .35em .7em; border: 1px solid var(--rule); border-radius: 4px; background: var(--sheet); color: var(--ink); cursor: pointer; font-variant-numeric: lining-nums; letter-spacing: 0 }
+.roles button:hover, .ctl button:hover { border-color: var(--ink-faint) }
+.roles button[aria-pressed="true"], .ctl button[aria-pressed="true"] { background: var(--chip); border-color: var(--ink) }
+.ctl label { font: inherit } .ctl input[type="range"] { vertical-align: middle; accent-color: var(--story) }
+.note { background: var(--hi); border-radius: 4px; padding: .6rem .9rem; font-size: .95rem; margin: 0 0 1.15rem }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: .9rem }
+.col { border: 1px solid var(--rule); border-radius: 4px; padding: .9rem; min-width: 0; background: var(--sheet) }
+.col h3 { margin: 0 0 .4rem; font-size: 1rem } .col.story h3 { color: var(--story) } .col.wiki h3 { color: var(--wiki) }
+.col p, .col li { font-size: .95rem; margin-bottom: .6rem } .col ul { padding-left: 1.1rem; margin: .4rem 0 0 } .col li { margin-bottom: .45rem }
+.q { border-left: 3px solid var(--rule); padding: .3rem .8rem; margin: 0 0 .8rem; font-size: .95rem } .q > b, .q summary > b { font: 500 .72rem var(--mono); color: var(--muted); letter-spacing: 0 }
+.q.story { border-left-color: var(--story) } .q.wiki, .q.deepwiki { border-left-color: var(--wiki) }
+.q.story summary > b, .q.deepwiki summary > b { font: 600 .95rem var(--serif); color: var(--ink) }
+.big { font: 600 2.4rem/1 var(--serif); font-variant-numeric: lining-nums tabular-nums } .big.story { color: var(--story) } .big.wiki { color: var(--wiki) }
+.pair { display: flex; gap: 1.6rem; align-items: baseline; margin: .3rem 0 .6rem; flex-wrap: wrap } .pair small { display: block; font: .72rem var(--mono); color: var(--muted) }
+.tag { display: inline-block; padding: .05em .5em; border-radius: 4px; font: 500 .72rem/1.5 var(--mono); letter-spacing: 0; font-variant-caps: normal; vertical-align: .1em }
+.tag.story { background: var(--story-soft); color: var(--story) } .tag.wiki { background: var(--wiki-soft); color: var(--wiki) }
+.tag.contradicted { background: var(--no); color: #fff } .tag.supported { background: var(--ok); color: #fff } .tag.unverifiable { background: var(--chip); color: var(--ink) }
+.bars { display: grid; grid-template-columns: 6rem 1fr; gap: .4rem .8rem; align-items: center; font: .74rem var(--mono); font-variant-numeric: lining-nums }
 .bar { height: 14px; border-radius: 3px; position: relative } .bar.story { background: var(--story) } .bar.wiki { background: var(--wiki) }
-.track { display: grid; gap: 3px } .track span { font-size: 11px; color: var(--muted); margin-left: 6px }
-.ctl { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 0 0 12px; font: 13px var(--mono) }
-.ctl button { font: 500 12.5px var(--mono); padding: 6px 10px; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); color: var(--ink); cursor: pointer }
-.ctl button[aria-pressed="true"] { background: var(--hi); border-color: var(--ink) }
-.big { font: 600 40px/1 var(--serif); font-variant-numeric: tabular-nums } .big.story { color: var(--story) } .big.wiki { color: var(--wiki) }
-.pair { display: flex; gap: 28px; align-items: baseline; margin: 6px 0 10px } .pair small { display: block; font: 12px var(--mono); color: var(--muted) }
-.nav { display: flex; justify-content: space-between; margin-top: 18px }
-.nav button { font: 500 14px var(--serif); padding: 8px 14px; border: 1px solid var(--rule); border-radius: 8px; background: var(--sheet); color: var(--ink); cursor: pointer }
-.nav button:disabled { opacity: .4; cursor: default }
-.tag { display: inline-block; padding: 1px 7px; border-radius: 4px; font: 500 12px/1.4 var(--mono) } .tag.story { background: var(--story-soft); color: var(--story) } .tag.wiki { background: var(--wiki-soft); color: var(--wiki) }
-.caveat { display: grid; gap: 10px } .caveat div { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; background: var(--sheet); font-size: 15.5px }
-.caveat b { display: block; font: 500 12px var(--mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 3px }
+.track { display: grid; gap: 3px } .track span { font-size: 11px; color: var(--muted); margin-left: 6px; white-space: nowrap }
+table { border-collapse: collapse; font: .72rem/1.45 var(--mono); font-variant-numeric: lining-nums tabular-nums; min-width: 100% }
+th, td { text-align: left; padding: .25rem .5rem; border-bottom: 1px solid var(--rule); white-space: nowrap } th { font-weight: 500; color: var(--muted) } td.n, th.n { text-align: right }
+tr.story td:nth-child(2) { color: var(--story) } tr.deepwiki td:nth-child(2) { color: var(--wiki) }
+.formula { font: .85rem/1.8 var(--mono); font-variant-numeric: lining-nums; background: var(--chip); border-radius: 4px; padding: .7rem .9rem; margin: 0 0 .9rem; overflow-x: auto; white-space: nowrap }
+.formula b { color: var(--story); font-weight: 600 } .formula i { color: var(--wiki); font-style: normal }
+details { border: 1px solid var(--rule); border-radius: 4px; padding: .45rem .8rem; margin: 0 0 .5rem; background: var(--sheet); font-size: .95rem }
+summary { cursor: pointer } details p { margin: .5rem 0 .25rem; font-size: .9rem }
+.caveat { display: grid; gap: .6rem } .caveat div { border: 1px solid var(--rule); border-radius: 4px; padding: .6rem .9rem; background: var(--sheet); font-size: .95rem }
+.caveat b { display: block; font-family: var(--sans); font-size: .72rem; font-weight: 500; letter-spacing: .02em; text-transform: lowercase; color: var(--accent); margin-bottom: .2rem }
+.nav { display: flex; justify-content: space-between; margin-top: 1.8rem; padding-top: .8rem; border-top: 1px solid var(--rule) }
+.nav button { font: inherit; font-size: .95rem; font-variant-caps: small-caps; letter-spacing: .07em; color: var(--link); background: none; border: none; padding: 0; cursor: pointer }
+.nav button:hover { color: var(--accent) } .nav button:disabled { opacity: .35; cursor: default; color: var(--ink-faint) }
+.muted { color: var(--muted) }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
 </style>
+</head><body>
+<header>
+  <h1><a href="https://omojumiller.com/">Omoju Miller</a></h1>
+</header>
 <main>
-<div class="kicker">codestories · the comprehension measure (H2) · how it was done</div>
-<h1>Is 76% against 56% a real result, and what exactly does it say?</h1>
+<article>
+  <h2 class="entry-title">Is 76% against 56% a real result, and what exactly does it say?</h2>
+  <div class="date">codestories · the comprehension measure (H2) · how it was done</div>
+  <div class="post-body">
 <ul class="steps" id="steps"></ul>
 
 <section data-title="1 · The claim">
@@ -84,7 +92,7 @@ pre { font: 13px/1.5 var(--mono); background: var(--bg); border: 1px solid var(-
   <div class="col story"><h3>Story</h3><p>Written by the CodeStories pipeline: one real run of the repository's intended use is traced, and the story follows the data through it. 6–10 chapters, about 6,000–10,000 words. Every claim links to lines at a pinned commit; each chapter has a proof that runs.</p></div>
   <div class="col wiki"><h3>DeepWiki</h3><p>Cognition's generated wiki for the same repository, every page, fetched through its public server on 2 October. Organised by the code's structure. 14,000–33,000 words per repository, with <code>[file:lines]()</code> references.</p></div>
 </div>
-<p style="margin-top:14px">Nine repositories count: requests, flask, click, httpx, rich, attrs, jinja, markupsafe, tqdm. A tenth, itsdangerous, was used to build the pipeline and is reported but not counted. For eight of the nine, DeepWiki's pages describe the very same commit the story cites; the two that differ (attrs, markupsafe) are each judged against their own commit.</p>
+<p style="margin-top:.8rem">Nine repositories count: requests, flask, click, httpx, rich, attrs, jinja, markupsafe, tqdm. A tenth, itsdangerous, was used to build the pipeline and is reported but not counted. For eight of the nine, DeepWiki's pages describe the very same commit the story cites; the two that differ (attrs, markupsafe) are each judged against their own commit.</p>
 <p>The reader for each arm gets the whole document. DeepWiki's is two to four times longer; nothing was trimmed.</p>
 </section>
 
@@ -145,12 +153,15 @@ assert raised is not None and &#x27;not callable&#x27; in str(raised)</pre>
   <div><b>Nine small, pure-Python libraries</b>Nothing here says anything about large, multi-language systems, and the interval for general questions starts at +5 points: real, not huge.</div>
   <div><b>The other measure went the other way</b>The same study found the stories no more accurate than DeepWiki (0.71 vs 0.54 contradicted claims per 1,000 words; 10 vs 7 of 360), which is why the preregistered rule said kill. Comprehension and accuracy are separate findings; quote them together.</div>
 </div>
-<p style="margin-top:16px"><b>The sentence that survives all of that:</b> on nine small Python libraries, a model reader given a CodeStory answered owner-style questions about the core modules of the repository better than one given DeepWiki (76% vs 56%; 95% interval on the difference +5 to +33 points, resampling repositories), with questions written from the code and one traced run by a model that saw neither document, keys checked by execution, and blind grading. On questions about the traced run itself the gap was +35 points.</p>
+<p style="margin-top:1rem"><b>The sentence that survives all of that:</b> on nine small Python libraries, a model reader given a CodeStory answered owner-style questions about the core modules of the repository better than one given DeepWiki (76% vs 56%; 95% interval on the difference +5 to +33 points, resampling repositories), with questions written from the code and one traced run by a model that saw neither document, keys checked by execution, and blind grading. On questions about the traced run itself the gap was +35 points.</p>
 <p>Everything on this page comes from <code>eval/</code> in the repository: the questions, every answer, every grade, and every model response.</p>
 </section>
 
 <div class="nav"><button id="prev">← Back</button><button id="next">Next →</button></div>
+  </div>
+</article>
 </main>
+<footer><p>&copy; Omoju Miller. Stories by Claude, checked by code; <a href="https://github.com/omoju/comprehension">source and evaluation</a>.</p></footer>
 <script>
 const DATA = {"repos": [{"repo": "attrs", "story": {"general": [1.0, 0.5, 0.5, 0.5, 1.0, 0.5, 1.0], "path": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]}, "deepwiki": {"general": [0.5, 0.0, 0.5, 0.5, 1.0, 0.0, 0.0], "path": [0.5, 0.0, 1.0, 0.5, 0.5, 0.5, 1.0, 0.5]}}, {"repo": "click", "story": {"general": [0.5, 0.5, 1.0, 1.0, 0.5, 0.5, 1.0], "path": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0]}, "deepwiki": {"general": [0.0, 0.5, 0.0, 0.0, 0.5, 1.0, 0.5], "path": [1.0, 1.0, 0.5, 1.0, 1.0, 0.5, 0.5, 0.5]}}, {"repo": "flask", "story": {"general": [0.5, 0.0, 1.0, 1.0, 0.0, 0.0], "path": [1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0]}, "deepwiki": {"general": [0.5, 0.0, 1.0, 1.0, 1.0, 0.0], "path": [0.5, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 0.5]}}, {"repo": "httpx", "story": {"general": [0.5, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0], "path": [1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0]}, "deepwiki": {"general": [0.5, 0.5, 0.5, 0.5, 1.0, 0.0, 0.5], "path": [0.5, 0.5, 0.5, 1.0, 0.5, 1.0, 1.0, 0.5]}}, {"repo": "jinja", "story": {"general": [1.0, 0.5, 1.0, 0.5, 0.5, 0.0, 0.5], "path": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]}, "deepwiki": {"general": [1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 0.5], "path": [0.5, 1.0, 1.0, 0.0, 0.0, 0.5, 0.5, 0.5]}}, {"repo": "markupsafe", "story": {"general": [1.0, 0.5, 1.0, 1.0, 1.0, 1.0], "path": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]}, "deepwiki": {"general": [0.5, 0.5, 1.0, 1.0, 0.5, 1.0], "path": [1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0]}}, {"repo": "requests", "story": {"general": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], "path": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]}, "deepwiki": {"general": [0.0, 1.0, 1.0, 1.0, 1.0, 0.5, 0.5], "path": [1.0, 0.5, 1.0, 1.0, 0.0, 1.0, 0.0]}}, {"repo": "rich", "story": {"general": [1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0], "path": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]}, "deepwiki": {"general": [0.5, 0.5, 1.0, 1.0, 1.0, 0.0, 0.5], "path": [0.5, 0.0, 0.0, 0.5, 0.0, 0.5, 1.0, 0.5]}}, {"repo": "tqdm", "story": {"general": [1.0, 0.5, 1.0, 0.5, 0.5, 1.0, 1.0], "path": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]}, "deepwiki": {"general": [0.5, 0.0, 0.5, 0.5, 0.0, 1.0, 0.0], "path": [0.0, 0.0, 0.0, 0.0, 1.0, 0.5, 1.0, 1.0]}}], "pooled": {"story": {"density": 0.7106649654106884, "path": 97.88732394366197, "general": 76.22950819672131}, "deepwiki": {"density": 0.5352434491074468, "path": 62.67605633802817, "general": 55.73770491803279}}, "ci": {"density_ratio": [0.5547368151826412, 4.85729012555935], "path_diff": [22.91666666666667, 47.18309859154929], "general_diff": [5.0, 33.06451612903226]}};
 // ---- stepper
@@ -214,3 +225,4 @@ function boot() {
 document.getElementById('d1').onclick = () => draw(1); document.getElementById('d100').onclick = () => draw(100); document.getElementById('d2000').onclick = () => draw(2000); document.getElementById('dreset').onclick = () => { draws = []; boot(); };
 boot();
 </script>
+</body></html>
