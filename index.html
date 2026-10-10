@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeStories · Omoju Miller</title>
+<meta name="description" content="A repository explained as a story that follows its data through one real run, every claim pinned to lines, every chapter with a proof: the stories, and how the comparison against DeepWiki was done.">
+<link rel="stylesheet" href="https://omojumiller.com/theme/css/style.css">
+<style>
+/* Only what the site's stylesheet has no rule for: the list of pages. */
+ul.pages { list-style: none; padding-left: 0; margin-bottom: 1.15rem }
+ul.pages li { margin-bottom: 1.9rem; text-align: left; hyphens: none }
+ul.pages a.page { display: block; font-size: 1.32rem; font-weight: 600; font-variant-caps: small-caps; letter-spacing: 0.045em; border-bottom: none; line-height: 1.3 }
+ul.pages .meta { display: block; font-size: 0.92rem; color: var(--ink-faint); font-variant-caps: small-caps; letter-spacing: 0.06em; margin-top: 0.1rem }
+</style></head><body>
+<header>
+  <h1><a href="https://omojumiller.com/">Omoju Miller</a></h1>
+</header>
+<main>
+<article class="page-home">
+  <div class="post-body">
+  <h2>codestories</h2>
+  <p>More and more code is written by agents and read by nobody, and reading code you didn't write doesn't scale.
+  Comprehension has to become something you can check, not something you take on trust. CodeStories is the first
+  prototype of that idea: a repository explained as a story that follows its data through one real run of its
+  intended use. Every claim links to the exact lines at a pinned commit, every chapter ends in a proof you can run,
+  and when the code changes the story fails like a test. The stories were written by Claude and checked by code;
+  whether they beat generated documentation was decided by a preregistered comparison against DeepWiki.</p>
+  <ul class="pages">
+<li>
+  <a class="page" href="stories/">The stories</a>
+  Ten Python libraries, each told as a story that follows its data through one real run. The reading page has three
+  panes: a control-flow chart of that run, the story, and the code it cites, side by side.
+  <span class="meta">requests · flask · click · httpx · rich · attrs · jinja · markupsafe · tqdm · itsdangerous</span>
+</li>
+<li>
+  <a class="page" href="eval/explainer/">How the comparison worked</a>
+  The comprehension measure: a model reader given a story answered questions about the code better than one given
+  DeepWiki. Who saw what, where the questions came from, how the marking was done, and what the numbers can and
+  cannot mean.
+  <span class="meta">H2 · 76% against 56% on owner questions · 98% against 63% on the traced run</span>
+</li>
+<li>
+  <a class="page" href="eval/explainer/h1.html">How the accuracy measure worked</a>
+  The accuracy measure, and why the preregistered rule said kill: what a claim is, how the judge worked and where it
+  was blind, the formula, and every contradicted claim in full.
+  <span class="meta">H1 · 0.71 against 0.54 contradicted claims per 1,000 words</span>
+</li>
+  </ul>
+  </div>
+</article>
+</main>
+<footer><p>&copy; Omoju Miller. Stories by Claude, checked by code; <a href="https://github.com/omoju/comprehension">source, preregistration and evaluation</a>.</p></footer>
+</body></html>
