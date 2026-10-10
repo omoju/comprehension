@@ -8,9 +8,10 @@
 :root { --story: #1f5f8b; --story-soft: #dfeaf4; --wiki: #8b5a1f; --wiki-soft: #f5ecdc; --ok: #2d6a4f; --no: #AA0000; --hi: #f7f1dc; --dim: .28;
   --sheet: #ffffff; --bg: var(--chip); --muted: var(--ink-faint); --serif: 'EB Garamond', Garamond, Georgia, serif }
 /* The stepper reads like the site's nav: small caps, the current step in the accent. */
-ul.steps { list-style: none; padding: 0; margin: 0 0 1.6rem; display: flex; flex-wrap: wrap; gap: .35rem 1.4rem }
+ul.steps { list-style: none; padding: 0; margin: 0 0 1.6rem; display: flex; flex-wrap: wrap; gap: .4rem 1.5rem }
+.date { font-weight: 600; color: var(--ink-soft) }
 ul.steps li { margin: 0 }
-ul.steps button { font: inherit; font-size: .92rem; font-variant-caps: small-caps; letter-spacing: .07em; color: var(--ink-soft); background: none; border: none; border-bottom: 1px solid transparent; padding: 0; cursor: pointer; white-space: nowrap }
+ul.steps button { font: inherit; font-size: 1.08rem; font-weight: 700; font-variant-caps: small-caps; letter-spacing: .06em; color: var(--ink); background: none; border: none; border-bottom: 1px solid transparent; padding: 0; cursor: pointer; white-space: nowrap }
 ul.steps button:hover { color: var(--accent) }
 ul.steps button[aria-current="step"] { color: var(--accent); border-bottom-color: var(--accent) }
 button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px }
