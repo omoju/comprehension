@@ -21,8 +21,9 @@ import sys
 from pathlib import Path
 
 import env  # noqa: F401  (loads .env)
+import llm
 
-MODEL = "claude-opus-5"
+MODEL = llm.DEFAULT_MODELS["anthropic"]  # the evaluation harness (eval/) calls the Anthropic API with this directly
 CONTEXT_BUDGET = 400_000  # characters of source code to show the model (~100k tokens)
 MAX_CHAPTERS = 10  # the length budget; "as many as the journey needs" gave 12-14 for 500-line libraries
 MIN_CALLS = 5  # calls into the repo a chapter's span must cover; the itsdangerous story that read well never had fewer
@@ -245,18 +246,14 @@ def repo_block(repo: Path, info: dict, story: Path | None = None) -> dict:
     return {"type": "text", "text": text, "cache_control": {"type": "ephemeral"}}
 
 
-def plan_call(client, messages: list[dict]):
-    with client.beta.messages.stream(
-        model=MODEL,
-        max_tokens=64000,
-        system=SYSTEM,
-        messages=messages,
-        thinking={"type": "adaptive"},
-        output_config={"effort": "high", "format": {"type": "json_schema", "schema": OUTLINE_SCHEMA}},
-        betas=["server-side-fallback-2026-07-01"],
-        fallbacks="default",
-    ) as stream:
-        return stream.get_final_message()
+def plan_call(messages: list[dict]):
+    return llm.ask(SYSTEM, messages, schema=OUTLINE_SCHEMA, max_tokens=64000)
+
+
+def usage_line(u: dict, cost: float | None) -> str:
+    return (f"{u.get('input_tokens', 0):,} tokens in (+{u.get('cache_read_input_tokens', 0):,} cached, "
+            f"{u.get('cache_creation_input_tokens', 0):,} written to cache), {u.get('output_tokens', 0):,} out"
+            + (f", ${cost:.2f}" if cost is not None else ""))
 
 
 def print_plan(plan: dict, reader: str, errors: list[str]) -> None:
@@ -285,18 +282,14 @@ def main(repo_arg: str, story_arg: str, reader: str, max_chapters: int, repair: 
         print("prompt written")
         return 0
 
-    import anthropic  # only needed for real runs
-
-    client = anthropic.Anthropic()
     usage = []
+    print(f"model: {llm.describe()}")
 
     def ask(name: str) -> dict:
-        response = plan_call(client, messages)
-        (story / f"outline.response{name}.json").write_text(response.to_json())  # thinking, usage, model, stop
-        usage.append((name or "plan", response.usage))
-        if response.stop_reason != "end_turn":
-            raise RuntimeError(f"model stopped early: {response.stop_reason}")
-        return json.loads(next(b.text for b in response.content if b.type == "text"))
+        reply = plan_call(messages)
+        (story / f"outline.response{name}.json").write_text(json.dumps(reply.record(), indent=1))  # usage, model, raw
+        usage.append((name or "plan", reply))
+        return json.loads(reply.text)
 
     if repair:  # the existing plan stands in for the model's first answer
         previous = json.loads((story / "outline.json").read_text())
@@ -325,9 +318,8 @@ def main(repo_arg: str, story_arg: str, reader: str, max_chapters: int, repair: 
                    "chapters": plan["chapters"]}
         (story / "outline.json").write_text(json.dumps(outline, indent=2) + "\n")
 
-    for name, u in usage:
-        print(f"\n{name} tokens: {u.input_tokens:,} in (+{u.cache_read_input_tokens:,} cached, "
-              f"{u.cache_creation_input_tokens:,} written to cache), {u.output_tokens:,} out")
+    for name, reply in usage:
+        print(f"\n{name}: {usage_line(reply.usage, reply.cost)}")
     return 1 if errors else 0  # a plan that fails its checks must not flow on to the chapters
 
 

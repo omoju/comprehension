@@ -57,6 +57,26 @@ Every model stage is the same loop:
 The checks are the design: the model fills whatever gap the check leaves, so each check says what we actually want
 (a minimum of calls per chapter, not just a cap on their count; an assert that can fail, not just an assert).
 
+## A change instead of a repository
+
+`review.py` tells the story of a change: a pull request, or any base and head. The repository explainer follows one
+run of a repo's intended use; a change has its own intended use, the tests that come with it, so those tests are run
+twice, on the base and on the head, and the story follows the same data through both versions.
+
+```bash
+.venv/bin/python codestory/review.py demo-repos/ufo --pr 313    # or --base <rev> --head <rev>
+```
+
+| Stage | Reads | Model call | Check (deterministic) | Writes |
+|---|---|---|---|---|
+| 1 `diff.py` | the change; its specs | none | the specs run under the tracer on a worktree of each side; the head's specs run on the base too, with imports of what the change adds softened to `undefined` | `changes.json` (changed functions per file), `trace.base.json`, `trace.head.json`, `diff.txt` (the merged run: `+` only after, `-` only before, `~` other values, ` *` an edited function), `diff.json` (each test before and after; changed functions the run never reaches), `diff.tree.json` |
+| 2 `diff_outline.py` | diff, both sides of every changed file, `diff.txt`, the evidence, reader | "plan the change story" → JSON plan | `check_diff_plan`: spans as before; every chapter covers a marked line; every changed function the run reaches is explained; every test that fails before and passes after is claimed as evidence; every function the run never reaches is listed as unexercised | `outline.json` (mode `diff`) |
+| 3 `diff_chapter.py` | the same, plan, previous chapter | "write chapter N" → Markdown + a whole spec file | `diff_verify.py`, for all chapters at once: permalinks name the base or the head and point at real lines there; each proof passes on the head, and a "changed" chapter's fails on the base (one that passes on both proves nothing) | `NN-slug.md`, `proofs/NN.ts`, `report.md`, `verify.json` |
+| 4 `render.py` | all of the above | none | n/a | `index.html`: the verdict and the evidence, the map of the change, chapters with Before/After, the code of either side |
+
+`diff_verify.py <story> --against <rev>` rechecks a finished story against a newer push: cited lines are matched by
+content, so code that only moved is reported as moved, not changed.
+
 ## TypeScript, and a change's two runs
 
 `codestory/ts/` traces TypeScript and JavaScript (Node 20.6 or later). `register.mjs` installs a module loader hook
@@ -79,4 +99,15 @@ python3 codestory/diff.py <repo> <base> <head> <out-dir> --pkg <package> --spec 
 
 It writes the merged run (`diff.txt`: `+` happens only after the change, `-` only before, `~` is the same call with
 other values, ` *` marks a function the change edited), each test's outcome before and after, and the changed
-functions no test reaches. No model is involved.
+functions no test reaches. No model is involved. `decisions.mjs` is `render.py`'s branch finder for
+TypeScript: which way each `if`, `switch` and `try` went, from the lines a test ran.
+
+## Models
+
+`llm.py` is the one place a stage asks a model. `CODESTORY_PROVIDER` chooses how you sign in (see `.env.example`):
+`anthropic` (an API key), `claude-cli` (your Claude login, through the Claude Code CLI), `codex-cli` (your ChatGPT
+login, through the Codex CLI), or `foundry` (a deployment on Azure AI Foundry, with a key or your
+`az login`). The CLIs sign in for us: their own login and terms apply, and nothing here reads their credentials.
+The `anthropic` provider marks the repository block for prompt caching and asks for server-side fallback; the CLIs
+and Foundry cache on their own terms. A CLI on a subscription reports what the API would have charged; Foundry and
+Codex report tokens only.

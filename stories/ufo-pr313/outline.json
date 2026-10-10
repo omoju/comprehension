@@ -1,0 +1,177 @@
+{
+  "mode": "diff",
+  "title": "Guarding withBase and withoutBase against false prefix matches",
+  "premise": "`withBase` and `withoutBase` decided a path \"has\" the base purely with `input.startsWith(_base)`. That matches too much: a path like `/admin-dashboard` starts with the string `/admin`, so the base was treated as already present. `withBase` then returned the input untouched (base silently dropped), and `withoutBase` sliced off the first 6 characters and re-prepended a slash, turning `/admin-dashboard` into the nonsense `/-dashboard`. The change adds a one-character lookahead: the character right after the base must be nothing, `/`, or `?` for the prefix to count as a real base boundary.",
+  "verdict": "The change makes one claim true: a base only counts as a prefix of a path when it ends on a segment boundary (end of string, `/`, or `?`). Where it doesn't, `withBase` now prepends the base (`/admin-dashboard` + base `/admin/` \u2192 `/admin/admin-dashboard`) and `withoutBase` now leaves the path alone (`/admin-dashboard` minus base `/admin/` stays `/admin-dashboard`) instead of producing `/-dashboard`. Four new tests are direct fail\u2192pass evidence (two per function), and the twenty-eight pre-existing pass\u2192pass tests show genuine prefixes (`/admin/dashboard`, `/api?test`), non-matches, protocol URLs, and empty bases are all untouched because their lookahead char is `/`, `?`, or absent. The run reaches both changed functions on both sides, so no code is unexercised. Risk is low and local: the only behavioural shift is for callers who previously relied on the buggy \"starts-with-string\" matching \u2014 any such caller now gets the corrected, boundary-aware result, which is the intended fix. Worth approving; the only thing to confirm by eye is that `#` fragments (which neither test exercises) are an acceptable non-boundary char, i.e. `/admin#x` is intentionally treated as not having base `/admin`.",
+  "reader": "reviewer",
+  "repo": {
+    "name": "unjs/ufo",
+    "url": "https://github.com/unjs/ufo",
+    "base": "5fb179d51384301ffb66b48e213863a27cadd1ff",
+    "head": "cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c",
+    "commit": "cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c",
+    "local_path": "demo-repos/ufo",
+    "pkg": ".",
+    "title": "fix(withBase, withoutBase): prevent false prefix matches",
+    "number": 313
+  },
+  "chapters": [
+    {
+      "n": 1,
+      "title": "withBase, where nothing should change",
+      "trace_lines": [
+        1,
+        69
+      ],
+      "kind": "preserved",
+      "before": "The first ten cases flow through `withBase` untouched: base `/` or `\"\"` returns the input via `isEmptyURL`; `https://test.com` returns early via `hasProtocol`; a real prefix like input `/base` against base `/base/` has `input.startsWith('/base')` true and returns `/base`; a non-match like `/bar` with base `/foo` falls to `joinURL` \u2192 `/foo/bar`.",
+      "after": "Identical results. In every one of these cases the character after the base is either absent or `/`, so even though the new `nextChar` lookahead now runs on the `startsWith` branch, it still permits the early return. Outputs match the base run exactly.",
+      "changed_functions": [
+        "withBase"
+      ],
+      "tests": [
+        "\"/\" + \"/\"",
+        "\"/foo\" + \"\"",
+        "\"/base/\" + \"/base\"",
+        "\"/base\" + \"/base/a\"",
+        "\"/base/\" + \"https://test.com\""
+      ],
+      "code": [
+        "src/utils.ts:290-303"
+      ],
+      "characters": [
+        "withBase",
+        "input.startsWith",
+        "isEmptyURL",
+        "hasProtocol",
+        "joinURL",
+        "_base"
+      ],
+      "facts": [
+        "withBase returns input unchanged when isEmptyURL(base) or hasProtocol(input) is true, before and after.",
+        "For a genuine prefix the early return still fires because nextChar is undefined or '/'.",
+        "For a non-prefix the code falls to joinURL(_base, input) on both sides."
+      ],
+      "open_questions": [],
+      "answers": []
+    },
+    {
+      "n": 2,
+      "title": "withBase stops dropping the base on a false prefix",
+      "trace_lines": [
+        71,
+        113
+      ],
+      "kind": "changed",
+      "before": "Input `/admin-dashboard` with base `/admin/` (and again with base `/admin`): `_base` = `/admin`, and `input.startsWith('/admin')` is true, so the function returned the input unchanged \u2014 `/admin-dashboard` \u2014 silently dropping the base. The test expected `/admin/admin-dashboard`, so it raised AssertionError.",
+      "after": "`nextChar = input[6]` is `-`, which is not undefined, `/`, or `?`, so the early return is skipped. Control falls to `joinURL('/admin', ['/admin-dashboard'])`, which runs `isNonEmptyURL` then `withTrailingSlash('/admin')` \u2192 `/admin/` and yields `/admin/admin-dashboard`. The two broken tests now pass. The genuine cases alongside them \u2014 `/admin/admin-dashboard` and `/admin/dashboard` (nextChar `/`) \u2014 still short-circuit and return the input unchanged on both sides.",
+      "changed_functions": [
+        "withBase"
+      ],
+      "tests": [
+        "\"/admin/\" + \"/admin-dashboard\"",
+        "\"/admin\" + \"/admin-dashboard\""
+      ],
+      "code": [
+        "src/utils.ts:294-302"
+      ],
+      "characters": [
+        "withBase",
+        "nextChar",
+        "input.startsWith",
+        "joinURL",
+        "withTrailingSlash"
+      ],
+      "facts": [
+        "withoutTrailingSlash turns both base `/admin/` and `/admin` into `_base` = `/admin`.",
+        "The guard `!nextChar || nextChar === '/' || nextChar === '?'` decides whether the prefix is a real boundary.",
+        "When the guard fails, joinURL re-adds the base, producing `/admin/admin-dashboard`.",
+        "A trailing-boundary prefix (`/admin/dashboard`, nextChar '/') is unaffected and still returns input."
+      ],
+      "open_questions": [
+        {
+          "id": "q2.1",
+          "question": "Does the inverse operation, withoutBase, get the same boundary guard, and what did its false-prefix bug produce before?"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "n": 3,
+      "title": "withoutBase, where nothing should change",
+      "trace_lines": [
+        115,
+        211
+      ],
+      "kind": "preserved",
+      "before": "Thirteen cases trim or pass through as before: genuine prefixes slice correctly (`/base/a` minus `/base` \u2192 `/a`), a query boundary is respected (`/api?test` minus `/api` \u2192 `/?test`, nextChar `?`), non-matches are returned (`/bar` minus `/foo` \u2192 `/bar`), and empty-base / protocol inputs pass straight through.",
+      "after": "Identical. In each case the character after `_base` is `/`, `?`, undefined, or the input never matches the base at all, so the new `nextChar` guard never changes the outcome. Outputs match the base run.",
+      "changed_functions": [
+        "withoutBase"
+      ],
+      "tests": [
+        "\"/base/a\"-\"/base\"",
+        "\"/api?test\"-\"/api\"",
+        "\"/bar\"-\"/foo\"",
+        "\"/base\"-\"/base/\"",
+        "\"https://test.com\"-\"/base/\""
+      ],
+      "code": [
+        "src/utils.ts:318-333"
+      ],
+      "characters": [
+        "withoutBase",
+        "input.startsWith",
+        "_base",
+        "isEmptyURL"
+      ],
+      "facts": [
+        "withoutBase returns input unchanged when isEmptyURL(base) or when input does not start with _base.",
+        "The `?` query boundary is an accepted boundary char, so `/api?test` minus `/api` still becomes `/?test`.",
+        "Genuine prefixes still slice off `_base` and normalise the leading slash."
+      ],
+      "open_questions": [],
+      "answers": []
+    },
+    {
+      "n": 4,
+      "title": "withoutBase stops mangling a false prefix",
+      "trace_lines": [
+        213,
+        243
+      ],
+      "kind": "changed",
+      "before": "Input `/admin-dashboard` with base `/admin/` (and with base `/admin`): `_base` = `/admin`, `input.startsWith('/admin')` is true, so it sliced the first 6 chars to `-dashboard` and, since that doesn't start with `/`, prepended one \u2192 `/-dashboard`. The expected `/admin-dashboard` never came; the test raised AssertionError.",
+      "after": "The new lookahead runs before the slice: `nextChar = input[6]` is `-`, and `nextChar && nextChar !== '/' && nextChar !== '?'` is true, so the function returns the input unchanged \u2014 `/admin-dashboard`. Both broken tests pass. The genuine neighbours still trim: `/admin/admin-dashboard` minus `/admin/` \u2192 `/admin-dashboard`, and `/admin/dashboard` \u2192 `/dashboard` (nextChar `/`).",
+      "changed_functions": [
+        "withoutBase"
+      ],
+      "tests": [
+        "\"/admin-dashboard\"-\"/admin/\"",
+        "\"/admin-dashboard\"-\"/admin\""
+      ],
+      "code": [
+        "src/utils.ts:322-332"
+      ],
+      "characters": [
+        "withoutBase",
+        "nextChar",
+        "input.startsWith",
+        "input.slice"
+      ],
+      "facts": [
+        "The guard sits after the startsWith check and before the slice, so a false prefix now returns input instead of `/-dashboard`.",
+        "This mirrors the withBase guard from chapter 2 with inverted logic: there it blocks an early return, here it adds one.",
+        "Genuine prefixes with nextChar '/' are still sliced and re-slashed as before."
+      ],
+      "open_questions": [],
+      "answers": [
+        {
+          "id": "q2.1",
+          "answer": "Yes: withoutBase gets the same boundary check with inverted logic. Before the fix its false-prefix bug produced `/-dashboard` from `/admin-dashboard`; after, the guard returns the input unchanged."
+        }
+      ]
+    }
+  ],
+  "unexercised": []
+}

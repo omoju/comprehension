@@ -30,12 +30,13 @@ Pipeline and data flow: [`codestory/README.md`](codestory/README.md). Running lo
 
 ### Make a story of your own repository
 
-Python 3.13 and [`uv`](https://docs.astral.sh/uv/) on the path; an Anthropic API key. Then:
+Python 3.13 and [`uv`](https://docs.astral.sh/uv/) on the path; a model: an Anthropic API key, or your Claude or
+ChatGPT login (through the `claude` or `codex` CLI), or a deployment on Azure AI Foundry (see `.env.example`). Then:
 
 ```bash
 git clone https://github.com/omoju/comprehension.git && cd comprehension
 uv venv .venv --python 3.13 && uv pip install --python .venv/bin/python -r requirements.txt
-cp .env.example .env            # put ANTHROPIC_API_KEY in it; the Cloudflare keys are optional
+cp .env.example .env            # choose CODESTORY_PROVIDER and its keys; the Cloudflare keys are optional
 .venv/bin/python codestory/story.py https://github.com/<owner>/<repo> --open
 ```
 
@@ -66,6 +67,22 @@ sh codestory/restore_repos.sh                                            # the t
 ```
 
 Ten stories exist in `stories/` (itsdangerous in `stories/itsdangerous-close-third/`, the rest in `stories/bench/`).
+
+### Tell the story of a change
+
+The same machinery explains a pull request instead of a repository. A change has its own intended use, the tests
+that come with it, so `review.py` runs them on the code before the change and after it, and the story follows the same
+data through both versions, for a reviewer: what the change makes true, what it keeps true, and what no test reaches.
+
+```bash
+.venv/bin/python codestory/review.py <repo> --pr <number> --open      # or --base <rev> --head <rev>
+```
+
+Each chapter's proof is a whole test file in the repository's own runner, and it is run on both sides: a chapter
+that claims a difference must pass after the change and fail before it, so a proof can't merely restate the code.
+TypeScript and JavaScript packages tested with Japa (AdonisJS) or Vitest (Vite, Vue) so far. An example from a
+public repository: [`stories/ufo-pr313/`](stories/ufo-pr313/) (unjs/ufo, "prevent false prefix matches").
+Pipeline: [`codestory/README.md`](codestory/README.md#a-change-instead-of-a-repository).
 
 ### Is it better than generated documentation?
 

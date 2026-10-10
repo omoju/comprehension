@@ -16,7 +16,8 @@ import sys
 from pathlib import Path
 
 import env  # noqa: F401  (loads .env)
-from outline import MODEL, repo_block, repo_info
+import llm
+from outline import repo_block, repo_info
 from trace import compress, render
 from verify import repo_python
 
@@ -79,32 +80,24 @@ def harness_failed(run: subprocess.CompletedProcess) -> bool:
 
 
 def main(repo_arg: str, story_arg: str) -> int:
-    import anthropic
-
     repo, story = Path(repo_arg).resolve(), Path(story_arg).resolve()
     story.mkdir(parents=True, exist_ok=True)
     if not any((repo / f).exists() for f in ("pyproject.toml", "setup.py", "setup.cfg")):
         print("only Python repositories are supported so far")
         return 2
 
-    client = anthropic.Anthropic()
+    print(f"  model: {llm.describe()}")
     messages = [{"role": "user", "content": [repo_block(repo, repo_info(repo)),
                                              {"type": "text", "text": "Write the scenario."}]}]
     for attempt in range(1, ATTEMPTS + 1):
-        with client.beta.messages.stream(
-            model=MODEL, max_tokens=32000, system=SYSTEM, messages=messages,
-            thinking={"type": "adaptive"},
-            output_config={"effort": "high", "format": {"type": "json_schema", "schema": SCHEMA}},
-            betas=["server-side-fallback-2026-07-01"], fallbacks="default",
-        ) as stream:
-            response = stream.get_final_message()
-        (story / "traces").mkdir(exist_ok=True)
-        (story / "traces" / f"scenario-{attempt}.response.json").write_text(response.to_json())
-        if response.stop_reason != "end_turn":
-            print(f"model stopped early: {response.stop_reason}")
+        try:
+            reply = llm.ask(SYSTEM, messages, schema=SCHEMA, max_tokens=32000)
+        except llm.LLMError as e:
+            print(f"  model call failed: {e}")
             return 1
-
-        answer = json.loads(next(b.text for b in response.content if b.type == "text"))
+        (story / "traces").mkdir(exist_ok=True)
+        (story / "traces" / f"scenario-{attempt}.response.json").write_text(json.dumps(reply.record(), indent=1))
+        answer = json.loads(reply.text)
         (story / "scenario.py").write_text(answer["script"].rstrip() + "\n")
         (story / "scenario.json").write_text(json.dumps({"why": answer["why"], "attempts": attempt}, indent=2) + "\n")
 
@@ -127,7 +120,7 @@ def main(repo_arg: str, story_arg: str) -> int:
         print(f"  attempt {attempt}: rejected: {error.splitlines()[-1][:120]}")
 
         # The loop: keep the conversation, add what went wrong, ask again.
-        messages += [{"role": "assistant", "content": response.content},
+        messages += [{"role": "assistant", "content": reply.text},
                      {"role": "user", "content": f"The script was rejected:\n\n{error}\n\nFix it. Same requirements."}]
     print(f"no working scenario after {ATTEMPTS} attempts")
     return 1

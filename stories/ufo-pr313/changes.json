@@ -1,0 +1,46 @@
+{
+ "repo": "demo-repos/ufo",
+ "base": "5fb179d51384301ffb66b48e213863a27cadd1ff",
+ "head": "cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c",
+ "pkg": ".",
+ "specs": [
+  "test/base.test.ts"
+ ],
+ "runner": "vitest",
+ "link": "node_modules",
+ "include": "src/",
+ "timeout": 300,
+ "files": {
+  "src/utils.ts": {
+   "functions": [
+    {
+     "name": "withBase",
+     "kind": "modified",
+     "base": [
+      290,
+      299
+     ],
+     "head": [
+      290,
+      303
+     ]
+    },
+    {
+     "name": "withoutBase",
+     "kind": "modified",
+     "base": [
+      314,
+      324
+     ],
+     "head": [
+      318,
+      333
+     ]
+    }
+   ],
+   "module_level_lines": []
+  }
+ },
+ "title": "fix(withBase, withoutBase): prevent false prefix matches",
+ "number": 313
+}

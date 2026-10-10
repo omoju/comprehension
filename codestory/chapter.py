@@ -22,7 +22,8 @@ from pathlib import Path
 import env  # noqa: F401  (loads .env)
 from claims import judge_text
 from jev import JevError, configured as jev_configured
-from outline import MODEL, READERS, REPAIRS, numbered_trace, repo_block
+import llm
+from outline import READERS, REPAIRS, numbered_trace, repo_block
 from verify import check_text, read_proofs, repo_path, split_proofs, write_proofs
 
 SYSTEM = """You write one chapter of a code story at a time. The story follows the data as it travels through the
@@ -107,29 +108,17 @@ def repair_request(errors: list[str]) -> str:
               "the span, the Enters/Leaves lines and everything that passed as they are.")
 
 
-def response_text(response) -> str:
-    return next(b.text for b in response.content if b.type == "text").strip() + "\n"
+def response_text(reply) -> str:
+    return reply.text.strip() + "\n"
 
 
-def ask(client, messages: list[dict], n: int, story: Path, name: str):
-    """One model turn; the full response (thinking, usage, stop reason) is kept in traces/."""
+def ask(messages: list[dict], n: int, story: Path, name: str):
+    """One model turn; the full response (usage, model, the provider's raw answer) is kept in traces/."""
     start = time.time()
-    with client.beta.messages.stream(
-        model=MODEL,
-        max_tokens=32000,
-        system=SYSTEM,
-        messages=messages,
-        thinking={"type": "adaptive"},
-        output_config={"effort": "high"},
-        betas=["server-side-fallback-2026-07-01"],
-        fallbacks="default",
-    ) as stream:
-        response = stream.get_final_message()
+    reply = llm.ask(SYSTEM, messages, max_tokens=32000)
     (story / "traces").mkdir(exist_ok=True)
-    (story / "traces" / f"{n:02}.{name}.json").write_text(response.to_json())
-    if response.stop_reason != "end_turn":
-        raise RuntimeError(f"chapter {n}: model stopped early: {response.stop_reason}")
-    return response, time.time() - start
+    (story / "traces" / f"{n:02}.{name}.json").write_text(json.dumps(reply.record(), indent=1))
+    return reply, time.time() - start
 
 
 def save_chapter(raw: str, n: int, outline: dict, story: Path):
@@ -154,31 +143,42 @@ def last_response(n: int, story: Path) -> Path | None:
 
 
 class Usage:
-    """Token counts summed over a chapter's turns (first write plus repairs)."""
+    """Tokens and cost summed over a chapter's turns (first write plus repairs). Cost is None when the provider
+    doesn't say (a Foundry deployment, the Codex CLI): the report then shows tokens only."""
 
     FIELDS = ("input_tokens", "output_tokens", "cache_read_input_tokens", "cache_creation_input_tokens")
 
     def __init__(self):
         for f in self.FIELDS:
             setattr(self, f, 0)
+        self.cost: float | None = 0.0
 
-    def add(self, u) -> None:
+    def add(self, u: dict | None, cost: float | None = 0.0) -> None:
         for f in self.FIELDS:
-            setattr(self, f, getattr(self, f) + ((getattr(u, f, None) if not isinstance(u, dict) else u.get(f)) or 0))
+            setattr(self, f, getattr(self, f) + ((u or {}).get(f) or 0))
+        self.cost = None if cost is None or self.cost is None else self.cost + cost
 
-    @property
-    def cost(self) -> float:
-        return (self.input_tokens * 5 + self.cache_creation_input_tokens * 6.25 + self.cache_read_input_tokens * 0.5
-                + self.output_tokens * 25) / 1e6
+    def add_record(self, record: dict) -> None:
+        """A turn kept in traces/: this module's records, or the Anthropic responses older stories kept."""
+        u = record.get("usage") or {}
+        if "provider" in record:
+            self.add(u, record.get("cost"))
+        else:
+            p = llm.ANTHROPIC_PRICES
+            self.add(u, ((u.get("input_tokens") or 0) * p["input"] + (u.get("cache_creation_input_tokens") or 0)
+                         * p["cache_write"] + (u.get("cache_read_input_tokens") or 0) * p["cache_read"]
+                         + (u.get("output_tokens") or 0) * p["output"]) / 1e6)
+
+
+def money(cost: float | None) -> str:
+    return f"${cost:.2f}" if cost is not None else "—"
 
 
 def main(story_arg: str, only: int | None, upto: int | None = None, repairs: int = REPAIRS) -> int:
-    import anthropic
-
     story = Path(story_arg)
     outline = json.loads((story / "outline.json").read_text())
     repo = repo_path(outline)
-    client = anthropic.Anthropic()
+    print(f"  model: {llm.describe()}")
 
     rows, previous, cache = [], None, {}
     for c in outline["chapters"]:
@@ -198,12 +198,13 @@ def main(story_arg: str, only: int | None, upto: int | None = None, repairs: int
             path, text = existing[0], existing[0].read_text()
             proofs = read_proofs(path)
             last = last_response(n, story)
-            usage.add(json.loads(last.read_text())["usage"] if last else {})
+            if last:
+                usage.add_record(json.loads(last.read_text()))
             raw = join_proofs(text, proofs)  # what the checker checked, hand edits included, stands as the model's turn
         else:
-            response, secs = ask(client, messages, n, story, "response")
-            usage.add(response.usage)
-            raw = response_text(response)
+            reply, secs = ask(messages, n, story, "response")
+            usage.add(reply.usage, reply.cost)
+            raw = response_text(reply)
             path, text, proofs = save_chapter(raw, n, outline, story)
 
         v = check_text(text, path.name, outline, repo, cache, proofs)
@@ -213,10 +214,10 @@ def main(story_arg: str, only: int | None, upto: int | None = None, repairs: int
             repaired += 1
             print(f"      ✗ {len(v.errors)} check errors, repair {repaired}/{repairs}: {v.errors[0]}", flush=True)
             messages += [{"role": "assistant", "content": raw}, {"role": "user", "content": repair_request(v.errors)}]
-            response, more = ask(client, messages, n, story, f"repair{repaired}")
+            reply, more = ask(messages, n, story, f"repair{repaired}")
             secs += more
-            usage.add(response.usage)
-            raw = response_text(response)
+            usage.add(reply.usage, reply.cost)
+            raw = response_text(reply)
             path, text, proofs = save_chapter(raw, n, outline, story)
             v = check_text(text, path.name, outline, repo, cache, proofs)
         previous = text
@@ -238,7 +239,7 @@ def main(story_arg: str, only: int | None, upto: int | None = None, repairs: int
         if repaired:
             status += f" after {repaired} repair{'s' if repaired > 1 else ''}"
         print(f"  {n:2}. {path.name}  {len(text.split())} words, {v.citations} citations, {secs:.0f}s, "
-              f"${usage.cost:.2f}  → {status}", flush=True)
+              f"{money(usage.cost)}  → {status}", flush=True)
 
     lines = [f"# Report · {outline['title']} · reader: {outline['reader']}\n",
              "| # | chapter | words | citations | repairs | check errors | contradicted ¶ | time | cost |",
@@ -246,9 +247,11 @@ def main(story_arg: str, only: int | None, upto: int | None = None, repairs: int
     for r in rows:
         judged = f"{len(r['contradicted'])}/{r['judged']}" if r["judged"] or not r["judge_note"] else "—"
         lines.append(f"| {r['n']} | [{r['file']}]({r['file']}) | {r['words']} | {r['citations']} | {r['repairs']} "
-                     f"| {len(r['errors'])} | {judged} | {r['seconds']}s | ${r['cost']:.2f} |")
-    lines.append(f"\n**Total:** ${sum(r['cost'] for r in rows):.2f}, {sum(r['seconds'] for r in rows)}s, "
-                 f"{sum(r['repairs'] for r in rows)} repairs\n")
+                     f"| {len(r['errors'])} | {judged} | {r['seconds']}s | {money(r['cost'])} |")
+    costs = [r["cost"] for r in rows]
+    total = None if any(c is None for c in costs) else sum(costs)
+    lines.append(f"\n**Total:** {money(total)}, {sum(r['seconds'] for r in rows)}s, "
+                 f"{sum(r['repairs'] for r in rows)} repairs · model: {llm.describe()}\n")
     notes = {r["judge_note"] for r in rows if r["judge_note"]}
     if notes:
         lines.append("Contradiction judge: " + "; ".join(sorted(notes)) + "\n")

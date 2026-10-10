@@ -93,6 +93,26 @@ the human check.
   Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-07** · Change stories (`review.py`): a pull request told for a reviewer, from its own tests run on its base
+  and its head (`diff.py`). The plan check puts the evidence in the open: every changed function the run reaches is
+  explained by a chapter, every test that starts passing is claimed as evidence, every changed function no test
+  reaches is named. Proofs are whole test files run on both sides: a chapter claiming a difference passes after and
+  fails before; one claiming nothing broke passes on both. A proof that passes on both sides proves nothing about the
+  change, and the check says so. Example: ufo #313 (`stories/ufo-pr313/`; 4 chapters, 0 repairs, $2.60 at API prices
+  on `claude-cli`; the base proofs fail with the bug itself, `withoutBase("/admin-dashboard", "/admin")` →
+  `"/-dashboard"`). Also run on three pull requests of a private TypeScript codebase, one each on `claude-cli`,
+  `foundry` and `codex-cli`: 15 chapters, one plan repair, no chapter repairs, every proof right on both sides.
+  What the reviewer gets beyond the diff: the base's actual values next to the head's, and callouts on what no test
+  covers (in one private pull request, two URL checks its guard enforces that none of its tests exercise).
+- **10-07** · Models are swappable (`codestory/llm.py`): every stage asks through one function, and
+  `CODESTORY_PROVIDER` chooses how to sign in. An Anthropic API key, as before (and still the default when one is
+  set); a Claude login, through `claude -p`; a ChatGPT login, through `codex exec`; or a deployment on Azure AI
+  Foundry (OpenAI models through the Responses API, Claude models through Foundry's Messages API; a key or
+  `az login`). The CLIs sign in for us; nothing reads their credentials. The checks and the repair loop are
+  unchanged; for a CLI, a repair conversation goes as one transcript. Checked: markupsafe end to end on `claude-cli`
+  (scenario first try, 4 chapters, 0 repairs, every citation and proof passing; $3.37 at API prices, on a
+  subscription), and the smoke test (`python codestory/llm.py`) on `claude-cli`, `codex-cli` and `foundry` (an OpenAI
+  and a Claude deployment). Not yet run here: `anthropic`, for want of a key; its call is the old one, moved.
 - **10-07** · TypeScript tracer (`codestory/ts/`) and `diff.py`, which runs a change's own tests on its base and
   its head and compares the two runs call by call; no model. Checked on ufo #313 (its 32 tests pass traced; 4 fail
   on the base and pass on the head, and the run reaches both changed functions) and on a private TypeScript codebase
