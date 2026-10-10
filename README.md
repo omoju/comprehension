@@ -88,4 +88,5 @@ Claude writes the code, the technical docs and the stories; the essays and talks
 
 ## License
 
-MIT. The stories quote the repositories they describe under those projects' own licenses, with permalinks as attribution.
+Apache License 2.0 (see `LICENSE` and `NOTICE`). The stories quote the repositories they describe under those projects'
+own licenses, with permalinks as attribution.
