@@ -1,13 +1,15 @@
 """Check a code story against the code it tells.
 
-    python3 codestory/verify.py stories/itsdangerous
+    python3 codestory/verify.py [--no-proofs] stories/itsdangerous [more stories...]
 
 Three checks, per chapter:
-  1. citations  - every permalink into the repo points at lines that exist at the pinned commit
+  1. citations  - every permalink into the repo points at lines that exist at the pinned commit (a change story
+                  may also cite the base commit: those lines must exist there)
   2. drift      - the cited lines are unchanged in the repo's working tree (the code moved on; the story didn't)
   3. proofs     - every proof (proofs/NN.py or .sh, or an inline ```python proof block) runs and passes
 
-Exit code 0 only if everything passes. Standard library only.
+--no-proofs skips running the proofs (they need the repository's own environment); the vacuous-assert scan still
+runs. Exit code 0 only if every story passes. Standard library only.
 """
 
 from __future__ import annotations
@@ -54,8 +56,10 @@ def write_proofs(chapter: Path, proofs: list[tuple[str, str]]) -> None:
 
 
 def read_proofs(chapter: Path) -> list[tuple[str, str]]:
+    """Proofs this checker can run. A change story's proofs may be in the repository's own language (diff.py runs
+    those, with the repository's test runner); they are left to it."""
     ext_lang = {v: k for k, v in PROOF_EXT.items()}
-    return [(ext_lang[f.suffix[1:]], f.read_text()) for f in proof_files(chapter)]
+    return [(ext_lang[f.suffix[1:]], f.read_text()) for f in proof_files(chapter) if f.suffix[1:] in ext_lang]
 RUNNERS = {"python": [sys.executable, "-c"], "sh": ["bash", "-c"]}
 
 # Assertions that cannot fail. A proof full of these passes whatever the story says.
@@ -117,38 +121,50 @@ def repo_path(outline: dict) -> Path:
     return (ROOT / outline["repo"]["local_path"]).resolve()  # absolute paths survive the join
 
 
-def check_chapter(chapter: Path, outline: dict, repo: Path, file_cache: dict) -> Report:
+def check_chapter(chapter: Path, outline: dict, repo: Path, file_cache: dict, run_proofs: bool = True) -> Report:
     text = chapter.read_text()
     proofs = PROOF_RE.findall(text) + read_proofs(chapter)  # inline (older chapters) or in proofs/
-    return check_text(text, chapter.name, outline, repo, file_cache, proofs)
+    return check_text(text, chapter.name, outline, repo, file_cache, proofs, run_proofs)
+
+
+def same_commit(a: str, b: str) -> bool:
+    return a.startswith(b) or b.startswith(a)
 
 
 def check_text(text: str, name: str, outline: dict, repo: Path, file_cache: dict,
-               proofs: list[tuple[str, str]] | None = None) -> Report:
+               proofs: list[tuple[str, str]] | None = None, run_proofs: bool = True) -> Report:
     report = Report(name)
     pinned = outline["repo"]["commit"]
+    base = outline["repo"].get("base")  # a change story also cites the code as it was before the change
 
     for c in find_citations(text, outline["repo"]["url"]):
         report.citations += 1
         where = f"line {c.line}: {c}"
-        if not pinned.startswith(c.commit) and not c.commit.startswith(pinned):
+        if same_commit(pinned, c.commit):
+            at = pinned
+        elif base and same_commit(base, c.commit):
+            at = base
+        else:
             report.errors.append(f"{where} cites commit {c.commit[:7]}, story is pinned to {pinned[:7]}")
             continue
-        if c.path not in file_cache:
+        key = (at, c.path)
+        if key not in file_cache:
             try:
-                then = git(repo, "show", f"{pinned}:{c.path}").splitlines()
+                then = git(repo, "show", f"{at}:{c.path}").splitlines()
             except subprocess.CalledProcessError:
                 then = None
             now_file = repo / c.path
             now = now_file.read_text().splitlines() if now_file.exists() else None
-            file_cache[c.path] = (then, now)
-        then, now = file_cache[c.path]
+            file_cache[key] = (then, now)
+        then, now = file_cache[key]
         if then is None:
-            report.errors.append(f"{where} file does not exist at {pinned[:7]}")
+            report.errors.append(f"{where} file does not exist at {at[:7]}")
             continue
         if not (1 <= c.start <= c.end <= len(then)):
             report.errors.append(f"{where} is outside the file ({len(then)} lines)")
             continue
+        if at != pinned:
+            continue  # lines before the change: they exist; the working tree holds the code after it
         if now is None:
             report.errors.append(f"{where} file has been deleted since the story was written")
         elif then[c.start - 1 : c.end] != now[c.start - 1 : c.end]:
@@ -160,6 +176,8 @@ def check_text(text: str, name: str, outline: dict, repo: Path, file_cache: dict
         for m in VACUOUS.finditer(block):
             line = block[: m.start()].count("\n") + 1
             report.errors.append(f"proof {i} line {line} can't fail: {block.splitlines()[line - 1].strip()}")
+        if not run_proofs:
+            continue
         try:
             runner = [repo_python(repo), "-c"] if lang == "python" else RUNNERS[lang]
             run = subprocess.run([*runner, block], cwd=repo, env=env, capture_output=True, text=True, timeout=60)
@@ -178,7 +196,7 @@ def check_text(text: str, name: str, outline: dict, repo: Path, file_cache: dict
     return report
 
 
-def main(story_dir: str) -> int:
+def main(story_dir: str, run_proofs: bool = True) -> int:
     story = Path(story_dir).resolve()
     outline = json.loads((story / "outline.json").read_text())
     repo = repo_path(outline)
@@ -192,7 +210,7 @@ def main(story_dir: str) -> int:
     cache: dict = {}
     failed = False
     for chapter in sorted(story.glob("[0-9][0-9]-*.md")):
-        r = check_chapter(chapter, outline, repo, cache)
+        r = check_chapter(chapter, outline, repo, cache, run_proofs)
         mark = "FAIL" if r.errors else "ok  "
         print(f"  {mark} {r.chapter}  ({r.citations} citations, {r.proofs} proofs)")
         for e in r.errors:
@@ -207,7 +225,14 @@ def main(story_dir: str) -> int:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    args = sys.argv[1:]
+    run_proofs = "--no-proofs" not in args
+    dirs = [a for a in args if a != "--no-proofs"]
+    if not dirs:
         print(__doc__)
         sys.exit(2)
-    sys.exit(main(sys.argv[1]))
+    codes = []
+    for d in dirs:
+        codes.append(main(d, run_proofs))
+        print()
+    sys.exit(max(codes))

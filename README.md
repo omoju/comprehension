@@ -63,6 +63,7 @@ The stages one at a time, if you want them:
 .venv/bin/python codestory/chapter.py  stories/mine
 .venv/bin/python codestory/render.py   stories/mine                      # → stories/mine/index.html, the three-pane page
 .venv/bin/python codestory/verify.py   stories/mine                      # citations, drift, proofs
+python3 codestory/verify.py --no-proofs stories/*/                      # citations and drift only; what CI runs on every pull request
 sh codestory/restore_repos.sh                                            # the ten demo repositories at their pinned commits
 ```
 

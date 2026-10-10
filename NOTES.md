@@ -16,7 +16,8 @@ two weeks (stories ≈ $65, outline repairs ≈ $21, evaluation ≈ $103), penni
 Repair: a plan or chapter that fails a deterministic check goes back to the model with the errors, in the same
 conversation, ≤ `REPAIRS` = 2 times; `outline.py --repair` does it for an existing plan, `chapter.py` on a finished
 story is the stage-3 pass. The judge is reported, never repaired on.
-Checks: `verify.py <dir>` (citations, drift, proofs), `claims.py <dir> <chapter>` (Jev contradiction judge).
+Checks: `verify.py [--no-proofs] <dir>...` (citations, drift, proofs), `claims.py <dir> <chapter>` (Jev contradiction
+judge). `.github/workflows/stories.yml` runs the citation and drift checks on every story on each pull request.
 Each repo gets its own environment at `demo-repos/<repo>/.codestory-venv` (created on first use).
 
 **The evaluation** (`codestory/eval/`, one line each): `questions.py` writes 8 path + 7 general questions from the
@@ -93,6 +94,11 @@ the human check.
   Repair from what the checker checked (the file on disk), not from what the model once said.
 
 ## Log (newest first)
+- **10-09** · `stories` workflow: on every pull request, `restore_repos.sh` fetches each cited repository at its pin
+  and `verify.py --no-proofs` checks citations and drift for all thirteen stories (102 chapters). `verify.py` takes
+  several stories, skips proofs on request, accepts a change story's base-commit citations, and ignores proofs in
+  languages it can't run. tomli added to `demo-repos.lock`. Tested on planted errors: an out-of-range line and a
+  missing file both fail the run.
 - **10-09** · The two explainer pages (`eval/explainer/`) now link omojumiller.com's stylesheet and use the site's page
   frame, as the gallery does; local CSS keeps only the stepper, figures, flow chart, bars and the two arms' colours.
   Templates changed the same way, placeholders untouched.

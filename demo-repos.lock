@@ -10,3 +10,4 @@ requests https://github.com/psf/requests.git 611c6162cbc4ac2020a2f91c7cfa4f3abf9
 rich https://github.com/Textualize/rich.git 9d8f9a372cc5916fd4781fec207ced7ddac2f08f
 tqdm https://github.com/tqdm/tqdm.git 9cf5a12b1f955468a17f0ba3c59092b23e4258ac
 ufo https://github.com/unjs/ufo.git cb6af4e5e55fc21b5b776fd13b2d1e372f71f40c 5fb179d51384301ffb66b48e213863a27cadd1ff
+tomli https://github.com/hukkin/tomli.git 18d8d59db6d632ebbcfe63f1f7636145d652da21

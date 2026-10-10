@@ -1,0 +1,19 @@
+# Every story still passes its citation and drift checks against the code it cites, at the pinned commit. Runs on
+# pull requests, so a change to a story, a generator or a checker fails here before it reaches main. Proofs are not
+# run: they need each repository's own environment and are the pipeline's job at generation time
+# (codestory/verify.py without --no-proofs).
+name: stories
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the repositories the stories cite, at their pinned commits
+        run: sh codestory/restore_repos.sh
+      - name: Check every story's citations and drift
+        run: find stories -maxdepth 3 -name outline.json | xargs -n1 dirname | sort | xargs python3 codestory/verify.py --no-proofs
