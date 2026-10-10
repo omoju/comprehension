@@ -5,3 +5,4 @@ __pycache__/
 demo-repos/
 eval/checkouts/
 NOTES.local.md
+.claude/

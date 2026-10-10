@@ -246,6 +246,18 @@ def repo_block(repo: Path, info: dict, story: Path | None = None) -> dict:
     return {"type": "text", "text": text, "cache_control": {"type": "ephemeral"}}
 
 
+def decode_escapes(value):
+    """The model sometimes writes "\\u2014" as six characters of text instead of the dash, and JSON keeps the text.
+    Decode such escapes in every string of the plan, so pages never print them."""
+    if isinstance(value, str):
+        return re.sub(r"\\u([0-9a-fA-F]{4})", lambda m: chr(int(m.group(1), 16)), value)
+    if isinstance(value, list):
+        return [decode_escapes(v) for v in value]
+    if isinstance(value, dict):
+        return {k: decode_escapes(v) for k, v in value.items()}
+    return value
+
+
 def plan_call(messages: list[dict]):
     return llm.ask(SYSTEM, messages, schema=OUTLINE_SCHEMA, max_tokens=64000)
 
@@ -289,7 +301,7 @@ def main(repo_arg: str, story_arg: str, reader: str, max_chapters: int, repair: 
         reply = plan_call(messages)
         (story / f"outline.response{name}.json").write_text(json.dumps(reply.record(), indent=1))  # usage, model, raw
         usage.append((name or "plan", reply))
-        return json.loads(reply.text)
+        return decode_escapes(json.loads(reply.text))
 
     if repair:  # the existing plan stands in for the model's first answer
         previous = json.loads((story / "outline.json").read_text())
