@@ -359,7 +359,8 @@ def build_diff(story: Path, outline: dict) -> str:
     return TEMPLATE.replace("__TITLE__", html.escape(name)).replace("__DATA__", payload)
 
 
-TEMPLATE = r"""<title>__TITLE__</title>
+TEMPLATE = r"""<meta charset="utf-8">
+<title>__TITLE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -803,5 +804,5 @@ if __name__ == "__main__":
         sys.exit(2)
     story = Path(sys.argv[1])
     out = story / "index.html"
-    out.write_text(build(story))
+    out.write_text(build(story), encoding="utf-8")
     print(f"wrote {out} ({out.stat().st_size // 1024} KB)")
