@@ -249,7 +249,7 @@ def diff_flow(trees: list[dict], spans: list[tuple], files: dict, revs: dict, to
         return next((n for n, a, b in spans if a <= tl <= b), None)
 
     # First pass: what is visible, and the decisions to ask for (one node process for all of them).
-    visible, requests = [], []
+    visible, requests, py_requests = [], [], []
     for ti, t in enumerate(trees):
         if not interesting(t["tree"], touched):
             continue
@@ -272,10 +272,20 @@ def diff_flow(trees: list[dict], spans: list[tuple], files: dict, revs: dict, to
                     if src is not None and child["file"].endswith((".ts", ".tsx", ".mts", ".js", ".mjs", ".vue")):
                         requests.append({"file": child["file"], "source": src, "line": child["line"],
                                          "ran": ran or [], "side": side, "test": ti})
+                    elif src is not None and child["file"].endswith(".py"):
+                        py_requests.append({"file": child["file"], "source": src, "line": child["line"],
+                                            "ran": ran or [], "side": side, "test": ti})
                 walk(child, depth + 1)
 
         walk(t["tree"], 1)
     found = ts_decisions(pkg_dir, requests)
+    for q in py_requests:  # Python decisions come from the ast, in process
+        try:
+            found[(q["file"], q["line"], q["side"], q["test"])] = {
+                "end": function_end(q["source"], q["line"]),
+                "decisions": decisions(q["source"], q["line"], set(q["ran"]))}
+        except (SyntaxError, StopIteration, ValueError):
+            continue
 
     items, current = [], None
     for ti, node, depth in visible:
