@@ -9,9 +9,10 @@ Options:
     --spec PATH          a spec, relative to the package, that exercises the change (repeatable; default: the test
                          files the change itself adds or edits)
     --reader NAME        who the story is for (default: reviewer; see codestory/readers/)
-    --runner NAME        japa or vitest (default: japa for an AdonisJS package, else vitest)
-    --link NAMES         what each worktree borrows from <repo>'s package, comma-separated (default: node_modules).
-                         Anything else the tests need, such as a local .env, has to be named here.
+    --runner NAME        japa, vitest or pytest (default: pytest for a Python package, japa for AdonisJS, else vitest)
+    --link NAMES         what each worktree borrows from <repo>'s package, comma-separated (default: node_modules;
+                         .venv for pytest). Anything else the tests need, such as a local .env, has to be named here.
+    --private            keep the story under stories/private/ (gitignored), for code that isn't public
     --max-chapters N     the length budget (default 8)
     --keep-worktrees     leave the base and head worktrees in place (by default they are removed at the end)
     --open               open the reading page
@@ -72,23 +73,36 @@ def pull_request(repo: Path, number: int) -> dict:
 
 
 TEST_FILE = re.compile(r"\.(spec|test)\.[cm]?[jt]sx?$")
+PY_TEST_FILE = re.compile(r"(^|/)test_[^/]*\.py$|_test\.py$")
+PY_MARKERS = ("pyproject.toml", "setup.py", "setup.cfg")
+
+
+def is_python_pkg(repo: Path, pkg: str) -> bool:
+    d = repo / pkg if pkg != "." else repo
+    return any((d / m).exists() for m in PY_MARKERS) and not (d / "package.json").exists()
 
 
 def guess_pkg(repo: Path, paths: list[str]) -> str | None:
-    """The package the change touches: a top-level directory with a package.json (preferring one whose tests the
-    change edits), else the repository root when it has one."""
-    tops = sorted({p.split("/")[0] for p in paths if "/" in p and (repo / p.split("/")[0] / "package.json").exists()})
-    with_tests = [t for t in tops if any(p.startswith(f"{t}/") and TEST_FILE.search(p) for p in paths)]
+    """The package the change touches: a top-level directory with a package.json or a pyproject.toml (preferring
+    one whose tests the change edits), else the repository root when it has one."""
+    markers = ("package.json", *PY_MARKERS)
+    tops = sorted({p.split("/")[0] for p in paths if "/" in p
+                   and any((repo / p.split("/")[0] / m).exists() for m in markers)})
+    with_tests = [t for t in tops if any(p.startswith(f"{t}/") and test_file(p) for p in paths)]
     if with_tests or tops:
         return (with_tests or tops)[0]
-    return "." if (repo / "package.json").exists() else None
+    return "." if any((repo / m).exists() for m in markers) else None
+
+
+def test_file(path: str) -> bool:
+    return bool(TEST_FILE.search(path) or PY_TEST_FILE.search(path))
 
 
 def changed_tests(repo: Path, head: str, pkg: str, paths: list[str]) -> list[str]:
     """The test files the change adds or edits in the package, relative to it, that still exist on the head."""
     prefix = under(pkg, "")
-    return sorted(p[len(prefix):] for p in paths if p.startswith(prefix) and TEST_FILE.search(p)
-                  and "node_modules/" not in p and git_has(repo, head, p))
+    return sorted(p[len(prefix):] for p in paths if p.startswith(prefix) and test_file(p)
+                  and "node_modules/" not in p and "/.venv/" not in p and git_has(repo, head, p))
 
 
 def main() -> int:
@@ -98,6 +112,7 @@ def main() -> int:
     ap.add_argument("--pkg"), ap.add_argument("--spec", action="append"), ap.add_argument("--reader", default="reviewer")
     ap.add_argument("--runner"), ap.add_argument("--link"), ap.add_argument("--max-chapters", default="8")
     ap.add_argument("--keep-worktrees", action="store_true"), ap.add_argument("--open", action="store_true")
+    ap.add_argument("--private", action="store_true")
     ap.add_argument("-h", "--help", action="store_true")
     a = ap.parse_args()
     if a.help or not (a.pr or (a.base and a.head)):
@@ -114,15 +129,19 @@ def main() -> int:
     paths = git(repo, "diff", "--name-only", base, head).splitlines()
     pkg = a.pkg or guess_pkg(repo, paths)
     if not pkg:
-        return fail("the change touches no package with a package.json; name one with --pkg")
+        return fail("the change touches no package with a package.json or pyproject.toml; name one with --pkg")
     specs = sorted(a.spec or changed_tests(repo, head, pkg, paths))
     if not specs:
         return fail(f"the change brings no test file in {pkg}: pass --spec with one that exercises it "
                     "(a change story needs a run to follow)")
-    runner = a.runner or ("japa" if (repo / pkg / "adonisrc.ts").exists() else "vitest")
-    link = a.link or "node_modules"
+    runner = a.runner or ("pytest" if is_python_pkg(repo, pkg) else "japa" if (repo / pkg / "adonisrc.ts").exists()
+                          else "vitest")
+    link = a.link or (".venv" if runner == "pytest" else "node_modules")
+    if runner == "pytest" and not (repo / pkg / ".venv").exists():
+        return fail(f"no .venv in {pkg}: create the package's environment first (for example `uv sync --all-groups`), "
+                    "so both sides of the change can borrow it")
 
-    story = ROOT / "stories" / name
+    story = ROOT / "stories" / ("private" if a.private else "") / name
     story.mkdir(parents=True, exist_ok=True)
     print(f"change:  {base[:7]} → {head[:7]}" + (f"  #{a.pr} {title}" if a.pr else ""))
     print(f"package: {pkg} ({runner}); specs: {', '.join(specs)}")

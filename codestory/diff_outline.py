@@ -24,7 +24,7 @@ from pathlib import Path
 import env  # noqa: F401  (loads .env)
 import llm
 from diff import repo_dir
-from outline import (CONTEXT_BUDGET, NOISE, READERS, REPAIRS, git, relative_to_root, span_errors, thread_errors,
+from outline import (CONTEXT_BUDGET, NOISE, READERS, REPAIRS, decode_escapes, git, relative_to_root, span_errors, thread_errors,
                      usage_line)
 
 MAX_CHAPTERS = 8
@@ -284,7 +284,7 @@ def main(story_arg: str, reader: str, max_chapters: int, repair: bool, dry_run: 
         reply = llm.ask(SYSTEM, messages, schema=DIFF_OUTLINE_SCHEMA, max_tokens=64000)
         (story / f"outline.response{name}.json").write_text(json.dumps(reply.record(), indent=1))
         replies.append((name or "plan", reply))
-        return json.loads(reply.text)
+        return decode_escapes(json.loads(reply.text))
 
     if repair:  # the existing plan stands in for the model's first answer
         previous = json.loads((story / "outline.json").read_text())

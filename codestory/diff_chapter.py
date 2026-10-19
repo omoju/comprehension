@@ -21,7 +21,7 @@ import env  # noqa: F401  (loads .env)
 import llm
 from chapter import Usage, money, slug
 from diff_outline import change_block, evidence_block, load, numbered
-from diff_verify import Report, chapter_files, proof_name, split_proof, verify
+from diff_verify import Report, chapter_files, proof_dir, proof_fence, proof_name, split_proof, verify
 from outline import READERS, REPAIRS
 
 SYSTEM = """You write one chapter of a change story at a time. A change story follows the data through the change's
@@ -57,8 +57,8 @@ Accountability, which is not optional:
   only to show what it did before.
 - Values you show must be the ones in the trace. Say only what the code and trace show; mark inference as such. The
   runs say nothing about code they never reached: don't claim behaviour for it.
-- End with a proof: one fenced code block whose info string is exactly `ts proof`, holding a whole spec file, as the
-  request describes. It runs once on the head and once on the base. A "changed" chapter's proof passes on the head
+- End with a proof: one fenced code block whose info string is exactly the proof language the request names (for
+  example `ts proof` or `python proof`), holding a whole test file, as the request describes. It runs once on the head and once on the base. A "changed" chapter's proof passes on the head
   and fails on the base: assert the values the trace shows on the head where the base's differ. A "preserved"
   chapter's proof passes on both. Every assertion must be able to fail if the story were wrong: never assert that a
   value equals itself, or that true is true.
@@ -77,6 +77,12 @@ test that needs longer. On the base, a name the change adds is undefined rather 
 once on the head and once on the base. Import application code by relative path from {pkg}/tests/unit/codestory/ (or
 the package's aliases), and use `describe`, `it` and `expect` from 'vitest'. On the base, a name the change adds is
 undefined rather than a failed import.""",
+    "pytest": """The proof is a whole pytest file. It is saved as {pkg}/{path} and run from {pkg}/ with pytest, once on
+the head and once on the base, inside the package's own environment with the package importable (the test files the
+change ships import it the same way: copy their imports and any fixture or fake you need into the file). Use plain
+`def test_…` functions with `assert`; `pytest` fixtures such as `tmp_path` and `monkeypatch` are available. No
+network. On the base, a name the change adds raises ImportError or AttributeError, which counts as the proof failing
+there; prefer asserting a behaviour the base gets wrong over merely importing a new name.""",
 }
 
 
@@ -88,9 +94,9 @@ def chapter_request(n: int, outline: dict, story: Path, changes: dict, summary: 
     info = outline["repo"]
     profile = (READERS / f"{outline['reader']}.md").read_text()
     plan = json.dumps({k: outline[k] for k in ("title", "premise", "verdict", "chapters", "unexercised")}, indent=1)
-    name = proof_name(story, n)
-    how = PROOF_HOW[changes.get("runner", "japa")].format(pkg=changes["pkg"], path=f"tests/unit/codestory/{name}",
-                                                          name=name)
+    runner = changes.get("runner", "japa")
+    name = proof_name(story, n, runner)
+    how = PROOF_HOW[runner].format(pkg=changes["pkg"], path=f"{proof_dir(runner)}/{name}", name=name)
     return [
         change_block(story, changes, info),
         {"type": "text", "cache_control": {"type": "ephemeral"},
@@ -100,7 +106,8 @@ def chapter_request(n: int, outline: dict, story: Path, changes: dict, summary: 
             (f"<previous_chapter>\n{previous}\n</previous_chapter>\n\n" if previous else "")
             + f"Write chapter {n}: {chapter['title']} (kind: {chapter['kind']}). It covers trace lines "
             f"{chapter['trace_lines'][0]}-{chapter['trace_lines'][-1]}.\n"
-            f"REPO_URL = {info['url']}\nBASE = {info['base']}\nHEAD = {info['head']}\n\n{how}")},
+            f"REPO_URL = {info['url']}\nBASE = {info['base']}\nHEAD = {info['head']}\n"
+            f"Proof language (the fenced block's info string): `{proof_fence(runner)}`.\n\n{how}")},
     ]
 
 
@@ -122,9 +129,10 @@ def ask(messages: list[dict], n: int, story: Path, name: str) -> tuple[llm.Reply
 
 
 def save(raw: str, n: int, outline: dict, story: Path) -> str:
-    """Split the model's answer into the chapter (NN-slug.md) and its proof (proofs/NN.ts); return the chapter."""
+    """Split the model's answer into the chapter (NN-slug.md) and its proof (proofs/NN.<ext>); return the chapter."""
     chapter = next(c for c in outline["chapters"] if c["n"] == n)
-    text, proof = split_proof(raw)
+    runner = json.loads((story / "changes.json").read_text()).get("runner", "japa")
+    text, proof = split_proof(raw, runner)
     for old in story.glob(f"{n:02}-*.md"):
         old.unlink()
     (story / f"{n:02}-{slug(chapter['title'])}.md").write_text(text)
@@ -140,8 +148,9 @@ def save(raw: str, n: int, outline: dict, story: Path) -> str:
 def joined(n: int, story: Path) -> str:
     """A finished chapter as the model would have written it: the story, then its proof."""
     md, proof = chapter_files(story, n)
+    runner = json.loads((story / "changes.json").read_text()).get("runner", "japa")
     text = md.read_text() if md else ""
-    return text.rstrip() + "\n" + (f"\n```ts proof\n{proof.read_text()}```\n" if proof.exists() else "")
+    return text.rstrip() + "\n" + (f"\n```{proof_fence(runner)}\n{proof.read_text()}```\n" if proof.exists() else "")
 
 
 def main(story_arg: str, only: int | None, repairs: int) -> int:

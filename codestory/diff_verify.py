@@ -22,19 +22,39 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from diff import checkout, repo_dir, run_traced
-from verify import find_citations
+from diff import PY_RUNNERS, checkout, repo_dir, run_traced
+from verify import VACUOUS as VACUOUS_PY, find_citations
 
 PROOF_TS = re.compile(r"```(?:ts|typescript) proof\n(.*?)```", re.DOTALL)
+PROOF_PY = re.compile(r"```(?:python|py) proof\n(.*?)```", re.DOTALL)
 PROOF_LEAD_IN = re.compile(r"(\n(-{3,}|#+ [^\n]*proof[^\n]*)\s*)+$", re.I)
 PROOF_DIR = "tests/unit/codestory"  # inside the package; the unit suite's glob picks it up
+PROOF_DIR_PY = "tests/codestory"  # pytest collects test_*.py under testpaths (tests/ by default)
+
+
+def runner_of(story: Path) -> str:
+    return json.loads((story / "changes.json").read_text()).get("runner", "japa")
+
+
+def proof_fence(runner: str) -> str:
+    """The info string a proof's fenced block carries, per runner."""
+    return "python proof" if runner in PY_RUNNERS else "ts proof"
+
+
+def proof_ext(runner: str) -> str:
+    return "py" if runner in PY_RUNNERS else "ts"
+
+
+def proof_dir(runner: str) -> str:
+    return PROOF_DIR_PY if runner in PY_RUNNERS else PROOF_DIR
 
 # Assertions that cannot fail, in the shapes Japa's assert and Vitest's expect take.
 VACUOUS = re.compile(
     r"\|\|\s*true\b|\bassert\.(?:isTrue|ok)\(\s*true\s*[,)]|\bexpect\(\s*true\s*\)\.toBe(?:Truthy)?\(\s*(?:true)?\s*\)"
     r"|\bassert\.(?:equal|strictEqual|deepEqual)\(\s*(?P<a>[\w.\[\]'\"]+)\s*,\s*(?P=a)\s*[,)]"
     r"|\bexpect\(\s*(?P<b>[\w.\[\]'\"]+)\s*\)\.to(?:Be|Equal|StrictEqual)\(\s*(?P=b)\s*\)", re.M)
-MISSING_NAME = re.compile(r"is not a function|is not a constructor|Cannot read propert|is undefined|of undefined")
+MISSING_NAME = re.compile(r"is not a function|is not a constructor|Cannot read propert|is undefined|of undefined"
+                          r"|ImportError|cannot import name|has no attribute|NameError|ModuleNotFoundError")
 
 
 @dataclass
@@ -52,9 +72,9 @@ def git(repo: Path, *args: str) -> str:
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, check=True).stdout
 
 
-def split_proof(text: str) -> tuple[str, str | None]:
-    """A chapter's story and its proof (the last ```ts proof block), apart."""
-    found = list(PROOF_TS.finditer(text))
+def split_proof(text: str, runner: str = "japa") -> tuple[str, str | None]:
+    """A chapter's story and its proof (the last ```ts proof or ```python proof block), apart."""
+    found = list((PROOF_PY if runner in PY_RUNNERS else PROOF_TS).finditer(text))
     if not found:
         return text.rstrip() + "\n", None
     m = found[-1]
@@ -66,14 +86,17 @@ def story_slug(story: Path) -> str:
     return re.sub(r"[^a-z0-9]+", "_", story.name.lower()).strip("_")
 
 
-def proof_name(story: Path, n: int) -> str:
-    """The proof's spec file name: unique per story and chapter, since the runner selects files by name suffix."""
+def proof_name(story: Path, n: int, runner: str = "japa") -> str:
+    """The proof's test file name: unique per story and chapter, since the runner selects files by name."""
+    if runner in PY_RUNNERS:
+        return f"test_cs_{story_slug(story)}_{n:02}.py"
     return f"cs_{story_slug(story)}_{n:02}.spec.ts"
 
 
-def chapter_files(story: Path, n: int) -> tuple[Path | None, Path]:
+def chapter_files(story: Path, n: int, runner: str | None = None) -> tuple[Path | None, Path]:
     found = sorted(story.glob(f"{n:02}-*.md"))
-    return (found[0] if found else None), story / "proofs" / f"{n:02}.ts"
+    runner = runner or runner_of(story)
+    return (found[0] if found else None), story / "proofs" / f"{n:02}.{proof_ext(runner)}"
 
 
 # ---------------------------------------------------------------- citations and drift
@@ -139,16 +162,17 @@ def run_proofs(story: Path, outline: dict, setup: dict, ns: list[int]) -> dict[i
     All proofs share one run per side (each run boots the application). A proof can hang its run, as the base of a
     change that fixes a hang will: then the proofs that never got to run are rerun one per process, so one hang
     costs one chapter its result, not every chapter."""
-    names = {proof_name(story, n): n for n in ns if chapter_files(story, n)[1].exists()}
+    runner = setup.get("runner", "japa")
+    names = {proof_name(story, n, runner): n for n in ns if chapter_files(story, n, runner)[1].exists()}
     results = {n: {"head": "no proof", "base": "no proof"} for n in ns}
     for side in ("head", "base"):
         pkg_dir = checkout(setup, side)
-        folder = pkg_dir / PROOF_DIR
+        folder = pkg_dir / proof_dir(runner)
         folder.mkdir(parents=True, exist_ok=True)
-        for old in folder.glob(f"cs_{story_slug(story)}_*.spec.ts"):
+        for old in list(folder.glob(f"cs_{story_slug(story)}_*.spec.ts")) + list(folder.glob(f"test_cs_{story_slug(story)}_*.py")):
             old.unlink()  # this story's earlier proofs
         for name, n in names.items():
-            (folder / name).write_text(chapter_files(story, n)[1].read_text())
+            (folder / name).write_text(chapter_files(story, n, runner)[1].read_text())
         got, timed_out = run_side(story, setup, pkg_dir, side, list(names))
         if timed_out:  # the proofs that never started get a run each
             for name in [x for x in names if x not in got]:
@@ -164,7 +188,8 @@ def run_side(story: Path, setup: dict, pkg_dir: Path, side: str, names: list[str
     out = story / f"proofs.{side}.json"
     out.unlink(missing_ok=True)
     # No app code is instrumented (CS_INCLUDE matches nothing) and no lines are kept: only each test's outcome.
-    code, tail = run_traced(pkg_dir, [f"{PROOF_DIR}/{name}" for name in names], out, soft=side == "base",
+    runner = setup.get("runner", "japa")
+    code, tail = run_traced(pkg_dir, [f"{proof_dir(runner)}/{name}" for name in names], out, soft=side == "base",
                             timeout=int(setup.get("timeout", 300)), runner=setup.get("runner", "japa"),
                             env_extra={"CS_INCLUDE": "-/", "CS_LINES": "0"})
     tests = json.loads(out.read_text())["calls"] if out.exists() else []
@@ -183,14 +208,14 @@ def last_error(tail: str, name: str) -> str:
     """The runner's complaint about a spec that never loaded, as one line."""
     clean = re.sub(r"\x1b\[[0-9;]*m", "", tail)
     lines = [ln.strip() for ln in clean.splitlines() if ln.strip()]
-    hits = [ln for ln in lines if re.search(r"Error|error TS|SyntaxError|Cannot find|is not", ln)]
+    hits = [ln for ln in lines if re.search(r"Error|error TS|SyntaxError|Cannot find|is not|ERROR", ln)]
     return (hits[0] if hits else (lines[-1] if lines else "no output"))[:300]
 
 
 def judge_proof(kind: str, res: dict[str, str], report: Report) -> None:
     report.head, report.base = res["head"], res["base"]
     if res["head"] == "no proof":
-        report.errors.append("no ```ts proof block")
+        report.errors.append("no proof block (a fenced block whose info string is the proof language given)")
         return
     if res["head"] != "pass":
         report.errors.append(f"proof fails on the head: {res['head']}")
@@ -211,10 +236,12 @@ def verify(story: Path, ns: list[int] | None = None, proofs: bool = True, agains
     setup = json.loads((story / "changes.json").read_text())
     repo, info = repo_dir(setup), outline["repo"]
     chapters = {c["n"]: c for c in outline["chapters"]}
+    runner = setup.get("runner", "japa")
+    vacuous = VACUOUS_PY if runner in PY_RUNNERS else VACUOUS
     ns = sorted(chapters) if ns is None else ns
     reports, cache = {}, {}
     for n in ns:
-        md, proof = chapter_files(story, n)
+        md, proof = chapter_files(story, n, runner)
         r = reports[n] = Report(md.name if md else f"chapter {n} (not written)")
         if md is None:
             r.errors.append("not written")
@@ -224,10 +251,10 @@ def verify(story: Path, ns: list[int] | None = None, proofs: bool = True, agains
             r.warnings.append("no citations: nothing in this chapter can be checked against the code")
         if proof.exists():
             r.proofs = 1
-            for m in VACUOUS.finditer(proof.read_text()):
+            for m in vacuous.finditer(proof.read_text()):
                 r.errors.append(f"proof can't fail: {m.group(0).strip()}")
     if proofs:
-        for n, res in run_proofs(story, outline, setup, [n for n in ns if chapter_files(story, n)[0]]).items():
+        for n, res in run_proofs(story, outline, setup, [n for n in ns if chapter_files(story, n, runner)[0]]).items():
             judge_proof(chapters[n]["kind"], res, reports[n])
     return reports
 

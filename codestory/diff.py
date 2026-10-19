@@ -16,7 +16,9 @@ Writes into <story-dir>:
   diff.json          per test: outcome before and after; changed functions the run reached, and those it never did
   diff.tree.json     the merged run as a tree, with each call's line in diff.txt and each test's executed lines
 
-TypeScript (and JavaScript) packages tested with Japa (AdonisJS) or Vitest (Vite, Vue). Standard library only.
+TypeScript (and JavaScript) packages tested with Japa (AdonisJS) or Vitest (Vite, Vue), and Python packages tested
+with pytest (the package's .venv is linked into each worktree; codestory/py/pytest_trace.py traces the tests).
+Standard library only.
 """
 
 from __future__ import annotations
@@ -41,7 +43,25 @@ RUNNERS = {
     "japa": ["node", "--enable-source-maps", "--import", str(TS / "register.mjs"),  # AdonisJS backend
              "--import", "ts-node-maintained/register/esm", "bin/test.ts", "{suite}", "--files={file}"],
     "vitest": ["node", str(TS / "vitest-run.mjs"), "{spec}"],  # Vite / Vue frontend
+    "pytest": ["{python}", str(Path(__file__).resolve().parent / "py" / "pytest_trace.py"), ".", "{spec}"],  # Python
 }
+PY_RUNNERS = {"pytest"}
+SOURCE_EXT = {"pytest": (".py",)}
+DEFAULT_EXT = (".ts", ".mts", ".js", ".mjs", ".vue")
+TEST_PATH = {"pytest": re.compile(r"(^|/)(tests?|testing)/|(^|/)test_[^/]*\.py$|_test\.py$")}
+DEFAULT_TEST_PATH = re.compile(r"\.(spec|test)\.")
+
+
+def is_test_file(path: str, runner: str) -> bool:
+    return bool(TEST_PATH.get(runner, DEFAULT_TEST_PATH).search(path))
+
+
+def venv_python(pkg_dir: Path) -> str:
+    """The package's own interpreter (its .venv, linked into each worktree), so its dependencies are there."""
+    for candidate in (pkg_dir / ".venv" / "bin" / "python", pkg_dir / ".venv" / "Scripts" / "python.exe"):
+        if candidate.exists():
+            return str(candidate)
+    raise SystemExit(f"✗ no .venv in {pkg_dir}: create one in the repository (uv sync) so both sides can borrow it")
 HUNK = re.compile(r"^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@")
 
 
@@ -107,18 +127,51 @@ def function_spans(repo: Path, rev: str, paths: list[str], pkg_dir: Path) -> dic
         return {files[k]: v for k, v in json.loads(run.stdout).items()}
 
 
+def py_function_spans(repo: Path, rev: str, paths: list[str]) -> dict[str, list[dict]]:
+    """{path: [{name, line, end}]} from Python's ast; names are qualified like co_qualname (Class.method,
+    outer.<locals>.inner), which is how the tracer names a call."""
+    import ast
+
+    out = {}
+    for p in paths:
+        try:
+            source = git(repo, "show", f"{rev}:{p}")
+            tree = ast.parse(source)
+        except (subprocess.CalledProcessError, SyntaxError):
+            continue
+        spans = []
+
+        def walk(node, prefix):
+            for child in ast.iter_child_nodes(node):
+                if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    name = prefix + child.name
+                    spans.append({"name": name, "line": child.lineno, "end": child.end_lineno or child.lineno})
+                    walk(child, name + ".<locals>.")
+                elif isinstance(child, ast.ClassDef):
+                    walk(child, prefix + child.name + ".")
+                else:
+                    walk(child, prefix)
+
+        walk(tree, "")
+        out[p] = spans
+    return out
+
+
 def innermost(spans: list[dict], line: int) -> dict | None:
     inside = [s for s in spans if s["line"] <= line <= s["end"]]
     return min(inside, key=lambda s: s["end"] - s["line"]) if inside else None
 
 
-def changed_functions(repo: Path, base: str, head: str, pkg: str, include: list[str], pkg_dir: Path) -> dict:
+def changed_functions(repo: Path, base: str, head: str, pkg: str, include: list[str], pkg_dir: Path,
+                      runner: str = "japa") -> dict:
     """Attribute every changed line to the innermost function containing it, on each side."""
+    ext = SOURCE_EXT.get(runner, DEFAULT_EXT)
     changed = {p: h for p, h in hunks(repo, base, head, pkg).items()
-               if p.endswith((".ts", ".mts", ".js", ".mjs", ".vue")) and not re.search(r"\.(spec|test)\.", p)
+               if p.endswith(ext) and not is_test_file(p, runner)
                and any(p.startswith(under(pkg, i)) for i in include)}
-    before = function_spans(repo, base, list(changed), pkg_dir)
-    after = function_spans(repo, head, list(changed), pkg_dir)
+    spans = py_function_spans if runner in PY_RUNNERS else (lambda r, rev, ps: function_spans(r, rev, ps, pkg_dir))
+    before = spans(repo, base, list(changed))
+    after = spans(repo, head, list(changed))
     out = {}
     for path, lines in changed.items():
         old_names = {s["name"]: s for s in before.get(path, [])}
@@ -183,10 +236,14 @@ def run_traced(pkg_dir: Path, specs: str | list[str], out: Path, soft: bool, tim
     parts = Path(specs[0]).parts  # tests/<suite>/<file>
     suite = parts[1] if len(parts) > 2 and parts[0] == "tests" else "unit"
     template = RUNNERS[runner]
-    argv = [a.format(suite=suite, file=",".join(Path(s).name for s in specs), spec=specs[0]) for a in template]
+    python = venv_python(pkg_dir) if runner in PY_RUNNERS else ""
+    argv = [a.format(suite=suite, file=",".join(Path(s).name for s in specs), spec=specs[0], python=python)
+            for a in template]
     if any("{spec}" in a for a in template):
         argv += specs[1:]  # a runner that takes paths takes the rest as further arguments
     env = {**os.environ, "CS_TRACE_OUT": str(out), "CS_SOFT_IMPORTS": "1" if soft else "0", **(env_extra or {})}
+    if runner in PY_RUNNERS:  # the worktree's own code first, ahead of whatever the borrowed venv installed
+        env["PYTHONPATH"] = str(pkg_dir) + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
     proc = subprocess.Popen(argv, cwd=pkg_dir, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
                             start_new_session=True)
     try:
@@ -208,6 +265,22 @@ def run_traced(pkg_dir: Path, specs: str | list[str], out: Path, soft: bool, tim
 
 
 # ---------------------------------------------------------------- the two runs, side by side
+
+DIFF_BUDGET = 2500  # lines of diff.txt a change story is planned from; large runs are folded to fit
+
+
+def shrink(side: dict, budget: int) -> dict:
+    """Each test's run compressed as trace.compress does (comprehension frames folded, identical sibling calls
+    collapsed to "×N", then the deepest levels cut) to about `budget` lines of its own."""
+    from trace import compress
+
+    out = {**side, "calls": []}
+    for root in side["calls"]:
+        small = compress(root, budget)
+        small["lines"] = root.get("lines", {})  # compress drops nothing else a test needs, but keep this explicit
+        out["calls"].append(small)
+    return out
+
 
 def key(n: dict) -> tuple[str, str]:
     return n["fn"], n["file"]
@@ -309,12 +382,15 @@ def compare(base: dict, head: dict, changes: dict) -> tuple[list[str], dict, lis
     touched = {(f["name"], path) for path, c in changes.items() for f in c["functions"]}
     tests_b = {(t["fn"], t.get("line")): t for t in base["calls"]}  # titles can repeat across describe blocks
     base_died = bool(base.get("crashed") or base.get("timed_out"))
+    base_uncollected = [e.split("::")[0] for e in base.get("collection_errors", [])]
     lines, tests, trees = [], [], []
     for t in head["calls"]:
         b = tests_b.get((t["fn"], t.get("line")))
         merged = align(b, t) if b else mark(t, "+")
         before, after = verdict(b), verdict(t)
-        if before == "absent" and base_died:
+        if before == "absent" and any(t["file"].endswith(f) or f.endswith(t["file"]) for f in base_uncollected):
+            before = "fail"  # its file could not even be imported on the base: the change is what it needs
+        elif before == "absent" and base_died:
             before = "not run"  # the base run died before reaching it
         tests.append({"test": t["fn"].removeprefix("test: "), "before": before, "after": after})
         lines.append(f"## {t['fn']}   (before: {before}, after: {after})")
@@ -344,7 +420,8 @@ def main() -> int:
     ap.add_argument("repo"), ap.add_argument("base"), ap.add_argument("head"), ap.add_argument("story")
     ap.add_argument("--pkg", required=True, help="package directory inside the repo (has package.json)")
     ap.add_argument("--spec", action="append", required=True, help="spec path relative to the package")
-    ap.add_argument("--link", default="node_modules", help="comma-separated names to link from the repo's package")
+    ap.add_argument("--link", help="comma-separated names to link from the repo's package "
+                                   "(default: node_modules; .venv for pytest)")
     ap.add_argument("--include", help="comma-separated prefixes (in the package) to trace "
                                       "(default: app/ for japa, src/ for vitest)")
     ap.add_argument("--timeout", type=int, default=300, help="seconds per spec run before it is stopped")
@@ -354,11 +431,12 @@ def main() -> int:
     repo, story = Path(a.repo).resolve(), Path(a.story).resolve()
     story.mkdir(parents=True, exist_ok=True)
     base, head = git(repo, "rev-parse", a.base).strip(), git(repo, "rev-parse", a.head).strip()
-    a.include = a.include or ("src/" if a.runner == "vitest" else "app/")
-    include = [i.strip() for i in a.include.split(",") if i.strip()]
+    a.include = a.include or ("" if a.runner in PY_RUNNERS else "src/" if a.runner == "vitest" else "app/")
+    a.link = a.link or (".venv" if a.runner in PY_RUNNERS else "node_modules")
+    include = [i.strip() for i in a.include.split(",") if i.strip()] or [""]  # "" = the whole package
     print(f"{repo.name}: {base[:7]}..{head[:7]} in {a.pkg}/")
 
-    changes = changed_functions(repo, base, head, a.pkg, include, repo / a.pkg)
+    changes = changed_functions(repo, base, head, a.pkg, include, repo / a.pkg, a.runner)
     setup = {"repo": stored(repo), "base": base, "head": head, "pkg": a.pkg, "specs": a.spec, "runner": a.runner,
              "link": a.link, "include": a.include, "timeout": a.timeout}  # enough for later stages to rerun
     (story / "changes.json").write_text(json.dumps({**setup, "files": changes}, indent=1) + "\n")
@@ -387,12 +465,21 @@ def main() -> int:
             if not out.exists():
                 print(f"  {side}: no trace from {spec} (exit {code}):\n{tail}")
                 return 1
-            merged["calls"] += json.loads(out.read_text())["calls"]
+            data = json.loads(out.read_text())
+            merged["calls"] += data["calls"]
+            merged.setdefault("collection_errors", []).extend(data.get("collection_errors", []))
         out.write_text(json.dumps(merged, indent=1) + "\n")
         trees[side] = merged
         print(f"  {side}: {len(merged['calls'])} tests traced")
 
     lines, summary, merged = compare(trees["base"], trees["head"], changes)
+    coverage = summary["coverage"]  # from the full runs: folding cuts deep calls, but they were still reached
+    for per_test in (400, 250, 150, 100, 60, 40, 25):  # fold each run until the whole reads in one sitting
+        if len(lines) <= DIFF_BUDGET:
+            break
+        lines, summary, merged = compare(shrink(trees["base"], per_test), shrink(trees["head"], per_test), changes)
+    summary["coverage"] = coverage
+    print(f"  diff.txt: {len(lines)} lines")
     (story / "diff.txt").write_text("\n".join(lines) + "\n")
     (story / "diff.tree.json").write_text(json.dumps(merged) + "\n")
     (story / "diff.json").write_text(json.dumps(summary, indent=1) + "\n")
