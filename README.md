@@ -4,6 +4,11 @@ Prototypes for the future of code comprehension. Premise: more and more code is 
 nobody, and reading code you didn't write doesn't scale. Comprehension has to become something you can check,
 not something you take on trust.
 
+**Status (18 October 2026):** Cycle 1 was decided on 6 October by its preregistered rule, which said *kill*: the
+stories helped readers a great deal but were not more accurate than generated docs. The pivot that rule named,
+stories of *changes* for pull requests, is under way (`review.py`, Python and TypeScript so far). Cycle 2 gets its own
+preregistration before any result exists. Details below and in [`PREREGISTRATION.md`](PREREGISTRATION.md) §13.
+
 ## CodeStories
 
 A repository explained as a story that follows its data through one real run of its intended use.
@@ -97,6 +102,47 @@ words; 10 vs 7 of 360 sampled). Omoju's verdict, recorded before the numbers, wa
 the rule stands, and both are published. The numbers, both judging passes, and every deviation:
 `eval/results.md`, `PREREGISTRATION.md` §12–13. Two interactive explainers walk through how each measure was
 produced: `eval/explainer/index.html` (comprehension, H2) and `eval/explainer/h1.html` (accuracy, H1).
+
+## Contributing
+
+**Where this is going.** Stories of libraries work today (ten in `stories/`, one command for your own). Stories of
+*changes* are next: `review.py` runs a pull request's own tests on the code before and after it and tells what the
+change makes true, keeps true, and never exercises; it handles Python (pytest) and TypeScript/JavaScript (Japa,
+Vitest) so far. After that, applications: record one run of a running system and replay the recording instead of
+the world. Each cycle gets a preregistration with a date and a kill rule before any result exists; cycle 2's is
+being written.
+
+**Help wanted, in rough order of value:**
+
+- **Run it on a repository you know and say where it's wrong.** The most useful thing anyone can do. A chapter that
+  misstates how something works, a proof that passes but shouldn't, a scenario that needed the network, a page that
+  renders badly. The issue template says what to include.
+- **Test runners for `review.py`**: Jest, Mocha, Go test, cargo test, JUnit. Each is a runner entry in `diff.py`,
+  a tracer that records one run per test, and a proof format the verifier can run on both sides. The pytest and
+  Vitest runners show the shape.
+- **Tracers for other languages** (Go, Rust, Ruby, Java): record every call into the repository with its arguments,
+  return value and the lines that ran, in `trace.py`'s shape. The writing stages don't care about the language.
+- **The contradiction judge inside the pipeline.** Cycle 1 found ten sentences in 360 that the citation and proof
+  checks let through; the evaluation's claim-level judge caught all ten. Making it a stage-3 check on the prose is
+  the first candidate for cycle 2.
+- **Reader profiles** beyond owner, maintainer and user (`codestory/readers/`): a security reviewer, an on-call
+  engineer, a newcomer on their first week.
+- **The applications work**: recording and replay, so a story can follow a request through a service.
+
+**How to engage.** Open an issue before anything larger than a small fix, so the shape is agreed before the work.
+Pull requests need `python3 codestory/verify.py --no-proofs stories/*/` passing, which is what CI runs on every
+change: every story's citations still point at real, unchanged lines. Keep to the rules below: plain formats,
+swappable models, public by default, no secrets, no private data. First pull requests are asked to accept a short
+contributor license agreement ([`CLA.md`](CLA.md)): you keep your copyright and grant the rights needed to
+relicense or move the project later.
+
+**On "Claude writes the code."** That rule is about authorship in *this* repository's own words: Omoju writes the
+essays and talks; the code, the technical docs and the stories here were written by Claude in sessions with Omoju.
+It is not a requirement on contributors. Write your contribution however you work, by hand, with an agent, or
+both; what is reviewed is the diff, the tests, and the checks. Say in the pull request whether an agent wrote it,
+the way the stories say so about themselves.
+
+The longer version, with the shape of each piece of work: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Rules of the project
 

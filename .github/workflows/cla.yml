@@ -1,0 +1,27 @@
+# Asks each first-time contributor to accept CLA.md by commenting on their pull request; blocks merge until then.
+# Signatures are recorded in signatures/cla.json on a branch of this repository.
+name: cla
+on:
+  issue_comment:
+    types: [created]
+  pull_request_target:
+    types: [opened, closed, synchronize]
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+  statuses: write
+jobs:
+  cla:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: contributor-assistant/github-action@v2.6.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          path-to-signatures: signatures/cla.json
+          path-to-document: https://github.com/omoju/comprehension/blob/main/CLA.md
+          branch: cla-signatures
+          allowlist: omoju,dependabot[bot]
+          custom-notsigned-prcomment: 'Thank you for the pull request. Before it can be merged, please read [CLA.md](https://github.com/omoju/comprehension/blob/main/CLA.md) and, if you agree, comment on this PR with the sentence below. You keep your copyright; the agreement lets the project be relicensed or moved later without tracking down every contributor.'
+          custom-pr-sign-comment: 'I have read the CLA Document and I hereby sign the CLA'
